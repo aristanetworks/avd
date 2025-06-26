@@ -42,6 +42,7 @@ keys:
             description: |-
               Cleartext password for Digital Twin fabric devices.
             required: true
+      # TODO: Add this in a separate PR.
       # endpoints:
       #   type: dict
       #   description: |-

@@ -1,9 +1,3 @@
-tools-server:
-  username: act_user
-  password: act_pass
-veos:
-  username: act_user
-  password: act_pass
 nodes:
 - DC1-POD1-L2LEAF1A:
     node_type: tools-server
@@ -271,3 +265,11 @@ links:
 - connection:
   - DC2-RS2:Ethernet2
   - DC2-SUPER-SPINE1:Ethernet7
+cloudeos: null
+cvp: null
+generic: null
+third-party: null
+tools-server: null
+veos:
+  username: act_user
+  password: act_pass

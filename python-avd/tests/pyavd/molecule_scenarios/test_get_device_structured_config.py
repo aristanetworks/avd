@@ -30,6 +30,7 @@ from tests.models import MoleculeHost
     "example-single-dc-l3ls",
     "example-single-dc-l3ls-ipv6",
 )
+@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos")
 def test_get_device_structured_config(molecule_host: MoleculeHost) -> None:
     """Test get_device_structured_config."""
     inputs = deepcopy(molecule_host.hostvars)

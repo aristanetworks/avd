@@ -23473,11 +23473,7 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """
-                        Desired management interface IPv4 address.
-                        Overrides the dynamically generated (from the pool
-                        `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                        """
+                        """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
@@ -23492,10 +23488,7 @@ class EosDesigns(EosDesignsRootModel):
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
-                                    mgmt_ip:
-                                       Desired management interface IPv4 address.
-                                       Overrides the dynamically generated (from the pool
-                                       `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                    mgmt_ip: Desired management interface IPv4 address.
 
                                 """
 
@@ -27711,11 +27704,7 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides global `digital_twin.fabric.os_version` flag.
                             """
                             mgmt_ip: str | None
-                            """
-                            Desired management interface IPv4 address.
-                            Overrides the dynamically generated (from the pool
-                            `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                            """
+                            """Desired management interface IPv4 address."""
 
                             if TYPE_CHECKING:
 
@@ -27732,10 +27721,7 @@ class EosDesigns(EosDesignsRootModel):
                                         os_version:
                                            Desired OS version.
                                            Overrides global `digital_twin.fabric.os_version` flag.
-                                        mgmt_ip:
-                                           Desired management interface IPv4 address.
-                                           Overrides the dynamically generated (from the pool
-                                           `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                        mgmt_ip: Desired management interface IPv4 address.
 
                                     """
 
@@ -31880,11 +31866,7 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """
-                        Desired management interface IPv4 address.
-                        Overrides the dynamically generated (from the pool
-                        `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                        """
+                        """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
@@ -31899,10 +31881,7 @@ class EosDesigns(EosDesignsRootModel):
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
-                                    mgmt_ip:
-                                       Desired management interface IPv4 address.
-                                       Overrides the dynamically generated (from the pool
-                                       `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                    mgmt_ip: Desired management interface IPv4 address.
 
                                 """
 
@@ -36127,11 +36106,7 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """
-                        Desired management interface IPv4 address.
-                        Overrides the dynamically generated (from the pool
-                        `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                        """
+                        """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
@@ -36146,10 +36121,7 @@ class EosDesigns(EosDesignsRootModel):
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
-                                    mgmt_ip:
-                                       Desired management interface IPv4 address.
-                                       Overrides the dynamically generated (from the pool
-                                       `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                    mgmt_ip: Desired management interface IPv4 address.
 
                                 """
 
@@ -47469,11 +47441,7 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """
-                        Desired management interface IPv4 address.
-                        Overrides the dynamically generated (from the pool
-                        `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                        """
+                        """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
@@ -47488,10 +47456,7 @@ class EosDesigns(EosDesignsRootModel):
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
-                                    mgmt_ip:
-                                       Desired management interface IPv4 address.
-                                       Overrides the dynamically generated (from the pool
-                                       `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                    mgmt_ip: Desired management interface IPv4 address.
 
                                 """
 
@@ -51707,11 +51672,7 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides global `digital_twin.fabric.os_version` flag.
                             """
                             mgmt_ip: str | None
-                            """
-                            Desired management interface IPv4 address.
-                            Overrides the dynamically generated (from the pool
-                            `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                            """
+                            """Desired management interface IPv4 address."""
 
                             if TYPE_CHECKING:
 
@@ -51728,10 +51689,7 @@ class EosDesigns(EosDesignsRootModel):
                                         os_version:
                                            Desired OS version.
                                            Overrides global `digital_twin.fabric.os_version` flag.
-                                        mgmt_ip:
-                                           Desired management interface IPv4 address.
-                                           Overrides the dynamically generated (from the pool
-                                           `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                        mgmt_ip: Desired management interface IPv4 address.
 
                                     """
 
@@ -55876,11 +55834,7 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """
-                        Desired management interface IPv4 address.
-                        Overrides the dynamically generated (from the pool
-                        `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                        """
+                        """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
@@ -55895,10 +55849,7 @@ class EosDesigns(EosDesignsRootModel):
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
-                                    mgmt_ip:
-                                       Desired management interface IPv4 address.
-                                       Overrides the dynamically generated (from the pool
-                                       `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                    mgmt_ip: Desired management interface IPv4 address.
 
                                 """
 
@@ -60123,11 +60074,7 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """
-                        Desired management interface IPv4 address.
-                        Overrides the dynamically generated (from the pool
-                        `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                        """
+                        """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
@@ -60142,10 +60089,7 @@ class EosDesigns(EosDesignsRootModel):
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
-                                    mgmt_ip:
-                                       Desired management interface IPv4 address.
-                                       Overrides the dynamically generated (from the pool
-                                       `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                    mgmt_ip: Desired management interface IPv4 address.
 
                                 """
 

@@ -514,6 +514,7 @@ $defs:
       validate_lldp:
         type: bool
         description: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+      # TODO: Add this in a separate PR.
       # digital_twin:
       #   type: bool
       #   description: |-

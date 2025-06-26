@@ -30,6 +30,7 @@ from tests.models import MoleculeScenario
     "example-single-dc-l3ls",
     "example-single-dc-l3ls-ipv6",
 )
+@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos")
 def test_get_avd_facts(molecule_scenario: MoleculeScenario) -> None:
     """Test get_avd_facts."""
     molecule_inputs = {host.name: deepcopy(host.hostvars) for host in molecule_scenario.hosts}

@@ -27,8 +27,10 @@ provisioner:
     defaults:
       jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
       gathering: explicit
-  ansible_args:
-    - --inventory
-    - ${MOLECULE_SCENARIO_DIRECTORY}/inventory/hosts.yml
+  inventory:
+    links:
+      hosts: 'inventory/hosts.yml'
+      group_vars: 'inventory/group_vars/'
+      host_vars: 'inventory/host_vars/'
 verifier:
   name: ansible

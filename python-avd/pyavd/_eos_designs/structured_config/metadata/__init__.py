@@ -33,7 +33,7 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
         )
         self._set_cv_tags()
         self._set_cv_pathfinder()
-        if self.inputs.digital_twin_mode:
+        if self.shared_utils.digital_twin:
             self._set_digital_twin()
 
 

@@ -145,6 +145,7 @@ def _act_dynamic_digital_twin_fabric_documentation(
     nodes: tuple[dict[str, ActNodeSettings], ...],
     links: tuple[ActLinkSettings, ...],
 ) -> ACTDigitalTwin:
+    ACTDigitalTwin(nodes=nodes, links=links)
     return cast(
         "ACTDigitalTwin",
         make_dataclass(
@@ -166,14 +167,12 @@ def _act_dynamic_digital_twin_fabric_documentation(
 
 
 def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin:
-    digital_twin_node_types: set[str] = set()
-
     # Identify common username for fabric nodes
     # Value is enforced as a non-empty string during the generation of the metadata part of the structured_config
     digital_twin_fabric_username: str = next(
         (
-            get(device_structurude_config, "metadata.digital_twin.username")
-            for device_structurude_config in fabric_documentation_facts.structured_configs.values()
+            get(device_structured_config, "metadata.digital_twin.username")
+            for device_structured_config in fabric_documentation_facts.structured_configs.values()
         ),
     )
 
@@ -181,16 +180,26 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
     # Value is enforced as a non-empty string during the generation of the metadata part of the structured_config
     digital_twin_fabric_password: str = next(
         (
-            get(device_structurude_config, "metadata.digital_twin.password")
-            for device_structurude_config in fabric_documentation_facts.structured_configs.values()
+            get(device_structured_config, "metadata.digital_twin.password")
+            for device_structured_config in fabric_documentation_facts.structured_configs.values()
         ),
     )
 
+    digital_twin_node_types: dict[str, ActNodeTypeSettings | None] = {
+        "cloudeos": None,
+        "cvp": None,
+        "generic": None,
+        "third_party": None,
+        "tools_server": None,
+        "veos": None,
+    }
     digital_twin_devices: list[dict[str, ActNodeSettings]] = []
     device_list: list[str] = list(fabric_documentation_facts.avd_facts)
     for device in sorted(device_list):
-        if (digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type")) is not None:
-            digital_twin_node_types.add(digital_twin_node_type)
+        if (
+            digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type")
+        ) in digital_twin_node_types and not digital_twin_node_types[digital_twin_node_type]:
+            digital_twin_node_types[digital_twin_node_type] = ActNodeTypeSettings(username=digital_twin_fabric_username, password=digital_twin_fabric_password)
 
         digital_twin_devices.append(
             {
@@ -203,12 +212,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
             }
         )
 
-    return _act_dynamic_digital_twin_fabric_documentation(
-        cls_name="digital_twin_act_data",
-        node_types={
-            digital_twin_node_type: ActNodeTypeSettings(username=digital_twin_fabric_username, password=digital_twin_fabric_password)
-            for digital_twin_node_type in sorted(digital_twin_node_types)
-        },
+    return ACTDigitalTwin(
         nodes=tuple(digital_twin_devices),
         links=tuple(
             ActLinkSettings(
@@ -227,4 +231,10 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                 and topology_link["peer_interface"]
             )
         ),
+        cloudeos=digital_twin_node_types["cloudeos"],
+        cvp=digital_twin_node_types["cvp"],
+        generic=digital_twin_node_types["generic"],
+        third_party=digital_twin_node_types["third_party"],
+        tools_server=digital_twin_node_types["tools_server"],
+        veos=digital_twin_node_types["veos"],
     )

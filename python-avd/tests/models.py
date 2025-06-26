@@ -16,6 +16,7 @@ from yaml import CSafeLoader, load
 
 from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
 from pyavd._eos_designs.schema import EosDesigns
+from pyavd._utils import get
 from pyavd.api.pool_manager import PoolManager
 
 if TYPE_CHECKING:
@@ -70,7 +71,15 @@ class MoleculeHost:
     @cached_property
     def hostvars(self) -> dict:
         """The input vars for the host, as read from the Ansible inventory in the molecule scenario."""
-        return json.loads(json.dumps(self.scenario._vars.get_vars(host=self.ansible_host)))
+        hostvars = json.loads(json.dumps(self.scenario._vars.get_vars(host=self.ansible_host)))
+
+        # Workaround to drop Jinja templates for tests with digital_twin.
+        # TODO: Avoid relying on templates in scenarios executed in pytest.
+        if self.scenario.digital_twin:
+            for node_type_key in get(hostvars, "node_type_keys", []):
+                if "ip_addressing" in node_type_key:
+                    node_type_key.pop("ip_addressing", None)
+        return hostvars
 
 
 class MoleculeScenario:
@@ -82,20 +91,22 @@ class MoleculeScenario:
     pool_manager: PoolManager | None
     extra_python_paths: list[str]
     artifacts_path_offset: Path
+    digital_twin: bool
 
-    def __init__(self, name: str, artifacts_path_offset: str = "") -> None:
+    def __init__(self, name: str, digital_twin: bool = False) -> None:
         """
         Class representing one Molecule scenario.
 
         Args:
             name: Molecule scenario name
-            artifacts_path_offset: Relative path offset for configuration and documentation artifacts
+            digital_twin: Run in digital twin mode. Will prepend "digital_twin" to the paths for 'intended' and 'documentation' folders.
 
         The Ansible inventory of the Molecule scenario will be parsed and MoleculeHost instances will be inserted into the `hosts` property
         for each host found in the inventory.
         """
         self.name = name
-        self.artifacts_path_offset = Path(artifacts_path_offset)
+        self.digital_twin = digital_twin
+        self.artifacts_path_offset = Path("digital_twin" if self.digital_twin else "")
         if name.startswith("example-"):
             # Example paths
             self.path = EXAMPLE_PATH / name.removeprefix("example-")
@@ -132,7 +143,7 @@ class MoleculeScenario:
         """The AVD facts calculated from the full Ansible inventory in the molecule scenario."""
         all_hostvars = {host.name: deepcopy(host.hostvars) for host in self.hosts}
         all_inputs = {hostname: EosDesigns._from_dict(hostvars) for hostname, hostvars in all_hostvars.items()}
-        return get_facts(all_inputs=all_inputs, pool_manager=self.pool_manager, all_hostvars=all_hostvars)
+        return get_facts(all_inputs=all_inputs, pool_manager=self.pool_manager, all_hostvars=all_hostvars, digital_twin=self.digital_twin)
 
     @cached_property
     def fabric_documentation(self) -> str | None:
