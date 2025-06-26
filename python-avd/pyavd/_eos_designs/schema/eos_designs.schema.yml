@@ -5270,13 +5270,6 @@ keys:
           profile_name:
             type: str
             default: CP-PROFILE
-          shared_key:
-            type: str
-            required: true
-            description: 'The IPSec shared key.
-
-              This variable is sensitive and SHOULD be configured using some vault
-              mechanism.'
       data_plane:
         type: dict
         $ref: eos_designs#/$defs/ipsec_profile
@@ -6468,10 +6461,16 @@ $defs:
         description: Name of the IPSec profile.
       shared_key:
         type: str
-        required: true
-        description: 'The type 7 encrypted IPSec shared key.
+        description: 'Type 7 obfuscated IPSec shared key.
 
-          This variable is sensitive and should be configured using some vault mechanism.'
+          Takes precedence over `cleartext_shared_key`.
+
+          This variable is sensitive and SHOULD be configured using some vault mechanism.'
+      cleartext_shared_key:
+        type: str
+        description: 'Cleartext IPSec shared key.
+
+          This variable is sensitive and SHOULD be configured using some vault mechanism.'
   l3_edge:
     type: dict
     keys:
