@@ -241,7 +241,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: 'BGP peer group Type 7 password.
+            description: 'BGP peer group Type 7 encrypted password.
 
               Takes precedence over `cleartext_password`.'
           cleartext_password:
@@ -281,7 +281,7 @@ keys:
             required: true
           password:
             type: str
-            description: 'BGP peer group Type 7 password.
+            description: 'BGP peer group Type 7 encrypted password.
 
               Takes precedence over `cleartext_password`.'
           cleartext_password:
@@ -310,7 +310,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: 'BGP peer group Type 7 password.
+            description: 'BGP peer group Type 7 encrypted password.
 
               Takes precedence over `cleartext_password`.'
           cleartext_password:
@@ -339,7 +339,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: 'BGP peer group Type 7 password.
+            description: 'BGP peer group Type 7 encrypted password.
 
               Takes precedence over `cleartext_password`.'
           cleartext_password:
@@ -368,7 +368,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: 'BGP peer group Type 7 password.
+            description: 'BGP peer group Type 7 encrypted password.
 
               Takes precedence over `cleartext_password`.'
           cleartext_password:
@@ -397,7 +397,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: 'BGP peer group Type 7 password.
+            description: 'BGP peer group Type 7 encrypted password.
 
               Takes precedence over `cleartext_password`.'
           cleartext_password:
@@ -426,7 +426,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: 'BGP peer group Type 7 password.
+            description: 'BGP peer group Type 7 encrypted password.
 
               Takes precedence over `cleartext_password`.'
           cleartext_password:
@@ -455,7 +455,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: 'BGP peer group Type 7 password.
+            description: 'BGP peer group Type 7 encrypted password.
 
               Takes precedence over `cleartext_password`.'
           cleartext_password:
@@ -484,7 +484,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: 'BGP peer group Type 7 password.
+            description: 'BGP peer group Type 7 encrypted password.
 
               Takes precedence over `cleartext_password`.
 
@@ -573,7 +573,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: 'BGP peer group Type 7 password.
+            description: 'BGP peer group Type 7 encrypted password.
 
               Takes precedence over `cleartext_password`.
 

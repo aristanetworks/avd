@@ -141,7 +141,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group Type 7 password.
+            BGP peer group Type 7 encrypted password.
             Takes precedence over `cleartext_password`.
             """
             cleartext_password: str | None
@@ -175,7 +175,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group Type 7 password.
+                           BGP peer group Type 7 encrypted password.
                            Takes precedence over `cleartext_password`.
                         cleartext_password:
                            BGP peer group cleartext password.
@@ -200,7 +200,7 @@ class EosDesigns(EosDesignsRootModel):
             """Name of peer group."""
             password: str | None
             """
-            BGP peer group Type 7 password.
+            BGP peer group Type 7 encrypted password.
             Takes precedence over `cleartext_password`.
             """
             cleartext_password: str | None
@@ -234,7 +234,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group Type 7 password.
+                           BGP peer group Type 7 encrypted password.
                            Takes precedence over `cleartext_password`.
                         cleartext_password:
                            BGP peer group cleartext password.
@@ -263,7 +263,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group Type 7 password.
+            BGP peer group Type 7 encrypted password.
             Takes precedence over `cleartext_password`.
             """
             cleartext_password: str | None
@@ -297,7 +297,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group Type 7 password.
+                           BGP peer group Type 7 encrypted password.
                            Takes precedence over `cleartext_password`.
                         cleartext_password:
                            BGP peer group cleartext password.
@@ -326,7 +326,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group Type 7 password.
+            BGP peer group Type 7 encrypted password.
             Takes precedence over `cleartext_password`.
             """
             cleartext_password: str | None
@@ -360,7 +360,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group Type 7 password.
+                           BGP peer group Type 7 encrypted password.
                            Takes precedence over `cleartext_password`.
                         cleartext_password:
                            BGP peer group cleartext password.
@@ -389,7 +389,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group Type 7 password.
+            BGP peer group Type 7 encrypted password.
             Takes precedence over `cleartext_password`.
             """
             cleartext_password: str | None
@@ -423,7 +423,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group Type 7 password.
+                           BGP peer group Type 7 encrypted password.
                            Takes precedence over `cleartext_password`.
                         cleartext_password:
                            BGP peer group cleartext password.
@@ -452,7 +452,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group Type 7 password.
+            BGP peer group Type 7 encrypted password.
             Takes precedence over `cleartext_password`.
             """
             cleartext_password: str | None
@@ -486,7 +486,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group Type 7 password.
+                           BGP peer group Type 7 encrypted password.
                            Takes precedence over `cleartext_password`.
                         cleartext_password:
                            BGP peer group cleartext password.
@@ -515,7 +515,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group Type 7 password.
+            BGP peer group Type 7 encrypted password.
             Takes precedence over `cleartext_password`.
             """
             cleartext_password: str | None
@@ -549,7 +549,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group Type 7 password.
+                           BGP peer group Type 7 encrypted password.
                            Takes precedence over `cleartext_password`.
                         cleartext_password:
                            BGP peer group cleartext password.
@@ -578,7 +578,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group Type 7 password.
+            BGP peer group Type 7 encrypted password.
             Takes precedence over `cleartext_password`.
             """
             cleartext_password: str | None
@@ -612,7 +612,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group Type 7 password.
+                           BGP peer group Type 7 encrypted password.
                            Takes precedence over `cleartext_password`.
                         cleartext_password:
                            BGP peer group cleartext password.
@@ -690,17 +690,17 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group Type 7 password.
+            BGP peer group Type 7 encrypted password.
             Takes precedence over `cleartext_password`.
 
-            When configuring a
-            password on the `wan_overlay_peers` BGP peer group,
-            it may also be required to set a password for
-            the `wan_rr_overlay_peers` BGP peer group.
-            This is required in the case where one or more
-            pathfinders use the same VTEP IP range as the edge routers.
-            If the password is not set, the static
-            BGP peerings between Pathfinders may not come up.
+            When
+            configuring a password on the `wan_overlay_peers` BGP peer group,
+            it may also be required to set a
+            password for the `wan_rr_overlay_peers` BGP peer group.
+            This is required in the case where one or
+            more pathfinders use the same VTEP IP range as the edge routers.
+            If the password is not set, the
+            static BGP peerings between Pathfinders may not come up.
             """
             cleartext_password: str | None
             """
@@ -765,17 +765,17 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group Type 7 password.
+                           BGP peer group Type 7 encrypted password.
                            Takes precedence over `cleartext_password`.
 
-                           When configuring a
-                           password on the `wan_overlay_peers` BGP peer group,
-                           it may also be required to set a password for
-                           the `wan_rr_overlay_peers` BGP peer group.
-                           This is required in the case where one or more
-                           pathfinders use the same VTEP IP range as the edge routers.
-                           If the password is not set, the static
-                           BGP peerings between Pathfinders may not come up.
+                           When
+                           configuring a password on the `wan_overlay_peers` BGP peer group,
+                           it may also be required to set a
+                           password for the `wan_rr_overlay_peers` BGP peer group.
+                           This is required in the case where one or
+                           more pathfinders use the same VTEP IP range as the edge routers.
+                           If the password is not set, the
+                           static BGP peerings between Pathfinders may not come up.
                         cleartext_password:
                            BGP peer group cleartext password.
                            To protect the password at rest it is strongly recommended to
@@ -870,17 +870,17 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group Type 7 password.
+            BGP peer group Type 7 encrypted password.
             Takes precedence over `cleartext_password`.
 
-            When configuring a
-            password on the `wan_overlay_peers` BGP peer group,
-            it may also be required to set a password for
-            the `wan_rr_overlay_peers` BGP peer group.
-            This is required in the case where one or more
-            pathfinders use the same VTEP IP range as the edge routers.
-            If the password is not set, the static
-            BGP peerings between Pathfinders may not come up.
+            When
+            configuring a password on the `wan_overlay_peers` BGP peer group,
+            it may also be required to set a
+            password for the `wan_rr_overlay_peers` BGP peer group.
+            This is required in the case where one or
+            more pathfinders use the same VTEP IP range as the edge routers.
+            If the password is not set, the
+            static BGP peerings between Pathfinders may not come up.
             """
             cleartext_password: str | None
             """
@@ -935,17 +935,17 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group Type 7 password.
+                           BGP peer group Type 7 encrypted password.
                            Takes precedence over `cleartext_password`.
 
-                           When configuring a
-                           password on the `wan_overlay_peers` BGP peer group,
-                           it may also be required to set a password for
-                           the `wan_rr_overlay_peers` BGP peer group.
-                           This is required in the case where one or more
-                           pathfinders use the same VTEP IP range as the edge routers.
-                           If the password is not set, the static
-                           BGP peerings between Pathfinders may not come up.
+                           When
+                           configuring a password on the `wan_overlay_peers` BGP peer group,
+                           it may also be required to set a
+                           password for the `wan_rr_overlay_peers` BGP peer group.
+                           This is required in the case where one or
+                           more pathfinders use the same VTEP IP range as the edge routers.
+                           If the password is not set, the
+                           static BGP peerings between Pathfinders may not come up.
                         cleartext_password:
                            BGP peer group cleartext password.
                            To protect the password at rest it is strongly recommended to
