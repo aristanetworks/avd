@@ -152,7 +152,7 @@ class VlanInterfacesMixin(Protocol):
             vlan_interface_config.vrf = vrf.name
 
         # Adding IP helpers and OSPF via a common function also used for subinterfaces when uplink_type: lan
-        self.shared_utils.get_additional_svi_config(vlan_interface_config, svi, vrf)
+        self.shared_utils.get_additional_svi_config(vlan_interface_config, svi, vrf, tenant)
 
         return vlan_interface_config
 
