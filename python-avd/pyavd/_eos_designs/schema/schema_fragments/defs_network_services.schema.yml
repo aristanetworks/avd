@@ -99,6 +99,16 @@ $defs:
               name:
                 type: str
                 description: BGP peer group name.
+              password:
+                type: str
+                description: |-
+                  Type 7 encrypted password.
+                  Takes precedence over `cleartext_password`.
+              cleartext_password:
+                type: str
+                description: |-
+                  BGP peer group cleartext password.
+                  To protect the password at rest it is strongly recommended to make use of a vault or similar.
               nodes:
                 type: list
                 items:
@@ -1173,7 +1183,14 @@ $defs:
                       type: str
                     password:
                       type: str
-                      description: Encrypted password.
+                      description: |-
+                        Type 7 encrypted password.
+                        Takes precedence over `cleartext_password`.
+                    cleartext_password:
+                      type: str
+                      description: |-
+                        BGP peer group cleartext password.
+                        To protect the password at rest it is strongly recommended to make use of a vault or similar.
                     send_community:
                       type: str
                       description: |
@@ -1314,6 +1331,16 @@ $defs:
                       description: |
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                         If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                    password:
+                      type: str
+                      description: |-
+                        Type 7 encrypted password.
+                        Takes precedence over `cleartext_password`.
+                    cleartext_password:
+                      type: str
+                      description: |-
+                        BGP peer group cleartext password.
+                        To protect the password at rest it is strongly recommended to make use of a vault or similar.
                     address_family_ipv4:
                       type: dict
                       keys:
