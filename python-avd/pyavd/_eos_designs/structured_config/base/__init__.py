@@ -191,7 +191,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         # Use case where all specific features are filtered out leaving an empty list
         if not hardware_counters.features:
             # Since we use the same data model in eos_cli_config_gen, it would pick up the input vars unless we explicitly set it to null.
-            self.custom_structured_configs.nested.hardware_counters = EosCliConfigGen.HardwareCounters._from_null()
+            self.custom_structured_configs.nested.hardware_counters.features = EosCliConfigGen.HardwareCounters.Features._from_null()
             return
 
         self.structured_config.hardware_counters = hardware_counters

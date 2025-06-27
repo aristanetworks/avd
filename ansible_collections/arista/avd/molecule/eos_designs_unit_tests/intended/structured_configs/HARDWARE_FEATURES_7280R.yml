@@ -14,8 +14,7 @@ ethernet_interfaces:
 - name: Ethernet7
   description: SERVER_TEST_POE_ETH5_NO_POE
   shutdown: false
-  l2_mtu: 10010
-  l2_mru: 10020
+  l2_mru: 1002
   peer: TEST_POE
   peer_interface: ETH5_NO_POE
   peer_type: server
@@ -29,7 +28,7 @@ ethernet_interfaces:
     mode: active
   peer: TEST_MTU_MRU
   peer_type: server
-- name: Ethernet9
+- name: Ethernet6
   description: SERVER_TEST_INTERFACE_STORM_CONTROL_ETH15_WITH_STORM_CONTROL
   shutdown: false
   storm_control:
@@ -47,39 +46,42 @@ hardware_counters:
     address_type: mac
   - name: decap-group
   - name: directflow
+    direction: in
   - name: ecn
+    direction: out
   - name: flow-spec
+    direction: in
   - name: gre tunnel interface
     direction: out
   - name: ip
-  - name: mpls interface
-  - name: mpls lfib
-    direction: out
-    units_packets: true
-  - name: mpls lfib
     direction: in
-    units_packets: false
+  - name: mpls interface
+    direction: in
+  - name: mpls lfib
   - name: mpls tunnel
   - name: multicast
+    address_type: ipv4
   - name: nexthop
   - name: pbr
     direction: in
-  - name: pdp
   - name: policing interface
+    direction: in
   - name: qos
+    direction: in
   - name: qos dual-rate-policer
-  - name: route
-  - name: routed-port
-  - name: segment-security
     direction: in
   - name: subinterface
+    direction: in
   - name: tapagg
+    direction: in
   - name: traffic-class
+    direction: in
   - name: traffic-policy
+    direction: in
   - name: vlan
+    direction: in
   - name: vlan-interface
-  - name: vni decap
-  - name: vni encap
+    direction: in
   - name: vtep decap
   - name: vtep encap
 hostname: HARDWARE_FEATURES_7280R
@@ -111,8 +113,7 @@ port_channel_interfaces:
 - name: Port-Channel8
   description: SERVER_TEST_MTU_MRU_PO_MTU_MRU_2
   shutdown: false
-  l2_mtu: 20010
-  l2_mru: 20020
+  l2_mru: 2002
   switchport:
     enabled: true
 prefix_lists:

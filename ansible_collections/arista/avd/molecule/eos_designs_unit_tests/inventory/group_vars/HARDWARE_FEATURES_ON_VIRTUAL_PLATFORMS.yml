@@ -6,6 +6,28 @@ custom_platform_settings:
     feature_support:
       poe: true
       queue_monitor_length_notify: false
+      hardware_counter_features:
+        acl: false
+        decap_group: false
+        directflow: false
+        ecn: false
+        flow_spec: false
+        mpls_interface: false
+        mpls_lfib: false
+        mpls_tunnel: false
+        nexthop: false
+        pbr: false
+        pdp: false
+        policing_interface: false
+        qos: false
+        qos_dual_rate_policer: false
+        routed_port: false
+        segment_security: false
+        tapagg: false
+        traffic_class: false
+        traffic_policy: false
+        vlan: false
+      per_interface_l2_mru: false
     reload_delay:
       mlag: 300
       non_mlag: 330
@@ -14,6 +36,15 @@ custom_platform_settings:
       - 7280R
       - 7280R2
       - 7020R
+    feature_support:
+      hardware_counter_features:
+        pdp: false
+        route: false
+        routed_port: false
+        segment_security: false
+        vni_decap: false
+        vni_encap: false
+      per_interface_l2_mtu: false
     lag_hardware_only: true
     reload_delay:
       mlag: 900
@@ -210,16 +241,16 @@ servers:
         poe:
           reboot:
             action: maintain
-        l2_mtu: 10010
-        l2_mru: 10020
+        l2_mtu: 1001
+        l2_mru: 1002
   - name: TEST_MTU_MRU
     adapters:
       - switch_ports:
           - Ethernet8
         switches:
           - HARDWARE_FEATURES_VEOS_LAB
-        l2_mtu: 20010
-        l2_mru: 20020
+        l2_mtu: 2001
+        l2_mru: 2002
         port_channel:
           mode: active
           endpoint_port_channel: PO_NO_MTU_NO_MRU
@@ -227,8 +258,8 @@ servers:
           - Ethernet8
         switches:
           - HARDWARE_FEATURES_CEOS_LAB
-        l2_mtu: 20010
-        l2_mru: 20020
+        l2_mtu: 2001
+        l2_mru: 2002
         port_channel:
           mode: active
           endpoint_port_channel: PO_NO_MTU_NO_MRU
@@ -236,8 +267,8 @@ servers:
           - Ethernet8
         switches:
           - HARDWARE_FEATURES_CLOUDEOS
-        l2_mtu: 20010
-        l2_mru: 20020
+        l2_mtu: 2001
+        l2_mru: 2002
         port_channel:
           mode: active
           endpoint_port_channel: PO_MTU_NO_MRU
@@ -245,8 +276,8 @@ servers:
           - Ethernet8
         switches:
           - HARDWARE_FEATURES_720XP
-        l2_mtu: 20010
-        l2_mru: 20020
+        l2_mtu: 2001
+        l2_mru: 2002
         port_channel:
           mode: active
           endpoint_port_channel: PO_MTU_MRU_1
@@ -254,19 +285,19 @@ servers:
           - Ethernet8
         switches:
           - HARDWARE_FEATURES_7280R
-        l2_mtu: 20010
-        l2_mru: 20020
+        l2_mtu: 2001
+        l2_mru: 2002
         port_channel:
           mode: active
           endpoint_port_channel: PO_MTU_MRU_2
   - name: TEST_INTERFACE_STORM_CONTROL
     adapters:
       - switch_ports:
-          - Ethernet9
-          - Ethernet9
-          - Ethernet9
-          - Ethernet9
-          - Ethernet9
+          - Ethernet6
+          - Ethernet6
+          - Ethernet6
+          - Ethernet6
+          - Ethernet6
         switches:
           - HARDWARE_FEATURES_VEOS_LAB
           - HARDWARE_FEATURES_CEOS_LAB
@@ -351,28 +382,28 @@ hardware_counters:
     - name: decap-group
     # Expected to be filtered out for virtual platforms
     - name: directflow
+      direction: in
     # Expected to be filtered out for virtual platforms
     - name: ecn
+      direction: out
     # Expected to be filtered out for virtual platforms
     - name: flow-spec
+      direction: in
     # Expected to be filtered out for virtual platforms
     - name: gre tunnel interface
       direction: out
     # Expected to be filtered out for virtual platforms
     - name: ip
+      direction: in
     # Expected to be filtered out for virtual platforms
     - name: mpls interface
-    # Is not accepted by CLI of the [cv]EOS devices but is permitted by AVD to simplify schema
-    - name: mpls lfib
-      units_packets: true
-      direction: out
-    - name: mpls lfib
-      units_packets: false
       direction: in
+    - name: mpls lfib
     # Expected to be filtered out for virtual platforms
     - name: mpls tunnel
     # Expected to be filtered out for virtual platforms
     - name: multicast
+      address_type: ipv4
     - name: nexthop
     - name: pbr
       direction: in
@@ -380,12 +411,17 @@ hardware_counters:
     - name: pdp
     # Expected to be filtered out for virtual platforms
     - name: policing interface
+      direction: in
     # Expected to be filtered out for virtual platforms
     - name: qos
+      direction: in
     # Expected to be filtered out for virtual platforms
     - name: qos dual-rate-policer
+      direction: in
     # Expected to be filtered out for virtual platforms
     - name: route
+      address_type: ipv4
+      prefix: 1.1.1.1/32
     # Expected to be filtered out for virtual platforms
     - name: routed-port
     # Expected to be filtered out for virtual platforms
@@ -393,16 +429,22 @@ hardware_counters:
       direction: in
     # Expected to be filtered out for virtual platforms
     - name: subinterface
+      direction: in
     # Expected to be filtered out for virtual platforms
     - name: tapagg
+      direction: in
     # Expected to be filtered out for virtual platforms
     - name: traffic-class
+      direction: in
     # Expected to be filtered out for virtual platforms
     - name: traffic-policy
+      direction: in
     # Expected to be filtered out for virtual platforms
     - name: vlan
+      direction: in
     # Expected to be filtered out for virtual platforms
     - name: vlan-interface
+      direction: in
     - name: vni decap
     - name: vni encap
     - name: vtep decap
