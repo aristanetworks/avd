@@ -67,13 +67,13 @@ application_traffic_recognition:
 config_end: true
 daemon_terminattr:
   cvaddrs:
-  - www.cv-staging.corp.arista.io:443
+  - apiserver.arista.io:443
   cvauth:
     method: token-secure
     token_file: /tmp/cv-onboarding-token
+  cvsourceintf: Management1
   cvvrf: MGMT
   disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 dns_domain: wan.example.local
 dps_interfaces:

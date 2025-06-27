@@ -1104,6 +1104,177 @@ keys:
 
       Make sure to set it in a common group_vars file.'
     type: str
+  cv_settings:
+    documentation_options:
+      table: cloudvision-settings
+    type: dict
+    description: Settings for CloudVision telemetry streaming and provisioning.
+    keys:
+      cvaas:
+        type: dict
+        description: State streaming to CloudVision-as-a-Service.
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: 'Enable streaming to CVaaS.
+
+              When enabled it will stream to ''apiserver.arista.io:443'' using the
+              VRF obtained from `default_mgmt_method` unless overridden under `clusters`.'
+          clusters:
+            type: list
+            primary_key: name
+            default:
+            - name: cvaas
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Short name for the CVaaS cluster. Required here, but
+                    only used when configuring multiple clusters.
+                  pattern: ^[a-zA-Z1-9-_]+$
+                region:
+                  type: str
+                  description: 'Optionally set the region to stream to.
+
+                    The "auto" region will use ''apiserver.arista.io:443'' which will
+                    redirect to the correct region based on the device''s serial number.
+
+                    "staging", "dev" and "play" are for internal Arista use.'
+                  default: auto
+                  valid_values:
+                  - auto
+                  - us-central1-a
+                  - us-central1-b
+                  - us-central1-c
+                  - apnortheast-1
+                  - euwest-2
+                  - ausoutheast-1
+                  - na-northeast1-b
+                  - uk-1
+                  - india-1
+                  - staging
+                  - dev
+                  - play
+                vrf:
+                  type: str
+                  default: use_default_mgmt_method_vrf
+                  convert_types:
+                  - int
+                  description: "The VRF used to connect to CloudVision.\nThe value
+                    will be interpreted according to these rules:\n- `use_mgmt_interface_vrf`
+                    will configure the VRF set with `mgmt_interface_vrf` and configure
+                    the `mgmt_interface` as the source interface.\n  An error will
+                    be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for
+                    the device.\n- `use_inband_mgmt_vrf` will configure the VRF set
+                    with `inband_mgmt_vrf` and configure the `inband_mgmt_interface`
+                    as the source interface.\n  An error will be raised if inband
+                    management is not configured for the device.\n- `use_default_mgmt_method_vrf`
+                    will configure the VRF and source-interface for one of the two
+                    options above depending on the value of `default_mgmt_method`.\n-
+                    Any other string will be used directly as the VRF name."
+                token_file:
+                  type: str
+                  description: 'Path to the onboarding token used for certificate
+                    based authentication.
+
+                    The path is on the EOS device and the token file must be copied
+                    to the device first.'
+                  default: /tmp/cv-onboarding-token
+                source_interface:
+                  type: str
+                  description: 'Source-interface used to connect to CloudVision.
+
+                    If not set, the source interface may be set automatically when
+                    VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                    or `use_default_mgmt_method_vrf`.'
+      onprem_clusters:
+        type: list
+        description: On-premise CloudVision clusters.
+        primary_key: name
+        unique_keys:
+        - servers.name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Short name for the cluster. Required here, but only used
+                when configuring multiple clusters.
+              pattern: ^[a-zA-Z1-9-_]+$
+            servers:
+              type: list
+              required: true
+              min_length: 1
+              max_length: 3
+              primary_key: name
+              description: CloudVision servers that makes up one cluster.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Server FQDN or IP address.
+                  port:
+                    type: int
+                    convert_types:
+                    - str
+                    default: 9910
+            vrf:
+              type: str
+              default: use_default_mgmt_method_vrf
+              convert_types:
+              - int
+              description: "The VRF used to connect to CloudVision.\nThe value will
+                be interpreted according to these rules:\n- `use_mgmt_interface_vrf`
+                will configure the VRF set with `mgmt_interface_vrf` and configure
+                the `mgmt_interface` as the source interface.\n  An error will be
+                raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n-
+                `use_inband_mgmt_vrf` will configure the VRF set with `inband_mgmt_vrf`
+                and configure the `inband_mgmt_interface` as the source interface.\n
+                \ An error will be raised if inband management is not configured for
+                the device.\n- `use_default_mgmt_method_vrf` will configure the VRF
+                and source-interface for one of the two options above depending on
+                the value of `default_mgmt_method`.\n- Any other string will be used
+                directly as the VRF name."
+            token_file:
+              type: str
+              description: 'Path to the onboarding token used for certificate based
+                authentication.
+
+                The path is on the EOS device and the token file must be copied to
+                the device first.'
+              default: /tmp/token
+            source_interface:
+              type: str
+              description: 'Source-interface used to connect to CloudVision.
+
+                If not set, the source interface may be set automatically when VRF
+                is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.'
+      terminattr:
+        type: dict
+        description: Specific settings for the TerminAttr daemon.
+        keys:
+          ingestexclude:
+            type: str
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/ingestexclude
+          smashexcludes:
+            type: str
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/smashexcludes
+            default: ale,flexCounter,hardware,kni,pulse,strata
+          disable_aaa:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/disable_aaa
+            default: false
+      set_source_interfaces:
+        type: bool
+        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+          `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+
+          Can be set to `false` to avoid changes when migrating from old `cv_instances`
+          model.'
+        default: true
   cv_tags_topology_type:
     documentation_options:
       table: cloudvision-tags
@@ -1177,12 +1348,15 @@ keys:
       - CVaaS using token-secure onboarding. Default token path is ''/tmp/cv-onboarding-token''.
 
       Token must be copied to the device first.'
+    deprecation:
+      warning: true
+      remove_in_version: 6.0.0
   cvp_instance_ip:
     documentation_options:
       table: cloudvision-settings
     deprecation:
       warning: true
-      new_key: cvp_instance_ips
+      new_key: cv_settings
       remove_in_version: 5.0.0
       removed: true
     type: str
@@ -1207,7 +1381,11 @@ keys:
       '
     items:
       type: str
-      description: IPv4 address or DNS name for CloudVision.
+      description: IPv4 address or DNS name for CloudVision
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
   cvp_token_file:
     documentation_options:
       table: cloudvision-settings
@@ -1217,6 +1395,10 @@ keys:
       If not set the default locations for on-premise or CVaaS will be used.
 
       See cvp_ingestauth_key for details.'
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
   dc_name:
     documentation_options:
       table: fabric-topology
@@ -1338,13 +1520,13 @@ keys:
     type: str
     description: "`default_mgmt_method` controls the default VRF and source interface
       used for the following management and monitoring protocols configured with `eos_designs`:\n
-      \ - `logging_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n  - `snmp_settings`\n
-      \ - `aaa_settings`\n\n`oob` means the protocols will be configured with the
-      VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.\n`inband`
-      means the protocols will be configured with the VRF set by `inband_mgmt_vrf`
-      and `inband_mgmt_interface` as the source interface.\n`none` means the VRF and
-      or interface must be manually set for each protocol.\nThis can be overridden
-      under the settings for each protocol.\n"
+      \ - `aaa_settings`\n  - `cv_settings`\n  - `logging_settings`\n  - `ntp_settings`\n
+      \ - `sflow_settings`\n  - `snmp_settings`\n  - `ssh_settings`\n\n`oob` means
+      the protocols will be configured with the VRF set by `mgmt_interface_vrf` and
+      `mgmt_interface` as the source interface.\n`inband` means the protocols will
+      be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface`
+      as the source interface.\n`none` means the VRF and or interface must be manually
+      set for each protocol.\nThis can be overridden under the settings for each protocol.\n"
     valid_values:
     - oob
     - inband
@@ -4860,6 +5042,47 @@ keys:
 
               `inband_mgmt_interface` is typically a loopback or SVI interface, and
               can be set under the node settings.'
+  ssh_settings:
+    type: dict
+    documentation_options:
+      table: management-settings
+    keys:
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+              - int
+              description: "VRF name.\nThe value will be interpreted according to
+                these rules:\n- `use_mgmt_interface_vrf` will configure SSH for the
+                VRF set with `mgmt_interface_vrf`.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+                will configure SSH for the VRF set with `inband_mgmt_vrf`.\n  An error
+                will be raised if inband management is not configured for the device.\n-
+                `use_default_mgmt_method_vrf` will configure the VRF for one of the
+                two options above depending on the value of `default_mgmt_method`.\n-
+                Any other string will be used directly as the VRF name."
+            enabled:
+              type: bool
+              required: true
+              description: Enable SSH in VRF.
+            ipv4_acl:
+              type: str
+              convert_types:
+              - int
+              description: IPv4 access-list name.
+            ipv6_acl:
+              type: str
+              convert_types:
+              - int
+              description: IPv6 access-list name.
+      idle_timeout:
+        type: int
+        $ref: eos_cli_config_gen#/keys/management_ssh/keys/idle_timeout
   svi_profiles:
     type: list
     primary_key: profile
@@ -4915,11 +5138,19 @@ keys:
       table: cloudvision-settings
     type: bool
     default: false
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
   terminattr_ingestexclude:
     documentation_options:
       table: cloudvision-settings
     type: str
     default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
   terminattr_ingestgrpcurl_port:
     documentation_options:
       table: cloudvision-settings
@@ -4932,11 +5163,19 @@ keys:
 
       The port number is always 443 when using CloudVision as a Service, so this value
       is ignored.'
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
   terminattr_smashexcludes:
     documentation_options:
       table: cloudvision-settings
     type: str
     default: ale,flexCounter,hardware,kni,pulse,strata
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
   timezone:
     documentation_options:
       table: management-settings

@@ -1,6 +1,17 @@
 aaa_root:
   disabled: true
 config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.12:444
+  - 192.168.200.13:444
+  cvauth:
+    method: key
+    key: test_key
+  cvvrf: default
+  disable_aaa: true
+  ingestexclude: excludethis
+  smashexcludes: excludethat
 enable_password:
   disabled: true
 ethernet_interfaces:
