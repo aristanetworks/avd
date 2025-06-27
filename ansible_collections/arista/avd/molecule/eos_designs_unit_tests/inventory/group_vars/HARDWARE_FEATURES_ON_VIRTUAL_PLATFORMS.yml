@@ -469,7 +469,7 @@ core_interfaces:
     - nodes: [HARDWARE_FEATURES_VEOS_LAB, HARDWARE_FEATURES_CLOUDEOS]
       interfaces: [Ethernet4, Ethernet4]
       as: ["65000", "65001"]
-      ip: ["10.10.10.0/31", "10.10.10.1/31"]
+      ip: ["10.10.30.0/31", "10.10.30.1/31"]
       # Test PTP
       ptp:
         enabled: true
