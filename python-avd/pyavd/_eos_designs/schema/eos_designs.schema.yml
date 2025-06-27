@@ -4706,6 +4706,8 @@ keys:
               can be set under the node settings.'
   ssh_settings:
     type: dict
+    documentation_options:
+      table: management-settings
     keys:
       vrfs:
         type: list
