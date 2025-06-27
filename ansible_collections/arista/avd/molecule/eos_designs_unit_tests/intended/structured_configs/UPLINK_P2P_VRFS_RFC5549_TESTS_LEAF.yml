@@ -11,9 +11,31 @@ ethernet_interfaces:
   ipv6_enable: true
   peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
   peer_interface: Ethernet3
-  peer_type: spine
+  peer_type: l3spine
   switchport:
     enabled: false
+- name: Ethernet1.100
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet3.100_VRF_IT
+  shutdown: false
+  mtu: 9214
+  vrf: IT
+  encapsulation_dot1q:
+    vlan: 100
+  ipv6_enable: true
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+  peer_interface: Ethernet3.100
+  peer_type: l3spine
+- name: Ethernet1.42
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet3.42_VRF_PROD
+  shutdown: false
+  mtu: 9214
+  vrf: PROD
+  encapsulation_dot1q:
+    vlan: 42
+  ipv6_enable: true
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+  peer_interface: Ethernet3.42
+  peer_type: l3spine
 hostname: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
 ip_igmp_snooping:
   globally_enabled: true
@@ -26,7 +48,7 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.8/32
-  ipv6_address: 2001:1::c/128
+  ipv6_address: 2001:2::8/128
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -79,6 +101,11 @@ router_bgp:
     neighbors:
     - ip_address: 10.10.1.2
       peer_group: MYPEERGROUP
+    neighbor_interfaces:
+    - name: Ethernet1.100
+      remote_as: '65000'
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet3.100_vrf_IT
     redistribute:
       connected:
         enabled: true
@@ -86,6 +113,16 @@ router_bgp:
       neighbors:
       - ip_address: 10.10.1.2
         activate: true
+  - name: PROD
+    router_id: 192.168.42.8
+    neighbor_interfaces:
+    - name: Ethernet1.42
+      remote_as: '65000'
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet3.42_vrf_PROD
+    redistribute:
+      connected:
+        enabled: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
