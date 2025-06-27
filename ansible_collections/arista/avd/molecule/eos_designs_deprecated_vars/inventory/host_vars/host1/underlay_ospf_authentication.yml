@@ -1,0 +1,8 @@
+---
+underlay_routing_protocol: ospf
+underlay_ospf_authentication:
+  enabled: true
+  message_digest_keys:
+    - id: 1
+      # Deprecated key, replaced by cleartext_key. To be removed in AVD 6.0.0
+      key: arista123arista

@@ -42,11 +42,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.area") | String |  | `0.0.0.0` |  | OSPF area ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cost</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.cost") | Integer |  |  |  | OSPF link cost. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.authentication") | String |  |  | Valid Values:<br>- <code>simple</code><br>- <code>message-digest</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.simple_auth_key") | String |  |  |  | Password used with simple authentication. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.simple_auth_key") | String |  |  |  | Type 7 encrypted key for OSPF simple authentication.<br>Takes precedence over `cleartext_simple_auth_key`.<br>NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same<br>(e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleartext_simple_auth_key</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.cleartext_simple_auth_key") | String |  |  | Min Length: 1<br>Max Length: 8 | Cleartext key for OSPF simple authentication.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message_digest_keys</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.message_digest_keys") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.message_digest_keys.[].id") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.message_digest_keys.[].hash_algorithm") | String |  | `sha512` | Valid Values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.message_digest_keys.[].key") | String |  |  |  | Key password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.message_digest_keys.[].key") | String |  |  |  | Type 7 encrypted key for OSPF message-digest authentication.<br>Takes precedence over `cleartext_key`<br>NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same<br>(e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleartext_key</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].ospf.message_digest_keys.[].cleartext_key") | String |  |  | Min Length: 1<br>Max Length: 16 | Cleartext key for OSPF message-digest authentication<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pim</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].pim") | Dictionary |  |  |  | Enable PIM sparse-mode on the interface; requires "evpn_l3_multicast" to be enabled on the VRF/Tenant.<br>Enabling this implicitly makes the device a PIM External Gateway (PEG) in EVPN designs only.<br>At least one RP address must be configured for EVPN PEG to be configured.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].pim.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting. |
@@ -132,14 +134,28 @@
                   cost: <int>
                   authentication: <str; "simple" | "message-digest">
 
-                  # Password used with simple authentication.
+                  # Type 7 encrypted key for OSPF simple authentication.
+                  # Takes precedence over `cleartext_simple_auth_key`.
+                  # NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                  # (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
                   simple_auth_key: <str>
+
+                  # Cleartext key for OSPF simple authentication.
+                  # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                  cleartext_simple_auth_key: <str; length 1-8>
                   message_digest_keys:
                     - id: <int>
                       hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512"; default="sha512">
 
-                      # Key password.
+                      # Type 7 encrypted key for OSPF message-digest authentication.
+                      # Takes precedence over `cleartext_key`
+                      # NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                      # (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
                       key: <str>
+
+                      # Cleartext key for OSPF message-digest authentication
+                      # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                      cleartext_key: <str; length 1-16>
 
                 # Enable PIM sparse-mode on the interface; requires "evpn_l3_multicast" to be enabled on the VRF/Tenant.
                 # Enabling this implicitly makes the device a PIM External Gateway (PEG) in EVPN designs only.

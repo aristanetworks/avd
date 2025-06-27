@@ -553,6 +553,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "IPv4-UNDERLAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -563,7 +564,16 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `"IPv4-UNDERLAY-PEERS"`
             """
             password: str | None
-            """Type 7 encrypted password."""
+            """
+            BGP peer group Type 7 encrypted password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+            """
             bfd: bool
             """Default value: `False`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
@@ -576,6 +586,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -587,7 +598,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: Name of peer group.
-                        password: Type 7 encrypted password.
+                        password:
+                           BGP peer group Type 7 encrypted password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -599,13 +616,23 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
             name: str
             """Name of peer group."""
             password: str | None
-            """Type 7 encrypted password."""
+            """
+            BGP peer group Type 7 encrypted password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+            """
             bfd: bool
             """Default value: `False`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
@@ -618,6 +645,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -629,7 +657,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: Name of peer group.
-                        password: Type 7 encrypted password.
+                        password:
+                           BGP peer group Type 7 encrypted password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -641,6 +675,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "MLAG-IPv4-UNDERLAY-PEER"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -651,7 +686,16 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `"MLAG-IPv4-UNDERLAY-PEER"`
             """
             password: str | None
-            """Type 7 encrypted password."""
+            """
+            BGP peer group Type 7 encrypted password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+            """
             bfd: bool
             """Default value: `False`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
@@ -664,6 +708,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -675,7 +720,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: Name of peer group.
-                        password: Type 7 encrypted password.
+                        password:
+                           BGP peer group Type 7 encrypted password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -687,6 +738,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "EVPN-OVERLAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -697,7 +749,16 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `"EVPN-OVERLAY-PEERS"`
             """
             password: str | None
-            """Type 7 encrypted password."""
+            """
+            BGP peer group Type 7 encrypted password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+            """
             bfd: bool
             """Default value: `True`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
@@ -710,6 +771,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -721,7 +783,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: Name of peer group.
-                        password: Type 7 encrypted password.
+                        password:
+                           BGP peer group Type 7 encrypted password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -733,6 +801,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "EVPN-OVERLAY-CORE"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -743,7 +812,16 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `"EVPN-OVERLAY-CORE"`
             """
             password: str | None
-            """Type 7 encrypted password."""
+            """
+            BGP peer group Type 7 encrypted password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+            """
             bfd: bool
             """Default value: `True`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
@@ -756,6 +834,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -767,7 +846,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: Name of peer group.
-                        password: Type 7 encrypted password.
+                        password:
+                           BGP peer group Type 7 encrypted password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -779,6 +864,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "MPLS-OVERLAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -789,7 +875,16 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `"MPLS-OVERLAY-PEERS"`
             """
             password: str | None
-            """Type 7 encrypted password."""
+            """
+            BGP peer group Type 7 encrypted password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+            """
             bfd: bool
             """Default value: `True`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
@@ -802,6 +897,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -813,7 +909,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: Name of peer group.
-                        password: Type 7 encrypted password.
+                        password:
+                           BGP peer group Type 7 encrypted password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -825,6 +927,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "RR-OVERLAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -835,7 +938,16 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `"RR-OVERLAY-PEERS"`
             """
             password: str | None
-            """Type 7 encrypted password."""
+            """
+            BGP peer group Type 7 encrypted password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+            """
             bfd: bool
             """Default value: `True`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
@@ -848,6 +960,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -859,7 +972,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: Name of peer group.
-                        password: Type 7 encrypted password.
+                        password:
+                           BGP peer group Type 7 encrypted password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -871,6 +990,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "IPVPN-GATEWAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -881,7 +1001,16 @@ class EosDesigns(EosDesignsRootModel):
             Default value: `"IPVPN-GATEWAY-PEERS"`
             """
             password: str | None
-            """Type 7 encrypted password."""
+            """
+            BGP peer group Type 7 encrypted password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+            """
             bfd: bool
             """Default value: `True`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
@@ -894,6 +1023,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -905,7 +1035,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: Name of peer group.
-                        password: Type 7 encrypted password.
+                        password:
+                           BGP peer group Type 7 encrypted password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -963,6 +1099,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "WAN-OVERLAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "bfd_timers": {"type": BfdTimers},
                 "listen_range_prefixes": {"type": ListenRangePrefixes},
@@ -977,12 +1114,30 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            Type 7 encrypted password.
-            When configuring a password on the `wan_overlay_peers` BGP peer group,
-            it
-            may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
-            This is
-            required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+            BGP peer group Type 7 encrypted password.
+            Takes precedence over `cleartext_password`.
+
+            When
+            configuring a password on the `wan_overlay_peers` BGP peer group,
+            it may also be required to set a
+            password for the `wan_rr_overlay_peers` BGP peer group.
+            This is required in the case where one or
+            more pathfinders use the same VTEP IP range as the edge routers.
+            If the password is not set, the
+            static BGP peerings between Pathfinders may not come up.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+
+            When configuring a password on the `wan_overlay_peers` BGP peer
+            group,
+            it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+            This
+            is required in the case where one or more pathfinders use the same VTEP IP range as the edge
+            routers.
             If the password is not set, the static BGP peerings between Pathfinders may not come up.
             """
             bfd: bool
@@ -1018,6 +1173,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     bfd_timers: BfdTimers | UndefinedType = Undefined,
                     listen_range_prefixes: ListenRangePrefixes | UndefinedType = Undefined,
@@ -1033,12 +1189,28 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           Type 7 encrypted password.
-                           When configuring a password on the `wan_overlay_peers` BGP peer group,
-                           it
-                           may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
-                           This is
-                           required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+                           BGP peer group Type 7 encrypted password.
+                           Takes precedence over `cleartext_password`.
+
+                           When
+                           configuring a password on the `wan_overlay_peers` BGP peer group,
+                           it may also be required to set a
+                           password for the `wan_rr_overlay_peers` BGP peer group.
+                           This is required in the case where one or
+                           more pathfinders use the same VTEP IP range as the edge routers.
+                           If the password is not set, the
+                           static BGP peerings between Pathfinders may not come up.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
+
+                           When configuring a password on the `wan_overlay_peers` BGP peer
+                           group,
+                           it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+                           This
+                           is required in the case where one or more pathfinders use the same VTEP IP range as the edge
+                           routers.
                            If the password is not set, the static BGP peerings between Pathfinders may not come up.
                         bfd: bfd
                         bfd_timers:
@@ -1108,6 +1280,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "WAN-RR-OVERLAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "bfd_timers": {"type": BfdTimers},
                 "ttl_maximum_hops": {"type": int, "default": 1},
@@ -1121,12 +1294,30 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            Type 7 encrypted password.
-            When configuring a password on the `wan_overlay_peers` BGP peer group,
-            it
-            may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
-            This is
-            required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+            BGP peer group Type 7 encrypted password.
+            Takes precedence over `cleartext_password`.
+
+            When
+            configuring a password on the `wan_overlay_peers` BGP peer group,
+            it may also be required to set a
+            password for the `wan_rr_overlay_peers` BGP peer group.
+            This is required in the case where one or
+            more pathfinders use the same VTEP IP range as the edge routers.
+            If the password is not set, the
+            static BGP peerings between Pathfinders may not come up.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+
+            When configuring a password on the `wan_overlay_peers` BGP peer
+            group,
+            it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+            This
+            is required in the case where one or more pathfinders use the same VTEP IP range as the edge
+            routers.
             If the password is not set, the static BGP peerings between Pathfinders may not come up.
             """
             bfd: bool
@@ -1153,6 +1344,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     bfd_timers: BfdTimers | UndefinedType = Undefined,
                     ttl_maximum_hops: int | UndefinedType = Undefined,
@@ -1167,12 +1359,28 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           Type 7 encrypted password.
-                           When configuring a password on the `wan_overlay_peers` BGP peer group,
-                           it
-                           may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
-                           This is
-                           required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+                           BGP peer group Type 7 encrypted password.
+                           Takes precedence over `cleartext_password`.
+
+                           When
+                           configuring a password on the `wan_overlay_peers` BGP peer group,
+                           it may also be required to set a
+                           password for the `wan_rr_overlay_peers` BGP peer group.
+                           This is required in the case where one or
+                           more pathfinders use the same VTEP IP range as the edge routers.
+                           If the password is not set, the
+                           static BGP peerings between Pathfinders may not come up.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
+
+                           When configuring a password on the `wan_overlay_peers` BGP peer
+                           group,
+                           it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+                           This
+                           is required in the case where one or more pathfinders use the same VTEP IP range as the edge
+                           routers.
                            If the password is not set, the static BGP peerings between Pathfinders may not come up.
                         bfd: bfd
                         bfd_timers:
@@ -14662,12 +14870,26 @@ class EosDesigns(EosDesignsRootModel):
                 class MessageDigestKeysItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                    _fields: ClassVar[dict] = {
+                        "id": {"type": int},
+                        "hash_algorithm": {"type": str, "default": "sha512"},
+                        "key": {"type": str},
+                        "cleartext_key": {"type": str},
+                    }
                     id: int | None
                     hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                     """Default value: `"sha512"`"""
                     key: str | None
-                    """Type 7 encrypted key."""
+                    """
+                    Type 7 encrypted key for OSPF message-digest authentication.
+                    Takes precedence over `cleartext_key`.
+                    """
+                    cleartext_key: str | None
+                    """
+                    Cleartext key for OSPF message-digest authentication
+                    To protect the password at rest it is strongly
+                    recommended to make use of a vault or similar.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -14677,6 +14899,7 @@ class EosDesigns(EosDesignsRootModel):
                             id: int | None | UndefinedType = Undefined,
                             hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                             key: str | None | UndefinedType = Undefined,
+                            cleartext_key: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MessageDigestKeysItem.
@@ -14687,7 +14910,13 @@ class EosDesigns(EosDesignsRootModel):
                             Args:
                                 id: id
                                 hash_algorithm: hash_algorithm
-                                key: Type 7 encrypted key.
+                                key:
+                                   Type 7 encrypted key for OSPF message-digest authentication.
+                                   Takes precedence over `cleartext_key`.
+                                cleartext_key:
+                                   Cleartext key for OSPF message-digest authentication
+                                   To protect the password at rest it is strongly
+                                   recommended to make use of a vault or similar.
 
                             """
 
@@ -14703,6 +14932,7 @@ class EosDesigns(EosDesignsRootModel):
                     "cost": {"type": int},
                     "authentication": {"type": str},
                     "simple_auth_key": {"type": str},
+                    "cleartext_simple_auth_key": {"type": str},
                     "message_digest_keys": {"type": MessageDigestKeys},
                 }
                 enabled: bool | None
@@ -14718,7 +14948,17 @@ class EosDesigns(EosDesignsRootModel):
                 """OSPF link cost."""
                 authentication: Literal["simple", "message-digest"] | None
                 simple_auth_key: str | None
-                """Password used with simple authentication."""
+                """
+                Type 7 encrypted key for OSPF simple authentication.
+                Takes precedence over
+                `cleartext_simple_auth_key`
+                """
+                cleartext_simple_auth_key: str | None
+                """
+                Cleartext key for OSPF simple authentication.
+                To protect the password at rest it is strongly
+                recommended to make use of a vault or similar.
+                """
                 message_digest_keys: MessageDigestKeys
                 """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -14733,6 +14973,7 @@ class EosDesigns(EosDesignsRootModel):
                         cost: int | None | UndefinedType = Undefined,
                         authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                         simple_auth_key: str | None | UndefinedType = Undefined,
+                        cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                         message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -14747,7 +14988,14 @@ class EosDesigns(EosDesignsRootModel):
                             area: OSPF area ID.
                             cost: OSPF link cost.
                             authentication: authentication
-                            simple_auth_key: Password used with simple authentication.
+                            simple_auth_key:
+                               Type 7 encrypted key for OSPF simple authentication.
+                               Takes precedence over
+                               `cleartext_simple_auth_key`
+                            cleartext_simple_auth_key:
+                               Cleartext key for OSPF simple authentication.
+                               To protect the password at rest it is strongly
+                               recommended to make use of a vault or similar.
                             message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                         """
@@ -15431,12 +15679,26 @@ class EosDesigns(EosDesignsRootModel):
             class MessageDigestKeysItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "id": {"type": int},
+                    "hash_algorithm": {"type": str, "default": "sha512"},
+                    "key": {"type": str},
+                    "cleartext_key": {"type": str},
+                }
                 id: int | None
                 hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                 """Default value: `"sha512"`"""
                 key: str | None
-                """Type 7 encrypted key."""
+                """
+                Type 7 encrypted key for OSPF message-digest authentication.
+                Takes precedence over `cleartext_key`.
+                """
+                cleartext_key: str | None
+                """
+                Cleartext key for OSPF message-digest authentication
+                To protect the password at rest it is strongly
+                recommended to make use of a vault or similar.
+                """
 
                 if TYPE_CHECKING:
 
@@ -15446,6 +15708,7 @@ class EosDesigns(EosDesignsRootModel):
                         id: int | None | UndefinedType = Undefined,
                         hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
+                        cleartext_key: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         MessageDigestKeysItem.
@@ -15456,7 +15719,13 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             id: id
                             hash_algorithm: hash_algorithm
-                            key: Type 7 encrypted key.
+                            key:
+                               Type 7 encrypted key for OSPF message-digest authentication.
+                               Takes precedence over `cleartext_key`.
+                            cleartext_key:
+                               Cleartext key for OSPF message-digest authentication
+                               To protect the password at rest it is strongly
+                               recommended to make use of a vault or similar.
 
                         """
 
@@ -15472,6 +15741,7 @@ class EosDesigns(EosDesignsRootModel):
                 "cost": {"type": int},
                 "authentication": {"type": str},
                 "simple_auth_key": {"type": str},
+                "cleartext_simple_auth_key": {"type": str},
                 "message_digest_keys": {"type": MessageDigestKeys},
             }
             enabled: bool | None
@@ -15487,7 +15757,17 @@ class EosDesigns(EosDesignsRootModel):
             """OSPF link cost."""
             authentication: Literal["simple", "message-digest"] | None
             simple_auth_key: str | None
-            """Password used with simple authentication."""
+            """
+            Type 7 encrypted key for OSPF simple authentication.
+            Takes precedence over
+            `cleartext_simple_auth_key`
+            """
+            cleartext_simple_auth_key: str | None
+            """
+            Cleartext key for OSPF simple authentication.
+            To protect the password at rest it is strongly
+            recommended to make use of a vault or similar.
+            """
             message_digest_keys: MessageDigestKeys
             """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -15502,6 +15782,7 @@ class EosDesigns(EosDesignsRootModel):
                     cost: int | None | UndefinedType = Undefined,
                     authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                     simple_auth_key: str | None | UndefinedType = Undefined,
+                    cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -15516,7 +15797,14 @@ class EosDesigns(EosDesignsRootModel):
                         area: OSPF area ID.
                         cost: OSPF link cost.
                         authentication: authentication
-                        simple_auth_key: Password used with simple authentication.
+                        simple_auth_key:
+                           Type 7 encrypted key for OSPF simple authentication.
+                           Takes precedence over
+                           `cleartext_simple_auth_key`
+                        cleartext_simple_auth_key:
+                           Cleartext key for OSPF simple authentication.
+                           To protect the password at rest it is strongly
+                           recommended to make use of a vault or similar.
                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                     """
@@ -16256,17 +16544,26 @@ class EosDesigns(EosDesignsRootModel):
         class MessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "id": {"type": int},
+                "hash_algorithm": {"type": str, "default": "sha512"},
+                "key": {"type": str},
+                "cleartext_key": {"type": str},
+            }
             id: int
             hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
             """Default value: `"sha512"`"""
-            key: str
+            key: str | None
             """
-            Key password.
-            Only plaintext passwords are supported here as `eos_designs` will encrypt the password
-            for each individual underlay interface.
-            To protect the password at rest it is strongly recommended
-            to make use of Ansible Vault or similar.
+            Cleartext key.
+            To protect the password at rest it is strongly recommended to make use of a vault or
+            similar.
+            """
+            cleartext_key: str | None
+            """
+            Cleartext key for OSPF message-digest authentication
+            To protect the password at rest it is strongly
+            recommended to make use of a vault or similar.
             """
 
             if TYPE_CHECKING:
@@ -16276,7 +16573,8 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
-                    key: str | UndefinedType = Undefined,
+                    key: str | None | UndefinedType = Undefined,
+                    cleartext_key: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     MessageDigestKeysItem.
@@ -16288,11 +16586,13 @@ class EosDesigns(EosDesignsRootModel):
                         id: id
                         hash_algorithm: hash_algorithm
                         key:
-                           Key password.
-                           Only plaintext passwords are supported here as `eos_designs` will encrypt the password
-                           for each individual underlay interface.
-                           To protect the password at rest it is strongly recommended
-                           to make use of Ansible Vault or similar.
+                           Cleartext key.
+                           To protect the password at rest it is strongly recommended to make use of a vault or
+                           similar.
+                        cleartext_key:
+                           Cleartext key for OSPF message-digest authentication
+                           To protect the password at rest it is strongly
+                           recommended to make use of a vault or similar.
 
                     """
 
@@ -16444,6 +16744,7 @@ class EosDesigns(EosDesignsRootModel):
                 "sa_policy_name": {"type": str, "default": "CP-SA-POLICY"},
                 "profile_name": {"type": str, "default": "CP-PROFILE"},
                 "shared_key": {"type": str},
+                "cleartext_shared_key": {"type": str},
             }
             ike_policy_name: str
             """
@@ -16463,9 +16764,16 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `"CP-PROFILE"`
             """
-            shared_key: str
+            shared_key: str | None
             """
-            The IPSec shared key.
+            Type 7 obfuscated IPSec shared key.
+            Takes precedence over `cleartext_shared_key`.
+            This variable is
+            sensitive and SHOULD be configured using some vault mechanism.
+            """
+            cleartext_shared_key: str | None
+            """
+            Cleartext IPSec shared key.
             This variable is sensitive and SHOULD be configured using some vault
             mechanism.
             """
@@ -16478,7 +16786,8 @@ class EosDesigns(EosDesignsRootModel):
                     ike_policy_name: str | UndefinedType = Undefined,
                     sa_policy_name: str | UndefinedType = Undefined,
                     profile_name: str | UndefinedType = Undefined,
-                    shared_key: str | UndefinedType = Undefined,
+                    shared_key: str | None | UndefinedType = Undefined,
+                    cleartext_shared_key: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ControlPlane.
@@ -16491,7 +16800,12 @@ class EosDesigns(EosDesignsRootModel):
                         sa_policy_name: Name of the SA policy.
                         profile_name: Name of the IPSec profile.
                         shared_key:
-                           The IPSec shared key.
+                           Type 7 obfuscated IPSec shared key.
+                           Takes precedence over `cleartext_shared_key`.
+                           This variable is
+                           sensitive and SHOULD be configured using some vault mechanism.
+                        cleartext_shared_key:
+                           Cleartext IPSec shared key.
                            This variable is sensitive and SHOULD be configured using some vault
                            mechanism.
 
@@ -16505,6 +16819,7 @@ class EosDesigns(EosDesignsRootModel):
                 "sa_policy_name": {"type": str, "default": "DP-SA-POLICY"},
                 "profile_name": {"type": str, "default": "DP-PROFILE"},
                 "shared_key": {"type": str},
+                "cleartext_shared_key": {"type": str},
             }
             ike_policy_name: str
             """
@@ -16524,11 +16839,18 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `"DP-PROFILE"`
             """
-            shared_key: str
+            shared_key: str | None
             """
-            The type 7 encrypted IPSec shared key.
-            This variable is sensitive and should be configured using
-            some vault mechanism.
+            Type 7 obfuscated IPSec shared key.
+            Takes precedence over `cleartext_shared_key`.
+            This variable is
+            sensitive and SHOULD be configured using some vault mechanism.
+            """
+            cleartext_shared_key: str | None
+            """
+            Cleartext IPSec shared key.
+            This variable is sensitive and SHOULD be configured using some vault
+            mechanism.
             """
 
             if TYPE_CHECKING:
@@ -16539,7 +16861,8 @@ class EosDesigns(EosDesignsRootModel):
                     ike_policy_name: str | UndefinedType = Undefined,
                     sa_policy_name: str | UndefinedType = Undefined,
                     profile_name: str | UndefinedType = Undefined,
-                    shared_key: str | UndefinedType = Undefined,
+                    shared_key: str | None | UndefinedType = Undefined,
+                    cleartext_shared_key: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DataPlane.
@@ -16552,9 +16875,14 @@ class EosDesigns(EosDesignsRootModel):
                         sa_policy_name: Name of the SA policy.
                         profile_name: Name of the IPSec profile.
                         shared_key:
-                           The type 7 encrypted IPSec shared key.
-                           This variable is sensitive and should be configured using
-                           some vault mechanism.
+                           Type 7 obfuscated IPSec shared key.
+                           Takes precedence over `cleartext_shared_key`.
+                           This variable is
+                           sensitive and SHOULD be configured using some vault mechanism.
+                        cleartext_shared_key:
+                           Cleartext IPSec shared key.
+                           This variable is sensitive and SHOULD be configured using some vault
+                           mechanism.
 
                     """
 
@@ -38513,6 +38841,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
+                        "password": {"type": str},
+                        "cleartext_password": {"type": str},
                         "nodes": {"type": Nodes},
                         "address_family_ipv4": {"type": AddressFamilyIpv4},
                         "address_family_ipv6": {"type": AddressFamilyIpv6},
@@ -38532,7 +38862,6 @@ class EosDesigns(EosDesignsRootModel):
                         "ebgp_multihop": {"type": int},
                         "next_hop_peer": {"type": bool},
                         "next_hop_self": {"type": bool},
-                        "password": {"type": str},
                         "passive": {"type": bool},
                         "default_originate": {"type": DefaultOriginate},
                         "send_community": {"type": str},
@@ -38553,6 +38882,17 @@ class EosDesigns(EosDesignsRootModel):
                     }
                     name: str
                     """BGP peer group name."""
+                    password: str | None
+                    """
+                    Type 7 encrypted password.
+                    Takes precedence over `cleartext_password`.
+                    """
+                    cleartext_password: str | None
+                    """
+                    BGP peer group cleartext password.
+                    To protect the password at rest it is strongly recommended to
+                    make use of a vault or similar.
+                    """
                     nodes: Nodes
                     """
                     Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
@@ -38615,7 +38955,6 @@ class EosDesigns(EosDesignsRootModel):
                     """Time-to-live in range of hops."""
                     next_hop_peer: bool | None
                     next_hop_self: bool | None
-                    password: str | None
                     passive: bool | None
                     default_originate: DefaultOriginate
                     """Subclass of AvdModel."""
@@ -38661,6 +39000,8 @@ class EosDesigns(EosDesignsRootModel):
                             self,
                             *,
                             name: str | UndefinedType = Undefined,
+                            password: str | None | UndefinedType = Undefined,
+                            cleartext_password: str | None | UndefinedType = Undefined,
                             nodes: Nodes | UndefinedType = Undefined,
                             address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                             address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
@@ -38680,7 +39021,6 @@ class EosDesigns(EosDesignsRootModel):
                             ebgp_multihop: int | None | UndefinedType = Undefined,
                             next_hop_peer: bool | None | UndefinedType = Undefined,
                             next_hop_self: bool | None | UndefinedType = Undefined,
-                            password: str | None | UndefinedType = Undefined,
                             passive: bool | None | UndefinedType = Undefined,
                             default_originate: DefaultOriginate | UndefinedType = Undefined,
                             send_community: str | None | UndefinedType = Undefined,
@@ -38707,6 +39047,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 name: BGP peer group name.
+                                password:
+                                   Type 7 encrypted password.
+                                   Takes precedence over `cleartext_password`.
+                                cleartext_password:
+                                   BGP peer group cleartext password.
+                                   To protect the password at rest it is strongly recommended to
+                                   make use of a vault or similar.
                                 nodes:
                                    Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                                    If not
@@ -38750,7 +39097,6 @@ class EosDesigns(EosDesignsRootModel):
                                 ebgp_multihop: Time-to-live in range of hops.
                                 next_hop_peer: next_hop_peer
                                 next_hop_self: next_hop_self
-                                password: password
                                 passive: passive
                                 default_originate: Subclass of AvdModel.
                                 send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
@@ -39327,6 +39673,60 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class MessageDigestKeysItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "id": {"type": int},
+                                "hash_algorithm": {"type": str, "default": "sha512"},
+                                "cleartext_key": {"type": str},
+                            }
+                            id: int
+                            hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+                            """Default value: `"sha512"`"""
+                            cleartext_key: str
+                            """
+                            Cleartext key for OSPF message-digest authentication
+                            To protect the password at rest it is strongly
+                            recommended to make use of a vault or similar.
+                            Configuration at the interface level under
+                            `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    id: int | UndefinedType = Undefined,
+                                    hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                                    cleartext_key: str | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    MessageDigestKeysItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        id: id
+                                        hash_algorithm: hash_algorithm
+                                        cleartext_key:
+                                           Cleartext key for OSPF message-digest authentication
+                                           To protect the password at rest it is strongly
+                                           recommended to make use of a vault or similar.
+                                           Configuration at the interface level under
+                                           `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+
+                                    """
+
+                        class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                            """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                            _primary_key: ClassVar[str] = "id"
+
+                        MessageDigestKeys._item_type = MessageDigestKeysItem
+
                         class Nodes(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -39340,6 +39740,9 @@ class EosDesigns(EosDesignsRootModel):
                             "bfd": {"type": bool, "default": False},
                             "redistribute_bgp": {"type": RedistributeBgp},
                             "redistribute_connected": {"type": RedistributeConnected},
+                            "authentication": {"type": str},
+                            "cleartext_simple_auth_key": {"type": str},
+                            "message_digest_keys": {"type": MessageDigestKeys},
                             "nodes": {"type": Nodes},
                             "structured_config": {"type": EosCliConfigGen.RouterOspf.ProcessIdsItem},
                         }
@@ -39367,6 +39770,22 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         redistribute_connected: RedistributeConnected
                         """Subclass of AvdModel."""
+                        authentication: Literal["simple", "message-digest"] | None
+                        """
+                        Configure OSPF authentication for all interfaces under the VRF.
+                        Can be overridden at the interface
+                        level under `l3_interfaces`, `l3_port_channels` or `svis`.
+                        """
+                        cleartext_simple_auth_key: str | None
+                        """
+                        Cleartext password used with simple authentication.
+                        To protect the password at rest it is strongly
+                        recommended to make use of a vault or similar.
+                        Configuration at the interface level under
+                        `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+                        """
+                        message_digest_keys: MessageDigestKeys
+                        """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
                         structured_config: EosCliConfigGen.RouterOspf.ProcessIdsItem
@@ -39387,6 +39806,9 @@ class EosDesigns(EosDesignsRootModel):
                                 bfd: bool | UndefinedType = Undefined,
                                 redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
                                 redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                                authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
+                                cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
+                                message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.RouterOspf.ProcessIdsItem | UndefinedType = Undefined,
                             ) -> None:
@@ -39413,6 +39835,17 @@ class EosDesigns(EosDesignsRootModel):
                                     bfd: bfd
                                     redistribute_bgp: Subclass of AvdModel.
                                     redistribute_connected: Subclass of AvdModel.
+                                    authentication:
+                                       Configure OSPF authentication for all interfaces under the VRF.
+                                       Can be overridden at the interface
+                                       level under `l3_interfaces`, `l3_port_channels` or `svis`.
+                                    cleartext_simple_auth_key:
+                                       Cleartext password used with simple authentication.
+                                       To protect the password at rest it is strongly
+                                       recommended to make use of a vault or similar.
+                                       Configuration at the interface level under
+                                       `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+                                    message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
                                     nodes: Subclass of AvdList with `str` items.
                                     structured_config:
                                        Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for
@@ -39870,12 +40303,26 @@ class EosDesigns(EosDesignsRootModel):
                                 class MessageDigestKeysItem(AvdModel):
                                     """Subclass of AvdModel."""
 
-                                    _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                    _fields: ClassVar[dict] = {
+                                        "id": {"type": int},
+                                        "hash_algorithm": {"type": str, "default": "sha512"},
+                                        "key": {"type": str},
+                                        "cleartext_key": {"type": str},
+                                    }
                                     id: int | None
                                     hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                     """Default value: `"sha512"`"""
                                     key: str | None
-                                    """Type 7 encrypted key."""
+                                    """
+                                    Type 7 encrypted key for OSPF message-digest authentication.
+                                    Takes precedence over `cleartext_key`.
+                                    """
+                                    cleartext_key: str | None
+                                    """
+                                    Cleartext key for OSPF message-digest authentication
+                                    To protect the password at rest it is strongly
+                                    recommended to make use of a vault or similar.
+                                    """
 
                                     if TYPE_CHECKING:
 
@@ -39885,6 +40332,7 @@ class EosDesigns(EosDesignsRootModel):
                                             id: int | None | UndefinedType = Undefined,
                                             hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                                             key: str | None | UndefinedType = Undefined,
+                                            cleartext_key: str | None | UndefinedType = Undefined,
                                         ) -> None:
                                             """
                                             MessageDigestKeysItem.
@@ -39895,7 +40343,13 @@ class EosDesigns(EosDesignsRootModel):
                                             Args:
                                                 id: id
                                                 hash_algorithm: hash_algorithm
-                                                key: Type 7 encrypted key.
+                                                key:
+                                                   Type 7 encrypted key for OSPF message-digest authentication.
+                                                   Takes precedence over `cleartext_key`.
+                                                cleartext_key:
+                                                   Cleartext key for OSPF message-digest authentication
+                                                   To protect the password at rest it is strongly
+                                                   recommended to make use of a vault or similar.
 
                                             """
 
@@ -39911,6 +40365,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "cost": {"type": int},
                                     "authentication": {"type": str},
                                     "simple_auth_key": {"type": str},
+                                    "cleartext_simple_auth_key": {"type": str},
                                     "message_digest_keys": {"type": MessageDigestKeys},
                                 }
                                 enabled: bool | None
@@ -39926,7 +40381,17 @@ class EosDesigns(EosDesignsRootModel):
                                 """OSPF link cost."""
                                 authentication: Literal["simple", "message-digest"] | None
                                 simple_auth_key: str | None
-                                """Password used with simple authentication."""
+                                """
+                                Type 7 encrypted key for OSPF simple authentication.
+                                Takes precedence over
+                                `cleartext_simple_auth_key`
+                                """
+                                cleartext_simple_auth_key: str | None
+                                """
+                                Cleartext key for OSPF simple authentication.
+                                To protect the password at rest it is strongly
+                                recommended to make use of a vault or similar.
+                                """
                                 message_digest_keys: MessageDigestKeys
                                 """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -39941,6 +40406,7 @@ class EosDesigns(EosDesignsRootModel):
                                         cost: int | None | UndefinedType = Undefined,
                                         authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                                         simple_auth_key: str | None | UndefinedType = Undefined,
+                                        cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                         message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                     ) -> None:
                                         """
@@ -39955,7 +40421,14 @@ class EosDesigns(EosDesignsRootModel):
                                             area: OSPF area ID.
                                             cost: OSPF link cost.
                                             authentication: authentication
-                                            simple_auth_key: Password used with simple authentication.
+                                            simple_auth_key:
+                                               Type 7 encrypted key for OSPF simple authentication.
+                                               Takes precedence over
+                                               `cleartext_simple_auth_key`
+                                            cleartext_simple_auth_key:
+                                               Cleartext key for OSPF simple authentication.
+                                               To protect the password at rest it is strongly
+                                               recommended to make use of a vault or similar.
                                             message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                         """
@@ -40662,12 +41135,26 @@ class EosDesigns(EosDesignsRootModel):
                             class MessageDigestKeysItem(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "id": {"type": int},
+                                    "hash_algorithm": {"type": str, "default": "sha512"},
+                                    "key": {"type": str},
+                                    "cleartext_key": {"type": str},
+                                }
                                 id: int | None
                                 hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                 """Default value: `"sha512"`"""
                                 key: str | None
-                                """Type 7 encrypted key."""
+                                """
+                                Type 7 encrypted key for OSPF message-digest authentication.
+                                Takes precedence over `cleartext_key`.
+                                """
+                                cleartext_key: str | None
+                                """
+                                Cleartext key for OSPF message-digest authentication
+                                To protect the password at rest it is strongly
+                                recommended to make use of a vault or similar.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -40677,6 +41164,7 @@ class EosDesigns(EosDesignsRootModel):
                                         id: int | None | UndefinedType = Undefined,
                                         hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
+                                        cleartext_key: str | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         MessageDigestKeysItem.
@@ -40687,7 +41175,13 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             id: id
                                             hash_algorithm: hash_algorithm
-                                            key: Type 7 encrypted key.
+                                            key:
+                                               Type 7 encrypted key for OSPF message-digest authentication.
+                                               Takes precedence over `cleartext_key`.
+                                            cleartext_key:
+                                               Cleartext key for OSPF message-digest authentication
+                                               To protect the password at rest it is strongly
+                                               recommended to make use of a vault or similar.
 
                                         """
 
@@ -40703,6 +41197,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "cost": {"type": int},
                                 "authentication": {"type": str},
                                 "simple_auth_key": {"type": str},
+                                "cleartext_simple_auth_key": {"type": str},
                                 "message_digest_keys": {"type": MessageDigestKeys},
                             }
                             enabled: bool | None
@@ -40718,7 +41213,17 @@ class EosDesigns(EosDesignsRootModel):
                             """OSPF link cost."""
                             authentication: Literal["simple", "message-digest"] | None
                             simple_auth_key: str | None
-                            """Password used with simple authentication."""
+                            """
+                            Type 7 encrypted key for OSPF simple authentication.
+                            Takes precedence over
+                            `cleartext_simple_auth_key`
+                            """
+                            cleartext_simple_auth_key: str | None
+                            """
+                            Cleartext key for OSPF simple authentication.
+                            To protect the password at rest it is strongly
+                            recommended to make use of a vault or similar.
+                            """
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -40733,6 +41238,7 @@ class EosDesigns(EosDesignsRootModel):
                                     cost: int | None | UndefinedType = Undefined,
                                     authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                                     simple_auth_key: str | None | UndefinedType = Undefined,
+                                    cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -40747,7 +41253,14 @@ class EosDesigns(EosDesignsRootModel):
                                         area: OSPF area ID.
                                         cost: OSPF link cost.
                                         authentication: authentication
-                                        simple_auth_key: Password used with simple authentication.
+                                        simple_auth_key:
+                                           Type 7 encrypted key for OSPF simple authentication.
+                                           Takes precedence over
+                                           `cleartext_simple_auth_key`
+                                        cleartext_simple_auth_key:
+                                           Cleartext key for OSPF simple authentication.
+                                           To protect the password at rest it is strongly
+                                           recommended to make use of a vault or similar.
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
@@ -41352,12 +41865,29 @@ class EosDesigns(EosDesignsRootModel):
                             class MessageDigestKeysItem(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "id": {"type": int},
+                                    "hash_algorithm": {"type": str, "default": "sha512"},
+                                    "key": {"type": str},
+                                    "cleartext_key": {"type": str},
+                                }
                                 id: int | None
                                 hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                 """Default value: `"sha512"`"""
                                 key: str | None
-                                """Key password."""
+                                """
+                                Type 7 encrypted key for OSPF message-digest authentication.
+                                Takes precedence over `cleartext_key`
+                                NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the
+                                same
+                                (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                                """
+                                cleartext_key: str | None
+                                """
+                                Cleartext key for OSPF message-digest authentication
+                                To protect the password at rest it is strongly
+                                recommended to make use of a vault or similar.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -41367,6 +41897,7 @@ class EosDesigns(EosDesignsRootModel):
                                         id: int | None | UndefinedType = Undefined,
                                         hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
+                                        cleartext_key: str | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         MessageDigestKeysItem.
@@ -41377,7 +41908,16 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             id: id
                                             hash_algorithm: hash_algorithm
-                                            key: Key password.
+                                            key:
+                                               Type 7 encrypted key for OSPF message-digest authentication.
+                                               Takes precedence over `cleartext_key`
+                                               NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the
+                                               same
+                                               (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                                            cleartext_key:
+                                               Cleartext key for OSPF message-digest authentication
+                                               To protect the password at rest it is strongly
+                                               recommended to make use of a vault or similar.
 
                                         """
 
@@ -41393,6 +41933,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "cost": {"type": int},
                                 "authentication": {"type": str},
                                 "simple_auth_key": {"type": str},
+                                "cleartext_simple_auth_key": {"type": str},
                                 "message_digest_keys": {"type": MessageDigestKeys},
                             }
                             enabled: bool | None
@@ -41408,7 +41949,21 @@ class EosDesigns(EosDesignsRootModel):
                             """OSPF link cost."""
                             authentication: Literal["simple", "message-digest"] | None
                             simple_auth_key: str | None
-                            """Password used with simple authentication."""
+                            """
+                            Type 7 encrypted key for OSPF simple authentication.
+                            Takes precedence over
+                            `cleartext_simple_auth_key`.
+                            NOTE: The l3_interfaces.interfaces list must not be more than 1
+                            interface or they must all be the same
+                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends
+                            on the interface.
+                            """
+                            cleartext_simple_auth_key: str | None
+                            """
+                            Cleartext key for OSPF simple authentication.
+                            To protect the password at rest it is strongly
+                            recommended to make use of a vault or similar.
+                            """
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -41423,6 +41978,7 @@ class EosDesigns(EosDesignsRootModel):
                                     cost: int | None | UndefinedType = Undefined,
                                     authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                                     simple_auth_key: str | None | UndefinedType = Undefined,
+                                    cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -41437,7 +41993,18 @@ class EosDesigns(EosDesignsRootModel):
                                         area: OSPF area ID.
                                         cost: OSPF link cost.
                                         authentication: authentication
-                                        simple_auth_key: Password used with simple authentication.
+                                        simple_auth_key:
+                                           Type 7 encrypted key for OSPF simple authentication.
+                                           Takes precedence over
+                                           `cleartext_simple_auth_key`.
+                                           NOTE: The l3_interfaces.interfaces list must not be more than 1
+                                           interface or they must all be the same
+                                           (e.g. [Ethernet7, Ethernet7]) as the type7 password depends
+                                           on the interface.
+                                        cleartext_simple_auth_key:
+                                           Cleartext key for OSPF simple authentication.
+                                           To protect the password at rest it is strongly
+                                           recommended to make use of a vault or similar.
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
@@ -41796,12 +42363,29 @@ class EosDesigns(EosDesignsRootModel):
                             class MessageDigestKeysItem(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "id": {"type": int},
+                                    "hash_algorithm": {"type": str, "default": "sha512"},
+                                    "key": {"type": str},
+                                    "cleartext_key": {"type": str},
+                                }
                                 id: int | None
                                 hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                 """Default value: `"sha512"`"""
                                 key: str | None
-                                """Key password."""
+                                """
+                                Type 7 encrypted key for OSPF message-digest authentication.
+                                Takes precedence over `cleartext_key`
+                                NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the
+                                same
+                                (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                                """
+                                cleartext_key: str | None
+                                """
+                                Cleartext key for OSPF message-digest authentication
+                                To protect the password at rest it is strongly
+                                recommended to make use of a vault or similar.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -41811,6 +42395,7 @@ class EosDesigns(EosDesignsRootModel):
                                         id: int | None | UndefinedType = Undefined,
                                         hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
+                                        cleartext_key: str | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         MessageDigestKeysItem.
@@ -41821,7 +42406,16 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             id: id
                                             hash_algorithm: hash_algorithm
-                                            key: Key password.
+                                            key:
+                                               Type 7 encrypted key for OSPF message-digest authentication.
+                                               Takes precedence over `cleartext_key`
+                                               NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the
+                                               same
+                                               (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                                            cleartext_key:
+                                               Cleartext key for OSPF message-digest authentication
+                                               To protect the password at rest it is strongly
+                                               recommended to make use of a vault or similar.
 
                                         """
 
@@ -41837,6 +42431,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "cost": {"type": int},
                                 "authentication": {"type": str},
                                 "simple_auth_key": {"type": str},
+                                "cleartext_simple_auth_key": {"type": str},
                                 "message_digest_keys": {"type": MessageDigestKeys},
                             }
                             enabled: bool | None
@@ -41852,7 +42447,21 @@ class EosDesigns(EosDesignsRootModel):
                             """OSPF link cost."""
                             authentication: Literal["simple", "message-digest"] | None
                             simple_auth_key: str | None
-                            """Password used with simple authentication."""
+                            """
+                            Type 7 encrypted key for OSPF simple authentication.
+                            Takes precedence over
+                            `cleartext_simple_auth_key`
+                            NOTE: The l3_interfaces.interfaces list must not be more than 1
+                            interface or they must all be the same
+                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends
+                            on the interface.
+                            """
+                            cleartext_simple_auth_key: str | None
+                            """
+                            Cleartext key for OSPF simple authentication.
+                            To protect the password at rest it is strongly
+                            recommended to make use of a vault or similar.
+                            """
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -41867,6 +42476,7 @@ class EosDesigns(EosDesignsRootModel):
                                     cost: int | None | UndefinedType = Undefined,
                                     authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                                     simple_auth_key: str | None | UndefinedType = Undefined,
+                                    cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -41881,7 +42491,18 @@ class EosDesigns(EosDesignsRootModel):
                                         area: OSPF area ID.
                                         cost: OSPF link cost.
                                         authentication: authentication
-                                        simple_auth_key: Password used with simple authentication.
+                                        simple_auth_key:
+                                           Type 7 encrypted key for OSPF simple authentication.
+                                           Takes precedence over
+                                           `cleartext_simple_auth_key`
+                                           NOTE: The l3_interfaces.interfaces list must not be more than 1
+                                           interface or they must all be the same
+                                           (e.g. [Ethernet7, Ethernet7]) as the type7 password depends
+                                           on the interface.
+                                        cleartext_simple_auth_key:
+                                           Cleartext key for OSPF simple authentication.
+                                           To protect the password at rest it is strongly
+                                           recommended to make use of a vault or similar.
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
@@ -42392,6 +43013,7 @@ class EosDesigns(EosDesignsRootModel):
                             "remote_as": {"type": str},
                             "description": {"type": str},
                             "password": {"type": str},
+                            "cleartext_password": {"type": str},
                             "send_community": {"type": str},
                             "next_hop_self": {"type": bool},
                             "timers": {"type": str},
@@ -42426,7 +43048,16 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         description: str | None
                         password: str | None
-                        """Encrypted password."""
+                        """
+                        Type 7 encrypted password.
+                        Takes precedence over `cleartext_password`.
+                        """
+                        cleartext_password: str | None
+                        """
+                        BGP peer group cleartext password.
+                        To protect the password at rest it is strongly recommended to
+                        make use of a vault or similar.
+                        """
                         send_community: str | None
                         """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
                         next_hop_self: bool | None
@@ -42498,6 +43129,7 @@ class EosDesigns(EosDesignsRootModel):
                                 remote_as: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 password: str | None | UndefinedType = Undefined,
+                                cleartext_password: str | None | UndefinedType = Undefined,
                                 send_community: str | None | UndefinedType = Undefined,
                                 next_hop_self: bool | None | UndefinedType = Undefined,
                                 timers: str | None | UndefinedType = Undefined,
@@ -42534,7 +43166,13 @@ class EosDesigns(EosDesignsRootModel):
                                        YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float
                                        number.
                                     description: description
-                                    password: Encrypted password.
+                                    password:
+                                       Type 7 encrypted password.
+                                       Takes precedence over `cleartext_password`.
+                                    cleartext_password:
+                                       BGP peer group cleartext password.
+                                       To protect the password at rest it is strongly recommended to
+                                       make use of a vault or similar.
                                     send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                                     next_hop_self: next_hop_self
                                     timers: BGP Keepalive and Hold Timer values in seconds as string <0-3600> <0-3600>.
@@ -43185,6 +43823,8 @@ class EosDesigns(EosDesignsRootModel):
                         _fields: ClassVar[dict] = {
                             "name": {"type": str},
                             "nodes": {"type": Nodes},
+                            "password": {"type": str},
+                            "cleartext_password": {"type": str},
                             "address_family_ipv4": {"type": AddressFamilyIpv4},
                             "address_family_ipv6": {"type": AddressFamilyIpv6},
                             "type": {"type": str},
@@ -43203,7 +43843,6 @@ class EosDesigns(EosDesignsRootModel):
                             "ebgp_multihop": {"type": int},
                             "next_hop_peer": {"type": bool},
                             "next_hop_self": {"type": bool},
-                            "password": {"type": str},
                             "passive": {"type": bool},
                             "default_originate": {"type": DefaultOriginate},
                             "send_community": {"type": str},
@@ -43233,6 +43872,17 @@ class EosDesigns(EosDesignsRootModel):
 
 
                         Subclass of AvdList with `str` items.
+                        """
+                        password: str | None
+                        """
+                        Type 7 encrypted password.
+                        Takes precedence over `cleartext_password`.
+                        """
+                        cleartext_password: str | None
+                        """
+                        BGP peer group cleartext password.
+                        To protect the password at rest it is strongly recommended to
+                        make use of a vault or similar.
                         """
                         address_family_ipv4: AddressFamilyIpv4
                         """Subclass of AvdModel."""
@@ -43286,7 +43936,6 @@ class EosDesigns(EosDesignsRootModel):
                         """Time-to-live in range of hops."""
                         next_hop_peer: bool | None
                         next_hop_self: bool | None
-                        password: str | None
                         passive: bool | None
                         default_originate: DefaultOriginate
                         """Subclass of AvdModel."""
@@ -43333,6 +43982,8 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 name: str | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
+                                password: str | None | UndefinedType = Undefined,
+                                cleartext_password: str | None | UndefinedType = Undefined,
                                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
                                 type: str | None | UndefinedType = Undefined,
@@ -43351,7 +44002,6 @@ class EosDesigns(EosDesignsRootModel):
                                 ebgp_multihop: int | None | UndefinedType = Undefined,
                                 next_hop_peer: bool | None | UndefinedType = Undefined,
                                 next_hop_self: bool | None | UndefinedType = Undefined,
-                                password: str | None | UndefinedType = Undefined,
                                 passive: bool | None | UndefinedType = Undefined,
                                 default_originate: DefaultOriginate | UndefinedType = Undefined,
                                 send_community: str | None | UndefinedType = Undefined,
@@ -43386,6 +44036,13 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
+                                    password:
+                                       Type 7 encrypted password.
+                                       Takes precedence over `cleartext_password`.
+                                    cleartext_password:
+                                       BGP peer group cleartext password.
+                                       To protect the password at rest it is strongly recommended to
+                                       make use of a vault or similar.
                                     address_family_ipv4: Subclass of AvdModel.
                                     address_family_ipv6: Subclass of AvdModel.
                                     type: Key only used for documentation or validation purposes.
@@ -43421,7 +44078,6 @@ class EosDesigns(EosDesignsRootModel):
                                     ebgp_multihop: Time-to-live in range of hops.
                                     next_hop_peer: next_hop_peer
                                     next_hop_self: next_hop_self
-                                    password: password
                                     passive: passive
                                     default_originate: Subclass of AvdModel.
                                     send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.

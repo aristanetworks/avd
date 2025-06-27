@@ -188,20 +188,7 @@ class EthernetInterfacesMixin(Protocol):
                         ospf_cost=l3_interface.ospf.cost,
                     )
 
-                    ospf_authentication = l3_interface.ospf.authentication
-                    if ospf_authentication == "simple" and (ospf_simple_auth_key := l3_interface.ospf.simple_auth_key) is not None:
-                        interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
-                    elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := l3_interface.ospf.message_digest_keys) is not None:
-                        for ospf_key in ospf_message_digest_keys:
-                            if not (ospf_key.id and ospf_key.key):
-                                continue
-                            interface.ospf_message_digest_keys.append_new(
-                                id=ospf_key.id,
-                                hash_algorithm=ospf_key.hash_algorithm,
-                                key=ospf_key.key,
-                            )
-                        if interface.ospf_message_digest_keys:
-                            interface.ospf_authentication = ospf_authentication
+                    self.shared_utils.update_ospf_authentication(interface, l3_interface, vrf, tenant)
 
                 if l3_interface.pim.enabled:
                     if not getattr(vrf._internal_data, "evpn_l3_multicast_enabled", False):
