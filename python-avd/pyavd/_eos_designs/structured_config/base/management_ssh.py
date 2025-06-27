@@ -29,16 +29,16 @@ class ManagementSshMixin(Protocol):
         if ssh_settings.idle_timeout:
             self.structured_config.management_ssh.idle_timeout = ssh_settings.idle_timeout
 
-        self._ssh_vrfs(ssh_settings)
+        self._set_vrfs_and_acls(ssh_settings)
 
-    def _ssh_vrfs(self: AvdStructuredConfigBaseProtocol, ssh_settings: EosDesigns.SshSettings) -> None:
+    def _set_vrfs_and_acls(self: AvdStructuredConfigBaseProtocol, ssh_settings: EosDesigns.SshSettings) -> None:
         """SSH IPv4/IPv6 ACLs with VRFs. Resolves VRF from management VRFs."""
         for vrf in ssh_settings.vrfs._natural_sorted():
             vrf_name = self.get_vrf(vrf.name, context=f"ssh_settings.vrfs[name={vrf.name}]")
             self.structured_config.management_ssh.vrfs.append_new(name=vrf_name, enable=vrf.enabled)
 
             if vrf.ipv4_acl:
-                self.structured_config.management_ssh.access_groups.append_new(name=vrf.ipv4_acl, vrf=vrf.name if vrf.name != "default" else None)
+                self.structured_config.management_ssh.access_groups.append_new(name=vrf.ipv4_acl, vrf=vrf_name if vrf_name != "default" else None)
 
             if vrf.ipv6_acl:
-                self.structured_config.management_ssh.ipv6_access_groups.append_new(name=vrf.ipv6_acl, vrf=vrf.name if vrf.name != "default" else None)
+                self.structured_config.management_ssh.ipv6_access_groups.append_new(name=vrf.ipv6_acl, vrf=vrf_name if vrf_name != "default" else None)

@@ -14,7 +14,6 @@ management_api_http:
 management_ssh:
   access_groups:
   - name: ACL-SSH-INBAND-MGMT
-    vrf: use_inband_mgmt_vrf
   vrfs:
   - name: default
     enable: true
