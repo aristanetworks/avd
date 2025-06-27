@@ -189,15 +189,15 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
         "cloudeos": None,
         "cvp": None,
         "generic": None,
-        "third_party": None,
-        "tools_server": None,
+        "third-party": None,
+        "tools-server": None,
         "veos": None,
     }
     digital_twin_devices: list[dict[str, ActNodeSettings]] = []
     device_list: list[str] = list(fabric_documentation_facts.avd_facts)
     for device in sorted(device_list):
         if (
-            digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type", "").replace("-", "_")
+            digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type", "")
         ) in digital_twin_node_types and not digital_twin_node_types[digital_twin_node_type]:
             digital_twin_node_types[digital_twin_node_type] = ActNodeTypeSettings(username=digital_twin_fabric_username, password=digital_twin_fabric_password)
 
@@ -234,7 +234,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
         cloudeos=digital_twin_node_types["cloudeos"],
         cvp=digital_twin_node_types["cvp"],
         generic=digital_twin_node_types["generic"],
-        third_party=digital_twin_node_types["third_party"],
-        tools_server=digital_twin_node_types["tools_server"],
+        third_party=digital_twin_node_types["third-party"],
+        tools_server=digital_twin_node_types["tools-server"],
         veos=digital_twin_node_types["veos"],
     )
