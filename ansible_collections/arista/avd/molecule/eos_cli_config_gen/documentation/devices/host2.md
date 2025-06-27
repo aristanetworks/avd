@@ -215,6 +215,7 @@ no ptp monitor sequence-id
 | VRF | Enabled | IPv4 ACL | IPv6 ACL |
 | --- | ------- | -------- | -------- |
 | mgt | True | ACL-SSH-VRF | - |
+| default | False | ACL-SSH | - |
 
 #### Authentication Settings
 

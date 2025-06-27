@@ -740,6 +740,7 @@ system control-plane
 | VRF | Enabled | IPv4 ACL | IPv6 ACL |
 | --- | ------- | -------- | -------- |
 | mgt | True | ACL-SSH-VRF | ACL-SSH-VRF6 |
+| default | True | ACL-SSH | ACL-SSH6 |
 
 #### Authentication Settings
 

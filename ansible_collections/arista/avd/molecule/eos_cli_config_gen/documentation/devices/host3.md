@@ -66,6 +66,7 @@ ntp serve ipv6 access-group test_ACL_v6 in
 | VRF | Enabled | IPv4 ACL | IPv6 ACL |
 | --- | ------- | -------- | -------- |
 | mgt | - | - | - |
+| default | True | - | - |
 
 #### Other SSH Settings
 
