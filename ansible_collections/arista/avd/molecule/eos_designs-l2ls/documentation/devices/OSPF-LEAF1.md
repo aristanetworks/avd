@@ -113,6 +113,13 @@ vlan 4092
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1 | L2_OSPF-SPINE1_Ethernet1 | active | 1 |
+| Ethernet2 | L2_OSPF-SPINE2_Ethernet1 | active | 1 |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -151,6 +158,12 @@ interface Ethernet11
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_OSPF_SPINES_Port-Channel1 | trunk | 100,4092 | - | - | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | L2_OSPF_SPINES_Port-Channel1 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

@@ -313,6 +313,13 @@ vlan internal order ascending range 1006 1199
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet8 | - | active | 8 |
+| Ethernet9 | - | active | 8 |
+
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -387,6 +394,12 @@ interface Ethernet10
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel8 | site3-wan1-Port-Channel4 | default | - | False | - | - | - | - |
 
 ##### IPv4
 

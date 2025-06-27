@@ -433,6 +433,13 @@ interface Dps1
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet4 | inet-cloud_Ethernet8 | active | 4 |
+| Ethernet5 | inet-cloud_Ethernet9 | active | 4 |
+
 ##### Encapsulation Dot1q Interfaces
 
 | Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
@@ -496,6 +503,12 @@ interface Ethernet5
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel4 | REGION2-INTERNET-CORP_inet-site3-wan1_inet-cloud_Port-Channel8 | default | - | False | - | - | - | - |
 
 ##### IPv4
 

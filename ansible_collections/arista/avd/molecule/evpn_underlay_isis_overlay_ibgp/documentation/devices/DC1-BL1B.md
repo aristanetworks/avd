@@ -286,6 +286,13 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet5 | MLAG_DC1-BL1A_Ethernet5 | active | 5 |
+| Ethernet6 | MLAG_DC1-BL1A_Ethernet6 | active | 5 |
+
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -376,6 +383,12 @@ interface Ethernet6
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_DC1-BL1A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | MLAG_DC1-BL1A_Port-Channel5 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

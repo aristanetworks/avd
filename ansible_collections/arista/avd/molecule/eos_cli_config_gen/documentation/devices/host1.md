@@ -3921,6 +3921,27 @@ interface Dps1
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet73 | DC1-AGG01_Ethernet1 | active | 5 |
+| Ethernet74 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | active | 3 |
+| Ethernet75 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | active | 3 |
+| Ethernet76 | SRV-POD03_Eth1 | active | 5 |
+| Ethernet77 | MLAG_PEER_DC1-LEAF1B_Ethernet8 | active | 8 |
+| Ethernet78 | DC1-AGG03_Ethernet1 | active | 15 |
+| Ethernet79 | DC1-AGG04_Ethernet1 | active | 16 |
+| Ethernet80 | LAG Member | active | 17 |
+| Ethernet80/1 | LAG Member | active | 101 |
+| Ethernet80/2 | LAG Member | active | 102 |
+| Ethernet80/3 | LAG Member | active | 103 |
+| Ethernet80/4 | LAG Member LACP fallback | active | 104 |
+| Ethernet81 | LAG Member | active | 109 |
+| Ethernet81/1 | LAG Member with error_correction | active | 111 |
+| Ethernet81/2 | LAG Member LACP fallback LLDP ZTP VLAN | active | 112 |
+| Ethernet81/10 | isis_port_channel_member | active | 110 |
+
 ##### Encapsulation Dot1q Interfaces
 
 | Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
@@ -5318,6 +5339,76 @@ interface Ethernet84
 | Port-Channel122 | trunk_port_with_no_vlans | trunk | - | - | - | - | - | - | - |
 | Port-Channel130 | IP NAT Testing | - | - | - | - | - | - | - | - |
 | Port-Channel131 | dot1q-tunnel mode | dot1q-tunnel | 115 | - | - | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | default | - | - | - | - | - | - |
+| Port-Channel5 | DC1_L2LEAF1_Po1 | default | - | - | - | - | 5 | - |
+| Port-Channel8 | to Dev02 Port-channel 8 | default | - | - | - | - | - | - |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | default | - | - | - | - | - | - |
+| Port-Channel9 | - | default | - | - | - | - | - | - |
+| Port-Channel10 | SRV01_bond0 | default | - | - | - | - | - | 0000:0000:0404:0404:0303 |
+| Port-Channel12 | interface_in_mode_access_with_voice | default | - | - | - | - | - | - |
+| Port-Channel13 | EVPN-Vxlan single-active redundancy | default | - | - | - | - | - | 0000:0000:0000:0102:0304 |
+| Port-Channel14 | EVPN-MPLS multihoming | default | - | - | - | - | - | 0000:0000:0000:0102:0305 |
+| Port-Channel15 | DC1_L2LEAF3_Po1 | default | - | - | - | - | 15 | - |
+| Port-Channel16 | DC1_L2LEAF4_Po1 | default | - | - | - | - | 16 | - |
+| Port-Channel17 | PBR Description | default | - | - | - | - | - | - |
+| Port-Channel18 | - | default | - | - | - | - | - | - |
+| Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | default | - | - | - | - | - | - |
+| Port-Channel50 | SRV-POD03_PortChanne1 | default | - | - | - | - | - | 0000:0000:0303:0202:0101 |
+| Port-Channel51 | ipv6_prefix | default | - | - | - | - | - | - |
+| Port-Channel99 | MCAST | default | - | - | - | - | - | - |
+| Port-Channel100 | - | default | - | - | - | - | - | - |
+| Port-Channel100.101 | IFL for TENANT01 | default | 1500 | - | - | - | - | - |
+| Port-Channel100.102 | IFL for TENANT02 | C2 | 1500 | - | - | - | - | - |
+| Port-Channel101 | PVLAN Promiscuous Access - only one secondary | default | - | - | - | - | - | - |
+| Port-Channel102 | PVLAN Promiscuous Trunk - vlan translation out | default | - | - | - | - | - | - |
+| Port-Channel103 | PVLAN Secondary Trunk | default | - | - | - | - | - | - |
+| Port-Channel104 | LACP fallback individual | default | - | - | 300 | individual | - | - |
+| Port-Channel105 | bpdu disabled | default | - | - | - | - | - | - |
+| Port-Channel106 | bpdu enabled | default | - | - | - | - | - | - |
+| Port-Channel107 | bpdu true | default | - | - | - | - | - | - |
+| Port-Channel108 | bpdu false | default | - | - | - | - | - | - |
+| Port-Channel109 | Molecule ACLs | default | - | - | - | - | - | - |
+| Port-Channel110 | isis_interface_knobs | default | - | - | - | - | - | - |
+| Port-Channel111 | Flexencap Port-Channel | default | - | - | - | - | - | - |
+| Port-Channel111.1 | TENANT_A pseudowire 1 interface | default | - | - | - | - | - | - |
+| Port-Channel111.100 | TENANT_A pseudowire 2 interface | default | - | - | - | - | - | - |
+| Port-Channel111.200 | TENANT_A pseudowire 3 interface | default | - | - | - | - | - | - |
+| Port-Channel111.300 | TENANT_A pseudowire 4 interface | default | - | - | - | - | - | - |
+| Port-Channel111.400 | TENANT_A pseudowire 3 interface | default | - | - | - | - | - | - |
+| Port-Channel111.1000 | L2 Subinterface | default | - | - | - | - | - | 0000:0000:0303:0202:0101 |
+| Port-Channel112 | LACP fallback individual | default | - | - | 5 | individual | - | - |
+| Port-Channel113 | interface_with_mpls_enabled | default | - | - | - | - | - | - |
+| Port-Channel114 | interface_with_mpls_disabled | default | - | - | - | - | - | - |
+| Port-Channel115 | native-vlan-tag-precedence | default | - | - | - | - | - | - |
+| Port-Channel117 | interface_with_sflow_ingress_egress_enabled | default | - | - | - | - | - | - |
+| Port-Channel118 | interface_with_sflow_ingress_egress_unmodified_enabled | default | - | - | - | - | - | - |
+| Port-Channel119 | interface_with_sflow_ingress_egress_disabled | default | - | - | - | - | - | - |
+| Port-Channel120 | interface_with_sflow_ingress_egress_unmodified_disabled | default | - | - | - | - | - | - |
+| Port-Channel121 | access_port_with_no_vlans | default | - | - | - | - | - | - |
+| Port-Channel122 | trunk_port_with_no_vlans | default | - | - | - | - | - | - |
+| Port-Channel130 | IP NAT Testing | default | - | - | - | - | - | - |
+| Port-Channel131 | dot1q-tunnel mode | default | - | - | - | - | - | - |
+| Port-Channel131.1 | Test_encapsulation_vlan1 | default | - | - | - | - | - | - |
+| Port-Channel131.2 | Test_encapsulation_vlan2 | default | - | - | - | - | - | - |
+| Port-Channel131.3 | Test_encapsulation_vlan3 | default | - | - | - | - | - | - |
+| Port-Channel131.4 | Test_encapsulation_vlan4 | default | - | - | - | - | - | - |
+| Port-Channel131.5 | Test_encapsulation_vlan5 | default | - | - | - | - | - | - |
+| Port-Channel131.6 | Test_encapsulation_vlan6 | default | - | - | - | - | - | - |
+| Port-Channel131.7 | Test_encapsulation_vlan7 | default | - | - | - | - | - | - |
+| Port-Channel131.8 | Test_encapsulation_vlan8 | default | - | - | - | - | - | - |
+| Port-Channel131.9 | Test_encapsulation_vlan9 | default | - | - | - | - | - | - |
+| Port-Channel131.10 | Test_encapsulation_vlan9 | default | - | - | - | - | - | - |
+| Port-Channel132 | Test_port-channel_interface-profile | default | - | - | - | - | - | - |
+| Port-Channel133 | Test1_switchport_tap_tool | default | - | - | - | - | - | - |
+| Port-Channel134 | Test2_switchport_tap_tool | default | - | - | - | - | - | - |
+| Port-Channel135 | - | default | - | - | - | - | - | - |
+| Port-Channel136 | Test_te_admin_groups | default | - | - | - | - | - | - |
+| Port-Channel137 | Traffic Engineering Interface | default | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q
 

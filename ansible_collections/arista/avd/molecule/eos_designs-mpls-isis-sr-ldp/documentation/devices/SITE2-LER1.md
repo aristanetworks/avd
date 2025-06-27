@@ -180,6 +180,17 @@ vlan 2020
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet4 | - | active | 4 |
+| Ethernet5 | - | active | 4 |
+| Ethernet11 | P2P_SITE2-LSR2_Ethernet12 | active | 11 |
+| Ethernet12 | P2P_SITE2-LSR2_Ethernet13 | active | 11 |
+| Ethernet13 | P2P_SITE2-LSR2_Ethernet14 | active | 220 |
+| Ethernet14 | P2P_SITE2-LSR2_Ethernet15 | active | 220 |
+
 ##### Encapsulation Dot1q Interfaces
 
 | Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
@@ -362,6 +373,19 @@ interface Ethernet14
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel4 | - | default | - | False | - | - | - | - |
+| Port-Channel4.1000 | - | default | - | False | - | - | - | - |
+| Port-Channel4.1001 | - | default | - | False | - | - | - | - |
+| Port-Channel4.1002 | - | default | - | False | - | - | - | - |
+| Port-Channel4.1003 | - | default | - | False | - | - | - | - |
+| Port-Channel4.1004 | - | default | - | False | - | - | - | - |
+| Port-Channel11 | P2P_SITE2-LSR2_Port-Channel12 | default | 9178 | False | - | - | - | - |
+| Port-Channel220 | P2P_SITE2-LSR2_Port-Channel110 | default | 9178 | False | - | - | - | - |
 
 ##### Flexible Encapsulation Interfaces
 

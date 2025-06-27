@@ -302,6 +302,13 @@ vlan 162
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1 | CUSTOM_DC1-LEAF2A_Ethernet9 | active | 1 |
+| Ethernet2 | CUSTOM_DC1-LEAF2B_Ethernet9 | active | 1 |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -326,6 +333,12 @@ interface Ethernet2
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | CUSTOM_DC1-LEAF2A_Po9 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | CUSTOM_DC1-LEAF2A_Po9 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

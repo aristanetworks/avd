@@ -301,6 +301,19 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet3 | L2_DC1-POD1-L2LEAF2A_Ethernet2 | active | 3 |
+| Ethernet4 | L2_DC1-POD1-L2LEAF2B_Ethernet2 | active | 3 |
+| Ethernet5 | MLAG_DC1.POD1.LEAF2A_Ethernet5 | active | 5 |
+| Ethernet6 | MLAG_DC1.POD1.LEAF2A_Ethernet6 | active | 5 |
+| Ethernet16 | SERVER_server-1_Eth2 | active | 16 |
+| Ethernet17 | Set using structured_config on server adapter | active | 17 |
+| Ethernet18 | SERVER_server-1_Eth6 | active | 18 |
+| Ethernet19 | SERVER_server-1_Eth8 | active | 19 |
+
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -429,6 +442,17 @@ interface Ethernet19
 | Port-Channel17 | Set using structured_config on server adapter port-channel | access | 110 | - | - | - | - | 17 | - |
 | Port-Channel18 | PortChannel | access | 110 | - | - | - | - | 18 | - |
 | Port-Channel19 | PortChannel | access | 110 | - | - | - | - | 19 | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | L2_RACK2_MLAG_Port-Channel1 | default | - | False | - | - | 3 | - |
+| Port-Channel5 | MLAG_DC1.POD1.LEAF2A_Port-Channel5 | default | - | False | - | - | - | - |
+| Port-Channel16 | PortChannel | default | - | False | - | - | 16 | - |
+| Port-Channel17 | Set using structured_config on server adapter port-channel | default | - | False | - | - | 17 | - |
+| Port-Channel18 | PortChannel | default | - | False | - | - | 18 | - |
+| Port-Channel19 | PortChannel | default | - | False | - | - | 19 | - |
 
 #### Port-Channel Interfaces Device Configuration
 

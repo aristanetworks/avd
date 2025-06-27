@@ -395,6 +395,17 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet5 | MLAG_DC1-LEAF2B_Ethernet5 | active | 5 |
+| Ethernet6 | MLAG_DC1-LEAF2B_Ethernet6 | active | 5 |
+| Ethernet7 | L2_DC1-L2LEAF1A_Ethernet1 | active | 7 |
+| Ethernet10 | SERVER_server01_MLAG_Eth2 | active | 10 |
+| Ethernet11 | SERVER_server01_MTU_PROFILE_MLAG_Eth4 | active | 11 |
+| Ethernet12 | SERVER_server01_MTU_ADAPTOR_MLAG_Eth6 | active | 12 |
+
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
@@ -480,6 +491,16 @@ interface Ethernet12
 | Port-Channel10 | PortChanne1 | trunk | 210-211 | - | - | - | - | 10 | - |
 | Port-Channel11 | PortChanne1 | access | 110 | - | - | - | - | 11 | - |
 | Port-Channel12 | PortChanne1 | - | - | - | - | - | - | 12 | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | MLAG_DC1-LEAF2B_Port-Channel5 | default | - | False | - | - | - | - |
+| Port-Channel7 | L2_DC1-L2LEAF1A_Port-Channel1 | default | - | False | - | - | 7 | - |
+| Port-Channel10 | PortChanne1 | default | - | False | - | - | 10 | - |
+| Port-Channel11 | PortChanne1 | default | 1600 | False | - | - | 11 | - |
+| Port-Channel12 | PortChanne1 | default | 1601 | False | - | - | 12 | - |
 
 #### Port-Channel Interfaces Device Configuration
 

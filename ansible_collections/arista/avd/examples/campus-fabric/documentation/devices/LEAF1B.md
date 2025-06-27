@@ -352,6 +352,14 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet51 | L2_SPINE2_Ethernet1 | active | 51 |
+| Ethernet53 | MLAG_LEAF1A_Ethernet53 | active | 53 |
+| Ethernet54 | MLAG_LEAF1A_Ethernet54 | active | 53 |
+
 ##### Phone Interfaces
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
@@ -1395,6 +1403,13 @@ interface Ethernet54
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel51 | L2_SPINES_Port-Channel1 | trunk | 10,110,120,130 | - | - | - | - | 51 | - |
 | Port-Channel53 | MLAG_LEAF1A_Port-Channel53 | trunk | - | - | MLAG | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel51 | L2_SPINES_Port-Channel1 | default | - | False | - | - | 51 | - |
+| Port-Channel53 | MLAG_LEAF1A_Port-Channel53 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

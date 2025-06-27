@@ -379,6 +379,19 @@ vlan 311
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet7 | CUSTOM_DC1-L2LEAF1A_Ethernet1 | active | 7 |
+| Ethernet8 | CUSTOM_DC1-L2LEAF1B_Ethernet1 | active | 7 |
+| Ethernet9 | CUSTOM_DC1-L2LEAF3A_Ethernet1 | active | 9 |
+| Ethernet10 | CUSTOM_server01_MLAG_Eth2 | active | 10 |
+| Ethernet11 | CUSTOM_server01_MTU_PROFILE_MLAG_Eth4 | active | 11 |
+| Ethernet12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth6 | active | 12 |
+| Ethernet13 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth8 | active | 12 |
+| Ethernet20 | CUSTOM_FIREWALL01_E0 | active | 20 |
+
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -486,6 +499,17 @@ interface Ethernet21
 | Port-Channel11 | CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1 | access | 110 | - | - | - | - | - | - |
 | Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | - | - | - | - | - | - | - | - |
 | Port-Channel20 | CUSTOM_FIREWALL01_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel7 | CUSTOM_DC1-L2LEAF1A_Po1 | default | - | False | - | - | - | 0000:1234:0808:0707:0606 |
+| Port-Channel9 | CUSTOM_DC1-L2LEAF3A_Po1 | default | - | False | - | - | - | 0000:1234:0606:0707:0808 |
+| Port-Channel10 | CUSTOM_server01_MLAG_PortChanne1 | default | - | False | - | - | - | - |
+| Port-Channel11 | CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1 | default | 1600 | False | - | - | - | - |
+| Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | default | 1601 | False | - | - | - | - |
+| Port-Channel20 | CUSTOM_FIREWALL01_PortChanne1 | default | - | False | - | - | - | - |
 
 ##### EVPN Multihoming
 

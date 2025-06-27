@@ -363,6 +363,13 @@ vlan 330
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet97/1 | L2_LEAF3A_Ethernet98/1 | active | 971 |
+| Ethernet97/2 | L2_LEAF3B_Ethernet98/1 | active | 971 |
+
 ##### Phone Interfaces
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
@@ -2408,6 +2415,12 @@ interface Ethernet97/2
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel971 | L2_IDF3_AGG_Port-Channel981 | trunk | 10,310,320,330 | - | - | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel971 | L2_IDF3_AGG_Port-Channel981 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

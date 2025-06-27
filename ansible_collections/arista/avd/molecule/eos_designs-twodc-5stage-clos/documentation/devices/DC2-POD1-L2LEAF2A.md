@@ -193,6 +193,12 @@ vlan 4092
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1 | L2_DC2-POD1-LEAF2A_Ethernet3 | active | 1 |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -212,6 +218,12 @@ interface Ethernet1
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_DC2-POD1-LEAF2A_Port-Channel3 | trunk | 4092 | - | - | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | L2_DC2-POD1-LEAF2A_Port-Channel3 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

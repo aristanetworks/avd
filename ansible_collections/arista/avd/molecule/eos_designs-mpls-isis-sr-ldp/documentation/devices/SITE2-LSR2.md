@@ -134,6 +134,15 @@ vlan internal order ascending range 1006 1199
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet12 | P2P_SITE2-LER1_Ethernet11 | active | 12 |
+| Ethernet13 | P2P_SITE2-LER1_Ethernet12 | active | 12 |
+| Ethernet14 | P2P_SITE2-LER1_Ethernet13 | active | 110 |
+| Ethernet15 | P2P_SITE2-LER1_Ethernet14 | active | 110 |
+
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -228,6 +237,13 @@ interface Ethernet15
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel12 | P2P_SITE2-LER1_Port-Channel11 | default | 9178 | False | - | - | - | - |
+| Port-Channel110 | P2P_SITE2-LER1_Port-Channel220 | default | 9178 | False | - | - | - | - |
 
 ##### IPv4
 

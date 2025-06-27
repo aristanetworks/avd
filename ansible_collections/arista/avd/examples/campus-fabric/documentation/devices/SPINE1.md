@@ -337,6 +337,17 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1 | L2_LEAF1A_Ethernet51 | active | 1 |
+| Ethernet49/1 | L2_LEAF2A_Ethernet1/1 | active | 491 |
+| Ethernet50/1 | L2_LEAF3A_Ethernet97/1 | active | 501 |
+| Ethernet51/1 | L2_LEAF3B_Ethernet97/1 | active | 501 |
+| Ethernet55/1 | MLAG_SPINE2_Ethernet55/1 | active | 551 |
+| Ethernet56/1 | MLAG_SPINE2_Ethernet56/1 | active | 551 |
+
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -399,6 +410,15 @@ interface Ethernet56/1
 | Port-Channel491 | L2_LEAF2A_Port-Channel11 | trunk | 10,210,220,230 | - | - | - | - | 491 | - |
 | Port-Channel501 | L2_IDF3_AGG_Port-Channel971 | trunk | 10,310,320,330 | - | - | - | - | 501 | - |
 | Port-Channel551 | MLAG_SPINE2_Port-Channel551 | trunk | - | - | MLAG | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | L2_IDF1_Port-Channel51 | default | - | False | - | - | 1 | - |
+| Port-Channel491 | L2_LEAF2A_Port-Channel11 | default | - | False | - | - | 491 | - |
+| Port-Channel501 | L2_IDF3_AGG_Port-Channel971 | default | - | False | - | - | 501 | - |
+| Port-Channel551 | MLAG_SPINE2_Port-Channel551 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

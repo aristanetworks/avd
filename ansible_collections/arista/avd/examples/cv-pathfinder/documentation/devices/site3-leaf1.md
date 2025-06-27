@@ -300,6 +300,11 @@ vlan 666
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos

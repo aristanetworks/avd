@@ -509,6 +509,13 @@ vlan 230
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1/1 | L2_SPINE1_Ethernet49/1 | active | 11 |
+| Ethernet1/3 | L2_SPINE2_Ethernet49/1 | active | 11 |
+
 ##### Phone Interfaces
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
@@ -6778,6 +6785,12 @@ interface Ethernet7/48
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel11 | L2_SPINES_Port-Channel491 | trunk | 10,210,220,230 | - | - | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel11 | L2_SPINES_Port-Channel491 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

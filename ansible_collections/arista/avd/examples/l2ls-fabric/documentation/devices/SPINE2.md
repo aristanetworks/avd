@@ -319,6 +319,18 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1 | L2_LEAF1_Ethernet2 | active | 1 |
+| Ethernet2 | L2_LEAF2_Ethernet2 | active | 1 |
+| Ethernet3 | L2_LEAF3_Ethernet2 | active | 3 |
+| Ethernet4 | L2_LEAF4_Ethernet2 | active | 3 |
+| Ethernet5 | FIREWALL_FIREWALL_Eth2 | active | 5 |
+| Ethernet47 | MLAG_SPINE1_Ethernet47 | active | 47 |
+| Ethernet48 | MLAG_SPINE1_Ethernet48 | active | 47 |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -371,6 +383,15 @@ interface Ethernet48
 | Port-Channel3 | L2_RACK2_Port-Channel1 | trunk | 10,30 | - | - | - | - | 3 | - |
 | Port-Channel5 | FIREWALL_FIREWALL | trunk | 10,20,30 | - | - | - | - | 5 | - |
 | Port-Channel47 | MLAG_SPINE1_Port-Channel47 | trunk | - | - | MLAG | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | L2_RACK1_Port-Channel1 | default | - | False | - | - | 1 | - |
+| Port-Channel3 | L2_RACK2_Port-Channel1 | default | - | False | - | - | 3 | - |
+| Port-Channel5 | FIREWALL_FIREWALL | default | - | False | - | - | 5 | - |
+| Port-Channel47 | MLAG_SPINE1_Port-Channel47 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

@@ -266,6 +266,13 @@ vlan 161
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1 | L2_DC1-LEAF2A_Ethernet7 | active | 1 |
+| Ethernet2 | L2_DC1-LEAF2B_Ethernet7 | active | 1 |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -290,6 +297,12 @@ interface Ethernet2
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_DC1_LEAF2_Port-Channel7 | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | L2_DC1_LEAF2_Port-Channel7 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

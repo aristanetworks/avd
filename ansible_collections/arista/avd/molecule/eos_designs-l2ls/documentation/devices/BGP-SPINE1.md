@@ -181,6 +181,15 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1 | L2_BGP-LEAF1_Ethernet1 | active | 1 |
+| Ethernet2 | L2_BGP-LEAF2_Ethernet1 | active | 2 |
+| Ethernet3 | MLAG_BGP-SPINE2_Ethernet3 | active | 3 |
+| Ethernet4 | MLAG_BGP-SPINE2_Ethernet4 | active | 3 |
+
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -230,6 +239,14 @@ interface Ethernet5
 | Port-Channel1 | L2_BGP-LEAF1_Port-Channel1 | trunk | 1,100,200,4092 | - | - | - | - | 1 | - |
 | Port-Channel2 | L2_BGP-LEAF2_Port-Channel1 | trunk | 100,4092 | - | - | - | - | 2 | - |
 | Port-Channel3 | MLAG_BGP-SPINE2_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | L2_BGP-LEAF1_Port-Channel1 | default | - | False | - | - | 1 | - |
+| Port-Channel2 | L2_BGP-LEAF2_Port-Channel1 | default | - | False | - | - | 2 | - |
+| Port-Channel3 | MLAG_BGP-SPINE2_Port-Channel3 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

@@ -313,6 +313,15 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1 | L2_SPINE1_Ethernet4 | active | 1 |
+| Ethernet2 | L2_SPINE2_Ethernet4 | active | 1 |
+| Ethernet47 | MLAG_LEAF3_Ethernet47 | active | 47 |
+| Ethernet48 | MLAG_LEAF3_Ethernet48 | active | 47 |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -356,6 +365,13 @@ interface Ethernet48
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_SPINES_Port-Channel3 | trunk | 10,30 | - | - | - | - | 1 | - |
 | Port-Channel47 | MLAG_LEAF3_Port-Channel47 | trunk | - | - | MLAG | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | L2_SPINES_Port-Channel3 | default | - | False | - | - | 1 | - |
+| Port-Channel47 | MLAG_LEAF3_Port-Channel47 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

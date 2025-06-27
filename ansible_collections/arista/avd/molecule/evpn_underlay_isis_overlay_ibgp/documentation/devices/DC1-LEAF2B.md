@@ -287,6 +287,14 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet5 | MLAG_DC1-LEAF2A_Ethernet5 | active | 5 |
+| Ethernet6 | MLAG_DC1-LEAF2A_Ethernet6 | active | 5 |
+| Ethernet7 | L2_DC1-L2LEAF1A_Ethernet2 | active | 7 |
+
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -383,6 +391,13 @@ interface Ethernet7
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_DC1-LEAF2A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | L2_DC1-L2LEAF1A_Port-Channel1 | trunk | none | - | - | - | - | 7 | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | MLAG_DC1-LEAF2A_Port-Channel5 | default | - | False | - | - | - | - |
+| Port-Channel7 | L2_DC1-L2LEAF1A_Port-Channel1 | default | - | False | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
 

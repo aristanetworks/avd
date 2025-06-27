@@ -160,6 +160,15 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1 | L2_L2ONLY-LEAF1_Ethernet2 | active | 1 |
+| Ethernet2 | L2_L2ONLY-LEAF2_Ethernet2 | active | 2 |
+| Ethernet3 | MLAG_L2ONLY-SPINE1_Ethernet3 | active | 3 |
+| Ethernet4 | MLAG_L2ONLY-SPINE1_Ethernet4 | active | 3 |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -196,6 +205,14 @@ interface Ethernet4
 | Port-Channel1 | L2_L2ONLY-LEAF1_Port-Channel1 | trunk | 100,4092 | - | - | - | - | 1 | - |
 | Port-Channel2 | L2_L2ONLY-LEAF2_Port-Channel1 | trunk | 100,4092 | - | - | - | - | 2 | - |
 | Port-Channel3 | MLAG_L2ONLY-SPINE1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | L2_L2ONLY-LEAF1_Port-Channel1 | default | - | False | - | - | 1 | - |
+| Port-Channel2 | L2_L2ONLY-LEAF2_Port-Channel1 | default | - | False | - | - | 2 | - |
+| Port-Channel3 | MLAG_L2ONLY-SPINE1_Port-Channel3 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

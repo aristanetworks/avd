@@ -178,6 +178,14 @@ vlan 2020
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet3 | - | active | 3 |
+| Ethernet4 | - | active | 3 |
+| Ethernet8 | CPE_CPE_TENANT_A_SITE1_Ethernet2 | active | 8 |
+
 ##### Encapsulation Dot1q Interfaces
 
 | Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
@@ -285,6 +293,21 @@ interface Ethernet8
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | - | default | - | False | - | - | - | 0000:0000:0102:0000:0034 |
+| Port-Channel3.1000 | - | default | - | False | - | - | - | - |
+| Port-Channel3.1001 | - | default | - | False | - | - | - | - |
+| Port-Channel3.1002 | - | default | - | False | - | - | - | - |
+| Port-Channel3.1003 | - | default | - | False | - | - | - | - |
+| Port-Channel3.1004 | - | default | - | False | - | - | - | - |
+| Port-Channel8 | CPE_CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel | default | - | False | - | - | - | - |
+| Port-Channel8.111 | - | default | - | - | - | - | - | - |
+| Port-Channel8.222 | - | default | - | - | - | - | - | - |
+| Port-Channel8.333 | - | default | - | - | - | - | - | - |
 
 ##### Flexible Encapsulation Interfaces
 

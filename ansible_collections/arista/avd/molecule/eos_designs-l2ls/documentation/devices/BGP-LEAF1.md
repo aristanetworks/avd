@@ -124,6 +124,13 @@ vlan 4092
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1 | L2_BGP-SPINE1_Ethernet1 | active | 1 |
+| Ethernet2 | L2_BGP-SPINE2_Ethernet1 | active | 1 |
+
 ##### Phone Interfaces
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
@@ -196,6 +203,12 @@ interface Ethernet14
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_BGP_SPINES_Port-Channel1 | trunk | 1,100,200,4092 | - | - | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | L2_BGP_SPINES_Port-Channel1 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

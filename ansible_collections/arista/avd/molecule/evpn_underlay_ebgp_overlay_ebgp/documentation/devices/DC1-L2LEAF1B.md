@@ -341,6 +341,15 @@ vlan 4091
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1 | CUSTOM_DC1-LEAF2A_Ethernet8 | active | 1 |
+| Ethernet2 | CUSTOM_DC1-LEAF2B_Ethernet8 | active | 1 |
+| Ethernet3 | MLAG_DC1-L2LEAF1A_Ethernet3 | active | 3 |
+| Ethernet4 | MLAG_DC1-L2LEAF1A_Ethernet4 | active | 3 |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -376,6 +385,13 @@ interface Ethernet4
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | CUSTOM_DC1-LEAF2A_Po7 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_DC1-L2LEAF1A_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | CUSTOM_DC1-LEAF2A_Po7 | default | - | False | - | - | 1 | - |
+| Port-Channel3 | MLAG_DC1-L2LEAF1A_Port-Channel3 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

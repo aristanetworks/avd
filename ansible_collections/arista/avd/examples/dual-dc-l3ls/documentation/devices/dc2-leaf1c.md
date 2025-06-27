@@ -196,6 +196,13 @@ vlan 3402
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet1 | L2_dc2-leaf1a_Ethernet8 | active | 1 |
+| Ethernet2 | L2_dc2-leaf1b_Ethernet8 | active | 1 |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -228,6 +235,12 @@ interface Ethernet5
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_DC2_L3_LEAF1_Port-Channel8 | trunk | 11-12,21-22,3401-3402 | - | - | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | L2_DC2_L3_LEAF1_Port-Channel8 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 

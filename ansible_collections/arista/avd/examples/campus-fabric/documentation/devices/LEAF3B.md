@@ -404,6 +404,18 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+##### L3 Port-Channel Members
+
+| Interface | Description | Mode | Channel-Group |
+| --------- | ----------- | ---- | ------------- |
+| Ethernet97/1 | L2_SPINE1_Ethernet51/1 | active | 971 |
+| Ethernet97/2 | L2_SPINE2_Ethernet51/1 | active | 971 |
+| Ethernet97/3 | L2_LEAF3C_Ethernet97/2 | active | 973 |
+| Ethernet97/4 | L2_LEAF3D_Ethernet97/2 | active | 974 |
+| Ethernet98/1 | L2_LEAF3E_Ethernet97/2 | active | 981 |
+| Ethernet98/3 | MLAG_LEAF3A_Ethernet98/3 | active | 983 |
+| Ethernet98/4 | MLAG_LEAF3A_Ethernet98/4 | active | 983 |
+
 ##### Phone Interfaces
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
@@ -2478,6 +2490,16 @@ interface Ethernet98/4
 | Port-Channel974 | L2_LEAF3D_Port-Channel971 | trunk | 10,310,320,330 | - | - | - | - | 974 | - |
 | Port-Channel981 | L2_LEAF3E_Port-Channel971 | trunk | 10,310,320,330 | - | - | - | - | 981 | - |
 | Port-Channel983 | MLAG_LEAF3A_Port-Channel983 | trunk | - | - | MLAG | - | - | - | - |
+
+##### L3 Port-Channel
+
+| Interface | Description | VRF | MTU | Shutdown | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | --- | --- | -------- | --------------------- | ------------------ | ------- | -------- |
+| Port-Channel971 | L2_SPINES_Port-Channel501 | default | - | False | - | - | 971 | - |
+| Port-Channel973 | L2_LEAF3C_Port-Channel971 | default | - | False | - | - | 973 | - |
+| Port-Channel974 | L2_LEAF3D_Port-Channel971 | default | - | False | - | - | 974 | - |
+| Port-Channel981 | L2_LEAF3E_Port-Channel971 | default | - | False | - | - | 981 | - |
+| Port-Channel983 | MLAG_LEAF3A_Port-Channel983 | default | - | False | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
