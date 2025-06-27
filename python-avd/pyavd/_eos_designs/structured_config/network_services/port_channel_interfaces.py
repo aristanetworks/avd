@@ -158,20 +158,7 @@ class PortChannelInterfacesMixin(Protocol):
                         ospf_network_point_to_point=l3_port_channel.ospf.point_to_point,
                         ospf_cost=l3_port_channel.ospf.cost,
                     )
-                    ospf_authentication = l3_port_channel.ospf.authentication
-                    if ospf_authentication == "simple" and (ospf_simple_auth_key := l3_port_channel.ospf.simple_auth_key) is not None:
-                        port_channel_interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
-                    elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := l3_port_channel.ospf.message_digest_keys) is not None:
-                        for ospf_key in ospf_message_digest_keys:
-                            if not (ospf_key.id and ospf_key.key):
-                                continue
-                            port_channel_interface.ospf_message_digest_keys.append_new(
-                                id=ospf_key.id,
-                                hash_algorithm=ospf_key.hash_algorithm,
-                                key=ospf_key.key,
-                            )
-                        if port_channel_interface.ospf_message_digest_keys:
-                            port_channel_interface.ospf_authentication = ospf_authentication
+                    self.shared_utils.update_ospf_authentication(port_channel_interface, l3_port_channel, vrf, tenant)
 
                 if is_subinterface:
                     port_channel_interface.encapsulation_dot1q.vlan = default(

@@ -30,6 +30,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "custom_platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private_vlan</samp>](## "custom_platform_settings.[].feature_support.private_vlan") | Boolean |  | `True` |  | Support for PVLAN feature.<br>On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3 set this via "private_vlan" in the specific platform settings.<br>See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "custom_platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "custom_platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -64,6 +65,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private_vlan</samp>](## "platform_settings.[].feature_support.private_vlan") | Boolean |  | `True` |  | Support for PVLAN feature.<br>On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3 set this via "private_vlan" in the specific platform settings.<br>See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -144,6 +146,11 @@
 
           # Support for all-active EVPN gateway redundancy.
           evpn_gateway_all_active_multihoming: <bool; default=False>
+
+          # Support for PVLAN feature.
+          # On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3 set this via "private_vlan" in the specific platform settings.
+          # See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
+          private_vlan: <bool; default=True>
         management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -237,6 +244,11 @@
 
           # Support for all-active EVPN gateway redundancy.
           evpn_gateway_all_active_multihoming: <bool; default=False>
+
+          # Support for PVLAN feature.
+          # On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3 set this via "private_vlan" in the specific platform settings.
+          # See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
+          private_vlan: <bool; default=True>
         management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -353,6 +365,8 @@
             non_mlag: 330
         - digital_twin:
             platform: vEOS-lab
+          feature_support:
+            private_vlan: false
           lag_hardware_only: true
           platforms:
           - 7280R
@@ -366,6 +380,7 @@
             platform: vEOS-lab
           feature_support:
             evpn_gateway_all_active_multihoming: true
+            private_vlan: false
           platforms:
           - 7280R3
           reload_delay:
@@ -374,6 +389,8 @@
           tcam_profile: vxlan-routing
         - digital_twin:
             platform: vEOS-lab
+          feature_support:
+            private_vlan: false
           lag_hardware_only: true
           management_interface: Management0
           platforms:
@@ -387,6 +404,7 @@
             platform: vEOS-lab
           feature_support:
             evpn_gateway_all_active_multihoming: true
+            private_vlan: false
           management_interface: Management0
           platforms:
           - 7500R3

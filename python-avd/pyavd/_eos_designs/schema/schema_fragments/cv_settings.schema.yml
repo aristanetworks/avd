@@ -1,0 +1,165 @@
+# Copyright (c) 2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  cv_settings:
+    documentation_options:
+      table: cloudvision-settings
+    type: dict
+    description: |-
+      Settings for CloudVision telemetry streaming and provisioning.
+    keys:
+      cvaas:
+        type: dict
+        description: |-
+          State streaming to CloudVision-as-a-Service.
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: |-
+              Enable streaming to CVaaS.
+              When enabled it will stream to 'apiserver.arista.io:443' using the VRF obtained from `default_mgmt_method` unless overridden under `clusters`.
+          clusters:
+            type: list
+            primary_key: name
+            default:
+              - name: cvaas
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: |-
+                    Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters.
+                  pattern: "^[a-zA-Z1-9-_]+$"
+                region:
+                  type: str
+                  description: |-
+                    Optionally set the region to stream to.
+                    The "auto" region will use 'apiserver.arista.io:443' which will redirect to the correct region based on the device's serial number.
+                    "staging", "dev" and "play" are for internal Arista use.
+                  default: "auto"
+                  valid_values:
+                    - auto
+                    - us-central1-a
+                    - us-central1-b
+                    - us-central1-c
+                    - apnortheast-1
+                    - euwest-2
+                    - ausoutheast-1
+                    - na-northeast1-b
+                    - uk-1
+                    - india-1
+                    - staging
+                    - dev
+                    - play
+                vrf:
+                  type: str
+                  default: use_default_mgmt_method_vrf
+                  convert_types:
+                    - int
+                  description: |-
+                    The VRF used to connect to CloudVision.
+                    The value will be interpreted according to these rules:
+                    - `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the `mgmt_interface` as the source interface.
+                      An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                    - `use_inband_mgmt_vrf` will configure the VRF set with `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.
+                      An error will be raised if inband management is not configured for the device.
+                    - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
+                    - Any other string will be used directly as the VRF name.
+                token_file:
+                  type: str
+                  description: |-
+                    Path to the onboarding token used for certificate based authentication.
+                    The path is on the EOS device and the token file must be copied to the device first.
+                  default: "/tmp/cv-onboarding-token"
+                source_interface:
+                  type: str
+                  description: |-
+                    Source-interface used to connect to CloudVision.
+                    If not set, the source interface may be set automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+      onprem_clusters:
+        type: list
+        description: On-premise CloudVision clusters.
+        primary_key: name
+        unique_keys:
+          - servers.name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: |-
+                Short name for the cluster. Required here, but only used when configuring multiple clusters.
+              pattern: "^[a-zA-Z1-9-_]+$"
+            servers:
+              type: list
+              required: true
+              min_length: 1
+              max_length: 3
+              primary_key: name
+              description: CloudVision servers that makes up one cluster.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Server FQDN or IP address.
+                  port:
+                    type: int
+                    convert_types:
+                      - str
+                    default: 9910
+            vrf:
+              type: str
+              default: use_default_mgmt_method_vrf
+              convert_types:
+                - int
+              description: |-
+                The VRF used to connect to CloudVision.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the `mgmt_interface` as the source interface.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the VRF set with `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.
+                  An error will be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the VRF name.
+            token_file:
+              type: str
+              description: |-
+                Path to the onboarding token used for certificate based authentication.
+                The path is on the EOS device and the token file must be copied to the device first.
+              default: "/tmp/token"
+            source_interface:
+              type: str
+              description: |-
+                Source-interface used to connect to CloudVision.
+                If not set, the source interface may be set automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+      terminattr:
+        type: dict
+        description: |-
+          Specific settings for the TerminAttr daemon.
+        keys:
+          ingestexclude:
+            type: str
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/ingestexclude
+          smashexcludes:
+            type: str
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/smashexcludes
+            default: "ale,flexCounter,hardware,kni,pulse,strata"
+          disable_aaa:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/disable_aaa
+            default: false
+      set_source_interfaces:
+        type: bool
+        # TODO: AVD7.0 remove mention of `cv_instances` in description
+        description: |-
+           Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+           Can be set to `false` to avoid changes when migrating from old `cv_instances` model.
+        default: true
