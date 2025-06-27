@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -100,11 +100,17 @@ class EthernetInterfacesMixin(Protocol):
                     if self.inputs.underlay_ospf_authentication.enabled:
                         ethernet_interface.ospf_authentication = "message-digest"
                         for ospf_key in self.inputs.underlay_ospf_authentication.message_digest_keys:
+                            if ospf_key.key is None and ospf_key.cleartext_key is None:
+                                msg = (
+                                    f"`underlay_ospf_authentication.message_digest_keys[key={ospf_key.id}].key or "
+                                    f"`underlay_ospf_authentication.message_digest_keys[key={ospf_key.id}].cleartext_key`"
+                                )
+                                raise AristaAvdMissingVariableError(msg)
                             ethernet_interface.ospf_message_digest_keys.append_new(
                                 id=ospf_key.id,
                                 hash_algorithm=ospf_key.hash_algorithm,
                                 key=ospf_message_digest_encrypt(
-                                    password=ospf_key.key,
+                                    password=cast("str", ospf_key.cleartext_key or ospf_key.key),
                                     key=ethernet_interface.name,
                                     hash_algorithm=ospf_key.hash_algorithm,
                                     key_id=str(ospf_key.id),
