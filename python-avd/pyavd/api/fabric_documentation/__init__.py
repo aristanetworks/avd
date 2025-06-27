@@ -27,18 +27,14 @@ class ActNodeSettings:
 class ACTDigitalTwin:
     """ACT Digital Twin fabric documentation dataclass."""
 
-    # Always present attributes
     nodes: tuple[dict[str, ActNodeSettings], ...]
-    # Dynamically-added attributes
-    # links attribute may be missing if fabric has no links defined
-    links: tuple[ActLinkSettings, ...] | None = None
-
     cloudeos: ActNodeTypeSettings | None = None
     cvp: ActNodeTypeSettings | None = None
     generic: ActNodeTypeSettings | None = None
     third_party: ActNodeTypeSettings | None = None
     tools_server: ActNodeTypeSettings | None = None
     veos: ActNodeTypeSettings | None = None
+    links: tuple[ActLinkSettings, ...] | None = None
 
 
 class FabricDocumentation:
