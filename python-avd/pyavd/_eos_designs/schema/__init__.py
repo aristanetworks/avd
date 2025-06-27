@@ -14543,12 +14543,26 @@ class EosDesigns(EosDesignsRootModel):
                 class MessageDigestKeysItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                    _fields: ClassVar[dict] = {
+                        "id": {"type": int},
+                        "hash_algorithm": {"type": str, "default": "sha512"},
+                        "key": {"type": str},
+                        "cleartext_key": {"type": str},
+                    }
                     id: int | None
                     hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                     """Default value: `"sha512"`"""
                     key: str | None
-                    """Type 7 encrypted key."""
+                    """
+                    Type 7 encrypted key for OSPF message-digest authentication.
+                    Takes precedence over `cleartext_key`.
+                    """
+                    cleartext_key: str | None
+                    """
+                    Cleartext key for OSPF message-digest authentication
+                    To protect the password at rest it is strongly
+                    recommended to make use of a vault or similar.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -14558,6 +14572,7 @@ class EosDesigns(EosDesignsRootModel):
                             id: int | None | UndefinedType = Undefined,
                             hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                             key: str | None | UndefinedType = Undefined,
+                            cleartext_key: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             MessageDigestKeysItem.
@@ -14568,7 +14583,13 @@ class EosDesigns(EosDesignsRootModel):
                             Args:
                                 id: id
                                 hash_algorithm: hash_algorithm
-                                key: Type 7 encrypted key.
+                                key:
+                                   Type 7 encrypted key for OSPF message-digest authentication.
+                                   Takes precedence over `cleartext_key`.
+                                cleartext_key:
+                                   Cleartext key for OSPF message-digest authentication
+                                   To protect the password at rest it is strongly
+                                   recommended to make use of a vault or similar.
 
                             """
 
@@ -14584,6 +14605,7 @@ class EosDesigns(EosDesignsRootModel):
                     "cost": {"type": int},
                     "authentication": {"type": str},
                     "simple_auth_key": {"type": str},
+                    "cleartext_simple_auth_key": {"type": str},
                     "message_digest_keys": {"type": MessageDigestKeys},
                 }
                 enabled: bool | None
@@ -14599,7 +14621,17 @@ class EosDesigns(EosDesignsRootModel):
                 """OSPF link cost."""
                 authentication: Literal["simple", "message-digest"] | None
                 simple_auth_key: str | None
-                """Password used with simple authentication."""
+                """
+                Type 7 encrypted key for OSPF simple authentication.
+                Takes precedence over
+                `cleartext_simple_auth_key`
+                """
+                cleartext_simple_auth_key: str | None
+                """
+                Cleartext key for OSPF simple authentication.
+                To protect the password at rest it is strongly
+                recommended to make use of a vault or similar.
+                """
                 message_digest_keys: MessageDigestKeys
                 """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -14614,6 +14646,7 @@ class EosDesigns(EosDesignsRootModel):
                         cost: int | None | UndefinedType = Undefined,
                         authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                         simple_auth_key: str | None | UndefinedType = Undefined,
+                        cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                         message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -14628,7 +14661,14 @@ class EosDesigns(EosDesignsRootModel):
                             area: OSPF area ID.
                             cost: OSPF link cost.
                             authentication: authentication
-                            simple_auth_key: Password used with simple authentication.
+                            simple_auth_key:
+                               Type 7 encrypted key for OSPF simple authentication.
+                               Takes precedence over
+                               `cleartext_simple_auth_key`
+                            cleartext_simple_auth_key:
+                               Cleartext key for OSPF simple authentication.
+                               To protect the password at rest it is strongly
+                               recommended to make use of a vault or similar.
                             message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                         """
@@ -15312,12 +15352,26 @@ class EosDesigns(EosDesignsRootModel):
             class MessageDigestKeysItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "id": {"type": int},
+                    "hash_algorithm": {"type": str, "default": "sha512"},
+                    "key": {"type": str},
+                    "cleartext_key": {"type": str},
+                }
                 id: int | None
                 hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                 """Default value: `"sha512"`"""
                 key: str | None
-                """Type 7 encrypted key."""
+                """
+                Type 7 encrypted key for OSPF message-digest authentication.
+                Takes precedence over `cleartext_key`.
+                """
+                cleartext_key: str | None
+                """
+                Cleartext key for OSPF message-digest authentication
+                To protect the password at rest it is strongly
+                recommended to make use of a vault or similar.
+                """
 
                 if TYPE_CHECKING:
 
@@ -15327,6 +15381,7 @@ class EosDesigns(EosDesignsRootModel):
                         id: int | None | UndefinedType = Undefined,
                         hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
+                        cleartext_key: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         MessageDigestKeysItem.
@@ -15337,7 +15392,13 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             id: id
                             hash_algorithm: hash_algorithm
-                            key: Type 7 encrypted key.
+                            key:
+                               Type 7 encrypted key for OSPF message-digest authentication.
+                               Takes precedence over `cleartext_key`.
+                            cleartext_key:
+                               Cleartext key for OSPF message-digest authentication
+                               To protect the password at rest it is strongly
+                               recommended to make use of a vault or similar.
 
                         """
 
@@ -15353,6 +15414,7 @@ class EosDesigns(EosDesignsRootModel):
                 "cost": {"type": int},
                 "authentication": {"type": str},
                 "simple_auth_key": {"type": str},
+                "cleartext_simple_auth_key": {"type": str},
                 "message_digest_keys": {"type": MessageDigestKeys},
             }
             enabled: bool | None
@@ -15368,7 +15430,17 @@ class EosDesigns(EosDesignsRootModel):
             """OSPF link cost."""
             authentication: Literal["simple", "message-digest"] | None
             simple_auth_key: str | None
-            """Password used with simple authentication."""
+            """
+            Type 7 encrypted key for OSPF simple authentication.
+            Takes precedence over
+            `cleartext_simple_auth_key`
+            """
+            cleartext_simple_auth_key: str | None
+            """
+            Cleartext key for OSPF simple authentication.
+            To protect the password at rest it is strongly
+            recommended to make use of a vault or similar.
+            """
             message_digest_keys: MessageDigestKeys
             """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -15383,6 +15455,7 @@ class EosDesigns(EosDesignsRootModel):
                     cost: int | None | UndefinedType = Undefined,
                     authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                     simple_auth_key: str | None | UndefinedType = Undefined,
+                    cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -15397,7 +15470,14 @@ class EosDesigns(EosDesignsRootModel):
                         area: OSPF area ID.
                         cost: OSPF link cost.
                         authentication: authentication
-                        simple_auth_key: Password used with simple authentication.
+                        simple_auth_key:
+                           Type 7 encrypted key for OSPF simple authentication.
+                           Takes precedence over
+                           `cleartext_simple_auth_key`
+                        cleartext_simple_auth_key:
+                           Cleartext key for OSPF simple authentication.
+                           To protect the password at rest it is strongly
+                           recommended to make use of a vault or similar.
                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                     """
@@ -16137,17 +16217,26 @@ class EosDesigns(EosDesignsRootModel):
         class MessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "id": {"type": int},
+                "hash_algorithm": {"type": str, "default": "sha512"},
+                "key": {"type": str},
+                "cleartext_key": {"type": str},
+            }
             id: int
             hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
             """Default value: `"sha512"`"""
-            key: str
+            key: str | None
             """
-            Key password.
-            Only plaintext passwords are supported here as `eos_designs` will encrypt the password
-            for each individual underlay interface.
-            To protect the password at rest it is strongly recommended
-            to make use of Ansible Vault or similar.
+            Cleartext key.
+            To protect the password at rest it is strongly recommended to make use of a vault or
+            similar.
+            """
+            cleartext_key: str | None
+            """
+            Cleartext key for OSPF message-digest authentication
+            To protect the password at rest it is strongly
+            recommended to make use of a vault or similar.
             """
 
             if TYPE_CHECKING:
@@ -16157,7 +16246,8 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
-                    key: str | UndefinedType = Undefined,
+                    key: str | None | UndefinedType = Undefined,
+                    cleartext_key: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     MessageDigestKeysItem.
@@ -16169,11 +16259,13 @@ class EosDesigns(EosDesignsRootModel):
                         id: id
                         hash_algorithm: hash_algorithm
                         key:
-                           Key password.
-                           Only plaintext passwords are supported here as `eos_designs` will encrypt the password
-                           for each individual underlay interface.
-                           To protect the password at rest it is strongly recommended
-                           to make use of Ansible Vault or similar.
+                           Cleartext key.
+                           To protect the password at rest it is strongly recommended to make use of a vault or
+                           similar.
+                        cleartext_key:
+                           Cleartext key for OSPF message-digest authentication
+                           To protect the password at rest it is strongly
+                           recommended to make use of a vault or similar.
 
                     """
 
@@ -39254,6 +39346,60 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class MessageDigestKeysItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "id": {"type": int},
+                                "hash_algorithm": {"type": str, "default": "sha512"},
+                                "cleartext_key": {"type": str},
+                            }
+                            id: int
+                            hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+                            """Default value: `"sha512"`"""
+                            cleartext_key: str
+                            """
+                            Cleartext key for OSPF message-digest authentication
+                            To protect the password at rest it is strongly
+                            recommended to make use of a vault or similar.
+                            Configuration at the interface level under
+                            `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    id: int | UndefinedType = Undefined,
+                                    hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                                    cleartext_key: str | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    MessageDigestKeysItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        id: id
+                                        hash_algorithm: hash_algorithm
+                                        cleartext_key:
+                                           Cleartext key for OSPF message-digest authentication
+                                           To protect the password at rest it is strongly
+                                           recommended to make use of a vault or similar.
+                                           Configuration at the interface level under
+                                           `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+
+                                    """
+
+                        class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                            """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                            _primary_key: ClassVar[str] = "id"
+
+                        MessageDigestKeys._item_type = MessageDigestKeysItem
+
                         class Nodes(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -39267,6 +39413,9 @@ class EosDesigns(EosDesignsRootModel):
                             "bfd": {"type": bool, "default": False},
                             "redistribute_bgp": {"type": RedistributeBgp},
                             "redistribute_connected": {"type": RedistributeConnected},
+                            "authentication": {"type": str},
+                            "cleartext_simple_auth_key": {"type": str},
+                            "message_digest_keys": {"type": MessageDigestKeys},
                             "nodes": {"type": Nodes},
                             "structured_config": {"type": EosCliConfigGen.RouterOspf.ProcessIdsItem},
                         }
@@ -39294,6 +39443,22 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         redistribute_connected: RedistributeConnected
                         """Subclass of AvdModel."""
+                        authentication: Literal["simple", "message-digest"] | None
+                        """
+                        Configure OSPF authentication for all interfaces under the VRF.
+                        Can be overridden at the interface
+                        level under `l3_interfaces`, `l3_port_channels` or `svis`.
+                        """
+                        cleartext_simple_auth_key: str | None
+                        """
+                        Cleartext password used with simple authentication.
+                        To protect the password at rest it is strongly
+                        recommended to make use of a vault or similar.
+                        Configuration at the interface level under
+                        `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+                        """
+                        message_digest_keys: MessageDigestKeys
+                        """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
                         structured_config: EosCliConfigGen.RouterOspf.ProcessIdsItem
@@ -39314,6 +39479,9 @@ class EosDesigns(EosDesignsRootModel):
                                 bfd: bool | UndefinedType = Undefined,
                                 redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
                                 redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                                authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
+                                cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
+                                message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.RouterOspf.ProcessIdsItem | UndefinedType = Undefined,
                             ) -> None:
@@ -39340,6 +39508,17 @@ class EosDesigns(EosDesignsRootModel):
                                     bfd: bfd
                                     redistribute_bgp: Subclass of AvdModel.
                                     redistribute_connected: Subclass of AvdModel.
+                                    authentication:
+                                       Configure OSPF authentication for all interfaces under the VRF.
+                                       Can be overridden at the interface
+                                       level under `l3_interfaces`, `l3_port_channels` or `svis`.
+                                    cleartext_simple_auth_key:
+                                       Cleartext password used with simple authentication.
+                                       To protect the password at rest it is strongly
+                                       recommended to make use of a vault or similar.
+                                       Configuration at the interface level under
+                                       `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+                                    message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
                                     nodes: Subclass of AvdList with `str` items.
                                     structured_config:
                                        Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for
@@ -39797,12 +39976,26 @@ class EosDesigns(EosDesignsRootModel):
                                 class MessageDigestKeysItem(AvdModel):
                                     """Subclass of AvdModel."""
 
-                                    _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                    _fields: ClassVar[dict] = {
+                                        "id": {"type": int},
+                                        "hash_algorithm": {"type": str, "default": "sha512"},
+                                        "key": {"type": str},
+                                        "cleartext_key": {"type": str},
+                                    }
                                     id: int | None
                                     hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                     """Default value: `"sha512"`"""
                                     key: str | None
-                                    """Type 7 encrypted key."""
+                                    """
+                                    Type 7 encrypted key for OSPF message-digest authentication.
+                                    Takes precedence over `cleartext_key`.
+                                    """
+                                    cleartext_key: str | None
+                                    """
+                                    Cleartext key for OSPF message-digest authentication
+                                    To protect the password at rest it is strongly
+                                    recommended to make use of a vault or similar.
+                                    """
 
                                     if TYPE_CHECKING:
 
@@ -39812,6 +40005,7 @@ class EosDesigns(EosDesignsRootModel):
                                             id: int | None | UndefinedType = Undefined,
                                             hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                                             key: str | None | UndefinedType = Undefined,
+                                            cleartext_key: str | None | UndefinedType = Undefined,
                                         ) -> None:
                                             """
                                             MessageDigestKeysItem.
@@ -39822,7 +40016,13 @@ class EosDesigns(EosDesignsRootModel):
                                             Args:
                                                 id: id
                                                 hash_algorithm: hash_algorithm
-                                                key: Type 7 encrypted key.
+                                                key:
+                                                   Type 7 encrypted key for OSPF message-digest authentication.
+                                                   Takes precedence over `cleartext_key`.
+                                                cleartext_key:
+                                                   Cleartext key for OSPF message-digest authentication
+                                                   To protect the password at rest it is strongly
+                                                   recommended to make use of a vault or similar.
 
                                             """
 
@@ -39838,6 +40038,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "cost": {"type": int},
                                     "authentication": {"type": str},
                                     "simple_auth_key": {"type": str},
+                                    "cleartext_simple_auth_key": {"type": str},
                                     "message_digest_keys": {"type": MessageDigestKeys},
                                 }
                                 enabled: bool | None
@@ -39853,7 +40054,17 @@ class EosDesigns(EosDesignsRootModel):
                                 """OSPF link cost."""
                                 authentication: Literal["simple", "message-digest"] | None
                                 simple_auth_key: str | None
-                                """Password used with simple authentication."""
+                                """
+                                Type 7 encrypted key for OSPF simple authentication.
+                                Takes precedence over
+                                `cleartext_simple_auth_key`
+                                """
+                                cleartext_simple_auth_key: str | None
+                                """
+                                Cleartext key for OSPF simple authentication.
+                                To protect the password at rest it is strongly
+                                recommended to make use of a vault or similar.
+                                """
                                 message_digest_keys: MessageDigestKeys
                                 """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -39868,6 +40079,7 @@ class EosDesigns(EosDesignsRootModel):
                                         cost: int | None | UndefinedType = Undefined,
                                         authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                                         simple_auth_key: str | None | UndefinedType = Undefined,
+                                        cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                         message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                     ) -> None:
                                         """
@@ -39882,7 +40094,14 @@ class EosDesigns(EosDesignsRootModel):
                                             area: OSPF area ID.
                                             cost: OSPF link cost.
                                             authentication: authentication
-                                            simple_auth_key: Password used with simple authentication.
+                                            simple_auth_key:
+                                               Type 7 encrypted key for OSPF simple authentication.
+                                               Takes precedence over
+                                               `cleartext_simple_auth_key`
+                                            cleartext_simple_auth_key:
+                                               Cleartext key for OSPF simple authentication.
+                                               To protect the password at rest it is strongly
+                                               recommended to make use of a vault or similar.
                                             message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                         """
@@ -40589,12 +40808,26 @@ class EosDesigns(EosDesignsRootModel):
                             class MessageDigestKeysItem(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "id": {"type": int},
+                                    "hash_algorithm": {"type": str, "default": "sha512"},
+                                    "key": {"type": str},
+                                    "cleartext_key": {"type": str},
+                                }
                                 id: int | None
                                 hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                 """Default value: `"sha512"`"""
                                 key: str | None
-                                """Type 7 encrypted key."""
+                                """
+                                Type 7 encrypted key for OSPF message-digest authentication.
+                                Takes precedence over `cleartext_key`.
+                                """
+                                cleartext_key: str | None
+                                """
+                                Cleartext key for OSPF message-digest authentication
+                                To protect the password at rest it is strongly
+                                recommended to make use of a vault or similar.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -40604,6 +40837,7 @@ class EosDesigns(EosDesignsRootModel):
                                         id: int | None | UndefinedType = Undefined,
                                         hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
+                                        cleartext_key: str | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         MessageDigestKeysItem.
@@ -40614,7 +40848,13 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             id: id
                                             hash_algorithm: hash_algorithm
-                                            key: Type 7 encrypted key.
+                                            key:
+                                               Type 7 encrypted key for OSPF message-digest authentication.
+                                               Takes precedence over `cleartext_key`.
+                                            cleartext_key:
+                                               Cleartext key for OSPF message-digest authentication
+                                               To protect the password at rest it is strongly
+                                               recommended to make use of a vault or similar.
 
                                         """
 
@@ -40630,6 +40870,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "cost": {"type": int},
                                 "authentication": {"type": str},
                                 "simple_auth_key": {"type": str},
+                                "cleartext_simple_auth_key": {"type": str},
                                 "message_digest_keys": {"type": MessageDigestKeys},
                             }
                             enabled: bool | None
@@ -40645,7 +40886,17 @@ class EosDesigns(EosDesignsRootModel):
                             """OSPF link cost."""
                             authentication: Literal["simple", "message-digest"] | None
                             simple_auth_key: str | None
-                            """Password used with simple authentication."""
+                            """
+                            Type 7 encrypted key for OSPF simple authentication.
+                            Takes precedence over
+                            `cleartext_simple_auth_key`
+                            """
+                            cleartext_simple_auth_key: str | None
+                            """
+                            Cleartext key for OSPF simple authentication.
+                            To protect the password at rest it is strongly
+                            recommended to make use of a vault or similar.
+                            """
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -40660,6 +40911,7 @@ class EosDesigns(EosDesignsRootModel):
                                     cost: int | None | UndefinedType = Undefined,
                                     authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                                     simple_auth_key: str | None | UndefinedType = Undefined,
+                                    cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -40674,7 +40926,14 @@ class EosDesigns(EosDesignsRootModel):
                                         area: OSPF area ID.
                                         cost: OSPF link cost.
                                         authentication: authentication
-                                        simple_auth_key: Password used with simple authentication.
+                                        simple_auth_key:
+                                           Type 7 encrypted key for OSPF simple authentication.
+                                           Takes precedence over
+                                           `cleartext_simple_auth_key`
+                                        cleartext_simple_auth_key:
+                                           Cleartext key for OSPF simple authentication.
+                                           To protect the password at rest it is strongly
+                                           recommended to make use of a vault or similar.
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
@@ -41279,12 +41538,29 @@ class EosDesigns(EosDesignsRootModel):
                             class MessageDigestKeysItem(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "id": {"type": int},
+                                    "hash_algorithm": {"type": str, "default": "sha512"},
+                                    "key": {"type": str},
+                                    "cleartext_key": {"type": str},
+                                }
                                 id: int | None
                                 hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                 """Default value: `"sha512"`"""
                                 key: str | None
-                                """Key password."""
+                                """
+                                Type 7 encrypted key for OSPF message-digest authentication.
+                                Takes precedence over `cleartext_key`
+                                NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the
+                                same
+                                (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                                """
+                                cleartext_key: str | None
+                                """
+                                Cleartext key for OSPF message-digest authentication
+                                To protect the password at rest it is strongly
+                                recommended to make use of a vault or similar.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -41294,6 +41570,7 @@ class EosDesigns(EosDesignsRootModel):
                                         id: int | None | UndefinedType = Undefined,
                                         hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
+                                        cleartext_key: str | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         MessageDigestKeysItem.
@@ -41304,7 +41581,16 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             id: id
                                             hash_algorithm: hash_algorithm
-                                            key: Key password.
+                                            key:
+                                               Type 7 encrypted key for OSPF message-digest authentication.
+                                               Takes precedence over `cleartext_key`
+                                               NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the
+                                               same
+                                               (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                                            cleartext_key:
+                                               Cleartext key for OSPF message-digest authentication
+                                               To protect the password at rest it is strongly
+                                               recommended to make use of a vault or similar.
 
                                         """
 
@@ -41320,6 +41606,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "cost": {"type": int},
                                 "authentication": {"type": str},
                                 "simple_auth_key": {"type": str},
+                                "cleartext_simple_auth_key": {"type": str},
                                 "message_digest_keys": {"type": MessageDigestKeys},
                             }
                             enabled: bool | None
@@ -41335,7 +41622,21 @@ class EosDesigns(EosDesignsRootModel):
                             """OSPF link cost."""
                             authentication: Literal["simple", "message-digest"] | None
                             simple_auth_key: str | None
-                            """Password used with simple authentication."""
+                            """
+                            Type 7 encrypted key for OSPF simple authentication.
+                            Takes precedence over
+                            `cleartext_simple_auth_key`.
+                            NOTE: The l3_interfaces.interfaces list must not be more than 1
+                            interface or they must all be the same
+                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends
+                            on the interface.
+                            """
+                            cleartext_simple_auth_key: str | None
+                            """
+                            Cleartext key for OSPF simple authentication.
+                            To protect the password at rest it is strongly
+                            recommended to make use of a vault or similar.
+                            """
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -41350,6 +41651,7 @@ class EosDesigns(EosDesignsRootModel):
                                     cost: int | None | UndefinedType = Undefined,
                                     authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                                     simple_auth_key: str | None | UndefinedType = Undefined,
+                                    cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -41364,7 +41666,18 @@ class EosDesigns(EosDesignsRootModel):
                                         area: OSPF area ID.
                                         cost: OSPF link cost.
                                         authentication: authentication
-                                        simple_auth_key: Password used with simple authentication.
+                                        simple_auth_key:
+                                           Type 7 encrypted key for OSPF simple authentication.
+                                           Takes precedence over
+                                           `cleartext_simple_auth_key`.
+                                           NOTE: The l3_interfaces.interfaces list must not be more than 1
+                                           interface or they must all be the same
+                                           (e.g. [Ethernet7, Ethernet7]) as the type7 password depends
+                                           on the interface.
+                                        cleartext_simple_auth_key:
+                                           Cleartext key for OSPF simple authentication.
+                                           To protect the password at rest it is strongly
+                                           recommended to make use of a vault or similar.
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
@@ -41723,12 +42036,29 @@ class EosDesigns(EosDesignsRootModel):
                             class MessageDigestKeysItem(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "id": {"type": int},
+                                    "hash_algorithm": {"type": str, "default": "sha512"},
+                                    "key": {"type": str},
+                                    "cleartext_key": {"type": str},
+                                }
                                 id: int | None
                                 hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                 """Default value: `"sha512"`"""
                                 key: str | None
-                                """Key password."""
+                                """
+                                Type 7 encrypted key for OSPF message-digest authentication.
+                                Takes precedence over `cleartext_key`
+                                NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the
+                                same
+                                (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                                """
+                                cleartext_key: str | None
+                                """
+                                Cleartext key for OSPF message-digest authentication
+                                To protect the password at rest it is strongly
+                                recommended to make use of a vault or similar.
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -41738,6 +42068,7 @@ class EosDesigns(EosDesignsRootModel):
                                         id: int | None | UndefinedType = Undefined,
                                         hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
+                                        cleartext_key: str | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         MessageDigestKeysItem.
@@ -41748,7 +42079,16 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             id: id
                                             hash_algorithm: hash_algorithm
-                                            key: Key password.
+                                            key:
+                                               Type 7 encrypted key for OSPF message-digest authentication.
+                                               Takes precedence over `cleartext_key`
+                                               NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the
+                                               same
+                                               (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                                            cleartext_key:
+                                               Cleartext key for OSPF message-digest authentication
+                                               To protect the password at rest it is strongly
+                                               recommended to make use of a vault or similar.
 
                                         """
 
@@ -41764,6 +42104,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "cost": {"type": int},
                                 "authentication": {"type": str},
                                 "simple_auth_key": {"type": str},
+                                "cleartext_simple_auth_key": {"type": str},
                                 "message_digest_keys": {"type": MessageDigestKeys},
                             }
                             enabled: bool | None
@@ -41779,7 +42120,21 @@ class EosDesigns(EosDesignsRootModel):
                             """OSPF link cost."""
                             authentication: Literal["simple", "message-digest"] | None
                             simple_auth_key: str | None
-                            """Password used with simple authentication."""
+                            """
+                            Type 7 encrypted key for OSPF simple authentication.
+                            Takes precedence over
+                            `cleartext_simple_auth_key`
+                            NOTE: The l3_interfaces.interfaces list must not be more than 1
+                            interface or they must all be the same
+                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends
+                            on the interface.
+                            """
+                            cleartext_simple_auth_key: str | None
+                            """
+                            Cleartext key for OSPF simple authentication.
+                            To protect the password at rest it is strongly
+                            recommended to make use of a vault or similar.
+                            """
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -41794,6 +42149,7 @@ class EosDesigns(EosDesignsRootModel):
                                     cost: int | None | UndefinedType = Undefined,
                                     authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                                     simple_auth_key: str | None | UndefinedType = Undefined,
+                                    cleartext_simple_auth_key: str | None | UndefinedType = Undefined,
                                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -41808,7 +42164,18 @@ class EosDesigns(EosDesignsRootModel):
                                         area: OSPF area ID.
                                         cost: OSPF link cost.
                                         authentication: authentication
-                                        simple_auth_key: Password used with simple authentication.
+                                        simple_auth_key:
+                                           Type 7 encrypted key for OSPF simple authentication.
+                                           Takes precedence over
+                                           `cleartext_simple_auth_key`
+                                           NOTE: The l3_interfaces.interfaces list must not be more than 1
+                                           interface or they must all be the same
+                                           (e.g. [Ethernet7, Ethernet7]) as the type7 password depends
+                                           on the interface.
+                                        cleartext_simple_auth_key:
+                                           Cleartext key for OSPF simple authentication.
+                                           To protect the password at rest it is strongly
+                                           recommended to make use of a vault or similar.
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
