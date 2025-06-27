@@ -14,7 +14,7 @@
 | --- | ------- | -------- | -------- |
 {%     set _vrf_default = namespace(enable = management_ssh.enable | arista.avd.default) %}
 {%     if management_ssh.vrfs is arista.avd.defined %}
-{%         for vrf in management_ssh.vrfs %}
+{%         for vrf in management_ssh.vrfs | arista.avd.natural_sort %}
 {%             if vrf.name == "default" %}
 {%                 set _vrf_default_.enable = vrf.enable | arista.avd.default(_vrf_default.enable) %}
 {%             else %}
