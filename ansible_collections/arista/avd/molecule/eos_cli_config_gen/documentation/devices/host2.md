@@ -102,6 +102,7 @@
 - [Application Traffic Recognition](#application-traffic-recognition)
   - [Applications](#applications)
   - [Router Application-Traffic-Recognition Device Configuration](#router-application-traffic-recognition-device-configuration)
+  - [Router Path-selection](#router-path-selection)
 - [Router L2 VPN](#router-l2-vpn)
   - [Router L2 VPN Summary](#router-l2-vpn-summary)
   - [Router L2 VPN Device Configuration](#router-l2-vpn-device-configuration)
@@ -209,50 +210,32 @@ no ptp monitor sequence-id
 
 ### Management SSH
 
+#### VRFs
+
+| VRF | Enabled | IPv4 ACL | IPv6 ACL |
+| --- | ------- | -------- | -------- |
+| mgt | True | ACL-SSH-VRF | - |
+| default | False | ACL-SSH | - |
+
 #### Authentication Settings
 
 | Authentication protocols | Empty passwords |
 | ------------------------ | --------------- |
 | keyboard-interactive, public-key | permit |
 
-#### IPv4 ACL
+#### Other SSH Settings
 
-| IPv4 ACL | VRF |
-| -------- | --- |
-| ACL-SSH | - |
-| ACL-SSH-VRF | mgt |
-
-#### SSH Timeout and Management
-
-| Idle Timeout | SSH Management |
-| ------------ | -------------- |
-| 15 | Disabled |
-
-#### Max number of SSH sessions limit and per-host limit
-
-| Connection Limit | Max from a single Host |
-| ---------------- | ---------------------- |
-| 55 | - |
-
-#### Ciphers and Algorithms
-
-| Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
-|---------|----------------------|----------------|---------------------------|
-| aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521 |
-
-#### VRFs
-
-| VRF | Status |
-| --- | ------ |
-| mgt | Enabled |
+| Idle Timeout | Connection Limit | Max from a single Host | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
+| ------------ | ---------------- | ---------------------- | ------- | -------------------- | -------------- | ------------------------- |
+| 15 | 55 | - | aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521 |
 
 #### Management SSH Device Configuration
 
 ```eos
 !
 management ssh
-   ip access-group ACL-SSH in
    ip access-group ACL-SSH-VRF vrf mgt in
+   ip access-group ACL-SSH in
    idle-timeout 15
    cipher aes256-cbc aes256-ctr aes256-gcm@openssh.com
    key-exchange ecdh-sha2-nistp521
@@ -656,6 +639,18 @@ sflow interface egress enable default
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
 
+#### Flow Tracking mirror-on-drop
+
+| Sample Limit Size | Encapsulations |
+| ----------------- | -------------- |
+| default | mpls |
+
+##### Trackers Summary
+
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters |
+| ------------ | --------------------------------- | ------------------------- | ------------------- |
+| T1 | 3666 | 5666 | 0 |
+
 #### Flow Tracking Device Configuration
 
 ```eos
@@ -667,6 +662,11 @@ flow tracking sampled
       record export on inactive timeout 3666
       record export on interval 5666
       record export mpls
+!
+flow tracking mirror-on-drop
+   tracker T1
+      record export on inactive timeout 3666
+      record export on interval 5666
 ```
 
 ### Monitor Telemetry Postcard Policy
@@ -1498,6 +1498,20 @@ application traffic recognition
    application l4 l4-app-1
       protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1
       protocol udp
+```
+
+### Router Path-selection
+
+#### MTU Discovery Summary
+
+- MTU discovery for hosts on the LAN: Enabled
+
+#### Router Path-selection Device Configuration
+
+```eos
+!
+router path-selection
+   mtu discovery hosts
 ```
 
 ## Router L2 VPN

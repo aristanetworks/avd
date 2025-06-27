@@ -10,5 +10,5 @@ keys:
     documentation_options:
       table: cloudvision-tags
     description: |-
-      Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or "edge". Defaults to the setting under node_type_keys.
+      Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". Defaults to the setting under node_type_keys.
     type: str

@@ -7,6 +7,29 @@
 {% if management_ssh is arista.avd.defined %}
 
 ### Management SSH
+
+#### VRFs
+
+| VRF | Enabled | IPv4 ACL | IPv6 ACL |
+| --- | ------- | -------- | -------- |
+{%     set _vrf_default = namespace(enable = management_ssh.enable | arista.avd.default) %}
+{%     if management_ssh.vrfs is arista.avd.defined %}
+{%         for vrf in management_ssh.vrfs | arista.avd.natural_sort %}
+{%             if vrf.name == "default" %}
+{%                 set _vrf_default_.enable = vrf.enable | arista.avd.default(_vrf_default.enable) %}
+{%             else %}
+{%                 if vrf.enable is arista.avd.defined and _vrf_default.enable is not arista.avd.defined %}
+{%                     set _vrf_default.enable = false %}
+{%                 endif %}
+{%                 set _ipv4_acl = management_ssh.access_groups | arista.avd.default([]) | selectattr("vrf", "arista.avd.defined") | list | last %}
+{%                 set _ipv6_acl = management_ssh.ipv6_access_groups | arista.avd.default([]) | selectattr("vrf", "arista.avd.defined") | list | last %}
+| {{ vrf.name }} | {{ vrf.enable | arista.avd.default("-") }} | {{ vrf.ip_access_group_in | arista.avd.default(_ipv4_acl.name, "-") }} | {{ vrf.ipv6_access_group_in | arista.avd.default(_ipv6_acl.name, "-") }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     set _ipv4_acl = management_ssh.access_groups | arista.avd.default([]) | rejectattr("vrf", "arista.avd.defined") | list | last %}
+{%     set _ipv6_acl = management_ssh.ipv6_access_groups | arista.avd.default([]) | rejectattr("vrf", "arista.avd.defined") | list | last %}
+| default | {{ _vrf_default.enable | arista.avd.default(true) }} | {{ management_ssh.ip_access_group_in | arista.avd.default(_ipv4_acl.name, "-") }} | {{ management_ssh.ipv6_access_group_in | arista.avd.default(_ipv6_acl.name, "-") }} |
 {%     if management_ssh.authentication is arista.avd.defined %}
 
 #### Authentication Settings
@@ -21,68 +44,19 @@
 {%         set empty_passwords = management_ssh.authentication.empty_passwords | arista.avd.default('auto') %}
 | {{ protocols }} | {{ empty_passwords }} |
 {%     endif %}
-{%     if management_ssh.access_groups is arista.avd.defined %}
 
-#### IPv4 ACL
+#### Other SSH Settings
 
-| IPv4 ACL | VRF |
-| -------- | --- |
-{%         for acl in management_ssh.access_groups %}
-| {{ acl.name }} | {{ acl.vrf | arista.avd.default('-') }} |
-{%         endfor %}
-{%     endif %}
-{%     if management_ssh.ipv6_access_groups is arista.avd.defined %}
-
-#### IPv6 ACL
-
-| IPv6 ACL | VRF |
-| -------- | --- |
-{%         for acl in management_ssh.ipv6_access_groups %}
-| {{ acl.name }} | {{ acl.vrf | arista.avd.default('-') }} |
-{%         endfor %}
-{%     endif %}
-{%     set ssh = namespace(enable=true) %}
-{%     if management_ssh.enable is arista.avd.defined %}
-{%         set ssh.enable=management_ssh.enable %}{#enable takes de value of the variable if defined. By default is set to true#}
-{%     endif %}
-
-#### SSH Timeout and Management
-
-| Idle Timeout | SSH Management |
-| ------------ | -------------- |
-{%     if ssh.enable %}
-{%         set ssh = 'Enabled' %}
-{%     else %}
-{%         set ssh = 'Disabled' %}
-{%     endif %}
-| {{ management_ssh.idle_timeout | arista.avd.default('default') }} | {{ ssh }} |
-
-#### Max number of SSH sessions limit and per-host limit
-
-| Connection Limit | Max from a single Host |
-| ---------------- | ---------------------- |
-| {{ management_ssh.connection.limit | arista.avd.default('-') }} | {{ management_ssh.connection.per_host | arista.avd.default('-') }} |
-
-#### Ciphers and Algorithms
-
-| Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
-|---------|----------------------|----------------|---------------------------|
-| {{ management_ssh.cipher | arista.avd.default(['default']) | join(", ") }} | {{ management_ssh.key_exchange | arista.avd.default(['default']) | join(", ") }} | {{ management_ssh.mac | arista.avd.default(['default']) | join(", ") }} | {{ management_ssh.hostkey.server | arista.avd.default(['default']) | join(", ") }} |
-
-{%     if management_ssh.vrfs is arista.avd.defined %}
-#### VRFs
-
-| VRF | Status |
-| --- | ------ |
-{%         for vrf in management_ssh.vrfs | arista.avd.natural_sort('name') %}
-{%             if vrf.enable is arista.avd.defined(true) %}
-{%                 set status = 'Enabled' %}
-{%             else %}
-{%                 set status = 'Disabled' %}
-{%             endif %}
-| {{ vrf.name }} | {{ status }} |
-{%         endfor %}
-{%     endif %}
+| Idle Timeout | Connection Limit | Max from a single Host | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
+| ------------ | ---------------- | ---------------------- | ------- | -------------------- | -------------- | ------------------------- |
+{%     set _idle_timeout = management_ssh.idle_timeout | arista.avd.default('default') %}
+{%     set _conn_limit = management_ssh.connection.limit | arista.avd.default('-') %}
+{%     set _per_host = management_ssh.connection.per_host | arista.avd.default('-') %}
+{%     set _ciphers = management_ssh.cipher | arista.avd.default(['default']) | join(", ") %}
+{%     set _key_ex = management_ssh.key_exchange | arista.avd.default(['default']) | join(", ") %}
+{%     set _mac = management_ssh.mac | arista.avd.default(['default']) | join(", ") %}
+{%     set _hostkey = management_ssh.hostkey.server | arista.avd.default(['default']) | join(", ") %}
+| {{ _idle_timeout }} | {{ _conn_limit }} | {{ _per_host }} | {{ _ciphers }} | {{ _key_ex }} | {{ _mac }} | {{ _hostkey }} |
 
 #### Management SSH Device Configuration
 

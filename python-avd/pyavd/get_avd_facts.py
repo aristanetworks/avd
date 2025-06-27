@@ -34,11 +34,8 @@ def get_avd_facts(all_inputs: dict[str, dict], pool_manager: PoolManager | None 
     Returns:
         Dictionary with various internal "facts" keyed by device hostname. The full dict must be given as argument to `pyavd.get_device_structured_config`.
     """
-    # pylint: disable=import-outside-toplevel
-    from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
-    from pyavd._eos_designs.schema import EosDesigns
-
-    # pylint: enable=import-outside-toplevel
+    from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts  # noqa: PLC0415
+    from pyavd._eos_designs.schema import EosDesigns  # noqa: PLC0415
 
     all_input_classes: dict[str, EosDesigns] = {}
     all_input_classes = {hostname: EosDesigns._from_dict(hostvars) for hostname, hostvars in all_inputs.items()}
