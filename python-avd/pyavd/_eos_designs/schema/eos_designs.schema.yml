@@ -653,6 +653,39 @@ keys:
     type: bool
     default: false
     $ref: eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_for_convergence
+  campus:
+    documentation_options:
+      table: fabric-topology
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
+
+      Name of the Campus fabric.
+
+      Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric`
+      feature.'
+    type: str
+  campus_access_pod:
+    documentation_options:
+      table: fabric-topology
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
+
+      Name of the Campus access pod.
+
+      Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric`
+      feature.'
+    type: str
+  campus_pod:
+    documentation_options:
+      table: fabric-topology
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
+
+      Name of the Campus pod.
+
+      Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric`
+      feature.'
+    type: str
   custom_connected_endpoints_keys:
     $ref: eos_designs#/keys/connected_endpoints_keys
     default: null
@@ -956,11 +989,183 @@ keys:
 
       Make sure to set it in a common group_vars file.'
     type: str
+  cv_settings:
+    documentation_options:
+      table: cloudvision-settings
+    type: dict
+    description: Settings for CloudVision telemetry streaming and provisioning.
+    keys:
+      cvaas:
+        type: dict
+        description: State streaming to CloudVision-as-a-Service.
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: 'Enable streaming to CVaaS.
+
+              When enabled it will stream to ''apiserver.arista.io:443'' using the
+              VRF obtained from `default_mgmt_method` unless overridden under `clusters`.'
+          clusters:
+            type: list
+            primary_key: name
+            default:
+            - name: cvaas
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Short name for the CVaaS cluster. Required here, but
+                    only used when configuring multiple clusters.
+                  pattern: ^[a-zA-Z1-9-_]+$
+                region:
+                  type: str
+                  description: 'Optionally set the region to stream to.
+
+                    The "auto" region will use ''apiserver.arista.io:443'' which will
+                    redirect to the correct region based on the device''s serial number.
+
+                    "staging", "dev" and "play" are for internal Arista use.'
+                  default: auto
+                  valid_values:
+                  - auto
+                  - us-central1-a
+                  - us-central1-b
+                  - us-central1-c
+                  - apnortheast-1
+                  - euwest-2
+                  - ausoutheast-1
+                  - na-northeast1-b
+                  - uk-1
+                  - india-1
+                  - staging
+                  - dev
+                  - play
+                vrf:
+                  type: str
+                  default: use_default_mgmt_method_vrf
+                  convert_types:
+                  - int
+                  description: "The VRF used to connect to CloudVision.\nThe value
+                    will be interpreted according to these rules:\n- `use_mgmt_interface_vrf`
+                    will configure the VRF set with `mgmt_interface_vrf` and configure
+                    the `mgmt_interface` as the source interface.\n  An error will
+                    be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for
+                    the device.\n- `use_inband_mgmt_vrf` will configure the VRF set
+                    with `inband_mgmt_vrf` and configure the `inband_mgmt_interface`
+                    as the source interface.\n  An error will be raised if inband
+                    management is not configured for the device.\n- `use_default_mgmt_method_vrf`
+                    will configure the VRF and source-interface for one of the two
+                    options above depending on the value of `default_mgmt_method`.\n-
+                    Any other string will be used directly as the VRF name."
+                token_file:
+                  type: str
+                  description: 'Path to the onboarding token used for certificate
+                    based authentication.
+
+                    The path is on the EOS device and the token file must be copied
+                    to the device first.'
+                  default: /tmp/cv-onboarding-token
+                source_interface:
+                  type: str
+                  description: 'Source-interface used to connect to CloudVision.
+
+                    If not set, the source interface may be set automatically when
+                    VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                    or `use_default_mgmt_method_vrf`.'
+      onprem_clusters:
+        type: list
+        description: On-premise CloudVision clusters.
+        primary_key: name
+        unique_keys:
+        - servers.name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Short name for the cluster. Required here, but only used
+                when configuring multiple clusters.
+              pattern: ^[a-zA-Z1-9-_]+$
+            servers:
+              type: list
+              required: true
+              min_length: 1
+              max_length: 3
+              primary_key: name
+              description: CloudVision servers that makes up one cluster.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Server FQDN or IP address.
+                  port:
+                    type: int
+                    convert_types:
+                    - str
+                    default: 9910
+            vrf:
+              type: str
+              default: use_default_mgmt_method_vrf
+              convert_types:
+              - int
+              description: "The VRF used to connect to CloudVision.\nThe value will
+                be interpreted according to these rules:\n- `use_mgmt_interface_vrf`
+                will configure the VRF set with `mgmt_interface_vrf` and configure
+                the `mgmt_interface` as the source interface.\n  An error will be
+                raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n-
+                `use_inband_mgmt_vrf` will configure the VRF set with `inband_mgmt_vrf`
+                and configure the `inband_mgmt_interface` as the source interface.\n
+                \ An error will be raised if inband management is not configured for
+                the device.\n- `use_default_mgmt_method_vrf` will configure the VRF
+                and source-interface for one of the two options above depending on
+                the value of `default_mgmt_method`.\n- Any other string will be used
+                directly as the VRF name."
+            token_file:
+              type: str
+              description: 'Path to the onboarding token used for certificate based
+                authentication.
+
+                The path is on the EOS device and the token file must be copied to
+                the device first.'
+              default: /tmp/token
+            source_interface:
+              type: str
+              description: 'Source-interface used to connect to CloudVision.
+
+                If not set, the source interface may be set automatically when VRF
+                is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.'
+      terminattr:
+        type: dict
+        description: Specific settings for the TerminAttr daemon.
+        keys:
+          ingestexclude:
+            type: str
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/ingestexclude
+          smashexcludes:
+            type: str
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/smashexcludes
+            default: ale,flexCounter,hardware,kni,pulse,strata
+          disable_aaa:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/disable_aaa
+            default: false
+      set_source_interfaces:
+        type: bool
+        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+          `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+
+          Can be set to `false` to avoid changes when migrating from old `cv_instances`
+          model.'
+        default: true
   cv_tags_topology_type:
     documentation_options:
       table: cloudvision-tags
     description: Device type that CloudVision should use when generating the Topology
-      like "leaf", "spine", "core" or "edge". Defaults to the setting under node_type_keys.
+      like "leaf", "spine", "core", "edge" or "member-leaf". Defaults to the setting
+      under node_type_keys.
     type: str
   cv_token:
     documentation_options:
@@ -1029,12 +1234,15 @@ keys:
       - CVaaS using token-secure onboarding. Default token path is ''/tmp/cv-onboarding-token''.
 
       Token must be copied to the device first.'
+    deprecation:
+      warning: true
+      remove_in_version: 6.0.0
   cvp_instance_ip:
     documentation_options:
       table: cloudvision-settings
     deprecation:
       warning: true
-      new_key: cvp_instance_ips
+      new_key: cv_settings
       remove_in_version: 5.0.0
       removed: true
     type: str
@@ -1059,7 +1267,11 @@ keys:
       '
     items:
       type: str
-      description: IPv4 address or DNS name for CloudVision.
+      description: IPv4 address or DNS name for CloudVision
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
   cvp_token_file:
     documentation_options:
       table: cloudvision-settings
@@ -1069,6 +1281,10 @@ keys:
       If not set the default locations for on-premise or CVaaS will be used.
 
       See cvp_ingestauth_key for details.'
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
   dc_name:
     documentation_options:
       table: fabric-topology
@@ -1190,12 +1406,13 @@ keys:
     type: str
     description: "`default_mgmt_method` controls the default VRF and source interface
       used for the following management and monitoring protocols configured with `eos_designs`:\n
-      \ - `logging_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n  - `snmp_settings`\n\n`oob`
-      means the protocols will be configured with the VRF set by `mgmt_interface_vrf`
-      and `mgmt_interface` as the source interface.\n`inband` means the protocols
-      will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface`
-      as the source interface.\n`none` means the VRF and or interface must be manually
-      set for each protocol.\nThis can be overridden under the settings for each protocol.\n"
+      \ - `logging_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n  - `snmp_settings`\n
+      \ - `ssh_settings`\n\n`oob` means the protocols will be configured with the
+      VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.\n`inband`
+      means the protocols will be configured with the VRF set by `inband_mgmt_vrf`
+      and `inband_mgmt_interface` as the source interface.\n`none` means the VRF and
+      or interface must be manually set for each protocol.\nThis can be overridden
+      under the settings for each protocol.\n"
     valid_values:
     - oob
     - inband
@@ -2062,6 +2279,22 @@ keys:
         type: bool
         default: false
         description: Enable the generation of CloudVision Topology Tags (hints).
+      campus_fabric:
+        type: bool
+        default: false
+        description: "PREVIEW: This option is marked as \"preview\", meaning the data
+          models or generated configuration can change at any time.\nGenerate CloudVision
+          device and interface Topology Tags for Campus fabric devices.\nDevice is
+          treated as a Campus fabric device if:\n  - The `campus` variable is assigned,
+          either as native Ansible variable or as part of the `<node_type_keys.key>`
+          AVD data construct.\n  - The `generate_cv_tags.campus_fabric` variable is
+          set to `True`.\nWhen campus-related tags are generated for a device, generation
+          of the DC-related tags is automatically disabled for that device.\nAVD generates
+          the following device tags for the Campus fabric devices based on the provided
+          Campus-related input variables:\n  - `Campus`\n  - `Campus-Pod`\n  - `Access-Pod`\n
+          \ - `topology_hint_type`\n  - `Role`\nThese tags are later used by CloudVision
+          to render the correct network layout in the Topology view (`campusV2` network
+          hierarchy) and Campus dashboards."
       interface_tags:
         description: List of interface tags that should be generated.
         type: list
@@ -3131,7 +3364,7 @@ keys:
           documentation_options:
             table: cloudvision-tags
           description: Device type that CloudVision should use when generating the
-            Topology like "leaf", "spine", "core" or "edge".
+            Topology like "leaf", "spine", "core", "edge" or "member-leaf".
           type: str
   ntp_settings:
     documentation_options:
@@ -4854,6 +5087,47 @@ keys:
 
               `inband_mgmt_interface` is typically a loopback or SVI interface, and
               can be set under the node settings.'
+  ssh_settings:
+    type: dict
+    documentation_options:
+      table: management-settings
+    keys:
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+              - int
+              description: "VRF name.\nThe value will be interpreted according to
+                these rules:\n- `use_mgmt_interface_vrf` will configure SSH for the
+                VRF set with `mgmt_interface_vrf`.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+                will configure SSH for the VRF set with `inband_mgmt_vrf`.\n  An error
+                will be raised if inband management is not configured for the device.\n-
+                `use_default_mgmt_method_vrf` will configure the VRF for one of the
+                two options above depending on the value of `default_mgmt_method`.\n-
+                Any other string will be used directly as the VRF name."
+            enabled:
+              type: bool
+              required: true
+              description: Enable SSH in VRF.
+            ipv4_acl:
+              type: str
+              convert_types:
+              - int
+              description: IPv4 access-list name.
+            ipv6_acl:
+              type: str
+              convert_types:
+              - int
+              description: IPv6 access-list name.
+      idle_timeout:
+        type: int
+        $ref: eos_cli_config_gen#/keys/management_ssh/keys/idle_timeout
   svi_profiles:
     type: list
     primary_key: profile
@@ -4909,11 +5183,19 @@ keys:
       table: cloudvision-settings
     type: bool
     default: false
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
   terminattr_ingestexclude:
     documentation_options:
       table: cloudvision-settings
     type: str
     default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
   terminattr_ingestgrpcurl_port:
     documentation_options:
       table: cloudvision-settings
@@ -4926,11 +5208,19 @@ keys:
 
       The port number is always 443 when using CloudVision as a Service, so this value
       is ignored.'
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
   terminattr_smashexcludes:
     documentation_options:
       table: cloudvision-settings
     type: str
     default: ale,flexCounter,hardware,kni,pulse,strata
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
   timezone:
     documentation_options:
       table: management-settings
@@ -5243,18 +5533,28 @@ keys:
               default: sha512
             key:
               type: str
-              required: true
-              max_length: 16
               min_length: 1
+              max_length: 16
               convert_types:
               - int
-              description: 'Key password.
-
-                Only plaintext passwords are supported here as `eos_designs` will
-                encrypt the password for each individual underlay interface.
+              description: 'Cleartext key.
 
                 To protect the password at rest it is strongly recommended to make
-                use of Ansible Vault or similar.'
+                use of a vault or similar.'
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: cleartext_key
+            cleartext_key:
+              type: str
+              convert_types:
+              - int
+              description: 'Cleartext key for OSPF message-digest authentication
+
+                To protect the password at rest it is strongly recommended to make
+                use of a vault or similar.'
+              min_length: 1
+              max_length: 16
   underlay_ospf_bfd_enable:
     documentation_options:
       table: ospf-settings
@@ -6503,6 +6803,9 @@ $defs:
         type: bool
         description: Set to false to disable the LLDP topology validation performed
           by the `eos_validate_state` role.
+      campus_link_type:
+        type: list
+        $ref: eos_designs#/$defs/campus_link_type
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final
@@ -6515,6 +6818,28 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+  campus_link_type:
+    type: list
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
+
+      Values for the CloudVision `Link-Type` user tags to be associated with an interface.
+
+      Attempting to associate `Link-Type` user tags with an Ethernet sub-interface
+      will result in the same tags being associated with the parent Ethernet interface
+      instead.
+
+      Attempting to associate `Link-Type` user tags with a Port-Channel interface
+      will result in the same tags being associated with the member Ethernet interfaces
+      instead.'
+    items:
+      type: str
+      valid_values:
+      - downlink
+      - egress
+      - fabric
+      - mlag
+      - uplink
   connected_endpoints:
     type: list
     primary_key: name
@@ -7396,6 +7721,62 @@ $defs:
                       route_map:
                         type: str
                         description: Route-map name.
+                  authentication:
+                    type: str
+                    valid_values:
+                    - simple
+                    - message-digest
+                    description: 'Configure OSPF authentication for all interfaces
+                      under the VRF.
+
+                      Can be overridden at the interface level under `l3_interfaces`,
+                      `l3_port_channels` or `svis`.'
+                  cleartext_simple_auth_key:
+                    type: str
+                    description: 'Cleartext password used with simple authentication.
+
+                      To protect the password at rest it is strongly recommended to
+                      make use of a vault or similar.
+
+                      Configuration at the interface level under `l3_interfaces`,
+                      `l3_port_channels` or `svis` takes precedence.'
+                    min_length: 1
+                    max_length: 8
+                  message_digest_keys:
+                    type: list
+                    primary_key: id
+                    min_length: 1
+                    max_length: 2
+                    items:
+                      type: dict
+                      keys:
+                        id:
+                          type: int
+                          convert_types:
+                          - str
+                        hash_algorithm:
+                          type: str
+                          valid_values:
+                          - md5
+                          - sha1
+                          - sha256
+                          - sha384
+                          - sha512
+                          default: sha512
+                        cleartext_key:
+                          type: str
+                          required: true
+                          convert_types:
+                          - int
+                          description: 'Cleartext key for OSPF message-digest authentication
+
+                            To protect the password at rest it is strongly recommended
+                            to make use of a vault or similar.
+
+                            Configuration at the interface level under `l3_interfaces`,
+                            `l3_port_channels` or `svis` takes precedence.'
+                          min_length: 1
+                          max_length: 16
                   nodes:
                     type: list
                     items:
@@ -7698,7 +8079,23 @@ $defs:
                           - message-digest
                         simple_auth_key:
                           type: str
-                          description: Password used with simple authentication.
+                          description: 'Type 7 encrypted key for OSPF simple authentication.
+
+                            Takes precedence over `cleartext_simple_auth_key`.
+
+                            NOTE: The l3_interfaces.interfaces list must not be more
+                            than 1 interface or they must all be the same
+
+                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends
+                            on the interface.'
+                        cleartext_simple_auth_key:
+                          type: str
+                          description: 'Cleartext key for OSPF simple authentication.
+
+                            To protect the password at rest it is strongly recommended
+                            to make use of a vault or similar.'
+                          min_length: 1
+                          max_length: 8
                         message_digest_keys:
                           type: list
                           items:
@@ -7719,7 +8116,26 @@ $defs:
                                 default: sha512
                               key:
                                 type: str
-                                description: Key password.
+                                description: 'Type 7 encrypted key for OSPF message-digest
+                                  authentication.
+
+                                  Takes precedence over `cleartext_key`
+
+                                  NOTE: The l3_interfaces.interfaces list must not
+                                  be more than 1 interface or they must all be the
+                                  same
+
+                                  (e.g. [Ethernet7, Ethernet7]) as the type7 password
+                                  depends on the interface.'
+                              cleartext_key:
+                                type: str
+                                description: 'Cleartext key for OSPF message-digest
+                                  authentication
+
+                                  To protect the password at rest it is strongly recommended
+                                  to make use of a vault or similar.'
+                                min_length: 1
+                                max_length: 16
                     pim:
                       type: dict
                       description: 'Enable PIM sparse-mode on the interface; requires
@@ -7740,6 +8156,9 @@ $defs:
                       $ref: eos_designs#/$defs/flow_tracking_link
                       description: Configures flow-tracking on the interface. Overrides
                         `fabric_flow_tracking.l3_interfaces` setting.
+                    campus_link_type:
+                      type: list
+                      $ref: eos_designs#/$defs/campus_link_type
                     structured_config:
                       type: dict
                       relaxed_validation: true
@@ -7912,7 +8331,23 @@ $defs:
                           - message-digest
                         simple_auth_key:
                           type: str
-                          description: Password used with simple authentication.
+                          description: 'Type 7 encrypted key for OSPF simple authentication.
+
+                            Takes precedence over `cleartext_simple_auth_key`
+
+                            NOTE: The l3_interfaces.interfaces list must not be more
+                            than 1 interface or they must all be the same
+
+                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends
+                            on the interface.'
+                        cleartext_simple_auth_key:
+                          type: str
+                          description: 'Cleartext key for OSPF simple authentication.
+
+                            To protect the password at rest it is strongly recommended
+                            to make use of a vault or similar.'
+                          min_length: 1
+                          max_length: 8
                         message_digest_keys:
                           type: list
                           items:
@@ -7933,7 +8368,26 @@ $defs:
                                 default: sha512
                               key:
                                 type: str
-                                description: Key password.
+                                description: 'Type 7 encrypted key for OSPF message-digest
+                                  authentication.
+
+                                  Takes precedence over `cleartext_key`
+
+                                  NOTE: The l3_interfaces.interfaces list must not
+                                  be more than 1 interface or they must all be the
+                                  same
+
+                                  (e.g. [Ethernet7, Ethernet7]) as the type7 password
+                                  depends on the interface.'
+                              cleartext_key:
+                                type: str
+                                description: 'Cleartext key for OSPF message-digest
+                                  authentication
+
+                                  To protect the password at rest it is strongly recommended
+                                  to make use of a vault or similar.'
+                                min_length: 1
+                                max_length: 16
                     flow_tracking:
                       type: dict
                       $ref: eos_designs#/$defs/flow_tracking_link
@@ -10619,6 +11073,39 @@ $defs:
               new_key: inband_mgmt_vlan
               remove_in_version: 5.0.0
             type: int
+          campus:
+            documentation_options:
+              table: node-type-common-configuration
+            description: 'PREVIEW: This option is marked as "preview", meaning the
+              data models or generated configuration can change at any time.
+
+              Name of the campus. Used to generate CloudVision device tags with the
+              `generate_cv_tags.campus_fabric` feature.'
+            type: str
+          campus_pod:
+            documentation_options:
+              table: node-type-common-configuration
+            description: 'PREVIEW: This option is marked as "preview", meaning the
+              data models or generated configuration can change at any time.
+
+              Name of the campus pod. Used to generate CloudVision device tags with
+              the `generate_cv_tags.campus_fabric` feature.'
+            type: str
+          campus_access_pod:
+            documentation_options:
+              table: node-type-common-configuration
+            description: 'PREVIEW: This option is marked as "preview", meaning the
+              data models or generated configuration can change at any time.
+
+              Name of the campus access pod. Used to generate CloudVision device tags
+              with the `generate_cv_tags.campus_fabric` feature.'
+            type: str
+          cv_tags_topology_type:
+            documentation_options:
+              table: node-type-common-configuration
+            description: Device type that CloudVision should use when generating the
+              Topology like "leaf", "spine", "core", "edge" or "member-leaf".
+            type: str
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -11350,6 +11837,9 @@ $defs:
                     - str
                     description: Port-Channel ID. If no `channel_id` is specified,
                       an id is generated using the `channel_id_algorithm`.
+        campus_link_type:
+          type: list
+          $ref: eos_designs#/$defs/campus_link_type
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in
@@ -11757,7 +12247,17 @@ $defs:
             - message-digest
           simple_auth_key:
             type: str
-            description: Password used with simple authentication.
+            description: 'Type 7 encrypted key for OSPF simple authentication.
+
+              Takes precedence over `cleartext_simple_auth_key`'
+          cleartext_simple_auth_key:
+            type: str
+            description: 'Cleartext key for OSPF simple authentication.
+
+              To protect the password at rest it is strongly recommended to make use
+              of a vault or similar.'
+            min_length: 1
+            max_length: 8
           message_digest_keys:
             type: list
             items:
@@ -11778,7 +12278,17 @@ $defs:
                   default: sha512
                 key:
                   type: str
-                  description: Type 7 encrypted key.
+                  description: 'Type 7 encrypted key for OSPF message-digest authentication.
+
+                    Takes precedence over `cleartext_key`.'
+                cleartext_key:
+                  type: str
+                  description: 'Cleartext key for OSPF message-digest authentication
+
+                    To protect the password at rest it is strongly recommended to
+                    make use of a vault or similar.'
+                  min_length: 1
+                  max_length: 16
       bgp:
         type: dict
         keys:

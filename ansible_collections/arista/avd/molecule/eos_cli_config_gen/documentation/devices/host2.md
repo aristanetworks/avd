@@ -210,50 +210,32 @@ no ptp monitor sequence-id
 
 ### Management SSH
 
+#### VRFs
+
+| VRF | Enabled | IPv4 ACL | IPv6 ACL |
+| --- | ------- | -------- | -------- |
+| mgt | True | ACL-SSH-VRF | - |
+| default | False | ACL-SSH | - |
+
 #### Authentication Settings
 
 | Authentication protocols | Empty passwords |
 | ------------------------ | --------------- |
 | keyboard-interactive, public-key | permit |
 
-#### IPv4 ACL
+#### Other SSH Settings
 
-| IPv4 ACL | VRF |
-| -------- | --- |
-| ACL-SSH | - |
-| ACL-SSH-VRF | mgt |
-
-#### SSH Timeout and Management
-
-| Idle Timeout | SSH Management |
-| ------------ | -------------- |
-| 15 | Disabled |
-
-#### Max number of SSH sessions limit and per-host limit
-
-| Connection Limit | Max from a single Host |
-| ---------------- | ---------------------- |
-| 55 | - |
-
-#### Ciphers and Algorithms
-
-| Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
-|---------|----------------------|----------------|---------------------------|
-| aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521 |
-
-#### VRFs
-
-| VRF | Status |
-| --- | ------ |
-| mgt | Enabled |
+| Idle Timeout | Connection Limit | Max from a single Host | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
+| ------------ | ---------------- | ---------------------- | ------- | -------------------- | -------------- | ------------------------- |
+| 15 | 55 | - | aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521 |
 
 #### Management SSH Device Configuration
 
 ```eos
 !
 management ssh
-   ip access-group ACL-SSH in
    ip access-group ACL-SSH-VRF vrf mgt in
+   ip access-group ACL-SSH in
    idle-timeout 15
    cipher aes256-cbc aes256-ctr aes256-gcm@openssh.com
    key-exchange ecdh-sha2-nistp521
