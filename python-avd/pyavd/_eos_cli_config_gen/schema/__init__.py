@@ -28201,17 +28201,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         LoadBalanceTridentUdf._item_type = LoadBalanceTridentUdfItem
 
-        _fields: ClassVar[dict] = {"load_balance_trident_udf": {"type": LoadBalanceTridentUdf}}
+        _fields: ClassVar[dict] = {"load_balance_trident_udf": {"type": LoadBalanceTridentUdf}, "load_balance_sand_profile": {"type": str}}
         load_balance_trident_udf: LoadBalanceTridentUdf
         """
         Trident chip UDF fields load balancing.
 
         Subclass of AvdList with `LoadBalanceTridentUdfItem` items.
         """
+        load_balance_sand_profile: str | None
+        """Name of the load-balance profile for sand platform."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, load_balance_trident_udf: LoadBalanceTridentUdf | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                load_balance_trident_udf: LoadBalanceTridentUdf | UndefinedType = Undefined,
+                load_balance_sand_profile: str | None | UndefinedType = Undefined,
+            ) -> None:
                 """
                 PortChannel.
 
@@ -28223,6 +28230,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Trident chip UDF fields load balancing.
 
                        Subclass of AvdList with `LoadBalanceTridentUdfItem` items.
+                    load_balance_sand_profile: Name of the load-balance profile for sand platform.
 
                 """
 

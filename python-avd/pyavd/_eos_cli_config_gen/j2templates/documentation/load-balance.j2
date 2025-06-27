@@ -8,7 +8,7 @@
 
 ## Load Balance
 
-### Load Balance Profiles Summary
+### Load Balance Profiles
 {%     for profile in load_balance.policies.sand_profiles | arista.avd.natural_sort('name')  %}
 
 #### {{ profile.name }}
