@@ -1,0 +1,57 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: ssh-settings-1
+ip_igmp_snooping:
+  globally_enabled: true
+is_deployed: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 10.10.10.43/26
+  type: oob
+  gateway: 10.10.10.1
+management_ssh:
+  access_groups:
+  - name: ACL-SSH
+    vrf: MGMT
+  - name: ACL-SSH-MGMT-INTERFACE
+    vrf: MGMT
+  ipv6_access_groups:
+  - name: ACL-SSH-VRF-DEFAULT
+  - name: ACL-SSH6
+    vrf: VRF10
+  idle_timeout: 15
+  vrfs:
+  - name: default
+    enable: true
+  - name: MGMT
+    enable: true
+  - name: VRF10
+    enable: true
+  - name: VRF12
+    enable: false
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 10.10.10.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

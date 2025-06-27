@@ -52,11 +52,12 @@ local_users:
       cvpadmin@hostmachine.local
 
 # Cloud Vision server
-cvp_instance_ips:
-  - 192.168.200.11
-
-cvp_ingestauth_key: telarista
-terminattr_disable_aaa: false
+cv_settings:
+  onprem_clusters:
+    - name: test
+      servers:
+        - name: 192.168.200.11
+  set_source_interfaces: false
 
 snmp_settings:
   contact: example@example.com
