@@ -62,6 +62,24 @@ keys:
       "warning" will produce warning messages.
 
       '
+  avd_digital_twin_mode:
+    documentation_options:
+      table: role-settings
+    type: bool
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
+
+      Enable generation of the Digital Twin version of the fabric (Digital Twin topology,
+      adjusted configuration, etc.).
+
+      By default, Digital Twin artifacts (such as the topology file, adjusted structured
+      and EOS configuration, device and fabric documentation) will replace original
+      fabric artifacts.
+
+      To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name`
+      variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated
+      output location.'
+    default: false
   avd_eos_designs_debug:
     documentation_options:
       table: role-settings
@@ -1208,7 +1226,9 @@ keys:
     description: 'PREVIEW: This option is marked as "preview", meaning the data models
       or generated configuration can change at any time.
 
-      Global settings to configure the Digital Twin of the Fabric.'
+      Global settings to configure the Digital Twin of the Fabric.
+
+      These settings are required when `avd_digital_twin_mode` is `true`'
     keys:
       environment:
         type: str
@@ -1232,23 +1252,6 @@ keys:
             type: str
             description: Cleartext password for Digital Twin fabric devices.
             required: true
-  digital_twin_mode:
-    documentation_options:
-      table: digital-twin-configuration
-    type: bool
-    description: 'PREVIEW: This option is marked as "preview", meaning the data models
-      or generated configuration can change at any time.
-
-      Enable generation of the Digital Twin version of the fabric (Digital Twin topology,
-      adjusted configuration, etc.).
-
-      By default, Digital Twin artifacts (such as the topology file, adjusted structured
-      and EOS configuration, device and fabric documentation) are output to the AVD
-      `root_dir`, potentially replacing original fabric artifacts.
-
-      To keep Digital Twin artifacts separate, adjust the `root_dir` variable for
-      both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location.'
-    default: false
   dns_settings:
     documentation_options:
       table: management-settings
@@ -3709,7 +3712,7 @@ keys:
           description: 'PREVIEW: This option is marked as "preview", meaning the data
             models or generated configuration can change at any time.
 
-            Digital Twin settings applied when `digital_twin_mode` is `true`.'
+            Digital Twin settings applied when `avd_digital_twin_mode` is `true`.'
           keys:
             platform:
               type: str
@@ -10433,10 +10436,7 @@ $defs:
                   Overrides global `digital_twin.fabric.os_version` flag.'
               mgmt_ip:
                 type: str
-                description: 'Desired management interface IPv4 address.
-
-                  Overrides the dynamically generated (from the pool `digital_twin.fabric.mgmt_ipv4_pool`)
-                  Digital Twin MGMT IP.'
+                description: Desired management interface IPv4 address.
                 format: cidr
       node_groups:
         type: list

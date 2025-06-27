@@ -13,6 +13,7 @@ keys:
     description: |-
       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
       Global settings to configure the Digital Twin of the Fabric.
+      These settings are required when `avd_digital_twin_mode` is `true`
     keys:
       environment:
         type: str
@@ -42,6 +43,7 @@ keys:
             description: |-
               Cleartext password for Digital Twin fabric devices.
             required: true
+      # TODO: Add this in a separate PR.
       # endpoints:
       #   type: dict
       #   description: |-

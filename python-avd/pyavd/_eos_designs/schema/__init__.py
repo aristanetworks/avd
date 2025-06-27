@@ -10602,10 +10602,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
-        Digital Twin settings applied when `digital_twin_mode` is `true`.
+        Digital Twin settings applied when `avd_digital_twin_mode` is `true`.
 
-        Subclass of
-        AvdModel.
+        Subclass
+        of AvdModel.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -10659,10 +10659,10 @@ class EosDesigns(EosDesignsRootModel):
                     digital_twin:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
-                       Digital Twin settings applied when `digital_twin_mode` is `true`.
+                       Digital Twin settings applied when `avd_digital_twin_mode` is `true`.
 
-                       Subclass of
-                       AvdModel.
+                       Subclass
+                       of AvdModel.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -10987,10 +10987,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
-        Digital Twin settings applied when `digital_twin_mode` is `true`.
+        Digital Twin settings applied when `avd_digital_twin_mode` is `true`.
 
-        Subclass of
-        AvdModel.
+        Subclass
+        of AvdModel.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -11044,10 +11044,10 @@ class EosDesigns(EosDesignsRootModel):
                     digital_twin:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
-                       Digital Twin settings applied when `digital_twin_mode` is `true`.
+                       Digital Twin settings applied when `avd_digital_twin_mode` is `true`.
 
-                       Subclass of
-                       AvdModel.
+                       Subclass
+                       of AvdModel.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -23473,11 +23473,7 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """
-                        Desired management interface IPv4 address.
-                        Overrides the dynamically generated (from the pool
-                        `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                        """
+                        """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
@@ -23492,10 +23488,7 @@ class EosDesigns(EosDesignsRootModel):
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
-                                    mgmt_ip:
-                                       Desired management interface IPv4 address.
-                                       Overrides the dynamically generated (from the pool
-                                       `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                    mgmt_ip: Desired management interface IPv4 address.
 
                                 """
 
@@ -27711,11 +27704,7 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides global `digital_twin.fabric.os_version` flag.
                             """
                             mgmt_ip: str | None
-                            """
-                            Desired management interface IPv4 address.
-                            Overrides the dynamically generated (from the pool
-                            `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                            """
+                            """Desired management interface IPv4 address."""
 
                             if TYPE_CHECKING:
 
@@ -27732,10 +27721,7 @@ class EosDesigns(EosDesignsRootModel):
                                         os_version:
                                            Desired OS version.
                                            Overrides global `digital_twin.fabric.os_version` flag.
-                                        mgmt_ip:
-                                           Desired management interface IPv4 address.
-                                           Overrides the dynamically generated (from the pool
-                                           `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                        mgmt_ip: Desired management interface IPv4 address.
 
                                     """
 
@@ -31880,11 +31866,7 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """
-                        Desired management interface IPv4 address.
-                        Overrides the dynamically generated (from the pool
-                        `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                        """
+                        """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
@@ -31899,10 +31881,7 @@ class EosDesigns(EosDesignsRootModel):
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
-                                    mgmt_ip:
-                                       Desired management interface IPv4 address.
-                                       Overrides the dynamically generated (from the pool
-                                       `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                    mgmt_ip: Desired management interface IPv4 address.
 
                                 """
 
@@ -36127,11 +36106,7 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """
-                        Desired management interface IPv4 address.
-                        Overrides the dynamically generated (from the pool
-                        `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                        """
+                        """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
@@ -36146,10 +36121,7 @@ class EosDesigns(EosDesignsRootModel):
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
-                                    mgmt_ip:
-                                       Desired management interface IPv4 address.
-                                       Overrides the dynamically generated (from the pool
-                                       `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                    mgmt_ip: Desired management interface IPv4 address.
 
                                 """
 
@@ -47469,11 +47441,7 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """
-                        Desired management interface IPv4 address.
-                        Overrides the dynamically generated (from the pool
-                        `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                        """
+                        """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
@@ -47488,10 +47456,7 @@ class EosDesigns(EosDesignsRootModel):
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
-                                    mgmt_ip:
-                                       Desired management interface IPv4 address.
-                                       Overrides the dynamically generated (from the pool
-                                       `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                    mgmt_ip: Desired management interface IPv4 address.
 
                                 """
 
@@ -51707,11 +51672,7 @@ class EosDesigns(EosDesignsRootModel):
                             Overrides global `digital_twin.fabric.os_version` flag.
                             """
                             mgmt_ip: str | None
-                            """
-                            Desired management interface IPv4 address.
-                            Overrides the dynamically generated (from the pool
-                            `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                            """
+                            """Desired management interface IPv4 address."""
 
                             if TYPE_CHECKING:
 
@@ -51728,10 +51689,7 @@ class EosDesigns(EosDesignsRootModel):
                                         os_version:
                                            Desired OS version.
                                            Overrides global `digital_twin.fabric.os_version` flag.
-                                        mgmt_ip:
-                                           Desired management interface IPv4 address.
-                                           Overrides the dynamically generated (from the pool
-                                           `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                        mgmt_ip: Desired management interface IPv4 address.
 
                                     """
 
@@ -55876,11 +55834,7 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """
-                        Desired management interface IPv4 address.
-                        Overrides the dynamically generated (from the pool
-                        `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                        """
+                        """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
@@ -55895,10 +55849,7 @@ class EosDesigns(EosDesignsRootModel):
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
-                                    mgmt_ip:
-                                       Desired management interface IPv4 address.
-                                       Overrides the dynamically generated (from the pool
-                                       `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                    mgmt_ip: Desired management interface IPv4 address.
 
                                 """
 
@@ -60123,11 +60074,7 @@ class EosDesigns(EosDesignsRootModel):
                         Overrides global `digital_twin.fabric.os_version` flag.
                         """
                         mgmt_ip: str | None
-                        """
-                        Desired management interface IPv4 address.
-                        Overrides the dynamically generated (from the pool
-                        `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
-                        """
+                        """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
@@ -60142,10 +60089,7 @@ class EosDesigns(EosDesignsRootModel):
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
-                                    mgmt_ip:
-                                       Desired management interface IPv4 address.
-                                       Overrides the dynamically generated (from the pool
-                                       `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                                    mgmt_ip: Desired management interface IPv4 address.
 
                                 """
 
@@ -61977,6 +61921,7 @@ class EosDesigns(EosDesignsRootModel):
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_6_behaviors": {"type": Avd6Behaviors},
         "avd_data_validation_mode": {"type": str, "default": "error"},
+        "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_debug": {"type": bool, "default": False},
         "avd_eos_designs_enforce_duplication_checks_across_all_models": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
@@ -62044,7 +61989,6 @@ class EosDesigns(EosDesignsRootModel):
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
         "design": {"type": Design},
         "digital_twin": {"type": DigitalTwin},
-        "digital_twin_mode": {"type": bool, "default": False},
         "dns_settings": {"type": DnsSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
@@ -62419,6 +62363,21 @@ class EosDesigns(EosDesignsRootModel):
     "warning" will produce warning messages.
 
     Default value: `"error"`
+    """
+    avd_digital_twin_mode: bool
+    """
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
+    Enable generation of the Digital Twin version of the fabric (Digital Twin
+    topology, adjusted configuration, etc.).
+    By default, Digital Twin artifacts (such as the topology
+    file, adjusted structured and EOS configuration, device and fabric documentation) will replace
+    original fabric artifacts.
+    To keep Digital Twin artifacts separate, adjust the `output_dir_name` and
+    `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
+    dedicated output location.
+
+    Default value: `False`
     """
     avd_eos_designs_debug: bool
     """
@@ -62952,24 +62911,10 @@ class EosDesigns(EosDesignsRootModel):
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
     change at any time.
     Global settings to configure the Digital Twin of the Fabric.
+    These settings are
+    required when `avd_digital_twin_mode` is `true`
 
-    Subclass of
-    AvdModel.
-    """
-    digital_twin_mode: bool
-    """
-    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-    change at any time.
-    Enable generation of the Digital Twin version of the fabric (Digital Twin
-    topology, adjusted configuration, etc.).
-    By default, Digital Twin artifacts (such as the topology
-    file, adjusted structured and EOS configuration, device and fabric documentation) are output to the
-    AVD `root_dir`, potentially replacing original fabric artifacts.
-    To keep Digital Twin artifacts
-    separate, adjust the `root_dir` variable for both `eos_designs` and `eos_cli_config_gen` to point to
-    a dedicated output location.
-
-    Default value: `False`
+    Subclass of AvdModel.
     """
     dns_settings: DnsSettings
     """
@@ -64325,6 +64270,7 @@ class EosDesigns(EosDesignsRootModel):
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_6_behaviors: Avd6Behaviors | UndefinedType = Undefined,
             avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
+            avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
             avd_eos_designs_enforce_duplication_checks_across_all_models: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
@@ -64370,7 +64316,6 @@ class EosDesigns(EosDesignsRootModel):
             default_vrf_diag_loopback_description: str | UndefinedType = Undefined,
             design: Design | UndefinedType = Undefined,
             digital_twin: DigitalTwin | UndefinedType = Undefined,
-            digital_twin_mode: bool | UndefinedType = Undefined,
             dns_settings: DnsSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
@@ -64551,6 +64496,17 @@ class EosDesigns(EosDesignsRootModel):
                    "error" will produce error messages and fail the
                    task.
                    "warning" will produce warning messages.
+                avd_digital_twin_mode:
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
+                   Enable generation of the Digital Twin version of the fabric (Digital Twin
+                   topology, adjusted configuration, etc.).
+                   By default, Digital Twin artifacts (such as the topology
+                   file, adjusted structured and EOS configuration, device and fabric documentation) will replace
+                   original fabric artifacts.
+                   To keep Digital Twin artifacts separate, adjust the `output_dir_name` and
+                   `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
+                   dedicated output location.
                 avd_eos_designs_debug: Dump all vars and facts per device after generating `avd_switch_facts`.
                 avd_eos_designs_enforce_duplication_checks_across_all_models:
                    PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
@@ -64953,20 +64909,10 @@ class EosDesigns(EosDesignsRootModel):
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
                    Global settings to configure the Digital Twin of the Fabric.
+                   These settings are
+                   required when `avd_digital_twin_mode` is `true`
 
-                   Subclass of
-                   AvdModel.
-                digital_twin_mode:
-                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                   change at any time.
-                   Enable generation of the Digital Twin version of the fabric (Digital Twin
-                   topology, adjusted configuration, etc.).
-                   By default, Digital Twin artifacts (such as the topology
-                   file, adjusted structured and EOS configuration, device and fabric documentation) are output to the
-                   AVD `root_dir`, potentially replacing original fabric artifacts.
-                   To keep Digital Twin artifacts
-                   separate, adjust the `root_dir` variable for both `eos_designs` and `eos_cli_config_gen` to point to
-                   a dedicated output location.
+                   Subclass of AvdModel.
                 dns_settings:
                    DNS settings
 

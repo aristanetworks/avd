@@ -24,7 +24,7 @@ class PlatformMixin(Protocol):
 
     @cached_property
     def platform(self: SharedUtilsProtocol) -> str | None:
-        if self.inputs.digital_twin_mode:
+        if self.digital_twin:
             return self.digital_twin_platform
         return default(self.node_config.platform, self.cv_topology_platform)
 

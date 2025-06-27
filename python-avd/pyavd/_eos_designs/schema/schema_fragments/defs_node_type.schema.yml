@@ -1557,7 +1557,8 @@ $defs:
                 type: str
                 description: |-
                   Desired management interface IPv4 address.
-                  Overrides the dynamically generated (from the pool `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                # TODO: Add this in a separate PR.
+                # Overrides the dynamically generated (from the pool `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
                 format: cidr
       node_groups:
         type: list

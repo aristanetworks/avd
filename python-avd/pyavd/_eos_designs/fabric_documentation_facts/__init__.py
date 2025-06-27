@@ -72,7 +72,7 @@ class FabricDocumentationFacts(AvdFacts):
                     "type": self.avd_facts[hostname].type,
                     "pod": self.avd_facts[hostname].pod,
                     "mgmt_ip": self.avd_facts[hostname].mgmt_ip or "-",
-                    "platform": default(get(structured_config, "metadata.platform"), self.avd_facts[hostname].platform, "-"),
+                    "platform": self.avd_facts[hostname].platform or "-",
                     "provisioned": "Provisioned" if self.avd_facts[hostname].is_deployed else "Not Available",
                     "serial_number": self.avd_facts[hostname].serial_number or "-",
                     "inband_mgmt_ip": self.avd_facts[hostname].inband_mgmt_ip,

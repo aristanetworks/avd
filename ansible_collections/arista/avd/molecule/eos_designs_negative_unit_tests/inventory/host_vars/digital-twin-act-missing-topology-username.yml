@@ -16,7 +16,7 @@ platform_settings:
       platform: vEOS-lab
       act_node_type: veos
 
-digital_twin_mode: true
+avd_digital_twin_mode: true
 digital_twin:
   fabric:
     username: ""

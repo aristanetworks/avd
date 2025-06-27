@@ -120,9 +120,9 @@ class ActionModule(ActionBase):
             result["changed"] = result.get("changed") or changed
 
         if output.digital_twin:
-            content = {str(key).replace("_", "-"): value for key, value in asdict(output.digital_twin).items()}
+            content = {str(key).replace("_", "-"): value for key, value in asdict(output.digital_twin).items() if value is not None}
             changed = write_file(
-                content=yaml.dump(content, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130),
+                content=yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130),
                 filename=validated_args["digital_twin_file"],
                 file_mode=validated_args["mode"],
             )

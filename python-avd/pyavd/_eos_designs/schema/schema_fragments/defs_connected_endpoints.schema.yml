@@ -21,6 +21,7 @@ $defs:
         rack:
           type: str
           description: Rack is used for documentation purposes only.
+        # TODO: Add this in a separate PR.
         # digital_twin:
         #   type: dict
         #   description: |-

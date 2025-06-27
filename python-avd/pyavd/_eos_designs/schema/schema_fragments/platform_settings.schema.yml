@@ -160,7 +160,7 @@ keys:
           type: dict
           description: |-
             PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
-            Digital Twin settings applied when `digital_twin_mode` is `true`.
+            Digital Twin settings applied when `avd_digital_twin_mode` is `true`.
           keys:
             platform:
               type: str

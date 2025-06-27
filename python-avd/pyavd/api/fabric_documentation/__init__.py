@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 
 from dataclasses import dataclass
-from typing import Protocol
 
 
 @dataclass(frozen=True)
@@ -24,20 +23,18 @@ class ActNodeSettings:
     version: str
 
 
-class ACTDigitalTwin(Protocol):
-    """Protocol describing the structure of the dynamically generated ACT Digital Twin fabric documentation dataclass."""
+@dataclass(frozen=True)
+class ACTDigitalTwin:
+    """ACT Digital Twin fabric documentation dataclass."""
 
-    # Always present attributes
     nodes: tuple[dict[str, ActNodeSettings], ...]
-    # Dynamically-added attributes
-    # links attribute may be missing if fabric has no links defined
-    links: tuple[ActLinkSettings, ...] | None
-    cloudeos: ActNodeTypeSettings | None
-    cvp: ActNodeTypeSettings | None
-    generic: ActNodeTypeSettings | None
-    third_party: ActNodeTypeSettings | None
-    tools_server: ActNodeTypeSettings | None
-    veos: ActNodeTypeSettings | None
+    cloudeos: ActNodeTypeSettings | None = None
+    cvp: ActNodeTypeSettings | None = None
+    generic: ActNodeTypeSettings | None = None
+    third_party: ActNodeTypeSettings | None = None
+    tools_server: ActNodeTypeSettings | None = None
+    veos: ActNodeTypeSettings | None = None
+    links: tuple[ActLinkSettings, ...] | None = None
 
 
 class FabricDocumentation:
