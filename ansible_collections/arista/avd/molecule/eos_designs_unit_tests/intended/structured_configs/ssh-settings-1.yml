@@ -24,9 +24,13 @@ management_ssh:
   - name: ACL-SSH
     vrf: MGMT
   - name: ACL-SSH-MGMT-INTERFACE
+<<<<<<< HEAD
     vrf: MGMT
   - name: ACL-SSH-VRF-DISABLED
     vrf: VRF12
+=======
+    vrf: use_mgmt_interface_vrf
+>>>>>>> 49a6a92c43 (Updated code to note generate ACL for disabled VRF)
   ipv6_access_groups:
   - name: ACL-SSH-VRF-DEFAULT
   - name: ACL-SSH6
