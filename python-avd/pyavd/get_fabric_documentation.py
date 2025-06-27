@@ -48,7 +48,7 @@ def get_fabric_documentation(
         topology_csv: Returns topology CSV when set to True.
         p2p_links_csv: Returns P2P links CSV when set to True.
         toc: Skip TOC when set to False.
-        digital_twin: Returns Digital Twin topology when set to True.
+        digital_twin: PREVIEW: Returns Digital Twin topology when set to True.
 
     Returns:
         FabricDocumentation object containing the requested documentation areas.

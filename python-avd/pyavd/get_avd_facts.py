@@ -30,7 +30,7 @@ def get_avd_facts(all_inputs: dict[str, dict], pool_manager: PoolManager | None 
         pool_manager: PREVIEW: Optional instance of pyavd.avd.PoolManager or subclass hereof,
             implementing ".get_assignment(pool_type: PoolType, shared_utils: SharedUtils)".
             Used for dynamic ID allocations using the "pool_manager" feature.
-        digital_twin: Optional flag to enable avd_digital_twin_mode.
+        digital_twin: PREVIEW: Optional flag to enable digital-twin mode.
 
     Returns:
         Dictionary with various internal "facts" keyed by device hostname. The full dict must be given as argument to `pyavd.get_device_structured_config`.

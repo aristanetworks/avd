@@ -19,7 +19,7 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[st
         inputs: Dictionary with inputs for "eos_designs".
             Variables should be converted and validated according to AVD `eos_designs` schema first using `pyavd.validate_inputs`.
         avd_facts: Dictionary of avd_facts as returned from `pyavd.get_avd_facts`.
-        digital_twin: Optional flag to enable avd_digital_twin_mode.
+        digital_twin: PREVIEW: Optional flag to enable digital-twin mode.
 
     Returns:
         Device Structured Configuration as a dictionary

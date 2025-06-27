@@ -41,7 +41,7 @@ def test_negative_eos_designs(molecule_scenario: MoleculeScenario, molecule_host
             with pytest.raises(AristaAvdError, match=re.escape(expected_error_message)):
                 _ = get_avd_facts(fabric_inputs, pool_manager=molecule_scenario.pool_manager)
     else:
-        _is_digital_twin_host = molecule_host.name in host_inputs["groups"].get("EOS_DESIGNS_FAILURES_INCLUDED_DIGITAL_TWIN")
+        _is_digital_twin_host = molecule_host.hostvars.get("avd_digital_twin_mode", False)
         # Run get_avd_facts with no errors
         avd_facts = get_avd_facts(fabric_inputs, pool_manager=molecule_scenario.pool_manager, digital_twin=_is_digital_twin_host)
         # Run get_device_structured_config excepting an error to be raised.
