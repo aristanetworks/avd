@@ -17,4 +17,4 @@ wan_router:
     - name: wan-unsupported-platform
 
 expected_error_message: >-
-  The SD-WAN feature is not compatible with the 'vEOS' platform used by node 'wan-unsupported-platform'.
+  The WAN features are not compatible with the 'vEOS' platform used by node 'wan-unsupported-platform'.

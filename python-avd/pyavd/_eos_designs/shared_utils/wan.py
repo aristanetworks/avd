@@ -34,7 +34,7 @@ class WanMixin(Protocol):
         default_wan_role = self.node_type_key_data.default_wan_role
         wan_role = self.node_config.wan_role or default_wan_role
         if wan_role is not None and not self.platform_settings.feature_support.wan:
-            msg = f"The SD-WAN feature is not compatible with the '{self.node_config.platform}' platform used by node '{self.hostname}'."
+            msg = f"The WAN features are not compatible with the '{self.node_config.platform}' platform used by node '{self.hostname}'."
             raise AristaAvdError(msg)
         return wan_role
 
