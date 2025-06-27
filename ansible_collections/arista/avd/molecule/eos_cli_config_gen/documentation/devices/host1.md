@@ -3286,7 +3286,7 @@ hardware tcam
 | ------- | ----- |
 | Destination Port | 100 |
 | Match Payload Bits | 10 |
-| Match Pattern | 1 |
+| Match Pattern | 0x7d1 |
 | Match Hash Payload Bytes | 10 |
 | UDP Payload | 10-20 |
 
@@ -3301,7 +3301,7 @@ load-balance policies
    !
    load-balance sand profile Profile_B
       fields udp dst-port 100
-         match payload bits 10 pattern 1 hash payload bytes 10
+         match payload bits 10 pattern 0x7d1 hash payload bytes 10
          payload bytes 10-20
 ```
 

@@ -7149,13 +7149,7 @@ keys:
                                 Matching is supported only on up to 16 bits of the
                                 UDP payload.
 
-                                Supports both integer and hexadecimal values for this
-                                field.
-
-                                Integer inputs will be internally converted to their
-                                hexadecimal representation by EOS.'
-                              convert_types:
-                              - int
+                                Only hexadecimal values are supported for this field.'
                             hash_payload_bytes:
                               type: str
                               required: true

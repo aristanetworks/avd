@@ -17905,10 +17905,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             The valid range is from 0 to (2^N - 1), where N is the number of bits selected in
                             `payload_bits`.
                             Matching is supported only on up to 16 bits of the UDP payload.
-                            Supports both
-                            integer and hexadecimal values for this field.
-                            Integer inputs will be internally converted to their
-                            hexadecimal representation by EOS.
+                            Only hexadecimal
+                            values are supported for this field.
                             """
                             hash_payload_bytes: str
                             """
@@ -17951,10 +17949,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                            The valid range is from 0 to (2^N - 1), where N is the number of bits selected in
                                            `payload_bits`.
                                            Matching is supported only on up to 16 bits of the UDP payload.
-                                           Supports both
-                                           integer and hexadecimal values for this field.
-                                           Integer inputs will be internally converted to their
-                                           hexadecimal representation by EOS.
+                                           Only hexadecimal
+                                           values are supported for this field.
                                         hash_payload_bytes:
                                            Specifies the UDP payload byte positions to include in the hash after pattern match.
                                            Accepts a

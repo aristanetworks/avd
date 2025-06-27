@@ -8,7 +8,7 @@ load_balance:
             payload_bytes: 10-20
             match:
               payload_bits: 10
-              pattern: 1
+              pattern: "0x7d1"
               hash_payload_bytes: 10
       - name: Profile_A
         fields:
