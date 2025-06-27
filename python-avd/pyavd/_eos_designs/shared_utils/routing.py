@@ -6,11 +6,29 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils.password_utils.password import bgp_encrypt
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
+
+    BgpPeerGroupOrNeighbor = (
+        EosDesigns.BgpPeerGroups.Ipv4UnderlayPeers
+        | EosDesigns.BgpPeerGroups.MlagIpv4UnderlayPeer
+        | EosDesigns.BgpPeerGroups.WanOverlayPeers
+        | EosDesigns.BgpPeerGroups.WanRrOverlayPeers
+        | EosDesigns.BgpPeerGroups.MplsOverlayPeers
+        | EosDesigns.BgpPeerGroups.EvpnOverlayCore
+        | EosDesigns.BgpPeerGroups.EvpnOverlayPeers
+        | EosDesigns.BgpPeerGroups.RrOverlayPeers
+        | EosDesigns.BgpPeerGroups.MlagIpv4VrfsPeer
+        | EosDesigns.BgpPeerGroups.IpvpnGatewayPeers
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.BgpPeerGroupsItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.BgpPeerGroupsItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.BgpPeersItem
+    )
 
 
 class RoutingMixin(Protocol):
@@ -119,3 +137,30 @@ class RoutingMixin(Protocol):
         except IndexError as exc:
             msg = f"Unable to allocate BGP AS: bgp_as range is too small ({len(bgp_as_range_expanded)}) for the id of the device"
             raise AristaAvdError(msg) from exc
+
+    def get_bgp_password(
+        self: SharedUtilsProtocol,
+        peer_group_or_neighbor: BgpPeerGroupOrNeighbor,
+    ) -> str | None:
+        """
+        Take a peer group name or a neighbor return a type 7 password, potentially encrypting a cleartext_password.
+
+        This function assumes that the `.password` attributes is always a type 7 as per the schema.
+
+        Args:
+            peer_group_or_neighbor: The Peer Group or Neighbor object to get the password for.
+
+        Returns:
+            str: The type 7 encrypted password
+            None: if the password is None
+        """
+        if peer_group_or_neighbor.password is not None:
+            return peer_group_or_neighbor.password
+        if peer_group_or_neighbor.cleartext_password is not None:
+            if isinstance(peer_group_or_neighbor, EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.BgpPeersItem):
+                key = peer_group_or_neighbor.ip_address
+            else:
+                key = peer_group_or_neighbor.name
+
+            return bgp_encrypt(peer_group_or_neighbor.cleartext_password, key)
+        return None
