@@ -17900,13 +17900,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             """
                             pattern: str
                             """
-                            Bit pattern to match in the UDP payload. The value must match the number of bits defined in
-                            `payload_bits`.
-                            The valid range is from 0 to (2^N - 1), where N is the number of bits selected in
-                            `payload_bits`.
-                            Matching is supported only on up to 16 bits of the UDP payload.
-                            Only hexadecimal
-                            values are supported for this field.
+                            Bit pattern to match in the UDP payload.
+                            The value should be given as an hexadecimal format `0x...`.
+                            The valid range is from 0 to (2^N - 1), where N is the number of bits selected in `payload_bits`.
                             """
                             hash_payload_bytes: str
                             """
@@ -17944,13 +17940,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                            Matching is limited to a maximum of 16
                                            bits total.
                                         pattern:
-                                           Bit pattern to match in the UDP payload. The value must match the number of bits defined in
-                                           `payload_bits`.
-                                           The valid range is from 0 to (2^N - 1), where N is the number of bits selected in
-                                           `payload_bits`.
-                                           Matching is supported only on up to 16 bits of the UDP payload.
-                                           Only hexadecimal
-                                           values are supported for this field.
+                                           Bit pattern to match in the UDP payload.
+                                           The value should be given as an hexadecimal format `0x...`.
+                                           The valid range is from 0 to (2^N - 1), where N is the number of bits selected in `payload_bits`.
                                         hash_payload_bytes:
                                            Specifies the UDP payload byte positions to include in the hash after pattern match.
                                            Accepts a

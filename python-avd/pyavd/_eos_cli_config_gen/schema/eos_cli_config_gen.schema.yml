@@ -7140,16 +7140,12 @@ keys:
                               type: str
                               required: true
                               description: 'Bit pattern to match in the UDP payload.
-                                The value must match the number of bits defined in
-                                `payload_bits`.
+
+                                The value should be given as an hexadecimal format
+                                `0x...`.
 
                                 The valid range is from 0 to (2^N - 1), where N is
-                                the number of bits selected in `payload_bits`.
-
-                                Matching is supported only on up to 16 bits of the
-                                UDP payload.
-
-                                Only hexadecimal values are supported for this field.'
+                                the number of bits selected in `payload_bits`.'
                             hash_payload_bytes:
                               type: str
                               required: true

@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;payload_bytes</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.payload_bytes") | String |  |  |  | Specifies the UDP payload bytes to use in hash calculation.<br>Accepts single bytes (e.g., "10"), comma-separated bytes (e.g., "0,1,5"),<br>ranges (e.g., "0-15"), or combinations (e.g., "0-10,12,15,20-25").<br>Valid values are between 0 and 62. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match") | Dictionary |  |  |  | Configuration to match specific bits and define custom payload-based hashing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;payload_bits</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match.payload_bits") | String | Required |  |  | Specifies the bit positions within the UDP payload to match for hashing.<br>Accepts a single bit (e.g., "12"), a comma-separated list (e.g., "0,3,8"),<br>a range (e.g., "0-15"), or combinations (e.g., "0-7,9,12-15").<br>Valid values must be in the range 0 to 503.<br>Matching is limited to a maximum of 16 bits total. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pattern</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match.pattern") | String | Required |  |  | Bit pattern to match in the UDP payload. The value must match the number of bits defined in `payload_bits`.<br>The valid range is from 0 to (2^N - 1), where N is the number of bits selected in `payload_bits`.<br>Matching is supported only on up to 16 bits of the UDP payload.<br>Only hexadecimal values are supported for this field. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pattern</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match.pattern") | String | Required |  |  | Bit pattern to match in the UDP payload.<br>The value should be given as an hexadecimal format `0x...`.<br>The valid range is from 0 to (2^N - 1), where N is the number of bits selected in `payload_bits`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_payload_bytes</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match.hash_payload_bytes") | String | Required |  |  | Specifies the UDP payload byte positions to include in the hash after pattern match.<br>Accepts a single byte (e.g., "5"), a comma-separated list (e.g., "0,3,7"),<br>a range (e.g., "0-15"), or a combination (e.g., "0-5,8,12-14").<br>All byte positions must be within the range 0 to 62. |
 
 === "YAML"
@@ -61,10 +61,9 @@
                   # Matching is limited to a maximum of 16 bits total.
                   payload_bits: <str; required>
 
-                  # Bit pattern to match in the UDP payload. The value must match the number of bits defined in `payload_bits`.
+                  # Bit pattern to match in the UDP payload.
+                  # The value should be given as an hexadecimal format `0x...`.
                   # The valid range is from 0 to (2^N - 1), where N is the number of bits selected in `payload_bits`.
-                  # Matching is supported only on up to 16 bits of the UDP payload.
-                  # Only hexadecimal values are supported for this field.
                   pattern: <str; required>
 
                   # Specifies the UDP payload byte positions to include in the hash after pattern match.
