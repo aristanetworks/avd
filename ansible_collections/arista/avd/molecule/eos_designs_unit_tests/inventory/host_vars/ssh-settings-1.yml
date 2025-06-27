@@ -1,0 +1,29 @@
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: ssh-settings-1
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+mgmt_interface_vrf: MGMT
+mgmt_gateway: 10.10.10.1
+
+ssh_settings:
+  vrfs:
+    - name: MGMT
+      enabled: true
+      ipv4_acl: ACL-SSH
+    - name: VRF10
+      enabled: true
+      ipv6_acl: ACL-SSH6
+    - name: VRF12
+      enabled: false
+      ipv4_acl: ACL-SSH-VRF-DISABLED
+    - name: default
+      enabled: true
+      ipv6_acl: ACL-SSH-VRF-DEFAULT
+    - name: use_mgmt_interface_vrf
+      enabled: true
+      ipv4_acl: ACL-SSH-MGMT-INTERFACE
+  idle_timeout: 15

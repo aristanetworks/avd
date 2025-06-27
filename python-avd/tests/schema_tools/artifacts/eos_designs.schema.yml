@@ -445,12 +445,16 @@ keys:
       - CVaaS using token-secure onboarding. Default token path is ''/tmp/cv-onboarding-token''.
 
       Token must be copied to the device first.'
+    deprecation:
+      warning: true
+      remove_in_version: 5.0.0
+      new_key: cv_settings.onprem_clusters[].key
   cvp_instance_ip:
     documentation_options:
       table: cloudvision-settings
     deprecation:
       warning: true
-      new_key: cvp_instance_ips
+      new_key: cv_settings.onprem_clusters[].servers[].name or cv_settings.cvaas.fqdn
       remove_in_version: 5.0.0
     type: str
     description: 'IPv4 address or DNS name for CloudVision.
@@ -473,6 +477,10 @@ keys:
     items:
       type: str
       description: IPv4 address or DNS name for CloudVision
+    deprecation:
+      warning: true
+      new_key: cv_settings.onprem_clusters[].servers[].name or cv_settings.cvaas.server
+      remove_in_version: 5.0.0
   cvp_token_file:
     documentation_options:
       table: cloudvision-settings
@@ -482,6 +490,10 @@ keys:
       If not set the default locations for on-premise or CVaaS will be used.
 
       See cvp_ingestauth_key for details.'
+    deprecation:
+      warning: true
+      new_key: cv_settings.onprem_clusters[].token_file or cv_settings.cvaas.token_file
+      remove_in_version: 5.0.0
   dc_name:
     documentation_options:
       table: fabric-topology
@@ -2650,11 +2662,19 @@ keys:
       table: cloudvision-settings
     type: bool
     default: false
+    deprecation:
+      warning: true
+      new_key: cv_settings.terminattr_disable_aaa
+      remove_in_version: 5.0.0
   terminattr_ingestexclude:
     documentation_options:
       table: cloudvision-settings
     type: str
     default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+    deprecation:
+      warning: true
+      new_key: cv_settings.terminattr_ingestexclude
+      remove_in_version: 5.0.0
   terminattr_ingestgrpcurl_port:
     documentation_options:
       table: cloudvision-settings
@@ -2667,11 +2687,19 @@ keys:
 
       The port number is always 443 when using CloudVision as a Service, so this value
       is ignored.'
+    deprecation:
+      warning: true
+      new_key: cv_settings.onprem_clusters[].servers[].port
+      remove_in_version: 5.0.0
   terminattr_smashexcludes:
     documentation_options:
       table: cloudvision-settings
     type: str
     default: ale,flexCounter,hardware,kni,pulse,strata
+    deprecation:
+      warning: true
+      new_key: cv_settings.terminattr_smashexcludes
+      remove_in_version: 5.0.0
   timezone:
     documentation_options:
       table: management-settings
