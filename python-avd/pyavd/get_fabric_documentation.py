@@ -3,8 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from dataclasses import field, make_dataclass
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 from pyavd._utils import get
 from pyavd.api.fabric_documentation import (
@@ -131,33 +130,6 @@ def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> A
             return _get_digital_twin_act(fabric_documentation_facts)
         case _:
             return None
-
-
-def _act_dynamic_digital_twin_fabric_documentation(
-    cls_name: str,
-    node_types: dict,
-    nodes: tuple[dict[str, ActNodeSettings], ...],
-    links: tuple[ActLinkSettings, ...],
-) -> ACTDigitalTwin:
-    ACTDigitalTwin(nodes=nodes, links=links)
-    return cast(
-        "ACTDigitalTwin",
-        make_dataclass(
-            cls_name,
-            # Process ACT node_types
-            [(str(key).replace("-", "_"), ActNodeTypeSettings, field(default=value)) for key, value in node_types.items()]
-            +
-            # Process ACT nodes
-            [("nodes", tuple[dict[str, ActNodeSettings], ...], field(default=nodes))]
-            +
-            # Process ACT links
-            # links attribute of the ACT topology file can not be an empty list. Drop key completely if this is the case.
-            [("links", tuple[ActLinkSettings, ...], field(default=links))]
-            if links
-            else [],
-            frozen=True,
-        )(),
-    )
 
 
 def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin:
