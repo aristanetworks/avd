@@ -50,7 +50,7 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: ebgp_overlay_evpn_false
+hostname: ebgp-overlay-address-families-vpn-ipv4
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -147,6 +147,10 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.42.0/24 eq 32
+- name: PL-DPS-WAN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.1/32 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -156,6 +160,10 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
     - extcommunity soo 192.168.42.1:422 additive
+  - sequence: 80
+    type: permit
+    match:
+    - ip address prefix-list PL-DPS-WAN-OVERLAY
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -178,6 +186,7 @@ route_maps:
     - extcommunity ECL-EVPN-SOO
 router_adaptive_virtual_topology:
   topology_role: edge
+  gateway_vxlan: true
   region:
     name: AVD_Land_West
     id: 42
@@ -248,11 +257,16 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
   address_family_evpn:
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
+      domain_remote: true
       encapsulation: path-selection
   address_family_ipv4:
     peer_groups:
@@ -319,7 +333,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: ebgp_overlay_evpn_false_VTEP
+    description: ebgp-overlay-address-families-vpn-ipv4_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789

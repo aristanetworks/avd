@@ -1,6 +1,6 @@
+# Test when evpn_role is none for a wan_router
 type: wan_router
 
-# enabling EVPN on LAN
 overlay_routing_protocol: ebgp
 wan_use_evpn_node_settings_for_lan: true
 
@@ -33,10 +33,10 @@ wan_router:
     vtep_loopback_ipv4_pool: 192.168.255.0/24
     wan_role: client
   nodes:
-    - name: ebgp_overlay_evpn_false
+    - name: ebgp-overlay-address-families-vpn-ipv4
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site422
-      evpn_role: none
+      overlay_address_families: [ "vpn-ipv4" ]
       id: 1
       l3_interfaces:
         - name: Ethernet1
