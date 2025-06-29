@@ -1540,6 +1540,33 @@ $defs:
               new_key: inband_mgmt_vlan
               remove_in_version: 5.0.0
             type: int
+          campus:
+            documentation_options:
+              table: node-type-common-configuration
+            description: |-
+              PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+              Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+            type: str
+          campus_pod:
+            documentation_options:
+              table: node-type-common-configuration
+            description: |-
+              PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+              Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+            type: str
+          campus_access_pod:
+            documentation_options:
+              table: node-type-common-configuration
+            description: |-
+              PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+              Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
+            type: str
+          cv_tags_topology_type:
+            documentation_options:
+              table: node-type-common-configuration
+            description: |-
+              Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
+            type: str
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

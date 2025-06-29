@@ -1,0 +1,16 @@
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: ssh-settings-2
+      id: 43
+      inband_mgmt_ip: 192.168.0.1/24
+      inband_mgmt_interface: Vlan123
+
+default_mgmt_method: inband
+
+ssh_settings:
+  vrfs:
+    - name: use_inband_mgmt_vrf
+      enabled: true
+      ipv4_acl: ACL-SSH-INBAND-MGMT
