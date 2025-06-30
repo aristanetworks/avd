@@ -11367,29 +11367,29 @@ class EosDesigns(EosDesignsRootModel):
             queue_monitor: bool
             """
             Support for LANZ.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
             queue_monitor_length_notify: bool
             """
             Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
-            Feature
-            will be ignored on unsupported platforms.
+            The
+            feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
             interface_storm_control: bool
             """
             Support for storm-control.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
             poe: bool
             """
             Support for PoE.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `False`
             """
@@ -11413,8 +11413,8 @@ class EosDesigns(EosDesignsRootModel):
             per_interface_l2_mtu: bool
             """
             Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
-            Feature
-            will be ignored on unsupported platforms.
+            The
+            feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
@@ -11422,7 +11422,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-
             Channel interfaces.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
@@ -11432,7 +11432,7 @@ class EosDesigns(EosDesignsRootModel):
             convergence state is reached.
             Can be overridden by setting "bgp_update_wait_install"
             host/group_vars.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
@@ -11444,7 +11444,8 @@ class EosDesigns(EosDesignsRootModel):
             that may not yet be installed into the forwarding plane.
             Can be overridden by setting
             "bgp_update_wait_for_convergence" host/group_vars.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where
+            this is false.
 
             Default value: `True`
             """
@@ -11458,7 +11459,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Support for all-active EVPN gateway redundancy.
             An error will be raised if the feature is enabled
-            for unsupported platforms.
+            and this is false.
 
             Default value: `False`
             """
@@ -11473,13 +11474,16 @@ class EosDesigns(EosDesignsRootModel):
             hardware_counter_features: HardwareCounterFeatures
             """
             Per-feature support for the hardware counters.
-            Feature will be ignored on unsupported platforms.
+            Features set to `false` will be ignored for this
+            platform.
+
             Subclass of AvdModel.
             """
             hardware_speed_group: bool
             """
             Support for configurable speeds per speed-group.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this
+            is false.
 
             Default value: `True`
             """
@@ -11525,17 +11529,17 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         queue_monitor:
                            Support for LANZ.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this is false.
                         queue_monitor_length_notify:
                            Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
-                           Feature
-                           will be ignored on unsupported platforms.
+                           The
+                           feature will be ignored on platforms where this is false.
                         interface_storm_control:
                            Support for storm-control.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this is false.
                         poe:
                            Support for PoE.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this is false.
                         subinterface_mtu:
                            Support for MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
@@ -11547,18 +11551,18 @@ class EosDesigns(EosDesignsRootModel):
                            this via "default_interface_mtu"
                         per_interface_l2_mtu:
                            Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
-                           Feature
-                           will be ignored on unsupported platforms.
+                           The
+                           feature will be ignored on platforms where this is false.
                         per_interface_l2_mru:
                            Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-
                            Channel interfaces.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this is false.
                         bgp_update_wait_install:
                            Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
                            convergence state is reached.
                            Can be overridden by setting "bgp_update_wait_install"
                            host/group_vars.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this is false.
                         bgp_update_wait_for_convergence:
                            Do not advertise reachability to a prefix until that prefix has been installed in hardware.
                            This
@@ -11566,7 +11570,8 @@ class EosDesigns(EosDesignsRootModel):
                            that may not yet be installed into the forwarding plane.
                            Can be overridden by setting
                            "bgp_update_wait_for_convergence" host/group_vars.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where
+                           this is false.
                         platform_sfe_interface_profile:
                            Support for Platform SFE Interface Profiles.
 
@@ -11574,18 +11579,21 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_gateway_all_active_multihoming:
                            Support for all-active EVPN gateway redundancy.
                            An error will be raised if the feature is enabled
-                           for unsupported platforms.
+                           and this is false.
                         hardware_counters:
                            Support for enabling counters using programmable hardware counter resources.
                            Setting this key to
                            `false` for the specific platform will ignore all hardware counter features for this platform.
                         hardware_counter_features:
                            Per-feature support for the hardware counters.
-                           Feature will be ignored on unsupported platforms.
+                           Features set to `false` will be ignored for this
+                           platform.
+
                            Subclass of AvdModel.
                         hardware_speed_group:
                            Support for configurable speeds per speed-group.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this
+                           is false.
                         private_vlan:
                            Support for PVLAN feature.
                            On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3
@@ -11998,29 +12006,29 @@ class EosDesigns(EosDesignsRootModel):
             queue_monitor: bool
             """
             Support for LANZ.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
             queue_monitor_length_notify: bool
             """
             Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
-            Feature
-            will be ignored on unsupported platforms.
+            The
+            feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
             interface_storm_control: bool
             """
             Support for storm-control.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
             poe: bool
             """
             Support for PoE.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `False`
             """
@@ -12044,8 +12052,8 @@ class EosDesigns(EosDesignsRootModel):
             per_interface_l2_mtu: bool
             """
             Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
-            Feature
-            will be ignored on unsupported platforms.
+            The
+            feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
@@ -12053,7 +12061,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-
             Channel interfaces.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
@@ -12063,7 +12071,7 @@ class EosDesigns(EosDesignsRootModel):
             convergence state is reached.
             Can be overridden by setting "bgp_update_wait_install"
             host/group_vars.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
@@ -12075,7 +12083,8 @@ class EosDesigns(EosDesignsRootModel):
             that may not yet be installed into the forwarding plane.
             Can be overridden by setting
             "bgp_update_wait_for_convergence" host/group_vars.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where
+            this is false.
 
             Default value: `True`
             """
@@ -12089,7 +12098,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Support for all-active EVPN gateway redundancy.
             An error will be raised if the feature is enabled
-            for unsupported platforms.
+            and this is false.
 
             Default value: `False`
             """
@@ -12104,13 +12113,16 @@ class EosDesigns(EosDesignsRootModel):
             hardware_counter_features: HardwareCounterFeatures
             """
             Per-feature support for the hardware counters.
-            Feature will be ignored on unsupported platforms.
+            Features set to `false` will be ignored for this
+            platform.
+
             Subclass of AvdModel.
             """
             hardware_speed_group: bool
             """
             Support for configurable speeds per speed-group.
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this
+            is false.
 
             Default value: `True`
             """
@@ -12156,17 +12168,17 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         queue_monitor:
                            Support for LANZ.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this is false.
                         queue_monitor_length_notify:
                            Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
-                           Feature
-                           will be ignored on unsupported platforms.
+                           The
+                           feature will be ignored on platforms where this is false.
                         interface_storm_control:
                            Support for storm-control.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this is false.
                         poe:
                            Support for PoE.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this is false.
                         subinterface_mtu:
                            Support for MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
@@ -12178,18 +12190,18 @@ class EosDesigns(EosDesignsRootModel):
                            this via "default_interface_mtu"
                         per_interface_l2_mtu:
                            Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
-                           Feature
-                           will be ignored on unsupported platforms.
+                           The
+                           feature will be ignored on platforms where this is false.
                         per_interface_l2_mru:
                            Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-
                            Channel interfaces.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this is false.
                         bgp_update_wait_install:
                            Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
                            convergence state is reached.
                            Can be overridden by setting "bgp_update_wait_install"
                            host/group_vars.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this is false.
                         bgp_update_wait_for_convergence:
                            Do not advertise reachability to a prefix until that prefix has been installed in hardware.
                            This
@@ -12197,7 +12209,8 @@ class EosDesigns(EosDesignsRootModel):
                            that may not yet be installed into the forwarding plane.
                            Can be overridden by setting
                            "bgp_update_wait_for_convergence" host/group_vars.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where
+                           this is false.
                         platform_sfe_interface_profile:
                            Support for Platform SFE Interface Profiles.
 
@@ -12205,18 +12218,21 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_gateway_all_active_multihoming:
                            Support for all-active EVPN gateway redundancy.
                            An error will be raised if the feature is enabled
-                           for unsupported platforms.
+                           and this is false.
                         hardware_counters:
                            Support for enabling counters using programmable hardware counter resources.
                            Setting this key to
                            `false` for the specific platform will ignore all hardware counter features for this platform.
                         hardware_counter_features:
                            Per-feature support for the hardware counters.
-                           Feature will be ignored on unsupported platforms.
+                           Features set to `false` will be ignored for this
+                           platform.
+
                            Subclass of AvdModel.
                         hardware_speed_group:
                            Support for configurable speeds per speed-group.
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this
+                           is false.
                         private_vlan:
                            Support for PVLAN feature.
                            On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3

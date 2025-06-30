@@ -19,22 +19,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "custom_platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "custom_platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "custom_platform_settings.[].feature_support") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor</samp>](## "custom_platform_settings.[].feature_support.queue_monitor") | Boolean |  | `True` |  | Support for LANZ.<br>Feature will be ignored on unsupported platforms. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "custom_platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  | Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.<br>Feature will be ignored on unsupported platforms. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "custom_platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  | Support for storm-control.<br>Feature will be ignored on unsupported platforms. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "custom_platform_settings.[].feature_support.poe") | Boolean |  | `False` |  | Support for PoE.<br>Feature will be ignored on unsupported platforms. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor</samp>](## "custom_platform_settings.[].feature_support.queue_monitor") | Boolean |  | `True` |  | Support for LANZ.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "custom_platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  | Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "custom_platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  | Support for storm-control.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "custom_platform_settings.[].feature_support.poe") | Boolean |  | `False` |  | Support for PoE.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_mtu</samp>](## "custom_platform_settings.[].feature_support.subinterface_mtu") | Boolean |  | `True` |  | Support for MTU configuration under sub-interfaces.<br>When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_mtu</samp>](## "custom_platform_settings.[].feature_support.per_interface_mtu") | Boolean |  | `True` |  | Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.<br>Effectively this means that all settings regarding interface MTU will be ignored if this is false.<br>Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mtu</samp>](## "custom_platform_settings.[].feature_support.per_interface_l2_mtu") | Boolean |  | `True` |  | Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.<br>Feature will be ignored on unsupported platforms.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mru</samp>](## "custom_platform_settings.[].feature_support.per_interface_l2_mru") | Boolean |  | `True` |  | Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-Channel interfaces.<br>Feature will be ignored on unsupported platforms.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_install</samp>](## "custom_platform_settings.[].feature_support.bgp_update_wait_install") | Boolean |  | `True` |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br>Can be overridden by setting "bgp_update_wait_install" host/group_vars.<br>Feature will be ignored on unsupported platforms.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_for_convergence</samp>](## "custom_platform_settings.[].feature_support.bgp_update_wait_for_convergence") | Boolean |  | `True` |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br>Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.<br>Feature will be ignored on unsupported platforms.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mtu</samp>](## "custom_platform_settings.[].feature_support.per_interface_l2_mtu") | Boolean |  | `True` |  | Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.<br>The feature will be ignored on platforms where this is false.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mru</samp>](## "custom_platform_settings.[].feature_support.per_interface_l2_mru") | Boolean |  | `True` |  | Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-Channel interfaces.<br>The feature will be ignored on platforms where this is false.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_install</samp>](## "custom_platform_settings.[].feature_support.bgp_update_wait_install") | Boolean |  | `True` |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br>Can be overridden by setting "bgp_update_wait_install" host/group_vars.<br>The feature will be ignored on platforms where this is false.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_for_convergence</samp>](## "custom_platform_settings.[].feature_support.bgp_update_wait_for_convergence") | Boolean |  | `True` |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br>Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.<br>The feature will be ignored on platforms where this is false.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform_sfe_interface_profile</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile") | Dictionary |  |  |  | Support for Platform SFE Interface Profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "custom_platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy.<br>An error will be raised if the feature is enabled for unsupported platforms. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "custom_platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counters</samp>](## "custom_platform_settings.[].feature_support.hardware_counters") | Boolean |  | `True` |  | Support for enabling counters using programmable hardware counter resources.<br>Setting this key to `false` for the specific platform will ignore all hardware counter features for this platform. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counter_features</samp>](## "custom_platform_settings.[].feature_support.hardware_counter_features") | Dictionary |  |  |  | Per-feature support for the hardware counters.<br>Feature will be ignored on unsupported platforms. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counter_features</samp>](## "custom_platform_settings.[].feature_support.hardware_counter_features") | Dictionary |  |  |  | Per-feature support for the hardware counters.<br>Features set to `false` will be ignored for this platform. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "custom_platform_settings.[].feature_support.hardware_counter_features.acl") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decap_group</samp>](## "custom_platform_settings.[].feature_support.hardware_counter_features.decap_group") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directflow</samp>](## "custom_platform_settings.[].feature_support.hardware_counter_features.directflow") | Boolean |  | `True` |  |  |
@@ -65,7 +65,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_encap</samp>](## "custom_platform_settings.[].feature_support.hardware_counter_features.vni_encap") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_decap</samp>](## "custom_platform_settings.[].feature_support.hardware_counter_features.vtep_decap") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_encap</samp>](## "custom_platform_settings.[].feature_support.hardware_counter_features.vtep_encap") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "custom_platform_settings.[].feature_support.hardware_speed_group") | Boolean |  | `True` |  | Support for configurable speeds per speed-group.<br>Feature will be ignored on unsupported platforms. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "custom_platform_settings.[].feature_support.hardware_speed_group") | Boolean |  | `True` |  | Support for configurable speeds per speed-group.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private_vlan</samp>](## "custom_platform_settings.[].feature_support.private_vlan") | Boolean |  | `True` |  | Support for PVLAN feature.<br>On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3 set this via "private_vlan" in the specific platform settings.<br>See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "custom_platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
@@ -87,22 +87,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "platform_settings.[].feature_support") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor</samp>](## "platform_settings.[].feature_support.queue_monitor") | Boolean |  | `True` |  | Support for LANZ.<br>Feature will be ignored on unsupported platforms. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  | Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.<br>Feature will be ignored on unsupported platforms. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  | Support for storm-control.<br>Feature will be ignored on unsupported platforms. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "platform_settings.[].feature_support.poe") | Boolean |  | `False` |  | Support for PoE.<br>Feature will be ignored on unsupported platforms. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor</samp>](## "platform_settings.[].feature_support.queue_monitor") | Boolean |  | `True` |  | Support for LANZ.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  | Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  | Support for storm-control.<br>The feature will be ignored on platforms where this is false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "platform_settings.[].feature_support.poe") | Boolean |  | `False` |  | Support for PoE.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_mtu</samp>](## "platform_settings.[].feature_support.subinterface_mtu") | Boolean |  | `True` |  | Support for MTU configuration under sub-interfaces.<br>When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_mtu</samp>](## "platform_settings.[].feature_support.per_interface_mtu") | Boolean |  | `True` |  | Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.<br>Effectively this means that all settings regarding interface MTU will be ignored if this is false.<br>Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mtu</samp>](## "platform_settings.[].feature_support.per_interface_l2_mtu") | Boolean |  | `True` |  | Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.<br>Feature will be ignored on unsupported platforms.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mru</samp>](## "platform_settings.[].feature_support.per_interface_l2_mru") | Boolean |  | `True` |  | Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-Channel interfaces.<br>Feature will be ignored on unsupported platforms.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_install</samp>](## "platform_settings.[].feature_support.bgp_update_wait_install") | Boolean |  | `True` |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br>Can be overridden by setting "bgp_update_wait_install" host/group_vars.<br>Feature will be ignored on unsupported platforms.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_for_convergence</samp>](## "platform_settings.[].feature_support.bgp_update_wait_for_convergence") | Boolean |  | `True` |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br>Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.<br>Feature will be ignored on unsupported platforms.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mtu</samp>](## "platform_settings.[].feature_support.per_interface_l2_mtu") | Boolean |  | `True` |  | Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.<br>The feature will be ignored on platforms where this is false.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_l2_mru</samp>](## "platform_settings.[].feature_support.per_interface_l2_mru") | Boolean |  | `True` |  | Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-Channel interfaces.<br>The feature will be ignored on platforms where this is false.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_install</samp>](## "platform_settings.[].feature_support.bgp_update_wait_install") | Boolean |  | `True` |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br>Can be overridden by setting "bgp_update_wait_install" host/group_vars.<br>The feature will be ignored on platforms where this is false.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_for_convergence</samp>](## "platform_settings.[].feature_support.bgp_update_wait_for_convergence") | Boolean |  | `True` |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br>Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.<br>The feature will be ignored on platforms where this is false.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform_sfe_interface_profile</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile") | Dictionary |  |  |  | Support for Platform SFE Interface Profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy.<br>An error will be raised if the feature is enabled for unsupported platforms. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy.<br>An error will be raised if the feature is enabled and this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counters</samp>](## "platform_settings.[].feature_support.hardware_counters") | Boolean |  | `True` |  | Support for enabling counters using programmable hardware counter resources.<br>Setting this key to `false` for the specific platform will ignore all hardware counter features for this platform. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counter_features</samp>](## "platform_settings.[].feature_support.hardware_counter_features") | Dictionary |  |  |  | Per-feature support for the hardware counters.<br>Feature will be ignored on unsupported platforms. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counter_features</samp>](## "platform_settings.[].feature_support.hardware_counter_features") | Dictionary |  |  |  | Per-feature support for the hardware counters.<br>Features set to `false` will be ignored for this platform. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "platform_settings.[].feature_support.hardware_counter_features.acl") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decap_group</samp>](## "platform_settings.[].feature_support.hardware_counter_features.decap_group") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directflow</samp>](## "platform_settings.[].feature_support.hardware_counter_features.directflow") | Boolean |  | `True` |  |  |
@@ -133,7 +133,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_encap</samp>](## "platform_settings.[].feature_support.hardware_counter_features.vni_encap") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_decap</samp>](## "platform_settings.[].feature_support.hardware_counter_features.vtep_decap") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_encap</samp>](## "platform_settings.[].feature_support.hardware_counter_features.vtep_encap") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "platform_settings.[].feature_support.hardware_speed_group") | Boolean |  | `True` |  | Support for configurable speeds per speed-group.<br>Feature will be ignored on unsupported platforms. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "platform_settings.[].feature_support.hardware_speed_group") | Boolean |  | `True` |  | Support for configurable speeds per speed-group.<br>The feature will be ignored on platforms where this is false. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private_vlan</samp>](## "platform_settings.[].feature_support.private_vlan") | Boolean |  | `True` |  | Support for PVLAN feature.<br>On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3 set this via "private_vlan" in the specific platform settings.<br>See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
@@ -181,19 +181,19 @@
         feature_support:
 
           # Support for LANZ.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           queue_monitor: <bool; default=True>
 
           # Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           queue_monitor_length_notify: <bool; default=True>
 
           # Support for storm-control.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           interface_storm_control: <bool; default=True>
 
           # Support for PoE.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           poe: <bool; default=False>
 
           # Support for MTU configuration under sub-interfaces.
@@ -206,22 +206,22 @@
           per_interface_mtu: <bool; default=True>
 
           # Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           per_interface_l2_mtu: <bool; default=True>
 
           # Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-Channel interfaces.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           per_interface_l2_mru: <bool; default=True>
 
           # Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
           # Can be overridden by setting "bgp_update_wait_install" host/group_vars.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           bgp_update_wait_install: <bool; default=True>
 
           # Do not advertise reachability to a prefix until that prefix has been installed in hardware.
           # This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
           # Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           bgp_update_wait_for_convergence: <bool; default=True>
 
           # Support for Platform SFE Interface Profiles.
@@ -234,7 +234,7 @@
             max_rx_queues: <int; default=6>
 
           # Support for all-active EVPN gateway redundancy.
-          # An error will be raised if the feature is enabled for unsupported platforms.
+          # An error will be raised if the feature is enabled and this is false.
           evpn_gateway_all_active_multihoming: <bool; default=False>
 
           # Support for enabling counters using programmable hardware counter resources.
@@ -242,7 +242,7 @@
           hardware_counters: <bool; default=True>
 
           # Per-feature support for the hardware counters.
-          # Feature will be ignored on unsupported platforms.
+          # Features set to `false` will be ignored for this platform.
           hardware_counter_features:
             acl: <bool; default=True>
             decap_group: <bool; default=True>
@@ -276,7 +276,7 @@
             vtep_encap: <bool; default=True>
 
           # Support for configurable speeds per speed-group.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           hardware_speed_group: <bool; default=True>
 
           # Support for PVLAN feature.
@@ -334,19 +334,19 @@
         feature_support:
 
           # Support for LANZ.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           queue_monitor: <bool; default=True>
 
           # Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           queue_monitor_length_notify: <bool; default=True>
 
           # Support for storm-control.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           interface_storm_control: <bool; default=True>
 
           # Support for PoE.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           poe: <bool; default=False>
 
           # Support for MTU configuration under sub-interfaces.
@@ -359,22 +359,22 @@
           per_interface_mtu: <bool; default=True>
 
           # Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           per_interface_l2_mtu: <bool; default=True>
 
           # Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-Channel interfaces.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           per_interface_l2_mru: <bool; default=True>
 
           # Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
           # Can be overridden by setting "bgp_update_wait_install" host/group_vars.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           bgp_update_wait_install: <bool; default=True>
 
           # Do not advertise reachability to a prefix until that prefix has been installed in hardware.
           # This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
           # Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           bgp_update_wait_for_convergence: <bool; default=True>
 
           # Support for Platform SFE Interface Profiles.
@@ -387,7 +387,7 @@
             max_rx_queues: <int; default=6>
 
           # Support for all-active EVPN gateway redundancy.
-          # An error will be raised if the feature is enabled for unsupported platforms.
+          # An error will be raised if the feature is enabled and this is false.
           evpn_gateway_all_active_multihoming: <bool; default=False>
 
           # Support for enabling counters using programmable hardware counter resources.
@@ -395,7 +395,7 @@
           hardware_counters: <bool; default=True>
 
           # Per-feature support for the hardware counters.
-          # Feature will be ignored on unsupported platforms.
+          # Features set to `false` will be ignored for this platform.
           hardware_counter_features:
             acl: <bool; default=True>
             decap_group: <bool; default=True>
@@ -429,7 +429,7 @@
             vtep_encap: <bool; default=True>
 
           # Support for configurable speeds per speed-group.
-          # Feature will be ignored on unsupported platforms.
+          # The feature will be ignored on platforms where this is false.
           hardware_speed_group: <bool; default=True>
 
           # Support for PVLAN feature.

@@ -88,26 +88,26 @@ keys:
               type: bool
               description: |-
                 Support for LANZ.
-                Feature will be ignored on unsupported platforms.
+                The feature will be ignored on platforms where this is false.
               default: true
             queue_monitor_length_notify:
               type: bool
               description: |-
                 Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
-                Feature will be ignored on unsupported platforms.
+                The feature will be ignored on platforms where this is false.
               default: true
             interface_storm_control:
               type: bool
               default: true
               description: |-
                 Support for storm-control.
-                Feature will be ignored on unsupported platforms.
+                The feature will be ignored on platforms where this is false.
             poe:
               type: bool
               default: false
               description: |-
                 Support for PoE.
-                Feature will be ignored on unsupported platforms.
+                The feature will be ignored on platforms where this is false.
             subinterface_mtu:
               type: bool
               default: true
@@ -126,20 +126,20 @@ keys:
               default: true
               description: |
                 Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
-                Feature will be ignored on unsupported platforms.
+                The feature will be ignored on platforms where this is false.
             per_interface_l2_mru:
               type: bool
               default: true
               description: |
                 Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-Channel interfaces.
-                Feature will be ignored on unsupported platforms.
+                The feature will be ignored on platforms where this is false.
             bgp_update_wait_install:
               type: bool
               default: true
               description: |
                 Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
                 Can be overridden by setting "bgp_update_wait_install" host/group_vars.
-                Feature will be ignored on unsupported platforms.
+                The feature will be ignored on platforms where this is false.
             bgp_update_wait_for_convergence:
               type: bool
               default: true
@@ -147,7 +147,7 @@ keys:
                 Do not advertise reachability to a prefix until that prefix has been installed in hardware.
                 This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
                 Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
-                Feature will be ignored on unsupported platforms.
+                The feature will be ignored on platforms where this is false.
             platform_sfe_interface_profile:
               type: dict
               description: Support for Platform SFE Interface Profiles.
@@ -167,7 +167,7 @@ keys:
               default: false
               description: |-
                 Support for all-active EVPN gateway redundancy.
-                An error will be raised if the feature is enabled for unsupported platforms.
+                An error will be raised if the feature is enabled and this is false.
             hardware_counters:
               type: bool
               description: |-
@@ -178,7 +178,7 @@ keys:
               type: dict
               description:  |-
                 Per-feature support for the hardware counters.
-                Feature will be ignored on unsupported platforms.
+                Features set to `false` will be ignored for this platform.
               keys:
                 acl:
                   type: bool
@@ -274,7 +274,7 @@ keys:
               type: bool
               description: |-
                 Support for configurable speeds per speed-group.
-                Feature will be ignored on unsupported platforms.
+                The feature will be ignored on platforms where this is false.
               default: true
             private_vlan:
               type: bool
