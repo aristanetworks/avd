@@ -14,7 +14,6 @@ l2leaf:
 default_mgmt_method: inband
 
 snmp_settings:
-  enable_inband_mgmt_vrf: true
   vrfs:
     - name: SNMPVRF
       enable: true
@@ -60,7 +59,3 @@ snmp_settings:
     snmp_traps:
       - name: foo
         enabled: true
-
-source_interfaces:
-  snmp:
-    inband_mgmt_interface: true
