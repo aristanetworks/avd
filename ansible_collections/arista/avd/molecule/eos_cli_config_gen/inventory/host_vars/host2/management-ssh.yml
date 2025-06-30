@@ -16,10 +16,7 @@ management_ssh:
       - ecdsa-nistp256
       - ecdsa-nistp521
     server_cert: sshkey.cert
-  access_groups:
-    - name: ACL-SSH
-    - name: ACL-SSH-VRF
-      vrf: mgt
+  ip_access_group_in: ACL-SSH
   idle_timeout: 15
   connection:
     limit: 55
@@ -27,3 +24,4 @@ management_ssh:
   vrfs:
     - name: mgt
       enable: true
+      ip_access_group_in: ACL-SSH-VRF

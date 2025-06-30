@@ -6,14 +6,8 @@ management_ssh:
       - keyboard-interactive
       - password
       - public-key
-  access_groups:
-    - name: ACL-SSH
-    - name: ACL-SSH-VRF
-      vrf: mgt
-  ipv6_access_groups:
-    - name: ACL-SSH6
-    - name: ACL-SSH-VRF6
-      vrf: mgt
+  ip_access_group_in: ACL-SSH
+  ipv6_access_group_in: ACL-SSH6
   idle_timeout: 15
   connection:
     limit: 50
@@ -22,6 +16,8 @@ management_ssh:
   vrfs:
     - name: mgt
       enable: true
+      ip_access_group_in: ACL-SSH-VRF
+      ipv6_access_group_in: ACL-SSH-VRF6
   log_level: debug
   client_alive:
     count_max: 42

@@ -6,9 +6,11 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  cv_tags_topology_type:
+  campus:
     documentation_options:
-      table: cloudvision-tags
+      table: fabric-topology
     description: |-
-      Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf". Defaults to the setting under node_type_keys.
+      PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+      Name of the Campus fabric.
+      Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
     type: str
