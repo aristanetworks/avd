@@ -11174,24 +11174,225 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class HardwareCounterFeatures(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "acl": {"type": bool, "default": True},
+                    "decap_group": {"type": bool, "default": True},
+                    "directflow": {"type": bool, "default": True},
+                    "ecn": {"type": bool, "default": True},
+                    "flow_spec": {"type": bool, "default": True},
+                    "gre_tunnel_interface": {"type": bool, "default": True},
+                    "ip": {"type": bool, "default": True},
+                    "mpls_interface": {"type": bool, "default": True},
+                    "mpls_lfib": {"type": bool, "default": True},
+                    "mpls_tunnel": {"type": bool, "default": True},
+                    "multicast": {"type": bool, "default": True},
+                    "nexthop": {"type": bool, "default": True},
+                    "pbr": {"type": bool, "default": True},
+                    "pdp": {"type": bool, "default": True},
+                    "policing_interface": {"type": bool, "default": True},
+                    "qos": {"type": bool, "default": True},
+                    "qos_dual_rate_policer": {"type": bool, "default": True},
+                    "route": {"type": bool, "default": True},
+                    "routed_port": {"type": bool, "default": True},
+                    "segment_security": {"type": bool, "default": True},
+                    "subinterface": {"type": bool, "default": True},
+                    "tapagg": {"type": bool, "default": True},
+                    "traffic_class": {"type": bool, "default": True},
+                    "traffic_policy": {"type": bool, "default": True},
+                    "vlan": {"type": bool, "default": True},
+                    "vlan_interface": {"type": bool, "default": True},
+                    "vni_decap": {"type": bool, "default": True},
+                    "vni_encap": {"type": bool, "default": True},
+                    "vtep_decap": {"type": bool, "default": True},
+                    "vtep_encap": {"type": bool, "default": True},
+                }
+                acl: bool
+                """Default value: `True`"""
+                decap_group: bool
+                """Default value: `True`"""
+                directflow: bool
+                """Default value: `True`"""
+                ecn: bool
+                """Default value: `True`"""
+                flow_spec: bool
+                """Default value: `True`"""
+                gre_tunnel_interface: bool
+                """Default value: `True`"""
+                ip: bool
+                """Default value: `True`"""
+                mpls_interface: bool
+                """Default value: `True`"""
+                mpls_lfib: bool
+                """Default value: `True`"""
+                mpls_tunnel: bool
+                """Default value: `True`"""
+                multicast: bool
+                """Default value: `True`"""
+                nexthop: bool
+                """Default value: `True`"""
+                pbr: bool
+                """Default value: `True`"""
+                pdp: bool
+                """Default value: `True`"""
+                policing_interface: bool
+                """Default value: `True`"""
+                qos: bool
+                """Default value: `True`"""
+                qos_dual_rate_policer: bool
+                """Default value: `True`"""
+                route: bool
+                """Default value: `True`"""
+                routed_port: bool
+                """Default value: `True`"""
+                segment_security: bool
+                """Default value: `True`"""
+                subinterface: bool
+                """Default value: `True`"""
+                tapagg: bool
+                """Default value: `True`"""
+                traffic_class: bool
+                """Default value: `True`"""
+                traffic_policy: bool
+                """Default value: `True`"""
+                vlan: bool
+                """Default value: `True`"""
+                vlan_interface: bool
+                """Default value: `True`"""
+                vni_decap: bool
+                """Default value: `True`"""
+                vni_encap: bool
+                """Default value: `True`"""
+                vtep_decap: bool
+                """Default value: `True`"""
+                vtep_encap: bool
+                """Default value: `True`"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        acl: bool | UndefinedType = Undefined,
+                        decap_group: bool | UndefinedType = Undefined,
+                        directflow: bool | UndefinedType = Undefined,
+                        ecn: bool | UndefinedType = Undefined,
+                        flow_spec: bool | UndefinedType = Undefined,
+                        gre_tunnel_interface: bool | UndefinedType = Undefined,
+                        ip: bool | UndefinedType = Undefined,
+                        mpls_interface: bool | UndefinedType = Undefined,
+                        mpls_lfib: bool | UndefinedType = Undefined,
+                        mpls_tunnel: bool | UndefinedType = Undefined,
+                        multicast: bool | UndefinedType = Undefined,
+                        nexthop: bool | UndefinedType = Undefined,
+                        pbr: bool | UndefinedType = Undefined,
+                        pdp: bool | UndefinedType = Undefined,
+                        policing_interface: bool | UndefinedType = Undefined,
+                        qos: bool | UndefinedType = Undefined,
+                        qos_dual_rate_policer: bool | UndefinedType = Undefined,
+                        route: bool | UndefinedType = Undefined,
+                        routed_port: bool | UndefinedType = Undefined,
+                        segment_security: bool | UndefinedType = Undefined,
+                        subinterface: bool | UndefinedType = Undefined,
+                        tapagg: bool | UndefinedType = Undefined,
+                        traffic_class: bool | UndefinedType = Undefined,
+                        traffic_policy: bool | UndefinedType = Undefined,
+                        vlan: bool | UndefinedType = Undefined,
+                        vlan_interface: bool | UndefinedType = Undefined,
+                        vni_decap: bool | UndefinedType = Undefined,
+                        vni_encap: bool | UndefinedType = Undefined,
+                        vtep_decap: bool | UndefinedType = Undefined,
+                        vtep_encap: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        HardwareCounterFeatures.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            acl: acl
+                            decap_group: decap_group
+                            directflow: directflow
+                            ecn: ecn
+                            flow_spec: flow_spec
+                            gre_tunnel_interface: gre_tunnel_interface
+                            ip: ip
+                            mpls_interface: mpls_interface
+                            mpls_lfib: mpls_lfib
+                            mpls_tunnel: mpls_tunnel
+                            multicast: multicast
+                            nexthop: nexthop
+                            pbr: pbr
+                            pdp: pdp
+                            policing_interface: policing_interface
+                            qos: qos
+                            qos_dual_rate_policer: qos_dual_rate_policer
+                            route: route
+                            routed_port: routed_port
+                            segment_security: segment_security
+                            subinterface: subinterface
+                            tapagg: tapagg
+                            traffic_class: traffic_class
+                            traffic_policy: traffic_policy
+                            vlan: vlan
+                            vlan_interface: vlan_interface
+                            vni_decap: vni_decap
+                            vni_encap: vni_encap
+                            vtep_decap: vtep_decap
+                            vtep_encap: vtep_encap
+
+                        """
+
             _fields: ClassVar[dict] = {
+                "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
                 "poe": {"type": bool, "default": False},
                 "subinterface_mtu": {"type": bool, "default": True},
                 "per_interface_mtu": {"type": bool, "default": True},
+                "per_interface_l2_mtu": {"type": bool, "default": True},
+                "per_interface_l2_mru": {"type": bool, "default": True},
                 "bgp_update_wait_install": {"type": bool, "default": True},
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
+                "hardware_counters": {"type": bool, "default": True},
+                "hardware_counter_features": {"type": HardwareCounterFeatures},
+                "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
             }
+            queue_monitor: bool
+            """
+            Support for LANZ.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             queue_monitor_length_notify: bool
-            """Default value: `True`"""
+            """
+            Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
+            The
+            feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             interface_storm_control: bool
-            """Default value: `True`"""
+            """
+            Support for storm-control.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             poe: bool
-            """Default value: `False`"""
+            """
+            Support for PoE.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `False`
+            """
             subinterface_mtu: bool
             """
             Support for MTU configuration under sub-interfaces.
@@ -11209,12 +11410,29 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            per_interface_l2_mtu: bool
+            """
+            Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
+            The
+            feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            per_interface_l2_mru: bool
+            """
+            Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-
+            Channel interfaces.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             bgp_update_wait_install: bool
             """
             Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
             convergence state is reached.
             Can be overridden by setting "bgp_update_wait_install"
             host/group_vars.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
@@ -11226,6 +11444,8 @@ class EosDesigns(EosDesignsRootModel):
             that may not yet be installed into the forwarding plane.
             Can be overridden by setting
             "bgp_update_wait_for_convergence" host/group_vars.
+            The feature will be ignored on platforms where
+            this is false.
 
             Default value: `True`
             """
@@ -11238,8 +11458,34 @@ class EosDesigns(EosDesignsRootModel):
             evpn_gateway_all_active_multihoming: bool
             """
             Support for all-active EVPN gateway redundancy.
+            An error will be raised if the feature is enabled
+            and this is false.
 
             Default value: `False`
+            """
+            hardware_counters: bool
+            """
+            Support for enabling counters using programmable hardware counter resources.
+            Setting this key to
+            `false` for the specific platform will ignore all hardware counter features for this platform.
+
+            Default value: `True`
+            """
+            hardware_counter_features: HardwareCounterFeatures
+            """
+            Per-feature support for the hardware counters.
+            Features set to `false` will be ignored for this
+            platform.
+
+            Subclass of AvdModel.
+            """
+            hardware_speed_group: bool
+            """
+            Support for configurable speeds per speed-group.
+            The feature will be ignored on platforms where this
+            is false.
+
+            Default value: `True`
             """
             private_vlan: bool
             """
@@ -11257,15 +11503,21 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
                     poe: bool | UndefinedType = Undefined,
                     subinterface_mtu: bool | UndefinedType = Undefined,
                     per_interface_mtu: bool | UndefinedType = Undefined,
+                    per_interface_l2_mtu: bool | UndefinedType = Undefined,
+                    per_interface_l2_mru: bool | UndefinedType = Undefined,
                     bgp_update_wait_install: bool | UndefinedType = Undefined,
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
+                    hardware_counters: bool | UndefinedType = Undefined,
+                    hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
+                    hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -11275,9 +11527,19 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        queue_monitor_length_notify: queue_monitor_length_notify
-                        interface_storm_control: interface_storm_control
-                        poe: poe
+                        queue_monitor:
+                           Support for LANZ.
+                           The feature will be ignored on platforms where this is false.
+                        queue_monitor_length_notify:
+                           Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
+                           The
+                           feature will be ignored on platforms where this is false.
+                        interface_storm_control:
+                           Support for storm-control.
+                           The feature will be ignored on platforms where this is false.
+                        poe:
+                           Support for PoE.
+                           The feature will be ignored on platforms where this is false.
                         subinterface_mtu:
                            Support for MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
@@ -11287,11 +11549,20 @@ class EosDesigns(EosDesignsRootModel):
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
                            Platforms without support for per interface MTU can use a single default interface MTU setting. Set
                            this via "default_interface_mtu"
+                        per_interface_l2_mtu:
+                           Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
+                           The
+                           feature will be ignored on platforms where this is false.
+                        per_interface_l2_mru:
+                           Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-
+                           Channel interfaces.
+                           The feature will be ignored on platforms where this is false.
                         bgp_update_wait_install:
                            Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
                            convergence state is reached.
                            Can be overridden by setting "bgp_update_wait_install"
                            host/group_vars.
+                           The feature will be ignored on platforms where this is false.
                         bgp_update_wait_for_convergence:
                            Do not advertise reachability to a prefix until that prefix has been installed in hardware.
                            This
@@ -11299,11 +11570,30 @@ class EosDesigns(EosDesignsRootModel):
                            that may not yet be installed into the forwarding plane.
                            Can be overridden by setting
                            "bgp_update_wait_for_convergence" host/group_vars.
+                           The feature will be ignored on platforms where
+                           this is false.
                         platform_sfe_interface_profile:
                            Support for Platform SFE Interface Profiles.
 
                            Subclass of AvdModel.
-                        evpn_gateway_all_active_multihoming: Support for all-active EVPN gateway redundancy.
+                        evpn_gateway_all_active_multihoming:
+                           Support for all-active EVPN gateway redundancy.
+                           An error will be raised if the feature is enabled
+                           and this is false.
+                        hardware_counters:
+                           Support for enabling counters using programmable hardware counter resources.
+                           Setting this key to
+                           `false` for the specific platform will ignore all hardware counter features for this platform.
+                        hardware_counter_features:
+                           Per-feature support for the hardware counters.
+                           Features set to `false` will be ignored for this
+                           platform.
+
+                           Subclass of AvdModel.
+                        hardware_speed_group:
+                           Support for configurable speeds per speed-group.
+                           The feature will be ignored on platforms where this
+                           is false.
                         private_vlan:
                            Support for PVLAN feature.
                            On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3
@@ -11523,24 +11813,225 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class HardwareCounterFeatures(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "acl": {"type": bool, "default": True},
+                    "decap_group": {"type": bool, "default": True},
+                    "directflow": {"type": bool, "default": True},
+                    "ecn": {"type": bool, "default": True},
+                    "flow_spec": {"type": bool, "default": True},
+                    "gre_tunnel_interface": {"type": bool, "default": True},
+                    "ip": {"type": bool, "default": True},
+                    "mpls_interface": {"type": bool, "default": True},
+                    "mpls_lfib": {"type": bool, "default": True},
+                    "mpls_tunnel": {"type": bool, "default": True},
+                    "multicast": {"type": bool, "default": True},
+                    "nexthop": {"type": bool, "default": True},
+                    "pbr": {"type": bool, "default": True},
+                    "pdp": {"type": bool, "default": True},
+                    "policing_interface": {"type": bool, "default": True},
+                    "qos": {"type": bool, "default": True},
+                    "qos_dual_rate_policer": {"type": bool, "default": True},
+                    "route": {"type": bool, "default": True},
+                    "routed_port": {"type": bool, "default": True},
+                    "segment_security": {"type": bool, "default": True},
+                    "subinterface": {"type": bool, "default": True},
+                    "tapagg": {"type": bool, "default": True},
+                    "traffic_class": {"type": bool, "default": True},
+                    "traffic_policy": {"type": bool, "default": True},
+                    "vlan": {"type": bool, "default": True},
+                    "vlan_interface": {"type": bool, "default": True},
+                    "vni_decap": {"type": bool, "default": True},
+                    "vni_encap": {"type": bool, "default": True},
+                    "vtep_decap": {"type": bool, "default": True},
+                    "vtep_encap": {"type": bool, "default": True},
+                }
+                acl: bool
+                """Default value: `True`"""
+                decap_group: bool
+                """Default value: `True`"""
+                directflow: bool
+                """Default value: `True`"""
+                ecn: bool
+                """Default value: `True`"""
+                flow_spec: bool
+                """Default value: `True`"""
+                gre_tunnel_interface: bool
+                """Default value: `True`"""
+                ip: bool
+                """Default value: `True`"""
+                mpls_interface: bool
+                """Default value: `True`"""
+                mpls_lfib: bool
+                """Default value: `True`"""
+                mpls_tunnel: bool
+                """Default value: `True`"""
+                multicast: bool
+                """Default value: `True`"""
+                nexthop: bool
+                """Default value: `True`"""
+                pbr: bool
+                """Default value: `True`"""
+                pdp: bool
+                """Default value: `True`"""
+                policing_interface: bool
+                """Default value: `True`"""
+                qos: bool
+                """Default value: `True`"""
+                qos_dual_rate_policer: bool
+                """Default value: `True`"""
+                route: bool
+                """Default value: `True`"""
+                routed_port: bool
+                """Default value: `True`"""
+                segment_security: bool
+                """Default value: `True`"""
+                subinterface: bool
+                """Default value: `True`"""
+                tapagg: bool
+                """Default value: `True`"""
+                traffic_class: bool
+                """Default value: `True`"""
+                traffic_policy: bool
+                """Default value: `True`"""
+                vlan: bool
+                """Default value: `True`"""
+                vlan_interface: bool
+                """Default value: `True`"""
+                vni_decap: bool
+                """Default value: `True`"""
+                vni_encap: bool
+                """Default value: `True`"""
+                vtep_decap: bool
+                """Default value: `True`"""
+                vtep_encap: bool
+                """Default value: `True`"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        acl: bool | UndefinedType = Undefined,
+                        decap_group: bool | UndefinedType = Undefined,
+                        directflow: bool | UndefinedType = Undefined,
+                        ecn: bool | UndefinedType = Undefined,
+                        flow_spec: bool | UndefinedType = Undefined,
+                        gre_tunnel_interface: bool | UndefinedType = Undefined,
+                        ip: bool | UndefinedType = Undefined,
+                        mpls_interface: bool | UndefinedType = Undefined,
+                        mpls_lfib: bool | UndefinedType = Undefined,
+                        mpls_tunnel: bool | UndefinedType = Undefined,
+                        multicast: bool | UndefinedType = Undefined,
+                        nexthop: bool | UndefinedType = Undefined,
+                        pbr: bool | UndefinedType = Undefined,
+                        pdp: bool | UndefinedType = Undefined,
+                        policing_interface: bool | UndefinedType = Undefined,
+                        qos: bool | UndefinedType = Undefined,
+                        qos_dual_rate_policer: bool | UndefinedType = Undefined,
+                        route: bool | UndefinedType = Undefined,
+                        routed_port: bool | UndefinedType = Undefined,
+                        segment_security: bool | UndefinedType = Undefined,
+                        subinterface: bool | UndefinedType = Undefined,
+                        tapagg: bool | UndefinedType = Undefined,
+                        traffic_class: bool | UndefinedType = Undefined,
+                        traffic_policy: bool | UndefinedType = Undefined,
+                        vlan: bool | UndefinedType = Undefined,
+                        vlan_interface: bool | UndefinedType = Undefined,
+                        vni_decap: bool | UndefinedType = Undefined,
+                        vni_encap: bool | UndefinedType = Undefined,
+                        vtep_decap: bool | UndefinedType = Undefined,
+                        vtep_encap: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        HardwareCounterFeatures.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            acl: acl
+                            decap_group: decap_group
+                            directflow: directflow
+                            ecn: ecn
+                            flow_spec: flow_spec
+                            gre_tunnel_interface: gre_tunnel_interface
+                            ip: ip
+                            mpls_interface: mpls_interface
+                            mpls_lfib: mpls_lfib
+                            mpls_tunnel: mpls_tunnel
+                            multicast: multicast
+                            nexthop: nexthop
+                            pbr: pbr
+                            pdp: pdp
+                            policing_interface: policing_interface
+                            qos: qos
+                            qos_dual_rate_policer: qos_dual_rate_policer
+                            route: route
+                            routed_port: routed_port
+                            segment_security: segment_security
+                            subinterface: subinterface
+                            tapagg: tapagg
+                            traffic_class: traffic_class
+                            traffic_policy: traffic_policy
+                            vlan: vlan
+                            vlan_interface: vlan_interface
+                            vni_decap: vni_decap
+                            vni_encap: vni_encap
+                            vtep_decap: vtep_decap
+                            vtep_encap: vtep_encap
+
+                        """
+
             _fields: ClassVar[dict] = {
+                "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
                 "poe": {"type": bool, "default": False},
                 "subinterface_mtu": {"type": bool, "default": True},
                 "per_interface_mtu": {"type": bool, "default": True},
+                "per_interface_l2_mtu": {"type": bool, "default": True},
+                "per_interface_l2_mru": {"type": bool, "default": True},
                 "bgp_update_wait_install": {"type": bool, "default": True},
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
+                "hardware_counters": {"type": bool, "default": True},
+                "hardware_counter_features": {"type": HardwareCounterFeatures},
+                "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
             }
+            queue_monitor: bool
+            """
+            Support for LANZ.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             queue_monitor_length_notify: bool
-            """Default value: `True`"""
+            """
+            Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
+            The
+            feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             interface_storm_control: bool
-            """Default value: `True`"""
+            """
+            Support for storm-control.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             poe: bool
-            """Default value: `False`"""
+            """
+            Support for PoE.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `False`
+            """
             subinterface_mtu: bool
             """
             Support for MTU configuration under sub-interfaces.
@@ -11558,12 +12049,29 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            per_interface_l2_mtu: bool
+            """
+            Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
+            The
+            feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            per_interface_l2_mru: bool
+            """
+            Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-
+            Channel interfaces.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             bgp_update_wait_install: bool
             """
             Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
             convergence state is reached.
             Can be overridden by setting "bgp_update_wait_install"
             host/group_vars.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
@@ -11575,6 +12083,8 @@ class EosDesigns(EosDesignsRootModel):
             that may not yet be installed into the forwarding plane.
             Can be overridden by setting
             "bgp_update_wait_for_convergence" host/group_vars.
+            The feature will be ignored on platforms where
+            this is false.
 
             Default value: `True`
             """
@@ -11587,8 +12097,34 @@ class EosDesigns(EosDesignsRootModel):
             evpn_gateway_all_active_multihoming: bool
             """
             Support for all-active EVPN gateway redundancy.
+            An error will be raised if the feature is enabled
+            and this is false.
 
             Default value: `False`
+            """
+            hardware_counters: bool
+            """
+            Support for enabling counters using programmable hardware counter resources.
+            Setting this key to
+            `false` for the specific platform will ignore all hardware counter features for this platform.
+
+            Default value: `True`
+            """
+            hardware_counter_features: HardwareCounterFeatures
+            """
+            Per-feature support for the hardware counters.
+            Features set to `false` will be ignored for this
+            platform.
+
+            Subclass of AvdModel.
+            """
+            hardware_speed_group: bool
+            """
+            Support for configurable speeds per speed-group.
+            The feature will be ignored on platforms where this
+            is false.
+
+            Default value: `True`
             """
             private_vlan: bool
             """
@@ -11606,15 +12142,21 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
                     poe: bool | UndefinedType = Undefined,
                     subinterface_mtu: bool | UndefinedType = Undefined,
                     per_interface_mtu: bool | UndefinedType = Undefined,
+                    per_interface_l2_mtu: bool | UndefinedType = Undefined,
+                    per_interface_l2_mru: bool | UndefinedType = Undefined,
                     bgp_update_wait_install: bool | UndefinedType = Undefined,
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
+                    hardware_counters: bool | UndefinedType = Undefined,
+                    hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
+                    hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -11624,9 +12166,19 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        queue_monitor_length_notify: queue_monitor_length_notify
-                        interface_storm_control: interface_storm_control
-                        poe: poe
+                        queue_monitor:
+                           Support for LANZ.
+                           The feature will be ignored on platforms where this is false.
+                        queue_monitor_length_notify:
+                           Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
+                           The
+                           feature will be ignored on platforms where this is false.
+                        interface_storm_control:
+                           Support for storm-control.
+                           The feature will be ignored on platforms where this is false.
+                        poe:
+                           Support for PoE.
+                           The feature will be ignored on platforms where this is false.
                         subinterface_mtu:
                            Support for MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
@@ -11636,11 +12188,20 @@ class EosDesigns(EosDesignsRootModel):
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
                            Platforms without support for per interface MTU can use a single default interface MTU setting. Set
                            this via "default_interface_mtu"
+                        per_interface_l2_mtu:
+                           Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
+                           The
+                           feature will be ignored on platforms where this is false.
+                        per_interface_l2_mru:
+                           Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-
+                           Channel interfaces.
+                           The feature will be ignored on platforms where this is false.
                         bgp_update_wait_install:
                            Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
                            convergence state is reached.
                            Can be overridden by setting "bgp_update_wait_install"
                            host/group_vars.
+                           The feature will be ignored on platforms where this is false.
                         bgp_update_wait_for_convergence:
                            Do not advertise reachability to a prefix until that prefix has been installed in hardware.
                            This
@@ -11648,11 +12209,30 @@ class EosDesigns(EosDesignsRootModel):
                            that may not yet be installed into the forwarding plane.
                            Can be overridden by setting
                            "bgp_update_wait_for_convergence" host/group_vars.
+                           The feature will be ignored on platforms where
+                           this is false.
                         platform_sfe_interface_profile:
                            Support for Platform SFE Interface Profiles.
 
                            Subclass of AvdModel.
-                        evpn_gateway_all_active_multihoming: Support for all-active EVPN gateway redundancy.
+                        evpn_gateway_all_active_multihoming:
+                           Support for all-active EVPN gateway redundancy.
+                           An error will be raised if the feature is enabled
+                           and this is false.
+                        hardware_counters:
+                           Support for enabling counters using programmable hardware counter resources.
+                           Setting this key to
+                           `false` for the specific platform will ignore all hardware counter features for this platform.
+                        hardware_counter_features:
+                           Per-feature support for the hardware counters.
+                           Features set to `false` will be ignored for this
+                           platform.
+
+                           Subclass of AvdModel.
+                        hardware_speed_group:
+                           Support for configurable speeds per speed-group.
+                           The feature will be ignored on platforms where this
+                           is false.
                         private_vlan:
                            Support for PVLAN feature.
                            On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3

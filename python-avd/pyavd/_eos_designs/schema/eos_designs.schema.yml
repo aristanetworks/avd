@@ -3904,15 +3904,31 @@ keys:
         feature_support:
           type: dict
           keys:
+            queue_monitor:
+              type: bool
+              description: 'Support for LANZ.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
             queue_monitor_length_notify:
               type: bool
+              description: 'Support for LANZ notifying mode. Requires the parent `queue_monitor`
+                feature to be enabled.
+
+                The feature will be ignored on platforms where this is false.'
               default: true
             interface_storm_control:
               type: bool
               default: true
+              description: 'Support for storm-control.
+
+                The feature will be ignored on platforms where this is false.'
             poe:
               type: bool
               default: false
+              description: 'Support for PoE.
+
+                The feature will be ignored on platforms where this is false.'
             subinterface_mtu:
               type: bool
               default: true
@@ -3935,6 +3951,24 @@ keys:
                 interface MTU setting. Set this via "default_interface_mtu"
 
                 '
+            per_interface_l2_mtu:
+              type: bool
+              default: true
+              description: 'Support for configuration of per interface L2 MTU on Ethernet
+                or Port-channel interfaces.
+
+                The feature will be ignored on platforms where this is false.
+
+                '
+            per_interface_l2_mru:
+              type: bool
+              default: true
+              description: 'Support for configuration of per interface L2 MRU (maximum
+                receive unit) on Ethernet and Port-Channel interfaces.
+
+                The feature will be ignored on platforms where this is false.
+
+                '
             bgp_update_wait_install:
               type: bool
               default: true
@@ -3942,6 +3976,8 @@ keys:
                 BGP instance is initiated until the BGP convergence state is reached.
 
                 Can be overridden by setting "bgp_update_wait_install" host/group_vars.
+
+                The feature will be ignored on platforms where this is false.
 
                 '
             bgp_update_wait_for_convergence:
@@ -3955,6 +3991,8 @@ keys:
                 into the forwarding plane.
 
                 Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
+
+                The feature will be ignored on platforms where this is false.
 
                 '
             platform_sfe_interface_profile:
@@ -3974,7 +4012,119 @@ keys:
             evpn_gateway_all_active_multihoming:
               type: bool
               default: false
-              description: Support for all-active EVPN gateway redundancy.
+              description: 'Support for all-active EVPN gateway redundancy.
+
+                An error will be raised if the feature is enabled and this is false.'
+            hardware_counters:
+              type: bool
+              description: 'Support for enabling counters using programmable hardware
+                counter resources.
+
+                Setting this key to `false` for the specific platform will ignore
+                all hardware counter features for this platform.'
+              default: true
+            hardware_counter_features:
+              type: dict
+              description: 'Per-feature support for the hardware counters.
+
+                Features set to `false` will be ignored for this platform.'
+              keys:
+                acl:
+                  type: bool
+                  default: true
+                decap_group:
+                  type: bool
+                  default: true
+                directflow:
+                  type: bool
+                  default: true
+                ecn:
+                  type: bool
+                  default: true
+                flow_spec:
+                  type: bool
+                  default: true
+                gre_tunnel_interface:
+                  type: bool
+                  default: true
+                ip:
+                  type: bool
+                  default: true
+                mpls_interface:
+                  type: bool
+                  default: true
+                mpls_lfib:
+                  type: bool
+                  default: true
+                mpls_tunnel:
+                  type: bool
+                  default: true
+                multicast:
+                  type: bool
+                  default: true
+                nexthop:
+                  type: bool
+                  default: true
+                pbr:
+                  type: bool
+                  default: true
+                pdp:
+                  type: bool
+                  default: true
+                policing_interface:
+                  type: bool
+                  default: true
+                qos:
+                  type: bool
+                  default: true
+                qos_dual_rate_policer:
+                  type: bool
+                  default: true
+                route:
+                  type: bool
+                  default: true
+                routed_port:
+                  type: bool
+                  default: true
+                segment_security:
+                  type: bool
+                  default: true
+                subinterface:
+                  type: bool
+                  default: true
+                tapagg:
+                  type: bool
+                  default: true
+                traffic_class:
+                  type: bool
+                  default: true
+                traffic_policy:
+                  type: bool
+                  default: true
+                vlan:
+                  type: bool
+                  default: true
+                vlan_interface:
+                  type: bool
+                  default: true
+                vni_decap:
+                  type: bool
+                  default: true
+                vni_encap:
+                  type: bool
+                  default: true
+                vtep_decap:
+                  type: bool
+                  default: true
+                vtep_encap:
+                  type: bool
+                  default: true
+            hardware_speed_group:
+              type: bool
+              description: 'Support for configurable speeds per speed-group.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
             private_vlan:
               type: bool
               default: true
