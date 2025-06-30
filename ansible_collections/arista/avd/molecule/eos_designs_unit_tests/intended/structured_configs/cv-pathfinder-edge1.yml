@@ -362,7 +362,7 @@ ip_security:
   - name: DP-PROFILE
     sa_policy: DP-SA-POLICY
     connection: start
-    shared_key: ABCDEF1234567890666
+    shared_key: 0207165218120E
     dpd:
       interval: 10
       time: 50
@@ -372,7 +372,7 @@ ip_security:
     ike_policy: CP-IKE-POLICY
     sa_policy: CP-SA-POLICY
     connection: start
-    shared_key: ABCDEF1234567890
+    shared_key: 0112140D481F07
     dpd:
       interval: 10
       time: 50

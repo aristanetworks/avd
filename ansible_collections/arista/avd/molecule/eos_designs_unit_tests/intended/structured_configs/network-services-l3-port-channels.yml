@@ -204,7 +204,7 @@ port_channel_interfaces:
   ospf_area: 0.0.0.0
   ospf_cost: 1
   ospf_authentication: simple
-  ospf_authentication_key: testpass
+  ospf_authentication_key: VYW+BCfsYBkuQbloxSLuoQ==
   flow_tracker:
     sampled: FT_Test
   peer: inet-cloud-sub100
@@ -233,10 +233,10 @@ port_channel_interfaces:
   ospf_message_digest_keys:
   - id: 1
     hash_algorithm: sha256
-    key: testpass1
+    key: ocAzkT2JRNKrbPGT790Geg==
   - id: 2
     hash_algorithm: sha512
-    key: testpass2
+    key: uVG6QXeIXN+QGY2DP4UCtA==
   flow_tracker:
     sampled: FLOW-TRACKER
   peer: inet-cloud

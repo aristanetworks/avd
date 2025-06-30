@@ -8623,6 +8623,10 @@ keys:
             description: Allowed SSH authentication methods.
       access_groups:
         type: list
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: ip_access_group_in or vrfs.ip_access_group_in
         items:
           type: dict
           keys:
@@ -8636,6 +8640,10 @@ keys:
               - int
       ipv6_access_groups:
         type: list
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: ipv6_access_group_in or vrfs.ipv6_access_group_in
         items:
           type: dict
           keys:
@@ -8647,6 +8655,16 @@ keys:
               description: VRF Name.
               convert_types:
               - int
+      ip_access_group_in:
+        type: str
+        description: Standard ACL Name.
+        convert_types:
+        - int
+      ipv6_access_group_in:
+        type: str
+        description: Standard IPv6 ACL Name.
+        convert_types:
+        - int
       idle_timeout:
         type: int
         convert_types:
@@ -8687,7 +8705,7 @@ keys:
             type: bool
             description: Enforce strict host key checking.
       enable:
-        description: Enable SSH daemon.
+        description: Enable SSH for VRF default.
         type: bool
       connection:
         type: dict
@@ -8720,6 +8738,22 @@ keys:
             enable:
               description: Enable SSH in VRF.
               type: bool
+            ip_access_group_in:
+              type: str
+              description: 'Standard ACL Name.
+
+                This should not be set for VRF ''default''. Use `management_ssh.ip_access_group_in`
+                instead.'
+              convert_types:
+              - int
+            ipv6_access_group_in:
+              type: str
+              description: 'Standard IPv6 ACL Name.
+
+                This should not be set for VRF ''default''. Use `management_ssh.ipv6_access_group_in`
+                instead.'
+              convert_types:
+              - int
       log_level:
         type: str
         description: SSH daemon log level.

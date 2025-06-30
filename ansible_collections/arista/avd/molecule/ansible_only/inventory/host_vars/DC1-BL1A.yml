@@ -12,9 +12,6 @@ override_ip_name_servers:
   - ip_address: 1.1.1.1
     vrf: MGMT
 
-# Testing empty key
-cvp_ingestauth_key: ""
-
 # Testing router id loopback description override
 router_id_loopback_description: "MY_ROUTER_ID_LOOPBACK"
 

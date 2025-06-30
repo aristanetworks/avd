@@ -17,6 +17,23 @@ keys:
         type: bool
         default: false
         description: Enable the generation of CloudVision Topology Tags (hints).
+      campus_fabric:
+        type: bool
+        default: false
+        description: |-
+          PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+          Generate CloudVision device and interface Topology Tags for Campus fabric devices.
+          Device is treated as a Campus fabric device if:
+            - The `campus` variable is assigned, either as native Ansible variable or as part of the `<node_type_keys.key>` AVD data construct.
+            - The `generate_cv_tags.campus_fabric` variable is set to `True`.
+          When campus-related tags are generated for a device, generation of the DC-related tags is automatically disabled for that device.
+          AVD generates the following device tags for the Campus fabric devices based on the provided Campus-related input variables:
+            - `Campus`
+            - `Campus-Pod`
+            - `Access-Pod`
+            - `topology_hint_type`
+            - `Role`
+          These tags are later used by CloudVision to render the correct network layout in the Topology view (`campusV2` network hierarchy) and Campus dashboards.
       interface_tags:
         description: List of interface tags that should be generated.
         type: list
