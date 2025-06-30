@@ -17,6 +17,7 @@ if TYPE_CHECKING:
 
 class InternalData:
     __slots__ = (
+        "campus_link_type",
         "context",
         "description",
         "evpn_l3_multicast_enabled",
@@ -28,6 +29,7 @@ class InternalData:
         "type",
     )
 
+    campus_link_type: list[str]
     context: str
     description: str | None
     evpn_l3_multicast_enabled: bool | None

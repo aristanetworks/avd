@@ -31,6 +31,9 @@ class EthernetInterfacesMixin(Protocol):
                 ethernet_interface.ptp = self._get_ptp_config_interface(p2p_link, output_type=EosCliConfigGen.EthernetInterfacesItem.Ptp)
                 ethernet_interface.description = self._p2p_link_ethernet_description(p2p_link_data) or None
                 ethernet_interface.speed = p2p_link.speed
+                # Propagate campus_link_type for campus devices
+                if self.shared_utils.is_campus_device and p2p_link.campus_link_type:
+                    ethernet_interface._internal_data.campus_link_type = list(p2p_link.campus_link_type)
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
             # Port-Channel members
@@ -46,6 +49,9 @@ class EthernetInterfacesMixin(Protocol):
                 )
                 ethernet_interface.channel_group.id = p2p_link_data["port_channel_id"]
                 ethernet_interface.channel_group.mode = p2p_link.port_channel.mode
+                # Propagate campus_link_type for campus devices
+                if self.shared_utils.is_campus_device and p2p_link.campus_link_type:
+                    ethernet_interface._internal_data.campus_link_type = list(p2p_link.campus_link_type)
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
     def _p2p_link_ethernet_description(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link_data: dict) -> str:
