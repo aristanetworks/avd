@@ -4,8 +4,9 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| L2LS_BGP | l2leaf | BGP-LEAF1 | - | - | Provisioned | - |
-| L2LS_BGP | l2leaf | BGP-LEAF2 | - | - | Provisioned | - |
+| L2LS_BGP | l2leaf | BGP-LEAF1 | 172.16.99.1/24 | - | Provisioned | - |
+| L2LS_BGP | l2leaf | BGP-LEAF2 | 172.16.99.2/24 | - | Provisioned | - |
+| L2LS_BGP | l2leaf | BGP-LEAF3 | 172.16.99.3/24 | - | Provisioned | - |
 | L2LS_BGP | l3spine | BGP-SPINE1 | - | - | Provisioned | - |
 | L2LS_BGP | l3spine | BGP-SPINE2 | - | - | Provisioned | - |
 | L2LS_ISIS | l2leaf | ISIS-LEAF1 | 192.168.200.105/24 | vEOS-LAB | Provisioned | - |
@@ -27,6 +28,7 @@
 | --- | ---- | ---- | ------------- | ---------------- |
 | L2LS_BGP | l2leaf | BGP-LEAF1 | 172.23.254.4/24 | Vlan4092 |
 | L2LS_BGP | l2leaf | BGP-LEAF2 | 172.23.254.5/24 | Vlan4092 |
+| L2LS_BGP | l2leaf | BGP-LEAF3 | 172.23.254.6/24 | Vlan4092 |
 | L2LS_ISIS | l2leaf | ISIS-LEAF1 | 172.23.254.4/24 | Vlan4092 |
 | L2LS_L2ONLY | l2leaf | L2ONLY-LEAF1 | 172.23.254.4/24 | Vlan4092 |
 | L2LS_L2ONLY | l2leaf | L2ONLY-LEAF2 | 172.23.254.5/24 | Vlan4092 |
@@ -39,8 +41,12 @@
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
 | l2leaf | BGP-LEAF1 | Ethernet1 | l3spine | BGP-SPINE1 | Ethernet1 |
 | l2leaf | BGP-LEAF1 | Ethernet2 | l3spine | BGP-SPINE2 | Ethernet1 |
+| l2leaf | BGP-LEAF1 | Ethernet3 | l2leaf | BGP-LEAF3 | Ethernet1 |
+| l2leaf | BGP-LEAF1 | Ethernet4 | mlag_peer | BGP-LEAF2 | Ethernet4 |
+| l2leaf | BGP-LEAF1 | Ethernet5 | mlag_peer | BGP-LEAF2 | Ethernet5 |
 | l2leaf | BGP-LEAF2 | Ethernet1 | l3spine | BGP-SPINE1 | Ethernet2 |
 | l2leaf | BGP-LEAF2 | Ethernet2 | l3spine | BGP-SPINE2 | Ethernet2 |
+| l2leaf | BGP-LEAF2 | Ethernet3 | l2leaf | BGP-LEAF3 | Ethernet2 |
 | l3spine | BGP-SPINE1 | Ethernet3 | mlag_peer | BGP-SPINE2 | Ethernet3 |
 | l3spine | BGP-SPINE1 | Ethernet4 | mlag_peer | BGP-SPINE2 | Ethernet4 |
 | l2leaf | ISIS-LEAF1 | Ethernet1 | l3spine | ISIS-SPINE1 | Ethernet1 |

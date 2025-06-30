@@ -1,0 +1,49 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ssh_settings:
+    type: dict
+    documentation_options:
+      table: management-settings
+    keys:
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+                - int
+              description: |-
+                VRF name.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will configure SSH for the VRF set with `mgmt_interface_vrf`.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure SSH for the VRF set with `inband_mgmt_vrf`.
+                  An error will be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the VRF name.
+            enabled:
+              type: bool
+              required: true
+              description: Enable SSH in VRF.
+            ipv4_acl:
+              type: str
+              convert_types:
+                - int
+              description: IPv4 access-list name.
+            ipv6_acl:
+              type: str
+              convert_types:
+                - int
+              description: IPv6 access-list name.
+      idle_timeout:
+        type: int
+        $ref: "eos_cli_config_gen#/keys/management_ssh/keys/idle_timeout"

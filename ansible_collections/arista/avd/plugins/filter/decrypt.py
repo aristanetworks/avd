@@ -39,7 +39,7 @@ options:
       Type of password to decrypt.
       `bgp` and `ospf_simple` requires the `password` and `key` inputs.
       `ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.
-      `isis` requires the `password`, `key` and `isis_mode` inputs.
+      `isis` requires the `password`, `key` and `mode` inputs.
       `tacacs` requires the `password` input.
     choices: ["bgp", "ospf_simple", "ospf_message_digest", "isis"]
     required: true
@@ -60,7 +60,7 @@ options:
     description: Key ID to use with `passwd_type=ospf_message_digest`.
     min: 1
     max: 255
-  isis_mode:
+  mode:
     type: string
     description: ISIS encryption mode (`none`, `text`, `md5`, `sha`) or shared-secret algorithm (`sha-1`, `sha-224`, `sha-256`, `sha-384`, `sha1-512`).
     choices: ["none", "text", "md5", "sha", "sha-1", "sha-224", "sha-256", "sha-384", "sha1-512"]

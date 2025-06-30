@@ -135,7 +135,7 @@ class UtilsMixin(Protocol):
         if short_esi.lower() == "auto":
             esi_hash = sha256(
                 "".join(
-                    [hash_extra_value] + adapter.switches[:2] + adapter.switch_ports[:2] + endpoint_ports[:2] + [str(channel_group_id)],
+                    [hash_extra_value, *adapter.switches[:2], *adapter.switch_ports[:2], *endpoint_ports[:2], str(channel_group_id)],
                 ).encode("UTF-8"),
             ).hexdigest()
             short_esi = re.sub(r"([0-9a-f]{4})", "\\1:", esi_hash)[:14]

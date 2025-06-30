@@ -1,0 +1,385 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_IPV6_NUMBERED_SPINE1_Ethernet3
+  shutdown: false
+  mtu: 1500
+  ipv6_address: 2001:db8:2:4::2/64
+  peer: IPV6_NUMBERED_SPINE1
+  peer_interface: Ethernet3
+  peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_IPV6_NUMBERED_SPINE2_Ethernet3
+  shutdown: false
+  mtu: 1500
+  ipv6_address: 2001:db8:2:5::2/64
+  peer: IPV6_NUMBERED_SPINE2
+  peer_interface: Ethernet3
+  peer_type: spine
+  switchport:
+    enabled: false
+hostname: IPV6_NUMBERED_LEAF2a
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
+ipv6_prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY-V6
+  sequence_numbers:
+  - sequence: 10
+    action: permit 2001:db8:1::/48 eq 64
+  - sequence: 20
+    action: permit 2001:db8:5::/48 eq 64
+ipv6_unicast_routing: true
+is_deployed: true
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: ansible
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ipv6_address: 2001:db8:1:3::1/64
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ipv6_address: 2001:db8:5:3::1/64
+- name: Loopback10
+  description: DIAG_VRF_VRF10
+  shutdown: false
+  vrf: VRF10
+  ip_address: 10.255.10.3/32
+- name: Loopback11
+  description: DIAG_VRF_VRF11
+  shutdown: false
+  vrf: VRF11
+  ip_address: 10.255.11.3/32
+- name: Loopback12
+  description: DIAG_VRF_VRF12
+  shutdown: false
+  vrf: VRF12
+  ip_address: 10.255.12.3/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.16.1.33/24
+  type: oob
+metadata:
+  platform: vEOS-lab
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: time.google.com
+    preferred: true
+    vrf: MGMT
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 30
+    type: permit
+    match:
+    - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65101'
+  router_id: 10.255.1.3
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv6-UNDERLAY-PEERS
+    type: ipv6
+    password: F0bdF6JLcJtagc6PCN8W0Q==
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 2001:db8:2:4::1
+    peer_group: IPv6-UNDERLAY-PEERS
+    remote_as: '65100'
+    peer: IPV6_NUMBERED_SPINE1
+    description: IPV6_NUMBERED_SPINE1_Ethernet3
+  - ip_address: 2001:db8:2:5::1
+    peer_group: IPv6-UNDERLAY-PEERS
+    remote_as: '65100'
+    peer: IPV6_NUMBERED_SPINE2
+    description: IPV6_NUMBERED_SPINE2_Ethernet3
+  - ip_address: 2001:db8:0:1::1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65100'
+    peer: IPV6_NUMBERED_SPINE1
+    description: IPV6_NUMBERED_SPINE1_Loopback0
+  - ip_address: 2001:db8:0:2::1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65100'
+    peer: IPV6_NUMBERED_SPINE2
+    description: IPV6_NUMBERED_SPINE2_Loopback0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 11
+    tenant: TENANT1
+    rd: 10.255.1.3:10011
+    route_targets:
+      both:
+      - 10011:10011
+    redistribute_routes:
+    - learned
+  - id: 12
+    tenant: TENANT1
+    rd: 10.255.1.3:10012
+    route_targets:
+      both:
+      - 10012:10012
+    redistribute_routes:
+    - learned
+  - id: 21
+    tenant: TENANT1
+    rd: 10.255.1.3:10021
+    route_targets:
+      both:
+      - 10021:10021
+    redistribute_routes:
+    - learned
+  - id: 22
+    tenant: TENANT1
+    rd: 10.255.1.3:10022
+    route_targets:
+      both:
+      - 10022:10022
+    redistribute_routes:
+    - learned
+  - id: 31
+    tenant: TENANT1
+    rd: 10.255.1.3:10031
+    route_targets:
+      both:
+      - 10031:10031
+    redistribute_routes:
+    - learned
+  - id: 32
+    tenant: TENANT1
+    rd: 10.255.1.3:10032
+    route_targets:
+      both:
+      - 10032:10032
+    redistribute_routes:
+    - learned
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  address_family_ipv6:
+    peer_groups:
+    - name: IPv6-UNDERLAY-PEERS
+      activate: true
+  vrfs:
+  - name: VRF10
+    rd: 10.255.1.3:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    router_id: 10.255.1.3
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF11
+    rd: 10.255.1.3:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    router_id: 10.255.1.3
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF12
+    rd: 10.255.1.3:12
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+    router_id: 10.255.1.3
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 4096
+transceiver_qsfp_default_mode_4x10: true
+virtual_source_nat_vrfs:
+- name: VRF10
+  ip_address: 10.255.10.3
+- name: VRF11
+  ip_address: 10.255.11.3
+- name: VRF12
+  ip_address: 10.255.12.3
+vlan_interfaces:
+- name: Vlan11
+  description: VRF10_VLAN11
+  shutdown: false
+  vrf: VRF10
+  ip_address_virtual: 10.10.11.1/24
+  tenant: TENANT1
+- name: Vlan12
+  description: VRF10_VLAN12
+  shutdown: false
+  vrf: VRF10
+  ip_address_virtual: 10.10.12.1/24
+  tenant: TENANT1
+- name: Vlan21
+  description: VRF11_VLAN21
+  shutdown: false
+  vrf: VRF11
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:21::1/48
+  tenant: TENANT1
+- name: Vlan22
+  description: VRF11_VLAN22
+  shutdown: false
+  vrf: VRF11
+  ip_address_virtual: 10.10.22.1/24
+  tenant: TENANT1
+- name: Vlan31
+  description: VRF11_VLAN21
+  shutdown: false
+  vrf: VRF12
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:32::1/48
+  tenant: TENANT1
+- name: Vlan32
+  description: VRF11_VLAN22
+  shutdown: false
+  vrf: VRF12
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:DB8:33::1/48
+  tenant: TENANT1
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: VRF10_VLAN11
+  tenant: TENANT1
+- id: 12
+  name: VRF10_VLAN12
+  tenant: TENANT1
+- id: 21
+  name: VRF11_VLAN21
+  tenant: TENANT1
+- id: 22
+  name: VRF11_VLAN22
+  tenant: TENANT1
+- id: 31
+  name: VRF11_VLAN21
+  tenant: TENANT1
+- id: 32
+  name: VRF11_VLAN22
+  tenant: TENANT1
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF10
+  ip_routing: true
+  tenant: TENANT1
+- name: VRF11
+  ip_routing: true
+  ipv6_routing: true
+  tenant: TENANT1
+- name: VRF12
+  ip_routing: true
+  ipv6_routing: true
+  tenant: TENANT1
+vxlan_interface:
+  vxlan1:
+    description: IPV6_NUMBERED_LEAF2a_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      encapsulations:
+        ipv6: true
+      vlans:
+      - id: 11
+        vni: 10011
+      - id: 12
+        vni: 10012
+      - id: 21
+        vni: 10021
+      - id: 22
+        vni: 10022
+      - id: 31
+        vni: 10031
+      - id: 32
+        vni: 10032
+      vrfs:
+      - name: VRF10
+        vni: 10
+      - name: VRF11
+        vni: 11
+      - name: VRF12
+        vni: 12

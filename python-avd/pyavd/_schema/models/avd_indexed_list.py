@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 NATURAL_SORT_PATTERN = re.compile(r"(\d+)")
 
 
-class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], AvdBase):
+class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
     """
     Base class used for schema-based data classes holding lists-of-dictionaries-with-primary-key loaded from AVD inputs.
 

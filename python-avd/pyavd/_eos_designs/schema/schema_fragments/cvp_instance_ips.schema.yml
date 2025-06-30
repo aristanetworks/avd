@@ -17,4 +17,8 @@ keys:
       `eos_designs` only supports one CloudVision cluster.
     items:
       type: str
-      description: IPv4 address or DNS name for CloudVision.
+      description: IPv4 address or DNS name for CloudVision
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0
