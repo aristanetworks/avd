@@ -21649,15 +21649,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "enable": {"type": bool}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "enable": {"type": bool},
+                "ip_access_group_in": {"type": str},
+                "ipv6_access_group_in": {"type": str},
+            }
             name: str
             """VRF Name."""
             enable: bool | None
             """Enable SSH in VRF."""
+            ip_access_group_in: str | None
+            """
+            Standard ACL Name.
+            This should not be set for VRF 'default'. Use `management_ssh.ip_access_group_in`
+            instead.
+            """
+            ipv6_access_group_in: str | None
+            """
+            Standard IPv6 ACL Name.
+            This should not be set for VRF 'default'. Use
+            `management_ssh.ipv6_access_group_in` instead.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, enable: bool | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    enable: bool | None | UndefinedType = Undefined,
+                    ip_access_group_in: str | None | UndefinedType = Undefined,
+                    ipv6_access_group_in: str | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     VrfsItem.
 
@@ -21667,6 +21691,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: VRF Name.
                         enable: Enable SSH in VRF.
+                        ip_access_group_in:
+                           Standard ACL Name.
+                           This should not be set for VRF 'default'. Use `management_ssh.ip_access_group_in`
+                           instead.
+                        ipv6_access_group_in:
+                           Standard IPv6 ACL Name.
+                           This should not be set for VRF 'default'. Use
+                           `management_ssh.ipv6_access_group_in` instead.
 
                     """
 
@@ -21710,6 +21742,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "authentication": {"type": Authentication},
             "access_groups": {"type": AccessGroups},
             "ipv6_access_groups": {"type": Ipv6AccessGroups},
+            "ip_access_group_in": {"type": str},
+            "ipv6_access_group_in": {"type": str},
             "idle_timeout": {"type": int},
             "cipher": {"type": Cipher},
             "key_exchange": {"type": KeyExchange},
@@ -21728,6 +21762,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdList with `AccessGroupsItem` items."""
         ipv6_access_groups: Ipv6AccessGroups
         """Subclass of AvdList with `Ipv6AccessGroupsItem` items."""
+        ip_access_group_in: str | None
+        """Standard ACL Name."""
+        ipv6_access_group_in: str | None
+        """Standard IPv6 ACL Name."""
         idle_timeout: int | None
         """Idle timeout in minutes."""
         cipher: Cipher
@@ -21753,7 +21791,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         hostkey: Hostkey
         """Subclass of AvdModel."""
         enable: bool | None
-        """Enable SSH daemon."""
+        """Enable SSH for VRF default."""
         connection: Connection
         """Subclass of AvdModel."""
         vrfs: Vrfs
@@ -21771,6 +21809,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 authentication: Authentication | UndefinedType = Undefined,
                 access_groups: AccessGroups | UndefinedType = Undefined,
                 ipv6_access_groups: Ipv6AccessGroups | UndefinedType = Undefined,
+                ip_access_group_in: str | None | UndefinedType = Undefined,
+                ipv6_access_group_in: str | None | UndefinedType = Undefined,
                 idle_timeout: int | None | UndefinedType = Undefined,
                 cipher: Cipher | UndefinedType = Undefined,
                 key_exchange: KeyExchange | UndefinedType = Undefined,
@@ -21793,6 +21833,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     authentication: Subclass of AvdModel.
                     access_groups: Subclass of AvdList with `AccessGroupsItem` items.
                     ipv6_access_groups: Subclass of AvdList with `Ipv6AccessGroupsItem` items.
+                    ip_access_group_in: Standard ACL Name.
+                    ipv6_access_group_in: Standard IPv6 ACL Name.
                     idle_timeout: Idle timeout in minutes.
                     cipher:
                        Cryptographic ciphers for SSH to use.
@@ -21808,7 +21850,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdList with `str` items.
                     fips_restrictions: Use FIPS compliant algorithms.
                     hostkey: Subclass of AvdModel.
-                    enable: Enable SSH daemon.
+                    enable: Enable SSH for VRF default.
                     connection: Subclass of AvdModel.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     log_level: SSH daemon log level.

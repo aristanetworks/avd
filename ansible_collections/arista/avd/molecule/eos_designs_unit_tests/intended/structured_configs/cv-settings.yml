@@ -1,0 +1,108 @@
+aaa_root:
+  disabled: true
+config_end: true
+daemon_terminattr:
+  clusters:
+  - name: cvaas-oob
+    cvaddrs:
+    - apiserver.arista.io:443
+    cvauth:
+      method: token-secure
+      token_file: /tmp/cv-onboarding-token
+    cvsourceintf: Management1
+    cvvrf: MGMT
+  - name: cvaas_inband_1
+    cvaddrs:
+    - apiserver.cv-prod-euwest-2.arista.io:443
+    cvauth:
+      method: token-secure
+      token_file: /tmp/cv-onboarding-token
+    cvsourceintf: Vlan4092
+    cvvrf: INBAND_MGMT_VRF
+  - name: cvaas_mgmt_intf
+    cvaddrs:
+    - apiserver.arista.io:443
+    cvauth:
+      method: token-secure
+      token_file: /tmp/cv-onboarding-token
+    cvsourceintf: Loopback0
+    cvvrf: INBAND_MGMT_VRF
+  - name: cvaas_inband_2
+    cvaddrs:
+    - apiserver.cv-prod-apnortheast-1.arista.io:443
+    cvauth:
+      method: token-secure
+      token_file: /tmp/anothercvaastoken
+    cvsourceintf: Loopback123
+    cvvrf: INBAND_MGMT_VRF
+  - name: onprem-oob
+    cvaddrs:
+    - onprem_oob_server_1:9911
+    - onprem_oob_server_2:9910
+    - onprem_oob_server_3:9910
+    cvauth:
+      method: token
+      token_file: /tmp/token
+    cvsourceintf: Management1
+    cvvrf: MGMT
+  - name: onprem_inband
+    cvaddrs:
+    - onprem_inband_server_1:9910
+    cvauth:
+      method: token
+      token_file: /tmp/anothertoken
+    cvsourceintf: Management1/1
+    cvvrf: INBAND_MGMT_VRF
+  - name: onprem_inband_two
+    cvaddrs:
+    - onprem_inband_server_2:9910
+    cvauth:
+      method: token
+      token_file: /tmp/token
+    cvsourceintf: Vlan4092
+    cvvrf: INBAND_MGMT_VRF
+  disable_aaa: true
+  ingestexclude: this_is_ingest_excluded
+  smashexcludes: this_is_smash_excluded
+enable_password:
+  disabled: true
+hostname: cv-settings
+ip_igmp_snooping:
+  globally_enabled: true
+is_deployed: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  type: oob
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  vrf: INBAND_MGMT_VRF
+  ip_address: 172.17.0.2/24
+  mtu: 1500
+  type: inband_mgmt
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4092
+  name: INBAND_MGMT
+  tenant: system
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: INBAND_MGMT_VRF
