@@ -282,5 +282,5 @@ keys:
           documentation_options:
             table: cloudvision-tags
           description: |-
-            Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or "edge".
+            Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
           type: str

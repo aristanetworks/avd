@@ -83,7 +83,7 @@ class RouterBgpMixin(Protocol):
             type=pg_type,
             update_source=update_source,
             bfd=peer_group.bfd,
-            password=peer_group.password,
+            password=self.shared_utils.get_bgp_password(peer_group),
             send_community="all",
             maximum_routes=maximum_routes,
         )
