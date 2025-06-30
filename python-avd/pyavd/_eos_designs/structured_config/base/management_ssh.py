@@ -43,5 +43,5 @@ class ManagementSshMixin(Protocol):
                     self.structured_config.management_ssh.ipv6_access_group_in = vrf.ipv6_acl if vrf.ipv6_acl else None
                 else:
                     management_ssh_vrf = self.structured_config.management_ssh.vrfs.obtain(vrf_name)
-                    management_ssh_vrf.ip_access_group_in=vrf.ipv4_acl if vrf.ipv4_acl else None
-                    management_ssh_vrf.ipv6_access_group_in=vrf.ipv6_acl if vrf.ipv6_acl else None
+                    management_ssh_vrf.ip_access_group_in = vrf.ipv4_acl if vrf.ipv4_acl else None
+                    management_ssh_vrf.ipv6_access_group_in = vrf.ipv6_acl if vrf.ipv6_acl else None
