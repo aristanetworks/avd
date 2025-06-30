@@ -23,6 +23,7 @@ spine:
       - "distance bgp 20 200 200"
     digital_twin:
       act_os_version: "4.33.1F"
+      act_internet_access: false
   nodes:
     # Spine also working as EVPN RS
     - name: DC1-POD1-SPINE1
@@ -40,6 +41,8 @@ spine:
       mgmt_ip: 192.168.1.6/24
       uplink_switch_interfaces: ["Ethernet2", "Ethernet2"]
       serial_number: "DEADBEEFC0FFEE"
+      digital_twin:
+        act_internet_access: true
 
 # In DC1 we define all variables on specific node / node_group
 l3leaf:

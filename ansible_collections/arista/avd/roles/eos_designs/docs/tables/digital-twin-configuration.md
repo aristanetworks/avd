@@ -13,6 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "digital_twin.fabric.act_os_version") | String |  |  |  | OS version for ACT Digital Twin fabric devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_username</samp>](## "digital_twin.fabric.act_username") | String |  | `cvpadmin` |  | Username for ACT Digital Twin fabric devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_password</samp>](## "digital_twin.fabric.act_password") | String |  | `cvp123!` |  | Cleartext password for ACT Digital Twin fabric devices. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_internet_access</samp>](## "digital_twin.fabric.act_internet_access") | Boolean |  | `True` |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'veos' node type and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to veos devices by default. |
 
 === "YAML"
 
@@ -35,4 +36,9 @@
 
         # Cleartext password for ACT Digital Twin fabric devices.
         act_password: <str; default="cvp123!">
+
+        # Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+        # This option applies only to the 'veos' node type and will be ignored for all other ACT node types.
+        # ACT does not provide direct Internet access to veos devices by default.
+        act_internet_access: <bool; default=True>
     ```
