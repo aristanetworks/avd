@@ -500,6 +500,19 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
                 enable_https=self.inputs.management_eapi.enable_https,
                 default_services=self.inputs.management_eapi.default_services,
             )
+            for vrf in self.inputs.management_eapi.vrfs._natural_sorted():
+                vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
+                if vrf.enabled:
+                    if vrf.ipv4_acl is None and vrf.ipv6_acl is None:
+                        self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name)
+                    elif vrf.ipv4_acl is not None and vrf.ipv6_acl is not None:
+                        self.structured_config.management_api_http.enable_vrfs.append_new(
+                            name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl
+                        )
+                    elif vrf.ipv4_acl is not None:
+                        self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl)
+                    elif vrf.ipv6_acl is not None:
+                        self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, ipv6_access_group=vrf.ipv6_acl)
 
     @structured_config_contributor
     def link_tracking_groups(self) -> None:

@@ -263,6 +263,14 @@ management_api_http:
   default_services: false
   enable_vrfs:
   - name: MGMT
+  - name: Tauji
+  - name: Tauji_1
+    access_group: ACL_EAPI_IPv4
+    ipv6_access_group: ACL_EAPI_IPv6
+  - name: Tauji_2
+    access_group: ACL_EAPI_IPv4_1
+  - name: Tauji_3
+    ipv6_access_group: ACL_EAPI_IPv6_1
 management_interfaces:
 - name: Management99
   description: OOB_MANAGEMENT
