@@ -5,13 +5,13 @@
 #}
 {# HEADER -- LOGIC implementation #}
 {% if ztp_bootstrap_file is not arista.avd.defined %}
-{%     set cvp_instance_ip = 'cvp_instance_ip is unset - please set' %}
+{%     set cvp_instance_ip = '<ztp_bootstrap_file is unset - please set>' %}
 {%     if hostvars[groups[fabric_group][0]]['cvp_instance_ips'] is arista.avd.defined %}
 {%         set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ips'][0] %}
 {%     elif hostvars[groups[fabric_group][0]]['cvp_instance_ip'] is arista.avd.defined %}
 {%         set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ip'] %}
 {%     endif %}
-{%     set ztp_bootstrap_file = "http://{{ cvp_instance_ip }}/ztp/bootstrap" %}
+{%     set ztp_bootstrap_file = "http://" ~ cvp_instance_ip ~ "/ztp/bootstrap" %}
 {% endif %}
 {% set node_types = dict() %}
 {% if hostvars[groups[fabric_group][0]]['node_type_keys'] is arista.avd.defined %}
