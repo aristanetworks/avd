@@ -15620,12 +15620,7 @@ class EosDesigns(EosDesignsRootModel):
             of AvdModel.
             """
             vxlan_flood_multicast: VxlanFloodMulticast
-            """
-            Explicitly enable or disable vxlan_flood_multicast to override settings of
-            `<network_services_key>.[].vxlan_flood_multicast`.
-
-            Subclass of AvdModel.
-            """
+            """Subclass of AvdModel."""
             evpn_l3_multicast: EvpnL3Multicast
             """
             Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -15823,11 +15818,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass
                            of AvdModel.
-                        vxlan_flood_multicast:
-                           Explicitly enable or disable vxlan_flood_multicast to override settings of
-                           `<network_services_key>.[].vxlan_flood_multicast`.
-
-                           Subclass of AvdModel.
+                        vxlan_flood_multicast: Subclass of AvdModel.
                         evpn_l3_multicast:
                            Explicitly enable or disable evpn_l3_multicast to override setting of
                            `<network_services_key>.[].evpn_l3_multicast.enabled` and
@@ -16492,12 +16483,7 @@ class EosDesigns(EosDesignsRootModel):
         of AvdModel.
         """
         vxlan_flood_multicast: VxlanFloodMulticast
-        """
-        Explicitly enable or disable vxlan_flood_multicast to override settings of
-        `<network_services_key>.[].vxlan_flood_multicast`.
-
-        Subclass of AvdModel.
-        """
+        """Subclass of AvdModel."""
         evpn_l3_multicast: EvpnL3Multicast
         """
         Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -16709,11 +16695,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
-                    vxlan_flood_multicast:
-                       Explicitly enable or disable vxlan_flood_multicast to override settings of
-                       `<network_services_key>.[].vxlan_flood_multicast`.
-
-                       Subclass of AvdModel.
+                    vxlan_flood_multicast: Subclass of AvdModel.
                     evpn_l3_multicast:
                        Explicitly enable or disable evpn_l3_multicast to override setting of
                        `<network_services_key>.[].evpn_l3_multicast.enabled` and
@@ -41479,12 +41461,7 @@ class EosDesigns(EosDesignsRootModel):
                             of AvdModel.
                             """
                             vxlan_flood_multicast: VxlanFloodMulticast
-                            """
-                            Explicitly enable or disable vxlan_flood_multicast to override settings of
-                            `<network_services_key>.[].vxlan_flood_multicast`.
-
-                            Subclass of AvdModel.
-                            """
+                            """Subclass of AvdModel."""
                             evpn_l3_multicast: EvpnL3Multicast
                             """
                             Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -41689,11 +41666,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass
                                            of AvdModel.
-                                        vxlan_flood_multicast:
-                                           Explicitly enable or disable vxlan_flood_multicast to override settings of
-                                           `<network_services_key>.[].vxlan_flood_multicast`.
-
-                                           Subclass of AvdModel.
+                                        vxlan_flood_multicast: Subclass of AvdModel.
                                         evpn_l3_multicast:
                                            Explicitly enable or disable evpn_l3_multicast to override setting of
                                            `<network_services_key>.[].evpn_l3_multicast.enabled` and
@@ -42383,12 +42356,7 @@ class EosDesigns(EosDesignsRootModel):
                         of AvdModel.
                         """
                         vxlan_flood_multicast: VxlanFloodMulticast
-                        """
-                        Explicitly enable or disable vxlan_flood_multicast to override settings of
-                        `<network_services_key>.[].vxlan_flood_multicast`.
-
-                        Subclass of AvdModel.
-                        """
+                        """Subclass of AvdModel."""
                         evpn_l3_multicast: EvpnL3Multicast
                         """
                         Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -42614,11 +42582,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass
                                        of AvdModel.
-                                    vxlan_flood_multicast:
-                                       Explicitly enable or disable vxlan_flood_multicast to override settings of
-                                       `<network_services_key>.[].vxlan_flood_multicast`.
-
-                                       Subclass of AvdModel.
+                                    vxlan_flood_multicast: Subclass of AvdModel.
                                     evpn_l3_multicast:
                                        Explicitly enable or disable evpn_l3_multicast to override setting of
                                        `<network_services_key>.[].evpn_l3_multicast.enabled` and
