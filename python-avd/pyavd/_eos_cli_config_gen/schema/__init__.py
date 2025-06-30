@@ -65352,7 +65352,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     FloodVteps._item_type = str
 
-                    _fields: ClassVar[dict] = {"id": {"type": int}, "vni": {"type": int}, "multicast_group": {"type": str}, "flood_vteps": {"type": FloodVteps}}
+                    _fields: ClassVar[dict] = {
+                        "id": {"type": int},
+                        "vni": {"type": int},
+                        "multicast_group": {"type": str},
+                        "flood_vteps": {"type": FloodVteps},
+                        "flood_group": {"type": str},
+                    }
                     id: int
                     """VLAN ID."""
                     vni: int | None
@@ -65360,6 +65366,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """IP Multicast Group Address."""
                     flood_vteps: FloodVteps
                     """Subclass of AvdList with `str` items."""
+                    flood_group: str | None
+                    """Flood multicast group address."""
 
                     if TYPE_CHECKING:
 
@@ -65370,6 +65378,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             vni: int | None | UndefinedType = Undefined,
                             multicast_group: str | None | UndefinedType = Undefined,
                             flood_vteps: FloodVteps | UndefinedType = Undefined,
+                            flood_group: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             VlansItem.
@@ -65382,6 +65391,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 vni: vni
                                 multicast_group: IP Multicast Group Address.
                                 flood_vteps: Subclass of AvdList with `str` items.
+                                flood_group: Flood multicast group address.
 
                             """
 
@@ -65806,7 +65816,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     FloodVteps._item_type = str
 
-                    _fields: ClassVar[dict] = {"id": {"type": int}, "vni": {"type": int}, "multicast_group": {"type": str}, "flood_vteps": {"type": FloodVteps}}
+                    _fields: ClassVar[dict] = {
+                        "id": {"type": int},
+                        "vni": {"type": int},
+                        "multicast_group": {"type": str},
+                        "flood_vteps": {"type": FloodVteps},
+                        "flood_group": {"type": str},
+                    }
                     id: int
                     """VLAN ID."""
                     vni: int | None
@@ -65814,6 +65830,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """IP Multicast Group Address."""
                     flood_vteps: FloodVteps
                     """Subclass of AvdList with `str` items."""
+                    flood_group: str | None
+                    """Flood multicast group address."""
 
                     if TYPE_CHECKING:
 
@@ -65824,6 +65842,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             vni: int | None | UndefinedType = Undefined,
                             multicast_group: str | None | UndefinedType = Undefined,
                             flood_vteps: FloodVteps | UndefinedType = Undefined,
+                            flood_group: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             VlansItem.
@@ -65836,6 +65855,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 vni: vni
                                 multicast_group: IP Multicast Group Address.
                                 flood_vteps: Subclass of AvdList with `str` items.
+                                flood_group: Flood multicast group address.
 
                             """
 
