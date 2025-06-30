@@ -133,6 +133,20 @@ def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> A
 
 
 def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin:
+    """
+    Build and return the ACT topology data.
+
+    The returned object will contain information required to render ACT topology file:
+    - ACT global node definitions.
+    - ACT individual node definitions.
+    - ACT node links.
+
+    Args:
+        fabric_documentation_facts: FabricDocumentationFacts object holding facts used for generating Fabric Documentation.
+
+    Returns:
+        ACTDigitalTwin object containing information to render ACT topology file.
+    """
     # Identify common username for fabric nodes
     # Value is enforced as a non-empty string during the generation of the metadata part of the structured_config
     digital_twin_fabric_username: str = next(
@@ -163,7 +177,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
     device_list: list[str] = list(fabric_documentation_facts.avd_facts)
     for device in sorted(device_list):
         if (
-            digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type", "")
+            digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..node_type", separator="..")
         ) in digital_twin_node_types and not digital_twin_node_types[digital_twin_node_type]:
             digital_twin_node_types[digital_twin_node_type] = ActNodeTypeSettings(username=digital_twin_fabric_username, password=digital_twin_fabric_password)
 
@@ -171,7 +185,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
             {
                 device: ActNodeSettings(
                     # All three values are enforced as non-empty strings during the generation of the metadata part of the structured_config
-                    node_type=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..node_type", separator=".."),
+                    node_type=digital_twin_node_type,
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
                 )

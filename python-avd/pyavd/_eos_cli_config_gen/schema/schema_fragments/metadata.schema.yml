@@ -366,12 +366,18 @@ keys:
               - act
           node_type:
             type: str
+            description: |-
+              Digital Twin's internal device type used for deploying a replica of the fabric device.
+              Possible values depend on the target Digital Twin environment.
           ip_addr:
             type: str
-            description: IPv4_address/Mask.
+            description: Management IPv4_address/Mask assigned to a replica of the fabric device within the Digital Twin environment.
           version:
             type: str
+            description: OS version used for deploying a replica of the fabric device within the Digital Twin environment.
           username:
             type: str
+            description: Local username assigned to a replica of the fabric device within the Digital Twin environment.
           password:
             type: str
+            description: Local password assigned to a replica of the fabric device within the Digital Twin environment.

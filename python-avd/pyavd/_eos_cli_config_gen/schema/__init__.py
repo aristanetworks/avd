@@ -23323,11 +23323,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             environment: Literal["act"] | None
             """Targeted Digital Twin environment."""
             node_type: str | None
+            """
+            Digital Twin's internal device type used for deploying a replica of the fabric device.
+            Possible
+            values depend on the target Digital Twin environment.
+            """
             ip_addr: str | None
-            """IPv4_address/Mask."""
+            """
+            Management IPv4_address/Mask assigned to a replica of the fabric device within the Digital Twin
+            environment.
+            """
             version: str | None
+            """OS version used for deploying a replica of the fabric device within the Digital Twin environment."""
             username: str | None
+            """Local username assigned to a replica of the fabric device within the Digital Twin environment."""
             password: str | None
+            """Local password assigned to a replica of the fabric device within the Digital Twin environment."""
 
             if TYPE_CHECKING:
 
@@ -23349,11 +23360,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         environment: Targeted Digital Twin environment.
-                        node_type: node_type
-                        ip_addr: IPv4_address/Mask.
-                        version: version
-                        username: username
-                        password: password
+                        node_type:
+                           Digital Twin's internal device type used for deploying a replica of the fabric device.
+                           Possible
+                           values depend on the target Digital Twin environment.
+                        ip_addr:
+                           Management IPv4_address/Mask assigned to a replica of the fabric device within the Digital Twin
+                           environment.
+                        version: OS version used for deploying a replica of the fabric device within the Digital Twin environment.
+                        username: Local username assigned to a replica of the fabric device within the Digital Twin environment.
+                        password: Local password assigned to a replica of the fabric device within the Digital Twin environment.
 
                     """
 
