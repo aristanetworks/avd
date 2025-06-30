@@ -32,3 +32,6 @@ ztp_mac_source: system
 
 # Default value to build config or deploy config
 ztp_mode: offline
+
+# Default value is generated in the template
+# ztp_bootstrap_file: http://<cvp_instance_ips[0]>/ztp/bootstrap
