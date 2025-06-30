@@ -20,6 +20,10 @@ title: Ansible Collection Role dhcp_provisioner
 - `Offline` mode let you generate a configuration you can apply on your DHCP server after carefully reviewing it.
 - `Online` mode lets you generate and push configuration to CloudVision, RHEL, or Ubuntu-based Linux systems.
 
+!!! Note
+    The role cannot automatically generate the ZTP bootstrap URL when using `cv_settings` in AVD.
+    Set `ztp_bootstrap_file` instead.
+
 ## Role requirements
 
 This role requires installing the `arista.cvp` collection to support CloudVision interactions.
@@ -55,6 +59,7 @@ all:
 - **`ztp_lease_time`**: Maximum lease time before devices lose IP. Renewal is max/2 (default is 300 sec).
 - **`ztp_mac_source`**: Define which mac-address field is used for identification: interface mac-address (`interface`) or system-mac-address (`system`). Default: `system`
 - **`ztp_mode`**: Define how role works either `offline` or `online` (Default `offline`).
+- **`ztp_bootstrap_file`**: URL to set as boot-file option (Default `http://<cvp_instance_ips[0]>/ztp/bootstrap`).
 - **`avd_dhcp_provisioner_provision`**: Run `arista.cvp.dhcp_configuration` in either online or offline mode (Default `true`).
 
 *Example*:

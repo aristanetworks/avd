@@ -1,0 +1,194 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ipv6_address: 2001:db8:3:8::2/64
+  mac_security:
+    profile: TEST
+  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+  peer_interface: Ethernet2
+  peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet1.42
+  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet2.42_VRF_PROD
+  shutdown: false
+  mtu: 9214
+  vrf: PROD
+  encapsulation_dot1q:
+    vlan: 42
+  ipv6_address: 2001:db8:3:8::2/64
+  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+  peer_interface: Ethernet2.42
+  peer_type: spine
+- name: Ethernet1.66
+  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet2.66_VRF_ONLY-ON-L2LEAF
+  shutdown: false
+  mtu: 9214
+  vrf: ONLY-ON-L2LEAF
+  encapsulation_dot1q:
+    vlan: 66
+  ipv6_address: 2001:db8:3:8::2/64
+  peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+  peer_interface: Ethernet2.66
+  peer_type: spine
+- name: Ethernet2
+  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ipv6_address: 2001:db8:3:9::2/64
+  mac_security:
+    profile: TEST
+  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+  peer_interface: Ethernet1
+  peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet2.100
+  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet1.100_VRF_IT
+  shutdown: false
+  mtu: 9214
+  vrf: IT
+  encapsulation_dot1q:
+    vlan: 100
+  ipv6_address: 2001:db8:3:9::2/64
+  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+  peer_interface: Ethernet1.100
+  peer_type: spine
+- name: Ethernet2.42
+  description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet1.42_VRF_PROD
+  shutdown: false
+  mtu: 9214
+  vrf: PROD
+  encapsulation_dot1q:
+    vlan: 42
+  ipv6_address: 2001:db8:3:9::2/64
+  peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+  peer_interface: Ethernet1.42
+  peer_type: spine
+hostname: UPLINK_P2P_VRFS_TESTS_LEAF2
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: cafe:cafe:cafe
+ipv6_unicast_routing: true
+is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ipv6_address: 2001:db8:1::5/128
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+metadata:
+  platform: vEOS-LAB
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+router_bgp:
+  as: '65000'
+  router_id: 192.168.43.5
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv6
+    send_community: all
+    maximum_routes: 12000
+  neighbors:
+  - ip_address: 2001:db8:3:8::1
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE1
+    description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet2
+  - ip_address: 2001:db8:3:9::1
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: UPLINK_P2P_VRFS_TESTS_SPINE2
+    description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet1
+  redistribute:
+    connected:
+      enabled: true
+  address_family_ipv6:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+  vrfs:
+  - name: PROD
+    router_id: 192.168.43.5
+    neighbors:
+    - ip_address: 2001:db8:3:8::1
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet2.42_vrf_PROD
+    - ip_address: 2001:db8:3:9::1
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet1.42_vrf_PROD
+    redistribute:
+      connected:
+        enabled: true
+  - name: ONLY-ON-L2LEAF
+    router_id: 192.168.43.5
+    neighbors:
+    - ip_address: 2001:db8:3:8::1
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet2.66_vrf_ONLY-ON-L2LEAF
+    redistribute:
+      connected:
+        enabled: true
+  - name: IT
+    router_id: 192.168.43.5
+    neighbors:
+    - ip_address: 2001:db8:3:9::1
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet1.100_vrf_IT
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan66
+  description: TEST-L2VLAN-ATTRACTION
+  shutdown: false
+  vrf: ONLY-ON-L2LEAF
+  ip_address_virtual: 172.16.0.1/24
+  tenant: TenantC
+  tags:
+  - not-on-spine-2
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 66
+  name: TEST-L2VLAN-ATTRACTION
+  tenant: TenantC
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: IT
+  ip_routing: true
+  tenant: TenantA
+- name: PROD
+  ip_routing: true
+  tenant: TenantA
+- name: ONLY-ON-L2LEAF
+  ip_routing: true
+  tenant: TenantC

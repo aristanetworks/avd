@@ -1,11 +1,31 @@
-type: l2leaf
-l2leaf:
+---
+type: l3leaf
+l3leaf:
   defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
   nodes:
     - name: default_interface_mtu_platform
+      id: 101
+      bgp_as: 101
 
 default_interface_mtu: 8765 # This will not be used since platform settings takes precedence.
 
 platform_settings:
   - platforms: [ default ]
     default_interface_mtu: 1234
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: default
+        vrf_id: 1
+        l3_interfaces:
+          - interfaces: [Ethernet10.10]
+            ip_addresses: [10.10.10.10/24]
+            nodes: [default_interface_mtu_platform]
+            # mtu will be configured for the sub-interface
+            mtu: 9000
+            enabled: true
+            description: "Allow sub-interface mtu"

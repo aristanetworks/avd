@@ -78,8 +78,12 @@ wan_route_servers:
 wan_ipsec_profiles:
   control_plane:
     shared_key: ABCDEF1234567890
+    # Making sure shared_key has precedence
+    cleartext_shared_key: arista
   data_plane:
     shared_key: ABCDEF1234567890666
+    # Making sure shared_key has precedence
+    cleartext_shared_key: arista
 
 default_node_types:
   - node_type: wan_rr

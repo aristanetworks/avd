@@ -7,9 +7,9 @@ daemon_terminattr:
   cvauth:
     method: token
     token_file: /tmp/token
+  cvsourceintf: Management1
   cvvrf: MGMT
   disable_aaa: true
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
@@ -71,6 +71,10 @@ ethernet_interfaces:
   peer_interface: PCI2
   peer_type: server
 hostname: dc1-leaf1b
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:

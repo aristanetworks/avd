@@ -12,7 +12,6 @@ keys:
     type: dict
     description: |-
       SNMP settings.
-      For SNMP local-interfaces see "source_interfaces.snmp".
       Configuration of remote SNMP engine IDs are currently only possible using `structured_config`.
     keys:
       contact:
@@ -23,23 +22,63 @@ keys:
         default: false
         description: Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack> <inventory_hostname>".
       vrfs:
-        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/vrfs"
         type: list
-        description: |-
-          Enable/disable SNMP for one or more VRFs.
-          Can be used in combination with "enable_mgmt_interface_vrf" and "enable_inband_mgmt_vrf".
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: |-
+                VRF name.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
+                  An error will be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the VRF name.
+              convert_types:
+                - int
+            enable:
+              type: bool
+              description: |-
+                Enable/disable SNMP for this VRF.
+            source_interface:
+              type: str
+              description: |-
+                Source interface to use for SNMP hosts in this VRF.
+                If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+            ipv4_acl:
+              type: str
+              description: IPv4 access-list name.
+              convert_types:
+                - int
+            ipv6_acl:
+              type: str
+              description: IPv6 access-list name.
+              convert_types:
+                - int
       enable_mgmt_interface_vrf:
         type: bool
         description: |-
           Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
           Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device.
           Can be used in combination with "vrfs" and "enable_inband_mgmt_vrf".
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[name="use_mgmt_interface_vrf"].enabled
       enable_inband_mgmt_vrf:
         type: bool
         description: |-
           Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
           Ignored if inband management is not configured for the device.
           Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[name="use_inband_mgmt_vrf"].enabled
       compute_local_engineid:
         type: bool
         default: false
@@ -101,15 +140,19 @@ keys:
         items:
           type: dict
           keys:
-            # Redefine host here to ensure it comes first in the docs.
             host:
               type: str
-              $ref: "eos_cli_config_gen#/keys/snmp_server/keys/hosts/items/keys/host"
             vrf:
               type: str
               description: |-
                 VRF Name.
-                Can be used in combination with "use_mgmt_interface_vrf" and "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
+                The value of `vrf` will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the SNMP host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.
+                  An error will be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
               convert_types:
                 - int
             use_mgmt_interface_vrf:
@@ -118,21 +161,41 @@ keys:
                 Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
                 Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.
                 Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: |-
+                  vrf: "use_mgmt_interface_vrf"
             use_inband_mgmt_vrf:
               type: bool
               description:
                 Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
                 Ignored if inband management is not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.
                 Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure the SNMP host under multiple VRFs.
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: |-
+                  vrf: "use_inband_mgmt_vrf"
       communities:
         type: list
         $ref: "eos_cli_config_gen#/keys/snmp_server/keys/communities"
       ipv4_acls:
         type: list
         $ref: "eos_cli_config_gen#/keys/snmp_server/keys/ipv4_acls"
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: |-
+            vrfs[].ipv4_acl
       ipv6_acls:
         type: list
         $ref: "eos_cli_config_gen#/keys/snmp_server/keys/ipv6_acls"
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: |-
+            vrfs[].ipv6_acl
       views:
         type: list
         $ref: "eos_cli_config_gen#/keys/snmp_server/keys/views"

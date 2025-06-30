@@ -38,13 +38,16 @@ snmp_server:
     view: VW-READ
   - name: SNMP-COMMUNITY-3
   ipv4_acls:
-  - name: SNMP-MGMT
+  - name: acl-for-vrf-default
+  - name: acl-for-vrf-MGMT
     vrf: MGMT
-  - name: onur
   ipv6_acls:
-  - name: SNMP-MGMT
+  - name: acl-for-vrf-default
+  - name: acl-for-vrf-MGMT
     vrf: MGMT
-  - name: onur_v6
+  local_interfaces:
+  - name: Management1
+    vrf: MGMT
   views:
   - name: VW-WRITE
     mib_family_name: iso
@@ -75,16 +78,7 @@ snmp_server:
     vrf: SNMPVRF
     version: '1'
     community: SNMP-COMMUNITY-1
-  - host: 10.6.75.123
-    vrf: MGMT
-    version: 2c
-    community: SNMP-COMMUNITY-2
-  - host: 10.6.75.123
-    vrf: SNMPVRF
-    version: 2c
-    community: SNMP-COMMUNITY-2
   - host: 10.6.75.124
-    vrf: MGMT
     version: '3'
     users:
     - username: USER-WRITE
@@ -93,20 +87,14 @@ snmp_server:
     vrf: SNMPVRF
     version: 2c
     community: SNMP-COMMUNITY-2
-  - host: 10.6.75.127
+  - host: 10.6.75.129
     vrf: MGMT
     version: 2c
     community: SNMP-COMMUNITY-2
-  - host: 10.6.75.127
-    vrf: SNMPVRF
+  - host: 10.6.75.130
+    vrf: MGMT
     version: 2c
     community: SNMP-COMMUNITY-2
-  - host: 10.6.75.128
-    vrf: MGMT
-    version: '3'
-    users:
-    - username: USER-WRITE
-      authentication_level: auth
   traps:
     enable: true
   vrfs:

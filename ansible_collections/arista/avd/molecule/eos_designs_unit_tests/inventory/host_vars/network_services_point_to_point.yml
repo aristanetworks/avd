@@ -50,3 +50,62 @@ tenants:
             interfaces: [Ethernet6, Ethernet7]
             port_channel:
               mode: active
+      - name: PORT_CHANNEL_WITHOUT_SUBINTERFACE
+        type: vpws-pseudowire
+        endpoints:
+          - id: 58
+            nodes: [network_services_point_to_point]
+            interfaces: [Ethernet4]
+            port_channel:
+              mode: active
+              short_esi: "0102:CAFE:F00D"
+          - id: 59
+            nodes: [fake_node]
+            interfaces: [Ethernet5]
+            port_channel:
+              mode: active
+      - name: TEN_A_ELINE_VLAN_BASE_AUTO_GENERATED_PARENT_MODE_NOT_ACTIVE
+        type: vpws-pseudowire
+        subinterfaces:
+          - number: 1000
+        endpoints:
+          # ESI dual-homed port-channel endpoint with subinterfaces.
+          - id: 3001
+            nodes: [network_services_point_to_point, fake_peer]
+            interfaces: [Ethernet8, Ethernet8]
+            port_channel:
+              mode: "on"
+              short_esi: "0102:BEEF:F00D"
+          # Normal single-homed port-channel endpoint with subinterfaces.
+          - id: 5001
+            nodes: [fake_node]
+            interfaces: [Ethernet9, Ethernet10]
+            port_channel:
+              mode: "on"
+      - name: PORT_CHANNEL_WITH_NO_SUBINTERFACE_SHORTESI
+        type: vpws-pseudowire
+        endpoints:
+          - id: 60
+            nodes: [network_services_point_to_point]
+            interfaces: [Ethernet10]
+            port_channel:
+              mode: active
+          - id: 61
+            nodes: [fake_node]
+            interfaces: [Ethernet11]
+            port_channel:
+              mode: active
+      - name: PORT_CHANNEL_WITH_NO_SUBINTERFACE_NOT_ACTIVE_SHORTESI
+        type: vpws-pseudowire
+        endpoints:
+          - id: 60
+            nodes: [network_services_point_to_point]
+            interfaces: [Ethernet11]
+            port_channel:
+              short_esi: "0102:BEEF:F00D"
+              mode: "on"
+          - id: 61
+            nodes: [fake_node]
+            interfaces: [Ethernet12]
+            port_channel:
+              mode: "on"

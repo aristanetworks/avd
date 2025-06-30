@@ -1,0 +1,6 @@
+---
+# Test leaf with underlay_ipv6_numbered (set in hostvars) and p2p_uplinks_vrf
+# Notice the spine config will be a bit weird since it has IPv6 addresses but no ipv6 routing.
+# This happens because we don't configure consistent underlay config and is the same for other underlay combinations.
+underlay_ipv6: true
+underlay_ipv6_numbered: true

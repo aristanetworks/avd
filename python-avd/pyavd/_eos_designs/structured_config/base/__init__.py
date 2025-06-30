@@ -15,6 +15,8 @@ from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default
 from pyavd.j2filters import natural_sort
 
+from .daemon_terminattr import DaemonTerminattrMixin
+from .management_ssh import ManagementSshMixin
 from .ntp import NtpMixin
 from .platform_mixin import PlatformMixin
 from .router_general import RouterGeneralMixin
@@ -22,7 +24,17 @@ from .snmp_server import SnmpServerMixin
 from .utils import UtilsMixin
 
 
-class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMixin, PlatformMixin, UtilsMixin, StructuredConfigGeneratorProtocol, Protocol):
+class AvdStructuredConfigBaseProtocol(
+    DaemonTerminattrMixin,
+    ManagementSshMixin,
+    NtpMixin,
+    SnmpServerMixin,
+    RouterGeneralMixin,
+    PlatformMixin,
+    UtilsMixin,
+    StructuredConfigGeneratorProtocol,
+    Protocol,
+):
     """
     Protocol for the AvdStructuredConfig Class, which is imported by "get_structured_config" to render parts of the structured config.
 
@@ -191,51 +203,6 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
                 self.structured_config.hardware.speed_groups.append_new(speed_group=speed_group, serdes=tmp_speed_groups[speed_group])
 
     @structured_config_contributor
-    def daemon_terminattr(self) -> None:
-        """
-        daemon_terminattr set based on cvp_instance_ips.
-
-        Updating cvaddrs and cvauth considering conditions for cvaas and cvp_on_prem IPs
-
-            if 'arista.io' in cvp_instance_ips:
-                 <updating as cvaas_ip>
-            else:
-                 <updating as cvp_on_prem ip>
-        """
-        cvp_instance_ip_list = self.inputs.cvp_instance_ips
-        if not cvp_instance_ip_list:
-            return
-
-        for cvp_instance_ip in cvp_instance_ip_list:
-            if "arista.io" in cvp_instance_ip:
-                # updating for cvaas_ips
-                self.structured_config.daemon_terminattr.cvaddrs.append(f"{cvp_instance_ip}:443")
-                self.structured_config.daemon_terminattr.cvauth._update(
-                    method="token-secure",
-                    # Ignoring sonar-lint false positive for tmp path since this is config for EOS
-                    token_file=self.inputs.cvp_token_file or "/tmp/cv-onboarding-token",  # NOSONAR # noqa: S108
-                )
-            else:
-                # updating for cvp_on_prem_ips
-                cv_address = f"{cvp_instance_ip}:{self.inputs.terminattr_ingestgrpcurl_port}"
-                self.structured_config.daemon_terminattr.cvaddrs.append(cv_address)
-                if (cvp_ingestauth_key := self.inputs.cvp_ingestauth_key) is not None:
-                    self.structured_config.daemon_terminattr.cvauth._update(method="key", key=cvp_ingestauth_key)
-                else:
-                    self.structured_config.daemon_terminattr.cvauth._update(
-                        method="token",
-                        # Ignoring sonar-lint false positive for tmp path since this is config for EOS
-                        token_file=self.inputs.cvp_token_file or "/tmp/token",  # NOSONAR # noqa: S108
-                    )
-
-        self.structured_config.daemon_terminattr._update(
-            cvvrf=self.inputs.mgmt_interface_vrf,
-            smashexcludes=self.inputs.terminattr_smashexcludes,
-            ingestexclude=self.inputs.terminattr_ingestexclude,
-            disable_aaa=self.inputs.terminattr_disable_aaa,
-        )
-
-    @structured_config_contributor
     def vlan_internal_order(self) -> None:
         """
         vlan_internal_order set based on internal_vlan_order data-model.
@@ -300,9 +267,83 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
 
     @structured_config_contributor
     def ip_name_servers(self) -> None:
-        """ip_name_servers set based on name_servers data-model and mgmt_interface_vrf."""
+        """Set ip name servers using old name_servers model and new dns_settings model. Results will be combined."""
         for name_server in self.inputs.name_servers:
             self.structured_config.ip_name_servers.append_new(ip_address=name_server, vrf=self.inputs.mgmt_interface_vrf)
+
+        if not self.inputs.dns_settings:
+            return
+
+        if self.inputs.dns_settings.domain:
+            self.structured_config.dns_domain = self.inputs.dns_settings.domain
+
+        vrfs = self.inputs.dns_settings.vrfs
+        for server in self.inputs.dns_settings.servers:
+            server_vrf, source_interface = self._get_vrf_and_source_interface(
+                vrf_input=server.vrf,
+                vrfs=vrfs,
+                set_source_interfaces=self.inputs.dns_settings.set_source_interfaces,
+                context=f"dns_settings.servers[ip_address={server.ip_address}].vrf",
+            )
+            if source_interface:
+                self.structured_config.ip_domain_lookup.source_interfaces.append_new(name=source_interface, vrf=server_vrf if server_vrf != "default" else None)
+
+            self.structured_config.ip_name_servers.append_new(ip_address=server.ip_address, vrf=server_vrf, priority=server.priority)
+
+    @structured_config_contributor
+    def logging(self) -> None:
+        """
+        Configures logging settings based on the input data model.
+
+        Applies global logging parameters and per-VRF host logging configuration,
+        including source interfaces, protocols, ports, and SSL profiles.
+        Ensures that each VRF has a unique and consistent source interface.
+        """
+        if not self.inputs.logging_settings:
+            return
+
+        settings = self.inputs.logging_settings
+
+        # Apply global logging parameters
+        self.structured_config.logging._update(
+            console=settings.console,
+            monitor=settings.monitor,
+            repeat_messages=settings.repeat_messages,
+            trap=settings.trap,
+            facility=settings.facility,
+            buffered=settings.buffered,
+            synchronous=settings.synchronous,
+            format=settings.format,
+            policy=settings.policy,
+            event=settings.event,
+            level=settings.level,
+        )
+
+        # Temporary structure to detect source interface conflicts
+        vrf_logging_config = EosCliConfigGen.Logging.Vrfs()
+
+        for host in settings.hosts:
+            # Determine the correct VRF and source interface for the host
+            host_vrf, source_interface = self._get_vrf_and_source_interface(
+                vrf_input=host.vrf,
+                vrfs=settings.vrfs,
+                set_source_interfaces=True,
+                context=f"logging_settings.hosts[name={host.name}].vrf",
+            )
+
+            logging_vrf = self.structured_config.logging.vrfs.obtain(host_vrf)
+            if source_interface:
+                # Add to local tmp object to detect conflicts.
+                vrf_logging_config.append_new(name=host_vrf, source_interface=source_interface)
+                logging_vrf.source_interface = source_interface
+
+            # Add host entry under the correct VRF
+            logging_vrf.hosts.append_new(
+                name=host.name,
+                protocol=host.protocol,
+                ssl_profile=host.ssl_profile,
+                ports=EosCliConfigGen.Logging.VrfsItem.HostsItem.Ports(items=host.ports),
+            )
 
     @structured_config_contributor
     def redundancy(self) -> None:

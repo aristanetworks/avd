@@ -249,9 +249,19 @@ $defs:
               - "message-digest"
           simple_auth_key:
             type: str
-            description: Password used with simple authentication.
+            description: |-
+              Type 7 encrypted key for OSPF simple authentication.
+              Takes precedence over `cleartext_simple_auth_key`
+          cleartext_simple_auth_key:
+            type: str
+            description: |-
+              Cleartext key for OSPF simple authentication.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
+            min_length: 1
+            max_length: 8
           message_digest_keys:
             type: list
+            # TODO: AVD 6.0.0: Make id primary_key and key required.
             items:
               type: dict
               keys:
@@ -270,7 +280,16 @@ $defs:
                   default: sha512
                 key:
                   type: str
-                  description: Type 7 encrypted key.
+                  description: |-
+                    Type 7 encrypted key for OSPF message-digest authentication.
+                    Takes precedence over `cleartext_key`.
+                cleartext_key:
+                  type: str
+                  description: |-
+                    Cleartext key for OSPF message-digest authentication
+                    To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                  min_length: 1
+                  max_length: 16
       bgp:
         type: dict
         keys:

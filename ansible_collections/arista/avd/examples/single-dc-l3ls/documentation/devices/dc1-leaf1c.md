@@ -5,6 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [IP Name Servers](#ip-name-servers)
+  - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
@@ -76,6 +77,20 @@ interface Management1
 
 ```eos
 ip name-server vrf MGMT 192.168.1.1
+```
+
+### Domain Lookup
+
+#### DNS Domain Lookup Summary
+
+| Source interface | vrf |
+| ---------------- | --- |
+| Management1 | MGMT |
+
+#### DNS Domain Lookup Device Configuration
+
+```eos
+ip domain lookup vrf MGMT source-interface Management1
 ```
 
 ### NTP
@@ -159,14 +174,14 @@ Enable password has been disabled
 
 | CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 192.168.1.12:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
+| gzip | 192.168.1.12:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | - | True |
 
 #### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs -cvsourceintf=Management1
    no shutdown
 ```
 

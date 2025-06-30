@@ -1,0 +1,12 @@
+type: l2leaf
+
+l2leaf: {}
+
+default_mgmt_method: inband
+
+dns_settings:
+  servers:
+    - ip_address: 10.10.10.10
+
+expected_error_message: >-
+  'dns_settings.servers[ip_address=10.10.10.10].vrf' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management.

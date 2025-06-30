@@ -1,0 +1,194 @@
+---
+# Common AVD group variables
+fabric_name: EOS_DESIGNS_UNIT_TESTS
+
+# Define underlay and overlay routing protocol to be used
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp
+
+# Local users
+local_users:
+  # Define a new user, which is called "ansible"
+  - name: ansible
+    privilege: 15
+    role: network-admin
+    # Password set to "ansible". Same string as the device generates when configuring a username.
+    sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+  - name: admin
+    privilege: 15
+    role: network-admin
+    no_password: true
+
+# BGP peer groups passwords
+bgp_peer_groups:
+  # all passwords set to "arista"
+  evpn_overlay_peers:
+    password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+  ipv4_underlay_peers:
+    name: IPv6-UNDERLAY-PEERS
+    password: F0bdF6JLcJtagc6PCN8W0Q==
+  mlag_ipv4_underlay_peer:
+    name: MLAG-IPv6-UNDERLAY-PEER
+    password: GNtuK+/vTwZwSZiwj1FK/Q==
+
+# P2P interfaces MTU, includes VLANs 4093 and 4094 that are over peer-link
+# If you're running vEOS-lab or cEOS, you should use MTU of 1500 instead as shown in the following line
+# p2p_uplinks_mtu: 9214
+p2p_uplinks_mtu: 1500
+
+# Set default uplink, downlink, and MLAG interfaces based on node type
+default_interfaces:
+  - types: [ spine ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-2 ]
+    downlink_interfaces: [ Ethernet1-8 ]
+  - types: [ l3leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-2 ]
+    mlag_interfaces: [ Ethernet11-12 ]
+    downlink_interfaces: [ Ethernet8 ]
+
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+
+fabric_ip_addressing:
+  mlag:
+    # Modifies the default MLAG peer-link prefix length of 64.
+    ipv6_prefix_length: 64
+  loopback:
+    # Modifies the default loopback prefix length of 128
+    ipv6_prefix_length: 64
+  p2p_uplinks:
+    # Modifies the default p2p uplink prefix length of 64
+    ipv6_prefix_length: 64
+
+# NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: time.google.com
+
+type: l3leaf
+
+# L3 Leaf switch group
+l3leaf:
+  defaults:
+    # Set the relevant platform as each platform has different default values in Ansible AVD
+    platform: vEOS-lab
+    # Logical Pool of Router ID's, formatted as IPv4 addresses, to configure BGP router ID. Does not configure any IPv4 address
+    router_id_pool: 10.255.1.0/24
+    # Pool of IPv6 addresses to configure interface Loopback0 used for BGP EVPN sessions
+    loopback_ipv6_pool: 2001:DB8:1::/48
+    # Pool of IPv6 addresses to be used as Virtual Tunnel EndPoint (VXLAN origin and destination IPs)
+    vtep_loopback_ipv6_pool: 2001:DB8:5::/48
+    # Ansible hostname of the devices used to establish neighborship (IP assignments and BGP peering)
+    uplink_switches: ['IPV6_NUMBERED_SPINE1', 'IPV6_NUMBERED_SPINE2']
+    # Pool of IPv6 addresses to be used in P2P links
+    uplink_ipv6_pool: 2001:DB8:2::/48
+    # descitpion
+    mlag_peer_address_family: ipv6
+    # Pool of IPv6 addresses to be used for MLAG peer-link connectivity
+    mlag_peer_ipv6_pool: 2001:DB8:3::/48
+    # iBGP Peering between MLAG peers
+    mlag_peer_l3_ipv6_pool: 2001:DB8:4::/48
+    # Virtual router mac for VNIs assigned to Leaf switches in format xx:xx:xx:xx:xx:xx
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+  # If two nodes (and only two) are in the same node_group, they will automatically form an MLAG pair
+  node_groups:
+    # Definition of a node group that will include two devices in MLAG.
+    # Definitions under the group will be inherited by both nodes in the group
+    - group: DC1_L3_LEAF1
+      # ASN to be used by BGP for the group. Both devices in the MLAG pair will use the same BGP ASN
+      bgp_as: 65101
+      nodes:
+        # Definition of hostnames under the node_group
+        - name: IPV6_NUMBERED_LEAF1a
+          id: 1
+          mgmt_ip: 172.16.1.31/24
+          # Definition of the port to be used in the uplink device facing this device.
+          # Note that the number of elements in this list must match the length of 'uplink_switches' as well as 'uplink_interfaces'
+          uplink_switch_interfaces:
+            - Ethernet1
+            - Ethernet1
+        - name: IPV6_NUMBERED_LEAF1b
+          id: 2
+          mgmt_ip: 172.16.1.32/24
+          uplink_switch_interfaces:
+            - Ethernet2
+            - Ethernet2
+    - group: DC1_L3_LEAF2
+      # ASN to be used by BGP for the group. Both devices in the MLAG pair will use the same BGP ASN
+      bgp_as: 65101
+      nodes:
+        # Definition of hostnames under the node_group
+        - name: IPV6_NUMBERED_LEAF2a
+          id: 3
+          mgmt_ip: 172.16.1.33/24
+          # Definition of the port to be used in the uplink device facing this device.
+          # Note that the number of elements in this list must match the length of 'uplink_switches' as well as 'uplink_interfaces'
+          uplink_switch_interfaces:
+            - Ethernet3
+            - Ethernet3
+tenants:
+  # Definition of tenants. Additional level of abstraction to VRFs
+  - name: TENANT1
+    # Number used to generate the VNI of each VLAN by adding the VLAN number in this tenant.
+    mac_vrf_vni_base: 10000
+    vrfs:
+      # VRF definitions inside the tenant.
+      - name: VRF10
+        # VRF VNI definition.
+        vrf_vni: 10
+        # Enable VTEP Network diagnostics
+        # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
+        vtep_diagnostic:
+          # Loopback interface number
+          loopback: 10
+          # Loopback ip range, a unique ip is derived from this ranged and assigned
+          # to each l3 leaf based on it's unique id.
+          loopback_ip_range: 10.255.10.0/27
+        svis:
+          # SVI definitions.
+          - id: 11
+            # SVI Description
+            name: VRF10_VLAN11
+            enabled: true
+            # IP anycast gateway to be used in the SVI in every leaf.
+            ip_address_virtual: 10.10.11.1/24
+          - id: 12
+            name: VRF10_VLAN12
+            enabled: true
+            ip_address_virtual: 10.10.12.1/24
+      - name: VRF11
+        vrf_vni: 11
+        vtep_diagnostic:
+          loopback: 11
+          loopback_ip_range: 10.255.11.0/27
+        svis:
+          - id: 21
+            name: VRF11_VLAN21
+            enabled: true
+            ipv6_address_virtuals: [2001:DB8:21::1/48]
+          - id: 22
+            name: VRF11_VLAN22
+            enabled: true
+            ip_address_virtual: 10.10.22.1/24
+      - name: VRF12
+        vrf_vni: 12
+        # Test to cover vrf.mlag_ibgp_peering_ipv6_pool
+        mlag_ibgp_peering_ipv6_pool: 2001:DB8:2::/48
+        vtep_diagnostic:
+          loopback: 12
+          loopback_ip_range: 10.255.12.0/27
+        svis:
+          - id: 31
+            name: VRF11_VLAN21
+            enabled: true
+            ipv6_address_virtuals: [2001:DB8:32::1/48]
+          - id: 32
+            name: VRF11_VLAN22
+            enabled: true
+            ipv6_address_virtuals: [2001:DB8:33::1/48]
