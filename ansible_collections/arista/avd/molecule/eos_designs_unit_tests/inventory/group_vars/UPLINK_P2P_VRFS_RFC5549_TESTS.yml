@@ -1,0 +1,62 @@
+---
+# Test uplink types p2p-vrfs with rfc5549 and 'overlay_routing_protocol: none'
+overlay_routing_protocol: none
+# explicitly setting the underlay routing protocol for l3spine
+underlay_routing_protocol: ebgp
+
+underlay_ipv6: true
+underlay_rfc5549: true
+
+default_node_types:
+  - node_type: l3spine
+    match_hostnames:
+      - ".*SPINE.*"
+  - node_type: l3leaf
+    match_hostnames:
+      - ".*LEAF.*"
+
+bgp_as: 65000
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.42.0/24
+    loopback_ipv6_pool: 2001:2::/64
+    vtep_loopback_ipv4_pool: 172.16.0.0/24
+    virtual_router_mac_address: cafe:cafe:cafe
+    uplink_switches: [UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1]
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_type: p2p-vrfs
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+  nodes:
+    - name: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
+      bgp_as: 65106
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      id: 8
+      uplink_switch_interfaces: [Ethernet3, Ethernet4]
+
+l3spine:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv6_pool: 2001:2::/64
+    loopback_ipv4_pool: 192.168.1.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+  nodes:
+    - name: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+      id: 72
+
+tenants:
+  - name: TenantA
+    vrfs:
+      - name: default
+        vrf_id: 1
+      - name: PROD
+        vrf_id: 42
+      - name: IT
+        vrf_id: 100
+        bgp_peers:
+          - ip_address: 10.10.1.2
+            peer_group: MYPEERGROUP
+            nodes: [UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF]
