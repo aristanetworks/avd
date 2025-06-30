@@ -97,11 +97,14 @@
 {%                 set vlan_vni = vlan.vni | arista.avd.default('-') %}
 {%             endif %}
 {%             set multicast_group = vlan.multicast_group | arista.avd.default('-') %}
+{%             set flood_list = [] %}
 {%             if vlan.flood_vteps is arista.avd.defined %}
-{%                 set flood_list = vlan.flood_vteps | join('<br/>')  %}
-{%             else %}
-{%                 set flood_list = '-' %}
+{%                 do flood_list.extend(vlan.flood_vteps)  %}
 {%             endif %}
+{%             if vlan.flood_group is arista.avd.defined %}
+{%                 do flood_list.append(vlan.flood_group) %}
+{%             endif %}
+{%             set flood_list = (flood_list or ["-"]) | join('<br/>') %}
 | {{ vlan.id }} | {{ vlan_vni | arista.avd.default("-") }} | {{ flood_list }} | {{ multicast_group }} |
 {%         endfor %}
 {%     endif %}
