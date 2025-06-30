@@ -38,8 +38,10 @@ class ManagementSshMixin(Protocol):
             self.structured_config.management_ssh.vrfs.append_new(name=vrf_name, enable=vrf.enabled)
 
             if vrf.enabled:
-                if vrf.ipv4_acl:
-                    self.structured_config.management_ssh.access_groups.append_new(name=vrf.ipv4_acl, vrf=vrf_name if vrf_name != "default" else None)
-
-                if vrf.ipv6_acl:
-                    self.structured_config.management_ssh.ipv6_access_groups.append_new(name=vrf.ipv6_acl, vrf=vrf_name if vrf_name != "default" else None)
+                if vrf_name == "default":
+                    self.structured_config.management_ssh.ip_access_group_in = vrf.ipv4_acl if vrf.ipv4_acl else None
+                    self.structured_config.management_ssh.ipv6_access_group_in = vrf.ipv6_acl if vrf.ipv6_acl else None
+                else:
+                    management_ssh_vrf = self.structured_config.management_ssh.vrfs.obtain(vrf_name)
+                    management_ssh_vrf.ip_access_group_in=vrf.ipv4_acl if vrf.ipv4_acl else None
+                    management_ssh_vrf.ipv6_access_group_in=vrf.ipv6_acl if vrf.ipv6_acl else None
