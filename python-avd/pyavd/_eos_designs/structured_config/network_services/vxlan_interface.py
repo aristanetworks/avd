@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, cast
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import default, unique
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -183,7 +183,6 @@ class VxlanInterfaceMixin(Protocol):
         Can be used for both svis and l2vlans
         """
         vxlan_vlan = EosCliConfigGen.VxlanInterface.Vxlan1.Vxlan.VlansItem(id=vlan.id)
-
         if vlan.vni_override:
             vxlan_vlan.vni = vlan.vni_override
         else:
@@ -203,6 +202,29 @@ class VxlanInterfaceMixin(Protocol):
                 vlan.id,
                 tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset,
             )
+
+        if default(vlan.vxlan_flood_multicast.enabled, tenant.vxlan_flood_multicast.enabled):
+            if not self.shared_utils.underlay_multicast:
+                msg = "'vxlan_flood_multicast' is only supported in combination with 'underlay_multicast: True'."
+                raise AristaAvdError(msg)
+            vxlan_vlan.flood_group = (
+                vlan.vxlan_flood_multicast.underlay_multicast_group
+                if vlan.vxlan_flood_multicast.underlay_multicast_group and vlan.vxlan_flood_multicast.enabled is True
+                else None
+            )
+            if vxlan_vlan.flood_group is None:
+                if not tenant.vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool:
+                    msg = (
+                        "'vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant "
+                        f"'{tenant.name}' or 'vxlan_flood_multicast.underlay_l2_multicast_group' for VLAN "
+                        f"'{vlan.id}' is required."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+                vxlan_vlan.flood_group = self.shared_utils.ip_addressing.evpn_underlay_l2_flood_group(
+                    tenant.vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool,
+                    vlan.id,
+                    tenant.vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool_offset,
+                )
 
         if self.shared_utils.overlay_her and self.inputs.overlay_her_flood_list_per_vni and (vlan_id_entry := self._overlay_her_flood_lists.get(vlan.id)):
             vxlan_vlan.flood_vteps.extend(natural_sort(unique(vlan_id_entry)))
