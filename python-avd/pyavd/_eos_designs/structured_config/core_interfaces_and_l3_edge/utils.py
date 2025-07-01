@@ -298,7 +298,7 @@ class UtilsMixin(Protocol):
                         key=isis_encrypt(
                             password=p2p_link.isis_authentication_cleartext_key,
                             key=cast("str", self.shared_utils.isis_instance_name),
-                            mode=cast("str",p2p_link.isis_authentication_mode),
+                            mode=cast("str", p2p_link.isis_authentication_mode),
                         ),
                         key_type="7",
                     )

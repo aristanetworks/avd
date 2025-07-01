@@ -117,5 +117,5 @@ class UnderlayMixin(Protocol):
         return isis_encrypt(
             password=cast("str", self.inputs.underlay_isis_authentication_cleartext_key),
             mode=cast("str", self.inputs.underlay_isis_authentication_mode),
-            key=cast("str",self.isis_instance_name),
+            key=cast("str", self.isis_instance_name),
         )
