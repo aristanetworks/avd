@@ -196,6 +196,7 @@ $defs:
               type: str
               description: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
               format: ipv4_pool
+            # TODO: make the default value of the offset 1
             underlay_l2_multicast_group_ipv4_pool_offset:
               type: int
               default: 0
@@ -212,6 +213,29 @@ $defs:
                 Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is enabled will take up additional control-plane and data-plane resources,
                 but it is required to support forwarding of TTL=1 multicast traffic within the VLAN.
                 This can be overridden per SVI.
+        vxlan_flood_multicast:
+          documentation_options:
+            table: network-services-multicast-settings
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              required: true
+              description: |-
+                Enable Flood group Multicast for all SVIs and l2vlans within Tenant.
+            underlay_l2_multicast_group_ipv4_pool:
+              type: str
+              description: |-
+                IPv4 Pool to allocate vxlan flood groups from.
+                The VLAN ID - 1 + `underlay_l2_multicast_group_ipv4_pool_offset` is the offset for each group.
+                Comma separated list of prefixes (IPv4_address/Mask) or ranges (IPv4_address-IPv4_address).
+              format: ipv4_pool
+            # TODO: make the default value of the offset 1
+            underlay_l2_multicast_group_ipv4_pool_offset:
+              type: int
+              default: 0
+              convert_types:
+                - str
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -1634,6 +1658,18 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+              vxlan_flood_multicast:
+                documentation_options:
+                  table: network-services-multicast-settings
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: |-
+                      Explicitly enable or disable vxlan_flood_multicast to override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                  underlay_multicast_group:
+                    description: Specific multicast group to use for this VLAN.
+                    type: str
               igmp_snooping_enabled:
                 documentation_options:
                   table: network-services-multicast-settings
