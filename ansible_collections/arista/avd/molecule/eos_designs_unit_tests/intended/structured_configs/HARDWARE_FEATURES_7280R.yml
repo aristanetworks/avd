@@ -100,8 +100,6 @@ loopback_interfaces:
   ip_address: 10.10.20.5/32
 management_api_http:
   enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   platform: 7280R
   fabric_name: EOS_DESIGNS_UNIT_TESTS

@@ -8027,7 +8027,7 @@ class EosDesigns(EosDesignsRootModel):
             `default_mgmt_method`.
             - Any other string will be used directly as the VRF name.
             """
-            enabled: bool | None
+            enabled: bool
             """Enable/disable SNMP for this VRF."""
             ipv4_acl: str | None
             """IPv4 access-list name."""
@@ -8040,7 +8040,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    enabled: bool | None | UndefinedType = Undefined,
+                    enabled: bool | UndefinedType = Undefined,
                     ipv4_acl: str | None | UndefinedType = Undefined,
                     ipv6_acl: str | None | UndefinedType = Undefined,
                 ) -> None:
@@ -8084,7 +8084,7 @@ class EosDesigns(EosDesignsRootModel):
             "enable_http": {"type": bool},
             "enable_https": {"type": bool, "default": True},
             "default_services": {"type": bool},
-            "vrfs": {"type": Vrfs},
+            "vrfs": {"type": Vrfs, "default": lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)},
         }
         enabled: bool
         """
@@ -8097,7 +8097,11 @@ class EosDesigns(EosDesignsRootModel):
         """Default value: `True`"""
         default_services: bool | None
         vrfs: Vrfs
-        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+        """
+        Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+
+        Default value: `lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)`
+        """
 
         if TYPE_CHECKING:
 
@@ -14600,11 +14604,11 @@ class EosDesigns(EosDesignsRootModel):
             VRF name.
             The value will be interpreted according to these rules:
             - `use_mgmt_interface_vrf` will
-            configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+            configure the EAPI ACL under the VRF set with `mgmt_interface_vrf`.
               An error will be raised if
             `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
             - `use_inband_mgmt_vrf` will
-            configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
+            configure the EAPI ACL under the VRF set with `inband_mgmt_vrf`.
               An error will be raised if inband
             management is not configured for the device.
             - `use_default_mgmt_method_vrf` will configure the VRF
@@ -14647,11 +14651,11 @@ class EosDesigns(EosDesignsRootModel):
                            VRF name.
                            The value will be interpreted according to these rules:
                            - `use_mgmt_interface_vrf` will
-                           configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+                           configure the EAPI ACL under the VRF set with `mgmt_interface_vrf`.
                              An error will be raised if
                            `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
                            - `use_inband_mgmt_vrf` will
-                           configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
+                           configure the EAPI ACL under the VRF set with `inband_mgmt_vrf`.
                              An error will be raised if inband
                            management is not configured for the device.
                            - `use_default_mgmt_method_vrf` will configure the VRF
@@ -65161,16 +65165,15 @@ class EosDesigns(EosDesignsRootModel):
       - `sflow_settings`
       - `snmp_settings`
       - `ssh_settings`
-
-    `oob` means the
-    protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the
-    source interface.
-    `inband` means the protocols will be configured with the VRF set by
-    `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.
-    `none` means the VRF and or
-    interface must be manually set for each protocol.
-    This can be overridden under the settings for each
-    protocol.
+      - `management_eapi`
+    `oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and
+    `mgmt_interface` as the source interface.
+    `inband` means the protocols will be configured with the
+    VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.
+    `none` means the
+    VRF and or interface must be manually set for each protocol.
+    This can be overridden under the
+    settings for each protocol.
 
     Default value: `"oob"`
     """
@@ -67195,16 +67198,15 @@ class EosDesigns(EosDesignsRootModel):
                      - `sflow_settings`
                      - `snmp_settings`
                      - `ssh_settings`
-
-                   `oob` means the
-                   protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the
-                   source interface.
-                   `inband` means the protocols will be configured with the VRF set by
-                   `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.
-                   `none` means the VRF and or
-                   interface must be manually set for each protocol.
-                   This can be overridden under the settings for each
-                   protocol.
+                     - `management_eapi`
+                   `oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and
+                   `mgmt_interface` as the source interface.
+                   `inband` means the protocols will be configured with the
+                   VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.
+                   `none` means the
+                   VRF and or interface must be manually set for each protocol.
+                   This can be overridden under the
+                   settings for each protocol.
                 default_network_ports_description:
                    Default description or description template to be used on all ports defined under `network_ports`.
                    This can be a template using the AVD string formatter syntax:

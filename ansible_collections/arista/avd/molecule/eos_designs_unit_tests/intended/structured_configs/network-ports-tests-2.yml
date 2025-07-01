@@ -741,8 +741,6 @@ ip_igmp_snooping:
 is_deployed: true
 management_api_http:
   enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   platform: 720XPM-24Y6
   fabric_name: EOS_DESIGNS_UNIT_TESTS

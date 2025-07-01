@@ -23,8 +23,6 @@ loopback_interfaces:
     ipv6_index: 203
 management_api_http:
   enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mpls:

@@ -86,8 +86,6 @@ loopback_interfaces:
   ipv6_address: 2001:db8:1::5/128
 management_api_http:
   enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS

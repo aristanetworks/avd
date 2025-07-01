@@ -510,25 +510,21 @@ class AvdStructuredConfigBaseProtocol(
     def management_api_http(self) -> None:
         """management_api_http set based on management_eapi data-model."""
         if self.inputs.management_eapi.enabled:
-            self.structured_config.management_api_http.enable_vrfs.append_new(name=self.inputs.mgmt_interface_vrf)
             self.structured_config.management_api_http._update(
                 enable_http=self.inputs.management_eapi.enable_http,
                 enable_https=self.inputs.management_eapi.enable_https,
                 default_services=self.inputs.management_eapi.default_services,
             )
             for vrf in self.inputs.management_eapi.vrfs._natural_sorted():
-                vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
                 if vrf.enabled:
-                    if vrf.ipv4_acl is None and vrf.ipv6_acl is None:
-                        self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name)
-                    elif vrf.ipv4_acl is not None and vrf.ipv6_acl is not None:
-                        self.structured_config.management_api_http.enable_vrfs.append_new(
-                            name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl
-                        )
-                    elif vrf.ipv4_acl is not None:
-                        self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl)
-                    elif vrf.ipv6_acl is not None:
-                        self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, ipv6_access_group=vrf.ipv6_acl)
+                    try:
+                        vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
+                    except AristaAvdInvalidInputsError as e:
+                        if vrf.name != "use_mgmt_interface_vrf":
+                            msg = f"'self.inputs.management_eapi.vrfs[name={vrf.name}' is set but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
+                            raise AristaAvdInvalidInputsError(msg) from e
+                        vrf_name = vrf.name
+                    self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
 
     @structured_config_contributor
     def link_tracking_groups(self) -> None:

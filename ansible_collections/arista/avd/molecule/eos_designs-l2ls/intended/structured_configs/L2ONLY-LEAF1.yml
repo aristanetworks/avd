@@ -45,7 +45,7 @@ is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
-  - name: MGMT
+  - name: use_mgmt_interface_vrf
 metadata:
   pod_name: L2LS_L2ONLY
   fabric_name: L2LS

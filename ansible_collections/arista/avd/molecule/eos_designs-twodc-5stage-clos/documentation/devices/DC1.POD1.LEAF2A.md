@@ -78,7 +78,7 @@ ip domain-list structured-config.set.under.vrf.common-vrf
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| MGMT | - | - |
+| use_mgmt_interface_vrf | - | - |
 
 #### Management API HTTP Device Configuration
 
@@ -88,7 +88,7 @@ management api http-commands
    protocol https
    no shutdown
    !
-   vrf MGMT
+   vrf use_mgmt_interface_vrf
       no shutdown
 ```
 

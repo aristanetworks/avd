@@ -19,8 +19,6 @@ ip_igmp_snooping:
 is_deployed: true
 management_api_http:
   enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   platform: vEOS-LAB
   fabric_name: SINGLE_LINK_TO_MLAG_PAIR

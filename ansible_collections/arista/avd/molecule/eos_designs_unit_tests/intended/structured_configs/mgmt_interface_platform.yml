@@ -50,8 +50,6 @@ local_users:
 management_api_http:
   enable_https: true
   default_services: false
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management0
   description: OOB_MANAGEMENT

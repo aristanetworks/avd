@@ -77,7 +77,7 @@ loopback_interfaces:
 management_api_http:
   enable_https: true
   enable_vrfs:
-  - name: MGMT
+  - name: use_mgmt_interface_vrf
 metadata:
   platform: vEOS-LAB
   pod_name: DC1_POD1

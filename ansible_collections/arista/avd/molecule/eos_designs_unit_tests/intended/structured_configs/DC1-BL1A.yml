@@ -261,7 +261,6 @@ management_api_http:
   enable_https: false
   default_services: false
   enable_vrfs:
-  - name: MGMT
   - name: Tauji
   - name: Tauji_1
     access_group: ACL_EAPI_IPv4
