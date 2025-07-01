@@ -6,7 +6,7 @@ l2leaf:
       id: 43
       mgmt_ip: 10.10.10.43/26
 
-mgmt_interface_vrf: MGMT
+# mgmt_interface_vrf: MGMT
 mgmt_gateway: 10.10.10.1
 
 ssh_settings:
@@ -22,6 +22,7 @@ ssh_settings:
       ipv4_acl: ACL-SSH-VRF-DISABLED
     - name: default
       enabled: true
+      ipv4_acl: IPv4-ACL-SSH-VRF-DEFAULT
       ipv6_acl: ACL-SSH-VRF-DEFAULT
     - name: use_mgmt_interface_vrf
       enabled: true

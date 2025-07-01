@@ -20,11 +20,10 @@ management_interfaces:
   type: oob
   gateway: 10.10.10.1
 management_ssh:
+  ip_access_group_in: IPv4-ACL-SSH-VRF-DEFAULT
   ipv6_access_group_in: ACL-SSH-VRF-DEFAULT
   idle_timeout: 15
   vrfs:
-  - name: default
-    enable: true
   - name: MGMT
     enable: true
     ip_access_group_in: ACL-SSH-MGMT-INTERFACE

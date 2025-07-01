@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
@@ -35,13 +36,13 @@ class ManagementSshMixin(Protocol):
         """SSH IPv4/IPv6 ACLs with VRFs. Resolves VRF from management VRFs."""
         for vrf in ssh_settings.vrfs._natural_sorted():
             vrf_name = self.get_vrf(vrf.name, context=f"ssh_settings.vrfs[name={vrf.name}]")
-            self.structured_config.management_ssh.vrfs.append_new(name=vrf_name, enable=vrf.enabled)
 
-            if vrf.enabled:
-                if vrf_name == "default":
-                    self.structured_config.management_ssh.ip_access_group_in = vrf.ipv4_acl if vrf.ipv4_acl else None
-                    self.structured_config.management_ssh.ipv6_access_group_in = vrf.ipv6_acl if vrf.ipv6_acl else None
-                else:
-                    management_ssh_vrf = self.structured_config.management_ssh.vrfs.obtain(vrf_name)
+            if vrf_name == "default":
+                self.structured_config.management_ssh.ip_access_group_in = vrf.ipv4_acl if vrf.ipv4_acl else None
+                self.structured_config.management_ssh.ipv6_access_group_in = vrf.ipv6_acl if vrf.ipv6_acl else None
+            else:
+                management_ssh_vrf = EosCliConfigGen.ManagementSsh.VrfsItem(name=vrf_name, enable=vrf.enabled)
+                if vrf.enabled:
                     management_ssh_vrf.ip_access_group_in = vrf.ipv4_acl if vrf.ipv4_acl else None
                     management_ssh_vrf.ipv6_access_group_in = vrf.ipv6_acl if vrf.ipv6_acl else None
+                self.structured_config.management_ssh.vrfs.append(management_ssh_vrf)

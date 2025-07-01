@@ -13,9 +13,6 @@ management_api_http:
   - name: MGMT
 management_ssh:
   ip_access_group_in: ACL-SSH-INBAND-MGMT
-  vrfs:
-  - name: default
-    enable: true
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
