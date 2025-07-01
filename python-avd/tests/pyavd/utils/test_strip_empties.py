@@ -13,17 +13,32 @@ STRIP_EMPTIES_LIST = {
     "None": ["string1", "string2", "string3", None],
     "empty_string": ["", "string1", "string2"],
     "empty_list": [[], ["string1", "string2"]],
+    "empty_tuple": [(), ("string1", "string2")],
     "empty_dict": [{}, {"key1": "value1", "key2": "value2"}],
     "None_in_nested_list": [[None, 1, 2, 3], [], 1, 2, 3],
+    "None_in_nested_tuple": [(None, 1, 2, 3), (), 1, 2, 3],
     "None_in_nested_dict": [{"key1": None, "key2": "value2", "key3": [None, 1, 2, 3]}, 1, 2, 3],
+}
+
+STRIP_EMPTIES_TUPLE = {
+    "None": ("string1", "string2", "string3", None),
+    "empty_string": ("", "string1", "string2"),
+    "empty_list": ([], ["string1", "string2"]),
+    "empty_tuple": ((), ("string1", "string2")),
+    "empty_dict": ({}, {"key1": "value1", "key2": "value2"}),
+    "None_in_nested_list": ([None, 1, 2, 3], [], 1, 2, 3),
+    "None_in_nested_tuple": ((None, 1, 2, 3), (), 1, 2, 3),
+    "None_in_nested_dict": ({"key1": None, "key2": "value2", "key3": (None, 1, 2, 3)}, 1, 2, 3),
 }
 
 STRIP_EMPTIES_DICT = {
     "None": {"key1": None, "key2": "value2", "key3": "value3"},
     "empty_string": {"key1": "", "key2": "value2", "key3": "value3"},
     "empty_list": {"key1": [], "key2": "value2", "key3": "value3"},
+    "empty_tuple": {"key1": (), "key2": "value2", "key3": "value3"},
     "empty_dict": {"key1": {}, "key2": "value2", "key3": "value3"},
     "None_in_nested_list": {"key1": [1, 2, 3, None], "key2": [{"key3": "value3"}, {"key4": "value4"}]},
+    "None_in_nested_tuple": {"key1": (1, 2, 3, None), "key2": ({"key3": "value3"}, {"key4": "value4"})},
     "None_in_nested_dict": {"key1": [1, 2, 3, {}], "key2": [{"key3": "value3", "key4": None}]},
 }
 
@@ -35,9 +50,12 @@ class TestStripEmpties:
         assert None not in output
         assert "" not in output
         assert [] not in output
+        assert () not in output
         assert {} not in output
         for entry in output:
             if isinstance(entry, list):
+                self.strip_empties_checks(entry)
+            if isinstance(entry, tuple):
                 self.strip_empties_checks(entry)
             if isinstance(entry, dict):
                 self.strip_empties_checks(entry.values())
@@ -56,6 +74,21 @@ class TestStripEmpties:
                 "",
                 [],
                 {},
+                (),
+            ),
+        )
+        self.strip_empties_checks(output)
+
+    @pytest.mark.parametrize("data", STRIP_EMPTIES_TUPLE.values(), ids=STRIP_EMPTIES_TUPLE.keys())
+    def test_strip_empties_tuple(self, data: Any) -> None:
+        output = strip_null_from_data(
+            data,
+            strip_values_tuple=(
+                None,
+                "",
+                [],
+                {},
+                (),
             ),
         )
         self.strip_empties_checks(output)
@@ -69,6 +102,7 @@ class TestStripEmpties:
                 "",
                 [],
                 {},
+                (),
             ),
         )
         self.strip_empties_checks(output.values())
