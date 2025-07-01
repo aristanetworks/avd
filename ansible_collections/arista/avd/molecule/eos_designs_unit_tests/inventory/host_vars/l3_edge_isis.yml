@@ -61,3 +61,10 @@ l3_edge:
       interfaces: [ethernet4, ethernet4]
       ip_pool: pool1
       id: 4
+
+      # P2P link with underlay routing and IP set manually.
+    - nodes: [l3_edge_isis, peer2]
+      interfaces: [ethernet5, ethernet5]
+      ip: [192.168.0.4/31, 192.168.0.5/31]
+      isis_authentication_mode: text
+      isis_authentication_cleartext_key: arista

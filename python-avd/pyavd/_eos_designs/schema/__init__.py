@@ -1483,6 +1483,7 @@ class EosDesigns(EosDesignsRootModel):
                 "isis_circuit_type": {"type": str},
                 "isis_authentication_mode": {"type": str},
                 "isis_authentication_key": {"type": str},
+                "isis_authentication_cleartext_key": {"type": str},
                 "isis_network_type": {"type": str, "default": "point-to-point"},
                 "mpls_ip": {"type": bool},
                 "mpls_ldp": {"type": bool},
@@ -1575,6 +1576,8 @@ class EosDesigns(EosDesignsRootModel):
             isis_authentication_mode: Literal["md5", "text"] | None
             isis_authentication_key: str | None
             """Type-7 encrypted password."""
+            isis_authentication_cleartext_key: str | None
+            """Cleartext password."""
             isis_network_type: Literal["point-to-point", "broadcast"]
             """Default value: `"point-to-point"`"""
             mpls_ip: bool | None
@@ -1668,6 +1671,7 @@ class EosDesigns(EosDesignsRootModel):
                     isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
                     isis_authentication_mode: Literal["md5", "text"] | None | UndefinedType = Undefined,
                     isis_authentication_key: str | None | UndefinedType = Undefined,
+                    isis_authentication_cleartext_key: str | None | UndefinedType = Undefined,
                     isis_network_type: Literal["point-to-point", "broadcast"] | UndefinedType = Undefined,
                     mpls_ip: bool | None | UndefinedType = Undefined,
                     mpls_ldp: bool | None | UndefinedType = Undefined,
@@ -1736,6 +1740,7 @@ class EosDesigns(EosDesignsRootModel):
                         isis_circuit_type: isis_circuit_type
                         isis_authentication_mode: isis_authentication_mode
                         isis_authentication_key: Type-7 encrypted password.
+                        isis_authentication_cleartext_key: Cleartext password.
                         isis_network_type: isis_network_type
                         mpls_ip: MPLS parameters. Default value is true if switch.mpls_lsr is true.
                         mpls_ldp: MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
@@ -2087,6 +2092,7 @@ class EosDesigns(EosDesignsRootModel):
                 "isis_circuit_type": {"type": str},
                 "isis_authentication_mode": {"type": str},
                 "isis_authentication_key": {"type": str},
+                "isis_authentication_cleartext_key": {"type": str},
                 "isis_network_type": {"type": str, "default": "point-to-point"},
                 "mpls_ip": {"type": bool},
                 "mpls_ldp": {"type": bool},
@@ -2179,6 +2185,8 @@ class EosDesigns(EosDesignsRootModel):
             isis_authentication_mode: Literal["md5", "text"] | None
             isis_authentication_key: str | None
             """Type-7 encrypted password."""
+            isis_authentication_cleartext_key: str | None
+            """Cleartext password."""
             isis_network_type: Literal["point-to-point", "broadcast"]
             """Default value: `"point-to-point"`"""
             mpls_ip: bool | None
@@ -2272,6 +2280,7 @@ class EosDesigns(EosDesignsRootModel):
                     isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
                     isis_authentication_mode: Literal["md5", "text"] | None | UndefinedType = Undefined,
                     isis_authentication_key: str | None | UndefinedType = Undefined,
+                    isis_authentication_cleartext_key: str | None | UndefinedType = Undefined,
                     isis_network_type: Literal["point-to-point", "broadcast"] | UndefinedType = Undefined,
                     mpls_ip: bool | None | UndefinedType = Undefined,
                     mpls_ldp: bool | None | UndefinedType = Undefined,
@@ -2340,6 +2349,7 @@ class EosDesigns(EosDesignsRootModel):
                         isis_circuit_type: isis_circuit_type
                         isis_authentication_mode: isis_authentication_mode
                         isis_authentication_key: Type-7 encrypted password.
+                        isis_authentication_cleartext_key: Cleartext password.
                         isis_network_type: isis_network_type
                         mpls_ip: MPLS parameters. Default value is true if switch.mpls_lsr is true.
                         mpls_ldp: MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
@@ -6223,6 +6233,7 @@ class EosDesigns(EosDesignsRootModel):
                 "isis_circuit_type": {"type": str},
                 "isis_authentication_mode": {"type": str},
                 "isis_authentication_key": {"type": str},
+                "isis_authentication_cleartext_key": {"type": str},
                 "isis_network_type": {"type": str, "default": "point-to-point"},
                 "mpls_ip": {"type": bool},
                 "mpls_ldp": {"type": bool},
@@ -6315,6 +6326,8 @@ class EosDesigns(EosDesignsRootModel):
             isis_authentication_mode: Literal["md5", "text"] | None
             isis_authentication_key: str | None
             """Type-7 encrypted password."""
+            isis_authentication_cleartext_key: str | None
+            """Cleartext password."""
             isis_network_type: Literal["point-to-point", "broadcast"]
             """Default value: `"point-to-point"`"""
             mpls_ip: bool | None
@@ -6408,6 +6421,7 @@ class EosDesigns(EosDesignsRootModel):
                     isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
                     isis_authentication_mode: Literal["md5", "text"] | None | UndefinedType = Undefined,
                     isis_authentication_key: str | None | UndefinedType = Undefined,
+                    isis_authentication_cleartext_key: str | None | UndefinedType = Undefined,
                     isis_network_type: Literal["point-to-point", "broadcast"] | UndefinedType = Undefined,
                     mpls_ip: bool | None | UndefinedType = Undefined,
                     mpls_ldp: bool | None | UndefinedType = Undefined,
@@ -6476,6 +6490,7 @@ class EosDesigns(EosDesignsRootModel):
                         isis_circuit_type: isis_circuit_type
                         isis_authentication_mode: isis_authentication_mode
                         isis_authentication_key: Type-7 encrypted password.
+                        isis_authentication_cleartext_key: Cleartext password.
                         isis_network_type: isis_network_type
                         mpls_ip: MPLS parameters. Default value is true if switch.mpls_lsr is true.
                         mpls_ldp: MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
@@ -6827,6 +6842,7 @@ class EosDesigns(EosDesignsRootModel):
                 "isis_circuit_type": {"type": str},
                 "isis_authentication_mode": {"type": str},
                 "isis_authentication_key": {"type": str},
+                "isis_authentication_cleartext_key": {"type": str},
                 "isis_network_type": {"type": str, "default": "point-to-point"},
                 "mpls_ip": {"type": bool},
                 "mpls_ldp": {"type": bool},
@@ -6919,6 +6935,8 @@ class EosDesigns(EosDesignsRootModel):
             isis_authentication_mode: Literal["md5", "text"] | None
             isis_authentication_key: str | None
             """Type-7 encrypted password."""
+            isis_authentication_cleartext_key: str | None
+            """Cleartext password."""
             isis_network_type: Literal["point-to-point", "broadcast"]
             """Default value: `"point-to-point"`"""
             mpls_ip: bool | None
@@ -7012,6 +7030,7 @@ class EosDesigns(EosDesignsRootModel):
                     isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None | UndefinedType = Undefined,
                     isis_authentication_mode: Literal["md5", "text"] | None | UndefinedType = Undefined,
                     isis_authentication_key: str | None | UndefinedType = Undefined,
+                    isis_authentication_cleartext_key: str | None | UndefinedType = Undefined,
                     isis_network_type: Literal["point-to-point", "broadcast"] | UndefinedType = Undefined,
                     mpls_ip: bool | None | UndefinedType = Undefined,
                     mpls_ldp: bool | None | UndefinedType = Undefined,
@@ -7080,6 +7099,7 @@ class EosDesigns(EosDesignsRootModel):
                         isis_circuit_type: isis_circuit_type
                         isis_authentication_mode: isis_authentication_mode
                         isis_authentication_key: Type-7 encrypted password.
+                        isis_authentication_cleartext_key: Cleartext password.
                         isis_network_type: isis_network_type
                         mpls_ip: MPLS parameters. Default value is true if switch.mpls_lsr is true.
                         mpls_ldp: MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
@@ -64586,6 +64606,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_filter_redistribute_connected": {"type": bool, "default": True},
         "underlay_ipv6": {"type": bool, "default": False},
         "underlay_ipv6_numbered": {"type": bool, "default": False},
+        "underlay_isis_authentication_cleartext_key": {"type": str},
         "underlay_isis_authentication_key": {"type": str},
         "underlay_isis_authentication_mode": {"type": str},
         "underlay_isis_bfd": {"type": bool, "default": False},
@@ -66258,6 +66279,12 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
+    underlay_isis_authentication_cleartext_key: str | None
+    """
+    Cleartext password.
+    To protect the password at rest it is strongly recommended to make use of a
+    vault or similar.
+    """
     underlay_isis_authentication_key: str | None
     """Type-7 encrypted password."""
     underlay_isis_authentication_mode: Literal["md5", "text"] | None
@@ -66730,6 +66757,7 @@ class EosDesigns(EosDesignsRootModel):
             underlay_filter_redistribute_connected: bool | UndefinedType = Undefined,
             underlay_ipv6: bool | UndefinedType = Undefined,
             underlay_ipv6_numbered: bool | UndefinedType = Undefined,
+            underlay_isis_authentication_cleartext_key: str | None | UndefinedType = Undefined,
             underlay_isis_authentication_key: str | None | UndefinedType = Undefined,
             underlay_isis_authentication_mode: Literal["md5", "text"] | None | UndefinedType = Undefined,
             underlay_isis_bfd: bool | UndefinedType = Undefined,
@@ -67957,6 +67985,10 @@ class EosDesigns(EosDesignsRootModel):
                      - wan_role
                      - vtep_vvtep_ip
                      - inband_ztp
+                underlay_isis_authentication_cleartext_key:
+                   Cleartext password.
+                   To protect the password at rest it is strongly recommended to make use of a
+                   vault or similar.
                 underlay_isis_authentication_key: Type-7 encrypted password.
                 underlay_isis_authentication_mode: Underlay ISIS authentication mode.
                 underlay_isis_bfd: Enable BFD for ISIS on all underlay links.

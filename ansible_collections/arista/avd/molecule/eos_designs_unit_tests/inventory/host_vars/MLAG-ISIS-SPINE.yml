@@ -1,7 +1,7 @@
 ---
 underlay_routing_protocol: isis
 underlay_isis_authentication_mode: md5
-underlay_isis_authentication_key: $1c$sTNAlR6rKSw=
+underlay_isis_authentication_cleartext_key: arista
 
 type: spine
 

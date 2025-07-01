@@ -105,6 +105,9 @@ $defs:
         isis_authentication_key:
           type: str
           description: Type-7 encrypted password.
+        isis_authentication_cleartext_key:
+          type: str
+          description: Cleartext password.
         isis_network_type:
           type: str
           default: point-to-point

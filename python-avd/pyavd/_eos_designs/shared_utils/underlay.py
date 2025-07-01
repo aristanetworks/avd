@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._utils.password_utils.password import isis_encrypt
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -110,3 +111,17 @@ class UnderlayMixin(Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg)
         return self.inputs.underlay_ipv6_numbered
+
+    @cached_property
+    def underlay_isis_authentication_cleartext_key(self: SharedUtilsProtocol) -> str | None:
+        if (
+            self.inputs.underlay_isis_authentication_cleartext_key is not None
+            and self.inputs.underlay_isis_authentication_mode is not None
+            and self.isis_instance_name is not None
+        ):
+            return isis_encrypt(
+                password=str(self.inputs.underlay_isis_authentication_cleartext_key),
+                mode=str(self.inputs.underlay_isis_authentication_mode),
+                key=str(self.isis_instance_name),
+            )
+        return None
