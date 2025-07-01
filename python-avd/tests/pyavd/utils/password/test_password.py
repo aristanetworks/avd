@@ -14,10 +14,10 @@ from pyavd._utils.password_utils import (
     ospf_message_digest_encrypt,
     ospf_simple_decrypt,
     ospf_simple_encrypt,
-    tacacs_decrypt,
-    tacacs_encrypt,
     radius_decrypt,
     radius_encrypt,
+    tacacs_decrypt,
+    tacacs_encrypt,
 )
 
 ##########
@@ -262,6 +262,7 @@ def test_tacacs_input_validation() -> None:
 
     with pytest.raises(ValueError):  # noqa: PT011
         tacacs_decrypt(None)
+
 
 ########
 # Radius
