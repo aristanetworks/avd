@@ -41,11 +41,8 @@ def template(template_file: str, template_vars: dict, templar: Templar | None) -
         raise NotImplementedError(msg)
 
     # We only get here when running from Ansible, so it is safe to import from ansible.
-    # pylint: disable=import-outside-toplevel
-    from ansible.module_utils._text import to_text
-    from jinja2.loaders import FileSystemLoader
-
-    # pylint: enable=import-outside-toplevel
+    from ansible.module_utils._text import to_text  # noqa: PLC0415
+    from jinja2.loaders import FileSystemLoader  # noqa: PLC0415
 
     dataloader: DataLoader = templar._loader
     jinjaloader = templar.environment.loader

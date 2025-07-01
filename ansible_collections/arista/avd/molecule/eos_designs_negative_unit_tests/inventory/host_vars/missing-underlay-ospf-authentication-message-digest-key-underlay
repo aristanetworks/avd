@@ -1,0 +1,30 @@
+---
+underlay_routing_protocol: ospf
+underlay_ospf_authentication:
+  enabled: true
+  message_digest_keys:
+    - id: 1
+      # missing cleartext_key or key
+      # TODO: Make cleartext_key required in AVD 6.0
+
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    uplink_ipv4_pool: 10.0.42.0/24
+    # using another of the ansible group switch as uplink to trigger
+    uplink_switches: [missing-underlay-ospf-authentication-message-digest-key-mlag]
+    uplink_interfaces: [Ethernet1] 
+    uplink_switch_interfaces: [Ethernet1] 
+  nodes:
+    - name: missing-underlay-ospf-authentication-message-digest-key-underlay
+      id: 101
+      bgp_as: 101
+
+expected_error_message: >-
+  '`underlay_ospf_authentication.message_digest_keys[key=1].key
+  or `underlay_ospf_authentication.message_digest_keys[key=1].cleartext_key`'
+  is required but was not found.

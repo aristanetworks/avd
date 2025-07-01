@@ -92,8 +92,8 @@ class EthernetInterfacesMixin(Protocol):
     ) -> None:
         ethernet_interface._update(
             mtu=self.shared_utils.get_interface_mtu(ethernet_interface.name, adapter.mtu),
-            l2_mtu=adapter.l2_mtu,
-            l2_mru=adapter.l2_mru,
+            l2_mtu=self._get_adapter_l2_mtu(adapter),
+            l2_mru=self._get_adapter_l2_mru(adapter),
             spanning_tree_portfast=adapter.spanning_tree_portfast,
             spanning_tree_bpdufilter=adapter.spanning_tree_bpdufilter,
             spanning_tree_bpduguard=adapter.spanning_tree_bpduguard,
@@ -239,5 +239,9 @@ class EthernetInterfacesMixin(Protocol):
         # More common ethernet_interface settings
         if adapter.flowcontrol:
             ethernet_interface.flowcontrol = adapter.flowcontrol
+
+        # Propagate campus_link_type for campus devices
+        if self.shared_utils.is_campus_device and adapter.campus_link_type:
+            ethernet_interface._internal_data.campus_link_type = list(adapter.campus_link_type)
 
         return ethernet_interface

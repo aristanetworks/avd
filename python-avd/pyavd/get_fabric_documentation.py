@@ -43,13 +43,11 @@ def get_fabric_documentation(
     Returns:
         FabricDocumentation object containing the requested documentation areas.
     """
-    # pylint: disable=import-outside-toplevel
-    from pyavd._eos_designs.fabric_documentation_facts import FabricDocumentationFacts
-    from pyavd.j2filters import add_md_toc
+    from pyavd._eos_designs.fabric_documentation_facts import FabricDocumentationFacts  # noqa: PLC0415
+    from pyavd.j2filters import add_md_toc  # noqa: PLC0415
 
-    from .constants import EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH
-    from .templater import Templar
-    # pylint: enable=import-outside-toplevel
+    from .constants import EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH  # noqa: PLC0415
+    from .templater import Templar  # noqa: PLC0415
 
     fabric_documentation_facts = FabricDocumentationFacts(avd_facts, structured_configs, fabric_name, include_connected_endpoints, toc)
     result = FabricDocumentation()
@@ -70,10 +68,8 @@ def get_fabric_documentation(
 
 
 def _get_topology_csv(fabric_documentation_facts: FabricDocumentationFacts) -> str:
-    # pylint: disable=import-outside-toplevel
-    from csv import writer
-    from io import StringIO
-    # pylint: enable=import-outside-toplevel
+    from csv import writer  # noqa: PLC0415
+    from io import StringIO  # noqa: PLC0415
 
     csv_content = StringIO()
     csv_writer = writer(csv_content, lineterminator="\n")
@@ -84,10 +80,8 @@ def _get_topology_csv(fabric_documentation_facts: FabricDocumentationFacts) -> s
 
 
 def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> str:
-    # pylint: disable=import-outside-toplevel
-    from csv import writer
-    from io import StringIO
-    # pylint: enable=import-outside-toplevel
+    from csv import writer  # noqa: PLC0415
+    from io import StringIO  # noqa: PLC0415
 
     csv_content = StringIO()
     csv_writer = writer(csv_content, lineterminator="\n")

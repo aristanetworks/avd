@@ -35,7 +35,7 @@ ethernet_interfaces:
   description: L2_BGP-LEAF2_Ethernet1
   shutdown: false
   channel_group:
-    id: 2
+    id: 1
     mode: active
   peer: BGP-LEAF2
   peer_interface: Ethernet1
@@ -50,6 +50,118 @@ ethernet_interfaces:
   peer_type: other
   switchport:
     enabled: false
+- name: Ethernet6
+  description: P2P_DUMMY-CORE_Ethernet1/5
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.253.8/31
+  peer: DUMMY-CORE
+  peer_interface: Ethernet1/5
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: P2P_DUMMY-CORE_Ethernet1/7
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  peer: DUMMY-CORE
+  peer_interface: Ethernet1/7
+  peer_type: other
+- name: Ethernet8
+  description: P2P_DUMMY-CORE_Ethernet1/9
+  shutdown: false
+  channel_group:
+    id: 8
+    mode: active
+  peer: DUMMY-CORE
+  peer_interface: Ethernet1/9
+  peer_type: other
+- name: Ethernet9
+  shutdown: false
+  ip_address: 10.0.1.0/31
+  peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet18.100
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 100
+  ip_address: 10.0.1.4/31
+  peer_type: l3_interface
+- name: Ethernet18.101
+  shutdown: false
+  vrf: New_VRF
+  encapsulation_dot1q:
+    vlan: 101
+  ip_address: 10.0.1.8/31
+  peer_type: l3_interface
+- name: Ethernet18
+  shutdown: false
+  peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet14
+  description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth0
+  shutdown: false
+  peer: CAMPUS_EGRESS_FW_1
+  peer_interface: Eth0
+  peer_type: firewall
+  switchport:
+    enabled: true
+- name: Ethernet15
+  description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth2
+  shutdown: false
+  peer: CAMPUS_EGRESS_FW_1
+  peer_interface: Eth2
+  peer_type: firewall
+  port_profile: campus_eggress
+  switchport:
+    enabled: true
+- name: Ethernet16
+  description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth4
+  shutdown: false
+  channel_group:
+    id: 16
+    mode: active
+  peer: CAMPUS_EGRESS_FW_1
+  peer_interface: Eth4
+  peer_type: firewall
+- name: Ethernet17
+  description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth6
+  shutdown: false
+  channel_group:
+    id: 17
+    mode: active
+  peer: CAMPUS_EGRESS_FW_1
+  peer_interface: Eth6
+  peer_type: firewall
+  port_profile: campus_eggress
+- name: Ethernet10
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet11
+  shutdown: false
+  peer_type: network_port
+  port_profile: campus_eggress
+  switchport:
+    enabled: true
+- name: Ethernet12
+  shutdown: false
+  channel_group:
+    id: 12
+    mode: active
+  peer_type: network_port
+- name: Ethernet13
+  shutdown: false
+  channel_group:
+    id: 13
+    mode: active
+  peer_type: network_port
+  port_profile: campus_eggress
 hostname: BGP-SPINE1
 ip_igmp_snooping:
   globally_enabled: true
@@ -68,6 +180,171 @@ management_api_http:
 metadata:
   pod_name: L2LS_BGP
   fabric_name: L2LS
+  cv_tags:
+    device_tags:
+    - name: topology_hint_network_type
+      value: campusV2
+    - name: topology_hint_type
+      value: Spine
+    - name: Role
+      value: Spine
+    - name: Campus
+      value: City_A
+    - name: Campus-Pod
+      value: Downtown_office
+    interface_tags:
+    - interface: Ethernet3
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: MLAG
+    - interface: Ethernet4
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: MLAG
+    - interface: Ethernet1
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Ethernet2
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Ethernet5
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet6
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet7
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet8
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet9
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet14
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet15
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet16
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet17
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet10
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet11
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet12
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet13
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet18
+      tags:
+      - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
 mlag_configuration:
   domain_id: BGP_SPINES
   local_interface: Vlan4094
@@ -86,7 +363,7 @@ port_channel_interfaces:
       groups:
       - MLAG
 - name: Port-Channel1
-  description: L2_BGP-LEAF1_Port-Channel1
+  description: L2_BGP-LEAFS_Port-Channel1
   shutdown: false
   mlag: 1
   switchport:
@@ -94,15 +371,51 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 1,100,200,4092
-- name: Port-Channel2
-  description: L2_BGP-LEAF2_Port-Channel1
+- name: Port-Channel7
+  description: P2P_DUMMY-CORE_Port-Channel17
   shutdown: false
-  mlag: 2
+  mtu: 9214
+  ip_address: 192.168.253.12/31
+  peer: DUMMY-CORE
+  peer_interface: Port-Channel17
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Port-Channel8
+  description: P2P_DUMMY-CORE_Port-Channel19
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.253.16/31
+  peer: DUMMY-CORE
+  peer_interface: Port-Channel19
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Port-Channel16
+  description: FIREWALL_CAMPUS_EGRESS_FW_1
+  shutdown: false
   switchport:
     enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: 100,4092
+- name: Port-Channel17
+  description: FIREWALL_CAMPUS_EGRESS_FW_1
+  shutdown: false
+  switchport:
+    enabled: true
+- name: Port-Channel12
+  shutdown: false
+  mlag: 12
+  switchport:
+    enabled: true
+- name: Port-Channel13
+  shutdown: false
+  mlag: 13
+  switchport:
+    enabled: true
+prefix_lists:
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.254.0/31
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
@@ -111,6 +424,14 @@ route_maps:
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
     set:
     - origin incomplete
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 router_bgp:
   as: '65001'
   router_id: 192.168.255.1
@@ -141,6 +462,21 @@ router_bgp:
     peer: BGP-SPINE2
     description: BGP-SPINE2_Vlan4094
   - ip_address: 192.168.253.5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: DUMMY-CORE
+    description: DUMMY-CORE
+  - ip_address: 192.168.253.9
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: DUMMY-CORE
+    description: DUMMY-CORE
+  - ip_address: 192.168.253.13
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: DUMMY-CORE
+    description: DUMMY-CORE
+  - ip_address: 192.168.253.17
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     peer: DUMMY-CORE
@@ -191,6 +527,14 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.220.1/24
   tenant: L2LS_BGP
+- name: Vlan3100
+  description: MLAG_L3_VRF_New_VRF
+  shutdown: false
+  vrf: New_VRF
+  ip_address: 192.168.254.0/31
+  mtu: 9214
+  tenant: L2LS_BGP
+  type: underlay_peering
 - name: Vlan4092
   description: Inband Management
   shutdown: false
@@ -224,9 +568,17 @@ vlans:
 - id: 220
   name: SVI_220
   tenant: L2LS_BGP
+- id: 3100
+  name: MLAG_L3_VRF_New_VRF
+  trunk_groups:
+  - MLAG
+  tenant: L2LS_BGP
 - id: 4092
   name: INBAND_MGMT
   tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: New_VRF
+  ip_routing: true
+  tenant: L2LS_BGP

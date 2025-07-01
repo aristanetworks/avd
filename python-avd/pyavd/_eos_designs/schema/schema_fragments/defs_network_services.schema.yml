@@ -99,6 +99,16 @@ $defs:
               name:
                 type: str
                 description: BGP peer group name.
+              password:
+                type: str
+                description: |-
+                  Type 7 encrypted password.
+                  Takes precedence over `cleartext_password`.
+              cleartext_password:
+                type: str
+                description: |-
+                  BGP peer group cleartext password.
+                  To protect the password at rest it is strongly recommended to make use of a vault or similar.
               nodes:
                 type: list
                 items:
@@ -186,6 +196,7 @@ $defs:
               type: str
               description: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
               format: ipv4_pool
+            # TODO: make the default value of the offset 1
             underlay_l2_multicast_group_ipv4_pool_offset:
               type: int
               default: 0
@@ -202,6 +213,29 @@ $defs:
                 Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is enabled will take up additional control-plane and data-plane resources,
                 but it is required to support forwarding of TTL=1 multicast traffic within the VLAN.
                 This can be overridden per SVI.
+        vxlan_flood_multicast:
+          documentation_options:
+            table: network-services-multicast-settings
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              required: true
+              description: |-
+                Enable Flood group Multicast for all SVIs and l2vlans within Tenant.
+            underlay_l2_multicast_group_ipv4_pool:
+              type: str
+              description: |-
+                IPv4 Pool to allocate vxlan flood groups from.
+                The VLAN ID - 1 + `underlay_l2_multicast_group_ipv4_pool_offset` is the offset for each group.
+                Comma separated list of prefixes (IPv4_address/Mask) or ranges (IPv4_address-IPv4_address).
+              format: ipv4_pool
+            # TODO: make the default value of the offset 1
+            underlay_l2_multicast_group_ipv4_pool_offset:
+              type: int
+              default: 0
+              convert_types:
+                - str
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -555,6 +589,54 @@ $defs:
                       route_map:
                         type: str
                         description: Route-map name.
+                  authentication:
+                    type: str
+                    valid_values:
+                      - simple
+                      - message-digest
+                    description: |-
+                      Configure OSPF authentication for all interfaces under the VRF.
+                      Can be overridden at the interface level under `l3_interfaces`, `l3_port_channels` or `svis`.
+                  cleartext_simple_auth_key:
+                    type: str
+                    description: |-
+                      Cleartext password used with simple authentication.
+                      To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                      Configuration at the interface level under `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+                    min_length: 1
+                    max_length: 8
+                  message_digest_keys:
+                    type: list
+                    primary_key: id
+                    min_length: 1
+                    max_length: 2
+                    items:
+                      type: dict
+                      keys:
+                        id:
+                          type: int
+                          convert_types:
+                            - str
+                        hash_algorithm:
+                          type: str
+                          valid_values:
+                            - md5
+                            - sha1
+                            - sha256
+                            - sha384
+                            - sha512
+                          default: sha512
+                        cleartext_key:
+                          type: str
+                          required: true
+                          convert_types:
+                            - int
+                          description: |-
+                            Cleartext key for OSPF message-digest authentication
+                            To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                            Configuration at the interface level under `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+                          min_length: 1
+                          max_length: 16
                   nodes:
                     type: list
                     items:
@@ -801,9 +883,21 @@ $defs:
                             - message-digest
                         simple_auth_key:
                           type: str
-                          description: Password used with simple authentication.
+                          description: |-
+                            Type 7 encrypted key for OSPF simple authentication.
+                            Takes precedence over `cleartext_simple_auth_key`.
+                            NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                        cleartext_simple_auth_key:
+                          type: str
+                          description: |-
+                            Cleartext key for OSPF simple authentication.
+                            To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                          min_length: 1
+                          max_length: 8
                         message_digest_keys:
                           type: list
+                          # TODO: AVD 6.0.0: Make id primary_key and key required.
                           items:
                             type: dict
                             keys:
@@ -822,7 +916,18 @@ $defs:
                                 default: sha512
                               key:
                                 type: str
-                                description: Key password.
+                                description: |-
+                                  Type 7 encrypted key for OSPF message-digest authentication.
+                                  Takes precedence over `cleartext_key`
+                                  NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                                  (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                              cleartext_key:
+                                type: str
+                                description: |-
+                                  Cleartext key for OSPF message-digest authentication
+                                  To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                min_length: 1
+                                max_length: 16
                     pim:
                       type: dict
                       description: |
@@ -837,6 +942,9 @@ $defs:
                       $ref: "eos_designs#/$defs/flow_tracking_link"
                       description: |-
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+                    campus_link_type:
+                      type: list
+                      $ref: "eos_designs#/$defs/campus_link_type"
                     structured_config:
                       type: dict
                       relaxed_validation: true
@@ -996,9 +1104,21 @@ $defs:
                             - message-digest
                         simple_auth_key:
                           type: str
-                          description: Password used with simple authentication.
+                          description: |-
+                            Type 7 encrypted key for OSPF simple authentication.
+                            Takes precedence over `cleartext_simple_auth_key`
+                            NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                        cleartext_simple_auth_key:
+                          type: str
+                          description: |-
+                            Cleartext key for OSPF simple authentication.
+                            To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                          min_length: 1
+                          max_length: 8
                         message_digest_keys:
                           type: list
+                          # TODO: AVD 6.0.0: Make id primary_key and key required.
                           items:
                             type: dict
                             keys:
@@ -1017,7 +1137,18 @@ $defs:
                                 default: sha512
                               key:
                                 type: str
-                                description: Key password.
+                                description: |-
+                                  Type 7 encrypted key for OSPF message-digest authentication.
+                                  Takes precedence over `cleartext_key`
+                                  NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                                  (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                              cleartext_key:
+                                type: str
+                                description: |-
+                                  Cleartext key for OSPF message-digest authentication
+                                  To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                min_length: 1
+                                max_length: 16
                     flow_tracking:
                       type: dict
                       $ref: "eos_designs#/$defs/flow_tracking_link"
@@ -1173,7 +1304,14 @@ $defs:
                       type: str
                     password:
                       type: str
-                      description: Encrypted password.
+                      description: |-
+                        Type 7 encrypted password.
+                        Takes precedence over `cleartext_password`.
+                    cleartext_password:
+                      type: str
+                      description: |-
+                        BGP peer group cleartext password.
+                        To protect the password at rest it is strongly recommended to make use of a vault or similar.
                     send_community:
                       type: str
                       description: |
@@ -1314,6 +1452,16 @@ $defs:
                       description: |
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                         If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                    password:
+                      type: str
+                      description: |-
+                        Type 7 encrypted password.
+                        Takes precedence over `cleartext_password`.
+                    cleartext_password:
+                      type: str
+                      description: |-
+                        BGP peer group cleartext password.
+                        To protect the password at rest it is strongly recommended to make use of a vault or similar.
                     address_family_ipv4:
                       type: dict
                       keys:
@@ -1510,6 +1658,18 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+              vxlan_flood_multicast:
+                documentation_options:
+                  table: network-services-multicast-settings
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: |-
+                      Explicitly enable or disable vxlan_flood_multicast to override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                  underlay_multicast_group:
+                    description: Specific multicast group to use for this VLAN.
+                    type: str
               igmp_snooping_enabled:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -1560,6 +1720,16 @@ $defs:
                     description: |
                       EOS cli commands rendered on router_bgp.vlans.
                       This configuration will not be applied to vlan aware bundles.
+              private_vlan:
+                type: dict
+                $ref: eos_cli_config_gen#/keys/vlans/items/keys/private_vlan
+                keys:
+                  type:
+                    type: str
+                    required: true
+                  primary_vlan:
+                    type: int
+                    required: true
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings

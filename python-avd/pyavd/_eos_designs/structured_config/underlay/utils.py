@@ -185,7 +185,7 @@ class UtilsMixin(Protocol):
                     if svi.id not in vlans:
                         continue
 
-                    interfaces.append(self._get_l2_as_subint(link, svi, vrf))
+                    interfaces.append(self._get_l2_as_subint(link, svi, vrf, tenant))
 
         # If we have the main interface covered, we can just remove it from the list and return as main interface.
         # Otherwise we return an almost empty dict as the main interface since it was already covered by the calling function.
@@ -212,6 +212,7 @@ class UtilsMixin(Protocol):
         link: EosDesignsFacts.UplinksItem,
         svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> EosCliConfigGen.EthernetInterfacesItem:
         """
         Return structured config for one subinterface representing the given SVI.
@@ -265,7 +266,7 @@ class UtilsMixin(Protocol):
             pass
 
         # Adding IP helpers and OSPF via a common function also used for SVIs on L3 switches.
-        self.shared_utils.get_additional_svi_config(subinterface, svi, vrf)
+        self.shared_utils.get_additional_svi_config(subinterface, svi, vrf, tenant)
 
         return subinterface
 

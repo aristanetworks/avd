@@ -1,0 +1,125 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet3
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ipv6_enable: true
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet3.100
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF_Ethernet1.100_VRF_IT
+  shutdown: false
+  mtu: 9214
+  vrf: IT
+  encapsulation_dot1q:
+    vlan: 100
+  ipv6_enable: true
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
+  peer_interface: Ethernet1.100
+  peer_type: l3leaf
+- name: Ethernet3.42
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF_Ethernet1.42_VRF_PROD
+  shutdown: false
+  mtu: 9214
+  vrf: PROD
+  encapsulation_dot1q:
+    vlan: 42
+  ipv6_enable: true
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
+  peer_interface: Ethernet1.42
+  peer_type: l3leaf
+hostname: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing_ipv6_interfaces: true
+ipv6_unicast_routing: true
+is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.1.72/32
+  ipv6_address: 2001:2::48/128
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+metadata:
+  platform: vEOS-LAB
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+router_bgp:
+  as: '65000'
+  router_id: 192.168.1.72
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  neighbor_interfaces:
+  - name: Ethernet3
+    remote_as: '65000'
+    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
+    peer_group: IPv4-UNDERLAY-PEERS
+    description: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF_Ethernet1
+  redistribute:
+    connected:
+      enabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
+  address_family_ipv6:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+  vrfs:
+  - name: IT
+    router_id: 192.168.1.72
+    neighbor_interfaces:
+    - name: Ethernet3.100
+      remote_as: '65000'
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF_Ethernet1.100_vrf_IT
+  - name: PROD
+    router_id: 192.168.1.72
+    neighbor_interfaces:
+    - name: Ethernet3.42
+      remote_as: '65000'
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF_Ethernet1.42_vrf_PROD
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: IT
+  ip_routing: true
+  tenant: TenantA
+- name: PROD
+  ip_routing: true
+  tenant: TenantA
