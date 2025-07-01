@@ -12,6 +12,8 @@ from .password import (
     ospf_simple_encrypt,
     tacacs_decrypt,
     tacacs_encrypt,
+    radius_decrypt,
+    radius_encrypt,
 )
 
 ##############
@@ -23,4 +25,5 @@ METHODS_DIR = {
     "ospf_message_digest": (ospf_message_digest_encrypt, ospf_message_digest_decrypt),
     "isis": (isis_encrypt, isis_decrypt),
     "tacacs": (tacacs_encrypt, tacacs_decrypt),
+    "radius": (radius_encrypt, radius_decrypt),
 }

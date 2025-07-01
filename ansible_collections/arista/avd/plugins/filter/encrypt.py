@@ -27,7 +27,7 @@ short_description: Encrypt supported EOS passwords
 description: |-
   - The filter encrypts a clear text password into EOS passwords.
   - It is intended to be used with Ansible Vault to load a password and have it encrypted on the fly by AVD in `eos_designs`.
-  - The filter only supports encryption for type `7` and not type `8a` for OSPF, BGP and TACACS+ passwords.
+  - The filter only supports encryption for type `7` and not type `8a` for OSPF, BGP, RADIUS and TACACS+ passwords.
 positional: _input
 options:
   _input:
@@ -41,7 +41,7 @@ options:
       `bgp` and `ospf_simple` requires the `password` and `key` inputs.
       `ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.
       `isis` requires the `password`, `key` and `mode` inputs.
-      `tacacs` requires the `password` and `salt` inputs.
+      `tacacs` and `radius` requires the `password` and `salt` inputs.
     choices: ["bgp", "ospf_simple", "ospf_message_digest", "isis"]
     required: true
   key:
@@ -70,7 +70,7 @@ options:
   salt:
     type: integer
     description: |-
-      Salt used for simple type-7 obfuscation. Required for `passwd_type: tacacs`.
+      Salt used for simple type-7 obfuscation. Required for `passwd_type: tacacs` and `radius`.
     min: 0
     max: 15
 """
