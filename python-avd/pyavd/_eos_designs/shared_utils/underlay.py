@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdInvalidInputsError
@@ -115,7 +115,7 @@ class UnderlayMixin(Protocol):
     @cached_property
     def underlay_isis_authentication_cleartext_key(self: SharedUtilsProtocol) -> str | None:
         return isis_encrypt(
-            password=self.inputs.underlay_isis_authentication_cleartext_key,
-            mode=self.inputs.underlay_isis_authentication_mode,
-            key=self.isis_instance_name,
+            password=cast("str", self.inputs.underlay_isis_authentication_cleartext_key),
+            mode=cast("str", self.inputs.underlay_isis_authentication_mode),
+            key=cast("str",self.isis_instance_name),
         )

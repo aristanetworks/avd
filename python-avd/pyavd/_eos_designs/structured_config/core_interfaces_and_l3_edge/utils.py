@@ -296,9 +296,9 @@ class UtilsMixin(Protocol):
                 elif p2p_link.isis_authentication_cleartext_key is not None:
                     interface.isis_authentication.both._update(
                         key=isis_encrypt(
-                            password=str(p2p_link.isis_authentication_cleartext_key),
-                            key=str(self.shared_utils.isis_instance_name),
-                            mode=str(p2p_link.isis_authentication_mode),
+                            password=p2p_link.isis_authentication_cleartext_key,
+                            key=cast("str", self.shared_utils.isis_instance_name),
+                            mode=cast("str",p2p_link.isis_authentication_mode),
                         ),
                         key_type="7",
                     )
