@@ -51,6 +51,8 @@ loopback_interfaces:
   ipv6_address: 2001:2::8/128
 management_api_http:
   enable_https: true
+  enable_vrfs:
+  - name: use_mgmt_interface_vrf
 metadata:
   platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS

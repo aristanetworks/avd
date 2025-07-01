@@ -25,6 +25,8 @@ ip_tacacs_source_interfaces:
 is_deployed: true
 management_api_http:
   enable_https: true
+  enable_vrfs:
+  - name: default
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

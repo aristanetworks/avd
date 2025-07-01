@@ -532,6 +532,8 @@ loopback_interfaces:
 management_api_http:
   enable_https: true
   default_services: false
+  enable_vrfs:
+  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

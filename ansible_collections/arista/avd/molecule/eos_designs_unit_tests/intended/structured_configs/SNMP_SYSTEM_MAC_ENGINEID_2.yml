@@ -9,6 +9,8 @@ ip_igmp_snooping:
 is_deployed: true
 management_api_http:
   enable_https: true
+  enable_vrfs:
+  - name: use_mgmt_interface_vrf
 metadata:
   system_mac_address: 12:34:56:78:90:AB
   fabric_name: EOS_DESIGNS_UNIT_TESTS

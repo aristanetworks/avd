@@ -20,6 +20,8 @@ loopback_interfaces:
   ip_address: 169.253.103.1/32
 management_api_http:
   enable_https: true
+  enable_vrfs:
+  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

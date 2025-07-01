@@ -141,6 +141,8 @@ loopback_interfaces:
   ip_address: 192.168.44.2/32
 management_api_http:
   enable_https: true
+  enable_vrfs:
+  - name: use_mgmt_interface_vrf
 management_security:
   ssl_profiles:
   - name: profileB

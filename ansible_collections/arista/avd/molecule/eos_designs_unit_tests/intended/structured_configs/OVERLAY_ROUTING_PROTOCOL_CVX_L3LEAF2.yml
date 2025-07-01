@@ -19,6 +19,8 @@ loopback_interfaces:
   ip_address: 192.168.253.2/32
 management_api_http:
   enable_https: true
+  enable_vrfs:
+  - name: use_mgmt_interface_vrf
 management_cvx:
   shutdown: false
   server_hosts:

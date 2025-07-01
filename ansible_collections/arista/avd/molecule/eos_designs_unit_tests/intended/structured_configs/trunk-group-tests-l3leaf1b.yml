@@ -75,6 +75,8 @@ loopback_interfaces:
   ip_address: 192.168.249.9/32
 management_api_http:
   enable_https: true
+  enable_vrfs:
+  - name: use_mgmt_interface_vrf
 metadata:
   pod_name: TRUNK_GROUP_TESTS
   fabric_name: EOS_DESIGNS_UNIT_TESTS

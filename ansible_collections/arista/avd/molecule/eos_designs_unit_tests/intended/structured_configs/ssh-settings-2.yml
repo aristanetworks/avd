@@ -9,6 +9,8 @@ ip_igmp_snooping:
 is_deployed: true
 management_api_http:
   enable_https: true
+  enable_vrfs:
+  - name: use_mgmt_interface_vrf
 management_ssh:
   access_groups:
   - name: ACL-SSH-INBAND-MGMT

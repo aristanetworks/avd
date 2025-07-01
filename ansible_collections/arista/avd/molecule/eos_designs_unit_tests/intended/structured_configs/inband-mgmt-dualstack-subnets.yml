@@ -45,6 +45,8 @@ ipv6_static_routes:
 is_deployed: true
 management_api_http:
   enable_https: true
+  enable_vrfs:
+  - name: use_mgmt_interface_vrf
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:

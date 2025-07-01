@@ -22,6 +22,8 @@ loopback_interfaces:
   ip_address: 10.10.255.1/32
 management_api_http:
   enable_https: true
+  enable_vrfs:
+  - name: use_mgmt_interface_vrf
 metadata:
   rack: ABC567
   pod_name: POD1

@@ -19,6 +19,8 @@ loopback_interfaces:
   ip_address: 192.168.1.1/32
 management_api_http:
   enable_https: true
+  enable_vrfs:
+  - name: use_mgmt_interface_vrf
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 prefix_lists:

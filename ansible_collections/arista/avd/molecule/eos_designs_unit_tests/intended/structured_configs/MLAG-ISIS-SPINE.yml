@@ -54,6 +54,8 @@ loopback_interfaces:
   isis_passive: true
 management_api_http:
   enable_https: true
+  enable_vrfs:
+  - name: use_mgmt_interface_vrf
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 router_bfd:
