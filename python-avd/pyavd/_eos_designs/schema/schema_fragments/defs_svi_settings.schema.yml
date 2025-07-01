@@ -164,6 +164,19 @@ $defs:
               By default `redistribute igmp` is only configured when `evpn_l2_multicast` is True and `evpn_l3_multicast` for the VRF is False.
               Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is enabled will take up additional control-plane and data-plane resources,
               but it is required to support forwarding of TTL=1 multicast traffic within the VLAN.
+      vxlan_flood_multicast:
+        documentation_options:
+          table: network-services-multicast-settings
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: |-
+              Explicitly enable or disable vxlan_flood_multicast to override settings of `<network_services_key>.[].vxlan_flood_multicast`.
+          underlay_multicast_group:
+            description: |-
+              Specific multicast group to use for this SVI.
+            type: str
       evpn_l3_multicast:
         documentation_options:
           table: network-services-multicast-settings
