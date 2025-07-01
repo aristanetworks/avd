@@ -114,14 +114,8 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def underlay_isis_authentication_cleartext_key(self: SharedUtilsProtocol) -> str | None:
-        if (
-            self.inputs.underlay_isis_authentication_cleartext_key is not None
-            and self.inputs.underlay_isis_authentication_mode is not None
-            and self.isis_instance_name is not None
-        ):
-            return isis_encrypt(
-                password=str(self.inputs.underlay_isis_authentication_cleartext_key),
-                mode=str(self.inputs.underlay_isis_authentication_mode),
-                key=str(self.isis_instance_name),
-            )
-        return None
+        return isis_encrypt(
+            password=self.inputs.underlay_isis_authentication_cleartext_key,
+            mode=self.inputs.underlay_isis_authentication_mode,
+            key=self.isis_instance_name,
+        )
