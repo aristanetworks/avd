@@ -134,6 +134,9 @@ keys:
                       items:
                         type: str
                         description: Remote VTEP IP Address.
+                    flood_group:
+                      type: str
+                      description: Flood multicast group address.
               vrfs:
                 type: list
                 primary_key: name

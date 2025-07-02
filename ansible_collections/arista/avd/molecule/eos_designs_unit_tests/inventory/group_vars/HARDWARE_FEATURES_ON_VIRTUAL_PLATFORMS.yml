@@ -1,0 +1,451 @@
+---
+
+custom_platform_settings:
+  - platforms:
+      - 720XP
+    feature_support:
+      poe: true
+      queue_monitor_length_notify: false
+      hardware_counter_features:
+        acl: false
+        decap_group: false
+        directflow: false
+        ecn: false
+        flow_spec: false
+        mpls_interface: false
+        mpls_lfib: false
+        mpls_tunnel: false
+        nexthop: false
+        pbr: false
+        pdp: false
+        policing_interface: false
+        qos: false
+        qos_dual_rate_policer: false
+        routed_port: false
+        segment_security: false
+        tapagg: false
+        traffic_class: false
+        traffic_policy: false
+        vlan: false
+      per_interface_l2_mru: false
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000 l3-shared 22000
+  - platforms:
+      - 7280R
+      - 7280R2
+      - 7020R
+    feature_support:
+      hardware_counter_features:
+        pdp: false
+        route: false
+        routed_port: false
+        segment_security: false
+        vni_decap: false
+        vni_encap: false
+      per_interface_l2_mtu: false
+    lag_hardware_only: true
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+    tcam_profile: vxlan-routing
+  - platforms:
+      - VEOS
+      - VEOS-LAB
+      - vEOS
+      - vEOS-lab
+    feature_support:
+      bgp_update_wait_for_convergence: false
+      bgp_update_wait_install: false
+      interface_storm_control: false
+      queue_monitor: false
+      queue_monitor_length_notify: false
+      evpn_gateway_all_active_multihoming: true
+      hardware_counter_features:
+        decap_group: false
+        directflow: false
+        ecn: false
+        flow_spec: false
+        gre_tunnel_interface: false
+        ip: false
+        mpls_interface: false
+        multicast: false
+        pdp: false
+        policing_interface: false
+        qos: false
+        qos_dual_rate_policer: false
+        route: false
+        routed_port: false
+        segment_security: false
+        subinterface: false
+        tapagg: false
+        traffic_class: false
+        traffic_policy: false
+        vlan: false
+        vlan_interface: false
+      hardware_speed_group: false
+      per_interface_l2_mtu: false
+      per_interface_l2_mru: false
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+  - platforms:
+      - CEOS
+      - cEOS
+      - ceos
+      - cEOSLab
+    feature_support:
+      bgp_update_wait_for_convergence: false
+      bgp_update_wait_install: false
+      interface_storm_control: false
+      queue_monitor: false
+      queue_monitor_length_notify: false
+      evpn_gateway_all_active_multihoming: true
+      hardware_counter_features:
+        decap_group: false
+        directflow: false
+        ecn: false
+        flow_spec: false
+        gre_tunnel_interface: false
+        ip: false
+        mpls_interface: false
+        multicast: false
+        pdp: false
+        policing_interface: false
+        qos: false
+        qos_dual_rate_policer: false
+        route: false
+        routed_port: false
+        segment_security: false
+        subinterface: false
+        tapagg: false
+        traffic_class: false
+        traffic_policy: false
+        vlan: false
+        vlan_interface: false
+      hardware_speed_group: false
+      per_interface_l2_mtu: false
+      per_interface_l2_mru: false
+    management_interface: Management0
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+  - platforms:
+      - CLOUDEOS
+      - CloudEOS
+      - cloudEOS
+    feature_support:
+      hardware_counters: false
+      bgp_update_wait_install: false
+      interface_storm_control: false
+      queue_monitor: false
+      queue_monitor_length_notify: false
+      hardware_speed_group: false
+      per_interface_l2_mru: false
+    p2p_uplinks_mtu: 9194
+  - platforms:
+      - customplatform
+    feature_support:
+      # Test with all features explicitly disabled
+      hardware_counter_features:
+        acl: false
+        decap_group: false
+        directflow: false
+        ecn: false
+        flow_spec: false
+        gre_tunnel_interface: false
+        ip: false
+        mpls_interface: false
+        mpls_lfib: false
+        mpls_tunnel: false
+        multicast: false
+        nexthop: false
+        pbr: false
+        pdp: false
+        policing_interface: false
+        qos: false
+        qos_dual_rate_policer: false
+        route: false
+        routed_port: false
+        segment_security: false
+        subinterface: false
+        tapagg: false
+        traffic_class: false
+        traffic_policy: false
+        vlan: false
+        vlan_interface: false
+        vni_decap: false
+        vni_encap: false
+        vtep_decap: false
+        vtep_encap: false
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    bgp_as: 65001
+    loopback_ipv4_pool: 10.10.10.0/24
+    vtep_loopback_ipv4_pool: 10.10.20.0/24
+  nodes:
+    - name: HARDWARE_FEATURES_VEOS_LAB
+      id: 1
+      platform: vEOS-lab
+    - name: HARDWARE_FEATURES_CEOS_LAB
+      id: 2
+      platform: cEOSLab
+    - name: HARDWARE_FEATURES_CLOUDEOS
+      id: 3
+      platform: cloudEOS
+    - name: HARDWARE_FEATURES_720XP
+      id: 4
+      # Supports PoE
+      platform: 720XP
+    - name: HARDWARE_FEATURES_7280R
+      id: 5
+      # Supports queue-monitor length notifying
+      platform: 7280R
+    - name: HARDWARE_FEATURES_CUSTOM_PLATFORM
+      id: 6
+      platform: customplatform
+
+# Test `queue-monitor`
+queue_monitor_length:
+  enabled: true
+  notifying: true
+queue_monitor_streaming:
+  enable: true
+
+# Test `PoE`, `L2 MTU/MRU` and `Storm Control` on Ethernet and Port-channel interfaces
+servers:
+  - name: TEST_POE
+    adapters:
+      - switch_ports:
+          - Ethernet7
+          - Ethernet7
+          - Ethernet7
+          - Ethernet7
+          - Ethernet7
+        switches:
+          - HARDWARE_FEATURES_VEOS_LAB
+          - HARDWARE_FEATURES_CEOS_LAB
+          - HARDWARE_FEATURES_CLOUDEOS
+          - HARDWARE_FEATURES_720XP
+          - HARDWARE_FEATURES_7280R
+        endpoint_ports:
+          - ETH1_NO_POE
+          - ETH2_NO_POE
+          - ETH3_NO_POE
+          - ETH4_WITH_POE
+          - ETH5_NO_POE
+        poe:
+          reboot:
+            action: maintain
+        l2_mtu: 1001
+        l2_mru: 1002
+  - name: TEST_MTU_MRU
+    adapters:
+      - switch_ports:
+          - Ethernet8
+        switches:
+          - HARDWARE_FEATURES_VEOS_LAB
+        l2_mtu: 2001
+        l2_mru: 2002
+        port_channel:
+          mode: active
+          endpoint_port_channel: PO_NO_MTU_NO_MRU
+      - switch_ports:
+          - Ethernet8
+        switches:
+          - HARDWARE_FEATURES_CEOS_LAB
+        l2_mtu: 2001
+        l2_mru: 2002
+        port_channel:
+          mode: active
+          endpoint_port_channel: PO_NO_MTU_NO_MRU
+      - switch_ports:
+          - Ethernet8
+        switches:
+          - HARDWARE_FEATURES_CLOUDEOS
+        l2_mtu: 2001
+        l2_mru: 2002
+        port_channel:
+          mode: active
+          endpoint_port_channel: PO_MTU_NO_MRU
+      - switch_ports:
+          - Ethernet8
+        switches:
+          - HARDWARE_FEATURES_720XP
+        l2_mtu: 2001
+        l2_mru: 2002
+        port_channel:
+          mode: active
+          endpoint_port_channel: PO_MTU_MRU_1
+      - switch_ports:
+          - Ethernet8
+        switches:
+          - HARDWARE_FEATURES_7280R
+        l2_mtu: 2001
+        l2_mru: 2002
+        port_channel:
+          mode: active
+          endpoint_port_channel: PO_MTU_MRU_2
+  - name: TEST_INTERFACE_STORM_CONTROL
+    adapters:
+      - switch_ports:
+          - Ethernet6
+          - Ethernet6
+          - Ethernet6
+          - Ethernet6
+          - Ethernet6
+        switches:
+          - HARDWARE_FEATURES_VEOS_LAB
+          - HARDWARE_FEATURES_CEOS_LAB
+          - HARDWARE_FEATURES_CLOUDEOS
+          - HARDWARE_FEATURES_720XP
+          - HARDWARE_FEATURES_7280R
+        endpoint_ports:
+          - ETH11_NO_STORM_CONTROL
+          - ETH12_NO_STORM_CONTROL
+          - ETH13_NO_STORM_CONTROL
+          - ETH14_WITH_STORM_CONTROL
+          - ETH15_WITH_STORM_CONTROL
+        storm_control:
+          all:
+            level: 10
+
+# Test `BGP`
+tenants:
+  - name: TENANT1
+    vrfs:
+      - name: VRF10
+        vrf_vni: 10
+        l3_interfaces:
+          - interfaces:
+              - Ethernet5
+              - Ethernet5
+              - Ethernet5
+              - Ethernet5
+              - Ethernet5
+            ip_addresses:
+              - 10.10.40.1/24
+              - 10.10.40.2/24
+              - 10.10.40.3/24
+              - 10.10.40.4/24
+              - 10.10.40.5/24
+            nodes:
+              - HARDWARE_FEATURES_VEOS_LAB
+              - HARDWARE_FEATURES_CEOS_LAB
+              - HARDWARE_FEATURES_CLOUDEOS
+              - HARDWARE_FEATURES_720XP
+              - HARDWARE_FEATURES_7280R
+        bgp_peers:
+          - ip_address: 10.10.40.100
+            remote_as: 65002
+            nodes:
+              - HARDWARE_FEATURES_VEOS_LAB
+              - HARDWARE_FEATURES_CEOS_LAB
+              - HARDWARE_FEATURES_CLOUDEOS
+              - HARDWARE_FEATURES_720XP
+              - HARDWARE_FEATURES_7280R
+
+# Test `hardware speed-group`
+platform_speed_groups:
+  - platform: vEOS-lab
+    speeds:
+      - speed: 10g
+        speed_groups:
+          - "1"
+  - platform: cEOSLab
+    speeds:
+      - speed: 10g
+        speed_groups:
+          - "1"
+  - platform: cloudEOS
+    speeds:
+      - speed: 10g
+        speed_groups:
+          - "1"
+  - platform: 720XP
+    speeds:
+      - speed: 10g
+        speed_groups:
+          - "1"
+
+# Test `hardware counter feature`
+hardware_counters:
+  features:
+    - name: acl
+      direction: out
+      address_type: mac
+    # Expected to be filtered out for virtual platforms
+    - name: decap-group
+    # Expected to be filtered out for virtual platforms
+    - name: directflow
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: ecn
+      direction: out
+    # Expected to be filtered out for virtual platforms
+    - name: flow-spec
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: gre tunnel interface
+      direction: out
+    # Expected to be filtered out for virtual platforms
+    - name: ip
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: mpls interface
+      direction: in
+    - name: mpls lfib
+    # Expected to be filtered out for virtual platforms
+    - name: mpls tunnel
+    # Expected to be filtered out for virtual platforms
+    - name: multicast
+      address_type: ipv4
+    - name: nexthop
+    - name: pbr
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: pdp
+    # Expected to be filtered out for virtual platforms
+    - name: policing interface
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: qos
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: qos dual-rate-policer
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: route
+      address_type: ipv4
+      prefix: 1.1.1.1/32
+    # Expected to be filtered out for virtual platforms
+    - name: routed-port
+    # Expected to be filtered out for virtual platforms
+    - name: segment-security
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: subinterface
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: tapagg
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: traffic-class
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: traffic-policy
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: vlan
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: vlan-interface
+      direction: in
+    - name: vni decap
+    - name: vni encap
+    - name: vtep decap
+    - name: vtep encap
