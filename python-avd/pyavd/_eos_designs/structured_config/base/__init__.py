@@ -12,7 +12,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default
+from pyavd._utils import default, get_v2
 from pyavd.j2filters import natural_sort
 
 from .daemon_terminattr import DaemonTerminattrMixin
@@ -175,8 +175,38 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def hardware_counters(self) -> None:
-        """hardware_counters set based on hardware_counters.features variable."""
-        self.structured_config.hardware_counters = self.inputs.hardware_counters
+        """
+        Set hardware_counters.
+
+        Contributing data sources:
+          - hardware_counters.features variable.
+          - platform_settings.feature_support.hardware_counters fact.
+          - platform_settings.feature_support.hardware_counter_features fact.
+        """
+        if not self.inputs.hardware_counters:
+            return
+        if not self.shared_utils.platform_settings.feature_support.hardware_counters:
+            # Since we use the same data model in eos_cli_config_gen, it would pick up the input vars unless we explicitly set it to null.
+            self.custom_structured_configs.nested.hardware_counters = EosCliConfigGen.HardwareCounters._from_null()
+            return
+        hardware_counters = self.inputs.hardware_counters._deepcopy()
+
+        # Filter different hardware counter features based on the platform supportability
+        hardware_counters.features = hardware_counters.features._filtered(
+            lambda feature: get_v2(
+                self.shared_utils.platform_settings.feature_support.hardware_counter_features,
+                feature.name.replace(" ", "_").replace("-", "_"),
+                # Assume all uncovered/new features are supported
+                default=True,
+            )
+        )
+        # Use case where all specific features are filtered out leaving an empty list
+        if not hardware_counters.features:
+            # Since we use the same data model in eos_cli_config_gen, it would pick up the input vars unless we explicitly set it to null.
+            self.custom_structured_configs.nested.hardware_counters.features = EosCliConfigGen.HardwareCounters.Features._from_null()
+            return
+
+        self.structured_config.hardware_counters = hardware_counters
 
     @structured_config_contributor
     def hardware(self) -> None:
@@ -185,6 +215,8 @@ class AvdStructuredConfigBaseProtocol(
 
         Converting nested dict to list of dict to support avd_v4.0.
         """
+        if not self.shared_utils.platform_settings.feature_support.hardware_speed_group:
+            return
         platform_speed_groups = self.inputs.platform_speed_groups
         switch_platform = self.shared_utils.platform
         if not platform_speed_groups or switch_platform is None:
@@ -255,13 +287,24 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def queue_monitor_length(self) -> None:
-        """queue_monitor_length set based on queue_monitor_length data-model and platform_settings.feature_support.queue_monitor_length_notify fact."""
+        """
+        Set queue_monitor_length.
+
+        Contributing data sources:
+          - queue_monitor_length data-model
+          - platform_settings.feature_support.queue_monitor fact
+          - platform_settings.feature_support.queue_monitor_length_notify fact.
+        """
         if not self.inputs.queue_monitor_length:
+            return
+        if not self.shared_utils.platform_settings.feature_support.queue_monitor:
+            # Since we use the same data model in eos_cli_config_gen, it would pick up the input vars unless we explicitly set it to null.
+            self.custom_structured_configs.nested.queue_monitor_length = EosCliConfigGen.QueueMonitorLength._from_null()
             return
 
         # Remove notifying key if not supported by the platform settings.
         queue_monitor_length = self.inputs.queue_monitor_length._cast_as(EosCliConfigGen.QueueMonitorLength)
-        if not self.shared_utils.platform_settings.feature_support.queue_monitor_length_notify and hasattr(queue_monitor_length, "notifying"):
+        if not self.shared_utils.platform_settings.feature_support.queue_monitor_length_notify and queue_monitor_length.notifying:
             del queue_monitor_length.notifying
         self.structured_config.queue_monitor_length = queue_monitor_length
 
@@ -454,7 +497,13 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def queue_monitor_streaming(self) -> None:
-        """queue_monitor_streaming set based on queue_monitor_streaming data-model."""
+        """queue_monitor_streaming set based on queue_monitor_streaming data-model and platform_settings.feature_support.queue_monitor fact."""
+        if not self.inputs.queue_monitor_streaming:
+            return
+        if not self.shared_utils.platform_settings.feature_support.queue_monitor:
+            # Since we use the same data model in eos_cli_config_gen, it would pick up the input vars unless we explicitly set it to null.
+            self.custom_structured_configs.nested.queue_monitor_streaming = EosCliConfigGen.QueueMonitorStreaming._from_null()
+            return
         self.structured_config.queue_monitor_streaming = self.inputs.queue_monitor_streaming
 
     @structured_config_contributor

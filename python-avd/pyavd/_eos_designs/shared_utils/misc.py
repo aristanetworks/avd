@@ -433,3 +433,8 @@ class MiscMixin(Protocol):
         salt = sum(bytearray(profile_name, "ascii")) % 16
 
         return simple_7_encrypt(cleartext_key, salt)
+
+    @cached_property
+    def is_campus_device(self: SharedUtilsProtocol) -> bool:
+        """Return True if generation of the Campus tags is globally enabled and current device is a Campus device."""
+        return bool(self.inputs.generate_cv_tags.campus_fabric and default(self.node_config.campus, self.inputs.campus))

@@ -1888,6 +1888,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class CampusLinkType(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            CampusLinkType._item_type = str
+
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "id": {"type": int},
@@ -1918,6 +1923,7 @@ class EosDesigns(EosDesignsRootModel):
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
                 "port_channel": {"type": PortChannel},
+                "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
@@ -2038,6 +2044,20 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            campus_link_type: CampusLinkType
+            """
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+            change at any time.
+            Values for the CloudVision `Link-Type` user tags to be associated with an
+            interface.
+            Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+            in the same tags being associated with the parent Ethernet interface instead.
+            Attempting to
+            associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+            associated with the member Ethernet interfaces instead.
+
+            Subclass of AvdList with `str` items.
+            """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
             routing_protocol: Literal["ebgp"] | None
@@ -2088,6 +2108,7 @@ class EosDesigns(EosDesignsRootModel):
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
+                    campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
@@ -2166,6 +2187,18 @@ class EosDesigns(EosDesignsRootModel):
                            Port-channel parameters.
 
                            Subclass of AvdModel.
+                        campus_link_type:
+                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                           change at any time.
+                           Values for the CloudVision `Link-Type` user tags to be associated with an
+                           interface.
+                           Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                           in the same tags being associated with the parent Ethernet interface instead.
+                           Attempting to
+                           associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                           associated with the member Ethernet interfaces instead.
+
+                           Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
@@ -2459,6 +2492,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class CampusLinkType(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            CampusLinkType._item_type = str
+
             _fields: ClassVar[dict] = {
                 "nodes": {"type": Nodes},
                 "profile": {"type": str},
@@ -2489,6 +2527,7 @@ class EosDesigns(EosDesignsRootModel):
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
                 "port_channel": {"type": PortChannel},
+                "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
@@ -2609,6 +2648,20 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            campus_link_type: CampusLinkType
+            """
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+            change at any time.
+            Values for the CloudVision `Link-Type` user tags to be associated with an
+            interface.
+            Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+            in the same tags being associated with the parent Ethernet interface instead.
+            Attempting to
+            associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+            associated with the member Ethernet interfaces instead.
+
+            Subclass of AvdList with `str` items.
+            """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
             routing_protocol: Literal["ebgp"] | None
@@ -2659,6 +2712,7 @@ class EosDesigns(EosDesignsRootModel):
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
+                    campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
@@ -2737,6 +2791,18 @@ class EosDesigns(EosDesignsRootModel):
                            Port-channel parameters.
 
                            Subclass of AvdModel.
+                        campus_link_type:
+                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                           change at any time.
+                           Values for the CloudVision `Link-Type` user tags to be associated with an
+                           interface.
+                           Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                           in the same tags being associated with the parent Ethernet interface instead.
+                           Attempting to
+                           associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                           associated with the member Ethernet interfaces instead.
+
+                           Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
@@ -5685,12 +5751,39 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "topology_hints": {"type": bool, "default": False},
+            "campus_fabric": {"type": bool, "default": False},
             "interface_tags": {"type": InterfaceTags},
             "device_tags": {"type": DeviceTags},
         }
         topology_hints: bool
         """
         Enable the generation of CloudVision Topology Tags (hints).
+
+        Default value: `False`
+        """
+        campus_fabric: bool
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Generate CloudVision device and interface Topology Tags for Campus fabric
+        devices.
+        Device is treated as a Campus fabric device if:
+          - The `campus` variable is assigned,
+        either as native Ansible variable or as part of the `<node_type_keys.key>` AVD data construct.
+          -
+        The `generate_cv_tags.campus_fabric` variable is set to `True`.
+        When campus-related tags are
+        generated for a device, generation of the DC-related tags is automatically disabled for that device.
+        AVD generates the following device tags for the Campus fabric devices based on the provided Campus-
+        related input variables:
+          - `Campus`
+          - `Campus-Pod`
+          - `Access-Pod`
+          - `topology_hint_type`
+          -
+        `Role`
+        These tags are later used by CloudVision to render the correct network layout in the Topology
+        view (`campusV2` network hierarchy) and Campus dashboards.
 
         Default value: `False`
         """
@@ -5714,6 +5807,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 topology_hints: bool | UndefinedType = Undefined,
+                campus_fabric: bool | UndefinedType = Undefined,
                 interface_tags: InterfaceTags | UndefinedType = Undefined,
                 device_tags: DeviceTags | UndefinedType = Undefined,
             ) -> None:
@@ -5725,6 +5819,28 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     topology_hints: Enable the generation of CloudVision Topology Tags (hints).
+                    campus_fabric:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Generate CloudVision device and interface Topology Tags for Campus fabric
+                       devices.
+                       Device is treated as a Campus fabric device if:
+                         - The `campus` variable is assigned,
+                       either as native Ansible variable or as part of the `<node_type_keys.key>` AVD data construct.
+                         -
+                       The `generate_cv_tags.campus_fabric` variable is set to `True`.
+                       When campus-related tags are
+                       generated for a device, generation of the DC-related tags is automatically disabled for that device.
+                       AVD generates the following device tags for the Campus fabric devices based on the provided Campus-
+                       related input variables:
+                         - `Campus`
+                         - `Campus-Pod`
+                         - `Access-Pod`
+                         - `topology_hint_type`
+                         -
+                       `Role`
+                       These tags are later used by CloudVision to render the correct network layout in the Topology
+                       view (`campusV2` network hierarchy) and Campus dashboards.
                     interface_tags:
                        List of interface tags that should be generated.
 
@@ -6512,6 +6628,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class CampusLinkType(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            CampusLinkType._item_type = str
+
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "id": {"type": int},
@@ -6542,6 +6663,7 @@ class EosDesigns(EosDesignsRootModel):
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
                 "port_channel": {"type": PortChannel},
+                "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
@@ -6662,6 +6784,20 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            campus_link_type: CampusLinkType
+            """
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+            change at any time.
+            Values for the CloudVision `Link-Type` user tags to be associated with an
+            interface.
+            Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+            in the same tags being associated with the parent Ethernet interface instead.
+            Attempting to
+            associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+            associated with the member Ethernet interfaces instead.
+
+            Subclass of AvdList with `str` items.
+            """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
             routing_protocol: Literal["ebgp"] | None
@@ -6712,6 +6848,7 @@ class EosDesigns(EosDesignsRootModel):
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
+                    campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
@@ -6790,6 +6927,18 @@ class EosDesigns(EosDesignsRootModel):
                            Port-channel parameters.
 
                            Subclass of AvdModel.
+                        campus_link_type:
+                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                           change at any time.
+                           Values for the CloudVision `Link-Type` user tags to be associated with an
+                           interface.
+                           Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                           in the same tags being associated with the parent Ethernet interface instead.
+                           Attempting to
+                           associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                           associated with the member Ethernet interfaces instead.
+
+                           Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
@@ -7083,6 +7232,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class CampusLinkType(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            CampusLinkType._item_type = str
+
             _fields: ClassVar[dict] = {
                 "nodes": {"type": Nodes},
                 "profile": {"type": str},
@@ -7113,6 +7267,7 @@ class EosDesigns(EosDesignsRootModel):
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
                 "port_channel": {"type": PortChannel},
+                "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
@@ -7233,6 +7388,20 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
+            campus_link_type: CampusLinkType
+            """
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+            change at any time.
+            Values for the CloudVision `Link-Type` user tags to be associated with an
+            interface.
+            Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+            in the same tags being associated with the parent Ethernet interface instead.
+            Attempting to
+            associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+            associated with the member Ethernet interfaces instead.
+
+            Subclass of AvdList with `str` items.
+            """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
             routing_protocol: Literal["ebgp"] | None
@@ -7283,6 +7452,7 @@ class EosDesigns(EosDesignsRootModel):
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
+                    campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
@@ -7361,6 +7531,18 @@ class EosDesigns(EosDesignsRootModel):
                            Port-channel parameters.
 
                            Subclass of AvdModel.
+                        campus_link_type:
+                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                           change at any time.
+                           Values for the CloudVision `Link-Type` user tags to be associated with an
+                           interface.
+                           Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                           in the same tags being associated with the parent Ethernet interface instead.
+                           Attempting to
+                           associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                           associated with the member Ethernet interfaces instead.
+
+                           Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
@@ -9378,6 +9560,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class CampusLinkType(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        CampusLinkType._item_type = str
+
         _fields: ClassVar[dict] = {
             "switches": {"type": Switches},
             "platforms": {"type": Platforms},
@@ -9414,6 +9601,7 @@ class EosDesigns(EosDesignsRootModel):
             "port_channel": {"type": PortChannel},
             "validate_state": {"type": bool},
             "validate_lldp": {"type": bool},
+            "campus_link_type": {"type": CampusLinkType},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
         }
@@ -9610,6 +9798,20 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_lldp: bool | None
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        campus_link_type: CampusLinkType
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Values for the CloudVision `Link-Type` user tags to be associated with an
+        interface.
+        Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+        in the same tags being associated with the parent Ethernet interface instead.
+        Attempting to
+        associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+        associated with the member Ethernet interfaces instead.
+
+        Subclass of AvdList with `str` items.
+        """
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -9655,6 +9857,7 @@ class EosDesigns(EosDesignsRootModel):
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
+                campus_link_type: CampusLinkType | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
             ) -> None:
@@ -9807,6 +10010,18 @@ class EosDesigns(EosDesignsRootModel):
                        Set to false to disable interface state and LLDP topology validation performed by the
                        `eos_validate_state` role.
                     validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                    campus_link_type:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Values for the CloudVision `Link-Type` user tags to be associated with an
+                       interface.
+                       Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                       in the same tags being associated with the parent Ethernet interface instead.
+                       Attempting to
+                       associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                       associated with the member Ethernet interfaces instead.
+
+                       Subclass of AvdList with `str` items.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -10241,8 +10456,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         cv_tags_topology_type: str | None
         """
-        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-        "edge".
+        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+        "edge" or "member-leaf".
         """
 
         if TYPE_CHECKING:
@@ -10354,8 +10569,8 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     cv_tags_topology_type:
-                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-                       "edge".
+                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                       "edge" or "member-leaf".
 
                 """
 
@@ -10763,8 +10978,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         cv_tags_topology_type: str | None
         """
-        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-        "edge".
+        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+        "edge" or "member-leaf".
         """
 
         if TYPE_CHECKING:
@@ -10876,8 +11091,8 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     cv_tags_topology_type:
-                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-                       "edge".
+                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                       "edge" or "member-leaf".
 
                 """
 
@@ -11387,24 +11602,225 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class HardwareCounterFeatures(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "acl": {"type": bool, "default": True},
+                    "decap_group": {"type": bool, "default": True},
+                    "directflow": {"type": bool, "default": True},
+                    "ecn": {"type": bool, "default": True},
+                    "flow_spec": {"type": bool, "default": True},
+                    "gre_tunnel_interface": {"type": bool, "default": True},
+                    "ip": {"type": bool, "default": True},
+                    "mpls_interface": {"type": bool, "default": True},
+                    "mpls_lfib": {"type": bool, "default": True},
+                    "mpls_tunnel": {"type": bool, "default": True},
+                    "multicast": {"type": bool, "default": True},
+                    "nexthop": {"type": bool, "default": True},
+                    "pbr": {"type": bool, "default": True},
+                    "pdp": {"type": bool, "default": True},
+                    "policing_interface": {"type": bool, "default": True},
+                    "qos": {"type": bool, "default": True},
+                    "qos_dual_rate_policer": {"type": bool, "default": True},
+                    "route": {"type": bool, "default": True},
+                    "routed_port": {"type": bool, "default": True},
+                    "segment_security": {"type": bool, "default": True},
+                    "subinterface": {"type": bool, "default": True},
+                    "tapagg": {"type": bool, "default": True},
+                    "traffic_class": {"type": bool, "default": True},
+                    "traffic_policy": {"type": bool, "default": True},
+                    "vlan": {"type": bool, "default": True},
+                    "vlan_interface": {"type": bool, "default": True},
+                    "vni_decap": {"type": bool, "default": True},
+                    "vni_encap": {"type": bool, "default": True},
+                    "vtep_decap": {"type": bool, "default": True},
+                    "vtep_encap": {"type": bool, "default": True},
+                }
+                acl: bool
+                """Default value: `True`"""
+                decap_group: bool
+                """Default value: `True`"""
+                directflow: bool
+                """Default value: `True`"""
+                ecn: bool
+                """Default value: `True`"""
+                flow_spec: bool
+                """Default value: `True`"""
+                gre_tunnel_interface: bool
+                """Default value: `True`"""
+                ip: bool
+                """Default value: `True`"""
+                mpls_interface: bool
+                """Default value: `True`"""
+                mpls_lfib: bool
+                """Default value: `True`"""
+                mpls_tunnel: bool
+                """Default value: `True`"""
+                multicast: bool
+                """Default value: `True`"""
+                nexthop: bool
+                """Default value: `True`"""
+                pbr: bool
+                """Default value: `True`"""
+                pdp: bool
+                """Default value: `True`"""
+                policing_interface: bool
+                """Default value: `True`"""
+                qos: bool
+                """Default value: `True`"""
+                qos_dual_rate_policer: bool
+                """Default value: `True`"""
+                route: bool
+                """Default value: `True`"""
+                routed_port: bool
+                """Default value: `True`"""
+                segment_security: bool
+                """Default value: `True`"""
+                subinterface: bool
+                """Default value: `True`"""
+                tapagg: bool
+                """Default value: `True`"""
+                traffic_class: bool
+                """Default value: `True`"""
+                traffic_policy: bool
+                """Default value: `True`"""
+                vlan: bool
+                """Default value: `True`"""
+                vlan_interface: bool
+                """Default value: `True`"""
+                vni_decap: bool
+                """Default value: `True`"""
+                vni_encap: bool
+                """Default value: `True`"""
+                vtep_decap: bool
+                """Default value: `True`"""
+                vtep_encap: bool
+                """Default value: `True`"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        acl: bool | UndefinedType = Undefined,
+                        decap_group: bool | UndefinedType = Undefined,
+                        directflow: bool | UndefinedType = Undefined,
+                        ecn: bool | UndefinedType = Undefined,
+                        flow_spec: bool | UndefinedType = Undefined,
+                        gre_tunnel_interface: bool | UndefinedType = Undefined,
+                        ip: bool | UndefinedType = Undefined,
+                        mpls_interface: bool | UndefinedType = Undefined,
+                        mpls_lfib: bool | UndefinedType = Undefined,
+                        mpls_tunnel: bool | UndefinedType = Undefined,
+                        multicast: bool | UndefinedType = Undefined,
+                        nexthop: bool | UndefinedType = Undefined,
+                        pbr: bool | UndefinedType = Undefined,
+                        pdp: bool | UndefinedType = Undefined,
+                        policing_interface: bool | UndefinedType = Undefined,
+                        qos: bool | UndefinedType = Undefined,
+                        qos_dual_rate_policer: bool | UndefinedType = Undefined,
+                        route: bool | UndefinedType = Undefined,
+                        routed_port: bool | UndefinedType = Undefined,
+                        segment_security: bool | UndefinedType = Undefined,
+                        subinterface: bool | UndefinedType = Undefined,
+                        tapagg: bool | UndefinedType = Undefined,
+                        traffic_class: bool | UndefinedType = Undefined,
+                        traffic_policy: bool | UndefinedType = Undefined,
+                        vlan: bool | UndefinedType = Undefined,
+                        vlan_interface: bool | UndefinedType = Undefined,
+                        vni_decap: bool | UndefinedType = Undefined,
+                        vni_encap: bool | UndefinedType = Undefined,
+                        vtep_decap: bool | UndefinedType = Undefined,
+                        vtep_encap: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        HardwareCounterFeatures.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            acl: acl
+                            decap_group: decap_group
+                            directflow: directflow
+                            ecn: ecn
+                            flow_spec: flow_spec
+                            gre_tunnel_interface: gre_tunnel_interface
+                            ip: ip
+                            mpls_interface: mpls_interface
+                            mpls_lfib: mpls_lfib
+                            mpls_tunnel: mpls_tunnel
+                            multicast: multicast
+                            nexthop: nexthop
+                            pbr: pbr
+                            pdp: pdp
+                            policing_interface: policing_interface
+                            qos: qos
+                            qos_dual_rate_policer: qos_dual_rate_policer
+                            route: route
+                            routed_port: routed_port
+                            segment_security: segment_security
+                            subinterface: subinterface
+                            tapagg: tapagg
+                            traffic_class: traffic_class
+                            traffic_policy: traffic_policy
+                            vlan: vlan
+                            vlan_interface: vlan_interface
+                            vni_decap: vni_decap
+                            vni_encap: vni_encap
+                            vtep_decap: vtep_decap
+                            vtep_encap: vtep_encap
+
+                        """
+
             _fields: ClassVar[dict] = {
+                "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
                 "poe": {"type": bool, "default": False},
                 "subinterface_mtu": {"type": bool, "default": True},
                 "per_interface_mtu": {"type": bool, "default": True},
+                "per_interface_l2_mtu": {"type": bool, "default": True},
+                "per_interface_l2_mru": {"type": bool, "default": True},
                 "bgp_update_wait_install": {"type": bool, "default": True},
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
+                "hardware_counters": {"type": bool, "default": True},
+                "hardware_counter_features": {"type": HardwareCounterFeatures},
+                "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
             }
+            queue_monitor: bool
+            """
+            Support for LANZ.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             queue_monitor_length_notify: bool
-            """Default value: `True`"""
+            """
+            Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
+            The
+            feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             interface_storm_control: bool
-            """Default value: `True`"""
+            """
+            Support for storm-control.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             poe: bool
-            """Default value: `False`"""
+            """
+            Support for PoE.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `False`
+            """
             subinterface_mtu: bool
             """
             Support for MTU configuration under sub-interfaces.
@@ -11422,12 +11838,29 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            per_interface_l2_mtu: bool
+            """
+            Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
+            The
+            feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            per_interface_l2_mru: bool
+            """
+            Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-
+            Channel interfaces.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             bgp_update_wait_install: bool
             """
             Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
             convergence state is reached.
             Can be overridden by setting "bgp_update_wait_install"
             host/group_vars.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
@@ -11439,6 +11872,8 @@ class EosDesigns(EosDesignsRootModel):
             that may not yet be installed into the forwarding plane.
             Can be overridden by setting
             "bgp_update_wait_for_convergence" host/group_vars.
+            The feature will be ignored on platforms where
+            this is false.
 
             Default value: `True`
             """
@@ -11451,8 +11886,34 @@ class EosDesigns(EosDesignsRootModel):
             evpn_gateway_all_active_multihoming: bool
             """
             Support for all-active EVPN gateway redundancy.
+            An error will be raised if the feature is enabled
+            and this is false.
 
             Default value: `False`
+            """
+            hardware_counters: bool
+            """
+            Support for enabling counters using programmable hardware counter resources.
+            Setting this key to
+            `false` for the specific platform will ignore all hardware counter features for this platform.
+
+            Default value: `True`
+            """
+            hardware_counter_features: HardwareCounterFeatures
+            """
+            Per-feature support for the hardware counters.
+            Features set to `false` will be ignored for this
+            platform.
+
+            Subclass of AvdModel.
+            """
+            hardware_speed_group: bool
+            """
+            Support for configurable speeds per speed-group.
+            The feature will be ignored on platforms where this
+            is false.
+
+            Default value: `True`
             """
             private_vlan: bool
             """
@@ -11470,15 +11931,21 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
                     poe: bool | UndefinedType = Undefined,
                     subinterface_mtu: bool | UndefinedType = Undefined,
                     per_interface_mtu: bool | UndefinedType = Undefined,
+                    per_interface_l2_mtu: bool | UndefinedType = Undefined,
+                    per_interface_l2_mru: bool | UndefinedType = Undefined,
                     bgp_update_wait_install: bool | UndefinedType = Undefined,
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
+                    hardware_counters: bool | UndefinedType = Undefined,
+                    hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
+                    hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -11488,9 +11955,19 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        queue_monitor_length_notify: queue_monitor_length_notify
-                        interface_storm_control: interface_storm_control
-                        poe: poe
+                        queue_monitor:
+                           Support for LANZ.
+                           The feature will be ignored on platforms where this is false.
+                        queue_monitor_length_notify:
+                           Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
+                           The
+                           feature will be ignored on platforms where this is false.
+                        interface_storm_control:
+                           Support for storm-control.
+                           The feature will be ignored on platforms where this is false.
+                        poe:
+                           Support for PoE.
+                           The feature will be ignored on platforms where this is false.
                         subinterface_mtu:
                            Support for MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
@@ -11500,11 +11977,20 @@ class EosDesigns(EosDesignsRootModel):
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
                            Platforms without support for per interface MTU can use a single default interface MTU setting. Set
                            this via "default_interface_mtu"
+                        per_interface_l2_mtu:
+                           Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
+                           The
+                           feature will be ignored on platforms where this is false.
+                        per_interface_l2_mru:
+                           Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-
+                           Channel interfaces.
+                           The feature will be ignored on platforms where this is false.
                         bgp_update_wait_install:
                            Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
                            convergence state is reached.
                            Can be overridden by setting "bgp_update_wait_install"
                            host/group_vars.
+                           The feature will be ignored on platforms where this is false.
                         bgp_update_wait_for_convergence:
                            Do not advertise reachability to a prefix until that prefix has been installed in hardware.
                            This
@@ -11512,11 +11998,30 @@ class EosDesigns(EosDesignsRootModel):
                            that may not yet be installed into the forwarding plane.
                            Can be overridden by setting
                            "bgp_update_wait_for_convergence" host/group_vars.
+                           The feature will be ignored on platforms where
+                           this is false.
                         platform_sfe_interface_profile:
                            Support for Platform SFE Interface Profiles.
 
                            Subclass of AvdModel.
-                        evpn_gateway_all_active_multihoming: Support for all-active EVPN gateway redundancy.
+                        evpn_gateway_all_active_multihoming:
+                           Support for all-active EVPN gateway redundancy.
+                           An error will be raised if the feature is enabled
+                           and this is false.
+                        hardware_counters:
+                           Support for enabling counters using programmable hardware counter resources.
+                           Setting this key to
+                           `false` for the specific platform will ignore all hardware counter features for this platform.
+                        hardware_counter_features:
+                           Per-feature support for the hardware counters.
+                           Features set to `false` will be ignored for this
+                           platform.
+
+                           Subclass of AvdModel.
+                        hardware_speed_group:
+                           Support for configurable speeds per speed-group.
+                           The feature will be ignored on platforms where this
+                           is false.
                         private_vlan:
                            Support for PVLAN feature.
                            On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3
@@ -11736,24 +12241,225 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class HardwareCounterFeatures(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "acl": {"type": bool, "default": True},
+                    "decap_group": {"type": bool, "default": True},
+                    "directflow": {"type": bool, "default": True},
+                    "ecn": {"type": bool, "default": True},
+                    "flow_spec": {"type": bool, "default": True},
+                    "gre_tunnel_interface": {"type": bool, "default": True},
+                    "ip": {"type": bool, "default": True},
+                    "mpls_interface": {"type": bool, "default": True},
+                    "mpls_lfib": {"type": bool, "default": True},
+                    "mpls_tunnel": {"type": bool, "default": True},
+                    "multicast": {"type": bool, "default": True},
+                    "nexthop": {"type": bool, "default": True},
+                    "pbr": {"type": bool, "default": True},
+                    "pdp": {"type": bool, "default": True},
+                    "policing_interface": {"type": bool, "default": True},
+                    "qos": {"type": bool, "default": True},
+                    "qos_dual_rate_policer": {"type": bool, "default": True},
+                    "route": {"type": bool, "default": True},
+                    "routed_port": {"type": bool, "default": True},
+                    "segment_security": {"type": bool, "default": True},
+                    "subinterface": {"type": bool, "default": True},
+                    "tapagg": {"type": bool, "default": True},
+                    "traffic_class": {"type": bool, "default": True},
+                    "traffic_policy": {"type": bool, "default": True},
+                    "vlan": {"type": bool, "default": True},
+                    "vlan_interface": {"type": bool, "default": True},
+                    "vni_decap": {"type": bool, "default": True},
+                    "vni_encap": {"type": bool, "default": True},
+                    "vtep_decap": {"type": bool, "default": True},
+                    "vtep_encap": {"type": bool, "default": True},
+                }
+                acl: bool
+                """Default value: `True`"""
+                decap_group: bool
+                """Default value: `True`"""
+                directflow: bool
+                """Default value: `True`"""
+                ecn: bool
+                """Default value: `True`"""
+                flow_spec: bool
+                """Default value: `True`"""
+                gre_tunnel_interface: bool
+                """Default value: `True`"""
+                ip: bool
+                """Default value: `True`"""
+                mpls_interface: bool
+                """Default value: `True`"""
+                mpls_lfib: bool
+                """Default value: `True`"""
+                mpls_tunnel: bool
+                """Default value: `True`"""
+                multicast: bool
+                """Default value: `True`"""
+                nexthop: bool
+                """Default value: `True`"""
+                pbr: bool
+                """Default value: `True`"""
+                pdp: bool
+                """Default value: `True`"""
+                policing_interface: bool
+                """Default value: `True`"""
+                qos: bool
+                """Default value: `True`"""
+                qos_dual_rate_policer: bool
+                """Default value: `True`"""
+                route: bool
+                """Default value: `True`"""
+                routed_port: bool
+                """Default value: `True`"""
+                segment_security: bool
+                """Default value: `True`"""
+                subinterface: bool
+                """Default value: `True`"""
+                tapagg: bool
+                """Default value: `True`"""
+                traffic_class: bool
+                """Default value: `True`"""
+                traffic_policy: bool
+                """Default value: `True`"""
+                vlan: bool
+                """Default value: `True`"""
+                vlan_interface: bool
+                """Default value: `True`"""
+                vni_decap: bool
+                """Default value: `True`"""
+                vni_encap: bool
+                """Default value: `True`"""
+                vtep_decap: bool
+                """Default value: `True`"""
+                vtep_encap: bool
+                """Default value: `True`"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        acl: bool | UndefinedType = Undefined,
+                        decap_group: bool | UndefinedType = Undefined,
+                        directflow: bool | UndefinedType = Undefined,
+                        ecn: bool | UndefinedType = Undefined,
+                        flow_spec: bool | UndefinedType = Undefined,
+                        gre_tunnel_interface: bool | UndefinedType = Undefined,
+                        ip: bool | UndefinedType = Undefined,
+                        mpls_interface: bool | UndefinedType = Undefined,
+                        mpls_lfib: bool | UndefinedType = Undefined,
+                        mpls_tunnel: bool | UndefinedType = Undefined,
+                        multicast: bool | UndefinedType = Undefined,
+                        nexthop: bool | UndefinedType = Undefined,
+                        pbr: bool | UndefinedType = Undefined,
+                        pdp: bool | UndefinedType = Undefined,
+                        policing_interface: bool | UndefinedType = Undefined,
+                        qos: bool | UndefinedType = Undefined,
+                        qos_dual_rate_policer: bool | UndefinedType = Undefined,
+                        route: bool | UndefinedType = Undefined,
+                        routed_port: bool | UndefinedType = Undefined,
+                        segment_security: bool | UndefinedType = Undefined,
+                        subinterface: bool | UndefinedType = Undefined,
+                        tapagg: bool | UndefinedType = Undefined,
+                        traffic_class: bool | UndefinedType = Undefined,
+                        traffic_policy: bool | UndefinedType = Undefined,
+                        vlan: bool | UndefinedType = Undefined,
+                        vlan_interface: bool | UndefinedType = Undefined,
+                        vni_decap: bool | UndefinedType = Undefined,
+                        vni_encap: bool | UndefinedType = Undefined,
+                        vtep_decap: bool | UndefinedType = Undefined,
+                        vtep_encap: bool | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        HardwareCounterFeatures.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            acl: acl
+                            decap_group: decap_group
+                            directflow: directflow
+                            ecn: ecn
+                            flow_spec: flow_spec
+                            gre_tunnel_interface: gre_tunnel_interface
+                            ip: ip
+                            mpls_interface: mpls_interface
+                            mpls_lfib: mpls_lfib
+                            mpls_tunnel: mpls_tunnel
+                            multicast: multicast
+                            nexthop: nexthop
+                            pbr: pbr
+                            pdp: pdp
+                            policing_interface: policing_interface
+                            qos: qos
+                            qos_dual_rate_policer: qos_dual_rate_policer
+                            route: route
+                            routed_port: routed_port
+                            segment_security: segment_security
+                            subinterface: subinterface
+                            tapagg: tapagg
+                            traffic_class: traffic_class
+                            traffic_policy: traffic_policy
+                            vlan: vlan
+                            vlan_interface: vlan_interface
+                            vni_decap: vni_decap
+                            vni_encap: vni_encap
+                            vtep_decap: vtep_decap
+                            vtep_encap: vtep_encap
+
+                        """
+
             _fields: ClassVar[dict] = {
+                "queue_monitor": {"type": bool, "default": True},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
                 "poe": {"type": bool, "default": False},
                 "subinterface_mtu": {"type": bool, "default": True},
                 "per_interface_mtu": {"type": bool, "default": True},
+                "per_interface_l2_mtu": {"type": bool, "default": True},
+                "per_interface_l2_mru": {"type": bool, "default": True},
                 "bgp_update_wait_install": {"type": bool, "default": True},
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
+                "hardware_counters": {"type": bool, "default": True},
+                "hardware_counter_features": {"type": HardwareCounterFeatures},
+                "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
             }
+            queue_monitor: bool
+            """
+            Support for LANZ.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             queue_monitor_length_notify: bool
-            """Default value: `True`"""
+            """
+            Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
+            The
+            feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             interface_storm_control: bool
-            """Default value: `True`"""
+            """
+            Support for storm-control.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             poe: bool
-            """Default value: `False`"""
+            """
+            Support for PoE.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `False`
+            """
             subinterface_mtu: bool
             """
             Support for MTU configuration under sub-interfaces.
@@ -11771,12 +12477,29 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            per_interface_l2_mtu: bool
+            """
+            Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
+            The
+            feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            per_interface_l2_mru: bool
+            """
+            Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-
+            Channel interfaces.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             bgp_update_wait_install: bool
             """
             Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
             convergence state is reached.
             Can be overridden by setting "bgp_update_wait_install"
             host/group_vars.
+            The feature will be ignored on platforms where this is false.
 
             Default value: `True`
             """
@@ -11788,6 +12511,8 @@ class EosDesigns(EosDesignsRootModel):
             that may not yet be installed into the forwarding plane.
             Can be overridden by setting
             "bgp_update_wait_for_convergence" host/group_vars.
+            The feature will be ignored on platforms where
+            this is false.
 
             Default value: `True`
             """
@@ -11800,8 +12525,34 @@ class EosDesigns(EosDesignsRootModel):
             evpn_gateway_all_active_multihoming: bool
             """
             Support for all-active EVPN gateway redundancy.
+            An error will be raised if the feature is enabled
+            and this is false.
 
             Default value: `False`
+            """
+            hardware_counters: bool
+            """
+            Support for enabling counters using programmable hardware counter resources.
+            Setting this key to
+            `false` for the specific platform will ignore all hardware counter features for this platform.
+
+            Default value: `True`
+            """
+            hardware_counter_features: HardwareCounterFeatures
+            """
+            Per-feature support for the hardware counters.
+            Features set to `false` will be ignored for this
+            platform.
+
+            Subclass of AvdModel.
+            """
+            hardware_speed_group: bool
+            """
+            Support for configurable speeds per speed-group.
+            The feature will be ignored on platforms where this
+            is false.
+
+            Default value: `True`
             """
             private_vlan: bool
             """
@@ -11819,15 +12570,21 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    queue_monitor: bool | UndefinedType = Undefined,
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
                     poe: bool | UndefinedType = Undefined,
                     subinterface_mtu: bool | UndefinedType = Undefined,
                     per_interface_mtu: bool | UndefinedType = Undefined,
+                    per_interface_l2_mtu: bool | UndefinedType = Undefined,
+                    per_interface_l2_mru: bool | UndefinedType = Undefined,
                     bgp_update_wait_install: bool | UndefinedType = Undefined,
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
+                    hardware_counters: bool | UndefinedType = Undefined,
+                    hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
+                    hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -11837,9 +12594,19 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        queue_monitor_length_notify: queue_monitor_length_notify
-                        interface_storm_control: interface_storm_control
-                        poe: poe
+                        queue_monitor:
+                           Support for LANZ.
+                           The feature will be ignored on platforms where this is false.
+                        queue_monitor_length_notify:
+                           Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
+                           The
+                           feature will be ignored on platforms where this is false.
+                        interface_storm_control:
+                           Support for storm-control.
+                           The feature will be ignored on platforms where this is false.
+                        poe:
+                           Support for PoE.
+                           The feature will be ignored on platforms where this is false.
                         subinterface_mtu:
                            Support for MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
@@ -11849,11 +12616,20 @@ class EosDesigns(EosDesignsRootModel):
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
                            Platforms without support for per interface MTU can use a single default interface MTU setting. Set
                            this via "default_interface_mtu"
+                        per_interface_l2_mtu:
+                           Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
+                           The
+                           feature will be ignored on platforms where this is false.
+                        per_interface_l2_mru:
+                           Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-
+                           Channel interfaces.
+                           The feature will be ignored on platforms where this is false.
                         bgp_update_wait_install:
                            Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
                            convergence state is reached.
                            Can be overridden by setting "bgp_update_wait_install"
                            host/group_vars.
+                           The feature will be ignored on platforms where this is false.
                         bgp_update_wait_for_convergence:
                            Do not advertise reachability to a prefix until that prefix has been installed in hardware.
                            This
@@ -11861,11 +12637,30 @@ class EosDesigns(EosDesignsRootModel):
                            that may not yet be installed into the forwarding plane.
                            Can be overridden by setting
                            "bgp_update_wait_for_convergence" host/group_vars.
+                           The feature will be ignored on platforms where
+                           this is false.
                         platform_sfe_interface_profile:
                            Support for Platform SFE Interface Profiles.
 
                            Subclass of AvdModel.
-                        evpn_gateway_all_active_multihoming: Support for all-active EVPN gateway redundancy.
+                        evpn_gateway_all_active_multihoming:
+                           Support for all-active EVPN gateway redundancy.
+                           An error will be raised if the feature is enabled
+                           and this is false.
+                        hardware_counters:
+                           Support for enabling counters using programmable hardware counter resources.
+                           Setting this key to
+                           `false` for the specific platform will ignore all hardware counter features for this platform.
+                        hardware_counter_features:
+                           Per-feature support for the hardware counters.
+                           Features set to `false` will be ignored for this
+                           platform.
+
+                           Subclass of AvdModel.
+                        hardware_speed_group:
+                           Support for configurable speeds per speed-group.
+                           The feature will be ignored on platforms where this
+                           is false.
                         private_vlan:
                            Support for PVLAN feature.
                            On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3
@@ -13122,6 +13917,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class CampusLinkType(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        CampusLinkType._item_type = str
+
         _fields: ClassVar[dict] = {
             "profile": {"type": str},
             "parent_profile": {"type": str},
@@ -13155,6 +13955,7 @@ class EosDesigns(EosDesignsRootModel):
             "port_channel": {"type": PortChannel},
             "validate_state": {"type": bool},
             "validate_lldp": {"type": bool},
+            "campus_link_type": {"type": CampusLinkType},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
         }
@@ -13308,6 +14109,20 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_lldp: bool | None
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        campus_link_type: CampusLinkType
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Values for the CloudVision `Link-Type` user tags to be associated with an
+        interface.
+        Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+        in the same tags being associated with the parent Ethernet interface instead.
+        Attempting to
+        associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+        associated with the member Ethernet interfaces instead.
+
+        Subclass of AvdList with `str` items.
+        """
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -13350,6 +14165,7 @@ class EosDesigns(EosDesignsRootModel):
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
+                campus_link_type: CampusLinkType | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
             ) -> None:
@@ -13464,6 +14280,18 @@ class EosDesigns(EosDesignsRootModel):
                        Set to false to disable interface state and LLDP topology validation performed by the
                        `eos_validate_state` role.
                     validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                    campus_link_type:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Values for the CloudVision `Link-Type` user tags to be associated with an
+                       interface.
+                       Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                       in the same tags being associated with the parent Ethernet interface instead.
+                       Attempting to
+                       associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                       associated with the member Ethernet interfaces instead.
+
+                       Subclass of AvdList with `str` items.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -15367,6 +16195,37 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class VxlanFloodMulticast(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
+                enabled: bool | None
+                """
+                Explicitly enable or disable vxlan_flood_multicast to override settings of
+                `<network_services_key>.[].vxlan_flood_multicast`.
+                """
+                underlay_multicast_group: str | None
+                """Specific multicast group to use for this SVI."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                    ) -> None:
+                        """
+                        VxlanFloodMulticast.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled:
+                               Explicitly enable or disable vxlan_flood_multicast to override settings of
+                               `<network_services_key>.[].vxlan_flood_multicast`.
+                            underlay_multicast_group: Specific multicast group to use for this SVI.
+
+                        """
+
             class EvpnL3Multicast(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -15623,6 +16482,7 @@ class EosDesigns(EosDesignsRootModel):
                 "rd_override": {"type": str},
                 "trunk_groups": {"type": TrunkGroups},
                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                 "igmp_snooping_enabled": {"type": bool},
                 "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
@@ -15767,6 +16627,8 @@ class EosDesigns(EosDesignsRootModel):
             Subclass
             of AvdModel.
             """
+            vxlan_flood_multicast: VxlanFloodMulticast
+            """Subclass of AvdModel."""
             evpn_l3_multicast: EvpnL3Multicast
             """
             Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -15846,6 +16708,7 @@ class EosDesigns(EosDesignsRootModel):
                     rd_override: str | None | UndefinedType = Undefined,
                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                    vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                     igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                     igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
@@ -15963,6 +16826,7 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass
                            of AvdModel.
+                        vxlan_flood_multicast: Subclass of AvdModel.
                         evpn_l3_multicast:
                            Explicitly enable or disable evpn_l3_multicast to override setting of
                            `<network_services_key>.[].evpn_l3_multicast.enabled` and
@@ -16173,6 +17037,37 @@ class EosDesigns(EosDesignsRootModel):
                            additional control-plane and data-plane resources,
                            but it is required to support forwarding of TTL=1
                            multicast traffic within the VLAN.
+
+                    """
+
+        class VxlanFloodMulticast(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
+            enabled: bool | None
+            """
+            Explicitly enable or disable vxlan_flood_multicast to override settings of
+            `<network_services_key>.[].vxlan_flood_multicast`.
+            """
+            underlay_multicast_group: str | None
+            """Specific multicast group to use for this SVI."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    VxlanFloodMulticast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Explicitly enable or disable vxlan_flood_multicast to override settings of
+                           `<network_services_key>.[].vxlan_flood_multicast`.
+                        underlay_multicast_group: Specific multicast group to use for this SVI.
 
                     """
 
@@ -16434,6 +17329,7 @@ class EosDesigns(EosDesignsRootModel):
             "rd_override": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
             "evpn_l2_multicast": {"type": EvpnL2Multicast},
+            "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
             "evpn_l3_multicast": {"type": EvpnL3Multicast},
             "igmp_snooping_enabled": {"type": bool},
             "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
@@ -16594,6 +17490,8 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
+        vxlan_flood_multicast: VxlanFloodMulticast
+        """Subclass of AvdModel."""
         evpn_l3_multicast: EvpnL3Multicast
         """
         Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -16675,6 +17573,7 @@ class EosDesigns(EosDesignsRootModel):
                 rd_override: str | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                 igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                 igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
@@ -16804,6 +17703,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
+                    vxlan_flood_multicast: Subclass of AvdModel.
                     evpn_l3_multicast:
                        Explicitly enable or disable evpn_l3_multicast to override setting of
                        `<network_services_key>.[].evpn_l3_multicast.enabled` and
@@ -20107,6 +21007,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class CampusLinkType(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    CampusLinkType._item_type = str
+
                     _fields: ClassVar[dict] = {
                         "switch_ports": {"type": SwitchPorts},
                         "switches": {"type": Switches},
@@ -20143,6 +21048,7 @@ class EosDesigns(EosDesignsRootModel):
                         "port_channel": {"type": PortChannel},
                         "validate_state": {"type": bool},
                         "validate_lldp": {"type": bool},
+                        "campus_link_type": {"type": CampusLinkType},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                     }
@@ -20336,6 +21242,20 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_lldp: bool | None
                     """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+                    campus_link_type: CampusLinkType
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Values for the CloudVision `Link-Type` user tags to be associated with an
+                    interface.
+                    Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                    in the same tags being associated with the parent Ethernet interface instead.
+                    Attempting to
+                    associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                    associated with the member Ethernet interfaces instead.
+
+                    Subclass of AvdList with `str` items.
+                    """
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -20381,6 +21301,7 @@ class EosDesigns(EosDesignsRootModel):
                             port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
+                            campus_link_type: CampusLinkType | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                         ) -> None:
@@ -20529,6 +21450,18 @@ class EosDesigns(EosDesignsRootModel):
                                    Set to false to disable interface state and LLDP topology validation performed by the
                                    `eos_validate_state` role.
                                 validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                                campus_link_type:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Values for the CloudVision `Link-Type` user tags to be associated with an
+                                   interface.
+                                   Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                                   in the same tags being associated with the parent Ethernet interface instead.
+                                   Attempting to
+                                   associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                                   associated with the member Ethernet interfaces instead.
+
+                                   Subclass of AvdList with `str` items.
                                 raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                                 structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -21690,6 +22623,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class CampusLinkType(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    CampusLinkType._item_type = str
+
                     _fields: ClassVar[dict] = {
                         "switch_ports": {"type": SwitchPorts},
                         "switches": {"type": Switches},
@@ -21726,6 +22664,7 @@ class EosDesigns(EosDesignsRootModel):
                         "port_channel": {"type": PortChannel},
                         "validate_state": {"type": bool},
                         "validate_lldp": {"type": bool},
+                        "campus_link_type": {"type": CampusLinkType},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                     }
@@ -21919,6 +22858,20 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_lldp: bool | None
                     """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+                    campus_link_type: CampusLinkType
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Values for the CloudVision `Link-Type` user tags to be associated with an
+                    interface.
+                    Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                    in the same tags being associated with the parent Ethernet interface instead.
+                    Attempting to
+                    associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                    associated with the member Ethernet interfaces instead.
+
+                    Subclass of AvdList with `str` items.
+                    """
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -21964,6 +22917,7 @@ class EosDesigns(EosDesignsRootModel):
                             port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
+                            campus_link_type: CampusLinkType | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                         ) -> None:
@@ -22112,6 +23066,18 @@ class EosDesigns(EosDesignsRootModel):
                                    Set to false to disable interface state and LLDP topology validation performed by the
                                    `eos_validate_state` role.
                                 validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                                campus_link_type:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Values for the CloudVision `Link-Type` user tags to be associated with an
+                                   interface.
+                                   Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                                   in the same tags being associated with the parent Ethernet interface instead.
+                                   Attempting to
+                                   associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                                   associated with the member Ethernet interfaces instead.
+
+                                   Subclass of AvdList with `str` items.
                                 raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                                 structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -24754,6 +25720,10 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "campus": {"type": str},
+                        "campus_pod": {"type": str},
+                        "campus_access_pod": {"type": str},
+                        "cv_tags_topology_type": {"type": str},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -25580,6 +26550,32 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    campus: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    campus_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    campus_access_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus access pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    cv_tags_topology_type: str | None
+                    """
+                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                    "edge" or "member-leaf".
+                    """
 
                     if TYPE_CHECKING:
 
@@ -25700,6 +26696,10 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            campus: str | None | UndefinedType = Undefined,
+                            campus_pod: str | None | UndefinedType = Undefined,
+                            campus_access_pod: str | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -26283,6 +27283,24 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                campus:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                campus_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                campus_access_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus access pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                cv_tags_topology_type:
+                                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                   "edge" or "member-leaf".
 
                             """
 
@@ -28940,6 +29958,10 @@ class EosDesigns(EosDesignsRootModel):
                             "l3_port_channels": {"type": L3PortChannels},
                             "data_plane_cpu_allocation_max": {"type": int},
                             "flow_tracker_type": {"type": str},
+                            "campus": {"type": str},
+                            "campus_pod": {"type": str},
+                            "campus_access_pod": {"type": str},
+                            "cv_tags_topology_type": {"type": str},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -29776,6 +30798,32 @@ class EosDesigns(EosDesignsRootModel):
                         level.
                         `default_flow_tracker_type` default value is `sampled`.
                         """
+                        campus: str | None
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Name of the campus. Used to generate CloudVision device tags with the
+                        `generate_cv_tags.campus_fabric` feature.
+                        """
+                        campus_pod: str | None
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Name of the campus pod. Used to generate CloudVision device tags with the
+                        `generate_cv_tags.campus_fabric` feature.
+                        """
+                        campus_access_pod: str | None
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Name of the campus access pod. Used to generate CloudVision device tags with the
+                        `generate_cv_tags.campus_fabric` feature.
+                        """
+                        cv_tags_topology_type: str | None
+                        """
+                        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                        "edge" or "member-leaf".
+                        """
 
                         if TYPE_CHECKING:
 
@@ -29898,6 +30946,10 @@ class EosDesigns(EosDesignsRootModel):
                                 l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                                 data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                                 flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                                campus: str | None | UndefinedType = Undefined,
+                                campus_pod: str | None | UndefinedType = Undefined,
+                                campus_access_pod: str | None | UndefinedType = Undefined,
+                                cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -30488,6 +31540,24 @@ class EosDesigns(EosDesignsRootModel):
                                        Override the `default_flow_tracker_type`` set at the `node_type_key`
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
+                                    campus:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Name of the campus. Used to generate CloudVision device tags with the
+                                       `generate_cv_tags.campus_fabric` feature.
+                                    campus_pod:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Name of the campus pod. Used to generate CloudVision device tags with the
+                                       `generate_cv_tags.campus_fabric` feature.
+                                    campus_access_pod:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Name of the campus access pod. Used to generate CloudVision device tags with the
+                                       `generate_cv_tags.campus_fabric` feature.
+                                    cv_tags_topology_type:
+                                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                       "edge" or "member-leaf".
 
                                 """
 
@@ -33053,6 +34123,10 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "campus": {"type": str},
+                        "campus_pod": {"type": str},
+                        "campus_access_pod": {"type": str},
+                        "cv_tags_topology_type": {"type": str},
                     }
                     group: str
                     """
@@ -33892,6 +34966,32 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    campus: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    campus_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    campus_access_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus access pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    cv_tags_topology_type: str | None
+                    """
+                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                    "edge" or "member-leaf".
+                    """
 
                     if TYPE_CHECKING:
 
@@ -34014,6 +35114,10 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            campus: str | None | UndefinedType = Undefined,
+                            campus_pod: str | None | UndefinedType = Undefined,
+                            campus_access_pod: str | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -34606,6 +35710,24 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                campus:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                campus_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                campus_access_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus access pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                cv_tags_topology_type:
+                                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                   "edge" or "member-leaf".
 
                             """
 
@@ -37246,6 +38368,10 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "campus": {"type": str},
+                        "campus_pod": {"type": str},
+                        "campus_access_pod": {"type": str},
+                        "cv_tags_topology_type": {"type": str},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -38082,6 +39208,32 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    campus: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    campus_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    campus_access_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus access pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    cv_tags_topology_type: str | None
+                    """
+                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                    "edge" or "member-leaf".
+                    """
 
                     if TYPE_CHECKING:
 
@@ -38204,6 +39356,10 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            campus: str | None | UndefinedType = Undefined,
+                            campus_pod: str | None | UndefinedType = Undefined,
+                            campus_access_pod: str | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -38794,6 +39950,24 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                campus:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                campus_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                campus_access_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus access pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                cv_tags_topology_type:
+                                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                   "edge" or "member-leaf".
 
                             """
 
@@ -39759,6 +40933,54 @@ class EosDesigns(EosDesignsRootModel):
                                    required to support forwarding of TTL=1 multicast traffic within the VLAN.
                                    This can be overridden
                                    per SVI.
+
+                            """
+
+                class VxlanFloodMulticast(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {
+                        "enabled": {"type": bool},
+                        "underlay_l2_multicast_group_ipv4_pool": {"type": str},
+                        "underlay_l2_multicast_group_ipv4_pool_offset": {"type": int, "default": 0},
+                    }
+                    enabled: bool
+                    """Enable Flood group Multicast for all SVIs and l2vlans within Tenant."""
+                    underlay_l2_multicast_group_ipv4_pool: str | None
+                    """
+                    IPv4 Pool to allocate vxlan flood groups from.
+                    The VLAN ID - 1 +
+                    `underlay_l2_multicast_group_ipv4_pool_offset` is the offset for each group.
+                    Comma separated list of
+                    prefixes (IPv4_address/Mask) or ranges (IPv4_address-IPv4_address).
+                    """
+                    underlay_l2_multicast_group_ipv4_pool_offset: int
+                    """Default value: `0`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | UndefinedType = Undefined,
+                            underlay_l2_multicast_group_ipv4_pool: str | None | UndefinedType = Undefined,
+                            underlay_l2_multicast_group_ipv4_pool_offset: int | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            VxlanFloodMulticast.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Enable Flood group Multicast for all SVIs and l2vlans within Tenant.
+                                underlay_l2_multicast_group_ipv4_pool:
+                                   IPv4 Pool to allocate vxlan flood groups from.
+                                   The VLAN ID - 1 +
+                                   `underlay_l2_multicast_group_ipv4_pool_offset` is the offset for each group.
+                                   Comma separated list of
+                                   prefixes (IPv4_address/Mask) or ranges (IPv4_address-IPv4_address).
+                                underlay_l2_multicast_group_ipv4_pool_offset: underlay_l2_multicast_group_ipv4_pool_offset
 
                             """
 
@@ -40795,6 +42017,40 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
+                            class VxlanFloodMulticast(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
+                                enabled: bool | None
+                                """
+                                Explicitly enable or disable vxlan_flood_multicast to override settings of
+                                `<network_services_key>.[].vxlan_flood_multicast`.
+                                """
+                                underlay_multicast_group: str | None
+                                """Specific multicast group to use for this SVI."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        underlay_multicast_group: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        VxlanFloodMulticast.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled:
+                                               Explicitly enable or disable vxlan_flood_multicast to override settings of
+                                               `<network_services_key>.[].vxlan_flood_multicast`.
+                                            underlay_multicast_group: Specific multicast group to use for this SVI.
+
+                                        """
+
                             class EvpnL3Multicast(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -41057,6 +42313,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "rd_override": {"type": str},
                                 "trunk_groups": {"type": TrunkGroups},
                                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                                "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                                 "igmp_snooping_enabled": {"type": bool},
                                 "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
@@ -41211,6 +42468,8 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass
                             of AvdModel.
                             """
+                            vxlan_flood_multicast: VxlanFloodMulticast
+                            """Subclass of AvdModel."""
                             evpn_l3_multicast: EvpnL3Multicast
                             """
                             Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -41291,6 +42550,7 @@ class EosDesigns(EosDesignsRootModel):
                                     rd_override: str | None | UndefinedType = Undefined,
                                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                                    vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                                     igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                                     igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
@@ -41414,6 +42674,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass
                                            of AvdModel.
+                                        vxlan_flood_multicast: Subclass of AvdModel.
                                         evpn_l3_multicast:
                                            Explicitly enable or disable evpn_l3_multicast to override setting of
                                            `<network_services_key>.[].evpn_l3_multicast.enabled` and
@@ -41624,6 +42885,37 @@ class EosDesigns(EosDesignsRootModel):
                                            additional control-plane and data-plane resources,
                                            but it is required to support forwarding of TTL=1
                                            multicast traffic within the VLAN.
+
+                                    """
+
+                        class VxlanFloodMulticast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
+                            enabled: bool | None
+                            """
+                            Explicitly enable or disable vxlan_flood_multicast to override settings of
+                            `<network_services_key>.[].vxlan_flood_multicast`.
+                            """
+                            underlay_multicast_group: str | None
+                            """Specific multicast group to use for this SVI."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    VxlanFloodMulticast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           Explicitly enable or disable vxlan_flood_multicast to override settings of
+                                           `<network_services_key>.[].vxlan_flood_multicast`.
+                                        underlay_multicast_group: Specific multicast group to use for this SVI.
 
                                     """
 
@@ -41892,6 +43184,7 @@ class EosDesigns(EosDesignsRootModel):
                             "rd_override": {"type": str},
                             "trunk_groups": {"type": TrunkGroups},
                             "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                            "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                             "evpn_l3_multicast": {"type": EvpnL3Multicast},
                             "igmp_snooping_enabled": {"type": bool},
                             "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
@@ -42070,6 +43363,8 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass
                         of AvdModel.
                         """
+                        vxlan_flood_multicast: VxlanFloodMulticast
+                        """Subclass of AvdModel."""
                         evpn_l3_multicast: EvpnL3Multicast
                         """
                         Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -42153,6 +43448,7 @@ class EosDesigns(EosDesignsRootModel):
                                 rd_override: str | None | UndefinedType = Undefined,
                                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                                vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                                 igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                                 igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
@@ -42294,6 +43590,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass
                                        of AvdModel.
+                                    vxlan_flood_multicast: Subclass of AvdModel.
                                     evpn_l3_multicast:
                                        Explicitly enable or disable evpn_l3_multicast to override setting of
                                        `<network_services_key>.[].evpn_l3_multicast.enabled` and
@@ -42617,6 +43914,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class CampusLinkType(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        CampusLinkType._item_type = str
+
                         _fields: ClassVar[dict] = {
                             "interfaces": {"type": Interfaces},
                             "encapsulation_dot1q_vlan": {"type": EncapsulationDot1qVlan},
@@ -42632,6 +43934,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ospf": {"type": Ospf},
                             "pim": {"type": Pim},
                             "flow_tracking": {"type": FlowTracking},
+                            "campus_link_type": {"type": CampusLinkType},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "raw_eos_cli": {"type": str},
                         }
@@ -42691,6 +43994,20 @@ class EosDesigns(EosDesignsRootModel):
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                         Subclass of AvdModel.
                         """
+                        campus_link_type: CampusLinkType
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Values for the CloudVision `Link-Type` user tags to be associated with an
+                        interface.
+                        Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                        in the same tags being associated with the parent Ethernet interface instead.
+                        Attempting to
+                        associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                        associated with the member Ethernet interfaces instead.
+
+                        Subclass of AvdList with `str` items.
+                        """
                         structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
                         raw_eos_cli: str | None
@@ -42715,6 +44032,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ospf: Ospf | UndefinedType = Undefined,
                                 pim: Pim | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
+                                campus_link_type: CampusLinkType | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
                             ) -> None:
@@ -42765,6 +44083,18 @@ class EosDesigns(EosDesignsRootModel):
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                                        Subclass of AvdModel.
+                                    campus_link_type:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Values for the CloudVision `Link-Type` user tags to be associated with an
+                                       interface.
+                                       Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                                       in the same tags being associated with the parent Ethernet interface instead.
+                                       Attempting to
+                                       associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                                       associated with the member Ethernet interfaces instead.
+
+                                       Subclass of AvdList with `str` items.
                                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
                                     raw_eos_cli: EOS CLI rendered directly on the Ethernet interface in the final EOS configuration.
 
@@ -45295,6 +46625,37 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class VxlanFloodMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
+                        enabled: bool | None
+                        """
+                        Explicitly enable or disable vxlan_flood_multicast to override setting of
+                        `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                        """
+                        underlay_multicast_group: str | None
+                        """Specific multicast group to use for this VLAN."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                VxlanFloodMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled:
+                                       Explicitly enable or disable vxlan_flood_multicast to override setting of
+                                       `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                                    underlay_multicast_group: Specific multicast group to use for this VLAN.
+
+                                """
+
                     class IgmpSnoopingQuerier(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -45423,6 +46784,7 @@ class EosDesigns(EosDesignsRootModel):
                         "trunk_groups": {"type": TrunkGroups},
                         "evpn_l2_multi_domain": {"type": bool},
                         "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                        "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                         "igmp_snooping_enabled": {"type": bool},
                         "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                         "bgp": {"type": Bgp},
@@ -45515,6 +46877,8 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of
                     AvdModel.
                     """
+                    vxlan_flood_multicast: VxlanFloodMulticast
+                    """Subclass of AvdModel."""
                     igmp_snooping_enabled: bool | None
                     """Enable or disable IGMP snooping (Enabled by default on EOS)."""
                     igmp_snooping_querier: IgmpSnoopingQuerier
@@ -45548,6 +46912,7 @@ class EosDesigns(EosDesignsRootModel):
                             trunk_groups: TrunkGroups | UndefinedType = Undefined,
                             evpn_l2_multi_domain: bool | None | UndefinedType = Undefined,
                             evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                            vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                             igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                             igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
@@ -45621,6 +46986,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of
                                    AvdModel.
+                                vxlan_flood_multicast: Subclass of AvdModel.
                                 igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                                 igmp_snooping_querier:
                                    Enable igmp snooping querier, by default using IP address of Loopback 0.
@@ -45912,6 +47278,7 @@ class EosDesigns(EosDesignsRootModel):
                     "evpn_vlan_bundle": {"type": str},
                     "bgp_peer_groups": {"type": BgpPeerGroups},
                     "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                    "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                     "evpn_l3_multicast": {"type": EvpnL3Multicast},
                     "pim_rp_addresses": {"type": PimRpAddresses},
                     "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
@@ -46021,6 +47388,8 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdModel.
                 """
+                vxlan_flood_multicast: VxlanFloodMulticast
+                """Subclass of AvdModel."""
                 evpn_l3_multicast: EvpnL3Multicast
                 """
                 Enable L3 Multicast for all SVIs and l3vlans within Tenant.
@@ -46129,6 +47498,7 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_vlan_bundle: str | None | UndefinedType = Undefined,
                         bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
                         evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                        vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                         evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                         pim_rp_addresses: PimRpAddresses | UndefinedType = Undefined,
                         igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
@@ -46219,6 +47589,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                Subclass of AvdModel.
+                            vxlan_flood_multicast: Subclass of AvdModel.
                             evpn_l3_multicast:
                                Enable L3 Multicast for all SVIs and l3vlans within Tenant.
                                - In the evpn-l3ls design type, this
@@ -48890,6 +50261,10 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "campus": {"type": str},
+                        "campus_pod": {"type": str},
+                        "campus_access_pod": {"type": str},
+                        "cv_tags_topology_type": {"type": str},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -49716,6 +51091,32 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    campus: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    campus_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    campus_access_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus access pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    cv_tags_topology_type: str | None
+                    """
+                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                    "edge" or "member-leaf".
+                    """
 
                     if TYPE_CHECKING:
 
@@ -49836,6 +51237,10 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            campus: str | None | UndefinedType = Undefined,
+                            campus_pod: str | None | UndefinedType = Undefined,
+                            campus_access_pod: str | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -50419,6 +51824,24 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                campus:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                campus_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                campus_access_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus access pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                cv_tags_topology_type:
+                                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                   "edge" or "member-leaf".
 
                             """
 
@@ -53076,6 +54499,10 @@ class EosDesigns(EosDesignsRootModel):
                             "l3_port_channels": {"type": L3PortChannels},
                             "data_plane_cpu_allocation_max": {"type": int},
                             "flow_tracker_type": {"type": str},
+                            "campus": {"type": str},
+                            "campus_pod": {"type": str},
+                            "campus_access_pod": {"type": str},
+                            "cv_tags_topology_type": {"type": str},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -53912,6 +55339,32 @@ class EosDesigns(EosDesignsRootModel):
                         level.
                         `default_flow_tracker_type` default value is `sampled`.
                         """
+                        campus: str | None
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Name of the campus. Used to generate CloudVision device tags with the
+                        `generate_cv_tags.campus_fabric` feature.
+                        """
+                        campus_pod: str | None
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Name of the campus pod. Used to generate CloudVision device tags with the
+                        `generate_cv_tags.campus_fabric` feature.
+                        """
+                        campus_access_pod: str | None
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Name of the campus access pod. Used to generate CloudVision device tags with the
+                        `generate_cv_tags.campus_fabric` feature.
+                        """
+                        cv_tags_topology_type: str | None
+                        """
+                        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                        "edge" or "member-leaf".
+                        """
 
                         if TYPE_CHECKING:
 
@@ -54034,6 +55487,10 @@ class EosDesigns(EosDesignsRootModel):
                                 l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                                 data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                                 flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                                campus: str | None | UndefinedType = Undefined,
+                                campus_pod: str | None | UndefinedType = Undefined,
+                                campus_access_pod: str | None | UndefinedType = Undefined,
+                                cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -54624,6 +56081,24 @@ class EosDesigns(EosDesignsRootModel):
                                        Override the `default_flow_tracker_type`` set at the `node_type_key`
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
+                                    campus:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Name of the campus. Used to generate CloudVision device tags with the
+                                       `generate_cv_tags.campus_fabric` feature.
+                                    campus_pod:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Name of the campus pod. Used to generate CloudVision device tags with the
+                                       `generate_cv_tags.campus_fabric` feature.
+                                    campus_access_pod:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Name of the campus access pod. Used to generate CloudVision device tags with the
+                                       `generate_cv_tags.campus_fabric` feature.
+                                    cv_tags_topology_type:
+                                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                       "edge" or "member-leaf".
 
                                 """
 
@@ -57189,6 +58664,10 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "campus": {"type": str},
+                        "campus_pod": {"type": str},
+                        "campus_access_pod": {"type": str},
+                        "cv_tags_topology_type": {"type": str},
                     }
                     group: str
                     """
@@ -58028,6 +59507,32 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    campus: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    campus_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    campus_access_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus access pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    cv_tags_topology_type: str | None
+                    """
+                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                    "edge" or "member-leaf".
+                    """
 
                     if TYPE_CHECKING:
 
@@ -58150,6 +59655,10 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            campus: str | None | UndefinedType = Undefined,
+                            campus_pod: str | None | UndefinedType = Undefined,
+                            campus_access_pod: str | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -58742,6 +60251,24 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                campus:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                campus_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                campus_access_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus access pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                cv_tags_topology_type:
+                                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                   "edge" or "member-leaf".
 
                             """
 
@@ -61382,6 +62909,10 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "campus": {"type": str},
+                        "campus_pod": {"type": str},
+                        "campus_access_pod": {"type": str},
+                        "cv_tags_topology_type": {"type": str},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -62218,6 +63749,32 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    campus: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    campus_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    campus_access_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus access pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
+                    """
+                    cv_tags_topology_type: str | None
+                    """
+                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                    "edge" or "member-leaf".
+                    """
 
                     if TYPE_CHECKING:
 
@@ -62340,6 +63897,10 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            campus: str | None | UndefinedType = Undefined,
+                            campus_pod: str | None | UndefinedType = Undefined,
+                            campus_access_pod: str | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -62930,6 +64491,24 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                campus:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                campus_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                campus_access_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus access pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
+                                cv_tags_topology_type:
+                                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                   "edge" or "member-leaf".
 
                             """
 
@@ -63092,6 +64671,9 @@ class EosDesigns(EosDesignsRootModel):
         "bgp_peer_groups": {"type": BgpPeerGroups},
         "bgp_update_wait_install": {"type": bool, "default": True},
         "bgp_update_wait_for_convergence": {"type": bool, "default": False},
+        "campus": {"type": str},
+        "campus_access_pod": {"type": str},
+        "campus_pod": {"type": str},
         "custom_connected_endpoints_keys": {"type": CustomConnectedEndpointsKeys},
         "connected_endpoints_keys": {
             "type": ConnectedEndpointsKeys,
@@ -63614,6 +65196,30 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
+    campus: str | None
+    """
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
+    Name of the Campus fabric.
+    Used to generate CloudVision device tags with the
+    `generate_cv_tags.campus_fabric` feature.
+    """
+    campus_access_pod: str | None
+    """
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
+    Name of the Campus access pod.
+    Used to generate CloudVision device tags with the
+    `generate_cv_tags.campus_fabric` feature.
+    """
+    campus_pod: str | None
+    """
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
+    Name of the Campus pod.
+    Used to generate CloudVision device tags with the
+    `generate_cv_tags.campus_fabric` feature.
+    """
     custom_connected_endpoints_keys: CustomConnectedEndpointsKeys
     """
     `custom_connected_endpoints_keys` offers a flexible way to extend endpoint definitions without
@@ -63764,8 +65370,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     cv_tags_topology_type: str | None
     """
-    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-    "edge". Defaults to the setting under node_type_keys.
+    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+    "edge" or "member-leaf". Defaults to the setting under node_type_keys.
     """
     cv_token: str | None
     """
@@ -65407,6 +67013,9 @@ class EosDesigns(EosDesignsRootModel):
             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
             bgp_update_wait_install: bool | UndefinedType = Undefined,
             bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
+            campus: str | None | UndefinedType = Undefined,
+            campus_access_pod: str | None | UndefinedType = Undefined,
+            campus_pod: str | None | UndefinedType = Undefined,
             custom_connected_endpoints_keys: CustomConnectedEndpointsKeys | UndefinedType = Undefined,
             connected_endpoints_keys: ConnectedEndpointsKeys | UndefinedType = Undefined,
             core_interfaces: CoreInterfaces | UndefinedType = Undefined,
@@ -65688,6 +67297,24 @@ class EosDesigns(EosDesignsRootModel):
                 bgp_update_wait_for_convergence:
                    Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
                    convergence state is reached.
+                campus:
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
+                   Name of the Campus fabric.
+                   Used to generate CloudVision device tags with the
+                   `generate_cv_tags.campus_fabric` feature.
+                campus_access_pod:
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
+                   Name of the Campus access pod.
+                   Used to generate CloudVision device tags with the
+                   `generate_cv_tags.campus_fabric` feature.
+                campus_pod:
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
+                   Name of the Campus pod.
+                   Used to generate CloudVision device tags with the
+                   `generate_cv_tags.campus_fabric` feature.
                 custom_connected_endpoints_keys:
                    `custom_connected_endpoints_keys` offers a flexible way to extend endpoint definitions without
                    altering the `connected_endpoints_keys`.
@@ -65812,8 +67439,8 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of AvdModel.
                 cv_tags_topology_type:
-                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-                   "edge". Defaults to the setting under node_type_keys.
+                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                   "edge" or "member-leaf". Defaults to the setting under node_type_keys.
                 cv_token:
                    PREVIEW: These keys are in preview mode.
 
