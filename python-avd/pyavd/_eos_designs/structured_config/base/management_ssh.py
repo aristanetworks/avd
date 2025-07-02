@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
@@ -45,5 +44,5 @@ class ManagementSshMixin(Protocol):
                     name=vrf_name,
                     enable=vrf.enabled,
                     ip_access_group_in=vrf.ipv4_acl if vrf.enabled else None,
-                    ipv6_access_group_in=vrf.ipv6_acl if vrf.enabled else None
+                    ipv6_access_group_in=vrf.ipv6_acl if vrf.enabled else None,
                 )
