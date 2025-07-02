@@ -261,8 +261,8 @@ The first section defines how the Ansible host connects to the devices:
 ```yaml title="FABRIC.yml"
 ansible_connection: ansible.netcommon.httpapi # (1)!
 ansible_network_os: arista.eos.eos # (2)!
-ansible_user: ansible # (3)!
-ansible_password: ansible
+ansible_user: arista # (3)!
+ansible_password: arista
 ansible_become: true
 ansible_become_method: enable # (4)!
 ansible_httpapi_use_ssl: true # (5)!
@@ -285,14 +285,15 @@ underlay_routing_protocol: isis-ldp
 overlay_routing_protocol: ibgp
 
 local_users: # (2)!
-  - name: ansible
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$QJUtFkyu9yoecsq.$ysGzlb2YXaIMvezqGEna7RE8CMALJHnv7Q1i.27VygyKUtSeX.n2xRTyOtCR8eOAl.4imBLyhXFc4o97P5n071
   - name: admin
     privilege: 15
     role: network-admin
     no_password: true
+  - name: arista
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
+
 
 bgp_peer_groups: # (3)!
   mpls_overlay_peers:
@@ -302,7 +303,7 @@ p2p_uplinks_mtu: 1500 # (4)!
 ```
 
 1. The name of the fabric for internal AVD use. This name *must* match the name of an Ansible Group (and therefore a corresponding group_vars file) covering all network devices.
-2. Local users/passwords and their privilege levels. In this case, the `ansible` user is set with the password `ansible`, and an `admin` user is set with no password.
+2. Local users/passwords and their privilege levels. In this case, the `admin` user is set with no password and the `arista` user is set with the password `arista`.
 3. BGP peer groups and their passwords (all passwords are "arista").
 4. Point-to-point interface MTU, in this case, is set to 1500 since the example uses vEOS, but when using hardware, this should be set to 9214 instead.
 

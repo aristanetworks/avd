@@ -8,11 +8,10 @@ daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
   cvauth:
-    method: key
-    key: telarista
+    method: token
+    token_file: /tmp/token
   cvvrf: MGMT
   disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
@@ -533,6 +532,8 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+      static:
+        enabled: true
   - name: Tenant_A_WEB_Zone
     rd: 192.168.255.21:11
     route_targets:
@@ -657,6 +658,10 @@ static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
   next_hop: 192.168.200.5
+- vrf: Tenant_A_WAN_Zone
+  prefix: 10.3.5.0/24
+  next_hop: 1.2.3.4
+  name: SVI_static_route
 tcam_profile:
   system: vxlan-routing
 transceiver_qsfp_default_mode_4x10: true

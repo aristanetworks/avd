@@ -32,6 +32,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_verify_unicast_source_reachable_via</samp>](## "vlan_interfaces.[].ip_verify_unicast_source_reachable_via") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>rx</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_igmp</samp>](## "vlan_interfaces.[].ip_igmp") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_igmp_version</samp>](## "vlan_interfaces.[].ip_igmp_version") | Integer |  |  | Min: 1<br>Max: 3 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_igmp_querier_address_virtual</samp>](## "vlan_interfaces.[].ip_igmp_querier_address_virtual") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_igmp_host_proxy</samp>](## "vlan_interfaces.[].ip_igmp_host_proxy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "vlan_interfaces.[].ip_igmp_host_proxy.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "vlan_interfaces.[].ip_igmp_host_proxy.groups") | List, items: Dictionary |  |  |  |  |
@@ -152,6 +153,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "vlan_interfaces.[].pim.ipv4.local_interface") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "vlan_interfaces.[].pim.ipv4.bfd") | Boolean |  |  |  | Set the default for whether Bidirectional Forwarding Detection is enabled for PIM. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bidirectional</samp>](## "vlan_interfaces.[].pim.ipv4.bidirectional") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor_filter</samp>](## "vlan_interfaces.[].pim.ipv4.neighbor_filter") | String |  |  |  | Standard access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hello</samp>](## "vlan_interfaces.[].pim.ipv4.hello") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "vlan_interfaces.[].pim.ipv4.hello.count") | String |  |  |  | Number of missed hellos after which the neighbor expires. Range <1.5-65535>. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "vlan_interfaces.[].pim.ipv4.hello.interval") | Integer |  |  | Min: 1<br>Max: 65535 | PIM hello interval in seconds. |
@@ -303,6 +305,7 @@
         ip_verify_unicast_source_reachable_via: <str; "any" | "rx">
         ip_igmp: <bool>
         ip_igmp_version: <int; 1-3>
+        ip_igmp_querier_address_virtual: <bool>
         ip_igmp_host_proxy:
           enabled: <bool>
           groups:
@@ -546,6 +549,9 @@
             # Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
             bfd: <bool>
             bidirectional: <bool>
+
+            # Standard access list name.
+            neighbor_filter: <str>
             hello:
 
               # Number of missed hellos after which the neighbor expires. Range <1.5-65535>.

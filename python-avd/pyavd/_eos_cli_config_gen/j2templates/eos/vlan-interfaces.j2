@@ -145,6 +145,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ip_igmp_version is arista.avd.defined %}
    ip igmp version {{ vlan_interface.ip_igmp_version }}
 {%     endif %}
+{%     if vlan_interface.ip_igmp_querier_address_virtual is arista.avd.defined(true) %}
+   ip igmp querier address virtual
+{%     endif %}
 {%     if vlan_interface.ip_igmp_host_proxy.enabled is arista.avd.defined(true) %}
 {%         set host_proxy_cli =  "ip igmp host-proxy" %}
    {{ host_proxy_cli }}
@@ -321,6 +324,9 @@ interface {{ vlan_interface.name }}
 {%     endif %}
 {%     if vlan_interface.pim.ipv4.dr_priority is arista.avd.defined %}
    pim ipv4 dr-priority {{ vlan_interface.pim.ipv4.dr_priority }}
+{%     endif %}
+{%     if vlan_interface.pim.ipv4.neighbor_filter is arista.avd.defined %}
+   pim ipv4 neighbor filter {{ vlan_interface.pim.ipv4.neighbor_filter }}
 {%     endif %}
 {%     if vlan_interface.pim.ipv4.bfd is arista.avd.defined(true) %}
    pim ipv4 bfd

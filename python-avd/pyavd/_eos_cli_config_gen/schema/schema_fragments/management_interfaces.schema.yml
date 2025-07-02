@@ -64,6 +64,67 @@ keys:
               convert_types:
                 - str
               description: ZTP vlan number.
+        redundancy:
+          type: dict
+          keys:
+            fallback_delay:
+              type: str
+              description: |-
+                The duration to wait before falling back to the higher-priority interface.
+                Accepts a value between 0 and 3600 seconds, or the string `infinity` to disable fallback.
+              convert_types:
+                - int
+            monitor:
+              type: dict
+              keys:
+                link_state:
+                  type: bool
+                  description: |-
+                    Link state of interface.
+                    `neighbor` and `link_state` are mutually exclusive and `link_state` takes precedence.
+                neighbor:
+                  type: dict
+                  description: |-
+                    To configure an IPv6 neighbor as monitor, `fallback_delay` must be set as infinity.
+                    `neighbor` and `link_state` are mutually exclusive and `link_state` takes precedence.
+                  keys:
+                    ipv6_address:
+                      required: true
+                      type: str
+                    interval:
+                      type: int
+                      description: Interval between neighbor probes in milliseconds.
+                      min: 1
+                      max: 300000
+                      convert_types:
+                        - str
+                    multiplier:
+                      type: int
+                      description: Number of missed neighbor replies after which it is timed out.
+                      min: 1
+                      max: 100
+                      convert_types:
+                        - str
+            supervisor_1:
+              type: dict
+              description: Configuration for supervisor 1, including its primary and backup management interfaces.
+              keys:
+                primary_management_interface:
+                  type: str
+                  description: Primary management interface name like 'Management1/1'.
+                  required: true
+                backup_management_interfaces:
+                  type: list
+                  description: Backup management interfaces.
+                  required: true
+                  min_length: 1
+                  items:
+                    type: str
+                    description: Management interface name like 'Management2/1'.
+            supervisor_2:
+              type: dict
+              description: Configuration for supervisor 2, including its primary and backup management interfaces.
+              $ref: "eos_cli_config_gen#/keys/management_interfaces/items/keys/redundancy/keys/supervisor_1"
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the management interface in the final EOS configuration.

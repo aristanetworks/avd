@@ -1,0 +1,34 @@
+---
+underlay_routing_protocol: ospf
+underlay_ospf_authentication:
+  enabled: true
+  message_digest_keys:
+    - id: 1
+      # missing cleartext_key or key
+      # TODO: Make cleartext_key required in AVD 6.0
+
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mlag_interfaces: [Ethernet42]
+    mlag_peer_ipv4_pool: 169.254.255.0/24
+    mlag_peer_l3_ipv4_pool: 169.254.254.0/24
+  node_groups:
+    - group: MLAG
+      nodes:
+      # Fake mlag node to trigger the error message
+      - name: missing-underlay-ospf-authentication-message-digest-key-underlay
+        id: 101
+        bgp_as: 101
+      - name: missing-underlay-ospf-authentication-message-digest-key-mlag
+        id: 102
+        bgp_as: 102
+
+expected_error_message: >-
+  '`underlay_ospf_authentication.message_digest_keys[key=1].key
+  or `underlay_ospf_authentication.message_digest_keys[key=1].cleartext_key`'
+  is required but was not found.

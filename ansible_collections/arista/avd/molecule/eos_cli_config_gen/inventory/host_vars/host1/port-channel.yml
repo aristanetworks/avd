@@ -1,0 +1,48 @@
+port_channel:
+  load_balance_trident_udf:
+    # test ipv4 inner header with ip_protocol as string
+    - eth_type: ipv4
+      ip_protocol: gre
+      header: inner_l3
+      offset: 30
+      mask: "0x01"
+    # test ipv4 inner header without ip_protocol
+    - eth_type: ipv4
+      header: inner_l3
+      offset: 10
+      mask: "0xff"
+    # test ipv4 inner header without ip_protocol and mask
+    - eth_type: ipv4
+      header: inner_l4
+      offset: 2
+    # test ipv4 inner header with ip_protocol as integer
+    - eth_type: ipv4
+      ip_protocol: 10
+      header: inner_l4
+      offset: 20
+      mask: "0x02"
+    # test ipv4 outer header without mask
+    - eth_type: ipv4
+      header: outer_l2
+      offset: 39
+      ip_protocol: sctp
+    # test ipv6 outer header without ip_protocol
+    - eth_type: ipv6
+      header: outer_l3
+      offset: 30
+      mask: "0x01"
+    # test ipv6 inner header without ip_protocol and mask
+    - eth_type: ipv6
+      header: inner_l3
+      offset: 20
+    # test ipv6 outer header without mask and ip_protcol as string
+    - eth_type: ipv6
+      ip_protocol: tcp
+      header: outer_l4
+      offset: 20
+    # test ipv6 inner header with ip_protocol as integer
+    - eth_type: ipv6
+      ip_protocol: 2
+      header: inner_l4
+      offset: 10
+      mask: "0x02"

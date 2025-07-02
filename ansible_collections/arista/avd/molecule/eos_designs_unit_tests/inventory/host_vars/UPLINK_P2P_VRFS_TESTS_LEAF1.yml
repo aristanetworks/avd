@@ -1,0 +1,6 @@
+---
+# This is to test subinterface_mtu: false. This will not generate mtu on sub interface underlay links.
+platform_settings:
+  - platforms: [default]
+    feature_support:
+      subinterface_mtu: false

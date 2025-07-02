@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 import random
-from typing import Any
+from typing import Any, Literal
 
 from .password_utils import cbc_decrypt, cbc_encrypt
 
@@ -185,9 +185,9 @@ def bgp_encrypt(password: str, key: str) -> str:
     _validate_password_and_key(password, key)
 
     data = bytes(password, encoding="UTF-8")
-    key = bytes(f"{key}_passwd", encoding="UTF-8")
+    key_bytes = bytes(f"{key}_passwd", encoding="UTF-8")
 
-    return cbc_encrypt(key, data).decode()
+    return cbc_encrypt(key_bytes, data).decode()
 
 
 def bgp_decrypt(password: str, key: str) -> str:
@@ -209,10 +209,10 @@ def bgp_decrypt(password: str, key: str) -> str:
     _validate_password_and_key(password, key)
 
     data = bytes(password, encoding="UTF-8")
-    key = bytes(f"{key}_passwd", encoding="UTF-8")
+    key_bytes = bytes(f"{key}_passwd", encoding="UTF-8")
 
     try:
-        return cbc_decrypt(key, data).decode()
+        return cbc_decrypt(key_bytes, data).decode()
     except Exception as exc:
         msg = "BGP password decryption failed - check the input parameters"
         raise ValueError(msg) from exc
@@ -335,6 +335,48 @@ def isis_decrypt(password: str, key: str, mode: str) -> str:
         raise ValueError(msg) from exc
 
 
+########
+# Tacacs
+########
+def tacacs_encrypt(password: str, salt: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) -> str:
+    """
+    Encrypt (obfuscate) a Tacacs key with insecure type-7.
+
+    Args:
+        password: The clear text Tacacs key.
+        salt: A number within the range 0-15.
+
+    Returns:
+        str: The encrypted Tacacs key as a string.
+    """
+    if not isinstance(password, str) or not password:
+        msg = "Password MUST be a string with at least 1 character."
+        raise ValueError(msg)
+
+    if not isinstance(salt, int) or salt < 0 or salt > 15:
+        msg = "Salt MUST be an integer within the range 0-15."
+        raise ValueError(msg)
+
+    return simple_7_encrypt(password, salt)
+
+
+def tacacs_decrypt(password: str) -> str:
+    """
+    Decrypt (deobfuscate) a Tacacs key from insecure type-7.
+
+    Args:
+        password: The encrypted Tacacs key to be decrypted.
+
+    Returns:
+        str: The decrypted Tacacs key as a string.
+    """
+    if not isinstance(password, str) or not password:
+        msg = "Password MUST be a string with at least 1 character."
+        raise ValueError(msg)
+
+    return simple_7_decrypt(password)
+
+
 ###############
 # Simple type 7
 ###############
@@ -346,7 +388,7 @@ def simple_7_decrypt(data: str) -> str:
     Decrypt (deobfuscate) a password from insecure type-7.
 
     Args:
-        data: The encrypted password
+        data: The encrypted password to be decrypted.
 
     Returns:
         str: The decrypted password as a string.

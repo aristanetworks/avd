@@ -3,10 +3,12 @@
 # that can be found in the LICENSE file.
 """Centralized package to import all the tests of the ANTA framework."""
 
-from anta.tests.avt import VerifyAVTPathHealth, VerifyAVTRole
+from anta.tests.avt import VerifyAVTRole, VerifyAVTSpecificPath
 from anta.tests.configuration import VerifyRunningConfigDiffs, VerifyZeroTouch
 from anta.tests.connectivity import VerifyLLDPNeighbors, VerifyReachability
 from anta.tests.hardware import (
+    VerifyEnvironmentCooling,
+    VerifyEnvironmentPower,
     VerifyEnvironmentSystemCooling,
     VerifyTemperature,
     VerifyTransceiversTemperature,
@@ -29,10 +31,11 @@ from anta.tests.mlag import (
     VerifyMlagReloadDelay,
     VerifyMlagStatus,
 )
-from anta.tests.path_selection import VerifyPathsHealth
+from anta.tests.path_selection import VerifySpecificPath
 from anta.tests.routing.bgp import VerifyBGPPeerSession
 from anta.tests.routing.generic import VerifyRoutingProtocolModel
 from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn, VerifyTelnetStatus
+from anta.tests.services import VerifyDNSServers
 from anta.tests.stp import VerifySTPBlockedPorts, VerifySTPCounters
 from anta.tests.stun import VerifyStunClientTranslation
 from anta.tests.system import (
@@ -46,11 +49,14 @@ from anta.tests.system import (
 
 __all__ = [
     "VerifyAPIHttpsSSL",
-    "VerifyAVTPathHealth",
     "VerifyAVTRole",
+    "VerifyAVTSpecificPath",
     "VerifyAgentLogs",
     "VerifyBGPPeerSession",
     "VerifyCoredump",
+    "VerifyDNSServers",
+    "VerifyEnvironmentCooling",
+    "VerifyEnvironmentPower",
     "VerifyEnvironmentSystemCooling",
     "VerifyFileSystemUtilization",
     "VerifyIllegalLACP",
@@ -68,7 +74,6 @@ __all__ = [
     "VerifyMlagReloadDelay",
     "VerifyMlagStatus",
     "VerifyNTP",
-    "VerifyPathsHealth",
     "VerifyPortChannels",
     "VerifyReachability",
     "VerifyReloadCause",
@@ -77,6 +82,7 @@ __all__ = [
     "VerifySTPBlockedPorts",
     "VerifySTPCounters",
     "VerifySpecificIPSecConn",
+    "VerifySpecificPath",
     "VerifyStormControlDrops",
     "VerifyStunClientTranslation",
     "VerifyTelnetStatus",

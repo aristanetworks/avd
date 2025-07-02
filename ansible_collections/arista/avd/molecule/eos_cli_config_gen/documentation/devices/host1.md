@@ -88,6 +88,7 @@
   - [Monitor Telemetry Postcard Policy](#monitor-telemetry-postcard-policy)
   - [Monitor Server Radius Summary](#monitor-server-radius-summary)
   - [Monitor TWAMP](#monitor-twamp)
+  - [Transceiver](#transceiver)
 - [Monitor Connectivity](#monitor-connectivity)
   - [Global Configuration](#global-configuration)
   - [VRF Configuration](#vrf-configuration)
@@ -114,6 +115,9 @@
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
   - [Synchronous Ethernet (SyncE) Settings](#synchronous-ethernet-synce-settings)
+- [Port-Channel](#port-channel)
+  - [Port-Channel Summary](#port-channel-summary)
+  - [Port-channel Device Configuration](#port-channel-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
@@ -122,6 +126,7 @@
   - [VLANs Device Configuration](#vlans-device-configuration)
 - [MAC Address Table](#mac-address-table)
   - [MAC Address Table Summary](#mac-address-table-summary)
+  - [Static MAC Address Entries](#static-mac-address-entries)
   - [MAC Address Table Device Configuration](#mac-address-table-device-configuration)
 - [IP Security](#ip-security)
   - [IKE policies](#ike-policies)
@@ -249,6 +254,9 @@
   - [NAT Synchronization](#nat-synchronization)
   - [NAT Translation Settings](#nat-translation-settings)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
+- [IP Hardware FIB](#ip-hardware-fib)
+  - [IP Hardware FIB Summary](#ip-hardware-fib-summary)
+  - [IP Hardware FIB Configuration](#ip-hardware-fib-configuration)
 - [Errdisable](#errdisable)
   - [Errdisable Summary](#errdisable-summary)
 - [MACsec](#macsec)
@@ -368,6 +376,37 @@ agent KernelFib shutdown supervisor standby
 | Management42 | - | oob | default | - | - |
 | Vlan123 | inband_management | inband | default | - | - |
 
+##### Interface Redundancy
+
+###### Management0
+
+| Settings | Value |
+| -------- | ----- |
+| Fallback Delay | 100 |
+| Monitor Link State | True |
+| Supervisor 1 Primary Interface | Management1/1 |
+| Supervisor 1 Backup Interfaces | Management1/2, Management2/1 |
+| Supervisor 2 Primary Interface | Management2/1 |
+| Supervisor 2 Backup Interfaces | Management2/2, Management1/1 |
+
+###### Management1
+
+| Settings | Value |
+| -------- | ----- |
+| Fallback Delay | infinity |
+| Monitor Neighbor IPv6 Address | 1:1:1:1:1:1:1:1 |
+| Monitor Neighbor Interval | 101 |
+| Monitor Neighbor Multiplier | 3 |
+
+###### Management42
+
+| Settings | Value |
+| -------- | ----- |
+| Fallback Delay | infinity |
+| Monitor Neighbor IPv6 Address | 1:1:1:1:1:1:1:1 |
+| Monitor Neighbor Interval | - |
+| Monitor Neighbor Multiplier | - |
+
 #### Management Interfaces Device Configuration
 
 ```eos
@@ -375,11 +414,17 @@ agent KernelFib shutdown supervisor standby
 interface Management0
    mac-address 00:1c:73:00:00:aa
    ip address 10.1.1.1
+   redundancy fallback-delay 100 seconds
+   redundancy monitor link-state
+   redundancy supervisor 1 interface primary Management1/1 backup Management1/2 Management2/1
+   redundancy supervisor 2 interface primary Management2/1 backup Management2/2 Management1/1
 !
 interface Management1
    description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
+   redundancy fallback-delay infinity
+   redundancy monitor neighbor ipv6 1:1:1:1:1:1:1:1 interval 101 milliseconds multiplier 3
 !
 interface Management42
    shutdown
@@ -387,6 +432,8 @@ interface Management42
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
+   redundancy fallback-delay infinity
+   redundancy monitor neighbor ipv6 1:1:1:1:1:1:1:1
 !
 interface Vlan123
    description inband_management
@@ -688,59 +735,34 @@ system control-plane
 
 ### Management SSH
 
+#### VRFs
+
+| VRF | Enabled | IPv4 ACL | IPv6 ACL |
+| --- | ------- | -------- | -------- |
+| mgt | True | ACL-SSH-VRF | ACL-SSH-VRF6 |
+| default | True | ACL-SSH | ACL-SSH6 |
+
 #### Authentication Settings
 
 | Authentication protocols | Empty passwords |
 | ------------------------ | --------------- |
 | keyboard-interactive, password, public-key | permit |
 
-#### IPv4 ACL
+#### Other SSH Settings
 
-| IPv4 ACL | VRF |
-| -------- | --- |
-| ACL-SSH | - |
-| ACL-SSH-VRF | mgt |
-
-#### IPv6 ACL
-
-| IPv6 ACL | VRF |
-| -------- | --- |
-| ACL-SSH6 | - |
-| ACL-SSH-VRF6 | mgt |
-
-#### SSH Timeout and Management
-
-| Idle Timeout | SSH Management |
-| ------------ | -------------- |
-| 15 | Enabled |
-
-#### Max number of SSH sessions limit and per-host limit
-
-| Connection Limit | Max from a single Host |
-| ---------------- | ---------------------- |
-| 50 | 10 |
-
-#### Ciphers and Algorithms
-
-| Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
-|---------|----------------------|----------------|---------------------------|
-| default | default | default | default |
-
-#### VRFs
-
-| VRF | Status |
-| --- | ------ |
-| mgt | Enabled |
+| Idle Timeout | Connection Limit | Max from a single Host | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
+| ------------ | ---------------- | ---------------------- | ------- | -------------------- | -------------- | ------------------------- |
+| 15 | 50 | 10 | default | default | default | default |
 
 #### Management SSH Device Configuration
 
 ```eos
 !
 management ssh
-   ip access-group ACL-SSH in
    ip access-group ACL-SSH-VRF vrf mgt in
-   ipv6 access-group ACL-SSH6 in
+   ip access-group ACL-SSH in
    ipv6 access-group ACL-SSH-VRF6 vrf mgt in
+   ipv6 access-group ACL-SSH6 in
    idle-timeout 15
    authentication protocol keyboard-interactive password public-key
    connection per-host 10
@@ -1585,6 +1607,8 @@ address locking
 | Common password encryption key | True |
 | Reversible password encryption | aes-256-gcm |
 | Minimum password length | 17 |
+| Signature verification | Enabled |
+| Signature verification SSL profile | cipher-v1.0-v1.3 |
 
 ### Management Security SSL Profiles
 
@@ -1661,6 +1685,7 @@ management security
    entropy source hardware exclusive
    password minimum length 17
    password encryption-key common
+   signature-verification extension ssl profile cipher-v1.0-v1.3
    password encryption reversible aes-256-gcm
    !
    password policy AVD_POLICY
@@ -2743,6 +2768,28 @@ Software export of IPFIX data records enabled.
 | T3 | T3-E3 | - | - | Management1 |
 | T3 | T3-E4 | - | - | No local interface |
 
+#### Flow Tracking mirror-on-drop
+
+| Sample Limit Size | Encapsulations |
+| ----------------- | -------------- |
+| 777 | ipv4, ipv6, mpls |
+
+##### Trackers Summary
+
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters |
+| ------------ | --------------------------------- | ------------------------- | ------------------- |
+| T1 | 3666 | 5666 | 0 |
+| T2 | - | - | 1 |
+| T3 | - | - | 2 |
+
+##### Exporters Summary
+
+| Tracker Name | Exporter Name |  Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port | DSCP Value | Format |
+| ------------ | ------------- | ---------------- | ------------------| ----------------------- | -------------- | ---------- | ------ |
+| T2 | T2-E1 | - | - | 10.10.10.10<br>42.42.42.42<br>collector.without.port<br>dead:beef::cafe<br>sflow<br>this.is.my.awesome.collector.dns.name | 777<br>-<br>-<br>-<br>666<br>888 | 50 | - |
+| T3 | T3-E3 | Management1 | 424242 | collector.with.port<br>sflow | 111<br>- | - | sflow |
+| T3 | T3-E4 | - | - | dead:beef::cafe | - | - | - |
+
 #### Flow Tracking Device Configuration
 
 ```eos
@@ -2798,6 +2845,36 @@ flow tracking sampled
       exporter T3-E3
          collector this.is.my.awesome.collector.dns.name port 888
          format ipfix version 10
+         local interface Management1
+         template interval 424242
+      !
+      exporter T3-E4
+         collector dead:beef::cafe
+   no shutdown
+!
+flow tracking mirror-on-drop
+   encapsulation ipv4 ipv6 mpls
+   sample limit 777 pps
+   !
+   tracker T1
+      record export on inactive timeout 3666
+      record export on interval 5666
+   !
+   tracker T2
+      exporter T2-E1
+         collector 10.10.10.10 port 777
+         collector 42.42.42.42
+         collector collector.without.port
+         collector dead:beef::cafe
+         collector sflow port 666
+         collector this.is.my.awesome.collector.dns.name port 888
+         dscp 50
+   !
+   tracker T3
+      exporter T3-E3
+         format sflow
+         collector collector.with.port port 111
+         collector sflow
          local interface Management1
          template interval 424242
       !
@@ -2965,6 +3042,10 @@ monitor twamp
       !
       sender profile test-profile2
 ```
+
+### Transceiver
+
+Transceiver dom-threshold file: flash:/dom_threshold.csv
 
 ## Monitor Connectivity
 
@@ -3387,6 +3468,39 @@ sync-e
    network option 2
 ```
 
+## Port-Channel
+
+### Port-Channel Summary
+
+#### Port-channel Load-balance Trident UDF Eth-type Headers
+
+| Eth-Type | IP Protocol | Header | Offset | Mask |
+| -------- | ----------- | ------ | ------ | ---- |
+| IPv4 | GRE | inner l3 | 30 | 0x01 |
+| IPv4 | - | inner l3 | 10 | 0xff |
+| IPv4 | - | inner l4 | 2 | - |
+| IPv4 | 10 | inner l4 | 20 | 0x02 |
+| IPv4 | SCTP | outer l2 | 39 | - |
+| IPv6 | - | outer l3 | 30 | 0x01 |
+| IPv6 | - | inner l3 | 20 | - |
+| IPv6 | TCP | outer l4 | 20 | - |
+| IPv6 | 2 | inner l4 | 10 | 0x02 |
+
+### Port-channel Device Configuration
+
+```eos
+!
+port-channel load-balance trident udf eth-type IPv4 ip-protocol gre header inner l3 offset 30 mask 0x01
+port-channel load-balance trident udf eth-type IPv4 header inner l3 offset 10 mask 0xff
+port-channel load-balance trident udf eth-type IPv4 header inner l4 offset 2
+port-channel load-balance trident udf eth-type IPv4 ip-protocol 10 header inner l4 offset 20 mask 0x02
+port-channel load-balance trident udf eth-type IPv4 ip-protocol sctp header outer l2 offset 39
+port-channel load-balance trident udf eth-type IPv6 header outer l3 offset 30 mask 0x01
+port-channel load-balance trident udf eth-type IPv6 header inner l3 offset 20
+port-channel load-balance trident udf eth-type IPv6 ip-protocol tcp header outer l4 offset 20
+port-channel load-balance trident udf eth-type IPv6 ip-protocol 2 header inner l4 offset 10 mask 0x02
+```
+
 ## Internal VLAN Allocation Policy
 
 ### Internal VLAN Allocation Policy Summary
@@ -3411,16 +3525,29 @@ vlan internal order ascending range 10 40
 | 110 | PR01-DMZ | - |
 | 111 | PRIVATE_VLAN_COMMUNITY | - |
 | 112 | PRIVATE_VLAN_ISOLATED | - |
+| 201 | ETREE_LEAF | - |
 | 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | LEAF_PEER_L3 |
 | 3011 | MLAG_iBGP_TENANT_A_PROJECT02 | MY_TRUNK_GROUP |
 | 3012 | MLAG_iBGP_TENANT_A_PROJECT03 | MY_TRUNK_GROUP |
 
 #### Private VLANs
 
-| Primary Vlan ID | Secondary VLAN ID | Private Vlan Type |
+| Primary VLAN ID | Secondary VLAN ID | Private VLAN Type |
 | --------------- | ----------------- | ----------------- |
 | community | 111 | 110 |
 | isolated | 112 | 110 |
+
+#### E-Tree Role
+
+| VLAN ID | VLAN Name | Role | Remote Leaf Host Drop |
+| ------- | --------- | ---- | --------------------- |
+| 110 | PR01-DMZ | Root | - |
+| 111 | PRIVATE_VLAN_COMMUNITY | Root | - |
+| 112 | PRIVATE_VLAN_ISOLATED | Root | - |
+| 201 | ETREE_LEAF | Leaf | True |
+| 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | Root | - |
+| 3011 | MLAG_iBGP_TENANT_A_PROJECT02 | Root | - |
+| 3012 | MLAG_iBGP_TENANT_A_PROJECT03 | Root | - |
 
 ### VLANs Device Configuration
 
@@ -3443,6 +3570,12 @@ vlan 111
 vlan 112
    name PRIVATE_VLAN_ISOLATED
    private-vlan isolated primary vlan 110
+!
+vlan 201
+   name ETREE_LEAF
+   !
+   e-tree role leaf
+      remote leaf host drop
 !
 vlan 3010
    name MLAG_iBGP_TENANT_A_PROJECT01
@@ -3471,11 +3604,34 @@ vlan 3012
 
 - Size of the flap detection time window: 10 seconds
 
+### Static MAC Address Entries
+
+| MAC Address | VLAN | DROP Traffic | Interface | Eligibility Forwarding |
+|-------------|------|--------------|-----------|------------------------|
+| 000a.000a.000a | 10 | - | Ethernet1 | - |
+| 000c.000c.000c | 10 | True | - | - |
+| 000d.000d.000d | 10 | - | Ethernet2 | - |
+| 0001.0001.0001 | 20 | - | Ethernet2 | - |
+| 0002.0002.0002 | 20 | True | - | - |
+| 000a.000a.000a | 20 | - | Ethernet1 | - |
+| 000b.000b.000b | 20 | - | Port-Channel1 | True |
+| 000c.000c.000c | 30 | True | - | - |
+| 000e.000e.000e | 40 | - | - | - |
+
 ### MAC Address Table Device Configuration
 
 ```eos
 !
 mac address-table aging-time 100
+!
+mac address-table static 000a.000a.000a vlan 10 interface Ethernet1
+mac address-table static 000c.000c.000c vlan 10 drop
+mac address-table static 000d.000d.000d vlan 10 interface Ethernet2
+mac address-table static 0001.0001.0001 vlan 20 interface Ethernet2
+mac address-table static 0002.0002.0002 vlan 20 drop
+mac address-table static 000a.000a.000a vlan 20 interface Ethernet1
+mac address-table static 000b.000b.000b vlan 20 interface Port-Channel1 eligibility forwarding
+mac address-table static 000c.000c.000c vlan 30 drop
 !
 mac address-table notification host-flap logging
 mac address-table notification host-flap detection window 10
@@ -3963,13 +4119,13 @@ interface Dps1
 
 ##### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- |
-| Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - |
-| Ethernet65 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 |
-| Ethernet66 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - |
-| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 |
-| Ethernet66 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - |
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- | ------------------------ |
+| Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - | ietf-md5 |
+| Ethernet65 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 | text |
+| Ethernet66 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - | ietf-md5 |
+| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 | text |
+| Ethernet66 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
 
 ##### ISIS
 
@@ -4049,10 +4205,10 @@ interface Dps1
 
 #### Traffic Engineering
 
-| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLG |
+| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
 | --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
-| Ethernet81/3 | True | 3,15-29,testgrp | 4 | 10 percent | 5 microseconds | TEST-SRLG |
-| Ethernet81/4 | True | 4,7-100,testgrp | 2 | 100 mbps | twamp-light, fallback 2 milliseconds | 16 |
+| Ethernet81/3 | True | 3,15-29,testgrp | 4 | 10 percent | 5 microseconds | 2,TEST-SRLG,ARISTA |
+| Ethernet81/4 | True | 4,7-100,testgrp | 2 | 100 mbps | twamp-light, fallback 2 milliseconds | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -4262,6 +4418,7 @@ interface Ethernet5
    pim ipv4 hello interval 10
    pim ipv4 hello count 2.5
    pim ipv4 dr-priority 200
+   pim ipv4 neighbor filter Test_Filter_Ethernet
    pim ipv4 bfd
    isis enable ISIS_TEST
    isis bfd
@@ -4851,7 +5008,9 @@ interface Ethernet65
    vrrp 1 priority-level 105
    vrrp 1 advertisement interval 2
    vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
    vrrp 1 ipv4 192.0.2.1
+   vrrp 2 peer authentication text <removed>
    vrrp 2 ipv6 2001:db8::1
 !
 interface Ethernet66
@@ -4865,9 +5024,11 @@ interface Ethernet66
    vrrp 1 priority-level 105
    vrrp 1 advertisement interval 2
    vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 peer authentication ietf-md5 key-string <removed>
    vrrp 1 ipv4 192.0.2.1
    vrrp 1 tracked-object ID1TrackedObjectDecrement decrement 5
    vrrp 1 tracked-object ID1TrackedObjectShutdown shutdown
+   vrrp 2 peer authentication text 0 <removed>
    vrrp 2 ipv6 2001:db8::1
    vrrp 2 tracked-object ID2TrackedObjectDecrement decrement 10
    vrrp 2 tracked-object ID2TrackedObjectShutdown shutdown
@@ -5057,6 +5218,8 @@ interface Ethernet81/3
    traffic-engineering
    traffic-engineering bandwidth 10 percent
    traffic-engineering administrative-group 3,15-29,testgrp
+   traffic-engineering srlg 2
+   traffic-engineering srlg ARISTA
    traffic-engineering srlg TEST-SRLG
    traffic-engineering metric 4
    traffic-engineering min-delay static 5 microseconds
@@ -5069,7 +5232,6 @@ interface Ethernet81/4
    traffic-engineering
    traffic-engineering bandwidth 100 mbps
    traffic-engineering administrative-group 4,7-100,testgrp
-   traffic-engineering srlg 16
    traffic-engineering metric 2
    traffic-engineering min-delay dynamic twamp-light fallback 2 milliseconds
 !
@@ -5318,9 +5480,9 @@ interface Ethernet84
 
 #### Traffic Engineering
 
-| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLG |
+| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
 | --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
-| Port-Channel136 | True | 7 | - | - | twamp-light, fallback 123 microseconds | - |
+| Port-Channel136 | True | 7 | - | - | twamp-light, fallback 123 microseconds | 666 |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -5562,6 +5724,7 @@ interface Port-Channel99
    pim ipv4 hello interval 15
    pim ipv4 hello count 4.5
    pim ipv4 dr-priority 200
+   pim ipv4 neighbor filter Test_Filter_PortChannel
    pim ipv4 bfd
 !
 interface Port-Channel100
@@ -5943,6 +6106,7 @@ interface Port-Channel136
    ip address 100.64.127.2/31
    traffic-engineering
    traffic-engineering administrative-group 7
+   traffic-engineering srlg 666
    traffic-engineering min-delay dynamic twamp-light fallback 123 microseconds
 !
 interface Port-Channel137
@@ -5952,6 +6116,7 @@ interface Port-Channel137
    traffic-engineering bandwidth 100 mbps
    traffic-engineering administrative-group 4,7-100,testgrp
    traffic-engineering srlg 16
+   traffic-engineering srlg TEST
    traffic-engineering metric 2
    traffic-engineering min-delay static 2 milliseconds
 ```
@@ -6034,12 +6199,12 @@ interface Loopback100
 
 #### Tunnel Interfaces Summary
 
-| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source Interface | Destination | PMTU-Discovery | IPsec Profile |
-| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ---------------- | ----------- | -------------- | ------------- |
+| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source | Destination | PMTU-Discovery | IPsec Profile |
+| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ------ | ----------- | -------------- | ------------- |
 | Tunnel1 | test ipv4 only | Tunnel-VRF | Underlay-VRF | 1500 | False | - | ipsec | Ethernet42 | 6.6.6.6 | True | - |
 | Tunnel2 | test ipv6 only | default | default | - | True | NAT-PROFILE-NO-VRF-2 | gre | Ethernet42 | dead:beef::1 | False | Profile-2 |
 | Tunnel3 | test dual stack | default | default | 1500 | - | - | ipsec | Ethernet42 | 1.1.1.1 | - | Profile-3 |
-| Tunnel4 | test no tcp_mss | default | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | Ethernet42 | 1.1.1.1 | - | - |
+| Tunnel4 | test no tcp_mss | default | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | 10.10.10.10 | 1.1.1.1 | - | - |
 
 ##### IPv4
 
@@ -6113,7 +6278,7 @@ interface Tunnel4
    ipv6 enable
    ipv6 address beef::64/64
    ip nat service-profile NAT-PROFILE-NO-VRF-1
-   tunnel source interface Ethernet42
+   tunnel source 10.10.10.10
    tunnel destination 1.1.1.1
 ```
 
@@ -6475,6 +6640,7 @@ interface Vlan89
    ip helper-address 10.10.96.151 source-interface Loopback0
    ip igmp
    ip igmp version 2
+   ip igmp querier address virtual
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
@@ -6675,6 +6841,7 @@ interface Vlan4094
    pim ipv4 hello interval 10
    pim ipv4 hello count 3.5
    pim ipv4 dr-priority 200
+   pim ipv4 neighbor filter Test_Filter_Vlan
    pim ipv4 bfd
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 5 rx-disabled level-1
@@ -6692,10 +6859,12 @@ interface Vlan4094
 | MLAG Source Interface | Loopback1 |
 | UDP port | 4789 |
 | Vtep-to-Vtep Bridging | True |
+| Vxlan Encapsulation | ipv4, ipv6 |
 | EVPN MLAG Shared Router MAC | mlag-system-id |
 | VXLAN flood-lists learning from data-plane | Enabled |
 | Qos dscp propagation encapsulation | Enabled |
 | Qos ECN propagation | Enabled |
+| Qos DHCP ECN rewrite bridged | Enabled |
 | Qos map dscp to traffic-class decapsulation | Enabled |
 | Remote VTEPs EVPN BFD transmission rate | 300ms |
 | Remote VTEPs EVPN BFD expected minimum incoming rate (min-rx) | 300ms |
@@ -6708,8 +6877,8 @@ interface Vlan4094
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
 | 110 | 10110 | - | 239.9.1.4 |
-| 111 | 10111 | 10.1.1.10<br/>10.1.1.11 | - |
-| 112 | - | - | 239.9.1.6 |
+| 111 | 10111 | 10.1.1.10<br/>10.1.1.11<br/>232.1.1.21 | - |
+| 112 | - | 232.1.1.22 | 239.9.1.6 |
 
 ##### VRF to VNI and Multicast Group Mappings
 
@@ -6736,6 +6905,7 @@ interface Vxlan1
    vxlan udp-port 4789
    vxlan bridging vtep-to-vtep
    vxlan flood vtep learned data-plane
+   vxlan encapsulation ipv4 ipv6
    vxlan vlan 110 vni 10110
    vxlan vlan 111 vni 10111
    vxlan vrf Tenant_A_OP_Zone vni 10
@@ -6745,11 +6915,14 @@ interface Vxlan1
    bfd vtep evpn prefix-list PL-TEST
    vxlan flood vtep 10.1.0.10 10.1.0.11
    vxlan vlan 111 flood vtep 10.1.1.10 10.1.1.11
+   vxlan vlan 111 flood group 232.1.1.21
+   vxlan vlan 112 flood group 232.1.1.22
    vxlan vlan 110 multicast group 239.9.1.4
    vxlan vlan 112 multicast group 239.9.1.6
    vxlan vrf Tenant_A_OP_Zone multicast group 232.0.0.10
    vxlan multicast headend-replication
    vxlan qos ecn propagation
+   vxlan qos dscp ecn rewrite bridged enabled
    vxlan qos dscp propagation encapsulation
    vxlan qos map dscp to traffic-class decapsulation
    vxlan encapsulation ipv4
@@ -6803,6 +6976,7 @@ service routing protocols model multi-agent
 
 Virtual Router MAC Address: 00:1c:73:00:dc:01
 Virtual Router MAC Address Advertisement Interval: 40
+Virtual Router MAC Address MLAG Peer: Enabled
 
 #### Virtual Router MAC Address Device Configuration
 
@@ -6810,6 +6984,8 @@ Virtual Router MAC Address Advertisement Interval: 40
 !
 ip virtual-router mac-address 00:1c:73:00:dc:01
 ip virtual-router mac-address advertisement-interval 40
+!
+ip virtual-router mac-address mlag-peer
 ```
 
 ### IP Routing
@@ -6834,6 +7010,8 @@ ip virtual-router mac-address advertisement-interval 40
 !
 ip routing ipv6 interfaces
 ip hardware fib optimize prefixes profile urpf-internet
+ip hardware fib load-balance distribution dynamic
+ip hardware fib load-balance distribution dynamic flow-set-size 4
 no ip routing vrf MGMT
 ip routing vrf TENANT_A_PROJECT01
 ip routing vrf TENANT_A_PROJECT02
@@ -7099,12 +7277,21 @@ router adaptive-virtual-topology
 
 - Nexthop fast fail-over is enabled.
 
+- Software Forwarding Hardware Offload MTU: 78
+
+#### VRF Software Forwarding Hardware Offload MTU
+
+| VRF | MTU |
+|-----|-----|
+| BLUE-C2 | 98 |
+
 #### VRF Route leaking
 
 | VRF | Source VRF | Route Map Policy |
 |-----|------------|------------------|
 | BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING |
 | BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING |
+| BLUE3 | BLUE-C1 | RM-BLUE-LEAKING |
 
 #### VRF Routes Dynamic Prefix-lists
 
@@ -7120,9 +7307,15 @@ router adaptive-virtual-topology
 router general
    router-id ipv4 10.1.2.3
    router-id ipv6 2001:beef:cafe::1
+   software forwarding hardware offload mtu 78
    hardware next-hop fast-failover
    !
+   vrf BLUE3
+      leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
+      exit
+   !
    vrf BLUE-C2
+      software forwarding hardware offload mtu 98
       leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
       leak routes source-vrf BLUE-C3 subscribe-policy RM-BLUE-LEAKING
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_1
@@ -9724,9 +9917,9 @@ patch panel
 
 ### Queue Monitor Length
 
-| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
-| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
-| True | 100 | 100 | 10 | enabled | enabled | 200000 | 100000 |
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low | Mirroring Enabled | Mirror destinations |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ | ----------------- | ------------------ |
+| True | 100 | 100 | 10 | enabled | enabled | 200000 | 100000 | True | Cpu, Tunnel, Ethernet1, Ethernet4 |
 
 ### Queue Monitor Streaming
 
@@ -9745,6 +9938,12 @@ queue-monitor length default thresholds 100 10
 queue-monitor length cpu thresholds 200000 100000
 !
 queue-monitor length log 100
+!
+queue-monitor length mirror
+queue-monitor length mirror destination Cpu
+queue-monitor length mirror destination Ethernet1
+queue-monitor length mirror destination Ethernet4
+queue-monitor length mirror destination tunnel mode gre source 1.1.1.1 destination 3.3.3.3
 !
 queue-monitor streaming
    max-connections 5
@@ -9953,12 +10152,12 @@ router pim sparse-mode
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
-| Ethernet5 | - | IPv4 | True | 200 | - |
-| Port-Channel99 | - | IPv4 | - | 200 | - |
-| Vlan89 | - | IPv4 | - | - | Loopback0 |
-| Vlan4094 | - | IPv4 | - | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface | Neighbor Filter |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- | --------------- |
+| Ethernet5 | - | IPv4 | True | 200 | - | Test_Filter_Ethernet |
+| Port-Channel99 | - | IPv4 | - | 200 | - | Test_Filter_PortChannel |
+| Vlan89 | - | IPv4 | - | - | Loopback0 | - |
+| Vlan4094 | - | IPv4 | - | 200 | - | Test_Filter_Vlan |
 
 ### Router MSDP
 
@@ -10933,10 +11132,29 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Routing MAC Address per VLAN | true |
 | Forwarding Table Partition | 2 |
 | MMU Applied Profile | mc_example_profile |
+| MMU Headroom-pool Limit | 556 cells |
 
 #### Trident MMU QUEUE PROFILES
 
 ##### mc_example_profile
+
+###### Ingress
+
+| Settings | Value |
+| -------- | ----- |
+| Headroom | 12 bytes |
+| Threshold | 1/32 |
+| Resume | 33 |
+| Reserved | 23 cells |
+
+###### Ingress Priority Groups
+
+| Group Number | Threshold | Reserved |
+| ------------ | --------- | -------- |
+| 1 | 1 | - |
+| 2 | 1/32 | 3 bytes |
+
+###### Egress
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -10947,6 +11165,24 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Multicast | 7 | 1/64 | 0 cells | - |
 
 ##### unused_profile
+
+###### Ingress
+
+| Settings | Value |
+| -------- | ----- |
+| Headroom | 121 cells |
+| Threshold | - |
+| Resume | - |
+| Reserved | 232 bytes |
+
+###### Ingress Priority Groups
+
+| Group Number | Threshold | Reserved |
+| ------------ | --------- | -------- |
+| 2 | - | 55 bytes |
+| 5 | 1/32 | 34 cells |
+
+###### Egress
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -11000,6 +11236,12 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 
 ##### TestProfile3
 
+#### Platform FAP Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Buffering Egress Profile | unicast |
+
 ### Platform Device Configuration
 
 ```eos
@@ -11009,6 +11251,7 @@ platform trident forwarding-table partition 2
 platform sand forwarding mode arad
 platform sand lag mode 512x32
 platform sand lag hardware-only
+platform fap buffering egress profile unicast
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7
 platform sand qos map traffic-class 2 to network-qos 15
@@ -11044,6 +11287,8 @@ platform sfe interface
       interface Ethernet9
    !
    profile TestProfile3
+!
+platform trident mmu headroom-pool limit cells 556
 ```
 
 ## System L1
@@ -11364,6 +11609,12 @@ router segment-security
 | ----------------- | --------- |
 | 200 | ingress |
 
+#### MTU Discovery Summary
+
+- MTU discovery interval: 100 seconds.
+- MTU discovery for hosts on the LAN: Enabled
+- Maximum rate of ICMP packet generation per CPU core: 100 pps
+
 #### Interfaces Metric Bandwidth
 
 | Interface name | Transmit Bandwidth (Mbps) | Receive Bandwidth (Mbps) |
@@ -11490,6 +11741,8 @@ router segment-security
 router path-selection
    peer dynamic source stun
    tcp mss ceiling ipv4 200 ingress
+   mtu discovery interval 100 seconds
+   mtu discovery hosts fragmentation-needed rate-limit 100 packets-per-second
    !
    interface Ethernet1
       metric bandwidth receive 100 Mbps
@@ -11930,6 +12183,22 @@ ip nat synchronization
    local-interface Ethernet1
    port-range 1024 65535
    port-range split disabled
+```
+
+## IP Hardware FIB
+
+### IP Hardware FIB Summary
+
+IP hardware FIB optimize prefixes profile: urpf-internet
+IP hardware FIB dynamic load balancing: Enabled
+IP hardware FIB dynamic load balancing flow-set-size: 4
+
+### IP Hardware FIB Configuration
+
+```eos
+ip hardware fib optimize prefixes profile urpf-internet
+ip hardware fib load-balance distribution dynamic
+ip hardware fib load-balance distribution dynamic flow-set-size 4
 ```
 
 ## Errdisable

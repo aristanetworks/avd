@@ -514,6 +514,9 @@ $defs:
       validate_lldp:
         type: bool
         description: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+      campus_link_type:
+        type: list
+        $ref: "eos_designs#/$defs/campus_link_type"
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.

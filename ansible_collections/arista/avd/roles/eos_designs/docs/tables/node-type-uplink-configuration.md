@@ -12,11 +12,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.defaults.link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.link_tracking.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups.[].name") | String |  |  |  | Tracking group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "<node_type_keys.key>.defaults.link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.defaults.uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.defaults.uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.defaults.uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
@@ -44,16 +45,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlink_pools</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].downlink_pools") | List, items: Dictionary |  |  |  | IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].downlink_pools.[].ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].downlink_pools.[].ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].downlink_pools.[].downlink_interfaces") | List, items: String |  |  |  | List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].downlink_pools.[].downlink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups.[].name") | String |  |  |  | Tracking group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
@@ -78,11 +81,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups.[].name") | String |  |  |  | Tracking group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.node_groups.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
@@ -108,16 +112,18 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlink_pools</samp>](## "<node_type_keys.key>.nodes.[].downlink_pools") | List, items: Dictionary |  |  |  | IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].downlink_pools.[].ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_pool</samp>](## "<node_type_keys.key>.nodes.[].downlink_pools.[].ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;downlink_interfaces</samp>](## "<node_type_keys.key>.nodes.[].downlink_pools.[].downlink_interfaces") | List, items: String |  |  |  | List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].downlink_pools.[].downlink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.nodes.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups") | List, items: Dictionary |  | `[{'name': 'LT_GROUP1'}]` |  | Link Tracking Groups.<br>By default a single group named "LT_GROUP1" is defined with default values.<br>Any groups defined under "groups" will replace the default.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups.[].name") | String |  |  |  | Tracking group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups.[].name") | String | Required, Unique |  |  | Tracking group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_delay</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups.[].recovery_delay") | Integer |  |  | Min: 0<br>Max: 3600 | default -> platform_settings_mlag_reload_delay -> 300. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links_minimum</samp>](## "<node_type_keys.key>.nodes.[].link_tracking.groups.[].links_minimum") | Integer |  |  | Min: 1<br>Max: 100000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "<node_type_keys.key>.nodes.[].uplink_type") | String |  |  | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | Override the default `uplink_type` set at the `node_type_key` level.<br>`uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].uplink_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ipv6_pool</samp>](## "<node_type_keys.key>.nodes.[].uplink_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,<br>uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces") | List, items: String |  |  |  | Local uplink interfaces.<br>Each list item supports range syntax that can be expanded into a list of interfaces.<br>If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.<br>Please note that default_interfaces are not defined by default, you should define these yourself.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].uplink_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_interfaces</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_interfaces") | List, items: String |  |  |  | Interfaces located on uplink switches. |
@@ -159,7 +165,7 @@
           groups: # default=[{'name': 'LT_GROUP1'}]
 
               # Tracking group name.
-            - name: <str>
+            - name: <str; required; unique>
 
               # default -> platform_settings_mlag_reload_delay -> 300.
               recovery_delay: <int; 0-3600>
@@ -173,6 +179,11 @@
         # IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
         # uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
         uplink_ipv4_pool: <str>
+
+        # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+        # IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+        # uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+        uplink_ipv6_pool: <str>
 
         # Local uplink interfaces.
         # Each list item supports range syntax that can be expanded into a list of interfaces.
@@ -283,6 +294,10 @@
                   # IPv4 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'.
                 - ipv4_pool: <str>
 
+                  # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                  # IPv6 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'.
+                  ipv6_pool: <str>
+
                   # List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool.
                   downlink_interfaces:
                     - <str>
@@ -298,7 +313,7 @@
                 groups: # default=[{'name': 'LT_GROUP1'}]
 
                     # Tracking group name.
-                  - name: <str>
+                  - name: <str; required; unique>
 
                     # default -> platform_settings_mlag_reload_delay -> 300.
                     recovery_delay: <int; 0-3600>
@@ -312,6 +327,11 @@
               # IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
               # uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
               uplink_ipv4_pool: <str>
+
+              # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+              # IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+              # uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+              uplink_ipv6_pool: <str>
 
               # Local uplink interfaces.
               # Each list item supports range syntax that can be expanded into a list of interfaces.
@@ -413,7 +433,7 @@
             groups: # default=[{'name': 'LT_GROUP1'}]
 
                 # Tracking group name.
-              - name: <str>
+              - name: <str; required; unique>
 
                 # default -> platform_settings_mlag_reload_delay -> 300.
                 recovery_delay: <int; 0-3600>
@@ -427,6 +447,11 @@
           # IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
           # uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
           uplink_ipv4_pool: <str>
+
+          # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+          # IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+          # uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+          uplink_ipv6_pool: <str>
 
           # Local uplink interfaces.
           # Each list item supports range syntax that can be expanded into a list of interfaces.
@@ -530,6 +555,10 @@
               # IPv4 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'.
             - ipv4_pool: <str>
 
+              # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+              # IPv6 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'.
+              ipv6_pool: <str>
+
               # List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool.
               downlink_interfaces:
                 - <str>
@@ -545,7 +574,7 @@
             groups: # default=[{'name': 'LT_GROUP1'}]
 
                 # Tracking group name.
-              - name: <str>
+              - name: <str; required; unique>
 
                 # default -> platform_settings_mlag_reload_delay -> 300.
                 recovery_delay: <int; 0-3600>
@@ -559,6 +588,11 @@
           # IPv4 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
           # uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
           uplink_ipv4_pool: <str>
+
+          # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+          # IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+          # uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+          uplink_ipv6_pool: <str>
 
           # Local uplink interfaces.
           # Each list item supports range syntax that can be expanded into a list of interfaces.

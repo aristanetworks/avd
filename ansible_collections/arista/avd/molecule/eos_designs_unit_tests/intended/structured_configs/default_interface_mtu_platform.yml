@@ -3,18 +3,110 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet10.10
+  description: Allow sub-interface mtu
+  shutdown: false
+  mtu: 9000
+  encapsulation_dot1q:
+    vlan: 10
+  ip_address: 10.10.10.10/24
+  peer_type: l3_interface
+- name: Ethernet10
+  shutdown: false
+  peer_type: l3_interface
+  switchport:
+    enabled: false
 hostname: default_interface_mtu_platform
 interface_defaults:
   mtu: 1234
 ip_igmp_snooping:
   globally_enabled: true
+ip_routing: true
 is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.255.101/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.101/32
 management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '101'
+  router_id: 192.168.255.101
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  vrfs:
+  - name: default
+    rd: 192.168.255.101:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
@@ -25,3 +117,12 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: default_interface_mtu_platform_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vrfs:
+      - name: default
+        vni: 1

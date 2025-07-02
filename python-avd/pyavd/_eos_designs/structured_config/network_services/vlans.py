@@ -7,8 +7,9 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import AvdStringFormatter
-from pyavd.j2filters import natural_sort
+from pyavd.j2filters import list_compress, natural_sort
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -36,6 +37,7 @@ class VlansMixin(Protocol):
         if not self.shared_utils.network_services_l2:
             return
 
+        all_primary_vlans: set[int] = set()
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 for svi in vrf.svis:
@@ -56,7 +58,29 @@ class VlansMixin(Protocol):
 
             # L2 Vlans per Tenant
             for l2vlan in tenant.l2vlans:
-                self.structured_config.vlans.append(self._get_vlan_config(l2vlan, tenant), ignore_fields=("tenant",))
+                vlan = self._get_vlan_config(l2vlan, tenant)
+
+                if l2vlan.private_vlan:
+                    if not self.shared_utils.platform_settings.feature_support.private_vlan:
+                        msg = (
+                            "The private VLAN feature is not enabled by default for this platform."
+                            " It can be enabled in the platform settings, but might need additional configurations to work."
+                        )
+                        raise AristaAvdInvalidInputsError(msg)
+
+                    all_primary_vlans.add(l2vlan.private_vlan.primary_vlan)
+                    vlan.private_vlan._update(type=l2vlan.private_vlan.type, primary_vlan=l2vlan.private_vlan.primary_vlan)
+
+                self.structured_config.vlans.append(vlan, ignore_fields=("tenant",))
+
+        # Check that all referenced primary vlans exist
+        if not all_primary_vlans.issubset(self.structured_config.vlans.keys()):
+            missing_vlans = list_compress(list(all_primary_vlans.difference(self.structured_config.vlans.keys())))
+            msg = (
+                f"The primary VLANs '{missing_vlans}' referenced in a private_vlan definition, "
+                "do not exist. The primary VLANs must be defined under 'l2vlans' or 'svis'."
+            )
+            raise AristaAvdInvalidInputsError(msg)
 
     def _get_vlan_config(
         self: AvdStructuredConfigNetworkServicesProtocol,

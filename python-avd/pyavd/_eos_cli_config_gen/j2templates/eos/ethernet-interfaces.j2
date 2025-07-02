@@ -513,12 +513,16 @@ interface {{ ethernet_interface.name }}
    {{ ipv6_nd_prefix_cli }}
 {%         endfor %}
 {%     endif %}
-{%     if ethernet_interface.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined or ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
+{%     if ethernet_interface.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined or ethernet_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined or ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined or ethernet_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
 {%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
-{%         if ethernet_interface.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined %}
+{%         if ethernet_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv4 " ~ ethernet_interface.tcp_mss_ceiling.ipv4 %}
+{%         elif ethernet_interface.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined %}
 {%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv4 " ~ ethernet_interface.tcp_mss_ceiling.ipv4_segment_size %}
 {%         endif %}
-{%         if ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
+{%         if ethernet_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv6 " ~ ethernet_interface.tcp_mss_ceiling.ipv6 %}
+{%         elif ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
 {%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv6 " ~ ethernet_interface.tcp_mss_ceiling.ipv6_segment_size %}
 {%         endif %}
 {%         if ethernet_interface.tcp_mss_ceiling.direction is arista.avd.defined %}
@@ -659,6 +663,9 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.pim.ipv4.dr_priority is arista.avd.defined %}
    pim ipv4 dr-priority {{ ethernet_interface.pim.ipv4.dr_priority }}
+{%     endif %}
+{%     if ethernet_interface.pim.ipv4.neighbor_filter is arista.avd.defined %}
+   pim ipv4 neighbor filter {{ ethernet_interface.pim.ipv4.neighbor_filter }}
 {%     endif %}
 {%     if ethernet_interface.pim.ipv4.bfd is arista.avd.defined(true) %}
    pim ipv4 bfd
@@ -1154,6 +1161,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.traffic_engineering.administrative_groups is arista.avd.defined %}
    traffic-engineering administrative-group {{ ethernet_interface.traffic_engineering.administrative_groups | join(",") }}
 {%     endif %}
+{%     for srlg in ethernet_interface.traffic_engineering.srlgs | arista.avd.natural_sort %}
+   traffic-engineering srlg {{ srlg }}
+{%     endfor %}
 {%     if ethernet_interface.traffic_engineering.srlg is arista.avd.defined %}
    traffic-engineering srlg {{ ethernet_interface.traffic_engineering.srlg }}
 {%     endif %}
@@ -1202,6 +1212,19 @@ interface {{ ethernet_interface.name }}
 {%             endif %}
 {%             if vrid.timers.delay.reload is arista.avd.defined %}
    vrrp {{ vrid.id }} timers delay reload {{ vrid.timers.delay.reload }}
+{%             endif %}
+{%             if vrid.peer_authentication is arista.avd.defined %}
+{%                 set peer_auth_cli = "vrrp " ~ vrid.id ~ " peer authentication" %}
+{%                 if vrid.peer_authentication.mode == "ietf-md5" %}
+{%                     set peer_auth_cli = peer_auth_cli ~ " ietf-md5 key-string" %}
+{%                 else %}
+{%                     set peer_auth_cli = peer_auth_cli ~ " text" %}
+{%                 endif %}
+{%                 if vrid.peer_authentication.key_type is arista.avd.defined %}
+{%                     set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key_type %}
+{%                 endif %}
+{%                 set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key | arista.avd.hide_passwords(hide_passwords) %}
+   {{ peer_auth_cli }}
 {%             endif %}
 {%             if vrid.ipv4.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv4 {{ vrid.ipv4.address }}

@@ -3,13 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
-from pyavd.j2filters import encrypt, natural_sort
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -52,7 +53,7 @@ class EthernetInterfacesMixin(Protocol):
             # Used for p2p uplinks as well as main interface for p2p-vrfs.
             if link.type == "underlay_p2p":
                 ethernet_interface._update(
-                    mtu=self.shared_utils.p2p_uplinks_mtu,
+                    mtu=self.shared_utils.get_interface_mtu(link.interface, self.shared_utils.p2p_uplinks_mtu),
                     service_profile=self.inputs.p2p_uplinks_qos_profile,
                     ipv6_enable=link.ipv6_enable,
                     flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
@@ -87,32 +88,32 @@ class EthernetInterfacesMixin(Protocol):
 
                 # IP address
                 if link.ip_address:
-                    if "unnumbered" in link.ip_address.lower():
+                    if self.shared_utils.underlay_ipv6_numbered:
+                        ethernet_interface.ipv6_address = f"{link.ip_address}/{link.prefix_length}"
+                    elif "unnumbered" in link.ip_address.lower():
                         ethernet_interface.ip_address = link.ip_address
                     else:
                         ethernet_interface.ip_address = f"{link.ip_address}/{link.prefix_length}"
 
                 if self.shared_utils.underlay_ospf:
-                    ethernet_interface.ospf_network_point_to_point = True
-                    ethernet_interface.ospf_area = self.inputs.underlay_ospf_area
-                    ospf_authentication = self.inputs.underlay_ospf_authentication.enabled
-                    ospf_message_digest_keys = self.inputs.underlay_ospf_authentication.message_digest_keys
-                    if ospf_authentication:
-                        if not ospf_message_digest_keys:
-                            msg = "'underlay_ospf_authentication.enabled' is True but no message-digest keys with both key and ID are defined."
-                            raise AristaAvdError(msg)
-
+                    ethernet_interface._update(ospf_network_point_to_point=True, ospf_area=self.inputs.underlay_ospf_area)
+                    if self.inputs.underlay_ospf_authentication.enabled:
                         ethernet_interface.ospf_authentication = "message-digest"
-                        for ospf_key in ospf_message_digest_keys:
+                        for ospf_key in self.inputs.underlay_ospf_authentication.message_digest_keys:
+                            if ospf_key.key is None and ospf_key.cleartext_key is None:
+                                msg = (
+                                    f"`underlay_ospf_authentication.message_digest_keys[key={ospf_key.id}].key or "
+                                    f"`underlay_ospf_authentication.message_digest_keys[key={ospf_key.id}].cleartext_key`"
+                                )
+                                raise AristaAvdMissingVariableError(msg)
                             ethernet_interface.ospf_message_digest_keys.append_new(
                                 id=ospf_key.id,
                                 hash_algorithm=ospf_key.hash_algorithm,
-                                key=encrypt(
-                                    ospf_key.key,
-                                    passwd_type="ospf_message_digest",  # NOSONAR # noqa: S106
+                                key=ospf_message_digest_encrypt(
+                                    password=cast("str", ospf_key.cleartext_key or ospf_key.key),
                                     key=ethernet_interface.name,
                                     hash_algorithm=ospf_key.hash_algorithm,
-                                    key_id=ospf_key.id,
+                                    key_id=str(ospf_key.id),
                                 ),
                             )
 
@@ -203,7 +204,7 @@ class EthernetInterfacesMixin(Protocol):
                         description=description or None,
                         shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
                         ipv6_enable=subinterface.ipv6_enable,
-                        mtu=self.shared_utils.p2p_uplinks_mtu,
+                        mtu=self.shared_utils.get_interface_mtu(subinterface.interface, self.shared_utils.p2p_uplinks_mtu),
                         flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                     )
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
@@ -212,6 +213,9 @@ class EthernetInterfacesMixin(Protocol):
 
                     if subinterface.ip_address:
                         ethernet_subinterface.ip_address = f"{subinterface.ip_address}/{subinterface.prefix_length}"
+
+                    if subinterface.ipv6_address:
+                        ethernet_subinterface.ipv6_address = f"{subinterface.ipv6_address}/{subinterface.ipv6_prefix_length}"
 
                     self.structured_config.ethernet_interfaces.append(ethernet_subinterface)
 
@@ -298,7 +302,7 @@ class EthernetInterfacesMixin(Protocol):
                 "'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, unless the carrier is configured as 'trusted' "
                 f"under 'wan_carriers'. 'ipv4_acl_in' is missing on L3 interface '{l3_interface.name}'."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         self.structured_config.ethernet_interfaces.append(interface)
 

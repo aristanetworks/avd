@@ -35,26 +35,26 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
         neighbors = []
         for intf in self.structured_config.ethernet_interfaces:
             if intf.validate_state is False or intf.validate_lldp is False:
-                self.logger.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, caller=intf.name)
+                self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
 
             if "." in intf.name:
-                self.logger.debug(LogMessage.INTERFACE_IS_SUBINTERFACE, caller=intf.name)
+                self.logger_adapter.debug(LogMessage.INTERFACE_IS_SUBINTERFACE, interface=intf.name)
                 continue
 
             if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown):
-                self.logger.debug(LogMessage.INTERFACE_SHUTDOWN, caller=intf.name)
+                self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=intf.name)
                 continue
 
             if not intf.peer or not intf.peer_interface:
-                self.logger.debug(LogMessage.INPUT_MISSING_FIELDS, caller=intf.name, fields="peer, peer_interface")
+                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="peer, peer_interface")
                 continue
 
-            if not self.is_peer_available(intf.peer, caller=intf.name):
+            if not self.is_peer_available(intf.peer, identity=intf.name):
                 continue
 
             # LLDP neighbor is the FQDN when dns domain is set in EOS
-            fqdn = f"{intf.peer}.{dns_domain}" if (dns_domain := self.structured_configs[intf.peer].dns_domain) is not None else intf.peer
+            fqdn = f"{intf.peer}.{dns_domain}" if (dns_domain := self.minimal_structured_configs[intf.peer].dns_domain) is not None else intf.peer
 
             neighbors.append(
                 LLDPNeighbor(
@@ -73,11 +73,17 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
 
     Generates test inputs for verifying the following reachability checks:
 
-    - Point-to-point links between Ethernet interfaces with `peer`, `peer_interface`,
-    and `ip_address` (non-dhcp) configured. Links are checked when interfaces are not `shutdown`,
-    fabric peers exist and are deployed (`is_deployed: true`), and peer interfaces have IP addresses.
+    - Point-to-Point Ethernet Links:
+        Inputs are generated for Ethernet interfaces that meet all the following criteria:
+        * `peer`, `peer_interface` and `ip_address` are defined
+        * `ip_address` is static - *not* 'dhcp' and *not* 'unnumbered'
+        * Interface is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`
+        * `peer` device is deployed - `is_deployed=True`
+        * `peer_interface` on the `peer` device has a defined static `ip_address` - *not* 'dhcp' and *not* 'unnumbered'
 
-    - IPv4 BGP neighbors with `update_source` configured.
+    - IPv4 BGP Neighbors:
+        Inputs are generated for BGP neighbors that meet all the following criteria:
+        * `update_source` IP address defined
     """
 
     def create(self) -> list[VerifyReachability.Input] | None:
@@ -85,13 +91,13 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
         inputs: list[VerifyReachability.Input] = []
 
         # Get the P2P reachability inputs
-        with self.logger.context("Point-to-Point Links"):
+        with self.logger_adapter.context("P2P link"):
             p2p_inputs = self._get_p2p_inputs()
             if p2p_inputs.hosts:
                 inputs.append(p2p_inputs)
 
         # Get the BGP neighbor reachability inputs
-        with self.logger.context("BGP Neighbors"):
+        with self.logger_adapter.context("BGP neighbor"):
             bgp_inputs = self._get_bgp_inputs()
             if bgp_inputs.hosts:
                 inputs.append(bgp_inputs)
@@ -105,18 +111,23 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
 
         for intf in self.structured_config.ethernet_interfaces:
             if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown):
-                self.logger.debug(LogMessage.INTERFACE_SHUTDOWN, caller=intf.name)
+                self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=intf.name)
                 continue
 
             if not intf.ip_address or not intf.peer or not intf.peer_interface:
-                self.logger.debug(LogMessage.INPUT_MISSING_FIELDS, caller=intf.name, fields="ip_address, peer, peer_interface")
+                self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="ip_address, peer, peer_interface")
                 continue
 
             if intf.ip_address == "dhcp":
-                self.logger.debug(LogMessage.INTERFACE_USING_DHCP, caller=intf.name)
+                self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=intf.name)
                 continue
 
-            if (peer_interface_ip := self.get_interface_ip(intf.peer, intf.peer_interface, caller=intf.name)) is None:
+            # TODO: Consider adding reachability check between lending interfaces without creating duplicate src-dst pairs
+            if "unnumbered" in intf.ip_address:
+                self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=intf.name)
+                continue
+
+            if (peer_interface_ip := self.get_interface_ip(intf.peer, intf.peer_interface, intf.name)) is None:
                 continue
 
             hosts.append(

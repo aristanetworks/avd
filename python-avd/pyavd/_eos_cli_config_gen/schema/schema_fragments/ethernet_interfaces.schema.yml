@@ -677,6 +677,11 @@ keys:
                   description: Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
                 bidirectional:
                   type: bool
+                neighbor_filter:
+                  type: str
+                  convert_types:
+                    - int
+                  description: Standard access list name.
                 hello:
                   type: dict
                   keys:
@@ -713,7 +718,27 @@ keys:
                 - str
               min: 64
               max: 65475
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: ipv4
+            ipv4:
+              type: int
+              convert_types:
+                - str
+              min: 64
+              max: 65475
             ipv6_segment_size:
+              type: int
+              convert_types:
+                - str
+              min: 64
+              max: 65475
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: ipv6
+            ipv6:
               type: int
               convert_types:
                 - str
@@ -1656,6 +1681,31 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address.
+              peer_authentication:
+                type: dict
+                keys:
+                  mode:
+                    type: str
+                    description: Authentication mode.
+                    valid_values:
+                      - text
+                      - ietf-md5
+                    required: true
+                  key:
+                    type: str
+                    required: true
+                    description: Authentication key.
+                    convert_types:
+                      - int
+                  key_type:
+                    type: str
+                    convert_types:
+                      - int
+                    description: Authentication key type.
+                    valid_values:
+                      - "0"
+                      - "7"
+                      - "8a"
         validate_state:
           type: bool
           description: Set to false to disable interface state and LLDP topology validation performed by the `eos_validate_state` role.
@@ -2242,9 +2292,22 @@ keys:
                 type: str
                 convert_types:
                   - int
+            srlgs:
+              description: List of SRLGs.
+              type: list
+              items:
+                type: str
+                description: SRLG name or number.
+                convert_types:
+                  - int
             srlg:
               description: SRLG name or number.
               type: str
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: srlgs
               convert_types:
                 - int
             metric:

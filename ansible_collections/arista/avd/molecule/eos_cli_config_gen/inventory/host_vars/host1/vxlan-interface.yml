@@ -10,6 +10,9 @@ vxlan_interface:
         headend_replication: true
       controller_client:
         enabled: true
+      encapsulations:
+        ipv4: true
+        ipv6: true
       mlag_source_interface: Loopback1
       udp_port: 4789
       vtep_to_vtep_bridging: true
@@ -18,6 +21,8 @@ vxlan_interface:
         dscp_propagation_encapsulation: true
         map_dscp_to_traffic_class_decapsulation: true
         ecn_propagation: true
+        dscp_ecn:
+          rewrite_bridged_enabled: true
       bfd_vtep_evpn:
         interval: 300
         min_rx: 300
@@ -29,11 +34,15 @@ vxlan_interface:
           multicast_group: 239.9.1.4
         - id: 111
           vni: 10111
+          # To test flood_group with flood_vteps
           flood_vteps:
             - 10.1.1.10
             - 10.1.1.11
+          flood_group: 232.1.1.21
         - id: 112
           multicast_group: 239.9.1.6
+          # To test flood_group without flood_vteps
+          flood_group: 232.1.1.22
 
       vrfs:
         - name: Tenant_A_OP_Zone
