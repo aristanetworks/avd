@@ -50,6 +50,8 @@ l3_edge:
       isis_circuit_type: level-2
       isis_authentication_mode: md5
       isis_authentication_key: $1c$sTNAlR6rKSw=
+      # To confirm  'isis_authentication_key' taking precedence over 'isis_authentication_cleartext_key'.
+      isis_authentication_cleartext_key: arista
 
       # P2P link with underlay routing and IP set as subnet.
     - nodes: [l3_edge_isis, peer3]
