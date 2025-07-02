@@ -317,7 +317,7 @@ link_tracking_groups:
 management_api_http:
   enable_https: true
   enable_vrfs:
-  - name: use_mgmt_interface_vrf
+  - name: MGMT
 metadata:
   platform: 720XP
   fabric_name: EOS_DESIGNS_UNIT_TESTS

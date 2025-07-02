@@ -22,7 +22,7 @@ is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
-  - name: use_mgmt_interface_vrf
+  - name: MGMT
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent

@@ -83,7 +83,7 @@ is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
-  - name: use_mgmt_interface_vrf
+  - name: MGMT
 metadata:
   platform: vEOS-LAB
   fabric_name: SINGLE_LINK_TO_MLAG_PAIR

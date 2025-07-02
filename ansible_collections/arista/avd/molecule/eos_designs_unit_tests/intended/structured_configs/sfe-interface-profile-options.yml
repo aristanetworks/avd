@@ -80,7 +80,7 @@ loopback_interfaces:
 management_api_http:
   enable_https: true
   enable_vrfs:
-  - name: use_mgmt_interface_vrf
+  - name: MGMT
 metadata:
   platform: AWE-5310
   fabric_name: EOS_DESIGNS_UNIT_TESTS

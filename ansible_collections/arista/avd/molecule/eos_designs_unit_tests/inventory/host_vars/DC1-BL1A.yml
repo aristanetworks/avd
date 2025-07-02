@@ -72,19 +72,19 @@ management_eapi:
   enable_http: false
   default_services: false
   vrfs:
-    - name: Tauji
+    - name: VRF_Enable
       enabled: true
-    - name: Tauji_1
+    - name: VRF_Enable_1
       enabled: true
       ipv4_acl: ACL_EAPI_IPv4
       ipv6_acl: ACL_EAPI_IPv6
-    - name: Tauji_2
+    - name: VRF_Enable_2
       enabled: true
       ipv4_acl: ACL_EAPI_IPv4_1
-    - name: Tauji_3
+    - name: VRF_Enable_3
       enabled: true
       ipv6_acl: ACL_EAPI_IPv6_1
-    - name: Tauji_4
+    - name: VRF_Disable
       enabled: false
       ipv4_acl: ACL_EAPI_IPv4_2
       ipv6_acl: ACL_EAPI_IPv6_2

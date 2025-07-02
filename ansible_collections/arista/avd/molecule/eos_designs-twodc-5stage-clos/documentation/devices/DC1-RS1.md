@@ -48,7 +48,7 @@
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| use_mgmt_interface_vrf | - | - |
+| MGMT | - | - |
 
 #### Management API HTTP Device Configuration
 
@@ -58,7 +58,7 @@ management api http-commands
    protocol https
    no shutdown
    !
-   vrf use_mgmt_interface_vrf
+   vrf MGMT
       no shutdown
 ```
 

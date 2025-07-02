@@ -39,7 +39,7 @@ loopback_interfaces:
 management_api_http:
   enable_https: true
   enable_vrfs:
-  - name: use_mgmt_interface_vrf
+  - name: MGMT
 metadata:
   dc_name: OVERLAY_ROUTING_PROTOCOL_HER_TESTS
   fabric_name: EOS_DESIGNS_UNIT_TESTS

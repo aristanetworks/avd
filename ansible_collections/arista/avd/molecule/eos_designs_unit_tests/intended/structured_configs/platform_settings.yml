@@ -37,7 +37,7 @@ loopback_interfaces:
 management_api_http:
   enable_https: true
   enable_vrfs:
-  - name: use_mgmt_interface_vrf
+  - name: MGMT
 management_security:
   entropy_sources:
     hardware: true

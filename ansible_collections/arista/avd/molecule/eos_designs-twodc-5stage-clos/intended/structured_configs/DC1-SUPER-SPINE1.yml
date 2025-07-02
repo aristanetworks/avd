@@ -101,7 +101,7 @@ loopback_interfaces:
 management_api_http:
   enable_https: true
   enable_vrfs:
-  - name: use_mgmt_interface_vrf
+  - name: MGMT
 metadata:
   platform: vEOS-LAB
   dc_name: DC1
