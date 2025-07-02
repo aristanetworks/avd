@@ -44,11 +44,11 @@ snmp_server:
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4092
-  description: 'Inband Management'
+  description: Inband Management
   ip_address: 192.168.0.10/24
   mtu: 1500
   shutdown: false
-  type: 'inband_mgmt'
+  type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
@@ -56,8 +56,8 @@ vlan_internal_order:
     ending: 1199
 vlans:
 - id: 4092
-  name: 'INBAND_MGMT'
-  tenant: 'system'
+  name: INBAND_MGMT
+  tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false

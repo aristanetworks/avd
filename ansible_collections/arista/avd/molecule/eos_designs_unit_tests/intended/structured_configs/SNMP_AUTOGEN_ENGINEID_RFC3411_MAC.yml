@@ -29,13 +29,13 @@ snmp_server:
     auth: sha
     auth_passphrase: c7d815463b2fd77c87201bc51ae77b93fcf4ac4f
     priv: aes192
-    priv_passphrase:  a1391df7a8ea377cbe6ccc7537ed6f1e1905bbe38f69eaac
+    priv_passphrase: a1391df7a8ea377cbe6ccc7537ed6f1e1905bbe38f69eaac
   - name: usertest-auth-no-priv
     group: usergroup
     version: v3
     localized: '8000757103424242424242'
     auth: sha512
-    auth_passphrase:  4f9e0da72fe42d16e603114d99811c495b8e999e7e560c8fc7d83439128cba71163cb2bb92e474922669c4435e80e5ef7fdae34e57c28058b8ddd3e34170fa4d
+    auth_passphrase: 4f9e0da72fe42d16e603114d99811c495b8e999e7e560c8fc7d83439128cba71163cb2bb92e474922669c4435e80e5ef7fdae34e57c28058b8ddd3e34170fa4d
   - name: usertest-no-auth-no-priv
     group: usergroup
     version: v3
