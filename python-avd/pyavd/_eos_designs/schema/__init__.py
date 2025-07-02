@@ -4068,9 +4068,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
             This option
-            applies only to the 'veos' node type and will be ignored for all other ACT node types.
-            ACT does not
-            provide direct Internet access to veos devices by default.
+            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+            types.
+            ACT does not provide direct Internet access to cloudeos or veos devices by default.
 
             Default value: `True`
             """
@@ -4098,9 +4098,9 @@ class EosDesigns(EosDesignsRootModel):
                         act_internet_access:
                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                            This option
-                           applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                           ACT does not
-                           provide direct Internet access to veos devices by default.
+                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                           types.
+                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
 
                     """
 
@@ -26288,11 +26288,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                         This option
-                        applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                        ACT does not
-                        provide direct Internet access to veos devices by default.
-                        Overrides global
-                        `digital_twin.fabric.act_internet_access` flag.
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
                         """
 
                         if TYPE_CHECKING:
@@ -26318,11 +26318,11 @@ class EosDesigns(EosDesignsRootModel):
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
-                                       applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                                       ACT does not
-                                       provide direct Internet access to veos devices by default.
-                                       Overrides global
-                                       `digital_twin.fabric.act_internet_access` flag.
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -30603,11 +30603,11 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                             This option
-                            applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                            ACT does not
-                            provide direct Internet access to veos devices by default.
-                            Overrides global
-                            `digital_twin.fabric.act_internet_access` flag.
+                            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                            types.
+                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                            Overrides
+                            global `digital_twin.fabric.act_internet_access` flag.
                             """
 
                             if TYPE_CHECKING:
@@ -30633,11 +30633,11 @@ class EosDesigns(EosDesignsRootModel):
                                         act_internet_access:
                                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                            This option
-                                           applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                                           ACT does not
-                                           provide direct Internet access to veos devices by default.
-                                           Overrides global
-                                           `digital_twin.fabric.act_internet_access` flag.
+                                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                           types.
+                                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                           Overrides
+                                           global `digital_twin.fabric.act_internet_access` flag.
 
                                     """
 
@@ -34847,11 +34847,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                         This option
-                        applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                        ACT does not
-                        provide direct Internet access to veos devices by default.
-                        Overrides global
-                        `digital_twin.fabric.act_internet_access` flag.
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
                         """
 
                         if TYPE_CHECKING:
@@ -34877,11 +34877,11 @@ class EosDesigns(EosDesignsRootModel):
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
-                                       applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                                       ACT does not
-                                       provide direct Internet access to veos devices by default.
-                                       Overrides global
-                                       `digital_twin.fabric.act_internet_access` flag.
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -39171,11 +39171,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                         This option
-                        applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                        ACT does not
-                        provide direct Internet access to veos devices by default.
-                        Overrides global
-                        `digital_twin.fabric.act_internet_access` flag.
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
                         """
 
                         if TYPE_CHECKING:
@@ -39201,11 +39201,11 @@ class EosDesigns(EosDesignsRootModel):
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
-                                       applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                                       ACT does not
-                                       provide direct Internet access to veos devices by default.
-                                       Overrides global
-                                       `digital_twin.fabric.act_internet_access` flag.
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -51143,11 +51143,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                         This option
-                        applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                        ACT does not
-                        provide direct Internet access to veos devices by default.
-                        Overrides global
-                        `digital_twin.fabric.act_internet_access` flag.
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
                         """
 
                         if TYPE_CHECKING:
@@ -51173,11 +51173,11 @@ class EosDesigns(EosDesignsRootModel):
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
-                                       applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                                       ACT does not
-                                       provide direct Internet access to veos devices by default.
-                                       Overrides global
-                                       `digital_twin.fabric.act_internet_access` flag.
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -55458,11 +55458,11 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                             This option
-                            applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                            ACT does not
-                            provide direct Internet access to veos devices by default.
-                            Overrides global
-                            `digital_twin.fabric.act_internet_access` flag.
+                            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                            types.
+                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                            Overrides
+                            global `digital_twin.fabric.act_internet_access` flag.
                             """
 
                             if TYPE_CHECKING:
@@ -55488,11 +55488,11 @@ class EosDesigns(EosDesignsRootModel):
                                         act_internet_access:
                                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                            This option
-                                           applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                                           ACT does not
-                                           provide direct Internet access to veos devices by default.
-                                           Overrides global
-                                           `digital_twin.fabric.act_internet_access` flag.
+                                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                           types.
+                                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                           Overrides
+                                           global `digital_twin.fabric.act_internet_access` flag.
 
                                     """
 
@@ -59702,11 +59702,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                         This option
-                        applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                        ACT does not
-                        provide direct Internet access to veos devices by default.
-                        Overrides global
-                        `digital_twin.fabric.act_internet_access` flag.
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
                         """
 
                         if TYPE_CHECKING:
@@ -59732,11 +59732,11 @@ class EosDesigns(EosDesignsRootModel):
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
-                                       applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                                       ACT does not
-                                       provide direct Internet access to veos devices by default.
-                                       Overrides global
-                                       `digital_twin.fabric.act_internet_access` flag.
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -64026,11 +64026,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                         This option
-                        applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                        ACT does not
-                        provide direct Internet access to veos devices by default.
-                        Overrides global
-                        `digital_twin.fabric.act_internet_access` flag.
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
                         """
 
                         if TYPE_CHECKING:
@@ -64056,11 +64056,11 @@ class EosDesigns(EosDesignsRootModel):
                                     act_internet_access:
                                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                                        This option
-                                       applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                                       ACT does not
-                                       provide direct Internet access to veos devices by default.
-                                       Overrides global
-                                       `digital_twin.fabric.act_internet_access` flag.
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 

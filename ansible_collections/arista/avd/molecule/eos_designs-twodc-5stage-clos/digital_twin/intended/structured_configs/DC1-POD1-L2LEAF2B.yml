@@ -65,18 +65,17 @@ management_interfaces:
   type: oob
   gateway: 192.168.1.254
 metadata:
-  platform: vEOS-LAB
+  platform: TOOLS-SERVER
   pod_name: DC1_POD1
   dc_name: DC1
   fabric_name: TWODC_5STAGE_CLOS
   digital_twin:
     environment: act
-    node_type: veos
+    node_type: tools-server
     ip_addr: 192.168.1.12/24
-    version: 4.33.1.1F
+    version: ubuntu-2204-lts
     username: cvpadmin
     password: cvp123!
-    act_internet_access: true
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094

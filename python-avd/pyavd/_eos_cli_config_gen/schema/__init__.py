@@ -23901,9 +23901,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
             This option
-            applies only to the 'veos' node type and will be ignored for all other ACT node types.
-            ACT does not
-            provide direct Internet access to veos devices by default.
+            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+            types.
+            ACT does not provide direct Internet access to cloudeos or veos devices by default.
             """
 
             if TYPE_CHECKING:
@@ -23940,9 +23940,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         act_internet_access:
                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                            This option
-                           applies only to the 'veos' node type and will be ignored for all other ACT node types.
-                           ACT does not
-                           provide direct Internet access to veos devices by default.
+                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                           types.
+                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
 
                     """
 
