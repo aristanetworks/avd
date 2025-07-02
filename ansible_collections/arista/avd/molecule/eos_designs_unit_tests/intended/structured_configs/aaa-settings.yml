@@ -199,31 +199,31 @@ radius_server:
   hosts:
   - host: 11.10.10.11
     vrf: default
-    key: password
+    key: 071B245F5A
   - host: 11.10.10.1
     vrf: MGMT
-    key: password
+    key: 071B245F5A
   - host: 11.10.10.2
     vrf: MGMT
-    key: password
+    key: 071B245F5A
   - host: 11.10.10.3
     vrf: MGMT
-    key: password
+    key: 071B245F5A
 service_routing_protocols_model: multi-agent
 tacacs_servers:
   hosts:
   - host: 10.10.10.11
     vrf: default
-    key: password
+    key: 071B245F5A
   - host: 10.10.10.1
     vrf: MGMT
-    key: password
+    key: 071B245F5A
   - host: 10.10.10.2
     vrf: MGMT
-    key: password
+    key: 071B245F5A
   - host: 10.10.10.3
     vrf: MGMT
-    key: password
+    key: 071B245F5A
   policy_unknown_mandatory_attribute_ignore: true
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:

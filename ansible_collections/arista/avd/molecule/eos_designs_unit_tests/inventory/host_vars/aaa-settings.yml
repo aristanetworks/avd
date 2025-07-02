@@ -10,26 +10,26 @@ aaa_settings:
     servers:
       - host: 10.10.10.11
         vrf: default
-        key: password
+        key: 071B245F5A
         groups:
           - TACACS1
 
       - host: 10.10.10.1
         vrf: use_mgmt_interface_vrf
-        key: password
+        key: 071B245F5A
         groups:
           - TACACS1
           - TACACS2
 
       - host: 10.10.10.2
         vrf: MGMT
-        key: password
+        key: 071B245F5A
         groups:
           - TACACS1
 
       # No VRF, so it should honor default_mgmt_method which is oob in this case
       - host: 10.10.10.3
-        key: password
+        key: 071B245F5A
         groups:
           - TACACS1
 
@@ -45,26 +45,26 @@ aaa_settings:
     servers:
       - host: 11.10.10.11
         vrf: default
-        key: password
+        key: 071B245F5A
         groups:
           - RADIUS1
 
       - host: 11.10.10.1
         vrf: use_mgmt_interface_vrf
-        key: password
+        key: 071B245F5A
         groups:
           - RADIUS1
           - RADIUS2
 
       - host: 11.10.10.2
         vrf: MGMT
-        key: password
+        key: 071B245F5A
         groups:
           - RADIUS1
 
       # No VRF, so it should honor default_mgmt_method which is oob in this case
       - host: 11.10.10.3
-        key: password
+        key: 071B245F5A
         groups:
           - RADIUS1
 
