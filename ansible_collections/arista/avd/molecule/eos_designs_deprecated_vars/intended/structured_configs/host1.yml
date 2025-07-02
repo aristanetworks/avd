@@ -39,7 +39,7 @@ ethernet_interfaces:
   ip_address: 192.168.0.4/31
   peer: host3
   peer_interface: Ethernet5
-  peer_type: other
+  peer_type: pe
   switchport:
     enabled: false
 - name: Ethernet3
@@ -54,7 +54,7 @@ ethernet_interfaces:
       sparse_mode: true
   peer: host3
   peer_interface: Ethernet4
-  peer_type: other
+  peer_type: pe
   switchport:
     enabled: false
 - name: Ethernet47

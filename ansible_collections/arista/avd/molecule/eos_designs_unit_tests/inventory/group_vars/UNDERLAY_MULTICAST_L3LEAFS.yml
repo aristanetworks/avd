@@ -50,7 +50,6 @@ l3leaf:
               uplink_interfaces:
                 - Ethernet1
                 - Ethernet2
-              mlag: false
     # Test multicast configuration with mlag pair sharing same vlan for l3 peering (4094)
     # Expected results:
     # - router multicast enabled for ipv4
@@ -59,9 +58,6 @@ l3leaf:
     - group: DC1_LEAF2
       bgp_as: 65102
       mlag_peer_l3_vlan: 4094
-      underlay_multicast:
-        pim_sm:
-          enabled: false
       nodes:
         - name: UNDERLAY-MULTICAST-L3LEAF2A
           id: 3

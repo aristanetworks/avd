@@ -1,0 +1,14 @@
+---
+# Testing the deprecated underlay_multicast. To be removed in AVD6.0.0.
+type: pe
+pe:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 44
+    id: 44
+  nodes:
+    - name: host3
+      id: 104
+      bgp_as: 104
+      virtual_router_mac_address: 00:1c:73:00:dc:01
+      mgmt_ip: 192.168.100.120/24

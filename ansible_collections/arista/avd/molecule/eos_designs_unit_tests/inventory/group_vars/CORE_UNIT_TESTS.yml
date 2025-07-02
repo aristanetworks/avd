@@ -207,7 +207,6 @@ core_interfaces:
       interfaces: [ Ethernet1, Ethernet1 ]
       include_in_underlay_protocol: true
       multicast_pim_sm: true
-      multicast_static: true
       ip_pool: underlay_pool
 
      # P2P core links with multicast_pim_sm(pim-sparse) and multicast_static disabled.
@@ -217,7 +216,6 @@ core_interfaces:
       interfaces: [ Ethernet2, Ethernet2 ]
       include_in_underlay_protocol: true
       multicast_pim_sm: false
-      multicast_static: false
       ip_pool: underlay_pool
 
     # P2P core links with multicast_pim_sm(pim-sparse) and multicast_static default.

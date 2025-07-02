@@ -20,10 +20,10 @@ l3leaf:
           mgmt_ip: 192.168.201.116/24
           underlay_multicast:
             pim_sm:
-              mlag: false
+              enabled: true
         - name: MLAG_IPV6_L3LEAF1B
           id: 4
           mgmt_ip: 192.168.201.117/24
           underlay_multicast:
             static:
-              mlag: false
+              enabled: true

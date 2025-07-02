@@ -145,6 +145,9 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
+router_multicast:
+  ipv4:
+    routing: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
   no_spanning_tree_vlan: 4093-4094
@@ -154,6 +157,9 @@ vlan_interfaces:
   description: MLAG_L3
   shutdown: false
   ip_address: 10.10.224.5/31
+  multicast:
+    ipv4:
+      static: true
   mtu: 9214
 - name: Vlan4094
   description: MLAG
