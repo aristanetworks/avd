@@ -11,5 +11,5 @@ keys:
       table: isis-settings
     type: str
     description: |
-      Cleartext password.
+      Cleartext password. `underlay_isis_authentication_key` takes precedence over this key.
       To protect the password at rest it is strongly recommended to make use of a vault or similar.

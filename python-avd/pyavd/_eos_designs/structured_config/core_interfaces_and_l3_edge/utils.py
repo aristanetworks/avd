@@ -304,7 +304,7 @@ class UtilsMixin(Protocol):
                     )
                 elif self.inputs.underlay_isis_authentication_key is not None:
                     interface.isis_authentication.both._update(key=self.inputs.underlay_isis_authentication_key, key_type="7")
-                elif self.inputs.underlay_isis_authentication_cleartext_key is not None:
+                elif self.shared_utils.underlay_isis_authentication_cleartext_key is not None:
                     interface.isis_authentication.both._update(key=self.shared_utils.underlay_isis_authentication_cleartext_key, key_type="7")
 
         if p2p_link.macsec_profile:
