@@ -38,11 +38,12 @@ class ManagementSshMixin(Protocol):
             vrf_name = self.get_vrf(vrf.name, context=f"ssh_settings.vrfs[name={vrf.name}]")
 
             if vrf_name == "default":
-                self.structured_config.management_ssh.ip_access_group_in = vrf.ipv4_acl if vrf.ipv4_acl else None
-                self.structured_config.management_ssh.ipv6_access_group_in = vrf.ipv6_acl if vrf.ipv6_acl else None
+                self.structured_config.management_ssh.ip_access_group_in = vrf.ipv4_acl
+                self.structured_config.management_ssh.ipv6_access_group_in = vrf.ipv6_acl
             else:
-                management_ssh_vrf = EosCliConfigGen.ManagementSsh.VrfsItem(name=vrf_name, enable=vrf.enabled)
-                if vrf.enabled:
-                    management_ssh_vrf.ip_access_group_in = vrf.ipv4_acl if vrf.ipv4_acl else None
-                    management_ssh_vrf.ipv6_access_group_in = vrf.ipv6_acl if vrf.ipv6_acl else None
-                self.structured_config.management_ssh.vrfs.append(management_ssh_vrf)
+                self.structured_config.management_ssh.vrfs.append_new(
+                    name=vrf_name,
+                    enable=vrf.enabled,
+                    ip_access_group_in=vrf.ipv4_acl if vrf.enabled else None,
+                    ipv6_access_group_in=vrf.ipv6_acl if vrf.enabled else None
+                )
