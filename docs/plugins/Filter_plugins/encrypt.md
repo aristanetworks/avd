@@ -59,31 +59,29 @@ Encrypt supported EOS passwords
           key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
 
 - # Encrypt the vaulted ISIS password for instance EVPN-UNDERLAY using sha-512
-router_isis:
-  instance: EVPN_UNDERLAY
-  authentication:
-    both:
-      key_ids:
-        - id: 1
-          algorithm: sha-512
-          key_type: 7
-          key: "{{ isis_vault_password | arista.avd.encrypt(passwd_type='isis', key="EVPN_UNDERLAY", mode="sha=512")
+  router_isis:
+    instance: EVPN_UNDERLAY
+    authentication:
+      both:
+        key_ids:
+          - id: 1
+            algorithm: sha-512
+            key_type: 7
+            key: "{{ isis_vault_password | arista.avd.encrypt(passwd_type='isis', key='EVPN_UNDERLAY', mode='sha-512') }}"
 
 - # Encrypt the vaulted NTP password for NTP authentication key
-    ntp:
-      authentication_keys:
-        - id: 1
-          hash_algorithm: "md5"
-          key_type: 7
-          key: "{{ ntp_vault_key | arista.avd.encrypt(passwd_type='ntp', salt=12) }}"
+  ntp:
+    authentication_keys:
+      - id: 1
+        hash_algorithm: "md5"
+        key: "{{ ntp_vault_key | arista.avd.encrypt(passwd_type='ntp', salt=12) }}"
 
 - # Encrypt the vaulted TACACS+ password
   tacacs_servers:
-      hosts:
-        - host: 10.10.10.159
-          vrf: default
-          key_type: 7
-          key: "{{ tacacs_vault_password | arista.avd.encrypt(passwd_type='tacacs', salt = 6) }}"
+    hosts:
+      - host: 10.10.10.159
+        vrf: default
+        key: "{{ tacacs_vault_password | arista.avd.encrypt(passwd_type='tacacs', salt = 6) }}"
 ```
 
 ## Return Values
