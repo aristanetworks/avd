@@ -35,7 +35,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "core_interfaces.p2p_links_profiles.[].isis_circuit_type") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>text</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_cleartext_key</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_cleartext_key") | String |  |  |  | Cleartext password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_cleartext_key</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_cleartext_key") | String |  |  |  | Cleartext password. `isis_authentication_key` takes precedence over this key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_network_type</samp>](## "core_interfaces.p2p_links_profiles.[].isis_network_type") | String |  | `point-to-point` | Valid Values:<br>- <code>point-to-point</code><br>- <code>broadcast</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "core_interfaces.p2p_links_profiles.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "core_interfaces.p2p_links_profiles.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
@@ -91,7 +91,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "core_interfaces.p2p_links.[].isis_circuit_type") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "core_interfaces.p2p_links.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>text</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "core_interfaces.p2p_links.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_cleartext_key</samp>](## "core_interfaces.p2p_links.[].isis_authentication_cleartext_key") | String |  |  |  | Cleartext password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_cleartext_key</samp>](## "core_interfaces.p2p_links.[].isis_authentication_cleartext_key") | String |  |  |  | Cleartext password. `isis_authentication_key` takes precedence over this key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_network_type</samp>](## "core_interfaces.p2p_links.[].isis_network_type") | String |  | `point-to-point` | Valid Values:<br>- <code>point-to-point</code><br>- <code>broadcast</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "core_interfaces.p2p_links.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "core_interfaces.p2p_links.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
@@ -211,7 +211,7 @@
           # Type-7 encrypted password.
           isis_authentication_key: <str>
 
-          # Cleartext password.
+          # Cleartext password. `isis_authentication_key` takes precedence over this key.
           isis_authentication_cleartext_key: <str>
           isis_network_type: <str; "point-to-point" | "broadcast"; default="point-to-point">
 
@@ -385,7 +385,7 @@
           # Type-7 encrypted password.
           isis_authentication_key: <str>
 
-          # Cleartext password.
+          # Cleartext password. `isis_authentication_key` takes precedence over this key.
           isis_authentication_cleartext_key: <str>
           isis_network_type: <str; "point-to-point" | "broadcast"; default="point-to-point">
 

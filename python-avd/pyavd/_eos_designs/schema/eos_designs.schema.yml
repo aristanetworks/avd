@@ -5332,7 +5332,8 @@ keys:
     documentation_options:
       table: isis-settings
     type: str
-    description: 'Cleartext password.
+    description: 'Cleartext password. `underlay_isis_authentication_key` takes precedence
+      over this key.
 
       To protect the password at rest it is strongly recommended to make use of a
       vault or similar.
@@ -11759,7 +11760,8 @@ $defs:
           description: Type-7 encrypted password.
         isis_authentication_cleartext_key:
           type: str
-          description: Cleartext password.
+          description: Cleartext password. `isis_authentication_key` takes precedence
+            over this key.
         isis_network_type:
           type: str
           default: point-to-point

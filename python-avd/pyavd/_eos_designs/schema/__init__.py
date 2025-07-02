@@ -1577,7 +1577,7 @@ class EosDesigns(EosDesignsRootModel):
             isis_authentication_key: str | None
             """Type-7 encrypted password."""
             isis_authentication_cleartext_key: str | None
-            """Cleartext password."""
+            """Cleartext password. `isis_authentication_key` takes precedence over this key."""
             isis_network_type: Literal["point-to-point", "broadcast"]
             """Default value: `"point-to-point"`"""
             mpls_ip: bool | None
@@ -1740,7 +1740,7 @@ class EosDesigns(EosDesignsRootModel):
                         isis_circuit_type: isis_circuit_type
                         isis_authentication_mode: isis_authentication_mode
                         isis_authentication_key: Type-7 encrypted password.
-                        isis_authentication_cleartext_key: Cleartext password.
+                        isis_authentication_cleartext_key: Cleartext password. `isis_authentication_key` takes precedence over this key.
                         isis_network_type: isis_network_type
                         mpls_ip: MPLS parameters. Default value is true if switch.mpls_lsr is true.
                         mpls_ldp: MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
@@ -2186,7 +2186,7 @@ class EosDesigns(EosDesignsRootModel):
             isis_authentication_key: str | None
             """Type-7 encrypted password."""
             isis_authentication_cleartext_key: str | None
-            """Cleartext password."""
+            """Cleartext password. `isis_authentication_key` takes precedence over this key."""
             isis_network_type: Literal["point-to-point", "broadcast"]
             """Default value: `"point-to-point"`"""
             mpls_ip: bool | None
@@ -2349,7 +2349,7 @@ class EosDesigns(EosDesignsRootModel):
                         isis_circuit_type: isis_circuit_type
                         isis_authentication_mode: isis_authentication_mode
                         isis_authentication_key: Type-7 encrypted password.
-                        isis_authentication_cleartext_key: Cleartext password.
+                        isis_authentication_cleartext_key: Cleartext password. `isis_authentication_key` takes precedence over this key.
                         isis_network_type: isis_network_type
                         mpls_ip: MPLS parameters. Default value is true if switch.mpls_lsr is true.
                         mpls_ldp: MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
@@ -6327,7 +6327,7 @@ class EosDesigns(EosDesignsRootModel):
             isis_authentication_key: str | None
             """Type-7 encrypted password."""
             isis_authentication_cleartext_key: str | None
-            """Cleartext password."""
+            """Cleartext password. `isis_authentication_key` takes precedence over this key."""
             isis_network_type: Literal["point-to-point", "broadcast"]
             """Default value: `"point-to-point"`"""
             mpls_ip: bool | None
@@ -6490,7 +6490,7 @@ class EosDesigns(EosDesignsRootModel):
                         isis_circuit_type: isis_circuit_type
                         isis_authentication_mode: isis_authentication_mode
                         isis_authentication_key: Type-7 encrypted password.
-                        isis_authentication_cleartext_key: Cleartext password.
+                        isis_authentication_cleartext_key: Cleartext password. `isis_authentication_key` takes precedence over this key.
                         isis_network_type: isis_network_type
                         mpls_ip: MPLS parameters. Default value is true if switch.mpls_lsr is true.
                         mpls_ldp: MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
@@ -6936,7 +6936,7 @@ class EosDesigns(EosDesignsRootModel):
             isis_authentication_key: str | None
             """Type-7 encrypted password."""
             isis_authentication_cleartext_key: str | None
-            """Cleartext password."""
+            """Cleartext password. `isis_authentication_key` takes precedence over this key."""
             isis_network_type: Literal["point-to-point", "broadcast"]
             """Default value: `"point-to-point"`"""
             mpls_ip: bool | None
@@ -7099,7 +7099,7 @@ class EosDesigns(EosDesignsRootModel):
                         isis_circuit_type: isis_circuit_type
                         isis_authentication_mode: isis_authentication_mode
                         isis_authentication_key: Type-7 encrypted password.
-                        isis_authentication_cleartext_key: Cleartext password.
+                        isis_authentication_cleartext_key: Cleartext password. `isis_authentication_key` takes precedence over this key.
                         isis_network_type: isis_network_type
                         mpls_ip: MPLS parameters. Default value is true if switch.mpls_lsr is true.
                         mpls_ldp: MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
@@ -66281,9 +66281,9 @@ class EosDesigns(EosDesignsRootModel):
     """
     underlay_isis_authentication_cleartext_key: str | None
     """
-    Cleartext password.
-    To protect the password at rest it is strongly recommended to make use of a
-    vault or similar.
+    Cleartext password. `underlay_isis_authentication_key` takes precedence over this key.
+    To protect
+    the password at rest it is strongly recommended to make use of a vault or similar.
     """
     underlay_isis_authentication_key: str | None
     """Type-7 encrypted password."""
@@ -67986,9 +67986,9 @@ class EosDesigns(EosDesignsRootModel):
                      - vtep_vvtep_ip
                      - inband_ztp
                 underlay_isis_authentication_cleartext_key:
-                   Cleartext password.
-                   To protect the password at rest it is strongly recommended to make use of a
-                   vault or similar.
+                   Cleartext password. `underlay_isis_authentication_key` takes precedence over this key.
+                   To protect
+                   the password at rest it is strongly recommended to make use of a vault or similar.
                 underlay_isis_authentication_key: Type-7 encrypted password.
                 underlay_isis_authentication_mode: Underlay ISIS authentication mode.
                 underlay_isis_bfd: Enable BFD for ISIS on all underlay links.
