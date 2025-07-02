@@ -10736,12 +10736,90 @@ class EosDesigns(EosDesignsRootModel):
 
         Servers._item_type = ServersItem
 
+        class AuthenticationKeysItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "key": {"type": str},
+                "cleartext_key": {"type": str},
+                "key_type": {"type": str},
+                "id": {"type": int},
+                "hash_algorithm": {"type": str},
+            }
+            key: str | None
+            """
+            Authentication provided using the `key_type` format.
+            Will be rendered as such.
+            Takes precedence over
+            `cleartext_key`.
+            """
+            cleartext_key: str | None
+            """
+            Cleartext key for the NTP authentication key. Encrypted to Type 7 by AVD.
+            `key_type` does not
+            influence this key.
+            To protect the password at rest it is strongly recommended to make use of a
+            vault or similar.
+            """
+            key_type: Literal["0", "7", "8a"] | None
+            """
+            Key type of the `key`.
+            Does not have any influence on `cleartext_key`.
+            """
+            id: int
+            """Key identifier."""
+            hash_algorithm: Literal["md5", "sha1"]
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    key: str | None | UndefinedType = Undefined,
+                    cleartext_key: str | None | UndefinedType = Undefined,
+                    key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                    id: int | UndefinedType = Undefined,
+                    hash_algorithm: Literal["md5", "sha1"] | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    AuthenticationKeysItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        key:
+                           Authentication provided using the `key_type` format.
+                           Will be rendered as such.
+                           Takes precedence over
+                           `cleartext_key`.
+                        cleartext_key:
+                           Cleartext key for the NTP authentication key. Encrypted to Type 7 by AVD.
+                           `key_type` does not
+                           influence this key.
+                           To protect the password at rest it is strongly recommended to make use of a
+                           vault or similar.
+                        key_type:
+                           Key type of the `key`.
+                           Does not have any influence on `cleartext_key`.
+                        id: Key identifier.
+                        hash_algorithm: hash_algorithm
+
+                    """
+
+        class AuthenticationKeys(AvdIndexedList[int, AuthenticationKeysItem]):
+            """Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`)."""
+
+            _primary_key: ClassVar[str] = "id"
+
+        AuthenticationKeys._item_type = AuthenticationKeysItem
+
         _fields: ClassVar[dict] = {
             "server_vrf": {"type": str},
             "servers": {"type": Servers},
             "authenticate": {"type": bool},
             "authenticate_servers_only": {"type": bool},
-            "authentication_keys": {"type": EosCliConfigGen.Ntp.AuthenticationKeys},
+            "authentication_keys": {"type": AuthenticationKeys},
             "trusted_keys": {"type": str},
         }
         server_vrf: str | None
@@ -10770,7 +10848,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         authenticate: bool | None
         authenticate_servers_only: bool | None
-        authentication_keys: EosCliConfigGen.Ntp.AuthenticationKeys
+        authentication_keys: AuthenticationKeys
+        """Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`)."""
         trusted_keys: str | None
         """List of trusted-keys as string ex. 10-12,15."""
 
@@ -10783,7 +10862,7 @@ class EosDesigns(EosDesignsRootModel):
                 servers: Servers | UndefinedType = Undefined,
                 authenticate: bool | None | UndefinedType = Undefined,
                 authenticate_servers_only: bool | None | UndefinedType = Undefined,
-                authentication_keys: EosCliConfigGen.Ntp.AuthenticationKeys | UndefinedType = Undefined,
+                authentication_keys: AuthenticationKeys | UndefinedType = Undefined,
                 trusted_keys: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -10815,7 +10894,7 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdList with `ServersItem` items.
                     authenticate: authenticate
                     authenticate_servers_only: authenticate_servers_only
-                    authentication_keys: authentication_keys
+                    authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).
                     trusted_keys: List of trusted-keys as string ex. 10-12,15.
 
                 """
