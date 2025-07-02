@@ -8015,20 +8015,20 @@ class EosDesigns(EosDesignsRootModel):
             VRF name.
             The value will be interpreted according to these rules:
             - `use_mgmt_interface_vrf` will
-            configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
-              An error will be raised if
-            `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-            - `use_inband_mgmt_vrf` will
-            configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
-              An error will be raised if inband
-            management is not configured for the device.
-            - `use_default_mgmt_method_vrf` will configure the VRF
-            and source-interface for one of the two options above depending on the value of
+            configure the Management EAPI ACL under the VRF set with `mgmt_interface_vrf`.
+              An error will be
+            raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf`
+            will configure the Management EAPI ACL under the VRF set with `inband_mgmt_vrf`.
+              An error will be
+            raised if inband management is not configured for the device.
+            - `use_default_mgmt_method_vrf` will
+            configure the VRF and source-interface for one of the two options above depending on the value of
             `default_mgmt_method`.
             - Any other string will be used directly as the VRF name.
             """
             enabled: bool
-            """Enable/disable SNMP for this VRF."""
+            """Enable/disable Management EAPI for this VRF."""
             ipv4_acl: str | None
             """IPv4 access-list name."""
             ipv6_acl: str | None
@@ -8055,18 +8055,18 @@ class EosDesigns(EosDesignsRootModel):
                            VRF name.
                            The value will be interpreted according to these rules:
                            - `use_mgmt_interface_vrf` will
-                           configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
-                             An error will be raised if
-                           `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-                           - `use_inband_mgmt_vrf` will
-                           configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
-                             An error will be raised if inband
-                           management is not configured for the device.
-                           - `use_default_mgmt_method_vrf` will configure the VRF
-                           and source-interface for one of the two options above depending on the value of
+                           configure the Management EAPI ACL under the VRF set with `mgmt_interface_vrf`.
+                             An error will be
+                           raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf`
+                           will configure the Management EAPI ACL under the VRF set with `inband_mgmt_vrf`.
+                             An error will be
+                           raised if inband management is not configured for the device.
+                           - `use_default_mgmt_method_vrf` will
+                           configure the VRF and source-interface for one of the two options above depending on the value of
                            `default_mgmt_method`.
                            - Any other string will be used directly as the VRF name.
-                        enabled: Enable/disable SNMP for this VRF.
+                        enabled: Enable/disable Management EAPI for this VRF.
                         ipv4_acl: IPv4 access-list name.
                         ipv6_acl: IPv6 access-list name.
 
@@ -14604,11 +14604,11 @@ class EosDesigns(EosDesignsRootModel):
             VRF name.
             The value will be interpreted according to these rules:
             - `use_mgmt_interface_vrf` will
-            configure the EAPI ACL under the VRF set with `mgmt_interface_vrf`.
+            configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
               An error will be raised if
             `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
             - `use_inband_mgmt_vrf` will
-            configure the EAPI ACL under the VRF set with `inband_mgmt_vrf`.
+            configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
               An error will be raised if inband
             management is not configured for the device.
             - `use_default_mgmt_method_vrf` will configure the VRF
@@ -14651,11 +14651,11 @@ class EosDesigns(EosDesignsRootModel):
                            VRF name.
                            The value will be interpreted according to these rules:
                            - `use_mgmt_interface_vrf` will
-                           configure the EAPI ACL under the VRF set with `mgmt_interface_vrf`.
+                           configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
                              An error will be raised if
                            `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
                            - `use_inband_mgmt_vrf` will
-                           configure the EAPI ACL under the VRF set with `inband_mgmt_vrf`.
+                           configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
                              An error will be raised if inband
                            management is not configured for the device.
                            - `use_default_mgmt_method_vrf` will configure the VRF
