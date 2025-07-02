@@ -14539,8 +14539,11 @@ class EosDesigns(EosDesignsRootModel):
             source_interface: str | None
             """
             Source interface to use for SNMP hosts in this VRF.
-            If set for the VRFs defined by
-            `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+            If not set, the source interface may be set
+            automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+            `use_default_mgmt_method_vrf`.
+            If set for the VRFs defined by `use_mgmt_interface_vrf`,
+            `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`, this setting will take precedence.
             """
             ipv4_acl: str | None
             """IPv4 access-list name."""
@@ -14583,8 +14586,11 @@ class EosDesigns(EosDesignsRootModel):
                         enable: Enable/disable SNMP for this VRF.
                         source_interface:
                            Source interface to use for SNMP hosts in this VRF.
-                           If set for the VRFs defined by
-                           `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+                           If not set, the source interface may be set
+                           automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                           `use_default_mgmt_method_vrf`.
+                           If set for the VRFs defined by `use_mgmt_interface_vrf`,
+                           `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`, this setting will take precedence.
                         ipv4_acl: IPv4 access-list name.
                         ipv6_acl: IPv6 access-list name.
 
