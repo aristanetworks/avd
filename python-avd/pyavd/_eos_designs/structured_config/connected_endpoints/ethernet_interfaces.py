@@ -92,8 +92,8 @@ class EthernetInterfacesMixin(Protocol):
     ) -> None:
         ethernet_interface._update(
             mtu=self.shared_utils.get_interface_mtu(ethernet_interface.name, adapter.mtu),
-            l2_mtu=adapter.l2_mtu,
-            l2_mru=adapter.l2_mru,
+            l2_mtu=self._get_adapter_l2_mtu(adapter),
+            l2_mru=self._get_adapter_l2_mru(adapter),
             spanning_tree_portfast=adapter.spanning_tree_portfast,
             spanning_tree_bpdufilter=adapter.spanning_tree_bpdufilter,
             spanning_tree_bpduguard=adapter.spanning_tree_bpduguard,
