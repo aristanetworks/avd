@@ -107,25 +107,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
                 name: str
-                """
-                VRF Name.
-                The value of `vrf` will be interpreted according to these rules:
-                -
-                `use_mgmt_interface_vrf` will configure the TACACS destination under the VRF set with
-                `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
-                  An error will be
-                raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-                - `use_inband_mgmt_vrf`
-                will configure the TACACS destination under the VRF set with `inband_mgmt_vrf` and set the
-                `inband_mgmt_interface` as SNMP source-interface.
-                  An error will be raised if inband management is
-                not configured for the device.
-                - `use_default_mgmt_method_vrf` will configure the VRF and source-
-                interface for one of the two options above depending on the value of `default_mgmt_method`.
-                - Any
-                other string will be used directly as the VRF name. Remember to set the
-                `aaa_settings.tacacs.vrfs[].source_interface` if needed.
-                """
+                """VRF Name."""
                 source_interface: str | None
 
                 if TYPE_CHECKING:
@@ -138,24 +120,7 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name:
-                               VRF Name.
-                               The value of `vrf` will be interpreted according to these rules:
-                               -
-                               `use_mgmt_interface_vrf` will configure the TACACS destination under the VRF set with
-                               `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
-                                 An error will be
-                               raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-                               - `use_inband_mgmt_vrf`
-                               will configure the TACACS destination under the VRF set with `inband_mgmt_vrf` and set the
-                               `inband_mgmt_interface` as SNMP source-interface.
-                                 An error will be raised if inband management is
-                               not configured for the device.
-                               - `use_default_mgmt_method_vrf` will configure the VRF and source-
-                               interface for one of the two options above depending on the value of `default_mgmt_method`.
-                               - Any
-                               other string will be used directly as the VRF name. Remember to set the
-                               `aaa_settings.tacacs.vrfs[].source_interface` if needed.
+                            name: VRF Name.
                             source_interface: source_interface
 
                         """
@@ -298,25 +263,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
                 name: str
-                """
-                VRF Name.
-                The value of `vrf` will be interpreted according to these rules:
-                -
-                `use_mgmt_interface_vrf` will configure the Radius destination under the VRF set with
-                `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
-                  An error will be
-                raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-                - `use_inband_mgmt_vrf`
-                will configure the Radius destination under the VRF set with `inband_mgmt_vrf` and set the
-                `inband_mgmt_interface` as SNMP source-interface.
-                  An error will be raised if inband management is
-                not configured for the device.
-                - `use_default_mgmt_method_vrf` will configure the VRF and source-
-                interface for one of the two options above depending on the value of `default_mgmt_method`.
-                - Any
-                other string will be used directly as the VRF name. Remember to set the
-                `aaa_settings.radius.vrfs[].source_interface` if needed.
-                """
+                """VRF Name."""
                 source_interface: str | None
 
                 if TYPE_CHECKING:
@@ -329,24 +276,7 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name:
-                               VRF Name.
-                               The value of `vrf` will be interpreted according to these rules:
-                               -
-                               `use_mgmt_interface_vrf` will configure the Radius destination under the VRF set with
-                               `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
-                                 An error will be
-                               raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-                               - `use_inband_mgmt_vrf`
-                               will configure the Radius destination under the VRF set with `inband_mgmt_vrf` and set the
-                               `inband_mgmt_interface` as SNMP source-interface.
-                                 An error will be raised if inband management is
-                               not configured for the device.
-                               - `use_default_mgmt_method_vrf` will configure the VRF and source-
-                               interface for one of the two options above depending on the value of `default_mgmt_method`.
-                               - Any
-                               other string will be used directly as the VRF name. Remember to set the
-                               `aaa_settings.radius.vrfs[].source_interface` if needed.
+                            name: VRF Name.
                             source_interface: source_interface
 
                         """
