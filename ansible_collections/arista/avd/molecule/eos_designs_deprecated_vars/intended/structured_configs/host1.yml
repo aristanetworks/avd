@@ -1,9 +1,37 @@
 aaa_root:
   disabled: true
 config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.12:444
+  - 192.168.200.13:444
+  cvauth:
+    method: key
+    key: test_key
+  cvvrf: default
+  disable_aaa: true
+  ingestexclude: excludethis
+  smashexcludes: excludethat
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet42
+  description: P2P_host2_Ethernet42
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.42.201/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha512
+    key: cJ25Oy2bNyqRwTqh1A2FXmcCqBSvRAvV
+  peer: host2
+  peer_interface: Ethernet42
+  peer_type: pe
+  switchport:
+    enabled: false
 - name: Ethernet4
   description: P2P_host3_Ethernet5
   shutdown: false
@@ -19,6 +47,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.2/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
   pim:
     ipv4:
       sparse_mode: true
@@ -73,13 +103,15 @@ ipv6_static_routes:
 is_deployed: true
 loopback_interfaces:
 - name: Loopback0
-  description: CUSTOM_ROUTER_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.101/32
+  ospf_area: 0.0.0.0
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.101/32
+  ospf_area: 0.0.0.0
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -108,20 +140,6 @@ port_channel_interfaces:
     transport: ipv4
   switchport:
     enabled: true
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 192.168.255.0/24 eq 32
-  - sequence: 20
-    action: permit 192.168.254.0/24 eq 32
-route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 300
@@ -139,10 +157,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
-    send_community: all
-    maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
@@ -150,16 +164,7 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
-  neighbors:
-  - ip_address: 192.168.0.3
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '101'
-    peer: host3
-    description: host3
   redistribute:
-    connected:
-      enabled: true
-      route_map: RM-CONN-2-BGP
     static:
       enabled: true
   address_family_evpn:
@@ -168,13 +173,21 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
 router_multicast:
   ipv4:
     routing: true
+router_ospf:
+  process_ids:
+  - id: 100
+    passive_interface_default: true
+    router_id: 192.168.255.101
+    bfd_enable: false
+    no_passive_interfaces:
+    - Ethernet42
+    - Ethernet3
+    max_lsa: 12000
 service_routing_protocols_model: multi-agent
 snmp_server:
   ipv4_acls:

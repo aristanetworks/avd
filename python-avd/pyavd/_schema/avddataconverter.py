@@ -6,7 +6,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from pyavd._errors import AvdDeprecationWarning
-from pyavd._utils import get, get_all
+from pyavd._utils import get_all
 
 from .utils import get_instance_with_defaults
 
@@ -185,7 +185,7 @@ class AvdDataConverter:
             for one_new_key in new_key.split(" or "):
                 if " " in one_new_key:
                     continue
-                if get(parent_dict, one_new_key) is not None:
+                if get_all(parent_dict, one_new_key):
                     conflict = True
                     # Overriding new_key to direct the error message to the relevant key in case the original new_key contained multiple keys.
                     new_key = one_new_key

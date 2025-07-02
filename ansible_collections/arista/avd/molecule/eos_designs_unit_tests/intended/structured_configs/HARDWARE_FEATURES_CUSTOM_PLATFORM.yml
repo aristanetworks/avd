@@ -1,37 +1,43 @@
 aaa_root:
   disabled: true
 config_end: true
-daemon_terminattr:
-  cvaddrs:
-  - cv-staging.corp.arista.io:443
-  cvauth:
-    method: token-secure
-    token_file: /tmp/cv-onboarding-token
-  cvvrf: MGMT
-  disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
-hostname: cvp-instance-ips-cvaas
+hardware_counters:
+  features: null
+hostname: HARDWARE_FEATURES_CUSTOM_PLATFORM
+ip_igmp_snooping:
+  globally_enabled: true
 ip_routing: true
 is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 1.2.3.1/32
+  ip_address: 10.10.10.6/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 10.10.20.6/32
 management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
 metadata:
+  platform: customplatform
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 1.2.3.0/24 eq 32
+    action: permit 10.10.10.0/24 eq 32
+  - sequence: 20
+    action: permit 10.10.20.0/24 eq 32
+queue_monitor_length:
+  enabled: true
+  notifying: true
+queue_monitor_streaming:
+  enable: true
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -45,8 +51,8 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '1234'
-  router_id: 1.2.3.1
+  as: '65001'
+  router_id: 10.10.10.6
   maximum_paths:
     paths: 4
     ecmp: 4
@@ -62,7 +68,6 @@ router_bgp:
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
     type: evpn
-    next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -83,12 +88,6 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: false
 service_routing_protocols_model: multi-agent
-spanning_tree:
-  mode: none
-static_routes:
-- vrf: MGMT
-  prefix: 0.0.0.0/0
-  next_hop: 192.168.0.1
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
@@ -98,3 +97,9 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: HARDWARE_FEATURES_CUSTOM_PLATFORM_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789

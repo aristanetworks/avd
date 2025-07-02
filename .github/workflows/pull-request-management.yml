@@ -608,7 +608,7 @@ jobs:
         # The version conflicts with our requirements,
         # so we let the galaxy-importer version resolve remaining requirements.
         run: |
-          pip install "galaxy-importer==0.4.29"
+          pip install "galaxy-importer==0.4.31"
       - name: Run galaxy-importer checks
         run: python -m galaxy_importer.main *.tar.gz
       - uses: actions/upload-artifact@v4

@@ -50,7 +50,13 @@ class IpSecurityMixin(Protocol):
         ike_policy_name = data_plane_config.ike_policy_name if self.shared_utils.wan_ha_ipsec else None
         sa_policy_name = data_plane_config.sa_policy_name
         profile_name = data_plane_config.profile_name
-        key = data_plane_config.shared_key
+        if data_plane_config.shared_key:
+            key = data_plane_config.shared_key
+        elif data_plane_config.cleartext_shared_key:
+            key = self.shared_utils.get_ipsec_key(data_plane_config.cleartext_shared_key, profile_name)
+        else:
+            msg = "`wan_ipsec_profile.data_plane.shared_key` or `wan_ipsec_profile.data_plane.cleartext_shared_key`"
+            raise AristaAvdMissingVariableError(msg)
 
         # IKE policy for data-plane is not required for dynamic tunnels except for HA cases
         if self.shared_utils.wan_ha_ipsec:
@@ -71,7 +77,13 @@ class IpSecurityMixin(Protocol):
         ike_policy_name = control_plane_config.ike_policy_name
         sa_policy_name = control_plane_config.sa_policy_name
         profile_name = control_plane_config.profile_name
-        key = control_plane_config.shared_key
+        if control_plane_config.shared_key:
+            key = control_plane_config.shared_key
+        elif control_plane_config.cleartext_shared_key:
+            key = self.shared_utils.get_ipsec_key(control_plane_config.cleartext_shared_key, profile_name)
+        else:
+            msg = "`wan_ipsec_profile.control_plane.shared_key` or `wan_ipsec_profile.control_plane.cleartext_shared_key`"
+            raise AristaAvdMissingVariableError(msg)
 
         self.structured_config.ip_security.ike_policies.append_new(name=ike_policy_name, local_id=self.shared_utils.vtep_ip)
         self._set_sa_policy(sa_policy_name)

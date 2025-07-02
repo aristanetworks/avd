@@ -121,19 +121,22 @@ class UtilsMixin(Protocol):
         source_interface: str | None = None
         vrf = self.get_vrf(vrf_input, context=context)
         if set_source_interfaces:
-            # source_interface may be overridden below if given in the 'vrfs'
-            match vrf_input:
-                case None | "" | "use_default_mgmt_method_vrf":
-                    source_interface = self.shared_utils.default_mgmt_protocol_interface
-                case "use_mgmt_interface_vrf":
-                    source_interface = self.shared_utils.mgmt_interface
-                case "use_inband_mgmt_vrf":
-                    source_interface = self.shared_utils.inband_mgmt_interface
-
-        if vrf in vrfs and vrfs[vrf].source_interface:
-            source_interface = vrfs[vrf].source_interface
+            source_interface = self.get_source_interface(vrf_input, source_interface_override=vrfs[vrf].source_interface if vrf in vrfs else None)
 
         return (vrf, source_interface)
+
+    def get_source_interface(self: AvdStructuredConfigBaseProtocol, vrf_input: str | None, source_interface_override: str | None) -> str | None:
+        """Returns source interface for the given vrf, letting the given override take precedence."""
+        if source_interface_override:
+            return source_interface_override
+
+        match vrf_input:
+            case None | "" | "use_default_mgmt_method_vrf":
+                return self.shared_utils.default_mgmt_protocol_interface
+            case "use_mgmt_interface_vrf":
+                return self.shared_utils.mgmt_interface
+            case "use_inband_mgmt_vrf":
+                return self.shared_utils.inband_mgmt_interface
 
     def get_vrf(
         self: AvdStructuredConfigBaseProtocol,

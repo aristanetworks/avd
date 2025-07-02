@@ -261,7 +261,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 1-9,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
+      allowed_vlan: 1-10,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -469,6 +469,15 @@ router_bgp:
     - learned
     - igmp
     vlan: '9'
+  - name: MULTICAST_VXLAN_FLOOD_ENABLED_WITH_UNDERLAY_MULTICAST_GROUP
+    tenant: Tenant_B
+    rd: 192.168.255.3:10010
+    route_targets:
+      both:
+      - 10010:10010
+    redistribute_routes:
+    - learned
+    vlan: '10'
   - name: TEN_C_L3_MULTICAST_DISABLED_330_331
     rd: 192.168.255.3:33
     route_targets:
@@ -1512,6 +1521,9 @@ vlans:
 - id: 9
   name: MULTICAST_ENABLED_9
   tenant: Tenant_B
+- id: 10
+  name: MULTICAST_VXLAN_FLOOD_ENABLED_WITH_UNDERLAY_MULTICAST_GROUP
+  tenant: Tenant_B
 - id: 330
   name: L3_MULTICAST_DISABLED_330
   tenant: Tenant_C
@@ -1695,16 +1707,20 @@ vxlan_interface:
         vni: 10211
       - id: 256
         vni: 10256
+        flood_group: 232.1.0.10
       - id: 257
         vni: 10257
         multicast_group: 232.0.1.0
+        flood_group: 232.1.1.1
       - id: 4092
         vni: 14092
         multicast_group: 232.0.15.251
       - id: 5
         vni: 10005
+        flood_group: 232.1.0.5
       - id: 6
         vni: 10006
+        flood_group: 232.1.0.6
       - id: 1
         vni: 10001
         multicast_group: 232.0.16.1
@@ -1714,16 +1730,24 @@ vxlan_interface:
       - id: 3
         vni: 10003
         multicast_group: 232.0.16.3
+        flood_group: 232.1.0.3
       - id: 4
         vni: 10004
+        flood_group: 232.1.0.4
       - id: 7
         vni: 10007
+        flood_group: 232.1.0.7
       - id: 8
         vni: 10008
         multicast_group: 232.0.16.8
+        flood_group: 232.1.0.8
       - id: 9
         vni: 10009
         multicast_group: 232.0.16.9
+        flood_group: 232.1.0.9
+      - id: 10
+        vni: 10010
+        flood_group: 232.10.10.10
       - id: 330
         vni: 10330
       - id: 331

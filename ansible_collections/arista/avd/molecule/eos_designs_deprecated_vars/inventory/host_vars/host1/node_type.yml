@@ -7,6 +7,11 @@ l3leaf:
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     id: 101
     bgp_as: 101
+    # Used for OSPF
+    uplink_switches: [host2]
+    uplink_switch_interfaces: [Ethernet42]
+    uplink_interfaces: [Ethernet42]
+    uplink_ipv4_pool: 192.168.42.0/24
   nodes:
     - name: host1
       id: 101

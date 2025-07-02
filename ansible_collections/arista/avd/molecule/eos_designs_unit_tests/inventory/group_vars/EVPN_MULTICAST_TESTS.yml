@@ -31,6 +31,11 @@ tenants:
       enabled: true
       underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
       fast_leave: true
+    # TO test vxlan_flood_multicast disabled at tenants.
+    vxlan_flood_multicast:
+      enabled: false
+      underlay_l2_multicast_group_ipv4_pool: 232.1.0.0-232.1.1.1
+      underlay_l2_multicast_group_ipv4_pool_offset: 1
     vrfs:
       - name: MULTICAST_ENABLED_110_111
         description: "MULTICAST_ENABLED_110_111"
@@ -111,9 +116,16 @@ tenants:
         # fast-leave is not expected for VLAN 256 since l2vlans.evpn_l2_multicast.enabled: false
         evpn_l2_multicast:
           enabled: false
+        # To test vxlan_flood_multicast enabled at l2vlans with underlay_multicast_group
+        vxlan_flood_multicast:
+          enabled: true
+          underlay_multicast_group: 232.1.0.10
       - id: 257
         name: "MULTICAST_ENABLED_257"
         tags: ['test_l2']
+        # To test vxlan_flood_multicast enabled at l2vlans without underlay_multicast_group
+        vxlan_flood_multicast:
+          enabled: true
       - id: 4092
         name: "MULTICAST_ENABLED_4092"
         tags: ['test_l2']
@@ -127,6 +139,11 @@ tenants:
       enabled: false
       # Testing multiple pools and ranges to represent 232.0.16.0/20
       underlay_l2_multicast_group_ipv4_pool: 232.0.16.0/31, 232.0.16.2-232.0.19.255, 232.0.20.0/22, 232.0.24.0-232.0.31.255
+      underlay_l2_multicast_group_ipv4_pool_offset: 1
+    # To test vxlan_flood_multicast enabled at tenants
+    vxlan_flood_multicast:
+      enabled: true
+      underlay_l2_multicast_group_ipv4_pool: 232.1.0.0-232.1.0.40
       underlay_l2_multicast_group_ipv4_pool_offset: 1
     igmp_snooping_querier:
       version: 3
@@ -154,6 +171,9 @@ tenants:
             # vrfs.svis.evpn_l2_multicast.enabled: true with igmp_snooping_querier.fast_leave: true
             evpn_l2_multicast:
               enabled: true
+            # To test vxlan_flood_multicast disabled at l2vlans but enabled at tenant
+            vxlan_flood_multicast:
+              enabled: false
             igmp_snooping_querier:
               fast_leave: true
           - id: 2
@@ -163,6 +183,10 @@ tenants:
             ip_address_virtual: 10.0.2.1/24
             evpn_l2_multicast:
               enabled: true
+            # To test vxlan_flood_multicast disabled at l2vlans but enabled at tenant with underlay_multicast_group
+            vxlan_flood_multicast:
+              enabled: false
+              underlay_multicast_group: 232.1.10.1
       - name: MULTICAST_ENABLED_3_DISABLED_4
         description: "MULTICAST_ENABLED_3_DISABLED_4"
         vrf_vni: 22
@@ -237,6 +261,12 @@ tenants:
         igmp_snooping_querier:
           version: 1
           source_address: 2.2.2.2
+      - id: 10
+        name: "MULTICAST_VXLAN_FLOOD_ENABLED_WITH_UNDERLAY_MULTICAST_GROUP"
+        tags: ['test_l2']
+        vxlan_flood_multicast:
+          enabled: true
+          underlay_multicast_group: 232.10.10.10
 
   # EVPN Multicast L3/IRB/OISM
   # Tenant_C is for testing of EVPN L3/OISM only

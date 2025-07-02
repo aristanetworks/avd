@@ -212,8 +212,8 @@ class UtilsMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
 
             else:
-                ptp_profile_config = self.inputs.ptp_profiles[p2p_link.ptp.profile]
-                if hasattr(ptp_profile_config, "profile"):
+                ptp_profile_config = self.inputs.ptp_profiles[p2p_link.ptp.profile]._deepcopy()
+                if ptp_profile_config.profile:
                     delattr(ptp_profile_config, "profile")
                 ptp_config = ptp_profile_config._cast_as(output_type, ignore_extra_keys=True)
 

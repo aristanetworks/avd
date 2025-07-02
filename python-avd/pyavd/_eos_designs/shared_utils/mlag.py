@@ -249,7 +249,7 @@ class MlagMixin(Protocol):
             remote_as=self.bgp_as,
             next_hop_self=True,
             description=AvdStringFormatter().format(self.inputs.mlag_bgp_peer_group_description, mlag_peer=self.mlag_peer),
-            password=bgp_peer_group.password,
+            password=self.get_bgp_password(bgp_peer_group),
             bfd=bgp_peer_group.bfd or None,
             maximum_routes=12000,
             send_community="all",
