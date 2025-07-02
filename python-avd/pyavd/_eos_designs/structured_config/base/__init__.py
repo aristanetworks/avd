@@ -12,7 +12,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default, get_v2
+from pyavd._utils import Undefined, default, get_v2
 from pyavd.j2filters import natural_sort
 
 from .daemon_terminattr import DaemonTerminattrMixin
@@ -515,12 +515,17 @@ class AvdStructuredConfigBaseProtocol(
                 enable_https=self.inputs.management_eapi.enable_https,
                 default_services=self.inputs.management_eapi.default_services,
             )
+
+            # TODO: remove in AVD 6.0
+            # For backward compatibility checking in advance if we are using the default value
+            using_default_vrfs = self.inputs.management_eapi._get_defined_attr("vrfs") == Undefined
+
             for vrf in self.inputs.management_eapi.vrfs._natural_sorted():
                 if vrf.enabled:
                     try:
                         vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
                     except AristaAvdInvalidInputsError as e:
-                        if vrf.name != "use_mgmt_interface_vrf":
+                        if not using_default_vrfs:
                             msg = f"'self.inputs.management_eapi.vrfs[name={vrf.name}' is set but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
                             raise AristaAvdInvalidInputsError(msg) from e
                         vrf_name = self.inputs.mgmt_interface_vrf
