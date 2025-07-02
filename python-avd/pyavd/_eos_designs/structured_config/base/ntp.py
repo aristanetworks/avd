@@ -41,7 +41,7 @@ class NtpMixin(Protocol):
                 )
             elif authentication_key.cleartext_key is not None:
                 # always type 7
-                # detemrinistic salt based on the key ID
+                # deterministic salt based on the key ID
                 salt: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] = authentication_key.id % 16
                 output_key = ntp_encrypt(authentication_key.cleartext_key, salt=salt)
                 self.structured_config.ntp.authentication_keys.append_new(
