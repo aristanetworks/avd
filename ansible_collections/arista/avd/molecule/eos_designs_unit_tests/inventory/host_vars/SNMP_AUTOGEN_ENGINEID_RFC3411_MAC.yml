@@ -1,25 +1,30 @@
 ---
 # Minimum config to only test the specific feature.
-# This tests the SNMP auto engine ID
+# This tests the SNMP engineID generated based on MAC address, with
+# the algorithm that is RFC3411 compliant
 type: l2leaf
 
 l2leaf:
   nodes:
-    - name: SNMP_AUTOGEN_ENGINEID
+    - name: SNMP_AUTOGEN_ENGINEID_RFC3411_MAC
       id: 43
+      # mgmt_ip: 192.168.0.10/24
+      system_mac_address: "42:42:42:42:42:42"
+      serial_number: A37383692F12C7DE733D9A9B8E2B37AE
 
-mgmt_interface_vrf: MGMT
-mgmt_gateway: 1.1.1.1
+# This variable below won't have precedence
+system_mac_address: "66:66:66:66:66:66"
+serial_number: 66666666666666666666666666666666
+
+# mgmt_interface_vrf: MGMT
+# mgmt_gateway: 1.1.1.1
 
 snmp_settings:
   contact: example@example.com
   location: true
   compute_local_engineid: true
-  # By default, the rfc3411 compliant is set to false to match
-  # the eos behaviour
-  # compute_local_engineid_rfc3411: true
-  # The default value is hostname_and_ip
-  # compute_local_engineid_source: hostname_and_ip
+  compute_local_engineid_rfc3411: true
+  compute_local_engineid_source: system_mac
   compute_v3_user_localized_key: true
   users:
     - name: usertest-auth-priv

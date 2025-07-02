@@ -4644,18 +4644,40 @@ keys:
           method.
 
           '
+      compute_local_engineid_rfc3411:
+        type: bool
+        default: false
+        description: 'Generate a local engineId for SNMP using the ''compute_local_engineid_source''
+          method.
+
+          '
       compute_local_engineid_source:
         type: str
         default: hostname_and_ip
         description: "`compute_local_engineid_source` supports:\n- `hostname_and_ip`
-          generate a local engineId for SNMP by hashing via SHA1\n  the string generated
-          via the concatenation of the hostname plus the management IP.\n  {{ inventory_hostname
-          }} + {{ switch.mgmt_ip }}.\n- `system_mac` generate the switch default engine
-          id for AVD usage.\n  To use this, `system_mac_address` MUST be set for the
-          device.\n  The formula is f5717f + system_mac_address + 00.\n"
+          generate a local engineId for SNMP by\nIf compute_local_engineid_rfc3411
+          is set to false (default), hashing via SHA1\n  the string generated via
+          the concatenation of the hostname plus the management IP.\n  {{ inventory_hostname
+          }} + {{ switch.mgmt_ip }}.\nIf compute_local_engineid_rfc3411 is set t True,
+          it will use the default_mgmt_method to find the mgmt ip and calculate an
+          RFC3411 compliant EngineID based on 8000757104+ sha1(hostname + mgmt_ip)\n-
+          `system_mac` generate the switch default engine id for AVD usage.\n  To
+          use this, `system_mac_address` MUST be set for the device.\n  The formula
+          is f5717f + system_mac_address + 00.\n- `hostname_inband_ip` generate a
+          local engineId for SNMP by hashing via SHA1\n  the string generated via
+          the concatenation of the hostname plus the management IP, with an RFC3411
+          compliant prefix.\n  8000757104 + sha1({{ inventory_hostname }} + {{ mgmt_ip
+          }}).\n  The management ip is either the switch.mgmt_ip or the ip address
+          of the inband_mgmt_interface.\n- `hostname_oob_ip` generate a local engineId
+          for SNMP by hashing via SHA1\n  the string generated via the concatenation
+          of the hostname plus the management IP, with an RFC3411 compliant prefix.\n
+          \ 8000757104 + sha1({{ inventory_hostname }} + {{ mgmt_ip }}).\n  The management
+          ip is either the switch.mgmt_ip or the ip address of the inband_mgmt_interface.\n"
         valid_values:
         - hostname_and_ip
         - system_mac
+        - hostname_inband_ip
+        - hostname_oob_ip
       compute_v3_user_localized_key:
         type: bool
         default: false

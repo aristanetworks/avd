@@ -60,26 +60,73 @@ class SnmpServerMixin(Protocol):
             traps=snmp_settings.traps,
         )
 
+    def _snmp_engine_id_hash(self: AvdStructuredConfigBaseProtocol, management_ip: str) -> str:
+        # Accepting SonarLint issue: The weak sha1 is not used for encryption. Just to create a unique engine id.
+        digest = sha1(f"{self.shared_utils.hostname}{management_ip}".encode()).hexdigest()  # NOSONAR # noqa: S324
+        # prefix with Enterprise Id + 04 to adhere to RCF3411 and RFC5343
+        # Arista Enterprise ID = 30065 (7571 in hex)
+        # 5th octet = 04 , meaning engine id is based on custom text
+        return f"8000757104{digest}"
+
+    def _snmp_engine_ids_inband(self: AvdStructuredConfigBaseProtocol) -> str:
+        """Returns the SNMP engine id based on Inband Management."""
+        # TODO: add support for inband_mgmt_subnet calculation, would need calculation done in SharedUtils
+        # TODO: add support for custom inband_mgmt_interface, would need calculation done in SharedUtils
+        if not self.shared_utils.inband_mgmt_ip:
+            msg = "hostname_inband_ip engine id calculation requires inband_mgmt_ip"
+            # look at the new snmp error messages
+            raise AristaAvdInvalidInputsError(msg)
+
+        return self._snmp_engine_id_hash(self.shared_utils.inband_mgmt_ip)
+
+    def _snmp_engine_ids_oob(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> str:
+        """Returns the SNMP engine id based on OutOfBand Management."""
+        if not snmp_settings._get("compute_local_engineid_rfc3411", None):
+            # This generation algorithm is not RFC3411 compliant, but needs to be maintained for backward compatibility
+            # If the mgmt_ip is not set, this will hash hostname+"None"
+            return sha1(f"{self.shared_utils.hostname}{self.shared_utils.node_config.mgmt_ip}".encode()).hexdigest()  # NOSONAR # noqa: S324
+        if self.shared_utils.node_config.mgmt_ip is None:
+            msg = "hostname_oob_ip engine id calculation requires mgmt_ip to be set when set being RFC3411 compliant."
+            raise AristaAvdInvalidInputsError(msg)
+        return self._snmp_engine_id_hash(self.shared_utils.node_config.mgmt_ip)
+
     def _snmp_engine_ids(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """Set dict of engine ids if "snmp_settings.compute_local_engineid" is True."""
         if not snmp_settings.compute_local_engineid:
             return
 
-        compute_source = snmp_settings.compute_local_engineid_source
-        if compute_source == "hostname_and_ip":
-            # Accepting SonarLint issue: The weak sha1 is not used for encryption. Just to create a unique engine id.
-            local_engine_id = sha1(f"{self.shared_utils.hostname}{self.shared_utils.node_config.mgmt_ip}".encode()).hexdigest()  # NOSONAR # noqa: S324
+        match snmp_settings.compute_local_engineid_source.lower():
+            case "hostname_and_ip":
+                # This is the default value in AVD 5.x
+                # This should be changed to self.shared_utils.default_mgmt_method when mgmt_ip is enforced
+                # when the default oob method is present
+                if self.inputs.default_mgmt_method and self.inputs.default_mgmt_method == "inband":
+                    local_engine_id = self._snmp_engine_ids_inband()
+                else:
+                    # For backward compatibility, the default should be oob
+                    local_engine_id = self._snmp_engine_ids_oob(snmp_settings)
 
-        elif compute_source == "system_mac":
-            if self.shared_utils.system_mac_address is None:
-                msg = "default_engine_id_from_system_mac: true requires system_mac_address to be set."
-                raise AristaAvdInvalidInputsError(msg)
-            # the default engine id on switches is derived as per the following formula
-            local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
-        else:
-            # Unknown mode
-            msg = f"'{compute_source}' is not a valid value to compute the engine ID, accepted values are 'hostname_and_ip' and 'system_mac'"
-            raise AristaAvdError(msg)
+            case "system_mac":
+                if self.shared_utils.system_mac_address is None:
+                    msg = "default_engine_id_from_system_mac: true requires system_mac_address to be set."
+                    raise AristaAvdInvalidInputsError(msg)
+                if not snmp_settings._get("compute_local_engineid_rfc3411", None):
+                    # This generation algorithm is not RFC3411 compliant, but matches the behaviour in existing EOS at time of writing.
+                    local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
+                else:
+                    local_engine_id = f"8000757103{str(self.shared_utils.system_mac_address).replace(':', '').lower()}"
+
+            case "hostname_inband_ip":
+                local_engine_id = self._snmp_engine_ids_inband()
+
+            case "hostname_oob_ip":
+                local_engine_id = self._snmp_engine_ids_oob(snmp_settings)
+
+            case _:
+                # Unknown mode
+                msg = f"'{snmp_settings.compute_local_engineid_source}' is not a valid value to compute the engine ID, \
+                accepted values are 'hostname_and_ip', 'system_mac', 'hostname_inband_ip', 'hostname_oob_ip'."
+                raise AristaAvdError(msg)
 
         self.structured_config.snmp_server.engine_ids.local = local_engine_id
 

@@ -1,0 +1,50 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: SNMP_AUTOGEN_ENGINEID_RFC3411_HOSTNAME_DEFAULT_MGMT
+ip_igmp_snooping:
+  globally_enabled: true
+is_deployed: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+snmp_server:
+  engine_ids:
+    local: 80007571041f24c315e079d178efbf30ef19e0836c112dc18f
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS SNMP_AUTOGEN_ENGINEID_RFC3411_HOSTNAME_DEFAULT_MGMT
+  users:
+  - name: usertest-auth-priv
+    group: usergroup
+    version: v3
+    localized: 80007571041f24c315e079d178efbf30ef19e0836c112dc18f
+    auth: sha
+    auth_passphrase: c339ee396973e90c04206140b55627678921d0a5
+    priv: aes192
+    priv_passphrase: 375984d3e9a16df7ee4348b037f614817a2833e89d4f6e78
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4092
+  description: 'Inband Management'
+  ip_address: 192.168.0.10/24
+  mtu: 1500
+  shutdown: false
+  type: 'inband_mgmt'
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4092
+  name: 'INBAND_MGMT'
+  tenant: 'system'
+vrfs:
+- name: MGMT
+  ip_routing: false

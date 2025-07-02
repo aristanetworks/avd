@@ -1,0 +1,54 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: SNMP_AUTOGEN_ENGINEID_RFC3411_MAC
+ip_igmp_snooping:
+  globally_enabled: true
+is_deployed: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  system_mac_address: '42:42:42:42:42:42'
+serial_number: A37383692F12C7DE733D9A9B8E2B37AE
+service_routing_protocols_model: multi-agent
+snmp_server:
+  engine_ids:
+    local: '8000757103424242424242'
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS SNMP_AUTOGEN_ENGINEID_RFC3411_MAC
+  users:
+  - name: usertest-auth-priv
+    group: usergroup
+    version: v3
+    localized: '8000757103424242424242'
+    auth: sha
+    auth_passphrase: c7d815463b2fd77c87201bc51ae77b93fcf4ac4f
+    priv: aes192
+    priv_passphrase:  a1391df7a8ea377cbe6ccc7537ed6f1e1905bbe38f69eaac
+  - name: usertest-auth-no-priv
+    group: usergroup
+    version: v3
+    localized: '8000757103424242424242'
+    auth: sha512
+    auth_passphrase:  4f9e0da72fe42d16e603114d99811c495b8e999e7e560c8fc7d83439128cba71163cb2bb92e474922669c4435e80e5ef7fdae34e57c28058b8ddd3e34170fa4d
+  - name: usertest-no-auth-no-priv
+    group: usergroup
+    version: v3
+    localized: '8000757103424242424242'
+  - name: usertest-v2c
+    group: usergroup
+    version: v2c
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

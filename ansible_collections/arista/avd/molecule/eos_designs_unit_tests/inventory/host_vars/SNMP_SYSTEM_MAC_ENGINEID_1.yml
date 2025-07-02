@@ -1,6 +1,7 @@
 ---
 # Minimum config to only test the specific feature.
 # This tests the SNMP engineID using system MAC
+# Note that the engineID generated is NOT RFC3411 compliant
 # As well as the fact that default_engineid_from_system_mac has precedence over compute_local_engineid
 # Setting system_mac_address as a topology variable and host variable, topology
 # should have precedence
@@ -21,6 +22,9 @@ snmp_settings:
   contact: example@example.com
   location: true
   compute_local_engineid: true
+  # By default, the rfc3411 compliant is set to false to match
+  # the eos behaviour
+  # compute_local_engineid_rfc3411: true
   compute_local_engineid_source: system_mac
   compute_v3_user_localized_key: true
   users:
