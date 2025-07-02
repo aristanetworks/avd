@@ -46,10 +46,11 @@ keys:
                   - int
                 key:
                   type: str
-                  description: Encrypted key.
+                  description: Encrypted type-7 key.
                   required: true
           vrfs:
             type: list
+            primary_key: name
             items:
               type: dict
               keys:
@@ -67,7 +68,7 @@ keys:
                     device.\n- `use_default_mgmt_method_vrf` will configure the VRF
                     and source-interface for one of the two options above depending
                     on the value of `default_mgmt_method`.\n- Any other string will
-                    be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface`
+                    be used directly as the VRF name. Remember to set the `aaa_settings.tacacs.vrfs[].source_interface`
                     if needed."
                   convert_types:
                   - int
@@ -117,6 +118,7 @@ keys:
                   required: true
           vrfs:
             type: list
+            primary_key: name
             items:
               type: dict
               keys:
@@ -134,7 +136,7 @@ keys:
                     device.\n- `use_default_mgmt_method_vrf` will configure the VRF
                     and source-interface for one of the two options above depending
                     on the value of `default_mgmt_method`.\n- Any other string will
-                    be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface`
+                    be used directly as the VRF name. Remember to set the `aaa_settings.radius.vrfs[].source_interface`
                     if needed."
                   convert_types:
                   - int

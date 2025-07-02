@@ -133,7 +133,7 @@ aaa_authorization:
     - level: '6'
     - default: group radius
 aaa_root:
-  disabled: true
+  disabled: false
   secret:
     sha512_password: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.
 aaa_server_groups:

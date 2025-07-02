@@ -36,10 +36,11 @@ keys:
                     - int
                 key:
                   type: str
-                  description: Encrypted key.
+                  description: Encrypted type-7 key.
                   required: true
           vrfs:
             type: list
+            primary_key: name
             items:
               type: dict
               keys:
@@ -53,7 +54,7 @@ keys:
                     - `use_inband_mgmt_vrf` will configure the TACACS destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.
                       An error will be raised if inband management is not configured for the device.
                     - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
-                    - Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+                    - Any other string will be used directly as the VRF name. Remember to set the `aaa_settings.tacacs.vrfs[].source_interface` if needed.
                   convert_types:
                     - int
                 source_interface:
@@ -101,6 +102,7 @@ keys:
                   required: true
           vrfs:
             type: list
+            primary_key: name
             items:
               type: dict
               keys:
@@ -114,7 +116,7 @@ keys:
                     - `use_inband_mgmt_vrf` will configure the Radius destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.
                       An error will be raised if inband management is not configured for the device.
                     - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
-                    - Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+                    - Any other string will be used directly as the VRF name. Remember to set the `aaa_settings.radius.vrfs[].source_interface` if needed.
                   convert_types:
                     - int
                 source_interface:

@@ -684,9 +684,8 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def aaa_root_login(self) -> None:
         """Assign AAA root login configuration from inputs to structured config."""
-        if not (aaa_root_login := self.inputs.aaa_settings.root_login):
-            return
-        self.structured_config.aaa_root.disabled = aaa_root_login.enabled
+        aaa_root_login = self.inputs.aaa_settings.root_login
+        self.structured_config.aaa_root.disabled = not aaa_root_login.enabled
         self.structured_config.aaa_root.secret.sha512_password = aaa_root_login.sha512_password
 
     @structured_config_contributor

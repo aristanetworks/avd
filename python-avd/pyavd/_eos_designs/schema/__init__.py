@@ -57,7 +57,7 @@ class EosDesigns(EosDesignsRootModel):
                 - Any other string will be used directly as the VRF name.
                 """
                 key: str
-                """Encrypted key."""
+                """Encrypted type-7 key."""
 
                 if TYPE_CHECKING:
 
@@ -93,7 +93,7 @@ class EosDesigns(EosDesignsRootModel):
                                the VRF and source-interface for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
-                            key: Encrypted key.
+                            key: Encrypted type-7 key.
 
                         """
 
@@ -106,7 +106,7 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
-                name: str | None
+                name: str
                 """
                 VRF Name.
                 The value of `vrf` will be interpreted according to these rules:
@@ -124,13 +124,13 @@ class EosDesigns(EosDesignsRootModel):
                 interface for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any
                 other string will be used directly as the VRF name. Remember to set the
-                `snmp_settings.vrfs[].source_interface` if needed.
+                `aaa_settings.tacacs.vrfs[].source_interface` if needed.
                 """
                 source_interface: str | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | None | UndefinedType = Undefined, source_interface: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | None | UndefinedType = Undefined) -> None:
                         """
                         VrfsItem.
 
@@ -155,13 +155,15 @@ class EosDesigns(EosDesignsRootModel):
                                interface for one of the two options above depending on the value of `default_mgmt_method`.
                                - Any
                                other string will be used directly as the VRF name. Remember to set the
-                               `snmp_settings.vrfs[].source_interface` if needed.
+                               `aaa_settings.tacacs.vrfs[].source_interface` if needed.
                             source_interface: source_interface
 
                         """
 
-            class Vrfs(AvdList[VrfsItem]):
-                """Subclass of AvdList with `VrfsItem` items."""
+            class Vrfs(AvdIndexedList[str, VrfsItem]):
+                """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
 
             Vrfs._item_type = VrfsItem
 
@@ -190,7 +192,7 @@ class EosDesigns(EosDesignsRootModel):
             servers: Servers
             """Subclass of AvdList with `ServersItem` items."""
             vrfs: Vrfs
-            """Subclass of AvdList with `VrfsItem` items."""
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
             policy: Policy
             """Subclass of AvdModel."""
 
@@ -207,7 +209,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         servers: Subclass of AvdList with `ServersItem` items.
-                        vrfs: Subclass of AvdList with `VrfsItem` items.
+                        vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                         policy: Subclass of AvdModel.
 
                     """
@@ -295,7 +297,7 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
-                name: str | None
+                name: str
                 """
                 VRF Name.
                 The value of `vrf` will be interpreted according to these rules:
@@ -313,13 +315,13 @@ class EosDesigns(EosDesignsRootModel):
                 interface for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any
                 other string will be used directly as the VRF name. Remember to set the
-                `snmp_settings.vrfs[].source_interface` if needed.
+                `aaa_settings.radius.vrfs[].source_interface` if needed.
                 """
                 source_interface: str | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | None | UndefinedType = Undefined, source_interface: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | None | UndefinedType = Undefined) -> None:
                         """
                         VrfsItem.
 
@@ -344,13 +346,15 @@ class EosDesigns(EosDesignsRootModel):
                                interface for one of the two options above depending on the value of `default_mgmt_method`.
                                - Any
                                other string will be used directly as the VRF name. Remember to set the
-                               `snmp_settings.vrfs[].source_interface` if needed.
+                               `aaa_settings.radius.vrfs[].source_interface` if needed.
                             source_interface: source_interface
 
                         """
 
-            class Vrfs(AvdList[VrfsItem]):
-                """Subclass of AvdList with `VrfsItem` items."""
+            class Vrfs(AvdIndexedList[str, VrfsItem]):
+                """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
 
             Vrfs._item_type = VrfsItem
 
@@ -358,7 +362,7 @@ class EosDesigns(EosDesignsRootModel):
             servers: Servers
             """Subclass of AvdList with `ServersItem` items."""
             vrfs: Vrfs
-            """Subclass of AvdList with `VrfsItem` items."""
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
 
             if TYPE_CHECKING:
 
@@ -371,7 +375,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         servers: Subclass of AvdList with `ServersItem` items.
-                        vrfs: Subclass of AvdList with `VrfsItem` items.
+                        vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
                     """
 
