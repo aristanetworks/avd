@@ -22,7 +22,7 @@ spine:
     bgp_defaults:
       - "distance bgp 20 200 200"
     digital_twin:
-      os_version: "4.33.1F"
+      act_os_version: "4.33.1F"
   nodes:
     # Spine also working as EVPN RS
     - name: DC1-POD1-SPINE1

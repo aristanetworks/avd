@@ -3516,22 +3516,34 @@ class EosDesigns(EosDesignsRootModel):
         class Fabric(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"os_version": {"type": str}, "username": {"type": str}, "password": {"type": str}}
-            os_version: str | None
-            """OS version for Digital Twin fabric devices."""
-            username: str
-            """Username for Digital Twin fabric devices."""
-            password: str
-            """Cleartext password for Digital Twin fabric devices."""
+            _fields: ClassVar[dict] = {
+                "act_os_version": {"type": str},
+                "act_username": {"type": str, "default": "admin"},
+                "act_password": {"type": str, "default": "admin"},
+            }
+            act_os_version: str | None
+            """OS version for ACT Digital Twin fabric devices."""
+            act_username: str
+            """
+            Username for ACT Digital Twin fabric devices.
+
+            Default value: `"admin"`
+            """
+            act_password: str
+            """
+            Cleartext password for ACT Digital Twin fabric devices.
+
+            Default value: `"admin"`
+            """
 
             if TYPE_CHECKING:
 
                 def __init__(
                     self,
                     *,
-                    os_version: str | None | UndefinedType = Undefined,
-                    username: str | UndefinedType = Undefined,
-                    password: str | UndefinedType = Undefined,
+                    act_os_version: str | None | UndefinedType = Undefined,
+                    act_username: str | UndefinedType = Undefined,
+                    act_password: str | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -3540,9 +3552,9 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        os_version: OS version for Digital Twin fabric devices.
-                        username: Username for Digital Twin fabric devices.
-                        password: Cleartext password for Digital Twin fabric devices.
+                        act_os_version: OS version for ACT Digital Twin fabric devices.
+                        act_username: Username for ACT Digital Twin fabric devices.
+                        act_password: Cleartext password for ACT Digital Twin fabric devices.
 
                     """
 
@@ -25357,18 +25369,20 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
-                        os_version: str | None
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        act_os_version: str | None
                         """
-                        Desired OS version.
-                        Overrides global `digital_twin.fabric.os_version` flag.
+                        Desired ACT Digital Twin OS version.
+                        Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                            ) -> None:
                                 """
                                 DigitalTwin.
 
@@ -25376,9 +25390,9 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    os_version:
-                                       Desired OS version.
-                                       Overrides global `digital_twin.fabric.os_version` flag.
+                                    act_os_version:
+                                       Desired ACT Digital Twin OS version.
+                                       Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
 
                                 """
@@ -29640,11 +29654,11 @@ class EosDesigns(EosDesignsRootModel):
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
-                            os_version: str | None
+                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            act_os_version: str | None
                             """
-                            Desired OS version.
-                            Overrides global `digital_twin.fabric.os_version` flag.
+                            Desired ACT Digital Twin OS version.
+                            Overrides global `digital_twin.fabric.act_os_version` flag.
                             """
                             mgmt_ip: str | None
                             """Desired management interface IPv4 address."""
@@ -29652,7 +29666,7 @@ class EosDesigns(EosDesignsRootModel):
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                    self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
                                 ) -> None:
                                     """
                                     DigitalTwin.
@@ -29661,9 +29675,9 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        os_version:
-                                           Desired OS version.
-                                           Overrides global `digital_twin.fabric.os_version` flag.
+                                        act_os_version:
+                                           Desired ACT Digital Twin OS version.
+                                           Overrides global `digital_twin.fabric.act_os_version` flag.
                                         mgmt_ip: Desired management interface IPv4 address.
 
                                     """
@@ -33854,18 +33868,20 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
-                        os_version: str | None
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        act_os_version: str | None
                         """
-                        Desired OS version.
-                        Overrides global `digital_twin.fabric.os_version` flag.
+                        Desired ACT Digital Twin OS version.
+                        Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                            ) -> None:
                                 """
                                 DigitalTwin.
 
@@ -33873,9 +33889,9 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    os_version:
-                                       Desired OS version.
-                                       Overrides global `digital_twin.fabric.os_version` flag.
+                                    act_os_version:
+                                       Desired ACT Digital Twin OS version.
+                                       Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
 
                                 """
@@ -38146,18 +38162,20 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
-                        os_version: str | None
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        act_os_version: str | None
                         """
-                        Desired OS version.
-                        Overrides global `digital_twin.fabric.os_version` flag.
+                        Desired ACT Digital Twin OS version.
+                        Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                            ) -> None:
                                 """
                                 DigitalTwin.
 
@@ -38165,9 +38183,9 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    os_version:
-                                       Desired OS version.
-                                       Overrides global `digital_twin.fabric.os_version` flag.
+                                    act_os_version:
+                                       Desired ACT Digital Twin OS version.
+                                       Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
 
                                 """
@@ -50088,18 +50106,20 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
-                        os_version: str | None
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        act_os_version: str | None
                         """
-                        Desired OS version.
-                        Overrides global `digital_twin.fabric.os_version` flag.
+                        Desired ACT Digital Twin OS version.
+                        Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                            ) -> None:
                                 """
                                 DigitalTwin.
 
@@ -50107,9 +50127,9 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    os_version:
-                                       Desired OS version.
-                                       Overrides global `digital_twin.fabric.os_version` flag.
+                                    act_os_version:
+                                       Desired ACT Digital Twin OS version.
+                                       Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
 
                                 """
@@ -54371,11 +54391,11 @@ class EosDesigns(EosDesignsRootModel):
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
-                            os_version: str | None
+                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            act_os_version: str | None
                             """
-                            Desired OS version.
-                            Overrides global `digital_twin.fabric.os_version` flag.
+                            Desired ACT Digital Twin OS version.
+                            Overrides global `digital_twin.fabric.act_os_version` flag.
                             """
                             mgmt_ip: str | None
                             """Desired management interface IPv4 address."""
@@ -54383,7 +54403,7 @@ class EosDesigns(EosDesignsRootModel):
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                    self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
                                 ) -> None:
                                     """
                                     DigitalTwin.
@@ -54392,9 +54412,9 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        os_version:
-                                           Desired OS version.
-                                           Overrides global `digital_twin.fabric.os_version` flag.
+                                        act_os_version:
+                                           Desired ACT Digital Twin OS version.
+                                           Overrides global `digital_twin.fabric.act_os_version` flag.
                                         mgmt_ip: Desired management interface IPv4 address.
 
                                     """
@@ -58585,18 +58605,20 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
-                        os_version: str | None
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        act_os_version: str | None
                         """
-                        Desired OS version.
-                        Overrides global `digital_twin.fabric.os_version` flag.
+                        Desired ACT Digital Twin OS version.
+                        Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                            ) -> None:
                                 """
                                 DigitalTwin.
 
@@ -58604,9 +58626,9 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    os_version:
-                                       Desired OS version.
-                                       Overrides global `digital_twin.fabric.os_version` flag.
+                                    act_os_version:
+                                       Desired ACT Digital Twin OS version.
+                                       Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
 
                                 """
@@ -62877,18 +62899,20 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
-                        os_version: str | None
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        act_os_version: str | None
                         """
-                        Desired OS version.
-                        Overrides global `digital_twin.fabric.os_version` flag.
+                        Desired ACT Digital Twin OS version.
+                        Overrides global `digital_twin.fabric.act_os_version` flag.
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                            ) -> None:
                                 """
                                 DigitalTwin.
 
@@ -62896,9 +62920,9 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    os_version:
-                                       Desired OS version.
-                                       Overrides global `digital_twin.fabric.os_version` flag.
+                                    act_os_version:
+                                       Desired ACT Digital Twin OS version.
+                                       Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
 
                                 """
@@ -64854,7 +64878,7 @@ class EosDesigns(EosDesignsRootModel):
         "default_underlay_p2p_port_channel_description": {"type": str, "default": "P2P_{peer}_{peer_interface}"},
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
         "design": {"type": Design},
-        "digital_twin": {"type": DigitalTwin},
+        "digital_twin": {"type": DigitalTwin, "default": lambda cls: coerce_type({"fabric": {}}, target_type=cls)},
         "dns_settings": {"type": DnsSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
@@ -65813,10 +65837,11 @@ class EosDesigns(EosDesignsRootModel):
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
     change at any time.
     Global settings to configure the Digital Twin of the Fabric.
-    These settings are
-    required when `avd_digital_twin_mode` is `true`
 
-    Subclass of AvdModel.
+    Subclass of
+    AvdModel.
+
+    Default value: `lambda cls: coerce_type({"fabric": {}}, target_type=cls)`
     """
     dns_settings: DnsSettings
     """
@@ -67843,10 +67868,9 @@ class EosDesigns(EosDesignsRootModel):
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
                    Global settings to configure the Digital Twin of the Fabric.
-                   These settings are
-                   required when `avd_digital_twin_mode` is `true`
 
-                   Subclass of AvdModel.
+                   Subclass of
+                   AvdModel.
                 dns_settings:
                    DNS settings
 

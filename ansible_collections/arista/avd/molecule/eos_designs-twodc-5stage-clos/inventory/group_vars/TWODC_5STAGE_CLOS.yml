@@ -226,11 +226,3 @@ eos_designs_documentation:
   connected_endpoints: true
   topology_csv: true
   p2p_links_csv: true
-
-# Digital twin settings
-digital_twin:
-  environment: act
-  fabric:
-    username: act_user
-    password: act_pass
-    os_version: 4.33.0F

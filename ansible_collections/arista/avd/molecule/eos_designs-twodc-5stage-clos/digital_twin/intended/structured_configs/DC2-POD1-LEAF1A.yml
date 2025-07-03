@@ -114,9 +114,9 @@ metadata:
     environment: act
     node_type: veos
     ip_addr: 192.168.1.22/24
-    version: 4.33.0F
-    username: act_user
-    password: act_pass
+    version: 4.33.1.1F
+    username: admin
+    password: admin
 port_channel_interfaces:
 - name: Port-Channel3
   description: L2_DC2-POD1-L2LEAF1A_Port-Channel1

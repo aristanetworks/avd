@@ -3,10 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, ClassVar, Protocol
 
 from pyavd._errors import AristaAvdError
-from pyavd._utils import default
+from pyavd._utils import default, get
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigMetadataProtocol
@@ -18,6 +18,17 @@ class DigitalTwinMixin(Protocol):
 
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
+
+    DEFAULT_OS_VERSION_MAP: ClassVar[dict[str, dict[str, str]]] = {
+        "act": {
+            "cloudeos": "4.33.2F",
+            "cvp": "2024.3.2",
+            "generic": "ubuntu-2204-lts",
+            "third-party": "byod",
+            "tools-server": "ubuntu-2204-lts",
+            "veos": "4.33.1.1F",
+        },
+    }
 
     def _set_digital_twin(self: AvdStructuredConfigMetadataProtocol) -> None:
         """
@@ -43,28 +54,13 @@ class DigitalTwinMixin(Protocol):
                         " 'mgmt_ip' attribute must be set in the node configuration settings using either the 'digital_twin.mgmt_ip' or 'mgmt_ip' key."
                     )
                     raise AristaAvdError(msg)
-                version = default(self.shared_utils.node_config.digital_twin.os_version, self.inputs.digital_twin.fabric.os_version)
-                if not (isinstance(version, str) and version):
-                    msg = (
-                        f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
-                        " 'os_version' attribute must be set using either the global 'digital_twin.fabric.os_version' key or "
-                        "the node configuration 'digital_twin.os_version' key."
-                    )
-                    raise AristaAvdError(msg)
-                username = self.inputs.digital_twin.fabric.username
-                if not (isinstance(username, str) and username):
-                    msg = (
-                        f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
-                        " 'username' attribute must be set using the global 'digital_twin.fabric.username' key."
-                    )
-                    raise AristaAvdError(msg)
-                password = self.inputs.digital_twin.fabric.password
-                if not (isinstance(password, str) and password):
-                    msg = (
-                        f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
-                        " 'password' attribute must be set using the global 'digital_twin.fabric.password' key."
-                    )
-                    raise AristaAvdError(msg)
+                version = default(
+                    self.shared_utils.node_config.digital_twin.act_os_version,
+                    self.inputs.digital_twin.fabric.act_os_version,
+                    get(self.DEFAULT_OS_VERSION_MAP, f"act..{digital_twin_node_type}", separator=".."),
+                )
+                username = self.inputs.digital_twin.fabric.act_username
+                password = self.inputs.digital_twin.fabric.act_password
                 self.structured_config.metadata.digital_twin._update(
                     environment=environment,
                     node_type=digital_twin_node_type,

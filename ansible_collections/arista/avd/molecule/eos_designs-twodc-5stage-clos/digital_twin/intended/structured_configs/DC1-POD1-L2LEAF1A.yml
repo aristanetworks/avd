@@ -44,9 +44,9 @@ metadata:
     environment: act
     node_type: tools-server
     ip_addr: 192.168.1.10/24
-    version: 4.33.0F
-    username: act_user
-    password: act_pass
+    version: ubuntu-2204-lts
+    username: admin
+    password: admin
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC1-POD1-LEAF1A_Port-Channel3

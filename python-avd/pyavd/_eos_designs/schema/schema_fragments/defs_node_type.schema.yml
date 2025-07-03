@@ -1575,11 +1575,11 @@ $defs:
               Set the OS version and management IP address for the digital twin of the associated node(s).
             type: dict
             keys:
-              os_version:
+              act_os_version:
                 type: str
                 description: |-
-                  Desired OS version.
-                  Overrides global `digital_twin.fabric.os_version` flag.
+                  Desired ACT Digital Twin OS version.
+                  Overrides global `digital_twin.fabric.act_os_version` flag.
               mgmt_ip:
                 type: str
                 description: |-

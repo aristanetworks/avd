@@ -13,7 +13,8 @@ keys:
     description: |-
       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
       Global settings to configure the Digital Twin of the Fabric.
-      These settings are required when `avd_digital_twin_mode` is `true`
+    default:
+      fabric: {}
     keys:
       environment:
         type: str
@@ -28,21 +29,20 @@ keys:
           Settings for Digital Twin fabric devices.
         required: true
         keys:
-          # TODO: Enforce (in code) to be set (here or under node_config)
-          os_version:
+          act_os_version:
             type: str
             description: |-
-              OS version for Digital Twin fabric devices.
-          username:
+              OS version for ACT Digital Twin fabric devices.
+          act_username:
             type: str
             description: |-
-              Username for Digital Twin fabric devices.
-            required: true
-          password:
+              Username for ACT Digital Twin fabric devices.
+            default: admin
+          act_password:
             type: str
             description: |-
-              Cleartext password for Digital Twin fabric devices.
-            required: true
+              Cleartext password for ACT Digital Twin fabric devices.
+            default: admin
       # TODO: Add this in a separate PR.
       # endpoints:
       #   type: dict
