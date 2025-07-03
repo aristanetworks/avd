@@ -26,10 +26,12 @@ def strip_null_from_data(data: T, strip_values_tuple: tuple = (None,)) -> T:
         return strip_empties_from_dict(data, strip_values_tuple)
     if isinstance(data, list):
         return strip_empties_from_list(data, strip_values_tuple)
+    if isinstance(data, tuple):
+        return strip_empties_from_tuple(data, strip_values_tuple)
     return data
 
 
-def strip_empties_from_list(data: list, strip_values_tuple: tuple = (None, "", [], {})) -> list:
+def strip_empties_from_list(data: list, strip_values_tuple: tuple = (None, "", [], {}, ())) -> list:
     """
     strip_empties_from_list Remove entries with null value from a list.
 
@@ -38,7 +40,7 @@ def strip_empties_from_list(data: list, strip_values_tuple: tuple = (None, "", [
     data : Any
         data to filter
     strip_values_tuple : tuple, optional
-        Value to remove from data, by default (None, "", [], {},)
+        Value to remove from data, by default (None, "", [], {}, (),)
 
     Returns:
     -------
@@ -51,6 +53,8 @@ def strip_empties_from_list(data: list, strip_values_tuple: tuple = (None, "", [
             stripped_v = strip_empties_from_dict(v, strip_values_tuple)
         elif isinstance(v, list):
             stripped_v = strip_empties_from_list(v, strip_values_tuple)
+        elif isinstance(v, tuple):
+            stripped_v = strip_empties_from_tuple(v, strip_values_tuple)
         else:
             stripped_v = v
 
@@ -59,7 +63,39 @@ def strip_empties_from_list(data: list, strip_values_tuple: tuple = (None, "", [
     return new_data
 
 
-def strip_empties_from_dict(data: dict, strip_values_tuple: tuple = (None, "", [], {})) -> dict:
+def strip_empties_from_tuple(data: tuple, strip_values_tuple: tuple = (None, "", [], {}, ())) -> tuple:
+    """
+    strip_empties_from_tuple Remove entries with null value from a tuple.
+
+    Parameters
+    ----------
+    data : Tuple
+        data to filter
+    strip_values_tuple : tuple, optional
+        Value to remove from data, by default (None, "", [], {}, (),)
+
+    Returns:
+    -------
+    Any
+        Cleaned tuple with no strip_values_tuple
+    """
+    new_data = []
+    for v in data:
+        if isinstance(v, dict):
+            stripped_v = strip_empties_from_dict(v, strip_values_tuple)
+        elif isinstance(v, list):
+            stripped_v = strip_empties_from_list(v, strip_values_tuple)
+        elif isinstance(v, tuple):
+            stripped_v = strip_empties_from_tuple(v, strip_values_tuple)
+        else:
+            stripped_v = v
+
+        if stripped_v not in strip_values_tuple:
+            new_data.append(stripped_v)
+    return tuple(new_data)
+
+
+def strip_empties_from_dict(data: dict, strip_values_tuple: tuple = (None, "", [], {}, ())) -> dict:
     """
     strip_empties_from_dict Remove entries with null value from a dict.
 
@@ -68,7 +104,7 @@ def strip_empties_from_dict(data: dict, strip_values_tuple: tuple = (None, "", [
     data : Any
         data to filter
     strip_values_tuple : tuple, optional
-        Value to remove from data, by default (None, "", [], {},)
+        Value to remove from data, by default (None, "", [], {}, (),)
 
     Returns:
     -------
@@ -81,6 +117,8 @@ def strip_empties_from_dict(data: dict, strip_values_tuple: tuple = (None, "", [
             stripped_v = strip_empties_from_dict(v, strip_values_tuple)
         elif isinstance(v, list):
             stripped_v = strip_empties_from_list(v, strip_values_tuple)
+        elif isinstance(v, tuple):
+            stripped_v = strip_empties_from_tuple(v, strip_values_tuple)
         else:
             stripped_v = v
         if stripped_v not in strip_values_tuple:

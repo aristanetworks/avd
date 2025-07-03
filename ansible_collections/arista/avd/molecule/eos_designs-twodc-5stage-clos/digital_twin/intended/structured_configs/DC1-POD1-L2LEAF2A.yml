@@ -42,6 +42,14 @@ ethernet_interfaces:
   peer: DC1-POD1-LEAF2B
   peer_interface: Ethernet3
   peer_type: l3leaf
+- name: Ethernet5
+  description: FIREWALL_firewall-1_Eth2
+  shutdown: false
+  peer: firewall-1
+  peer_interface: Eth2
+  peer_type: firewall
+  switchport:
+    enabled: true
 hostname: DC1-POD1-L2LEAF2A
 ip_igmp_snooping:
   globally_enabled: true

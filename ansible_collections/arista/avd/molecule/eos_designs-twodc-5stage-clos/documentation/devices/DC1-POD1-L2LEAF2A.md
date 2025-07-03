@@ -241,6 +241,7 @@ vlan 4094
 | Ethernet2 | L2_DC1-POD1-LEAF2B_Ethernet3 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 1 |
 | Ethernet3 | MLAG_DC1-POD1-L2LEAF2B_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet4 | MLAG_DC1-POD1-L2LEAF2B_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet5 | FIREWALL_firewall-1_Eth2 | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -267,6 +268,11 @@ interface Ethernet4
    description MLAG_DC1-POD1-L2LEAF2B_Ethernet4
    no shutdown
    channel-group 3 mode active
+!
+interface Ethernet5
+   description FIREWALL_firewall-1_Eth2
+   no shutdown
+   switchport
 ```
 
 ### Port-Channel Interfaces

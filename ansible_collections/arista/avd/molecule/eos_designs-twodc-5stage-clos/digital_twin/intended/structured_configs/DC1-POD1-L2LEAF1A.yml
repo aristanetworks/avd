@@ -21,6 +21,14 @@ ethernet_interfaces:
   peer_type: server
   switchport:
     enabled: true
+- name: Ethernet5
+  description: FIREWALL_firewall-1_Eth1
+  shutdown: false
+  peer: firewall-1
+  peer_interface: Eth1
+  peer_type: firewall
+  switchport:
+    enabled: true
 hostname: DC1-POD1-L2LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
@@ -42,9 +50,9 @@ metadata:
   fabric_name: TWODC_5STAGE_CLOS
   digital_twin:
     environment: act
-    node_type: tools-server
+    node_type: cloudeos
     ip_addr: 192.168.1.10/24
-    version: ubuntu-2204-lts
+    version: 4.33.2F
     username: admin
     password: admin
 port_channel_interfaces:
