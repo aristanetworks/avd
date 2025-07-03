@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -42,7 +42,7 @@ class NtpMixin(Protocol):
             elif authentication_key.cleartext_key is not None:
                 # always type 7
                 # deterministic salt based on the key ID
-                salt: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] = authentication_key.id % 16
+                salt = cast("Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]", authentication_key.id % 16)
                 output_key = ntp_encrypt(authentication_key.cleartext_key, salt=salt)
                 self.structured_config.ntp.authentication_keys.append_new(
                     id=authentication_key.id, key_type="7", key=output_key, hash_algorithm=authentication_key.hash_algorithm
