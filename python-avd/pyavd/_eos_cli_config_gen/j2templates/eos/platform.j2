@@ -4,7 +4,12 @@
  that can be found in the LICENSE file.
 #}
 {# eos - platform #}
-{% if platform.trident.l3 is arista.avd.defined or platform.trident.forwarding_table_partition is arista.avd.defined or platform.sand is arista.avd.defined or platform.sfe is arista.avd.defined or platform.fap is arista.avd.defined %}
+{% if platform.trident.l3 is arista.avd.defined or
+    platform.trident.forwarding_table_partition is arista.avd.defined or
+    platform.sand is arista.avd.defined or
+    platform.sfe is arista.avd.defined or
+    platform.fap is arista.avd.defined or
+    port_channel.load_balance_sand_profile is arista.avd.defined %}
 !
 {%     if platform.trident.l3 is arista.avd.defined %}
 {%         if platform.trident.l3.routing_mac_address_per_vlan is arista.avd.defined(true) %}
@@ -32,6 +37,10 @@ platform fap buffering egress profile {{ platform.fap.buffering_egress.profile }
 platform sand qos map traffic-class {{ qos_map.traffic_class }} to network-qos {{ qos_map.to_network_qos }}
 {%             endif %}
 {%         endfor %}
+{%         if port_channel.load_balance_sand_profile is arista.avd.defined %}
+!
+port-channel load-balance sand profile {{ port_channel.load_balance_sand_profile }}
+{%         endif %}
 {%         if platform.sand.multicast_replication.default is arista.avd.defined %}
 platform sand multicast replication default {{ platform.sand.multicast_replication.default }}
 {%         endif %}
