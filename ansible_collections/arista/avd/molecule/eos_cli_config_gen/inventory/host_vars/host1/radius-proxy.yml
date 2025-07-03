@@ -1,0 +1,69 @@
+---
+radius_proxy:
+  client_key: encrypt_radius_proxy
+  client_session_idle_timeout: 46
+  dynamic_authorization: true
+  client_groups:
+    - name: CG_1
+      server_groups:
+        - aaa
+          bbb
+          ccc
+      vrfs:
+        - name: vrf_2
+          ipv4_clients:
+            - address: 1.1.10.10
+              key: secret_1
+            - address: 1.1.10.6
+            - address: 2.1.1.1
+            - address: 1.1.10.8
+              key: secret_2
+        - name: vrf_1
+          ipv4_clients:
+            - address: 1.2.10.10
+              key: secret_1
+            - address: 1.2.10.6
+            - address: 2.2.1.1
+            - address: 1.2.10.8
+              key: secret_2
+          ipv6_clients:
+            - address: 2001:db8::1
+              key: secret_ipv6_1
+            - address: ::1
+            - address: fd00::1234
+              key: secret_ipv6_2
+          host_clients:
+            - name: host1
+              key: secret_host_1
+            - name: host2
+            - name: host3
+              key: secret_host_2
+    - name: CG_2
+    - name: CG_3
+      server_groups: [ ddd ]
+    - name: CG_4
+      vrfs:
+        - name: vrf_only_host
+          host_clients:
+            - name: host11
+              key: secret_host_11
+            - name: host12
+            - name: host13
+              key: secret_host_13
+        - name: vrf_only_ipv4
+          ipv4_clients:
+            - address: 1.2.10.11
+              key: secret_11
+            - address: 1.2.10.16
+            - address: 2.2.1.11
+            - address: 1.2.10.18
+              key: secret_21
+    - name: CG_5
+      vrfs:
+        - name: vrf_only_ipv6
+          ipv6_clients:
+            - address: 2001:db8::11
+              key: secret_ipv6_12
+            - address: ::12
+            - address: fd0::1234
+              key: secret_ipv6_22

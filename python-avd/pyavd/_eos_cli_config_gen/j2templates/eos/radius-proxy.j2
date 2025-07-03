@@ -1,0 +1,76 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - queue monitor streaming #}
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - radius proxy #}
+{% if radius_proxy is arista.avd.defined %}
+!
+radius proxy
+{%     if radius_proxy.dynamic_authorization is arista.avd.defined(true) %}
+   dynamic-authorization
+{%     endif %}
+{#
+
+ask for hide password, add docs and also check which all files needs to be edited to add these
+
+#}
+{%     if radius_proxy.client_key is arista.avd.defined %}
+   client key 7 {{ radius_proxy.client_key | arista.avd.hide_passwords(hide_passwords) }}
+{%     endif %}
+{%     if radius_proxy.client_session_idle_timeout is arista.avd.defined %}
+   client session idle-timeout {{ radius_proxy.client_session_idle_timeout }} seconds
+{%     endif %}
+{%     for client_group in radius_proxy.client_groups | arista.avd.natural_sort("name") %}
+   !
+   client group {{ client_group.name }}
+{%         for vrf in client_group.vrfs | arista.avd.default([]) | selectattr("ipv4_clients", "arista.avd.defined") %}
+{%             if vrf.ipv4_clients is arista.avd.defined %}
+{%                 for ipv4 in vrf.ipv4_clients %}
+{%                     if ipv4.address is arista.avd.defined %}
+{%                         set client_ipv4 = "client ipv4 " ~ ipv4.address ~ " vrf " ~ vrf.name %}
+{%                         if ipv4.key is arista.avd.defined %}
+{%                             set client_ipv4 = client_ipv4 ~ " key " ~ ipv4.key ~ " 7 " ~ ipv4.key | arista.avd.hide_passwords(hide_passwords) %}
+{%                         endif %}
+      {{ client_ipv4 }}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%         for vrf in client_group.vrfs | arista.avd.default([]) | selectattr("ipv6_clients", "arista.avd.defined") %}
+{%             if vrf.ipv6_clients is arista.avd.defined %}
+{%                 for ipv6 in vrf.ipv6_clients %}
+{%                     if ipv6.address is arista.avd.defined %}
+{%                         set client_ipv6 = "client ipv6 " ~ ipv6.address ~ " vrf " ~ vrf.name %}
+{%                         if ipv6.key is arista.avd.defined %}
+{%                             set client_ipv6 = client_ipv6 ~ " key "  ~ ipv6.key ~ " 7 " ~ ipv6.key | arista.avd.hide_passwords(hide_passwords) %}
+{%                         endif %}
+      {{ client_ipv6 }}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%         for vrf in client_group.vrfs | arista.avd.default([]) | selectattr("host_clients", "arista.avd.defined") %}
+{%             if vrf.host_clients is arista.avd.defined %}
+{%                 for host in vrf.host_clients %}
+{%                     if host.name is arista.avd.defined %}
+{%                         set client_host = "client host " ~ host.name ~ " vrf " ~ vrf.name %}
+{%                         if host.key is arista.avd.defined %}
+{%                             set client_host = client_host ~ " key "  ~ host.key ~ " 7 " ~ host.key | arista.avd.hide_passwords(hide_passwords) %}
+{%                         endif %}
+      {{ client_host }}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%         if client_group.server_groups is arista.avd.defined %}
+      server group {{ client_group.server_groups | join(" ") }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

@@ -34704,6 +34704,262 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class RadiusProxy(AvdModel):
+        """Subclass of AvdModel."""
+
+        class ClientGroupsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class ServerGroups(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            ServerGroups._item_type = str
+
+            class VrfsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Ipv4ClientsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "key": {"type": str}}
+                    address: str
+                    """IPv4 address "A.B.C.D" or prefix "A.B.C.D/E"."""
+                    key: str | None
+                    """
+                    Key for this client (overrides global).
+                    Only type 7 supported.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, address: str | UndefinedType = Undefined, key: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            Ipv4ClientsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                address: IPv4 address "A.B.C.D" or prefix "A.B.C.D/E".
+                                key:
+                                   Key for this client (overrides global).
+                                   Only type 7 supported.
+
+                            """
+
+                class Ipv4Clients(AvdIndexedList[str, Ipv4ClientsItem]):
+                    """Subclass of AvdIndexedList with `Ipv4ClientsItem` items. Primary key is `address` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "address"
+
+                Ipv4Clients._item_type = Ipv4ClientsItem
+
+                class Ipv6ClientsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"address": {"type": str}, "key": {"type": str}}
+                    address: str
+                    """IPv6 address "A:B:C:D:E:F:G:H" prefix "A:B:C:D:E:F:G:H/I"."""
+                    key: str | None
+                    """
+                    Key for this client (overrides global).
+                    Only type 7 supported.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, address: str | UndefinedType = Undefined, key: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            Ipv6ClientsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                address: IPv6 address "A:B:C:D:E:F:G:H" prefix "A:B:C:D:E:F:G:H/I".
+                                key:
+                                   Key for this client (overrides global).
+                                   Only type 7 supported.
+
+                            """
+
+                class Ipv6Clients(AvdIndexedList[str, Ipv6ClientsItem]):
+                    """Subclass of AvdIndexedList with `Ipv6ClientsItem` items. Primary key is `address` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "address"
+
+                Ipv6Clients._item_type = Ipv6ClientsItem
+
+                class HostClientsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"name": {"type": str}, "key": {"type": str}}
+                    name: str
+                    """Hostname."""
+                    key: str | None
+                    """
+                    Key for this client (overrides global).
+                    Only type 7 supported.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, name: str | UndefinedType = Undefined, key: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            HostClientsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                name: Hostname.
+                                key:
+                                   Key for this client (overrides global).
+                                   Only type 7 supported.
+
+                            """
+
+                class HostClients(AvdIndexedList[str, HostClientsItem]):
+                    """Subclass of AvdIndexedList with `HostClientsItem` items. Primary key is `name` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "name"
+
+                HostClients._item_type = HostClientsItem
+
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "ipv4_clients": {"type": Ipv4Clients},
+                    "ipv6_clients": {"type": Ipv6Clients},
+                    "host_clients": {"type": HostClients},
+                }
+                name: str
+                """VRF name."""
+                ipv4_clients: Ipv4Clients
+                """Subclass of AvdIndexedList with `Ipv4ClientsItem` items. Primary key is `address` (`str`)."""
+                ipv6_clients: Ipv6Clients
+                """Subclass of AvdIndexedList with `Ipv6ClientsItem` items. Primary key is `address` (`str`)."""
+                host_clients: HostClients
+                """Subclass of AvdIndexedList with `HostClientsItem` items. Primary key is `name` (`str`)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        ipv4_clients: Ipv4Clients | UndefinedType = Undefined,
+                        ipv6_clients: Ipv6Clients | UndefinedType = Undefined,
+                        host_clients: HostClients | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        VrfsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: VRF name.
+                            ipv4_clients: Subclass of AvdIndexedList with `Ipv4ClientsItem` items. Primary key is `address` (`str`).
+                            ipv6_clients: Subclass of AvdIndexedList with `Ipv6ClientsItem` items. Primary key is `address` (`str`).
+                            host_clients: Subclass of AvdIndexedList with `HostClientsItem` items. Primary key is `name` (`str`).
+
+                        """
+
+            class Vrfs(AvdIndexedList[str, VrfsItem]):
+                """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Vrfs._item_type = VrfsItem
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "server_groups": {"type": ServerGroups}, "vrfs": {"type": Vrfs}}
+            name: str
+            """Name of client group."""
+            server_groups: ServerGroups
+            """Subclass of AvdList with `str` items."""
+            vrfs: Vrfs
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    server_groups: ServerGroups | UndefinedType = Undefined,
+                    vrfs: Vrfs | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    ClientGroupsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Name of client group.
+                        server_groups: Subclass of AvdList with `str` items.
+                        vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+
+                    """
+
+        class ClientGroups(AvdIndexedList[str, ClientGroupsItem]):
+            """Subclass of AvdIndexedList with `ClientGroupsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        ClientGroups._item_type = ClientGroupsItem
+
+        _fields: ClassVar[dict] = {
+            "client_key": {"type": str},
+            "client_session_idle_timeout": {"type": int},
+            "dynamic_authorization": {"type": bool},
+            "client_groups": {"type": ClientGroups},
+        }
+        client_key: str | None
+        """
+        Set client secret key, allowed max size is 128.
+        Only type 7 supported.
+        """
+        client_session_idle_timeout: int | None
+        """Idle timeout in seconds."""
+        dynamic_authorization: bool | None
+        """
+        To change or revoke a user's access dynamically after authentication,
+        without requiring the user to
+        reconnect or reauthenticate.
+        """
+        client_groups: ClientGroups
+        """Subclass of AvdIndexedList with `ClientGroupsItem` items. Primary key is `name` (`str`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                client_key: str | None | UndefinedType = Undefined,
+                client_session_idle_timeout: int | None | UndefinedType = Undefined,
+                dynamic_authorization: bool | None | UndefinedType = Undefined,
+                client_groups: ClientGroups | UndefinedType = Undefined,
+            ) -> None:
+                """
+                RadiusProxy.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    client_key:
+                       Set client secret key, allowed max size is 128.
+                       Only type 7 supported.
+                    client_session_idle_timeout: Idle timeout in seconds.
+                    dynamic_authorization:
+                       To change or revoke a user's access dynamically after authentication,
+                       without requiring the user to
+                       reconnect or reauthenticate.
+                    client_groups: Subclass of AvdIndexedList with `ClientGroupsItem` items. Primary key is `name` (`str`).
+
+                """
+
     class RadiusServer(AvdModel):
         """Subclass of AvdModel."""
 
@@ -66243,6 +66499,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "qos_profiles": {"type": QosProfiles},
         "queue_monitor_length": {"type": QueueMonitorLength},
         "queue_monitor_streaming": {"type": QueueMonitorStreaming},
+        "radius_proxy": {"type": RadiusProxy},
         "radius_server": {"type": RadiusServer},
         "redundancy": {"type": Redundancy},
         "roles": {"type": Roles},
@@ -66725,6 +66982,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     queue_monitor_streaming: QueueMonitorStreaming
     """Subclass of AvdModel."""
+    radius_proxy: RadiusProxy
+    """
+    It forwards RADIUS requests and responses between clients (NAS devices) and RADIUS servers.
+    It acts
+    as a middle layer that helps route, manage, and control authentication,
+    authorization, and
+    accounting (AAA) traffic
+
+    Subclass of AvdModel.
+    """
     radius_server: RadiusServer
     """Subclass of AvdModel."""
     redundancy: Redundancy
@@ -67007,6 +67274,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             qos_profiles: QosProfiles | UndefinedType = Undefined,
             queue_monitor_length: QueueMonitorLength | UndefinedType = Undefined,
             queue_monitor_streaming: QueueMonitorStreaming | UndefinedType = Undefined,
+            radius_proxy: RadiusProxy | UndefinedType = Undefined,
             radius_server: RadiusServer | UndefinedType = Undefined,
             redundancy: Redundancy | UndefinedType = Undefined,
             roles: Roles | UndefinedType = Undefined,
@@ -67330,6 +67598,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 qos_profiles: Subclass of AvdIndexedList with `QosProfilesItem` items. Primary key is `name` (`str`).
                 queue_monitor_length: Subclass of AvdModel.
                 queue_monitor_streaming: Subclass of AvdModel.
+                radius_proxy:
+                   It forwards RADIUS requests and responses between clients (NAS devices) and RADIUS servers.
+                   It acts
+                   as a middle layer that helps route, manage, and control authentication,
+                   authorization, and
+                   accounting (AAA) traffic
+
+                   Subclass of AvdModel.
                 radius_server: Subclass of AvdModel.
                 redundancy: Subclass of AvdModel.
                 roles: Subclass of AvdIndexedList with `RolesItem` items. Primary key is `name` (`str`).
