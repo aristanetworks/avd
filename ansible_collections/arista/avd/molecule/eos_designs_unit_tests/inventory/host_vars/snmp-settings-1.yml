@@ -64,6 +64,10 @@ snmp_settings:
       vrf: use_default_mgmt_method_vrf
       version: 2c
       community: SNMP-COMMUNITY-2
+    # test without vrf
+    - host: 10.6.75.131
+      version: 3
+      community: SNMP-COMMUNITY-2
 
   communities: # Copied from eos_cli_config_gen, since we pass this through 1:1
     - name: SNMP-COMMUNITY-1
