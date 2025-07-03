@@ -75,6 +75,11 @@ interface Vxlan1
    vxlan vlan {{ vlan.id }} flood vtep {{ vlan.flood_vteps | join(' ') }}
 {%         endif %}
 {%     endfor %}
+{%     for vlan in vxlan_config.vxlan.vlans | arista.avd.natural_sort('id') %}
+{%         if vlan.flood_group is arista.avd.defined %}
+   vxlan vlan {{ vlan.id }} flood group {{ vlan.flood_group }}
+{%         endif %}
+{%     endfor %}
 {%     for vlan in vxlan_config.vxlan.vlans | arista.avd.natural_sort('id') if vlan.multicast_group is arista.avd.defined %}
    vxlan vlan {{ vlan.id }} multicast group {{ vlan.multicast_group }}
 {%     endfor %}

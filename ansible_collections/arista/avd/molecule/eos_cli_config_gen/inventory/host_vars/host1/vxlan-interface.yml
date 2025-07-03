@@ -34,11 +34,15 @@ vxlan_interface:
           multicast_group: 239.9.1.4
         - id: 111
           vni: 10111
+          # To test flood_group with flood_vteps
           flood_vteps:
             - 10.1.1.10
             - 10.1.1.11
+          flood_group: 232.1.1.21
         - id: 112
           multicast_group: 239.9.1.6
+          # To test flood_group without flood_vteps
+          flood_group: 232.1.1.22
 
       vrfs:
         - name: Tenant_A_OP_Zone
