@@ -343,7 +343,7 @@ def radius_encrypt(password: str, salt: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
     Encrypt (obfuscate) a Radius key with insecure type-7.
 
     Args:
-        password: The clear text Tacacs key.
+        password: The clear text Radius key.
         salt: A number within the range 0-15.
 
     Returns:
