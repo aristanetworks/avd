@@ -1406,10 +1406,10 @@ keys:
     type: str
     description: "`default_mgmt_method` controls the default VRF and source interface
       used for the following management and monitoring protocols configured with `eos_designs`:\n
-      \ - `logging_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n  - `snmp_settings`\n
-      \ - `ssh_settings`\n  - `management_eapi`\n\n`oob` means the protocols will
-      be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface`
-      as the source interface.\n`inband` means the protocols will be configured with
+      \ - `logging_settings`\n  - `management_eapi`\n  - `ntp_settings`\n  - `sflow_settings`\n
+      \ - `snmp_settings`\n  - `ssh_settings`\n\n`oob` means the protocols will be
+      configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as
+      the source interface.\n`inband` means the protocols will be configured with
       the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.\n`none`
       means the VRF and or interface must be manually set for each protocol.\nThis
       can be overridden under the settings for each protocol.\n"
@@ -2761,6 +2761,11 @@ keys:
           enabled: true
         type: list
         primary_key: name
+        description: 'Note: For backward compatibility, the default behavior does
+          not enforce `mgmt_ip` to be present in VRFs.
+
+          If this enforcement is desired, users must explicitly define VRFs. This
+          behavior applies up to AVD version 6.0.'
         items:
           type: dict
           keys:

@@ -32,6 +32,9 @@ keys:
             enabled: true
         type: list
         primary_key: name
+        description: |-
+          Note: For backward compatibility, the default behavior does not enforce `mgmt_ip` to be present in VRFs.
+          If this enforcement is desired, users must explicitly define VRFs. This behavior applies up to AVD version 6.0.
         items:
           type: dict
           keys:

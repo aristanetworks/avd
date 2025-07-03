@@ -261,14 +261,7 @@ management_api_http:
   enable_https: false
   default_services: false
   enable_vrfs:
-  - name: VRF_Enable
-  - name: VRF_Enable_1
-    access_group: ACL_EAPI_IPv4
-    ipv6_access_group: ACL_EAPI_IPv6
-  - name: VRF_Enable_2
-    access_group: ACL_EAPI_IPv4_1
-  - name: VRF_Enable_3
-    ipv6_access_group: ACL_EAPI_IPv6_1
+  - name: MGMT
 management_interfaces:
 - name: Management99
   description: OOB_MANAGEMENT

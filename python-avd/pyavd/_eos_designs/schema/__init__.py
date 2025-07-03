@@ -8098,6 +8098,11 @@ class EosDesigns(EosDesignsRootModel):
         default_services: bool | None
         vrfs: Vrfs
         """
+        Note: For backward compatibility, the default behavior does not enforce `mgmt_ip` to be present in
+        VRFs.
+        If this enforcement is desired, users must explicitly define VRFs. This behavior applies up to
+        AVD version 6.0.
+
         Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
         Default value: `lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)`
@@ -8125,7 +8130,13 @@ class EosDesigns(EosDesignsRootModel):
                     enable_http: enable_http
                     enable_https: enable_https
                     default_services: default_services
-                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                    vrfs:
+                       Note: For backward compatibility, the default behavior does not enforce `mgmt_ip` to be present in
+                       VRFs.
+                       If this enforcement is desired, users must explicitly define VRFs. This behavior applies up to
+                       AVD version 6.0.
+
+                       Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
 
@@ -65161,11 +65172,11 @@ class EosDesigns(EosDesignsRootModel):
     management and monitoring protocols configured with `eos_designs`:
       - `logging_settings`
       -
-    `ntp_settings`
+    `management_eapi`
+      - `ntp_settings`
       - `sflow_settings`
       - `snmp_settings`
       - `ssh_settings`
-      - `management_eapi`
     `oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and
     `mgmt_interface` as the source interface.
     `inband` means the protocols will be configured with the
@@ -67194,11 +67205,11 @@ class EosDesigns(EosDesignsRootModel):
                    management and monitoring protocols configured with `eos_designs`:
                      - `logging_settings`
                      -
-                   `ntp_settings`
+                   `management_eapi`
+                     - `ntp_settings`
                      - `sflow_settings`
                      - `snmp_settings`
                      - `ssh_settings`
-                     - `management_eapi`
                    `oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and
                    `mgmt_interface` as the source interface.
                    `inband` means the protocols will be configured with the

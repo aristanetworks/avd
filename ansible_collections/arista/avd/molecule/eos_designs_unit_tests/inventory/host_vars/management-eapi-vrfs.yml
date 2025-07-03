@@ -1,0 +1,31 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.10.0/24
+    vtep_loopback_ipv4_pool: 10.10.10.0/24
+    bgp_as: 65042
+  nodes:
+    - name: management-eapi-vrfs
+      loopback_ipv4_address: 10.42.42.42
+      id: 12
+
+management_eapi:
+  vrfs:
+    - name: VRF_Enable
+      enabled: true
+    - name: VRF_Enable_1
+      enabled: true
+      ipv4_acl: ACL_EAPI_IPv4
+      ipv6_acl: ACL_EAPI_IPv6
+    - name: VRF_Enable_2
+      enabled: true
+      ipv4_acl: ACL_EAPI_IPv4_1
+    - name: VRF_Enable_3
+      enabled: true
+      ipv6_acl: ACL_EAPI_IPv6_1
+    - name: VRF_Disable
+      enabled: false
+      ipv4_acl: ACL_EAPI_IPv4_2
+      ipv6_acl: ACL_EAPI_IPv6_2
