@@ -1157,7 +1157,7 @@ keys:
         description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
           `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
 
-          Can be set to `false` to avoid changes when migrating from old `cv_instances`
+          Can be set to `false` to avoid changes when migrating from the old `cv_instances`
           model.'
         default: true
   cv_tags_topology_type:
@@ -1543,17 +1543,19 @@ keys:
           keys:
             vrf:
               type: str
-              description: "If not set, the VRF is automatically picked up from the
-                global setting `default_mgmt_method`.\nThe value of `vrf` will be
-                interpreted according to these rules:\n- `use_mgmt_interface_vrf`
-                will configure the DNS server under the VRF set with `mgmt_interface_vrf`
-                and set the `mgmt_interface` as DNS lookup source-interface.\n  An
-                error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
-                for the device.\n- `use_inband_mgmt_vrf` will configure the DNS server
-                under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface`
-                as DNS lookup source-interface.\n  An error will be raised if inband
-                management is not configured for the device.\n- Any other string will
-                be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface`
+              default: use_default_mgmt_method_vrf
+              description: "The value of `vrf` will be interpreted according to these
+                rules:\n- `use_mgmt_interface_vrf` will configure the DNS server under
+                the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface`
+                as DNS lookup source-interface.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+                will configure the DNS server under the VRF set with `inband_mgmt_vrf`
+                and set the `inband_mgmt_interface` as DNS lookup source-interface.\n
+                \ An error will be raised if inband management is not configured for
+                the device.\n- `use_default_mgmt_method_vrf` will configure the VRF
+                and source-interface for one of the two options above depending on
+                the value of `default_mgmt_method`.\n- Any other string will be used
+                directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface`
                 if needed."
               convert_types:
               - int
@@ -1577,10 +1579,10 @@ keys:
       set_source_interfaces:
         type: bool
         default: true
-        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`
-          and `use_inband_mgmt_vrf`.
+        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+          `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
 
-          Can be set to `false` to avoid changes when migrating from old `name_servers`
+          Can be set to `false` to avoid changes when migrating from the old `name_servers`
           model.'
   enable_trunk_groups:
     documentation_options:
@@ -2664,17 +2666,19 @@ keys:
               required: true
             vrf:
               type: str
-              description: "If not set, the VRF is automatically picked up from the
-                global setting `default_mgmt_method`.\nThe value of `vrf` will be
-                interpreted according to these rules:\n- `use_mgmt_interface_vrf`
-                will configure the logging destination under the VRF set with `mgmt_interface_vrf`
-                and set the `mgmt_interface` as logging source-interface.\n  An error
-                will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for
-                the device.\n- `use_inband_mgmt_vrf` will configure the logging destination
-                under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface`
-                as logging source-interface.\n  An error will be raised if inband
-                management is not configured for the device.\n- Any other string will
-                be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface`
+              default: use_default_mgmt_method_vrf
+              description: "The value of `vrf` will be interpreted according to these
+                rules:\n- `use_mgmt_interface_vrf` will configure the logging destination
+                under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface`
+                as logging source-interface.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+                will configure the logging destination under the VRF set with `inband_mgmt_vrf`
+                and set the `inband_mgmt_interface` as logging source-interface.\n
+                \ An error will be raised if inband management is not configured for
+                the device.\n- `use_default_mgmt_method_vrf` will configure the VRF
+                and source-interface for one of the two options above depending on
+                the value of `default_mgmt_method`.\n- Any other string will be used
+                directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface`
                 if needed."
               convert_types:
               - int
@@ -4767,7 +4771,7 @@ keys:
                 `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set
                 with `inband_mgmt_vrf`.\n  An error will be raised if inband management
                 is not configured for the device.\n- `use_default_mgmt_method_vrf`
-                will configure the VRF and source-interface for one of the two options
+                will configure the SNMP ACL under the VRF for one of the two options
                 above depending on the value of `default_mgmt_method`.\n- Any other
                 string will be used directly as the VRF name."
               convert_types:
@@ -4778,6 +4782,9 @@ keys:
             source_interface:
               type: str
               description: 'Source interface to use for SNMP hosts in this VRF.
+
+                If not set, the source interface may be set automatically when VRF
+                is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
 
                 If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
                 this setting will take precedence.'
@@ -4905,32 +4912,37 @@ keys:
                 will configure the SNMP host under the VRF set with `inband_mgmt_vrf`
                 and set the `inband_mgmt_interface` as SNMP source-interface.\n  An
                 error will be raised if inband management is not configured for the
-                device.\n- `use_default_mgmt_method_vrf` will configure the VRF and
-                source-interface for one of the two options above depending on the
-                value of `default_mgmt_method`.\n- Any other string will be used directly
-                as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface`
-                if needed."
+                device.\n- `use_default_mgmt_method_vrf` will configure the SNMP host
+                under the VRF and set the source-interface for one of the two options
+                above depending on the value of `default_mgmt_method`.\n- Any other
+                string will be used directly as the VRF name. Remember to set the
+                `snmp_settings.vrfs[].source_interface` if needed."
               convert_types:
               - int
             use_mgmt_interface_vrf:
               type: bool
-              description: Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-                Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the
-                device, so if the host is only configured with this VRF, the host
-                will not be configured at all. Can be used in combination with "vrf"
-                and "use_inband_mgmt_vrf" to configure the SNMP host under multiple
-                VRFs.
+              description: 'Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
+
+                Ignored if ''mgmt_ip'' or ''ipv6_mgmt_ip'' are not configured for
+                the device, so if the host is only configured with this VRF, the host
+                will not be configured at all.
+
+                Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to
+                configure the SNMP host under multiple VRFs.'
               deprecation:
                 warning: true
                 remove_in_version: 6.0.0
                 new_key: 'vrf: "use_mgmt_interface_vrf"'
             use_inband_mgmt_vrf:
               type: bool
-              description: Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+              description: 'Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+
                 Ignored if inband management is not configured for the device, so
                 if the host is only configured with this VRF, the host will not be
-                configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
-                to configure the SNMP host under multiple VRFs.
+                configured at all.
+
+                Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
+                to configure the SNMP host under multiple VRFs.'
               deprecation:
                 warning: true
                 remove_in_version: 6.0.0
