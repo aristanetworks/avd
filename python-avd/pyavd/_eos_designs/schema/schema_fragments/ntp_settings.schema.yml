@@ -79,7 +79,6 @@ keys:
               description: |-
                 Key type of the `key`.
                 Does not have any influence on `cleartext_key`.
-
       trusted_keys:
         type: str
         $ref: eos_cli_config_gen#/keys/ntp/keys/trusted_keys
