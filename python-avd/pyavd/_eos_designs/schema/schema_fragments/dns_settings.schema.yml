@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
@@ -26,13 +26,14 @@ keys:
           keys:
             vrf:
               type: str
+              default: use_default_mgmt_method_vrf
               description: |-
-                If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
                 The value of `vrf` will be interpreted according to these rules:
                 - `use_mgmt_interface_vrf` will configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as DNS lookup source-interface.
                   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
                 - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
                   An error will be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
               convert_types:
                 - int
@@ -56,5 +57,5 @@ keys:
         type: bool
         default: true
         description: |-
-          Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
-          Can be set to `false` to avoid changes when migrating from old `name_servers` model.
+          Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+          Can be set to `false` to avoid changes when migrating from the old `name_servers` model.
