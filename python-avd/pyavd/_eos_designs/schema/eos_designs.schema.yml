@@ -5333,7 +5333,7 @@ keys:
       table: isis-settings
     type: str
     description: 'Cleartext password. `underlay_isis_authentication_key` takes precedence
-      over this key.
+      over this key. Only type 7 encryption is supported.
 
       To protect the password at rest it is strongly recommended to make use of a
       vault or similar.
@@ -11760,8 +11760,12 @@ $defs:
           description: Type-7 encrypted password.
         isis_authentication_cleartext_key:
           type: str
-          description: Cleartext password. `isis_authentication_key` takes precedence
+          description: 'Cleartext password. `isis_authentication_key` takes precedence
             over this key.
+
+            Type 7 encryption is supported.
+
+            '
         isis_network_type:
           type: str
           default: point-to-point

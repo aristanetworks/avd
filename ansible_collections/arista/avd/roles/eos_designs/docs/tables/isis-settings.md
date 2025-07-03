@@ -18,7 +18,7 @@
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "isis_ti_lfa.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;protection</samp>](## "isis_ti_lfa.protection") | String |  |  | Valid Values:<br>- <code>link</code><br>- <code>node</code> |  |
     | [<samp>&nbsp;&nbsp;local_convergence_delay</samp>](## "isis_ti_lfa.local_convergence_delay") | Integer |  | `10000` |  | Local convergence delay in milliseconds. |
-    | [<samp>underlay_isis_authentication_cleartext_key</samp>](## "underlay_isis_authentication_cleartext_key") | String |  |  |  | Cleartext password. `underlay_isis_authentication_key` takes precedence over this key.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar.<br> |
+    | [<samp>underlay_isis_authentication_cleartext_key</samp>](## "underlay_isis_authentication_cleartext_key") | String |  |  |  | Cleartext password. `underlay_isis_authentication_key` takes precedence over this key. Only type 7 encryption is supported.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar.<br> |
     | [<samp>underlay_isis_authentication_key</samp>](## "underlay_isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
     | [<samp>underlay_isis_authentication_mode</samp>](## "underlay_isis_authentication_mode") | String |  |  | Valid Values:<br>- <code>md5</code><br>- <code>text</code> | Underlay ISIS authentication mode. |
     | [<samp>underlay_isis_bfd</samp>](## "underlay_isis_bfd") | Boolean |  | `False` |  | Enable BFD for ISIS on all underlay links. |
@@ -51,7 +51,7 @@
       # Local convergence delay in milliseconds.
       local_convergence_delay: <int; default=10000>
 
-    # Cleartext password. `underlay_isis_authentication_key` takes precedence over this key.
+    # Cleartext password. `underlay_isis_authentication_key` takes precedence over this key. Only type 7 encryption is supported.
     # To protect the password at rest it is strongly recommended to make use of a vault or similar.
     underlay_isis_authentication_cleartext_key: <str>
 
