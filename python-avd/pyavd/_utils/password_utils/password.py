@@ -347,7 +347,7 @@ def radius_encrypt(password: str, salt: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
         salt: A number within the range 0-15.
 
     Returns:
-        str: The encrypted Tacacs key as a string.
+        str: The encrypted Radius key as a string.
     """
     if not isinstance(password, str) or not password:
         msg = "Password MUST be a string with at least 1 character."
