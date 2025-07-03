@@ -437,6 +437,16 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         offset = vlan_id - 1 + underlay_l2_multicast_group_ipv4_pool_offset
         return get_ip_from_pool(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
 
+    def evpn_underlay_l2_flood_group(
+        self,
+        underlay_l2_flood_ipv4_pool: str,
+        vlan_id: int,
+        underlay_l2_flood_ipv4_pool_offset: int,
+    ) -> str:
+        """Return IP address to be used for EVPN underlay L2 flood group."""
+        offset = vlan_id - 1 + underlay_l2_flood_ipv4_pool_offset
+        return get_ip_from_pool(underlay_l2_flood_ipv4_pool, 32, offset, 0)
+
     def wan_ha_ip(self) -> str:
         """Return the WAN HA local IP address."""
         wan_ha_ipv4_pool = self.shared_utils.wan_ha_ipv4_pool

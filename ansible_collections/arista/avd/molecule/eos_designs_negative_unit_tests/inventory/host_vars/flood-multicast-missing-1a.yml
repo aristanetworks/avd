@@ -1,0 +1,29 @@
+underlay_multicast: true
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+
+  node_groups:
+    - group: flood_multicast_missing
+      nodes:
+        - name: flood-multicast-missing-1a
+          bgp_as: 42
+          id: 42
+
+type: l3leaf
+
+tenants:
+  - name: Tenant_A
+    mac_vrf_vni_base: 10000
+    vxlan_flood_multicast:
+      enabled: true
+    l2vlans:
+      - id: 256
+        name: "Missing_underlay_l2_multicast_group_ipv4_pool"
+        tags: ['test_l2']
+
+expected_error_message: >-
+  'vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant 'Tenant_A' or 'vxlan_flood_multicast.underlay_l2_multicast_group'
+  for VLAN '256' is required.
