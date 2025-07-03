@@ -13,7 +13,7 @@ from pyavd.api.fabric_documentation import (
     ActNodeTypeSettings,
     FabricDocumentation,
 )
-from pyavd.j2filters import natural_sort
+from pyavd.j2filters.natural_sort import natural_sort
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
