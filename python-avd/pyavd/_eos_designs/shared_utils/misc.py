@@ -156,6 +156,10 @@ class MiscMixin(Protocol):
         return default(self.node_config.uplink_interface_speed, self.default_interfaces.uplink_interface_speed)
 
     @cached_property
+    def mlag_interface_speed(self: SharedUtilsProtocol) -> str | None:
+        return default(self.node_config.mlag_interfaces_speed, self.default_interfaces.mlag_interfaces_speed)
+
+    @cached_property
     def uplink_switch_interface_speed(self: SharedUtilsProtocol) -> str | None:
         # Keeping since we will need it when adding speed support under default interfaces.
         return self.node_config.uplink_switch_interface_speed
