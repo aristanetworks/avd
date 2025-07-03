@@ -649,7 +649,6 @@ class AvdStructuredConfigBaseProtocol(
             return
 
         vrfs = self.inputs.aaa_settings.radius.vrfs
-        radius_source_interface = EosCliConfigGen.IpRadiusSourceInterfacesItem()
         for server in self.inputs.aaa_settings.radius.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -658,8 +657,9 @@ class AvdStructuredConfigBaseProtocol(
                 context=f"aaa_settings.radius.servers[ip_address={server.host}].vrf",
             )
             if source_interface:
-                radius_source_interface._update(name=source_interface, vrf=server_vrf)
-                self.structured_config.ip_radius_source_interfaces.append_unique(radius_source_interface)
+                self.structured_config.ip_radius_source_interfaces.append_unique(
+                    EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
+                )
 
             self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server.key)
 
@@ -686,7 +686,6 @@ class AvdStructuredConfigBaseProtocol(
             return
 
         vrfs = self.inputs.aaa_settings.tacacs.vrfs
-        tacacs_source_interface = EosCliConfigGen.IpTacacsSourceInterfacesItem()
         for server in self.inputs.aaa_settings.tacacs.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -695,8 +694,9 @@ class AvdStructuredConfigBaseProtocol(
                 context=f"aaa_settings.tacacs.servers[ip_address={server.host}].vrf",
             )
             if source_interface:
-                tacacs_source_interface._update(name=source_interface, vrf=server_vrf)
-                self.structured_config.ip_tacacs_source_interfaces.append_unique(tacacs_source_interface)
+                self.structured_config.ip_tacacs_source_interfaces.append_unique(
+                    EosCliConfigGen.IpTacacsSourceInterfacesItem(name=source_interface, vrf=server_vrf)
+                )
 
             self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server.key)
 
