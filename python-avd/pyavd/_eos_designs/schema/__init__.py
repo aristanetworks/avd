@@ -3193,7 +3193,7 @@ class EosDesigns(EosDesignsRootModel):
         Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
         `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
         Can be set to `false` to avoid changes when
-        migrating from old `cv_instances` model.
+        migrating from the old `cv_instances` model.
 
         Default value: `True`
         """
@@ -3232,7 +3232,7 @@ class EosDesigns(EosDesignsRootModel):
                        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
                        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
                        Can be set to `false` to avoid changes when
-                       migrating from old `cv_instances` model.
+                       migrating from the old `cv_instances` model.
 
                 """
 
@@ -3516,12 +3516,10 @@ class EosDesigns(EosDesignsRootModel):
         class ServersItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"vrf": {"type": str}, "ip_address": {"type": str}, "priority": {"type": int}}
-            vrf: str | None
+            _fields: ClassVar[dict] = {"vrf": {"type": str, "default": "use_default_mgmt_method_vrf"}, "ip_address": {"type": str}, "priority": {"type": int}}
+            vrf: str
             """
-            If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-            The
-            value of `vrf` will be interpreted according to these rules:
+            The value of `vrf` will be interpreted according to these rules:
             - `use_mgmt_interface_vrf` will
             configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
             DNS lookup source-interface.
@@ -3531,9 +3529,13 @@ class EosDesigns(EosDesignsRootModel):
             with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
               An
             error will be raised if inband management is not configured for the device.
-            - Any other string will
-            be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if
-            needed.
+            -
+            `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+            above depending on the value of `default_mgmt_method`.
+            - Any other string will be used directly as
+            the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
+
+            Default value: `"use_default_mgmt_method_vrf"`
             """
             ip_address: str
             """IPv4 or IPv6 address for DNS server."""
@@ -3543,11 +3545,7 @@ class EosDesigns(EosDesignsRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self,
-                    *,
-                    vrf: str | None | UndefinedType = Undefined,
-                    ip_address: str | UndefinedType = Undefined,
-                    priority: int | None | UndefinedType = Undefined,
+                    self, *, vrf: str | UndefinedType = Undefined, ip_address: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     ServersItem.
@@ -3557,9 +3555,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         vrf:
-                           If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-                           The
-                           value of `vrf` will be interpreted according to these rules:
+                           The value of `vrf` will be interpreted according to these rules:
                            - `use_mgmt_interface_vrf` will
                            configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
                            DNS lookup source-interface.
@@ -3569,9 +3565,11 @@ class EosDesigns(EosDesignsRootModel):
                            with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
                              An
                            error will be raised if inband management is not configured for the device.
-                           - Any other string will
-                           be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if
-                           needed.
+                           -
+                           `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+                           above depending on the value of `default_mgmt_method`.
+                           - Any other string will be used directly as
+                           the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
                         ip_address: IPv4 or IPv6 address for DNS server.
                         priority: Priority value (lower is first).
 
@@ -3634,10 +3632,10 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         set_source_interfaces: bool
         """
-        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and
-        `use_inband_mgmt_vrf`.
-        Can be set to `false` to avoid changes when migrating from old `name_servers`
-        model.
+        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+        Can be set to `false` to avoid changes when
+        migrating from the old `name_servers` model.
 
         Default value: `True`
         """
@@ -3663,10 +3661,10 @@ class EosDesigns(EosDesignsRootModel):
                     servers: Subclass of AvdList with `ServersItem` items.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     set_source_interfaces:
-                       Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and
-                       `use_inband_mgmt_vrf`.
-                       Can be set to `false` to avoid changes when migrating from old `name_servers`
-                       model.
+                       Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+                       `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                       Can be set to `false` to avoid changes when
+                       migrating from the old `name_servers` model.
 
                 """
 
@@ -7748,18 +7746,16 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
-                "vrf": {"type": str},
+                "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
                 "protocol": {"type": str, "default": "udp"},
                 "ports": {"type": Ports},
                 "ssl_profile": {"type": str},
             }
             name: str
             """Syslog server name."""
-            vrf: str | None
+            vrf: str
             """
-            If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-            The
-            value of `vrf` will be interpreted according to these rules:
+            The value of `vrf` will be interpreted according to these rules:
             - `use_mgmt_interface_vrf` will
             configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the
             `mgmt_interface` as logging source-interface.
@@ -7770,8 +7766,12 @@ class EosDesigns(EosDesignsRootModel):
             source-interface.
               An error will be raised if inband management is not configured for the device.
             -
-            Any other string will be used directly as the VRF name. Remember to set the
-            `logging_settings.vrfs[].source_interface` if needed.
+            `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+            above depending on the value of `default_mgmt_method`.
+            - Any other string will be used directly as
+            the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed.
+
+            Default value: `"use_default_mgmt_method_vrf"`
             """
             protocol: Literal["tcp", "udp", "tls"]
             """Default value: `"udp"`"""
@@ -7786,7 +7786,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    vrf: str | None | UndefinedType = Undefined,
+                    vrf: str | UndefinedType = Undefined,
                     protocol: Literal["tcp", "udp", "tls"] | UndefinedType = Undefined,
                     ports: Ports | UndefinedType = Undefined,
                     ssl_profile: str | None | UndefinedType = Undefined,
@@ -7800,9 +7800,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Syslog server name.
                         vrf:
-                           If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-                           The
-                           value of `vrf` will be interpreted according to these rules:
+                           The value of `vrf` will be interpreted according to these rules:
                            - `use_mgmt_interface_vrf` will
                            configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the
                            `mgmt_interface` as logging source-interface.
@@ -7813,8 +7811,10 @@ class EosDesigns(EosDesignsRootModel):
                            source-interface.
                              An error will be raised if inband management is not configured for the device.
                            -
-                           Any other string will be used directly as the VRF name. Remember to set the
-                           `logging_settings.vrfs[].source_interface` if needed.
+                           `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+                           above depending on the value of `default_mgmt_method`.
+                           - Any other string will be used directly as
+                           the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed.
                         protocol: protocol
                         ports: Subclass of AvdList with `int` items.
                         ssl_profile: Used when host protocol is 'tls'. Profiles are defined under `management_security.ssl_profiles`.
