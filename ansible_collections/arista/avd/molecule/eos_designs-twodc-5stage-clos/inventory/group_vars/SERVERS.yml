@@ -88,3 +88,7 @@ firewalls:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet5, Ethernet5 ]
         switches: [ DC1-POD1-L2LEAF1A, DC1-POD1-L2LEAF2A ]
+
+network_ports:
+  - switches: [ DC1-POD1-L2LEAF1A, DC1-POD1-L2LEAF2A ]
+    switch_ports: [ Ethernet6, Ethernet6 ]

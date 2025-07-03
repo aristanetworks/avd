@@ -2,11 +2,13 @@ Node Type,Node,Node Interface,Peer Type,Peer Node,Peer Interface,Node Interface 
 l2leaf,DC1-POD1-L2LEAF1A,Ethernet1,l3leaf,DC1-POD1-LEAF1A,Ethernet3,True
 l2leaf,DC1-POD1-L2LEAF1A,Ethernet2,server,server-1,Eth9,True
 l2leaf,DC1-POD1-L2LEAF1A,Ethernet5,firewall,firewall-1,Eth1,True
+l2leaf,DC1-POD1-L2LEAF1A,Ethernet6,network_port,,,True
 l2leaf,DC1-POD1-L2LEAF2A,Ethernet1,l3leaf,DC1.POD1.LEAF2A,Ethernet3,True
 l2leaf,DC1-POD1-L2LEAF2A,Ethernet2,l3leaf,DC1-POD1-LEAF2B,Ethernet3,True
 l2leaf,DC1-POD1-L2LEAF2A,Ethernet3,mlag_peer,DC1-POD1-L2LEAF2B,Ethernet3,True
 l2leaf,DC1-POD1-L2LEAF2A,Ethernet4,mlag_peer,DC1-POD1-L2LEAF2B,Ethernet4,True
 l2leaf,DC1-POD1-L2LEAF2A,Ethernet5,firewall,firewall-1,Eth2,True
+l2leaf,DC1-POD1-L2LEAF2A,Ethernet6,network_port,,,True
 l2leaf,DC1-POD1-L2LEAF2B,Ethernet1,l3leaf,DC1.POD1.LEAF2A,Ethernet4,True
 l2leaf,DC1-POD1-L2LEAF2B,Ethernet2,l3leaf,DC1-POD1-LEAF2B,Ethernet4,True
 l2leaf,DC1-POD1-L2LEAF2B,Ethernet3,mlag_peer,DC1-POD1-L2LEAF2A,Ethernet3,True

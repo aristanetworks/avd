@@ -163,6 +163,7 @@ vlan 4085
 | Ethernet1 | L2_DC1-POD1-LEAF1A_Ethernet3 | *trunk | *4085 | *- | *- | 1 |
 | Ethernet2 | SERVER_server-1_Eth9 | - | - | - | - | - |
 | Ethernet5 | FIREWALL_firewall-1_Eth1 | - | - | - | - | - |
+| Ethernet6 | - | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -182,6 +183,10 @@ interface Ethernet2
 !
 interface Ethernet5
    description FIREWALL_firewall-1_Eth1
+   no shutdown
+   switchport
+!
+interface Ethernet6
    no shutdown
    switchport
 ```

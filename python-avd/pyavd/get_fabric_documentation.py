@@ -3,10 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from itertools import chain
 from typing import TYPE_CHECKING
 
-from pyavd._utils import get, groupby
+from pyavd._utils import get
 from pyavd.api.fabric_documentation import (
     ACTDigitalTwin,
     ActLinkSettings,
@@ -177,11 +176,6 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
     }
     digital_twin_devices: list[dict[str, ActNodeSettings]] = []
     device_list: list[str] = list(fabric_documentation_facts.avd_facts)
-    # Form map of switches and their endpoint-facing ports
-    endpoint_facing_switch_ports: dict[str, tuple[str, ...]] = {
-        switch_name: tuple(natural_sort(fabric_port for link in connected_endpoint_links if (fabric_port := link["fabric_port"])))
-        for switch_name, connected_endpoint_links in groupby(list(chain(*fabric_documentation_facts.all_connected_endpoints.values())), key="fabric_switch")
-    }
     for device in sorted(device_list):
         if (
             digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..node_type", separator="..")
@@ -195,8 +189,15 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                     node_type=digital_twin_node_type,
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
-                    # Render endpoint-facing ports (if any) for veos node type devices
-                    ports=get(endpoint_facing_switch_ports, device, (), separator="..") if digital_twin_node_type == "veos" else (),
+                    # Render Ethernet ports for veos node type devices
+                    ports=tuple(
+                        natural_sort(
+                            ethernet_interface["name"]
+                            for ethernet_interface in get(fabric_documentation_facts.structured_configs, f"{device}..ethernet_interfaces", [], separator="..")
+                        )
+                    )
+                    if digital_twin_node_type == "veos"
+                    else (),
                 )
             }
         )
