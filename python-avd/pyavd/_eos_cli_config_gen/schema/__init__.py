@@ -17868,6 +17868,247 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class LoadBalance(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Policies(AvdModel):
+            """Subclass of AvdModel."""
+
+            class SandProfilesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Fields(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Udp(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Match(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"payload_bits": {"type": str}, "pattern": {"type": str}, "hash_payload_bytes": {"type": str}}
+                            payload_bits: str
+                            """
+                            Specifies the bit positions within the UDP payload to match for hashing.
+                            Accepts a single bit (e.g.,
+                            "12"), a comma-separated list (e.g., "0,3,8"),
+                            a range (e.g., "0-15"), or combinations (e.g.,
+                            "0-7,9,12-15").
+                            Valid values must be in the range 0 to 503.
+                            Matching is limited to a maximum of 16
+                            bits total.
+                            """
+                            pattern: str
+                            """
+                            Bit pattern to match in the UDP payload.
+                            The value should be given as an hexadecimal format `0x...`.
+                            The valid range is from 0 to (2^N - 1), where N is the number of bits selected in `payload_bits`.
+                            """
+                            hash_payload_bytes: str
+                            """
+                            Specifies the UDP payload byte positions to include in the hash after pattern match.
+                            Accepts a
+                            single byte (e.g., "5"), a comma-separated list (e.g., "0,3,7"),
+                            a range (e.g., "0-15"), or a
+                            combination (e.g., "0-5,8,12-14").
+                            All byte positions must be within the range 0 to 62.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    payload_bits: str | UndefinedType = Undefined,
+                                    pattern: str | UndefinedType = Undefined,
+                                    hash_payload_bytes: str | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Match.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        payload_bits:
+                                           Specifies the bit positions within the UDP payload to match for hashing.
+                                           Accepts a single bit (e.g.,
+                                           "12"), a comma-separated list (e.g., "0,3,8"),
+                                           a range (e.g., "0-15"), or combinations (e.g.,
+                                           "0-7,9,12-15").
+                                           Valid values must be in the range 0 to 503.
+                                           Matching is limited to a maximum of 16
+                                           bits total.
+                                        pattern:
+                                           Bit pattern to match in the UDP payload.
+                                           The value should be given as an hexadecimal format `0x...`.
+                                           The valid range is from 0 to (2^N - 1), where N is the number of bits selected in `payload_bits`.
+                                        hash_payload_bytes:
+                                           Specifies the UDP payload byte positions to include in the hash after pattern match.
+                                           Accepts a
+                                           single byte (e.g., "5"), a comma-separated list (e.g., "0,3,7"),
+                                           a range (e.g., "0-15"), or a
+                                           combination (e.g., "0-5,8,12-14").
+                                           All byte positions must be within the range 0 to 62.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"dst_port": {"type": int}, "payload_bytes": {"type": str}, "match": {"type": Match}}
+                        dst_port: int
+                        """Use the UDP destination port as a hash input."""
+                        payload_bytes: str | None
+                        """
+                        Specifies the UDP payload bytes to use in hash calculation.
+                        Accepts single bytes (e.g., "10"),
+                        comma-separated bytes (e.g., "0,1,5"),
+                        ranges (e.g., "0-15"), or combinations (e.g.,
+                        "0-10,12,15,20-25").
+                        Valid values are between 0 and 62.
+                        """
+                        match: Match
+                        """
+                        Configuration to match specific bits and define custom payload-based hashing.
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                dst_port: int | UndefinedType = Undefined,
+                                payload_bytes: str | None | UndefinedType = Undefined,
+                                match: Match | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Udp.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    dst_port: Use the UDP destination port as a hash input.
+                                    payload_bytes:
+                                       Specifies the UDP payload bytes to use in hash calculation.
+                                       Accepts single bytes (e.g., "10"),
+                                       comma-separated bytes (e.g., "0,1,5"),
+                                       ranges (e.g., "0-15"), or combinations (e.g.,
+                                       "0-10,12,15,20-25").
+                                       Valid values are between 0 and 62.
+                                    match:
+                                       Configuration to match specific bits and define custom payload-based hashing.
+
+                                       Subclass of AvdModel.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"udp": {"type": Udp}}
+                    udp: Udp
+                    """
+                    UDP-specific fields used in the load balancing hash.
+                    Requires EOS version 4.33.1F or higher.
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, udp: Udp | UndefinedType = Undefined) -> None:
+                            """
+                            Fields.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                udp:
+                                   UDP-specific fields used in the load balancing hash.
+                                   Requires EOS version 4.33.1F or higher.
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "fields": {"type": Fields}}
+                name: str
+                """Unique name of the load-balancing profile."""
+                fields: Fields
+                """
+                Configure packet fields used as input to the hash function for port-channel and ECMP load balancing.
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | UndefinedType = Undefined, fields: Fields | UndefinedType = Undefined) -> None:
+                        """
+                        SandProfilesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Unique name of the load-balancing profile.
+                            fields:
+                               Configure packet fields used as input to the hash function for port-channel and ECMP load balancing.
+                               Subclass of AvdModel.
+
+                        """
+
+            class SandProfiles(AvdIndexedList[str, SandProfilesItem]):
+                """Subclass of AvdIndexedList with `SandProfilesItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            SandProfiles._item_type = SandProfilesItem
+
+            _fields: ClassVar[dict] = {"sand_profiles": {"type": SandProfiles}}
+            sand_profiles: SandProfiles
+            """
+            List of load balancing profiles for SAND-based platforms, used for port-channel and ECMP hashing.
+            Subclass of AvdIndexedList with `SandProfilesItem` items. Primary key is `name` (`str`).
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, sand_profiles: SandProfiles | UndefinedType = Undefined) -> None:
+                    """
+                    Policies.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sand_profiles:
+                           List of load balancing profiles for SAND-based platforms, used for port-channel and ECMP hashing.
+                           Subclass of AvdIndexedList with `SandProfilesItem` items. Primary key is `name` (`str`).
+
+                    """
+
+        _fields: ClassVar[dict] = {"policies": {"type": Policies}}
+        policies: Policies
+        """
+        Collection of load balancing policy definitions.
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, policies: Policies | UndefinedType = Undefined) -> None:
+                """
+                LoadBalance.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    policies:
+                       Collection of load balancing policy definitions.
+
+                       Subclass of AvdModel.
+
+                """
+
     class LoadInterval(AvdModel):
         """Subclass of AvdModel."""
 
@@ -27998,17 +28239,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         LoadBalanceTridentUdf._item_type = LoadBalanceTridentUdfItem
 
-        _fields: ClassVar[dict] = {"load_balance_trident_udf": {"type": LoadBalanceTridentUdf}}
+        _fields: ClassVar[dict] = {"load_balance_trident_udf": {"type": LoadBalanceTridentUdf}, "load_balance_sand_profile": {"type": str}}
         load_balance_trident_udf: LoadBalanceTridentUdf
         """
         Trident chip UDF fields load balancing.
 
         Subclass of AvdList with `LoadBalanceTridentUdfItem` items.
         """
+        load_balance_sand_profile: str | None
+        """Name of the load-balance profile for sand platform."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, load_balance_trident_udf: LoadBalanceTridentUdf | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                load_balance_trident_udf: LoadBalanceTridentUdf | UndefinedType = Undefined,
+                load_balance_sand_profile: str | None | UndefinedType = Undefined,
+            ) -> None:
                 """
                 PortChannel.
 
@@ -28020,6 +28268,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Trident chip UDF fields load balancing.
 
                        Subclass of AvdList with `LoadBalanceTridentUdfItem` items.
+                    load_balance_sand_profile: Name of the load-balance profile for sand platform.
 
                 """
 
@@ -66195,6 +66444,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "lacp": {"type": Lacp},
         "link_tracking_groups": {"type": LinkTrackingGroups},
         "lldp": {"type": Lldp},
+        "load_balance": {"type": LoadBalance},
         "load_interval": {"type": LoadInterval},
         "local_users": {"type": LocalUsers},
         "logging": {"type": Logging},
@@ -66607,6 +66857,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdIndexedList with `LinkTrackingGroupsItem` items. Primary key is `name` (`str`)."""
     lldp: Lldp
     """Subclass of AvdModel."""
+    load_balance: LoadBalance
+    """
+    Configuration for load balancing behavior across port-channels and ECMP paths.
+
+    Subclass of
+    AvdModel.
+    """
     load_interval: LoadInterval
     """Subclass of AvdModel."""
     local_users: LocalUsers
@@ -66959,6 +67216,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             lacp: Lacp | UndefinedType = Undefined,
             link_tracking_groups: LinkTrackingGroups | UndefinedType = Undefined,
             lldp: Lldp | UndefinedType = Undefined,
+            load_balance: LoadBalance | UndefinedType = Undefined,
             load_interval: LoadInterval | UndefinedType = Undefined,
             local_users: LocalUsers | UndefinedType = Undefined,
             logging: Logging | UndefinedType = Undefined,
@@ -67264,6 +67522,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 link_tracking_groups: Subclass of AvdIndexedList with `LinkTrackingGroupsItem` items. Primary key is `name` (`str`).
                 lldp: Subclass of AvdModel.
+                load_balance:
+                   Configuration for load balancing behavior across port-channels and ECMP paths.
+
+                   Subclass of
+                   AvdModel.
                 load_interval: Subclass of AvdModel.
                 local_users: Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`).
                 logging: Subclass of AvdModel.

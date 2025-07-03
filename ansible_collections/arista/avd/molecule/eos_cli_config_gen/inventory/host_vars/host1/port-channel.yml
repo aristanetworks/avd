@@ -46,3 +46,4 @@ port_channel:
       header: inner_l4
       offset: 10
       mask: "0x02"
+  load_balance_sand_profile: Profile_B
