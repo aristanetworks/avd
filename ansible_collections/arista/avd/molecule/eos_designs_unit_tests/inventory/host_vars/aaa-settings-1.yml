@@ -1,8 +1,9 @@
+# Testing with oob management
 type: l2leaf
 l2leaf:
   defaults:
   nodes:
-    - name: aaa-settings
+    - name: aaa-settings-1
       mgmt_ip: 192.168.0.2/24
 
 aaa_settings:
@@ -78,7 +79,6 @@ aaa_settings:
           - RADIUS1
 
     vrfs:
-      # Testing override of source for VRF default - no VRF in output source interface model.
       - name: default
         source_interface: Vlan123
       - name: MGMT
