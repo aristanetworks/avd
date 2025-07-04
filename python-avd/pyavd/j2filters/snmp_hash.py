@@ -11,7 +11,7 @@ _PRIV_KEY_LENGTH = {"des": 128, "aes": 128, "aes192": 192, "aes256": 256}
 # Define the common interface that all hash objects provide - this is required
 # because hashlib real return type is hashlib._hashlib.HASH which pyright cannot understand.
 @runtime_checkable
-class HashObject(Protocol): # pragma: no cover
+class HashObject(Protocol):  # pragma: no cover
     """
     A Protocol defining the common interface for hash objects returned by hashlib.
 
