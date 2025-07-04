@@ -380,6 +380,8 @@ def tacacs_decrypt(password: str) -> str:
 ########
 # NTP
 ########
+# TODO: discuss with @Claus to merge the functions between tacacs, ntp and -soon- radius
+# probably can move the salt check in simple_7_xxx and use only one function
 def ntp_encrypt(password: str, salt: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) -> str:
     """
     Encrypt (obfuscate) an NTP key with insecure type-7.
