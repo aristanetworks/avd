@@ -1657,3 +1657,103 @@ This feature currently provides the following configurations based on the given 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-topology.md
 --8<--
+
+## PREVIEW - Digital Twin settings
+
+!!! note
+    To easily switch between production mode and digital twin mode, it is recommended to create a dedicated playbook where `avd_digital_twin_mode: true` is set in the playbook vars.
+
+    By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation)
+    will replace original fabric artifacts.
+
+    To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs`
+    and `eos_cli_config_gen` to point to a dedicated output location.
+
+AVD Digital Twin functionality natively generates all artifacts required to deploy a virtual replica of a production AVD fabric.
+The generated artifacts are automatically optimized for the specific Digital Twin environment. For example, an EOS configuration generated for an ACT environment will automatically remove or adjust any unsupported features.
+
+AVD currently supports the following Digital Twin environments:
+
+- ACT (Arista Cloud Test)
+
+To generate the ACT Digital Twin artifacts, run the `eos_designs` and `eos_cli_config_gen` roles with the `avd_digital_twin_mode`  flag set to `true` in your Ansible playbook:
+
+```yaml
+---
+
+# Production playbook to generate production fabric artifacts
+- name: Build Configurations and Documentation
+  hosts: FABRIC
+  gather_facts: false
+  tasks:
+
+    - name: Generate AVD Structured Configurations and Fabric Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate Device Configurations and Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+
+# Digital Twin playbook to generate Digital Twin mode artifacts
+- name: Build Configurations and Documentation
+  hosts: FABRIC
+  gather_facts: false
+  vars:
+    # Adjust the output dirs to keep Digital Twin artifacts in a separate directory
+    output_dir_name: "digital_twin/intended"
+    documentation_dir_name: "digital_twin/documentation"
+    # Set this flag to True to enable Digital Twin mode
+    avd_digital_twin_mode: true
+  tasks:
+
+    - name: Generate AVD Structured Configurations and Fabric Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate Device Configurations and Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+
+```
+
+Produced artifacts:
+
+```text
+.
+├── digital_twin
+│   ├── documentation
+│   │   ├── devices
+│   │   │   ├── <DEVICE_NAME>.md
+│   │   │   └── ...
+│   │   └── fabric
+│   │       ├── <FABRIC_NAME>-documentation.md
+│   │       ├── <FABRIC_NAME>-p2p-links.csv
+│   │       ├── <FABRIC_NAME>-topology.csv
+│   │       └── <FABRIC_NAME>-topology.yml
+│   └── intended
+│       ├── configs
+│       │   ├── <DEVICE_NAME>.cfg
+│       │   └── ...
+│       └── structured_configs
+│           ├── <DEVICE_NAME>.yml
+│           └── ...
+```
+
+If not specified otherwise, AVD uses the following default values when generating ACT Digital Twin artifacts:
+
+| Attribute | Description | Default value | Source of information |
+| --------- | ----------- | ------------- | --------------------- |
+| act_os_version | OS version of the replica device | `cloudeos`: `4.33.2F`<br>`cvp`: `2024.3.2`<br>`generic`: `ubuntu-2204-lts`<br>`third-party`: `byod`<br>`tools-server`: `ubuntu-2204-lts`<br>`veos`: `4.33.1.1F` | `node_config.digital_twin.act_os_version` or `digital_twin.fabric.act_os_version` |
+| act_username | username of the default account deployed on the replica device | `admin` | `digital_twin.fabric.act_username` |
+| act_password | password of the default account deployed on the replica device | `admin` | `digital_twin.fabric.act_password` |
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-configuration.md
+--8<--
+
+### Node type Digital Twin configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-digital-twin-configuration.md
+--8<--

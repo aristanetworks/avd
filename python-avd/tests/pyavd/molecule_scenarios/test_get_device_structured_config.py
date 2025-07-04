@@ -30,6 +30,8 @@ from tests.models import MoleculeHost
     "example-single-dc-l3ls",
     "example-single-dc-l3ls-ipv6",
 )
+# TODO: Remove inline jinja
+# @pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos")
 def test_get_device_structured_config(molecule_host: MoleculeHost) -> None:
     """Test get_device_structured_config."""
     inputs = deepcopy(molecule_host.hostvars)
@@ -37,11 +39,11 @@ def test_get_device_structured_config(molecule_host: MoleculeHost) -> None:
     # run validation on inputs to ensure it is converted
     validate_inputs(inputs)
 
-    expected_structured_config = molecule_host.structured_config
+    expected_structured_config = deepcopy(molecule_host.structured_config)
 
     with patch("sys.path", [*sys.path, *molecule_host.scenario.extra_python_paths]):
         avd_facts = molecule_host.scenario.avd_facts
-        structured_config = get_device_structured_config(molecule_host.name, inputs, avd_facts)
+        structured_config = get_device_structured_config(molecule_host.name, inputs, avd_facts, digital_twin=molecule_host.scenario.digital_twin)
 
     assert isinstance(structured_config, dict)
     assert molecule_host.name == structured_config["hostname"]
