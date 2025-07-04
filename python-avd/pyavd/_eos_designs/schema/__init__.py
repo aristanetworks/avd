@@ -64892,7 +64892,7 @@ class EosDesigns(EosDesignsRootModel):
         "default_underlay_p2p_port_channel_description": {"type": str, "default": "P2P_{peer}_{peer_interface}"},
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
         "design": {"type": Design},
-        "digital_twin": {"type": DigitalTwin, "default": lambda cls: coerce_type({"fabric": {}}, target_type=cls)},
+        "digital_twin": {"type": DigitalTwin},
         "dns_settings": {"type": DnsSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
@@ -65854,8 +65854,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of
     AvdModel.
-
-    Default value: `lambda cls: coerce_type({"fabric": {}}, target_type=cls)`
     """
     dns_settings: DnsSettings
     """

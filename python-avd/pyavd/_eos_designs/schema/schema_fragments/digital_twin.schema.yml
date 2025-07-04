@@ -13,8 +13,6 @@ keys:
     description: |-
       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
       Global settings to configure the Digital Twin of the Fabric.
-    default:
-      fabric: {}
     keys:
       environment:
         type: str
