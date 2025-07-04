@@ -14529,9 +14529,8 @@ class EosDesigns(EosDesignsRootModel):
             configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
               An error will be raised if inband
             management is not configured for the device.
-            - `use_default_mgmt_method_vrf` will configure the VRF
-            and source-interface for one of the two options above depending on the value of
-            `default_mgmt_method`.
+            - `use_default_mgmt_method_vrf` will configure the SNMP
+            ACL under the VRF for one of the two options above depending on the value of `default_mgmt_method`.
             - Any other string will be used directly as the VRF name.
             """
             enable: bool | None
@@ -14539,8 +14538,11 @@ class EosDesigns(EosDesignsRootModel):
             source_interface: str | None
             """
             Source interface to use for SNMP hosts in this VRF.
-            If set for the VRFs defined by
-            `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+            If not set, the source interface may be set
+            automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+            `use_default_mgmt_method_vrf`.
+            If set for the VRFs defined by `mgmt_interface_vrf` or
+            `inband_mgmt_vrf`, this setting will take precedence.
             """
             ipv4_acl: str | None
             """IPv4 access-list name."""
@@ -14576,15 +14578,17 @@ class EosDesigns(EosDesignsRootModel):
                            configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
                              An error will be raised if inband
                            management is not configured for the device.
-                           - `use_default_mgmt_method_vrf` will configure the VRF
-                           and source-interface for one of the two options above depending on the value of
-                           `default_mgmt_method`.
+                           - `use_default_mgmt_method_vrf` will configure the SNMP
+                           ACL under the VRF for one of the two options above depending on the value of `default_mgmt_method`.
                            - Any other string will be used directly as the VRF name.
                         enable: Enable/disable SNMP for this VRF.
                         source_interface:
                            Source interface to use for SNMP hosts in this VRF.
-                           If set for the VRFs defined by
-                           `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+                           If not set, the source interface may be set
+                           automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                           `use_default_mgmt_method_vrf`.
+                           If set for the VRFs defined by `mgmt_interface_vrf` or
+                           `inband_mgmt_vrf`, this setting will take precedence.
                         ipv4_acl: IPv4 access-list name.
                         ipv6_acl: IPv6 access-list name.
 
@@ -14716,23 +14720,28 @@ class EosDesigns(EosDesignsRootModel):
             interface.
               An error will be raised if inband management is not configured for the device.
             -
-            `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
-            above depending on the value of `default_mgmt_method`.
-            - Any other string will be used directly as
-            the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+            `use_default_mgmt_method_vrf` will configure the SNMP host under the VRF and set the source-
+            interface for one of the two options above depending on the value of `default_mgmt_method`.
+            - Any
+            other string will be used directly as the VRF name. Remember to set the
+            `snmp_settings.vrfs[].source_interface` if needed.
             """
             use_mgmt_interface_vrf: bool | None
             """
-            Configure the SNMP host under the VRF set with "mgmt_interface_vrf". Ignored if 'mgmt_ip' or
+            Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
+            Ignored if 'mgmt_ip' or
             'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF,
-            the host will not be configured at all. Can be used in combination with "vrf" and
+            the host will not be configured at all.
+            Can be used in combination with "vrf" and
             "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
             """
             use_inband_mgmt_vrf: bool | None
             """
-            Configure the SNMP host under the VRF set with "inband_mgmt_vrf". Ignored if inband management is
+            Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+            Ignored if inband management is
             not configured for the device, so if the host is only configured with this VRF, the host will not be
-            configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
+            configured at all.
+            Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
             the SNMP host under multiple VRFs.
             """
             version: Literal["1", "2c", "3"] | None
@@ -14775,19 +14784,24 @@ class EosDesigns(EosDesignsRootModel):
                            interface.
                              An error will be raised if inband management is not configured for the device.
                            -
-                           `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
-                           above depending on the value of `default_mgmt_method`.
-                           - Any other string will be used directly as
-                           the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+                           `use_default_mgmt_method_vrf` will configure the SNMP host under the VRF and set the source-
+                           interface for one of the two options above depending on the value of `default_mgmt_method`.
+                           - Any
+                           other string will be used directly as the VRF name. Remember to set the
+                           `snmp_settings.vrfs[].source_interface` if needed.
                         use_mgmt_interface_vrf:
-                           Configure the SNMP host under the VRF set with "mgmt_interface_vrf". Ignored if 'mgmt_ip' or
+                           Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
+                           Ignored if 'mgmt_ip' or
                            'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF,
-                           the host will not be configured at all. Can be used in combination with "vrf" and
+                           the host will not be configured at all.
+                           Can be used in combination with "vrf" and
                            "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
                         use_inband_mgmt_vrf:
-                           Configure the SNMP host under the VRF set with "inband_mgmt_vrf". Ignored if inband management is
+                           Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+                           Ignored if inband management is
                            not configured for the device, so if the host is only configured with this VRF, the host will not be
-                           configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
+                           configured at all.
+                           Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
                            the SNMP host under multiple VRFs.
                         version: version
                         community: Community name. Required with version "1" or "2c".

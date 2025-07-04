@@ -7062,6 +7062,104 @@ keys:
               type: bool
       run:
         type: bool
+  load_balance:
+    type: dict
+    description: Configuration for load balancing behavior across port-channels and
+      ECMP paths.
+    keys:
+      policies:
+        type: dict
+        description: Collection of load balancing policy definitions.
+        keys:
+          sand_profiles:
+            type: list
+            description: List of load balancing profiles for SAND-based platforms,
+              used for port-channel and ECMP hashing.
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Unique name of the load-balancing profile.
+                fields:
+                  type: dict
+                  description: Configure packet fields used as input to the hash function
+                    for port-channel and ECMP load balancing.
+                  keys:
+                    udp:
+                      type: dict
+                      description: 'UDP-specific fields used in the load balancing
+                        hash.
+
+                        Requires EOS version 4.33.1F or higher.'
+                      keys:
+                        dst_port:
+                          type: int
+                          required: true
+                          min: 0
+                          max: 65535
+                          description: Use the UDP destination port as a hash input.
+                          convert_types:
+                          - str
+                        payload_bytes:
+                          type: str
+                          description: 'Specifies the UDP payload bytes to use in
+                            hash calculation.
+
+                            Accepts single bytes (e.g., "10"), comma-separated bytes
+                            (e.g., "0,1,5"),
+
+                            ranges (e.g., "0-15"), or combinations (e.g., "0-10,12,15,20-25").
+
+                            Valid values are between 0 and 62.'
+                          convert_types:
+                          - int
+                        match:
+                          type: dict
+                          description: Configuration to match specific bits and define
+                            custom payload-based hashing.
+                          keys:
+                            payload_bits:
+                              type: str
+                              required: true
+                              description: 'Specifies the bit positions within the
+                                UDP payload to match for hashing.
+
+                                Accepts a single bit (e.g., "12"), a comma-separated
+                                list (e.g., "0,3,8"),
+
+                                a range (e.g., "0-15"), or combinations (e.g., "0-7,9,12-15").
+
+                                Valid values must be in the range 0 to 503.
+
+                                Matching is limited to a maximum of 16 bits total.'
+                              convert_types:
+                              - int
+                            pattern:
+                              type: str
+                              required: true
+                              description: 'Bit pattern to match in the UDP payload.
+
+                                The value should be given as an hexadecimal format
+                                `0x...`.
+
+                                The valid range is from 0 to (2^N - 1), where N is
+                                the number of bits selected in `payload_bits`.'
+                            hash_payload_bytes:
+                              type: str
+                              required: true
+                              description: 'Specifies the UDP payload byte positions
+                                to include in the hash after pattern match.
+
+                                Accepts a single byte (e.g., "5"), a comma-separated
+                                list (e.g., "0,3,7"),
+
+                                a range (e.g., "0-15"), or a combination (e.g., "0-5,8,12-14").
+
+                                All byte positions must be within the range 0 to 62.'
+                              convert_types:
+                              - int
   load_interval:
     type: dict
     keys:
@@ -11086,6 +11184,9 @@ keys:
             mask:
               type: str
               description: Mask of the offset. A hex value within the range 0x01-0xFF.
+      load_balance_sand_profile:
+        description: Name of the load-balance profile for sand platform.
+        type: str
   port_channel_interfaces:
     type: list
     primary_key: name

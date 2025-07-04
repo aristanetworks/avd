@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -36,7 +36,7 @@ keys:
                   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
                 - `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
                   An error will be raised if inband management is not configured for the device.
-                - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
+                - `use_default_mgmt_method_vrf` will configure the SNMP ACL under the VRF for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
               convert_types:
                 - int
@@ -48,6 +48,7 @@ keys:
               type: str
               description: |-
                 Source interface to use for SNMP hosts in this VRF.
+                If not set, the source interface may be set automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
                 If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
             ipv4_acl:
               type: str
@@ -151,13 +152,13 @@ keys:
                   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
                 - `use_inband_mgmt_vrf` will configure the SNMP host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.
                   An error will be raised if inband management is not configured for the device.
-                - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
+                - `use_default_mgmt_method_vrf` will configure the SNMP host under the VRF and set the source-interface for one of the two options above depending on the value of `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
               convert_types:
                 - int
             use_mgmt_interface_vrf:
               type: bool
-              description:
+              description: |-
                 Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
                 Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.
                 Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
@@ -168,7 +169,7 @@ keys:
                   vrf: "use_mgmt_interface_vrf"
             use_inband_mgmt_vrf:
               type: bool
-              description:
+              description: |-
                 Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
                 Ignored if inband management is not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.
                 Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure the SNMP host under multiple VRFs.
