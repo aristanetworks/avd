@@ -95,6 +95,9 @@ snmp_server:
     vrf: MGMT
     version: 2c
     community: SNMP-COMMUNITY-2
+  - host: 10.6.75.131
+    version: '3'
+    community: SNMP-COMMUNITY-2
   traps:
     enable: true
   vrfs:
