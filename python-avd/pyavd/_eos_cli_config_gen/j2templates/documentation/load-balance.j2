@@ -1,0 +1,38 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - load balance #}
+{% if load_balance.policies is arista.avd.defined %}
+
+## Load Balance
+
+### Load Balance Profiles
+{%     for profile in load_balance.policies.sand_profiles | arista.avd.natural_sort('name')  %}
+
+#### {{ profile.name }}
+{%         if profile.fields.udp is arista.avd.defined %}
+
+##### UDP Fields Settings
+
+| Setting | Value |
+| ------- | ----- |
+| Destination Port | {{ profile.fields.udp.dst_port }} |
+{%             if profile.fields.udp.match is arista.avd.defined %}
+| Match Payload Bits | {{ profile.fields.udp.match.payload_bits }} |
+| Match Pattern | {{ profile.fields.udp.match.pattern }} |
+| Match Hash Payload Bytes | {{ profile.fields.udp.match.hash_payload_bytes }} |
+{%             endif %}
+{%             if profile.fields.udp.payload_bytes is arista.avd.defined %}
+| UDP Payload | {{ profile.fields.udp.payload_bytes }} |
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+
+### Load Balance Configuration
+
+```eos
+{%     include 'eos/load-balance.j2' %}
+```
+{% endif %}
