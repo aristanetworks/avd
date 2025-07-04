@@ -213,6 +213,10 @@ class MlagMixin(Protocol):
             return self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer.name
         return self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
 
+    @cached_property
+    def mlag_interface_speed(self: SharedUtilsProtocol) -> str | None:
+        return default(self.node_config.mlag_interfaces_speed, self.default_interfaces.mlag_interfaces_speed)
+
     def update_router_bgp_with_mlag_peer_group(self: SharedUtilsProtocol, router_bgp: EosCliConfigGen.RouterBgp, custom_structured_configs: StructCfgs) -> None:
         """
         Update router_bgp structured_config covering the MLAG peer_group(s) and associated address_family activations.
