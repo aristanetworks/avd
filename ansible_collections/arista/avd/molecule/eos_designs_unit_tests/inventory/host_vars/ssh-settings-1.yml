@@ -11,7 +11,7 @@ mgmt_gateway: 10.10.10.1
 
 ssh_settings:
   vrfs:
-    - name: MGMT
+    - name: VRF20
       enabled: true
       ipv4_acl: ACL-SSH
     - name: VRF10
@@ -22,6 +22,7 @@ ssh_settings:
       ipv4_acl: ACL-SSH-VRF-DISABLED
     - name: default
       enabled: true
+      ipv4_acl: IPv4-ACL-SSH-VRF-DEFAULT
       ipv6_acl: ACL-SSH-VRF-DEFAULT
     - name: use_mgmt_interface_vrf
       enabled: true
