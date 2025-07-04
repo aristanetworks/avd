@@ -20,25 +20,23 @@ management_interfaces:
   type: oob
   gateway: 10.10.10.1
 management_ssh:
-  access_groups:
-  - name: ACL-SSH
-    vrf: MGMT
-  - name: ACL-SSH-MGMT-INTERFACE
-    vrf: MGMT
-  ipv6_access_groups:
-  - name: ACL-SSH-VRF-DEFAULT
-  - name: ACL-SSH6
-    vrf: VRF10
+  ip_access_group_in: IPv4-ACL-SSH-VRF-DEFAULT
+  ipv6_access_group_in: ACL-SSH-VRF-DEFAULT
   idle_timeout: 15
   vrfs:
   - name: default
     enable: true
   - name: MGMT
     enable: true
+    ip_access_group_in: ACL-SSH-MGMT-INTERFACE
   - name: VRF10
     enable: true
+    ipv6_access_group_in: ACL-SSH6
   - name: VRF12
     enable: false
+  - name: VRF20
+    enable: true
+    ip_access_group_in: ACL-SSH
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
