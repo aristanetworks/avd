@@ -70,7 +70,7 @@ options:
   salt:
     type: integer
     description: |-
-      Salt used for simple type-7 obfuscation. Required for `passwd_type: tacacs` and `radius`.
+      Salt used for simple type-7 obfuscation. Required when `passwd_type` is `radius` or `tacacs`.
     min: 0
     max: 15
 """
