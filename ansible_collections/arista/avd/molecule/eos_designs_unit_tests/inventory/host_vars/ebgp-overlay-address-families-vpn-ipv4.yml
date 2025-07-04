@@ -1,5 +1,5 @@
 ---
-# Test when evpn_role is none for a wan_router
+# Test when overlay_address_families is "vpn-ipv4", hence not an overlay_evpn
 type: wan_router
 
 overlay_routing_protocol: ebgp
