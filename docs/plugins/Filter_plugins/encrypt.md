@@ -31,7 +31,7 @@ Encrypt supported EOS passwords
 | <samp>hash_algorithm</samp> | string | optional | None | Valid values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Hash algorithm to use with `passwd_type=ospf_message_digest`. |
 | <samp>key_id</samp> | integer | optional | None | Min value: <code>1</code><br>Max value: <code>255</code> | Key ID to use with `passwd_type=ospf_message_digest`. |
 | <samp>mode</samp> | string | optional | None | Valid values:<br>- <code>none</code><br>- <code>text</code><br>- <code>md5</code><br>- <code>sha</code><br>- <code>sha-1</code><br>- <code>sha-224</code><br>- <code>sha-256</code><br>- <code>sha-384</code><br>- <code>sha1-512</code> | ISIS encryption mode (`none`, `text`, `md5`, `sha`) or shared-secret algorithm (`sha-1`, `sha-224`, `sha-256`, `sha-384`, `sha1-512`). |
-| <samp>salt</samp> | integer | optional | None | Max value: <code>15</code> | Salt used for simple type-7 obfuscation. Required for `passwd_type` `tacacs` or `ntp`. |
+| <samp>salt</samp> | integer | optional | None | Max value: <code>15</code> | Salt used for simple type-7 obfuscation. Required when `passwd_type` is `ntp` or `tacacs`. |
 
 ## Examples
 
