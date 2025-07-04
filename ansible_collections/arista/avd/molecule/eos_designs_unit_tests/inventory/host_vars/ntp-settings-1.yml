@@ -32,7 +32,7 @@ ntp_settings:
       key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
       key_type: 8a
     - id: 3
-      # Text eos_designs encrypting the key to type 7.
+      # Test eos_designs encrypting the key to type 7.
       hash_algorithm: sha1
       cleartext_key: arista
   trusted_keys: 1

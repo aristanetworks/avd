@@ -407,10 +407,10 @@ def ntp_decrypt(password: str) -> str:
     Decrypt (deobfuscate) a NTP key from insecure type-7.
 
     Args:
-        password: The encrypted Tacacs key to be decrypted.
+        password: The encrypted NTP key to be decrypted.
 
     Returns:
-        str: The decrypted Tacacs key as a string.
+        str: The decrypted NTP key as a string.
     """
     if not isinstance(password, str) or not password:
         msg = "Password MUST be a string with at least 1 character."

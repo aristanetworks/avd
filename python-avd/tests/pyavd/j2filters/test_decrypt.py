@@ -37,7 +37,7 @@ from pyavd.j2filters import decrypt
         pytest.param("0005010F174F0A", "tacacs", None, {}, does_not_raise(), id="Tacacs"),
     ],
 )
-def test_decrypt(password: str, passwd_type: str | None, key: str, kwargs: dict, expected_raise: AbstractContextManager) -> None:
+def test_decrypt(password: str, passwd_type: str | None, key: str | None, kwargs: dict, expected_raise: AbstractContextManager) -> None:
     """Test decrypt method for non existing and existing type."""
     with expected_raise:
         decrypt(password, passwd_type=passwd_type, key=key, **kwargs)
