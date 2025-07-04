@@ -134,10 +134,6 @@ router_bgp:
     peer_group: RR-OVERLAY-PEERS
     peer: SITE3-RR1
     description: SITE3-RR1_Loopback0
-  - ip_address: 100.70.0.13
-    peer_group: RR-OVERLAY-PEERS
-    peer: SITE4-RR1
-    description: SITE4-RR1_Loopback0
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls

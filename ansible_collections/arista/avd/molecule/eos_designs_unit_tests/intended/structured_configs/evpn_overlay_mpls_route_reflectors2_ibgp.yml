@@ -13,11 +13,11 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 169.254.102.2/32
+  ip_address: 192.168.255.2/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 169.253.103.2/32
+  ip_address: 192.168.254.2/32
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -36,9 +36,9 @@ prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 169.254.102.0/24 eq 32
+    action: permit 192.168.255.0/24 eq 32
   - sequence: 20
-    action: permit 169.253.103.0/24 eq 32
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -53,11 +53,11 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65233'
-  router_id: 169.254.102.2
+  router_id: 192.168.255.2
   maximum_paths:
     paths: 4
     ecmp: 4
-  bgp_cluster_id: 169.254.102.2
+  bgp_cluster_id: 192.168.255.2
   bgp:
     default:
       ipv4_unicast: false
@@ -81,11 +81,6 @@ router_bgp:
     bfd: true
     send_community: all
     maximum_routes: 0
-  neighbors:
-  - ip_address: 169.254.102.1
-    peer_group: MPLS-OVERLAY-PEERS
-    peer: evpn_overlay_mpls_route_reflectors_ibgp
-    description: evpn_overlay_mpls_route_reflectors_ibgp_Loopback0
   redistribute:
     connected:
       enabled: true

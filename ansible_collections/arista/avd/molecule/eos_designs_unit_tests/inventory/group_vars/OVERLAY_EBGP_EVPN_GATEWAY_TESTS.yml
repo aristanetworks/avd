@@ -1,19 +1,20 @@
 ---
 type: l3leaf
 
+# using default overlay_routing_protocol: ebgp
 evpn_overlay_bgp_rtc: true
 
 l3leaf:
   defaults:
-    loopback_ipv4_pool: 169.254.102.0/24
-    vtep_loopback_ipv4_pool: 169.253.103.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
     virtual_router_mac_address: 00:1c:73:00:00:99
     bgp_as: 65233
   nodes:
     - name: evpn_gateway_all_active_mh_gw
       id: 1
       filter:
-        tenants: [ TENANT1 ]
+        tenants: [ EVPN_GATEWAY_TESTS ]
       platform: vEOS
       mlag: false
       bgp_as: 65233
@@ -39,7 +40,7 @@ l3leaf:
     - name: evpn_gateway_all_active_mh_gw_enabled_d_path_false
       id: 2
       filter:
-        tenants: [ TENANT1 ]
+        tenants: [ EVPN_GATEWAY_TESTS ]
       platform: vEOS
       mlag: false
       mgmt_ip: 192.168.0.205/24
@@ -57,7 +58,7 @@ l3leaf:
     - name: evpn_gateway_l2_evpn_role_server
       id: 3
       filter:
-        tenants: [ TENANT1 ]
+        tenants: [ EVPN_GATEWAY_TESTS ]
       platform: vEOS
       mlag: false
       mgmt_ip: 192.168.0.206/24
@@ -68,20 +69,11 @@ l3leaf:
     - name: evpn_gateway_l2_l3_disabled
       id: 4
       filter:
-        tenants: [ TENANT1 ]
+        tenants: [ EVPN_GATEWAY_TESTS ]
       platform: vEOS
       mlag: false
       mgmt_ip: 192.168.0.207/24
       evpn_role: server
-      evpn_gateway:
-        all_active_multihoming:
-          enabled: true
-          enable_d_path: false
-          evpn_domain_id_local: "65200:1"
-          evpn_domain_id_remote: "65100:2"
-          evpn_ethernet_segment:
-            identifier: 0000:0001:0001:0000:0509
-            rt_import: 00:00:00:00:07:09
 
     - name: evpn_l2_multi_domain
       id: 5
@@ -99,7 +91,7 @@ l3leaf:
           enabled: true
 
 tenants:
-  - name: TENANT1
+  - name: EVPN_GATEWAY_TESTS
     mac_vrf_vni_base: 10000
     vrfs:
       - name: VRF10

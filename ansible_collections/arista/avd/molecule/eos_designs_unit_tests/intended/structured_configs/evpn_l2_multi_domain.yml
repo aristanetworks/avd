@@ -13,11 +13,11 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 169.254.102.5/32
+  ip_address: 192.168.255.5/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 169.253.103.5/32
+  ip_address: 192.168.254.5/32
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -36,9 +36,9 @@ prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 169.254.102.0/24 eq 32
+    action: permit 192.168.255.0/24 eq 32
   - sequence: 20
-    action: permit 169.253.103.0/24 eq 32
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -53,7 +53,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65001'
-  router_id: 169.254.102.5
+  router_id: 192.168.255.5
   maximum_paths:
     paths: 4
     ecmp: 4
@@ -92,10 +92,10 @@ router_bgp:
   vlans:
   - id: 150
     tenant: L2_MULTI_DOMAIN_DISABLED
-    rd: 169.254.102.5:10150
+    rd: 192.168.255.5:10150
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.5:10150
+      rd: 192.168.255.5:10150
     route_targets:
       both:
       - 10150:10150
@@ -106,10 +106,10 @@ router_bgp:
     - learned
   - id: 160
     tenant: L2_MULTI_DOMAIN_DISABLED
-    rd: 169.254.102.5:10160
+    rd: 192.168.255.5:10160
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.5:10160
+      rd: 192.168.255.5:10160
     route_targets:
       both:
       - 10160:10160
@@ -120,7 +120,7 @@ router_bgp:
     - learned
   - id: 170
     tenant: L2_MULTI_DOMAIN_DISABLED
-    rd: 169.254.102.5:10170
+    rd: 192.168.255.5:10170
     route_targets:
       both:
       - 10170:10170
@@ -128,7 +128,7 @@ router_bgp:
     - learned
   - id: 110
     tenant: L2_MULTI_DOMAIN_DISABLED
-    rd: 169.254.102.5:10110
+    rd: 192.168.255.5:10110
     route_targets:
       both:
       - 10110:10110
@@ -136,10 +136,10 @@ router_bgp:
     - learned
   - id: 111
     tenant: L2_MULTI_DOMAIN_DISABLED
-    rd: 169.254.102.5:10111
+    rd: 192.168.255.5:10111
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.5:10111
+      rd: 192.168.255.5:10111
     route_targets:
       both:
       - 10111:10111
@@ -150,10 +150,10 @@ router_bgp:
     - learned
   - id: 190
     tenant: L2_MULTI_DOMAIN_DISABLED
-    rd: 169.254.102.5:10190
+    rd: 192.168.255.5:10190
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.5:10190
+      rd: 192.168.255.5:10190
     route_targets:
       both:
       - 10190:10190
@@ -164,7 +164,7 @@ router_bgp:
     - learned
   - id: 180
     tenant: L2_MULTI_DOMAIN_DISABLED
-    rd: 169.254.102.5:10180
+    rd: 192.168.255.5:10180
     route_targets:
       both:
       - 10180:10180
@@ -172,7 +172,7 @@ router_bgp:
     - learned
   - id: 250
     tenant: L2_MULTI_DOMAIN_ENABLED
-    rd: 169.254.102.5:20250
+    rd: 192.168.255.5:20250
     route_targets:
       both:
       - 20250:20250
@@ -180,7 +180,7 @@ router_bgp:
     - learned
   - id: 260
     tenant: L2_MULTI_DOMAIN_ENABLED
-    rd: 169.254.102.5:20260
+    rd: 192.168.255.5:20260
     route_targets:
       both:
       - 20260:20260
@@ -188,10 +188,10 @@ router_bgp:
     - learned
   - id: 270
     tenant: L2_MULTI_DOMAIN_ENABLED
-    rd: 169.254.102.5:20270
+    rd: 192.168.255.5:20270
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.5:20270
+      rd: 192.168.255.5:20270
     route_targets:
       both:
       - 20270:20270
@@ -202,10 +202,10 @@ router_bgp:
     - learned
   - id: 210
     tenant: L2_MULTI_DOMAIN_ENABLED
-    rd: 169.254.102.5:20210
+    rd: 192.168.255.5:20210
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.5:20210
+      rd: 192.168.255.5:20210
     route_targets:
       both:
       - 20210:20210
@@ -216,7 +216,7 @@ router_bgp:
     - learned
   - id: 211
     tenant: L2_MULTI_DOMAIN_ENABLED
-    rd: 169.254.102.5:20211
+    rd: 192.168.255.5:20211
     route_targets:
       both:
       - 20211:20211
@@ -224,7 +224,7 @@ router_bgp:
     - learned
   - id: 290
     tenant: L2_MULTI_DOMAIN_ENABLED
-    rd: 169.254.102.5:20290
+    rd: 192.168.255.5:20290
     route_targets:
       both:
       - 20290:20290
@@ -232,10 +232,10 @@ router_bgp:
     - learned
   - id: 280
     tenant: L2_MULTI_DOMAIN_ENABLED
-    rd: 169.254.102.5:20280
+    rd: 192.168.255.5:20280
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.5:20280
+      rd: 192.168.255.5:20280
     route_targets:
       both:
       - 20280:20280
@@ -267,7 +267,7 @@ router_bgp:
       activate: false
   vrfs:
   - name: L2_MULTI_DOMAIN_ENABLED
-    rd: 169.254.102.5:11
+    rd: 192.168.255.5:11
     route_targets:
       import:
       - address_family: evpn
@@ -277,12 +277,12 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '11:11'
-    router_id: 169.254.102.5
+    router_id: 192.168.255.5
     redistribute:
       connected:
         enabled: true
   - name: L2_MULTI_DOMAIN_NEUTRAL_1
-    rd: 169.254.102.5:10
+    rd: 192.168.255.5:10
     route_targets:
       import:
       - address_family: evpn
@@ -292,12 +292,12 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
-    router_id: 169.254.102.5
+    router_id: 192.168.255.5
     redistribute:
       connected:
         enabled: true
   - name: L2_MULTI_DOMAIN_DISBLED
-    rd: 169.254.102.5:21
+    rd: 192.168.255.5:21
     route_targets:
       import:
       - address_family: evpn
@@ -307,12 +307,12 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '21:21'
-    router_id: 169.254.102.5
+    router_id: 192.168.255.5
     redistribute:
       connected:
         enabled: true
   - name: L2_MULTI_DOMAIN_NEUTRAL_2
-    rd: 169.254.102.5:20
+    rd: 192.168.255.5:20
     route_targets:
       import:
       - address_family: evpn
@@ -322,7 +322,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '20:20'
-    router_id: 169.254.102.5
+    router_id: 192.168.255.5
     redistribute:
       connected:
         enabled: true

@@ -8,7 +8,7 @@ ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 169.253.103.1:1
+    extcommunities: soo 192.168.254.1:1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -18,11 +18,11 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 169.254.102.1/32
+  ip_address: 192.168.255.1/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 169.253.103.1/32
+  ip_address: 192.168.254.1/32
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -41,9 +41,9 @@ prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 169.254.102.0/24 eq 32
+    action: permit 192.168.255.0/24 eq 32
   - sequence: 20
-    action: permit 169.253.103.0/24 eq 32
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -64,7 +64,7 @@ route_maps:
   - sequence: 10
     type: permit
     set:
-    - extcommunity soo 169.253.103.1:1 additive
+    - extcommunity soo 192.168.254.1:1 additive
 router_bfd:
   multihop:
     interval: 300
@@ -72,11 +72,11 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65233'
-  router_id: 169.254.102.1
+  router_id: 192.168.255.1
   maximum_paths:
     paths: 4
     ecmp: 4
-  bgp_cluster_id: 169.254.102.1
+  bgp_cluster_id: 192.168.255.1
   bgp:
     default:
       ipv4_unicast: false
@@ -93,11 +93,6 @@ router_bgp:
     bfd: true
     send_community: all
     maximum_routes: 0
-  neighbors:
-  - ip_address: 169.254.102.2
-    peer_group: MPLS-OVERLAY-PEERS
-    peer: evpn_overlay_mpls_route_reflectors2_ibgp
-    description: evpn_overlay_mpls_route_reflectors2_ibgp_Loopback0
   redistribute:
     connected:
       enabled: true
