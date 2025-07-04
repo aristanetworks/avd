@@ -14,3 +14,6 @@ ssh_settings:
     - name: use_inband_mgmt_vrf
       enabled: true
       ipv4_acl: ACL-SSH-INBAND-MGMT
+    - name: default
+      enabled: true
+      ipv4_acl: IPv4-ACL-SSH-INBAND-MGMT
