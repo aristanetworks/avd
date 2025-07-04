@@ -234,7 +234,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     ),
                 ),
                 shutdown=False,
-                speed=self.shared_utils.mlag_interface_speed,
+                speed=self.shared_utils.mlag_interfaces_speed,
             )
             ethernet_interface.channel_group._update(id=self.shared_utils.mlag_port_channel_id, mode="active")
             if self.shared_utils.mlag and self.shared_utils.mlag_peer_facts.inband_ztp is True:

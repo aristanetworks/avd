@@ -214,7 +214,7 @@ class MlagMixin(Protocol):
         return self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
 
     @cached_property
-    def mlag_interface_speed(self: SharedUtilsProtocol) -> str | None:
+    def mlag_interfaces_speed(self: SharedUtilsProtocol) -> str | None:
         return default(self.node_config.mlag_interfaces_speed, self.default_interfaces.mlag_interfaces_speed)
 
     def update_router_bgp_with_mlag_peer_group(self: SharedUtilsProtocol, router_bgp: EosCliConfigGen.RouterBgp, custom_structured_configs: StructCfgs) -> None:
