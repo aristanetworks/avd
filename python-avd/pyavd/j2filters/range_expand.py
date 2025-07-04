@@ -22,8 +22,11 @@ class InterfaceData:
     last_module: int | None = None
 
 
-def expand_subinterfaces(interface_string: str, data: InterfaceData) -> list:
-    result = []
+def expand_subinterfaces(interface_string: str, data: InterfaceData) -> list[str]:
+    result: list[str] = []
+    if data.first_subinterface is None:
+        msg = f"Range {data.one_range} could not be expanded because the first subinterface {data.first_subinterface} is None"
+        raise ValueError(msg)
     if data.last_subinterface is not None:
         if data.first_subinterface > data.last_subinterface:
             msg = (
@@ -37,8 +40,14 @@ def expand_subinterfaces(interface_string: str, data: InterfaceData) -> list:
     return result
 
 
-def expand_interfaces(interface_string: str, data: InterfaceData) -> list:
-    result = []
+def expand_interfaces(interface_string: str, data: InterfaceData) -> list[str]:
+    result: list[str] = []
+    if data.first_interface is None:
+        msg = f"Range {data.one_range} could not be expanded because the first interface {data.first_interface} is None"
+        raise ValueError(msg)
+    if data.last_interface is None:
+        msg = f"Range {data.one_range} could not be expanded because the last interface {data.last_interface} is None"
+        raise ValueError(msg)
     if data.first_interface > data.last_interface:
         msg = (
             f"Range {data.one_range} could not be expanded because the first interface {data.first_interface} is larger than last interface"
@@ -50,8 +59,11 @@ def expand_interfaces(interface_string: str, data: InterfaceData) -> list:
     return result
 
 
-def expand_parent_interfaces(interface_string: str, data: InterfaceData) -> list:
-    result = []
+def expand_parent_interfaces(interface_string: str, data: InterfaceData) -> list[str]:
+    result: list[str] = []
+    if data.first_parent_interface is None:
+        msg = f"Range {data.one_range} could not be expanded because the first parent interface {data.first_parent_interface} is None"
+        raise ValueError(msg)
     if data.last_parent_interface is not None:
         if data.first_parent_interface > data.last_parent_interface:
             msg = (
@@ -66,8 +78,11 @@ def expand_parent_interfaces(interface_string: str, data: InterfaceData) -> list
     return result
 
 
-def expand_module(interface_string: str, data: InterfaceData) -> list:
-    result = []
+def expand_module(interface_string: str, data: InterfaceData) -> list[str]:
+    result: list[str] = []
+    if data.first_module is None:
+        msg = f"Range {data.one_range} could not be expanded because the first module {data.first_module} is None"
+        raise ValueError(msg)
     if data.last_module is not None:
         if data.first_module > data.last_module:
             msg = (
@@ -82,7 +97,7 @@ def expand_module(interface_string: str, data: InterfaceData) -> list:
     return result
 
 
-def range_expand(range_to_expand: Sequence) -> list:
+def range_expand(range_to_expand: Sequence[str]) -> list[str]:
     if not isinstance(range_to_expand, Sequence):
         msg = f"value must be a Sequence, got {type(range_to_expand)}"
         raise TypeError(msg)
