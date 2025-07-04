@@ -1661,7 +1661,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-topology.md
 ## PREVIEW - Digital Twin settings
 
 !!! note
-    Remember to set `avd_digital_twin_mode: true` in the playbook vars.
+    To easily switch between production mode and digital twin mode, it is recommended to create a dedicated playbook where `avd_digital_twin_mode: true` is set in the playbook vars.
 
     By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation)
     will replace original fabric artifacts.
@@ -1670,7 +1670,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-topology.md
     and `eos_cli_config_gen` to point to a dedicated output location.
 
 AVD Digital Twin functionality natively generates all artifacts required to deploy a virtual replica of a production AVD fabric.
-The generated artifacts are automatically optimized for the specific Digital Twin environment. For example, an EOS configuration generated for an ACT environment will have any unsupported features automatically removed or adjusted.
+The generated artifacts are automatically optimized for the specific Digital Twin environment. For example, an EOS configuration generated for an ACT environment will automatically remove or adjust any unsupported features.
 
 AVD currently supports the following Digital Twin environments:
 
@@ -1681,7 +1681,7 @@ To generate the ACT Digital Twin artifacts, run the `eos_designs` and `eos_cli_c
 ```yaml
 ---
 
-# Original play (generates original fabric artifacts)
+# Production playbook to generate production fabric artifacts
 - name: Build Configurations and Documentation
   hosts: FABRIC
   gather_facts: false
@@ -1695,12 +1695,12 @@ To generate the ACT Digital Twin artifacts, run the `eos_designs` and `eos_cli_c
       ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
 
-# New play to run eos_designs and eos_cli_config_gen in digital twin mode
+# Digital Twin playbook to generate Digital Twin mode artifacts
 - name: Build Configurations and Documentation
   hosts: FABRIC
   gather_facts: false
   vars:
-    # Adjust the output dirs to keep Digital Twin artifacts separate
+    # Adjust the output dirs to keep Digital Twin artifacts in a separate directory
     output_dir_name: "digital_twin/intended"
     documentation_dir_name: "digital_twin/documentation"
     # Set this flag to True to enable Digital Twin mode
