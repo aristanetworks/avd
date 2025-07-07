@@ -42,7 +42,7 @@ options:
       `isis` requires the `password`, `key` and `mode` inputs.
       `ntp` requires the `password` and `salt` inputs.
       `ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.
-      `tacacs` and 'radius` require the `password` and `salt` inputs.
+      `radius` and `tacacs` require the `password` and `salt` inputs.
     choices: ["bgp", "isis", "ntp", "ospf_message_digest", "ospf_simple", "radius", "tacacs"]
     required: true
   key:
