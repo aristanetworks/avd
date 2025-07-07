@@ -13123,6 +13123,12 @@ keys:
                   chip_based:
                     type: bool
                     description: Allow non-ect chip-based.
+      tx_queue:
+        type: dict
+        description: Global txQueue settings.
+        keys:
+          shape_rate_percent_adaptive:
+            type: bool
   qos_profiles:
     type: list
     primary_key: name

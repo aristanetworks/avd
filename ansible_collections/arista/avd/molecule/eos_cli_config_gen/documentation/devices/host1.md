@@ -12671,6 +12671,7 @@ qos map traffic-class 6 to tx-queue 2
 qos map exp 0 to traffic-class 0
 !
 qos random-detect ecn allow non-ect chip-based
+qos tx-queue shape rate percent adaptive
 ```
 
 ### QOS Class Maps
