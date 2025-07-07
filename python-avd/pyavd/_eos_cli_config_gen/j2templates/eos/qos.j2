@@ -29,4 +29,7 @@ qos map exp {{ exp_map }}
 {%         endif %}
 {{ ecn_command }}
 {%     endif %}
+{%     if qos.tx_queue.shape_rate_percent_adaptive is arista.avd.defined(true) %}
+qos tx-queue shape rate percent adaptive
+{%     endif %}
 {% endif %}
