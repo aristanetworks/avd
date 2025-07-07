@@ -517,6 +517,13 @@ $defs:
       campus_link_type:
         type: list
         $ref: "eos_designs#/$defs/campus_link_type"
+      # TODO: Add this in a separate PR.
+      # digital_twin:
+      #   type: bool
+      #   description: |-
+      #     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+      #     Setting this flag to `true` includes the interfaces in "Digital Twin" mode.
+      #   default: true
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.

@@ -10,6 +10,8 @@ from pyavd._utils.password_utils import (
     bgp_encrypt,
     isis_decrypt,
     isis_encrypt,
+    ntp_decrypt,
+    ntp_encrypt,
     ospf_message_digest_decrypt,
     ospf_message_digest_encrypt,
     ospf_simple_decrypt,
@@ -260,3 +262,53 @@ def test_tacacs_input_validation() -> None:
 
     with pytest.raises(ValueError):  # noqa: PT011
         tacacs_decrypt(None)
+
+
+########
+# NTP
+########
+@pytest.mark.parametrize(
+    ("salt", "password", "encrypted_password"),
+    [
+        pytest.param(1, "foo", "0115090B"),
+        pytest.param(6, "foo", "0600002E"),
+        pytest.param(9, "foo", "094A4106"),
+        pytest.param(3, "foo", "03025404"),
+        pytest.param(12, "foo", "121F0A18"),
+        pytest.param(10, "foo", "10480616"),
+        pytest.param(15, "foo", "15140403"),
+    ],
+)
+def test_ntp(salt: int, password: str, encrypted_password: str) -> None:
+    """Test ntp encrypt and decrypt."""
+    assert ntp_encrypt(password, salt) == encrypted_password
+    assert ntp_decrypt(encrypted_password) == password
+
+
+def test_ntp_input_validation() -> None:
+    with pytest.raises(ValueError):  # noqa: PT011
+        ntp_encrypt(["foo"], 1)
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        ntp_encrypt("foo", "foo")
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        ntp_encrypt("foo", -1)
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        ntp_encrypt("", 1)
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        ntp_encrypt("foo", None)
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        ntp_encrypt(None, 1)
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        ntp_decrypt(111)
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        ntp_decrypt("")
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        ntp_decrypt(None)

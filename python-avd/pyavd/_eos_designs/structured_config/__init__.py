@@ -70,6 +70,7 @@ def get_structured_config(
     result: dict,
     templar: Templar | None = None,
     validate: bool = True,
+    digital_twin: bool = False,
 ) -> EosCliConfigGen | None:
     """
     Generate structured_config for a device.
@@ -89,6 +90,8 @@ def get_structured_config(
             The templar to use for rendering templates.
         validate:
             Optional flag to disable validation for the input schema.
+        digital_twin:
+            Optional flag to enable avd_digital_twin_mode.
 
     Returns:
         The structured config as an EosCliConfigGen instance or None if validation failed.
@@ -104,7 +107,7 @@ def get_structured_config(
     inputs = EosDesigns._from_dict(hostvars)
 
     # Initialize SharedUtils class to be passed to each python_module below.
-    shared_utils = SharedUtils(hostname=hostname, hostvars=hostvars, inputs=inputs, peer_facts=all_facts, templar=templar)
+    shared_utils = SharedUtils(hostname=hostname, hostvars=hostvars, inputs=inputs, peer_facts=all_facts, templar=templar, digital_twin=digital_twin)
 
     # Single structured config instance which will be in-place updated by each structured config generator.
     structured_config = EosCliConfigGen()

@@ -9231,6 +9231,37 @@ keys:
                           type: str
                         category:
                           type: str
+      digital_twin:
+        type: dict
+        description: Metadata used to generate Digital Twin topology.
+        keys:
+          environment:
+            type: str
+            description: Targeted Digital Twin environment.
+            valid_values:
+            - act
+          node_type:
+            type: str
+            description: 'Digital Twin''s internal device type used for deploying
+              a replica of the fabric device.
+
+              Possible values depend on the target Digital Twin environment.'
+          ip_addr:
+            type: str
+            description: Management IPv4_address/Mask assigned to a replica of the
+              fabric device within the Digital Twin environment.
+          version:
+            type: str
+            description: OS version used for deploying a replica of the fabric device
+              within the Digital Twin environment.
+          username:
+            type: str
+            description: Local username assigned to a replica of the fabric device
+              within the Digital Twin environment.
+          password:
+            type: str
+            description: Local password assigned to a replica of the fabric device
+              within the Digital Twin environment.
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
