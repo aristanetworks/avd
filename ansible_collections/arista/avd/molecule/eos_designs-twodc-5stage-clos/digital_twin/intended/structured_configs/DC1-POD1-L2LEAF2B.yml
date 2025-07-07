@@ -3,8 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-eos_cli: "interface Loopback1003\n  description Loopback created from raw_eos_cli under l2leaf node DC1-POD1-L2LEAF2B\n\ninterface Loopback1111\n
-  \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+eos_cli: "interface Loopback1003\n  description Loopback created from raw_eos_cli under l2leaf node DC1-POD1-L2LEAF2B\n"
 ethernet_interfaces:
 - name: Ethernet3
   description: MLAG_DC1-POD1-L2LEAF2A_Ethernet3
