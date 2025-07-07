@@ -13,8 +13,9 @@ l3leaf:
 
 management_eapi:
   vrfs:
+    # Assigning default value (use_mgmt_interface_vrf) as user defined to test negative scenario.
     - name: use_mgmt_interface_vrf
       enabled: true
 
 expected_error_message: >-
-  'self.inputs.management_eapi.vrfs[name=use_mgmt_interface_vrf' is set but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'.
+  'self.inputs.management_eapi.vrfs[name=use_mgmt_interface_vrf]' is set but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'.

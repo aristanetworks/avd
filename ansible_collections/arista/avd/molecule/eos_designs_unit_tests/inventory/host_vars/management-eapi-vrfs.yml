@@ -9,6 +9,8 @@ l3leaf:
   nodes:
     - name: management-eapi-vrfs
       loopback_ipv4_address: 10.42.42.42
+      mgmt_ip: 192.168.66.22/24
+      inband_mgmt_interface: Vlan123
       id: 12
 
 management_eapi:
@@ -29,3 +31,10 @@ management_eapi:
       enabled: false
       ipv4_acl: ACL_EAPI_IPv4_2
       ipv6_acl: ACL_EAPI_IPv6_2
+    - name: use_inband_mgmt_vrf
+      enabled: true
+      ipv4_acl: ACL_EAPI_IPv4_3
+    - name: use_default_mgmt_method_vrf
+      enabled: true
+      ipv4_acl: ACL_EAPI_IPv4_4
+      ipv6_acl: ACL_EAPI_IPv6_3

@@ -8095,17 +8095,17 @@ class EosDesigns(EosDesignsRootModel):
             VRF name.
             The value will be interpreted according to these rules:
             - `use_mgmt_interface_vrf` will
-            configure the Management EAPI ACL under the VRF set with `mgmt_interface_vrf`.
-              An error will be
-            raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-            - `use_inband_mgmt_vrf`
-            will configure the eAPI ACL under the VRF set with `inband_mgmt_vrf`.
+            configure the eAPI ACL under the VRF set with `mgmt_interface_vrf`.
               An error will be raised if
-            inband management is not configured for the device.
-            - `use_default_mgmt_method_vrf` will configure
-            the VRF and source-interface for one of the two options above depending on the value of
-            `default_mgmt_method`.
-            - Any other string will be used directly as the VRF name.
+            `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf` will
+            configure the eAPI ACL under the VRF set with `inband_mgmt_vrf`.
+              An error will be raised if inband
+            management is not configured for the device.
+            - `use_default_mgmt_method_vrf` will configure the eAPI
+            ACL under VRF for one of the two options above depending on the value of `default_mgmt_method`.
+            -
+            Any other string will be used directly as the VRF name.
             """
             enabled: bool
             """Enable/disable Management EAPI for this VRF."""
@@ -8135,17 +8135,17 @@ class EosDesigns(EosDesignsRootModel):
                            VRF name.
                            The value will be interpreted according to these rules:
                            - `use_mgmt_interface_vrf` will
-                           configure the Management EAPI ACL under the VRF set with `mgmt_interface_vrf`.
-                             An error will be
-                           raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-                           - `use_inband_mgmt_vrf`
-                           will configure the eAPI ACL under the VRF set with `inband_mgmt_vrf`.
+                           configure the eAPI ACL under the VRF set with `mgmt_interface_vrf`.
                              An error will be raised if
-                           inband management is not configured for the device.
-                           - `use_default_mgmt_method_vrf` will configure
-                           the VRF and source-interface for one of the two options above depending on the value of
-                           `default_mgmt_method`.
-                           - Any other string will be used directly as the VRF name.
+                           `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf` will
+                           configure the eAPI ACL under the VRF set with `inband_mgmt_vrf`.
+                             An error will be raised if inband
+                           management is not configured for the device.
+                           - `use_default_mgmt_method_vrf` will configure the eAPI
+                           ACL under VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                           -
+                           Any other string will be used directly as the VRF name.
                         enabled: Enable/disable Management EAPI for this VRF.
                         ipv4_acl: IPv4 access-list name.
                         ipv6_acl: IPv6 access-list name.
@@ -66366,11 +66366,11 @@ class EosDesigns(EosDesignsRootModel):
     management_eapi: ManagementEapi
     """
     Default is HTTPS management eAPI enabled.
-    The VRF is set to < mgmt_interface_vrf >.
+    The VRF is set to < use_mgmt_interface_vrf >.
 
 
-    Subclass of
-    AvdModel.
+    Subclass
+    of AvdModel.
     """
     mgmt_destination_networks: MgmtDestinationNetworks
     """
@@ -68281,11 +68281,11 @@ class EosDesigns(EosDesignsRootModel):
                 mac_address_table: mac_address_table
                 management_eapi:
                    Default is HTTPS management eAPI enabled.
-                   The VRF is set to < mgmt_interface_vrf >.
+                   The VRF is set to < use_mgmt_interface_vrf >.
 
 
-                   Subclass of
-                   AvdModel.
+                   Subclass
+                   of AvdModel.
                 mgmt_destination_networks:
                    List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
                    Replaces the default route.
