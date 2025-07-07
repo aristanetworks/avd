@@ -3,12 +3,6 @@
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
-{# eos - queue monitor streaming #}
-{#
- Copyright (c) 2023-2025 Arista Networks, Inc.
- Use of this source code is governed by the Apache License 2.0
- that can be found in the LICENSE file.
-#}
 {# eos - radius proxy #}
 {% if radius_proxy is arista.avd.defined %}
 !
@@ -16,11 +10,6 @@ radius proxy
 {%     if radius_proxy.dynamic_authorization is arista.avd.defined(true) %}
    dynamic-authorization
 {%     endif %}
-{#
-
-ask for hide password, add docs and also check which all files needs to be edited to add these
-
-#}
 {%     if radius_proxy.client_key is arista.avd.defined %}
    client key 7 {{ radius_proxy.client_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}

@@ -238,6 +238,12 @@
   - [Segmentation Policies](#segmentation-policies)
   - [Segment Definitions](#segment-definitions)
   - [Router MSS-G Device Configuration](#router-mss-g-device-configuration)
+- [Radius Proxy](#radius-proxy)
+  - [CG_1](#cg_1)
+  - [CG_2](#cg_2)
+  - [CG_3](#cg_3)
+  - [CG_4](#cg_4)
+  - [CG_5](#cg_5)
   - [Router Path-selection](#router-path-selection)
   - [Router Internet Exit](#router-internet-exit)
 - [Router L2 VPN](#router-l2-vpn)
@@ -11641,6 +11647,103 @@ router segment-security
             fallback policy policy-custom
    !
 ```
+
+## Radius Proxy
+
+| Settings | Value |
+| -------- | ----- |
+| Dynamic Authorization | True |
+| Client Key | <removed> |
+| Client Session Idle-timeout (seconds) | 46 |
+
+### CG_1
+
+Server Groups: aaa bbb ccc
+
+#### Vrfs: vrf_1
+
+##### Ipv4 Clients
+
+| Address | Key |
+| ------- | --- |
+| 1.2.10.10 | <removed> |
+| 1.2.10.6 | - |
+| 2.2.1.1 | - |
+| 1.2.10.8 | <removed> |
+
+##### Ipv6 Clients
+
+| Address | Key |
+| ------- | --- |
+| 2001:db8::1 | <removed> |
+| ::1 | - |
+| fd00::1234 | <removed> |
+
+##### Host Clients
+
+| Name | Key |
+| ---- | --- |
+| host1 | <removed> |
+| host2 | - |
+| host3 | <removed> |
+
+#### Vrfs: vrf_2
+
+##### Ipv4 Clients
+
+| Address | Key |
+| ------- | --- |
+| 1.1.10.10 | <removed> |
+| 1.1.10.6 | - |
+| 2.1.1.1 | - |
+| 1.1.10.8 | <removed> |
+
+### CG_2
+
+Server Groups: -
+
+### CG_3
+
+Server Groups: ddd
+
+### CG_4
+
+Server Groups: -
+
+#### Vrfs: vrf_only_host
+
+##### Host Clients
+
+| Name | Key |
+| ---- | --- |
+| host11 | <removed> |
+| host12 | - |
+| host13 | <removed> |
+
+#### Vrfs: vrf_only_ipv4
+
+##### Ipv4 Clients
+
+| Address | Key |
+| ------- | --- |
+| 1.2.10.11 | <removed> |
+| 1.2.10.16 | - |
+| 2.2.1.11 | - |
+| 1.2.10.18 | <removed> |
+
+### CG_5
+
+Server Groups: -
+
+#### Vrfs: vrf_only_ipv6
+
+##### Ipv6 Clients
+
+| Address | Key |
+| ------- | --- |
+| 2001:db8::11 | <removed> |
+| ::12 | - |
+| fd0::1234 | <removed> |
 
 ### Router Path-selection
 
