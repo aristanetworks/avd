@@ -1,0 +1,17 @@
+load_balance:
+  policies:
+    sand_profiles:
+      - name: Profile_B
+        fields:
+          udp:
+            dst_port: 100
+            payload_bytes: 10-20
+            match:
+              payload_bits: 10
+              pattern: "0x7d1"
+              hash_payload_bytes: 10
+      - name: Profile_A
+        fields:
+          udp:
+            dst_port: 101
+            payload_bytes: 25

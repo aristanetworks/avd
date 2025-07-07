@@ -23,6 +23,16 @@ ntp_settings:
   authentication_keys:
     - id: 1
       hash_algorithm: sha1
-      key: someobfuscatedkey
+      key: 06071D285F5A08
       key_type: 7
+      # Making sure `key` takes precedence over `cleartext_key`
+      cleartext_key: arista
+    - id: 2
+      hash_algorithm: md5
+      key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
+      key_type: 8a
+    - id: 3
+      # Test eos_designs encrypting the key to type 7.
+      hash_algorithm: sha1
+      cleartext_key: arista
   trusted_keys: 1

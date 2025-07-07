@@ -9,6 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>avd_6_behaviors</samp>](## "avd_6_behaviors") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0.</span> |
     | [<samp>&nbsp;&nbsp;snmp_settings_vrfs</samp>](## "avd_6_behaviors.snmp_settings_vrfs") | Boolean |  | `False` |  | Opt-in to the new behavior for snmp_settings:<br>- SNMP will only be enabled for VRFs specifically enabled under `snmp_settings.vrfs`.<br>  Note this means SNMP will be disabled for VRF "default" unless it is defined there.<br>- `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.<br>  If `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string "default". |
+    | [<samp>avd_digital_twin_mode</samp>](## "avd_digital_twin_mode") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).<br>By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation) will replace original fabric artifacts.<br>To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location. |
     | [<samp>avd_eos_designs_debug</samp>](## "avd_eos_designs_debug") | Boolean |  | `False` |  | Dump all vars and facts per device after generating `avd_switch_facts`. |
     | [<samp>avd_eos_designs_enforce_duplication_checks_across_all_models</samp>](## "avd_eos_designs_enforce_duplication_checks_across_all_models") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described behavior.<br>When this is enabled, the generation of Structured Config in `eos_designs` will prevent duplicate objects generated<br>by different input models. This will also improve performance since `eos_designs` will not maintain separate copied of the Structured Configuration.<br>As an example, if you define an Ethernet interface under `l3_edge` and use the same interface for connectivity under `servers`:<br>- With this option disabled (default), AVD will merge these configurations together for the interface and not raise an error.<br>- With this option enabled, AVD will raise an error about duplicate interface definitions. |
     | [<samp>avd_eos_designs_structured_config</samp>](## "avd_eos_designs_structured_config") | Boolean |  | `True` |  | Generate structured configuration per device. |
@@ -34,6 +35,12 @@
       # - `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.
       #   If `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string "default".
       snmp_settings_vrfs: <bool; default=False>
+
+    # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+    # Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).
+    # By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation) will replace original fabric artifacts.
+    # To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location.
+    avd_digital_twin_mode: <bool; default=False>
 
     # Dump all vars and facts per device after generating `avd_switch_facts`.
     avd_eos_designs_debug: <bool; default=False>

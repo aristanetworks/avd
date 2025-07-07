@@ -30,12 +30,13 @@ from tests.models import MoleculeScenario
     "example-single-dc-l3ls",
     "example-single-dc-l3ls-ipv6",
 )
+@pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos")
 def test_get_avd_facts(molecule_scenario: MoleculeScenario) -> None:
     """Test get_avd_facts."""
     molecule_inputs = {host.name: deepcopy(host.hostvars) for host in molecule_scenario.hosts}
 
     with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
-        avd_facts = get_avd_facts(molecule_inputs, pool_manager=molecule_scenario.pool_manager)
+        avd_facts = get_avd_facts(molecule_inputs, pool_manager=molecule_scenario.pool_manager, digital_twin=molecule_scenario.digital_twin)
 
     assert isinstance(avd_facts, dict)
     assert len(avd_facts) == len(molecule_inputs)

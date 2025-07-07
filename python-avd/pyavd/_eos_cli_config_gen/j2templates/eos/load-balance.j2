@@ -1,0 +1,25 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - load balance #}
+{% if load_balance.policies is arista.avd.defined %}
+!
+load-balance policies
+{%     for profile in load_balance.policies.sand_profiles | arista.avd.natural_sort('name')  %}
+{%         if not loop.first %}
+   !
+{%         endif %}
+   load-balance sand profile {{ profile.name }}
+{%         if profile.fields.udp is arista.avd.defined %}
+      fields udp dst-port {{ profile.fields.udp.dst_port }}
+{%             if profile.fields.udp.match is arista.avd.defined %}
+         match payload bits {{ profile.fields.udp.match.payload_bits }} pattern {{ profile.fields.udp.match.pattern }} hash payload bytes {{ profile.fields.udp.match.hash_payload_bytes }}
+{%             endif %}
+{%             if profile.fields.udp.payload_bytes is arista.avd.defined %}
+         payload bytes {{ profile.fields.udp.payload_bytes }}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

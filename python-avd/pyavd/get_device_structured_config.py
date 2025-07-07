@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 
 
-def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[str, EosDesignsFacts]) -> dict:
+def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[str, EosDesignsFacts], digital_twin: bool = False) -> dict:
     """
     Build and return the AVD structured configuration for one device.
 
@@ -19,6 +19,7 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[st
         inputs: Dictionary with inputs for "eos_designs".
             Variables should be converted and validated according to AVD `eos_designs` schema first using `pyavd.validate_inputs`.
         avd_facts: Dictionary of avd_facts as returned from `pyavd.get_avd_facts`.
+        digital_twin: PREVIEW: Optional flag to enable digital-twin mode.
 
     Returns:
         Device Structured Configuration as a dictionary
@@ -48,6 +49,7 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[st
         result=result,
         templar=None,
         validate=False,
+        digital_twin=digital_twin,
     )
     if result.get("failed") or structured_config is None:
         msg = f"{[str(error) for error in result['errors']]}"

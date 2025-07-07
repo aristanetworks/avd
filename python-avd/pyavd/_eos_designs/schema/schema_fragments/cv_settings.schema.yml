@@ -160,6 +160,6 @@ keys:
         type: bool
         # TODO: AVD7.0 remove mention of `cv_instances` in description
         description: |-
-           Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
-           Can be set to `false` to avoid changes when migrating from old `cv_instances` model.
+          Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+          Can be set to `false` to avoid changes when migrating from the old `cv_instances` model.
         default: true
