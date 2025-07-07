@@ -1,0 +1,55 @@
+---
+# Tests for flow_tracking.sampled/hardware.trackers[].exporters[].collector
+flow_tracking:
+  sampled:
+    trackers:
+      - name: T1
+        exporters:
+          - name: T1-E1
+            collector:
+              host: 42.42.42.42
+              # no port
+      - name: T2
+        exporters:
+          - name: T2-E1
+            collector:
+              # only port - should not be rendered
+              port: 666
+          - name: T2-E2
+            collector:
+              host: 10.10.10.10
+              port: 777
+          - name: T2-E3
+            collector:
+              host: this.is.my.awesome.collector.dns.name
+              port: 888
+          - name: T2-E4
+            collector:
+              host: dead:beef::cafe
+
+  hardware:
+    trackers:
+      - name: T1
+        # one exporter
+        exporters:
+          - name: T1-E1
+            collector:
+              host: 42.42.42.42
+              # no port
+      - name: T2
+        exporters:
+          - name: T2-E1
+            collector:
+              # only port - should not be rendered
+              port: 666
+          - name: T2-E2
+            collector:
+              host: 10.10.10.10
+              port: 777
+          - name: T2-E3
+            collector:
+              host: this.is.my.awesome.collector.dns.name
+              port: 888
+          - name: T2-E4
+            collector:
+              host: dead:beef::cafe

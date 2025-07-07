@@ -121,7 +121,7 @@ Software export of IPFIX data records enabled.
 
 ##### Exporters Summary
 
-| Tracker Name | Exporter Name | Collectors IP/Host | Collectors Port | Local Interface |
+| Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
 {%             for tracker in flow_tracking.hardware.trackers | arista.avd.natural_sort('name') %}
 {%                 for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
