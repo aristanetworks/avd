@@ -6,6 +6,8 @@ from .password import (
     bgp_encrypt,
     isis_decrypt,
     isis_encrypt,
+    ntp_decrypt,
+    ntp_encrypt,
     ospf_message_digest_decrypt,
     ospf_message_digest_encrypt,
     ospf_simple_decrypt,
@@ -19,8 +21,9 @@ from .password import (
 ##############
 METHODS_DIR = {
     "bgp": (bgp_encrypt, bgp_decrypt),
-    "ospf_simple": (ospf_simple_encrypt, ospf_simple_decrypt),
-    "ospf_message_digest": (ospf_message_digest_encrypt, ospf_message_digest_decrypt),
     "isis": (isis_encrypt, isis_decrypt),
+    "ospf_message_digest": (ospf_message_digest_encrypt, ospf_message_digest_decrypt),
+    "ospf_simple": (ospf_simple_encrypt, ospf_simple_decrypt),
+    "ntp": (ntp_encrypt, ntp_decrypt),
     "tacacs": (tacacs_encrypt, tacacs_decrypt),
 }

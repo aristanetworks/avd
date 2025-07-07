@@ -49,3 +49,6 @@ keys:
             mask:
               type: str
               description: Mask of the offset. A hex value within the range 0x01-0xFF.
+      load_balance_sand_profile:
+        description: Name of the load-balance profile for sand platform.
+        type: str
