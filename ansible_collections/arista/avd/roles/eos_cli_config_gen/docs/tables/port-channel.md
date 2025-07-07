@@ -14,6 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header</samp>](## "port_channel.load_balance_trident_udf.[].header") | String | Required |  | Valid Values:<br>- <code>inner_l3</code><br>- <code>inner_l4</code><br>- <code>outer_l2</code><br>- <code>outer_l3</code><br>- <code>outer_l4</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset</samp>](## "port_channel.load_balance_trident_udf.[].offset") | Integer | Required |  | Min: 0<br>Max: 64 | Offset starting from selected header in the packet. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mask</samp>](## "port_channel.load_balance_trident_udf.[].mask") | String |  |  |  | Mask of the offset. A hex value within the range 0x01-0xFF. |
+    | [<samp>&nbsp;&nbsp;load_balance_sand_profile</samp>](## "port_channel.load_balance_sand_profile") | String |  |  |  | Name of the load-balance profile for sand platform. |
 
 === "YAML"
 
@@ -36,4 +37,7 @@
 
           # Mask of the offset. A hex value within the range 0x01-0xFF.
           mask: <str>
+
+      # Name of the load-balance profile for sand platform.
+      load_balance_sand_profile: <str>
     ```

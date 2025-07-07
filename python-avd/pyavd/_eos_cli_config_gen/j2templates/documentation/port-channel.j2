@@ -9,6 +9,10 @@
 ## Port-Channel
 
 ### Port-Channel Summary
+{%     if port_channel.load_balance_sand_profile is arista.avd.defined %}
+
+Port-Channel load balance Sand platform profile: {{ port_channel.load_balance_sand_profile }}
+{%     endif %}
 {%     if port_channel.load_balance_trident_udf is arista.avd.defined %}
 
 #### Port-channel Load-balance Trident UDF Eth-type Headers

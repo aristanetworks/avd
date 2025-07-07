@@ -29,10 +29,11 @@
   - [Static Routes](#static-routes)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
+- [Power Over Ethernet (PoE)](#power-over-ethernet-poe)
+  - [PoE Summary](#poe-summary)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [EOS CLI Device Configuration](#eos-cli-device-configuration)
 
 ## Management
 
@@ -162,6 +163,7 @@ vlan 4085
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | L2_DC1-POD1-LEAF1A_Ethernet3 | *trunk | *4085 | *- | *- | 1 |
+| Ethernet2 | SERVER_server-1_Eth9 | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -173,6 +175,12 @@ interface Ethernet1
    description L2_DC1-POD1-LEAF1A_Ethernet3
    no shutdown
    channel-group 1 mode active
+!
+interface Ethernet2
+   description SERVER_server-1_Eth9
+   no shutdown
+   switchport
+   poe reboot action maintain
 ```
 
 ### Port-Channel Interfaces
@@ -204,7 +212,7 @@ interface Port-Channel1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
+| Vlan4085 | L2LEAF_INBAND_MGMT | default | 1500 | False |
 
 ##### IPv4
 
@@ -219,6 +227,7 @@ interface Port-Channel1
 interface Vlan4085
    description L2LEAF_INBAND_MGMT
    no shutdown
+   mtu 1500
    ip address 172.21.110.4/24
 ```
 
@@ -289,6 +298,16 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 ```eos
 ```
 
+## Power Over Ethernet (PoE)
+
+### PoE Summary
+
+#### PoE Interfaces
+
+| Interface | PoE Enabled | Priority | Limit | Reboot Action | Link Down Action | Shutdown Action | LLDP Negotiation | Legacy Detection |
+| --------- | --------- | --------- | ----------- | ----------- | ----------- | ----------- | --------- | --------- |
+| Ethernet2 | True | - | - | maintain | - | - | - | - |
+
 ## VRF Instances
 
 ### VRF Instances Summary
@@ -302,13 +321,4 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 ```eos
 !
 vrf instance MGMT
-```
-
-## EOS CLI Device Configuration
-
-```eos
-!
-interface Loopback1111
-  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
-
 ```
