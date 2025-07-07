@@ -38,7 +38,15 @@ ntp:
   authentication_keys:
   - id: 1
     hash_algorithm: sha1
-    key: someobfuscatedkey
+    key: 06071D285F5A08
+    key_type: '7'
+  - id: 2
+    hash_algorithm: md5
+    key: $BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo
+    key_type: 8a
+  - id: 3
+    hash_algorithm: sha1
+    key: 03054902151B20
     key_type: '7'
   trusted_keys: '1'
 service_routing_protocols_model: multi-agent

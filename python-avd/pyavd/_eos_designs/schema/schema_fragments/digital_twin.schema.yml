@@ -1,0 +1,89 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  digital_twin:
+    documentation_options:
+      table: digital-twin-configuration
+    type: dict
+    description: |-
+      PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+      Global settings to configure the Digital Twin of the Fabric.
+    keys:
+      environment:
+        type: str
+        description: |-
+          Targeted Digital Twin environment.
+        valid_values:
+          - act
+        default: act
+      fabric:
+        type: dict
+        description: |-
+          Settings for Digital Twin fabric devices.
+        required: true
+        keys:
+          act_os_version:
+            type: str
+            description: |-
+              OS version for ACT Digital Twin fabric devices.
+          act_username:
+            type: str
+            description: |-
+              Username for ACT Digital Twin fabric devices.
+            default: admin
+          act_password:
+            type: str
+            description: |-
+              Cleartext password for ACT Digital Twin fabric devices.
+            default: admin
+      # TODO: Add this in a separate PR.
+      # endpoints:
+      #   type: dict
+      #   description: |-
+      #     Global Digital Twin settings related to the configuration of the endpoints.
+      #   keys:
+      #     enabled:
+      #       type: bool
+      #       description: |-
+      #         Setting this flag to `true` will include all `connected_endpoints` in the generated Digital Twin topology data.
+      #         Specific endpoints may be suppressed by setiing `<connected_endpoints_keys.key>.digital_twin.enabled` to `false`.
+      #       default: false
+      #     act_node_type:
+      #       type: str
+      #       description: |-
+      #         Desired node_type for ACT Digital Twin endpoints.
+      #       valid_values:
+      #         - veos
+      #         - cloudeos
+      #         - generic
+      #       default: generic
+      #     act_os_version:
+      #       type: str
+      #       description: |-
+      #         Desired Digital Twin OS version for endpoints.
+      #         For `veos` and `cloudeos` ACT `node_type`s - use the standard EOS software release naming convention (e.g., `4.33.0F`).
+      #         For the `generic` ACT `node_type`, use the ACT-specific naming convention (e.g., `ubuntu-2204-lts`).
+      #         Refer to the ACT online documentation for the complete list of supported versions for each node_type.
+      #       required: true
+      #     mgmt_ipv4_pool:
+      #       type: str
+      #       description: |-
+      #         IPv4 address pool to automatically generate MGMT IPv4 addresses for Digital Twin endpoints.
+      #         Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+      #       format: ipv4_pool
+      #       required: true
+      #     username:
+      #       type: str
+      #       description: |-
+      #         Desired Digital Twin username for endpoints.
+      #         Is not required if the selected Digital Twin platform for endpoints matches the Digital Twin platform used by any of the fabric nodes.
+      #     password:
+      #       type: str
+      #       description: |-
+      #         Desired Digital Twin clear-text password for endpoints.
+      #         Is not required if the selected Digital Twin platform for endpoints matches the Digital Twin platform used by any of the fabric nodes.

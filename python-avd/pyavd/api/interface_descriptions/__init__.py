@@ -121,7 +121,8 @@ class AvdInterfaceDescriptions(AvdFacts):
             - overlay_routing_protocol
             - type
             - wan_carrier
-            - wan_circuit_id.
+            - wan_circuit_id
+            - main_interface_wan_carrier.
         """
         # This is historic behavior for these two modules where the defined description
         # should take precedence over anything. This was broken from AVD 5.0 to 5.3
@@ -151,6 +152,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "peer_channel_group_id": data.peer_channel_group_id,
                     "channel_description": data.port_channel_description,
                     "peer_node_group": data.peer_node_group,
+                    "wan_carrier": data.wan_carrier,
+                    "wan_circuit_id": data.wan_circuit_id,
+                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
                 },
             )
 
@@ -178,6 +182,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "peer_node_group": data.peer_node_group,
                     "peer_node_group_or_peer": data.peer_node_group or data.peer,
                     "peer_node_group_or_uppercase_peer": data.peer_node_group or str(data.peer or "").upper() or None,
+                    "wan_carrier": data.wan_carrier,
+                    "wan_circuit_id": data.wan_circuit_id,
+                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
                 }
             ),
         )
@@ -554,8 +561,11 @@ class InterfaceDescriptionData:
     """The WAN Carrier this interface is connected to"""
     wan_circuit_id: str | None
     """The WAN Circuit ID for this interface."""
+    main_interface_wan_carrier: str | None
+    """ WAN carrier of parent interface"""
 
-    def __init__(
+    # We accept more arguments than max-args number for this method.
+    def __init__(  # noqa: PLR0913
         self,
         shared_utils: SharedUtilsProtocol,
         description: str | None = None,
@@ -572,6 +582,7 @@ class InterfaceDescriptionData:
         vrf: str | None = None,
         wan_carrier: str | None = None,
         wan_circuit_id: str | None = None,
+        main_interface_wan_carrier: str | None = None,
     ) -> None:
         self._shared_utils = shared_utils
         self.description = description
@@ -588,6 +599,7 @@ class InterfaceDescriptionData:
         self.vrf = vrf
         self.wan_carrier = wan_carrier
         self.wan_circuit_id = wan_circuit_id
+        self.main_interface_wan_carrier = main_interface_wan_carrier
 
     @property
     def mpls_overlay_role(self) -> str | None:

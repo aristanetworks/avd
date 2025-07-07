@@ -98,6 +98,9 @@
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Custom TCAM Profiles](#custom-tcam-profiles)
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
+- [Load Balance](#load-balance)
+  - [Load Balance Profiles](#load-balance-profiles)
+  - [Load Balance Configuration](#load-balance-configuration)
   - [Link Tracking](#link-tracking)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
@@ -3237,6 +3240,46 @@ hardware tcam
    system profile traffic_policy
 ```
 
+## Load Balance
+
+### Load Balance Profiles
+
+#### Profile_A
+
+##### UDP Fields Settings
+
+| Setting | Value |
+| ------- | ----- |
+| Destination Port | 101 |
+| UDP Payload | 25 |
+
+#### Profile_B
+
+##### UDP Fields Settings
+
+| Setting | Value |
+| ------- | ----- |
+| Destination Port | 100 |
+| Match Payload Bits | 10 |
+| Match Pattern | 0x7d1 |
+| Match Hash Payload Bytes | 10 |
+| UDP Payload | 10-20 |
+
+### Load Balance Configuration
+
+```eos
+!
+load-balance policies
+   load-balance sand profile Profile_A
+      fields udp dst-port 101
+         payload bytes 25
+   !
+   load-balance sand profile Profile_B
+      fields udp dst-port 100
+         match payload bits 10 pattern 0x7d1 hash payload bytes 10
+         payload bytes 10-20
+```
+
 ### Link Tracking
 
 #### Link Tracking Groups Summary
@@ -3471,6 +3514,8 @@ sync-e
 ## Port-Channel
 
 ### Port-Channel Summary
+
+Port-Channel load balance Sand platform profile: Profile_B
 
 #### Port-channel Load-balance Trident UDF Eth-type Headers
 
@@ -11255,6 +11300,8 @@ platform fap buffering egress profile unicast
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7
 platform sand qos map traffic-class 2 to network-qos 15
+!
+port-channel load-balance sand profile Profile_B
 platform sand multicast replication default ingress
 platform sand mdb profile l3-xxl
 platform sfe data-plane cpu allocation maximum 42
