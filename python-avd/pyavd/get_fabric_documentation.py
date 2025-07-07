@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from re import findall as re_findall
 from typing import TYPE_CHECKING
 
 from pyavd._utils import get
@@ -13,7 +14,6 @@ from pyavd.api.fabric_documentation import (
     ActNodeTypeSettings,
     FabricDocumentation,
 )
-from pyavd.j2filters.natural_sort import natural_sort
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
@@ -191,9 +191,16 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
                     # Render Ethernet ports for veos node type devices
                     ports=tuple(
-                        natural_sort(
-                            ethernet_interface["name"]
-                            for ethernet_interface in get(fabric_documentation_facts.structured_configs, f"{device}..ethernet_interfaces", [], separator="..")
+                        sorted(
+                            (
+                                ethernet_interface["name"]
+                                for ethernet_interface in get(
+                                    fabric_documentation_facts.structured_configs, f"{device}..ethernet_interfaces", [], separator=".."
+                                )
+                            ),
+                            # Extract digits from the interface names and use them to sort interfaces using the natural order
+                            # Can not use natural_sort utility here directly due to the triggered CI deps import failure
+                            key=lambda interface_name: list(map(int, re_findall(r"\d+", interface_name))),
                         )
                     )
                     if digital_twin_node_type == "veos"
