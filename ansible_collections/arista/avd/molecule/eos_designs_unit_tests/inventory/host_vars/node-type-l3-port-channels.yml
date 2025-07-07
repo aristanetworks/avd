@@ -93,6 +93,7 @@ wan_router:
               name: Port-Channel5.100
               encapsulation_dot1q_vlan: 108
               ip_address: 192.168.100.115/31
+              description: "{wan_carrier}_{wan_circuit_id}"
               peer: peer2
               peer_port_channel: Port-Channel15
               peer_ip: 192.168.100.114
@@ -110,6 +111,13 @@ wan_router:
               qos_profile: TEST-QOS-PROFILE2
               flow_tracking:
                 enabled: true
+            - # sub-interface using main_interface_carrier name for description
+              name: Port-Channel5.110
+              ip_address: 192.168.100.118/31
+              peer: peer3
+              peer_port_channel: Port-Channel17
+              peer_ip: 192.168.100.119
+              description: "{main_interface_wan_carrier}_{peer}_{peer_interface}"
             - # Port-Channel with 1 member port
               name: Port-Channel8
               mode: 'on'
