@@ -5142,7 +5142,8 @@ keys:
         deprecation:
           warning: true
           remove_in_version: 6.0.0
-          new_key: aaa_settings
+          new_key: 'aaa_settings.radius.vrfs[].source_interface or aaa_settings.radius.servers[].vrf:
+            use_mgmt_interface_vrf or aaa_settings.radius.servers[].vrf: use_inband_mgmt_vrf'
         keys:
           mgmt_interface:
             type: bool
@@ -5215,7 +5216,8 @@ keys:
         deprecation:
           warning: true
           remove_in_version: 6.0.0
-          new_key: aaa_settings
+          new_key: 'aaa_settings.tacacs.vrfs[].source_interface or aaa_settings.tacacs.servers[].vrf:
+            use_mgmt_interface_vrf or aaa_settings.tacacs.servers[].vrf: use_inband_mgmt_vrf'
         keys:
           mgmt_interface:
             type: bool

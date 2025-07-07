@@ -31,7 +31,7 @@ aaa_server_groups:
   - server: 10.10.10.3
     vrf: INBAND_MGMT
   - server: 10.10.10.2
-    vrf: other_vrf
+    vrf: MGMT1
 - name: TACACS2
   type: tacacs+
   servers:
@@ -51,6 +51,8 @@ ip_tacacs_source_interfaces:
   vrf: default
 - name: Vlan4092
   vrf: INBAND_MGMT
+- name: Vlan125
+  vrf: MGMT1
 is_deployed: true
 management_api_http:
   enable_https: true
@@ -91,7 +93,7 @@ tacacs_servers:
     vrf: INBAND_MGMT
     key: 071B245F5A
   - host: 10.10.10.2
-    vrf: other_vrf
+    vrf: MGMT1
     key: 071B245F5A
   policy_unknown_mandatory_attribute_ignore: true
 transceiver_qsfp_default_mode_4x10: true
