@@ -282,6 +282,7 @@ jobs:
           - "example-isis-ldp-ipvpn"
           - "example-l2ls-fabric"
           - "example-single-dc-l3ls"
+          - "example-single-dc-l3ls-ipv6"
           - "example-cv-pathfinder"
         ansible_version:
           # Testing all scenario with 2.16.x, due to bug with in 2.17.0 with and the way we test eos_designs_negative_unit_tests https://github.com/ansible/ansible/issues/83292
@@ -607,7 +608,7 @@ jobs:
         # The version conflicts with our requirements,
         # so we let the galaxy-importer version resolve remaining requirements.
         run: |
-          pip install "galaxy-importer==0.4.29"
+          pip install "galaxy-importer==0.4.31"
       - name: Run galaxy-importer checks
         run: python -m galaxy_importer.main *.tar.gz
       - uses: actions/upload-artifact@v4

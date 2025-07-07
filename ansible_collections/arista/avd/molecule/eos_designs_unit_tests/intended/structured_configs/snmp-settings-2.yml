@@ -15,10 +15,13 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 snmp_server:
+  ipv4_acls:
+  - name: acl-for-vrf-default
+  ipv6_acls:
+  - name: acl-for-vrf-default
+  local_interfaces:
+  - name: Vlan123
   hosts:
-  - host: 10.6.75.125
-    version: 2c
-    community: SNMP-COMMUNITY-2
   - host: 10.6.75.125
     vrf: SNMPVRF
     version: 2c
@@ -29,17 +32,15 @@ snmp_server:
     - username: USER-WRITE
       authentication_level: auth
   - host: 10.6.75.127
-    version: 2c
-    community: SNMP-COMMUNITY-2
-  - host: 10.6.75.127
     vrf: SNMPVRF
     version: 2c
     community: SNMP-COMMUNITY-2
-  - host: 10.6.75.128
-    version: '3'
-    users:
-    - username: USER-WRITE
-      authentication_level: auth
+  - host: 10.6.75.129
+    version: 2c
+    community: SNMP-COMMUNITY-2
+  - host: 10.6.75.130
+    version: 2c
+    community: SNMP-COMMUNITY-2
   traps:
     snmp_traps:
     - name: foo

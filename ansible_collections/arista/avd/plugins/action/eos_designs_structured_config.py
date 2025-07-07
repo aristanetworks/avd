@@ -63,6 +63,7 @@ class ActionModule(ActionBase):
         file_mode = str(self._task.args.get("mode", "0o664"))
         template_output = self._task.args.get("template_output", False)
         validation_mode = self._task.args.get("validation_mode")
+        digital_twin = self._task.args.get("digital_twin", False)
 
         avd_switch_facts = get(task_vars, "avd_switch_facts", required=True)
 
@@ -105,6 +106,7 @@ class ActionModule(ActionBase):
                 input_schema_tools=input_schema_tools,
                 result=result,
                 templar=self.templar,
+                digital_twin=digital_twin,
             )
         except Exception as error:
             raise AnsibleActionFail(message=str(error)) from error

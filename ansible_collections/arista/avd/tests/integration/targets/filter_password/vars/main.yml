@@ -24,3 +24,13 @@ isis:
   clear_password: arista
   mode: sha-512
   expected_encrypted_password: ungRXTzMFB4lTWHOt14hSA==
+
+ntp:
+  clear_password: arista
+  salt: 0
+  expected_encrypted_password: 0005010F174F0A
+
+tacacs:
+  clear_password: arista
+  salt: 9
+  expected_encrypted_password: 094D5C000A1116

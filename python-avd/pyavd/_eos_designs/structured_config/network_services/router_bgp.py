@@ -99,7 +99,12 @@ class RouterBgpMixin(Protocol):
             )
 
         for peer_group in peer_groups:
-            self.structured_config.router_bgp.peer_groups.append(peer_group._cast_as(EosCliConfigGen.RouterBgp.PeerGroupsItem, ignore_extra_keys=True))
+            # Below we recast directly to eos_cli_config_gen. Losing incompatible keys, but relaying everything else.
+            peer_group_config = peer_group._cast_as(EosCliConfigGen.RouterBgp.PeerGroupsItem, ignore_extra_keys=True)
+            # encrypt password if needed
+            peer_group_config.password = self.shared_utils.get_bgp_password(peer_group)
+            self.structured_config.router_bgp.peer_groups.append(peer_group_config)
+
             if peer_group.address_family_ipv4:
                 af_peer_group = peer_group.address_family_ipv4._cast_as(EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem, ignore_extra_keys=True)
                 af_peer_group.name = peer_group.name
@@ -200,6 +205,8 @@ class RouterBgpMixin(Protocol):
 
                     # Below we recast directly to eos_cli_config_gen. Losing incompatible keys, but relaying everything else.
                     bgp_peer_config = bgp_peer._cast_as(bgp_vrf.NeighborsItem, ignore_extra_keys=True)
+                    # encrypt password if needed
+                    bgp_peer_config.password = self.shared_utils.get_bgp_password(bgp_peer)
 
                     if bgp_peer.set_ipv4_next_hop or bgp_peer.set_ipv6_next_hop:
                         route_map = f"RM-{vrf.name}-{peer_ip}-SET-NEXT-HOP-OUT"

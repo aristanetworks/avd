@@ -135,7 +135,7 @@ class UtilsMixin(Protocol):
         if short_esi.lower() == "auto":
             esi_hash = sha256(
                 "".join(
-                    [hash_extra_value] + adapter.switches[:2] + adapter.switch_ports[:2] + endpoint_ports[:2] + [str(channel_group_id)],
+                    [hash_extra_value, *adapter.switches[:2], *adapter.switch_ports[:2], *endpoint_ports[:2], str(channel_group_id)],
                 ).encode("UTF-8"),
             ).hexdigest()
             short_esi = re.sub(r"([0-9a-f]{4})", "\\1:", esi_hash)[:14]
@@ -289,3 +289,23 @@ class UtilsMixin(Protocol):
             raise AristaAvdError(msg)
 
         return output_type(trunk=adapter.phone_trunk_mode, vlan=adapter.phone_vlan)
+
+    def _get_adapter_l2_mtu(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> int | None:
+        """Return l2_mtu for one adapter."""
+        if self.shared_utils.platform_settings.feature_support.per_interface_l2_mtu and adapter.l2_mtu:
+            return adapter.l2_mtu
+
+        return None
+
+    def _get_adapter_l2_mru(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> int | None:
+        """Return l2_mru for one adapter."""
+        if self.shared_utils.platform_settings.feature_support.per_interface_l2_mru and adapter.l2_mru:
+            return adapter.l2_mru
+
+        return None

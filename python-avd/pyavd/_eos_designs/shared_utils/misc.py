@@ -11,6 +11,7 @@ from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get
+from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
@@ -139,8 +140,6 @@ class MiscMixin(Protocol):
 
     @cached_property
     def p2p_uplinks_mtu(self: SharedUtilsProtocol) -> int | None:
-        if not self.platform_settings.feature_support.per_interface_mtu:
-            return None
         p2p_uplinks_mtu = default(self.platform_settings.p2p_uplinks_mtu, self.inputs.p2p_uplinks_mtu)
         return default(self.node_config.uplink_mtu, p2p_uplinks_mtu)
 
@@ -168,6 +167,14 @@ class MiscMixin(Protocol):
     @cached_property
     def evpn_multicast(self: SharedUtilsProtocol) -> bool:
         return self.switch_facts.evpn_multicast is True
+
+    def get_interface_mtu(self: SharedUtilsProtocol, interface_name: str, configured_mtu: int | None) -> int | None:
+        """Returns MTU value for the interface."""
+        if not self.platform_settings.feature_support.per_interface_mtu:
+            return None
+        if "." in interface_name and not self.platform_settings.feature_support.subinterface_mtu:
+            return None
+        return configured_mtu
 
     def get_ipv4_acl(
         self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None
@@ -410,3 +417,24 @@ class MiscMixin(Protocol):
                 all_connected_endpoints.append(connected_endpoint)
 
         return all_connected_endpoints
+
+    def get_ipsec_key(self: SharedUtilsProtocol, cleartext_key: str, profile_name: str) -> str:
+        """
+        Return a type 7 encrypted shared key for IPsec.
+
+        Args:
+            cleartext_key: The cleartext key to encrypt
+            profile_name: The profile name to derive a salt deterministically
+
+        Returns:
+            str: type 7 encrypted key.
+        """
+        # Need to compute it deterministically
+        salt = sum(bytearray(profile_name, "ascii")) % 16
+
+        return simple_7_encrypt(cleartext_key, salt)
+
+    @cached_property
+    def is_campus_device(self: SharedUtilsProtocol) -> bool:
+        """Return True if generation of the Campus tags is globally enabled and current device is a Campus device."""
+        return bool(self.inputs.generate_cv_tags.campus_fabric and default(self.node_config.campus, self.inputs.campus))

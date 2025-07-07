@@ -1,0 +1,27 @@
+---
+# This tests the VRFs and SNMP hosts only using inband management VRF.
+snmp_settings:
+  # Deprecated. To be removed in 6.0.0
+  enable_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
+  # Deprecated. To be removed in 6.0.0
+  enable_mgmt_interface_vrf: true # This one should not be in the output, since this host has no oob mgmt
+  hosts:
+    - host: 10.6.75.127
+      # Deprecated. To be removed in 6.0.0
+      use_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
+      # Deprecated. To be removed in 6.0.0
+      use_mgmt_interface_vrf: true # This one should not be in the output, since this host has no oob mgmt
+      version: 2c
+      community: SNMP-COMMUNITY-2
+
+  # Deprecated. To be removed in 6.0.0
+  ipv4_acls: # Copied from eos_cli_config_gen, since we pass this through 1:1
+    - name: SNMP-MGMT
+      vrf: MGMT
+    - name: onur
+
+  # Deprecated. To be removed in 6.0.0
+  ipv6_acls: # Copied from eos_cli_config_gen, since we pass this through 1:1
+    - name: SNMP-MGMT
+      vrf: MGMT
+    - name: onur_v6

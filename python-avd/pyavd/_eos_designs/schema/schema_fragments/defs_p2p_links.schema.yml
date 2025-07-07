@@ -222,6 +222,9 @@ $defs:
                     convert_types:
                       - str
                     description: Port-Channel ID. If no `channel_id` is specified, an id is generated using the `channel_id_algorithm`.
+        campus_link_type:
+          type: list
+          $ref: "eos_designs#/$defs/campus_link_type"
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.

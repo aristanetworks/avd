@@ -1,5 +1,9 @@
-# source_interfaces.domain_lookup is deprecated. To be removed in 6.0.0
 source_interfaces:
+  # source_interfaces.domain_lookup is deprecated. To be removed in 6.0.0
   domain_lookup:
+    mgmt_interface: true
+    inband_mgmt_interface: true
+  # source_interfaces.snmp is deprecated. To be removed in 6.0.0
+  snmp:
     mgmt_interface: true
     inband_mgmt_interface: true

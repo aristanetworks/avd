@@ -93,6 +93,8 @@ platform_settings:
     reload_delay:
       mlag: 300
       non_mlag: 330
+    digital_twin:
+      platform: vEOS-LAB
   - platforms: [vEOS-LAB]
     raw_eos_cli: |
       interface Loopback1111
@@ -102,6 +104,19 @@ platform_settings:
       non_mlag: 330
     feature_support:
       per_interface_mtu: false # Removes mtu command from all interfaces
+    digital_twin:
+      act_node_type: veos
+  - platforms: [CloudEOS]
+    digital_twin:
+      act_node_type: tools-server
+
+custom_platform_settings:
+  - platforms:
+      - CUSTOM-PLATFORM
+    digital_twin:
+      platform: CloudEOS
+    feature_support:
+      poe: true
 
 custom_structured_configuration_list_merge: 'append'
 
@@ -209,3 +224,5 @@ default_interfaces:
 # Documentation
 eos_designs_documentation:
   connected_endpoints: true
+  topology_csv: true
+  p2p_links_csv: true
