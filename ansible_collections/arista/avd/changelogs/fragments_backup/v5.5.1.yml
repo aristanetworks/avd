@@ -1,0 +1,6 @@
+release_summary: |
+  Release 5.5.1 - See documentation on avd.arista.com for details.
+bugfixes:
+### Fixed issues in eos_cli_config_gen
+- |-
+ Fix(eos_cli_config_gen): Fix documentation generation when using vrf default for SSH (#5592) by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5593
