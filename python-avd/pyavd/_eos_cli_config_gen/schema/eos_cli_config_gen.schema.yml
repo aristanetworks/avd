@@ -5046,7 +5046,17 @@ keys:
                         description: Exporter Name.
                       collectors:
                         type: list
+                        primary_key: host
                         $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/collectors
+                        items:
+                          type: dict
+                          keys:
+                            host:
+                              type: str
+                              description: 'Flow collector name.
+
+                                The collector name can be an IPv4 address, IPv6 address,
+                                fully qualified domain name or `"sflow"`.'
                       format:
                         type: str
                         description: Configure flow export format. Valid values are
@@ -24824,7 +24834,7 @@ $defs:
                           description: 'Flow collector name.
 
                             The collector name can be an IPv4 address, IPv6 address,
-                            fully qualified domain name or `"sflow"`.'
+                            fully qualified domain name.'
                         port:
                           type: int
                           description: Collector Port Number.

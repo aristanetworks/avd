@@ -12739,7 +12739,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """
                         Flow collector name.
                         The collector name can be an IPv4 address, IPv6 address, fully qualified domain
-                        name or `"sflow"`.
+                        name.
                         """
                         port: int | None
                         """Collector Port Number."""
@@ -12757,7 +12757,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     host:
                                        Flow collector name.
                                        The collector name can be an IPv4 address, IPv6 address, fully qualified domain
-                                       name or `"sflow"`.
+                                       name.
                                     port: Collector Port Number.
 
                                 """
@@ -13021,7 +13021,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """
                         Flow collector name.
                         The collector name can be an IPv4 address, IPv6 address, fully qualified domain
-                        name or `"sflow"`.
+                        name.
                         """
                         port: int | None
                         """Collector Port Number."""
@@ -13039,7 +13039,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     host:
                                        Flow collector name.
                                        The collector name can be an IPv4 address, IPv6 address, fully qualified domain
-                                       name or `"sflow"`.
+                                       name.
                                     port: Collector Port Number.
 
                                 """
