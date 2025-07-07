@@ -62,6 +62,24 @@ keys:
       "warning" will produce warning messages.
 
       '
+  avd_digital_twin_mode:
+    documentation_options:
+      table: role-settings
+    type: bool
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
+
+      Enable generation of the Digital Twin version of the fabric (Digital Twin topology,
+      adjusted configuration, etc.).
+
+      By default, Digital Twin artifacts (such as the topology file, adjusted structured
+      and EOS configuration, device and fabric documentation) will replace original
+      fabric artifacts.
+
+      To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name`
+      variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated
+      output location.'
+    default: false
   avd_eos_designs_debug:
     documentation_options:
       table: role-settings
@@ -1157,7 +1175,7 @@ keys:
         description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
           `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
 
-          Can be set to `false` to avoid changes when migrating from old `cv_instances`
+          Can be set to `false` to avoid changes when migrating from the old `cv_instances`
           model.'
         default: true
   cv_tags_topology_type:
@@ -1524,6 +1542,37 @@ keys:
         - mpls
         - l2ls
         default: l3ls-evpn
+  digital_twin:
+    documentation_options:
+      table: digital-twin-configuration
+    type: dict
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
+
+      Global settings to configure the Digital Twin of the Fabric.'
+    keys:
+      environment:
+        type: str
+        description: Targeted Digital Twin environment.
+        valid_values:
+        - act
+        default: act
+      fabric:
+        type: dict
+        description: Settings for Digital Twin fabric devices.
+        required: true
+        keys:
+          act_os_version:
+            type: str
+            description: OS version for ACT Digital Twin fabric devices.
+          act_username:
+            type: str
+            description: Username for ACT Digital Twin fabric devices.
+            default: admin
+          act_password:
+            type: str
+            description: Cleartext password for ACT Digital Twin fabric devices.
+            default: admin
   dns_settings:
     documentation_options:
       table: management-settings
@@ -1543,17 +1592,19 @@ keys:
           keys:
             vrf:
               type: str
-              description: "If not set, the VRF is automatically picked up from the
-                global setting `default_mgmt_method`.\nThe value of `vrf` will be
-                interpreted according to these rules:\n- `use_mgmt_interface_vrf`
-                will configure the DNS server under the VRF set with `mgmt_interface_vrf`
-                and set the `mgmt_interface` as DNS lookup source-interface.\n  An
-                error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
-                for the device.\n- `use_inband_mgmt_vrf` will configure the DNS server
-                under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface`
-                as DNS lookup source-interface.\n  An error will be raised if inband
-                management is not configured for the device.\n- Any other string will
-                be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface`
+              default: use_default_mgmt_method_vrf
+              description: "The value of `vrf` will be interpreted according to these
+                rules:\n- `use_mgmt_interface_vrf` will configure the DNS server under
+                the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface`
+                as DNS lookup source-interface.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+                will configure the DNS server under the VRF set with `inband_mgmt_vrf`
+                and set the `inband_mgmt_interface` as DNS lookup source-interface.\n
+                \ An error will be raised if inband management is not configured for
+                the device.\n- `use_default_mgmt_method_vrf` will configure the VRF
+                and source-interface for one of the two options above depending on
+                the value of `default_mgmt_method`.\n- Any other string will be used
+                directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface`
                 if needed."
               convert_types:
               - int
@@ -1577,10 +1628,10 @@ keys:
       set_source_interfaces:
         type: bool
         default: true
-        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`
-          and `use_inband_mgmt_vrf`.
+        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+          `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
 
-          Can be set to `false` to avoid changes when migrating from old `name_servers`
+          Can be set to `false` to avoid changes when migrating from the old `name_servers`
           model.'
   enable_trunk_groups:
     documentation_options:
@@ -2664,17 +2715,19 @@ keys:
               required: true
             vrf:
               type: str
-              description: "If not set, the VRF is automatically picked up from the
-                global setting `default_mgmt_method`.\nThe value of `vrf` will be
-                interpreted according to these rules:\n- `use_mgmt_interface_vrf`
-                will configure the logging destination under the VRF set with `mgmt_interface_vrf`
-                and set the `mgmt_interface` as logging source-interface.\n  An error
-                will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for
-                the device.\n- `use_inband_mgmt_vrf` will configure the logging destination
-                under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface`
-                as logging source-interface.\n  An error will be raised if inband
-                management is not configured for the device.\n- Any other string will
-                be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface`
+              default: use_default_mgmt_method_vrf
+              description: "The value of `vrf` will be interpreted according to these
+                rules:\n- `use_mgmt_interface_vrf` will configure the logging destination
+                under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface`
+                as logging source-interface.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+                will configure the logging destination under the VRF set with `inband_mgmt_vrf`
+                and set the `inband_mgmt_interface` as logging source-interface.\n
+                \ An error will be raised if inband management is not configured for
+                the device.\n- `use_default_mgmt_method_vrf` will configure the VRF
+                and source-interface for one of the two options above depending on
+                the value of `default_mgmt_method`.\n- Any other string will be used
+                directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface`
                 if needed."
               convert_types:
               - int
@@ -3416,7 +3469,33 @@ keys:
         type: bool
       authentication_keys:
         type: list
-        $ref: eos_cli_config_gen#/keys/ntp/keys/authentication_keys
+        primary_key: id
+        items:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/ntp/keys/authentication_keys/items
+          keys:
+            key:
+              type: str
+              description: 'Authentication provided using the `key_type` format.
+
+                Will be rendered as such.
+
+                Takes precedence over `cleartext_key`.'
+              required: false
+            cleartext_key:
+              type: str
+              description: 'Cleartext key for the NTP authentication key. Encrypted
+                to Type 7 by AVD.
+
+                `key_type` does not influence this key.
+
+                To protect the password at rest it is strongly recommended to make
+                use of a vault or similar.'
+            key_type:
+              type: str
+              description: 'Key type of the `key`.
+
+                Does not have any influence on `cleartext_key`.'
       trusted_keys:
         type: str
         $ref: eos_cli_config_gen#/keys/ntp/keys/trusted_keys
@@ -4156,6 +4235,30 @@ keys:
             hardware_exclusive:
               type: bool
               description: Only use entropy from the hardware source.
+        digital_twin:
+          type: dict
+          description: 'PREVIEW: This option is marked as "preview", meaning the data
+            models or generated configuration can change at any time.
+
+            Digital Twin settings applied when `avd_digital_twin_mode` is `true`.'
+          keys:
+            platform:
+              type: str
+              description: 'Name of an alternate `platform_settings` platform used
+                when running in Digital Twin mode.
+
+                The `platform_settings` for the regular `platform` is used if this
+                is not set.'
+            act_node_type:
+              type: str
+              description: ACT node type.
+              valid_values:
+              - cloudeos
+              - cvp
+              - generic
+              - third-party
+              - tools-server
+              - veos
         structured_config:
           type: dict
           relaxed_validation: true
@@ -4175,6 +4278,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7050X3
       feature_support:
@@ -4184,6 +4289,8 @@ keys:
         non_mlag: 330
       trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
         l3-shared 131072
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 720XP
       feature_support:
@@ -4194,6 +4301,8 @@ keys:
         non_mlag: 330
       trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000
         l3-shared 22000
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - '750'
       - '755'
@@ -4205,6 +4314,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 720DP
       - 722XP
@@ -4215,6 +4326,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7010TX
       feature_support:
@@ -4223,6 +4336,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7280R
       - 7280R2
@@ -4234,6 +4349,8 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         private_vlan: false
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7280R3
       reload_delay:
@@ -4243,6 +4360,8 @@ keys:
       feature_support:
         evpn_gateway_all_active_multihoming: true
         private_vlan: false
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7500R
       - 7500R2
@@ -4254,6 +4373,8 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         private_vlan: false
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7500R3
       - 7800R3
@@ -4265,6 +4386,8 @@ keys:
       feature_support:
         evpn_gateway_all_active_multihoming: true
         private_vlan: false
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7358X4
       management_interface: Management1/1
@@ -4276,12 +4399,16 @@ keys:
         interface_storm_control: true
         bgp_update_wait_for_convergence: true
         bgp_update_wait_install: false
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7368X4
       management_interface: Management0
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7300X3
       management_interface: Management0
@@ -4290,6 +4417,8 @@ keys:
         non_mlag: 1320
       trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
         l3-shared 131072
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - VEOS
       - VEOS-LAB
@@ -4304,6 +4433,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        act_node_type: veos
     - platforms:
       - CEOS
       - cEOS
@@ -4319,6 +4450,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        act_node_type: veos
     - platforms:
       - CloudEOS
       feature_support:
@@ -4326,6 +4459,8 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
       p2p_uplinks_mtu: 9194
+      digital_twin:
+        act_node_type: cloudeos
     - platforms:
       - AWE-5310
       - AWE-7230R
@@ -4339,6 +4474,8 @@ keys:
           max_rx_queues: 6
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
+      digital_twin:
+        platform: CloudEOS
     - platforms:
       - AWE-5510
       - AWE-7250R
@@ -4352,6 +4489,8 @@ keys:
           max_rx_queues: 16
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
+      digital_twin:
+        platform: CloudEOS
     - platforms:
       - AWE-7220R
       feature_support:
@@ -4362,6 +4501,8 @@ keys:
         poe: true
       management_interface: Management1
       p2p_uplinks_mtu: 9194
+      digital_twin:
+        platform: CloudEOS
   platform_speed_groups:
     documentation_options:
       table: platform-settings
@@ -4741,7 +4882,7 @@ keys:
                 `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set
                 with `inband_mgmt_vrf`.\n  An error will be raised if inband management
                 is not configured for the device.\n- `use_default_mgmt_method_vrf`
-                will configure the VRF and source-interface for one of the two options
+                will configure the SNMP ACL under the VRF for one of the two options
                 above depending on the value of `default_mgmt_method`.\n- Any other
                 string will be used directly as the VRF name."
               convert_types:
@@ -4752,6 +4893,9 @@ keys:
             source_interface:
               type: str
               description: 'Source interface to use for SNMP hosts in this VRF.
+
+                If not set, the source interface may be set automatically when VRF
+                is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
 
                 If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
                 this setting will take precedence.'
@@ -4879,32 +5023,37 @@ keys:
                 will configure the SNMP host under the VRF set with `inband_mgmt_vrf`
                 and set the `inband_mgmt_interface` as SNMP source-interface.\n  An
                 error will be raised if inband management is not configured for the
-                device.\n- `use_default_mgmt_method_vrf` will configure the VRF and
-                source-interface for one of the two options above depending on the
-                value of `default_mgmt_method`.\n- Any other string will be used directly
-                as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface`
-                if needed."
+                device.\n- `use_default_mgmt_method_vrf` will configure the SNMP host
+                under the VRF and set the source-interface for one of the two options
+                above depending on the value of `default_mgmt_method`.\n- Any other
+                string will be used directly as the VRF name. Remember to set the
+                `snmp_settings.vrfs[].source_interface` if needed."
               convert_types:
               - int
             use_mgmt_interface_vrf:
               type: bool
-              description: Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-                Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the
-                device, so if the host is only configured with this VRF, the host
-                will not be configured at all. Can be used in combination with "vrf"
-                and "use_inband_mgmt_vrf" to configure the SNMP host under multiple
-                VRFs.
+              description: 'Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
+
+                Ignored if ''mgmt_ip'' or ''ipv6_mgmt_ip'' are not configured for
+                the device, so if the host is only configured with this VRF, the host
+                will not be configured at all.
+
+                Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to
+                configure the SNMP host under multiple VRFs.'
               deprecation:
                 warning: true
                 remove_in_version: 6.0.0
                 new_key: 'vrf: "use_mgmt_interface_vrf"'
             use_inband_mgmt_vrf:
               type: bool
-              description: Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+              description: 'Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+
                 Ignored if inband management is not configured for the device, so
                 if the host is only configured with this VRF, the host will not be
-                configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
-                to configure the SNMP host under multiple VRFs.
+                configured at all.
+
+                Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
+                to configure the SNMP host under multiple VRFs.'
               deprecation:
                 warning: true
                 remove_in_version: 6.0.0
@@ -11152,6 +11301,25 @@ $defs:
             description: Device type that CloudVision should use when generating the
               Topology like "leaf", "spine", "core", "edge" or "member-leaf".
             type: str
+          digital_twin:
+            documentation_options:
+              table: node-type-digital-twin-configuration
+            description: 'PREVIEW: This option is marked as "preview", meaning the
+              data models or generated configuration can change at any time.
+
+              Set the OS version and management IP address for the digital twin of
+              the associated node(s).'
+            type: dict
+            keys:
+              act_os_version:
+                type: str
+                description: 'Desired ACT Digital Twin OS version.
+
+                  Overrides global `digital_twin.fabric.act_os_version` flag.'
+              mgmt_ip:
+                type: str
+                description: Desired management interface IPv4 address.
+                format: cidr
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
