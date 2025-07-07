@@ -29,3 +29,15 @@
     that:
       - isis.clear_password | arista.avd.encrypt(passwd_type='isis', key=isis.instance_name, mode=isis.mode) == isis.expected_encrypted_password
       - isis.expected_encrypted_password | arista.avd.decrypt(passwd_type='isis', key=isis.instance_name, mode=isis.mode) == isis.clear_password
+
+- name: Test Encrypt & Decrypt for NTP passwords
+  ansible.builtin.assert:
+    that:
+      - ntp.clear_password | arista.avd.encrypt(passwd_type='ntp', salt=ntp.salt) == ntp.expected_encrypted_password
+      - ntp.expected_encrypted_password | arista.avd.decrypt(passwd_type='ntp') == ntp.clear_password
+
+- name: Test Encrypt & Decrypt for TACACS+ passwords
+  ansible.builtin.assert:
+    that:
+      - tacacs.clear_password | arista.avd.encrypt(passwd_type='tacacs', salt = tacacs.salt) == tacacs.expected_encrypted_password
+      - tacacs.expected_encrypted_password | arista.avd.decrypt(passwd_type='tacacs') == tacacs.clear_password
