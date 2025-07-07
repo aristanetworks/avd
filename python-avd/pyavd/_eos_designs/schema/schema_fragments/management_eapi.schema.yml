@@ -43,7 +43,7 @@ keys:
               description: |-
                 VRF name.
                 The value will be interpreted according to these rules:
-                - `use_mgmt_interface_vrf` will configure the Management EAPI ACL under the VRF set with `mgmt_interface_vrf`.
+                - `use_mgmt_interface_vrf` will configure the eAPI ACL under the VRF set with `mgmt_interface_vrf`.
                   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
                 - `use_inband_mgmt_vrf` will configure the eAPI ACL under the VRF set with `inband_mgmt_vrf`.
                   An error will be raised if inband management is not configured for the device.
