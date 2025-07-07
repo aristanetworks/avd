@@ -32,3 +32,10 @@ l3leaf:
           mgmt_ip: 192.168.201.119/24
           uplink_switch_interfaces: [Ethernet33]
           mlag_interfaces: [Ethernet5, Ethernet6]
+
+l3_edge:
+  p2p_links:
+    - nodes: [isis-cleartext-keys-leaf1, peer1]
+      interfaces: [ethernet2, ethernet2]
+      id: 1
+      include_in_underlay_protocol: true
