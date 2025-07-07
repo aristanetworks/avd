@@ -16,7 +16,7 @@ ethernet_interfaces:
   isis_authentication:
     both:
       key_type: '7'
-      key: m89QJMCtp4LRQGQz7SJF/Q==
+      key: $1c$sTNAlR6rKSw=
       mode: md5
   peer: MLAG-ISIS-L3LEAF1A
   peer_interface: Ethernet1
@@ -35,7 +35,7 @@ ethernet_interfaces:
   isis_authentication:
     both:
       key_type: '7'
-      key: m89QJMCtp4LRQGQz7SJF/Q==
+      key: $1c$sTNAlR6rKSw=
       mode: md5
   peer: MLAG-ISIS-L3LEAF1B
   peer_interface: Ethernet1
@@ -54,7 +54,7 @@ ethernet_interfaces:
   isis_authentication:
     both:
       key_type: '7'
-      key: m89QJMCtp4LRQGQz7SJF/Q==
+      key: $1c$sTNAlR6rKSw=
       mode: md5
   peer: isis-cleartext-keys-leaf1
   peer_interface: Ethernet1
@@ -73,7 +73,7 @@ ethernet_interfaces:
   isis_authentication:
     both:
       key_type: '7'
-      key: m89QJMCtp4LRQGQz7SJF/Q==
+      key: $1c$sTNAlR6rKSw=
       mode: md5
   peer: isis-cleartext-keys-leaf2
   peer_interface: Ethernet1
