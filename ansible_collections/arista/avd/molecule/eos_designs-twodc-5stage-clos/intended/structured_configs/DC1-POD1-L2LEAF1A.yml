@@ -3,7 +3,6 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
 - name: Ethernet1
   description: L2_DC1-POD1-LEAF1A_Ethernet3
@@ -14,6 +13,17 @@ ethernet_interfaces:
   peer: DC1-POD1-LEAF1A
   peer_interface: Ethernet3
   peer_type: l3leaf
+- name: Ethernet2
+  description: SERVER_server-1_Eth9
+  shutdown: false
+  poe:
+    reboot:
+      action: maintain
+  peer: server-1
+  peer_interface: Eth9
+  peer_type: server
+  switchport:
+    enabled: true
 hostname: DC1-POD1-L2LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
@@ -29,7 +39,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 metadata:
-  platform: vEOS-LAB
+  platform: CUSTOM-PLATFORM
   pod_name: DC1_POD1
   dc_name: DC1
   fabric_name: TWODC_5STAGE_CLOS
@@ -63,6 +73,7 @@ vlan_interfaces:
   description: L2LEAF_INBAND_MGMT
   shutdown: false
   ip_address: 172.21.110.4/24
+  mtu: 1500
   type: inband_mgmt
 vlan_internal_order:
   allocation: ascending

@@ -302,6 +302,28 @@ keys:
             hardware_exclusive:
               type: bool
               description: Only use entropy from the hardware source.
+        digital_twin:
+          type: dict
+          description: |-
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+            Digital Twin settings applied when `avd_digital_twin_mode` is `true`.
+          keys:
+            platform:
+              type: str
+              description: |-
+                Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
+                The `platform_settings` for the regular `platform` is used if this is not set.
+            act_node_type:
+              type: str
+              description: |-
+                ACT node type.
+              valid_values:
+                - cloudeos
+                - cvp
+                - generic
+                - third-party
+                - tools-server
+                - veos
         structured_config:
           type: dict
           relaxed_validation: true
@@ -325,6 +347,8 @@ keys:
         reload_delay:
           mlag: 300
           non_mlag: 330
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - 7050X3
         feature_support:
@@ -333,6 +357,8 @@ keys:
           mlag: 300
           non_mlag: 330
         trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared 131072
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - 720XP
         feature_support:
@@ -342,6 +368,8 @@ keys:
           mlag: 300
           non_mlag: 330
         trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000 l3-shared 22000
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - '750'
           - '755'
@@ -353,6 +381,8 @@ keys:
         reload_delay:
           mlag: 300
           non_mlag: 330
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - 720DP
           - 722XP
@@ -363,6 +393,8 @@ keys:
         reload_delay:
           mlag: 300
           non_mlag: 330
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - 7010TX
         feature_support:
@@ -371,6 +403,8 @@ keys:
         reload_delay:
           mlag: 300
           non_mlag: 330
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - 7280R
           - 7280R2
@@ -382,6 +416,8 @@ keys:
         tcam_profile: vxlan-routing
         feature_support:
           private_vlan: false
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - 7280R3
         reload_delay:
@@ -391,6 +427,8 @@ keys:
         feature_support:
           evpn_gateway_all_active_multihoming: true
           private_vlan: false
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - 7500R
           - 7500R2
@@ -402,6 +440,8 @@ keys:
         tcam_profile: vxlan-routing
         feature_support:
           private_vlan: false
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - 7500R3
           - 7800R3
@@ -413,6 +453,8 @@ keys:
         feature_support:
           evpn_gateway_all_active_multihoming: true
           private_vlan: false
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - 7358X4
         management_interface: Management1/1
@@ -424,12 +466,16 @@ keys:
           interface_storm_control: true
           bgp_update_wait_for_convergence: true
           bgp_update_wait_install: false
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - 7368X4
         management_interface: Management0
         reload_delay:
           mlag: 300
           non_mlag: 330
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - 7300X3
         management_interface: Management0
@@ -437,6 +483,8 @@ keys:
           mlag: 1200
           non_mlag: 1320
         trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared 131072
+        digital_twin:
+          platform: vEOS-lab
       - platforms:
           - VEOS
           - VEOS-LAB
@@ -451,6 +499,8 @@ keys:
         reload_delay:
           mlag: 300
           non_mlag: 330
+        digital_twin:
+          act_node_type: veos
       - platforms:
           - CEOS
           - cEOS
@@ -466,6 +516,8 @@ keys:
         reload_delay:
           mlag: 300
           non_mlag: 330
+        digital_twin:
+          act_node_type: veos
       - platforms:
           - CloudEOS
         feature_support:
@@ -473,6 +525,8 @@ keys:
           interface_storm_control: false
           queue_monitor_length_notify: false
         p2p_uplinks_mtu: 9194
+        digital_twin:
+          act_node_type: cloudeos
       - platforms:
           - AWE-5310
           - AWE-7230R
@@ -486,6 +540,8 @@ keys:
             max_rx_queues: 6
         management_interface: Management1/1
         p2p_uplinks_mtu: 9194
+        digital_twin:
+          platform: CloudEOS
       - platforms:
           - AWE-5510
           - AWE-7250R
@@ -499,6 +555,8 @@ keys:
             max_rx_queues: 16
         management_interface: Management1/1
         p2p_uplinks_mtu: 9194
+        digital_twin:
+          platform: CloudEOS
       - platforms:
           - AWE-7220R
         feature_support:
@@ -509,3 +567,5 @@ keys:
           poe: true
         management_interface: Management1
         p2p_uplinks_mtu: 9194
+        digital_twin:
+          platform: CloudEOS

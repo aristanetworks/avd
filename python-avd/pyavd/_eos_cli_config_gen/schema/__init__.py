@@ -23550,6 +23550,70 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class DigitalTwin(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "environment": {"type": str},
+                "node_type": {"type": str},
+                "ip_addr": {"type": str},
+                "version": {"type": str},
+                "username": {"type": str},
+                "password": {"type": str},
+            }
+            environment: Literal["act"] | None
+            """Targeted Digital Twin environment."""
+            node_type: str | None
+            """
+            Digital Twin's internal device type used for deploying a replica of the fabric device.
+            Possible
+            values depend on the target Digital Twin environment.
+            """
+            ip_addr: str | None
+            """
+            Management IPv4_address/Mask assigned to a replica of the fabric device within the Digital Twin
+            environment.
+            """
+            version: str | None
+            """OS version used for deploying a replica of the fabric device within the Digital Twin environment."""
+            username: str | None
+            """Local username assigned to a replica of the fabric device within the Digital Twin environment."""
+            password: str | None
+            """Local password assigned to a replica of the fabric device within the Digital Twin environment."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    environment: Literal["act"] | None | UndefinedType = Undefined,
+                    node_type: str | None | UndefinedType = Undefined,
+                    ip_addr: str | None | UndefinedType = Undefined,
+                    version: str | None | UndefinedType = Undefined,
+                    username: str | None | UndefinedType = Undefined,
+                    password: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DigitalTwin.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        environment: Targeted Digital Twin environment.
+                        node_type:
+                           Digital Twin's internal device type used for deploying a replica of the fabric device.
+                           Possible
+                           values depend on the target Digital Twin environment.
+                        ip_addr:
+                           Management IPv4_address/Mask assigned to a replica of the fabric device within the Digital Twin
+                           environment.
+                        version: OS version used for deploying a replica of the fabric device within the Digital Twin environment.
+                        username: Local username assigned to a replica of the fabric device within the Digital Twin environment.
+                        password: Local password assigned to a replica of the fabric device within the Digital Twin environment.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "platform": {"type": str},
             "system_mac_address": {"type": str},
@@ -23559,6 +23623,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "fabric_name": {"type": str},
             "cv_tags": {"type": CvTags},
             "cv_pathfinder": {"type": CvPathfinder},
+            "digital_twin": {"type": DigitalTwin},
         }
         platform: str | None
         system_mac_address: str | None
@@ -23571,6 +23636,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         cv_pathfinder: CvPathfinder
         """
         Metadata used for CV Pathfinder visualization on CloudVision.
+
+        Subclass of AvdModel.
+        """
+        digital_twin: DigitalTwin
+        """
+        Metadata used to generate Digital Twin topology.
 
         Subclass of AvdModel.
         """
@@ -23588,6 +23659,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 fabric_name: str | None | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
+                digital_twin: DigitalTwin | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -23605,6 +23677,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     cv_tags: Subclass of AvdModel.
                     cv_pathfinder:
                        Metadata used for CV Pathfinder visualization on CloudVision.
+
+                       Subclass of AvdModel.
+                    digital_twin:
+                       Metadata used to generate Digital Twin topology.
 
                        Subclass of AvdModel.
 

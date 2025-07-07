@@ -21,6 +21,20 @@ $defs:
         rack:
           type: str
           description: Rack is used for documentation purposes only.
+        # TODO: Add this in a separate PR.
+        # digital_twin:
+        #   type: dict
+        #   description: |-
+        #     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        #   keys:
+        #     enabled:
+        #       type: bool
+        #       description: |-
+        #         Setting this flag to `false` will exclude the endpoint and all associated switch ports from the:
+        #           - generated Digital Twin topology file.
+        #           - generated structured and rendered EOS configuration.
+        #         This setting overrides global `digital_twin.endpoints.enabled` flag.
+        #       default: true
         adapters:
           type: list
           description: A list of adapters, group by adapters leveraging the same port-profile.

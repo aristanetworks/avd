@@ -1,0 +1,20 @@
+---
+
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: digital-twin-act-missing-ip-addr
+      platform: vEOS-lab
+
+platform_settings:
+  - platforms: [vEOS-lab]
+    digital_twin:
+      platform: vEOS-lab
+      act_node_type: veos
+
+avd_digital_twin_mode: true
+
+expected_error_message: >-
+  Failed to generate ACT Digital Twin metadata for device 'digital-twin-act-missing-ip-addr'.
+  'mgmt_ip' attribute must be set in the node configuration settings using either the 'digital_twin.mgmt_ip' or 'mgmt_ip' key.
