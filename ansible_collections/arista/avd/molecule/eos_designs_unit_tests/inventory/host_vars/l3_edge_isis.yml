@@ -64,7 +64,7 @@ l3_edge:
       ip_pool: pool1
       id: 4
 
-      # P2P link with underlay routing and IP set manually.
+      # Test isis_authentication_cleartext_key.
     - nodes: [l3_edge_isis, peer2]
       interfaces: [ethernet5, ethernet5]
       ip: [192.168.0.4/31, 192.168.0.5/31]

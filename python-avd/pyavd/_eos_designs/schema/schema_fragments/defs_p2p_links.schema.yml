@@ -109,7 +109,7 @@ $defs:
           type: str
           description: |
             Cleartext password. `isis_authentication_key` takes precedence over this key.
-            Type 7 encryption is supported.
+            Encrypted to Type 7 by AVD.
         isis_network_type:
           type: str
           default: point-to-point

@@ -9,7 +9,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
 from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import AvdStringFormatter, default
-from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
+from pyavd._utils.password_utils.password import ospf_message_digest_encrypt, isis_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import list_compress
 
@@ -156,6 +156,12 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     key=self.inputs.underlay_isis_authentication_key,
                     key_type="7",
                 )
+            elif (isis_authentication_key:=self.shared_utils.underlay_isis_authentication_cleartext_key) is not None:
+                vlan_interface.isis_authentication.both._update(
+                    key=isis_authentication_key,
+                    key_type="7",
+                )
+
         if self.shared_utils.underlay_multicast:
             vlan_interface.pim.ipv4.sparse_mode = True
 
