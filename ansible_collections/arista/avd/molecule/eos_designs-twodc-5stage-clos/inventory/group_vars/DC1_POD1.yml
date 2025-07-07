@@ -165,6 +165,8 @@ l2leaf:
     inband_mgmt_vlan: 4085
     mlag_peer_l3_ipv4_pool: 172.19.110.0/24
     mlag_peer_ipv4_pool: 172.20.110.0/24
+    digital_twin:
+      act_internet_access: true
   node_groups:
     - group: RACK2_SINGLE
       platform: vEOS-LAB

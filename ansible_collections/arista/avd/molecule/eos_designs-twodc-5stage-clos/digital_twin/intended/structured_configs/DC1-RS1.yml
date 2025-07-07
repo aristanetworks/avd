@@ -64,7 +64,6 @@ metadata:
     version: 4.33.1.1F
     username: cvpadmin
     password: cvp123!
-    act_internet_access: true
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

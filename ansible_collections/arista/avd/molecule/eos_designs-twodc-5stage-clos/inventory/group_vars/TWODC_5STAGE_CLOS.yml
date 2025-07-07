@@ -122,8 +122,9 @@ custom_platform_settings:
     reload_delay:
       mlag: 300
       non_mlag: 330
-    feature_support:
-      per_interface_mtu: false # Removes mtu command from all interfaces
+    raw_eos_cli: |
+      interface Loopback1111
+        description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
     digital_twin:
       act_node_type: tools-server
 
