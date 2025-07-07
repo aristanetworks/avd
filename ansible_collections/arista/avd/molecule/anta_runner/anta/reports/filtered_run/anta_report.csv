@@ -40,7 +40,6 @@ dc1-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc1-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-leaf1a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc1-leaf1a,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc1-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -80,7 +79,6 @@ dc1-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc1-leaf1b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-leaf1b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc1-leaf1b,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc1-leaf1c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-leaf1c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -154,7 +152,6 @@ dc1-leaf2a,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and 
 dc1-leaf2a,VerifyVxlan1Interface,unset,,Verifies the Vxlan1 interface status.,VXLAN
 dc1-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc1-leaf2a,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc1-leaf2a,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc1-leaf2a,VerifyVxlanVtep,unset,,Verifies Vxlan1 VTEP peers.,VXLAN
 dc1-leaf2c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
@@ -299,7 +296,6 @@ dc1-wan1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utiliz
 dc1-wan1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-wan1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-wan1,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc1-wan1,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc1-wan2,VerifyAVTRole,unset,,Verifies the AVT role of a device.,AVT
 dc1-wan2,VerifyAVTSpecificPath,unset,,Verifies the Adaptive Virtual Topology (AVT) path.,AVT
 dc1-wan2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
@@ -339,7 +335,6 @@ dc1-wan2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utiliz
 dc1-wan2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-wan2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-wan2,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc1-wan2,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc2-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -378,7 +373,6 @@ dc2-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc2-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf1a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc2-leaf1a,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc2-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -417,7 +411,6 @@ dc2-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc2-leaf1b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf1b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc2-leaf1b,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc2-leaf1c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf1c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -491,7 +484,6 @@ dc2-leaf2a,VerifyVxlan1Interface,unset,,Verifies the Vxlan1 interface status.,VX
 dc2-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf2a,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
-dc2-leaf2a,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc2-leaf2a,VerifyVxlanVtep,unset,,Verifies Vxlan1 VTEP peers.,VXLAN
 dc2-leaf2b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf2b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
@@ -534,7 +526,6 @@ dc2-leaf2b,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and 
 dc2-leaf2b,VerifyVxlan1Interface,unset,,Verifies the Vxlan1 interface status.,VXLAN
 dc2-leaf2b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf2b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc2-leaf2b,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc2-leaf2b,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc2-leaf2b,VerifyVxlanVtep,unset,,Verifies Vxlan1 VTEP peers.,VXLAN
 dc2-leaf2c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
@@ -606,7 +597,6 @@ dc2-leaf3a.arista.com,VerifyFileSystemUtilization,unset,,Verifies that no partit
 dc2-leaf3a.arista.com,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf3a.arista.com,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf3a.arista.com,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc2-leaf3a.arista.com,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc2-leaf3b.arista.com,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf3b.arista.com,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf3b.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -645,7 +635,6 @@ dc2-leaf3b.arista.com,VerifyFileSystemUtilization,unset,,Verifies that no partit
 dc2-leaf3b.arista.com,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf3b.arista.com,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf3b.arista.com,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc2-leaf3b.arista.com,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
 dc2-spine1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-spine1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration

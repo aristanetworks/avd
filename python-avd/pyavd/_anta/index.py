@@ -164,7 +164,6 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyTransceiversTemperature,
     ),
     TestSpec(test_class=VerifyVxlanConfigSanity, contitional_keys=[StructuredConfigKey.VXLAN1_INTERFACE]),
-    TestSpec(test_class=VerifyVxlanVniBinding, contitional_keys=[StructuredConfigKey.VXLAN1_INTERFACE], input_factory=VerifyVxlanVniBindingInputFactory),
     TestSpec(
         test_class=VerifyZeroTouch,
     ),
