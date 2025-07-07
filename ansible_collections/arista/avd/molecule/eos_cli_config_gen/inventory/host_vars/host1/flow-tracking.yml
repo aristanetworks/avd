@@ -29,6 +29,13 @@ flow_tracking:
             collector:
               host: 42.42.42.42
               # no port
+          - name: T2-E2
+            collectors:
+              - host: 42.42.42.42
+              - host: sflow
+                port: 666
+              - host: 10.10.10.10
+                port: 777
       - name: T3
         # specify table size
         table_size: 100000

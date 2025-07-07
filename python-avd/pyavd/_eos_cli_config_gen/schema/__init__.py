@@ -13256,30 +13256,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class ExportersItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    class Collector(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"host": {"type": str}, "port": {"type": int}}
-                        host: str | None
-                        """Collector IPv4 address or IPv6 address or fully qualified domain name."""
-                        port: int | None
-                        """Collector Port Number."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, host: str | None | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
-                                """
-                                Collector.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    host: Collector IPv4 address or IPv6 address or fully qualified domain name.
-                                    port: Collector Port Number.
-
-                                """
-
                     class CollectorsItem(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -13318,46 +13294,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Collectors._item_type = CollectorsItem
 
-                    class Format(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"ipfix_version": {"type": int}}
-                        ipfix_version: int | None
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, ipfix_version: int | None | UndefinedType = Undefined) -> None:
-                                """
-                                Format.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    ipfix_version: ipfix_version
-
-                                """
-
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
-                        "collector": {"type": Collector},
                         "collectors": {"type": Collectors},
-                        "format": {"type": Format},
+                        "format": {"type": str},
                         "local_interface": {"type": str},
                         "template_interval": {"type": int},
+                        "dscp": {"type": int},
                     }
                     name: str
                     """Exporter Name."""
-                    collector: Collector
-                    """Subclass of AvdModel."""
                     collectors: Collectors
                     """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
-                    format: Format
-                    """Subclass of AvdModel."""
+                    format: Literal["sflow", "drop-report"] | None
+                    """Configure flow export format. Valid values are platform dependent."""
                     local_interface: str | None
                     """Local Source Interface."""
                     template_interval: int | None
                     """Template interval in milliseconds."""
+                    dscp: int | None
 
                     if TYPE_CHECKING:
 
@@ -13365,11 +13320,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             name: str | UndefinedType = Undefined,
-                            collector: Collector | UndefinedType = Undefined,
                             collectors: Collectors | UndefinedType = Undefined,
-                            format: Format | UndefinedType = Undefined,
+                            format: Literal["sflow", "drop-report"] | None | UndefinedType = Undefined,
                             local_interface: str | None | UndefinedType = Undefined,
                             template_interval: int | None | UndefinedType = Undefined,
+                            dscp: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             ExportersItem.
@@ -13379,11 +13334,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 name: Exporter Name.
-                                collector: Subclass of AvdModel.
                                 collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`).
-                                format: Subclass of AvdModel.
+                                format: Configure flow export format. Valid values are platform dependent.
                                 local_interface: Local Source Interface.
                                 template_interval: Template interval in milliseconds.
+                                dscp: dscp
 
                             """
 

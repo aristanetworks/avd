@@ -2736,18 +2736,19 @@ event-handler without-trigger-key
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On | Table Size |
 | ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- | ---------- |
 | T1 | 3666 | 5666 | True | 0 |  | - |
-| T2 | - | - | False | 1 | Dps1<br>Ethernet40 | 614400 |
+| T2 | - | - | False | 2 | Dps1<br>Ethernet40 | 614400 |
 | T3 | - | - | - | 4 | Ethernet41<br>Ethernet42<br>Port-Channel115 | 100000 |
 
 ##### Exporters Summary
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-| T2 | T2-E1 | - | - | No local interface |
+| T2 | T2-E1 | 42.42.42.42 | - | No local interface |
+| T2 | T2-E2 | 10.10.10.10<br>42.42.42.42<br>sflow | 777<br>-<br>666 | No local interface |
 | T3 | T3-E1 | - | - | No local interface |
-| T3 | T3-E2 | - | - | No local interface |
-| T3 | T3-E3 | - | - | Management1 |
-| T3 | T3-E4 | - | - | No local interface |
+| T3 | T3-E2 | 10.10.10.10 | 777 | No local interface |
+| T3 | T3-E3 | this.is.my.awesome.collector.dns.name | 888 | Management1 |
+| T3 | T3-E4 | dead:beef::cafe | - | No local interface |
 
 #### Flow Tracking Hardware
 
@@ -2763,13 +2764,13 @@ Software export of IPFIX data records enabled.
 
 ##### Exporters Summary
 
-| Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
+| Tracker Name | Exporter Name | Collectors IP/Host | Collectors Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-| T2 | T2-E1 | - | - | No local interface |
+| T2 | T2-E1 | 42.42.42.42 | - | No local interface |
 | T3 | T3-E1 | - | - | No local interface |
-| T3 | T3-E2 | - | - | No local interface |
-| T3 | T3-E3 | - | - | Management1 |
-| T3 | T3-E4 | - | - | No local interface |
+| T3 | T3-E2 | 10.10.10.10 | 777 | No local interface |
+| T3 | T3-E3 | this.is.my.awesome.collector.dns.name | 888 | Management1 |
+| T3 | T3-E4 | dead:beef::cafe | - | No local interface |
 
 #### Flow Tracking mirror-on-drop
 
@@ -2837,6 +2838,11 @@ flow tracking sampled
       flow table size 614400 entries
       exporter T2-E1
          collector 42.42.42.42
+      !
+      exporter T2-E2
+         collector 10.10.10.10 port 777
+         collector 42.42.42.42
+         collector sflow port 666
    !
    tracker T3
       flow table size 100000 entries
