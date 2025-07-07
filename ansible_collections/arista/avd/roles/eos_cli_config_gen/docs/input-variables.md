@@ -86,6 +86,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/local-users.
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/radius-server.md
 --8<--
 
+### Radius proxy
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/radius-proxy.md
+--8<--
+
 ### Roles
 
 --8<--

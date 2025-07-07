@@ -16,13 +16,13 @@
 {%     if radius_proxy.client_groups is arista.avd.defined %}
 {%         for client_group in radius_proxy.client_groups %}
 
-### {{ client_group.name }}
+### Client Group: {{ client_group.name }}
 {%             set server_groups = client_group.server_groups | arista.avd.default(["-"]) | join(", ") %}
 
 Server Groups: {{ server_groups }}
 {%             for vrf in client_group.vrfs | arista.avd.natural_sort("name") %}
 
-#### Vrfs: {{ vrf.name }}
+#### Vrf: {{ vrf.name }}
 {%                 if vrf.ipv4_clients is arista.avd.defined %}
 
 ##### Ipv4 Clients

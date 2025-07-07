@@ -239,11 +239,11 @@
   - [Segment Definitions](#segment-definitions)
   - [Router MSS-G Device Configuration](#router-mss-g-device-configuration)
 - [Radius Proxy](#radius-proxy)
-  - [CG_1](#cg_1)
-  - [CG_2](#cg_2)
-  - [CG_3](#cg_3)
-  - [CG_4](#cg_4)
-  - [CG_5](#cg_5)
+  - [Client Group: CG_1](#client-group-cg_1)
+  - [Client Group: CG_2](#client-group-cg_2)
+  - [Client Group: CG_3](#client-group-cg_3)
+  - [Client Group: CG_4](#client-group-cg_4)
+  - [Client Group: CG_5](#client-group-cg_5)
   - [Router Path-selection](#router-path-selection)
   - [Router Internet Exit](#router-internet-exit)
 - [Router L2 VPN](#router-l2-vpn)
@@ -11656,11 +11656,11 @@ router segment-security
 | Client Key | <removed> |
 | Client Session Idle-timeout (seconds) | 46 |
 
-### CG_1
+### Client Group: CG_1
 
 Server Groups: aaa bbb ccc
 
-#### Vrfs: vrf_1
+#### Vrf: vrf_1
 
 ##### Ipv4 Clients
 
@@ -11687,7 +11687,7 @@ Server Groups: aaa bbb ccc
 | host2 | - |
 | host3 | <removed> |
 
-#### Vrfs: vrf_2
+#### Vrf: vrf_2
 
 ##### Ipv4 Clients
 
@@ -11698,19 +11698,19 @@ Server Groups: aaa bbb ccc
 | 2.1.1.1 | - |
 | 1.1.10.8 | <removed> |
 
-### CG_2
+### Client Group: CG_2
 
 Server Groups: -
 
-### CG_3
+### Client Group: CG_3
 
 Server Groups: ddd
 
-### CG_4
+### Client Group: CG_4
 
 Server Groups: -
 
-#### Vrfs: vrf_only_host
+#### Vrf: vrf_only_host
 
 ##### Host Clients
 
@@ -11720,7 +11720,7 @@ Server Groups: -
 | host12 | - |
 | host13 | <removed> |
 
-#### Vrfs: vrf_only_ipv4
+#### Vrf: vrf_only_ipv4
 
 ##### Ipv4 Clients
 
@@ -11731,11 +11731,11 @@ Server Groups: -
 | 2.2.1.11 | - |
 | 1.2.10.18 | <removed> |
 
-### CG_5
+### Client Group: CG_5
 
 Server Groups: -
 
-#### Vrfs: vrf_only_ipv6
+#### Vrf: vrf_only_ipv6
 
 ##### Ipv6 Clients
 
