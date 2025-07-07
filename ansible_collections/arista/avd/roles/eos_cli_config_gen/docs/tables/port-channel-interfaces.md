@@ -487,7 +487,7 @@
         # For an access port this would be a single vlan "123".
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.access_vlan or switchport.trunk.allowed_vlan</samp> instead.
+        # Use `switchport.access_vlan` or `switchport.trunk.allowed_vlan` instead.
         vlans: <str>
         snmp_trap_link_change: <bool>
 
@@ -501,7 +501,7 @@
         # VLAN tag to configure on sub-interface.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>encapsulation_dot1q.vlan</samp> instead.
+        # Use `encapsulation_dot1q.vlan` instead.
         encapsulation_dot1q_vlan: <int>
 
         # Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.
@@ -584,19 +584,19 @@
         vlan_id: <int; 1-4094>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.mode</samp> instead.
+        # Use `switchport.mode` instead.
         mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone">
 
         # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.trunk.native_vlan</samp> instead.
+        # Use `switchport.trunk.native_vlan` instead.
         native_vlan: <int>
 
         # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.trunk.native_vlan_tag</samp> instead.
+        # Use `switchport.trunk.native_vlan_tag` instead.
         native_vlan_tag: <bool>
         link_tracking_groups:
 
@@ -613,7 +613,7 @@
             - <str>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.phone</samp> instead.
+        # Use `switchport.phone` instead.
         phone:
           trunk: <str; "tagged" | "untagged">
           vlan: <int; 1-4094>
@@ -630,7 +630,7 @@
         mlag: <int; 1-2000>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.trunk.groups</samp> instead.
+        # Use `switchport.trunk.groups` instead.
         trunk_groups:
           - <str>
 
@@ -683,17 +683,17 @@
         ntp_serve: <bool>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.trunk.private_vlan_secondary</samp> instead.
+        # Use `switchport.trunk.private_vlan_secondary` instead.
         trunk_private_vlan_secondary: <bool>
 
         # List of vlans as string.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.pvlan_mapping</samp> instead.
+        # Use `switchport.pvlan_mapping` instead.
         pvlan_mapping: <str>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.vlan_translations</samp> instead.
+        # Use `switchport.vlan_translations` instead.
         vlan_translations:
 
             # List of vlans as string (only one vlan if direction is "both").
@@ -754,13 +754,13 @@
         isis_hello_padding: <bool>
         # This key is deprecated.
         # Support will be removed in AVD version v6.0.0.
-        # Use <samp>port_channel_interfaces[].isis_authentication.both.mode or port_channel_interfaces[].isis_authentication.level_1.mode or port_channel_interfaces[].isis_authentication.level_2.mode</samp> instead.
+        # Use `port_channel_interfaces[].isis_authentication.both.mode` or `port_channel_interfaces[].isis_authentication.level_1.mode` or `port_channel_interfaces[].isis_authentication.level_2.mode` instead.
         isis_authentication_mode: <str; "text" | "md5">
 
         # Type-7 encrypted password.
         # This key is deprecated.
         # Support will be removed in AVD version v6.0.0.
-        # Use <samp>port_channel_interfaces[].isis_authentication.both.key or port_channel_interfaces[].isis_authentication.level_1.key or port_channel_interfaces[].isis_authentication.level_2.key</samp> instead.
+        # Use `port_channel_interfaces[].isis_authentication.both.key` or `port_channel_interfaces[].isis_authentication.level_1.key` or `port_channel_interfaces[].isis_authentication.level_2.key` instead.
         isis_authentication_key: <str>
 
         # This key should not be mixed with port_channel_interfaces[].isis_authentication_mode or ethernet_interfaces[].isis_authentication_key.
@@ -1467,7 +1467,7 @@
           # SRLG name or number.
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
-          # Use <samp>srlgs</samp> instead.
+          # Use `srlgs` instead.
           srlg: <str>
           metric: <int; 1-16777215>
 

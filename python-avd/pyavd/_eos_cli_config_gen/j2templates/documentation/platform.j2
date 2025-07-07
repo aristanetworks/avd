@@ -25,10 +25,8 @@
 {%             if platform.trident.mmu.active_profile is arista.avd.defined %}
 | MMU Applied Profile | {{ platform.trident.mmu.active_profile }} |
 {%             endif %}
-{%             if platform.trident.mmu.headroom_pool_limit.bytes is arista.avd.defined %}
-| MMU Headroom-pool Limit | {{ platform.trident.mmu.headroom_pool_limit.bytes }} bytes |
-{%             elif platform.trident.mmu.headroom_pool_limit.cells is arista.avd.defined %}
-| MMU Headroom-pool Limit | {{ platform.trident.mmu.headroom_pool_limit.cells }} cells |
+{%             if platform.trident.mmu.headroom_pool.limit is arista.avd.defined %}
+| MMU Headroom-pool Limit | {{ platform.trident.mmu.headroom_pool.limit }} {{ platform.trident.mmu.headroom_pool.unit | arista.avd.default("bytes") }} |
 {%             endif %}
 {%             if platform.trident.mmu.queue_profiles is arista.avd.defined %}
 
@@ -36,15 +34,49 @@
 {%                 for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 
 ##### {{ profile.name }}
+{%                     if profile.ingress.headroom.memory is arista.avd.defined or profile.ingress.threshold is arista.avd.defined or profile.ingress.resume is arista.avd.defined or profile.ingress.reserved.memory is arista.avd.defined %}
+
+###### Ingress
+
+| Settings | Value |
+| -------- | ----- |
+{%                         if profile.ingress.headroom.memory is arista.avd.defined %}
+| Headroom | {{ profile.ingress.headroom.memory }} {{ profile.ingress.headroom.unit | arista.avd.default('bytes') }} |
+{%                         endif %}
+| Threshold | {{ profile.ingress.threshold | arista.avd.default('-') }} |
+| Resume | {{ profile.ingress.resume | arista.avd.default('-') }} |
+{%                         if profile.ingress.reserved.memory is arista.avd.defined %}
+| Reserved | {{ profile.ingress.reserved.memory }} {{ profile.ingress.reserved.unit | arista.avd.default('bytes') }} |
+{%                         endif %}
+{%                     endif %}
+{%                     if profile.ingress.priority_groups is arista.avd.defined %}
+
+###### Ingress Priority Groups
+
+| Group Number | Threshold | Reserved |
+| ------------ | --------- | -------- |
+{%                         for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort('id') %}
+{%                             if priority_group.reserved.memory is arista.avd.defined %}
+{%                                 set reserved = priority_group.reserved.memory ~ ' ' ~ (priority_group.reserved.unit | arista.avd.default('bytes')) %}
+{%                             else %}
+{%                                 set reserved = '-' %}
+{%                             endif %}
+| {{ priority_group.id }} | {{ priority_group.threshold | arista.avd.default('-') }} | {{ reserved }} |
+{%                         endfor %}
+{%                     endif %}
+{%                     if profile.unicast_queues is arista.avd.defined or profile.multicast_queues is arista.avd.defined %}
+
+###### Egress
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
-{%                     for queue in profile.unicast_queues | arista.avd.natural_sort('id') %}
+{%                         for queue in profile.unicast_queues | arista.avd.natural_sort('id') %}
 | Unicast | {{ queue.id }} | {{ queue.threshold | arista.avd.default('-') }} | {{ queue.reserved | arista.avd.default('-') }} {{ queue.unit | arista.avd.default('bytes') }} | {{ queue.drop_precedence | arista.avd.default('-') }} |
-{%                     endfor %}
-{%                     for queue in profile.multicast_queues | arista.avd.natural_sort('id') %}
+{%                         endfor %}
+{%                         for queue in profile.multicast_queues | arista.avd.natural_sort('id') %}
 | Multicast | {{ queue.id }} | {{ queue.threshold | arista.avd.default('-') }} | {{ queue.reserved | arista.avd.default('-') }} {{ queue.unit | arista.avd.default('bytes') }} | {{ queue.drop_precedence | arista.avd.default('-') }} |
-{%                     endfor %}
+{%                         endfor %}
+{%                     endif %}
 {%                 endfor %}
 {%             endif %}
 {%         endif %}

@@ -204,6 +204,10 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
 
         if self.inputs.underlay_rfc5549:
             uplink.ipv6_enable = True
+        elif self.shared_utils.underlay_ipv6_numbered:
+            uplink.prefix_length = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv6_prefix_length
+            uplink.ip_address = self.shared_utils.ip_addressing.p2p_uplinks_ipv6(uplink_index)
+            uplink.peer_ip_address = self.shared_utils.ip_addressing.p2p_uplinks_peer_ipv6(uplink_index)
         else:
             uplink.prefix_length = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv4_prefix_length
             uplink.ip_address = self.shared_utils.ip_addressing.p2p_uplinks_ip(uplink_index)
@@ -342,6 +346,10 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
 
                 if self.inputs.underlay_rfc5549:
                     subinterface.ipv6_enable = True
+                elif self.shared_utils.underlay_ipv6_numbered:
+                    subinterface.ipv6_prefix_length = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv6_prefix_length
+                    subinterface.ipv6_address = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_ipv6(uplink_index, vrf.name)
+                    subinterface.peer_ipv6_address = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_peer_ipv6(uplink_index, vrf.name)
                 else:
                     subinterface.prefix_length = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv4_prefix_length
                     subinterface.ip_address = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_ip(uplink_index, vrf.name)

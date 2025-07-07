@@ -1,0 +1,27 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  avd_6_behaviors:
+    type: dict
+    description: |-
+      Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
+    documentation_options:
+      table: role-settings
+    deprecation:
+      warning: false
+      remove_in_version: 6.0.0
+    keys:
+      snmp_settings_vrfs:
+        type: bool
+        default: false
+        description: |-
+          Opt-in to the new behavior for snmp_settings:
+          - SNMP will only be enabled for VRFs specifically enabled under `snmp_settings.vrfs`.
+            Note this means SNMP will be disabled for VRF "default" unless it is defined there.
+          - `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.
+            If `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string "default".

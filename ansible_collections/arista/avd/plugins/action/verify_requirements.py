@@ -362,7 +362,7 @@ def _get_running_collection_version(running_collection_name: str, result: dict[s
     try:
         # Try to detect a git tag
         # Using subprocess for now
-        with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:  # noqa: S603, S607
+        with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:  # noqa: S607
             output, err = process.communicate()
             if err:
                 # Not that when molecule runs, it runs in a copy of the directory that is not a git repo
@@ -393,8 +393,8 @@ def check_running_from_source() -> bool:
         return False
 
     # if running from source, path to pyavd and schema_tools has already been prepended to Python Path
-    from schema_tools.check_schemas import check_schemas, rebuild_schemas
-    from schema_tools.compile_templates import check_templates, recompile_templates
+    from schema_tools.check_schemas import check_schemas, rebuild_schemas  # noqa: PLC0415
+    from schema_tools.compile_templates import check_templates, recompile_templates  # noqa: PLC0415
 
     if schemas_recompiled := check_schemas():
         display.display("Schemas have changed, rebuilding...", color=C.COLOR_CHANGED)

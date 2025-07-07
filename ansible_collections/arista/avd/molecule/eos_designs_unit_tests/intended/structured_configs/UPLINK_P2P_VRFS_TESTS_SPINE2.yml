@@ -4,6 +4,40 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 2001:db8:3:9::1/64
+  mac_security:
+    profile: TEST
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet1.100
+  description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2.100_VRF_IT
+  shutdown: false
+  mtu: 9214
+  vrf: IT
+  encapsulation_dot1q:
+    vlan: 100
+  ipv6_address: 2001:db8:3:9::2/64
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+  peer_interface: Ethernet2.100
+  peer_type: l3leaf
+- name: Ethernet1.42
+  description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2.42_VRF_PROD
+  shutdown: false
+  mtu: 9214
+  vrf: PROD
+  encapsulation_dot1q:
+    vlan: 42
+  ipv6_address: 2001:db8:3:9::2/64
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+  peer_interface: Ethernet2.42
+  peer_type: l3leaf
 - name: Ethernet2
   description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2
   shutdown: false
@@ -70,6 +104,11 @@ router_bgp:
     send_community: all
     maximum_routes: 12000
   neighbors:
+  - ip_address: 2001:db8:3:9::2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+    description: UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2
   - ip_address: 10.42.42.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
@@ -86,6 +125,10 @@ router_bgp:
   - name: IT
     router_id: 192.168.42.2
     neighbors:
+    - ip_address: 2001:db8:3:9::1
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2.100_vrf_IT
     - ip_address: 10.42.42.11
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
@@ -93,6 +136,10 @@ router_bgp:
   - name: PROD
     router_id: 192.168.42.2
     neighbors:
+    - ip_address: 2001:db8:3:9::1
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet2.42_vrf_PROD
     - ip_address: 10.42.42.11
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'

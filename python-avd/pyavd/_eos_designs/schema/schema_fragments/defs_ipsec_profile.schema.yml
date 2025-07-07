@@ -20,7 +20,12 @@ $defs:
         description: Name of the IPSec profile.
       shared_key:
         type: str
-        required: true
         description: |-
-          The type 7 encrypted IPSec shared key.
-          This variable is sensitive and should be configured using some vault mechanism.
+          Type 7 obfuscated IPSec shared key.
+          Takes precedence over `cleartext_shared_key`.
+          This variable is sensitive and SHOULD be configured using some vault mechanism.
+      cleartext_shared_key:
+        type: str
+        description: |-
+          Cleartext IPSec shared key.
+          This variable is sensitive and SHOULD be configured using some vault mechanism.

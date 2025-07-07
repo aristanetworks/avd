@@ -12853,7 +12853,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "sample": {"type": int},
                 "hardware_offload": {"type": HardwareOffload},
                 "trackers": {"type": Trackers},
-                "shutdown": {"type": bool, "default": False},
+                "shutdown": {"type": bool},
             }
             encapsulation: Encapsulation
             """Subclass of AvdModel."""
@@ -12862,8 +12862,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             trackers: Trackers
             """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
-            shutdown: bool
-            """Default value: `False`"""
+            shutdown: bool | None
 
             if TYPE_CHECKING:
 
@@ -12874,7 +12873,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     sample: int | None | UndefinedType = Undefined,
                     hardware_offload: HardwareOffload | UndefinedType = Undefined,
                     trackers: Trackers | UndefinedType = Undefined,
-                    shutdown: bool | UndefinedType = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Sampled.
@@ -13079,13 +13078,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Trackers._item_type = TrackersItem
 
-            _fields: ClassVar[dict] = {"record": {"type": Record}, "trackers": {"type": Trackers}, "shutdown": {"type": bool, "default": False}}
+            _fields: ClassVar[dict] = {"record": {"type": Record}, "trackers": {"type": Trackers}, "shutdown": {"type": bool}}
             record: Record
             """Subclass of AvdModel."""
             trackers: Trackers
             """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
-            shutdown: bool
-            """Default value: `False`"""
+            shutdown: bool | None
 
             if TYPE_CHECKING:
 
@@ -13094,7 +13092,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     record: Record | UndefinedType = Undefined,
                     trackers: Trackers | UndefinedType = Undefined,
-                    shutdown: bool | UndefinedType = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Hardware.
@@ -13109,15 +13107,254 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"sampled": {"type": Sampled}, "hardware": {"type": Hardware}}
+        class MirrorOnDrop(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Encapsulation(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ipv4_ipv6": {"type": bool}, "mpls": {"type": bool}}
+                ipv4_ipv6: bool | None
+                """
+                Set IPv4 and IPv6 encapsulations.
+                Both IPv4 and IPv6 encapsulations must be set together.
+                """
+                mpls: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ipv4_ipv6: bool | None | UndefinedType = Undefined, mpls: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Encapsulation.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv4_ipv6:
+                               Set IPv4 and IPv6 encapsulations.
+                               Both IPv4 and IPv6 encapsulations must be set together.
+                            mpls: mpls
+
+                        """
+
+            class TrackersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RecordExport(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"on_inactive_timeout": {"type": int}, "on_interval": {"type": int}}
+                    on_inactive_timeout: int | None
+                    """Flow record inactive export timeout in milliseconds."""
+                    on_interval: int | None
+                    """Flow record export interval in milliseconds."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, on_inactive_timeout: int | None | UndefinedType = Undefined, on_interval: int | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RecordExport.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                on_inactive_timeout: Flow record inactive export timeout in milliseconds.
+                                on_interval: Flow record export interval in milliseconds.
+
+                            """
+
+                class ExportersItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class CollectorsItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"host": {"type": str}, "port": {"type": int}}
+                        host: str
+                        """
+                        Flow collector name.
+                        The collector name can be an IPv4 address, IPv6 address, fully qualified domain
+                        name or `"sflow"`.
+                        """
+                        port: int | None
+                        """Collector Port Number."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, host: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
+                                """
+                                CollectorsItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    host:
+                                       Flow collector name.
+                                       The collector name can be an IPv4 address, IPv6 address, fully qualified domain
+                                       name or `"sflow"`.
+                                    port: Collector Port Number.
+
+                                """
+
+                    class Collectors(AvdIndexedList[str, CollectorsItem]):
+                        """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "host"
+
+                    Collectors._item_type = CollectorsItem
+
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "collectors": {"type": Collectors},
+                        "format": {"type": str},
+                        "local_interface": {"type": str},
+                        "template_interval": {"type": int},
+                        "dscp": {"type": int},
+                    }
+                    name: str
+                    """Exporter Name."""
+                    collectors: Collectors
+                    """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
+                    format: Literal["sflow", "drop-report"] | None
+                    """Configure flow export format. Valid values are platform dependent."""
+                    local_interface: str | None
+                    """Local source interface."""
+                    template_interval: int | None
+                    """Template interval in milliseconds."""
+                    dscp: int | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            name: str | UndefinedType = Undefined,
+                            collectors: Collectors | UndefinedType = Undefined,
+                            format: Literal["sflow", "drop-report"] | None | UndefinedType = Undefined,
+                            local_interface: str | None | UndefinedType = Undefined,
+                            template_interval: int | None | UndefinedType = Undefined,
+                            dscp: int | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            ExportersItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                name: Exporter Name.
+                                collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`).
+                                format: Configure flow export format. Valid values are platform dependent.
+                                local_interface: Local source interface.
+                                template_interval: Template interval in milliseconds.
+                                dscp: dscp
+
+                            """
+
+                class Exporters(AvdIndexedList[str, ExportersItem]):
+                    """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "name"
+
+                Exporters._item_type = ExportersItem
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "record_export": {"type": RecordExport}, "exporters": {"type": Exporters}}
+                name: str
+                """Tracker Name."""
+                record_export: RecordExport
+                """Subclass of AvdModel."""
+                exporters: Exporters
+                """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        record_export: RecordExport | UndefinedType = Undefined,
+                        exporters: Exporters | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        TrackersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Tracker Name.
+                            record_export: Subclass of AvdModel.
+                            exporters: Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`).
+
+                        """
+
+            class Trackers(AvdIndexedList[str, TrackersItem]):
+                """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Trackers._item_type = TrackersItem
+
+            _fields: ClassVar[dict] = {
+                "encapsulation": {"type": Encapsulation},
+                "sample_limit": {"type": int},
+                "trackers": {"type": Trackers},
+                "shutdown": {"type": bool},
+            }
+            encapsulation: Encapsulation
+            """Subclass of AvdModel."""
+            sample_limit: int | None
+            """Limit the number of packets sampled."""
+            trackers: Trackers
+            """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
+            shutdown: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    encapsulation: Encapsulation | UndefinedType = Undefined,
+                    sample_limit: int | None | UndefinedType = Undefined,
+                    trackers: Trackers | UndefinedType = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    MirrorOnDrop.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        encapsulation: Subclass of AvdModel.
+                        sample_limit: Limit the number of packets sampled.
+                        trackers: Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
+                        shutdown: shutdown
+
+                    """
+
+        _fields: ClassVar[dict] = {"sampled": {"type": Sampled}, "hardware": {"type": Hardware}, "mirror_on_drop": {"type": MirrorOnDrop}}
         sampled: Sampled
         """Subclass of AvdModel."""
         hardware: Hardware
         """Subclass of AvdModel."""
+        mirror_on_drop: MirrorOnDrop
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, sampled: Sampled | UndefinedType = Undefined, hardware: Hardware | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                sampled: Sampled | UndefinedType = Undefined,
+                hardware: Hardware | UndefinedType = Undefined,
+                mirror_on_drop: MirrorOnDrop | UndefinedType = Undefined,
+            ) -> None:
                 """
                 FlowTracking.
 
@@ -13127,6 +13364,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     sampled: Subclass of AvdModel.
                     hardware: Subclass of AvdModel.
+                    mirror_on_drop: Subclass of AvdModel.
 
                 """
 
@@ -17630,6 +17868,247 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class LoadBalance(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Policies(AvdModel):
+            """Subclass of AvdModel."""
+
+            class SandProfilesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Fields(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Udp(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Match(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"payload_bits": {"type": str}, "pattern": {"type": str}, "hash_payload_bytes": {"type": str}}
+                            payload_bits: str
+                            """
+                            Specifies the bit positions within the UDP payload to match for hashing.
+                            Accepts a single bit (e.g.,
+                            "12"), a comma-separated list (e.g., "0,3,8"),
+                            a range (e.g., "0-15"), or combinations (e.g.,
+                            "0-7,9,12-15").
+                            Valid values must be in the range 0 to 503.
+                            Matching is limited to a maximum of 16
+                            bits total.
+                            """
+                            pattern: str
+                            """
+                            Bit pattern to match in the UDP payload.
+                            The value should be given as an hexadecimal format `0x...`.
+                            The valid range is from 0 to (2^N - 1), where N is the number of bits selected in `payload_bits`.
+                            """
+                            hash_payload_bytes: str
+                            """
+                            Specifies the UDP payload byte positions to include in the hash after pattern match.
+                            Accepts a
+                            single byte (e.g., "5"), a comma-separated list (e.g., "0,3,7"),
+                            a range (e.g., "0-15"), or a
+                            combination (e.g., "0-5,8,12-14").
+                            All byte positions must be within the range 0 to 62.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    payload_bits: str | UndefinedType = Undefined,
+                                    pattern: str | UndefinedType = Undefined,
+                                    hash_payload_bytes: str | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Match.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        payload_bits:
+                                           Specifies the bit positions within the UDP payload to match for hashing.
+                                           Accepts a single bit (e.g.,
+                                           "12"), a comma-separated list (e.g., "0,3,8"),
+                                           a range (e.g., "0-15"), or combinations (e.g.,
+                                           "0-7,9,12-15").
+                                           Valid values must be in the range 0 to 503.
+                                           Matching is limited to a maximum of 16
+                                           bits total.
+                                        pattern:
+                                           Bit pattern to match in the UDP payload.
+                                           The value should be given as an hexadecimal format `0x...`.
+                                           The valid range is from 0 to (2^N - 1), where N is the number of bits selected in `payload_bits`.
+                                        hash_payload_bytes:
+                                           Specifies the UDP payload byte positions to include in the hash after pattern match.
+                                           Accepts a
+                                           single byte (e.g., "5"), a comma-separated list (e.g., "0,3,7"),
+                                           a range (e.g., "0-15"), or a
+                                           combination (e.g., "0-5,8,12-14").
+                                           All byte positions must be within the range 0 to 62.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"dst_port": {"type": int}, "payload_bytes": {"type": str}, "match": {"type": Match}}
+                        dst_port: int
+                        """Use the UDP destination port as a hash input."""
+                        payload_bytes: str | None
+                        """
+                        Specifies the UDP payload bytes to use in hash calculation.
+                        Accepts single bytes (e.g., "10"),
+                        comma-separated bytes (e.g., "0,1,5"),
+                        ranges (e.g., "0-15"), or combinations (e.g.,
+                        "0-10,12,15,20-25").
+                        Valid values are between 0 and 62.
+                        """
+                        match: Match
+                        """
+                        Configuration to match specific bits and define custom payload-based hashing.
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                dst_port: int | UndefinedType = Undefined,
+                                payload_bytes: str | None | UndefinedType = Undefined,
+                                match: Match | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Udp.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    dst_port: Use the UDP destination port as a hash input.
+                                    payload_bytes:
+                                       Specifies the UDP payload bytes to use in hash calculation.
+                                       Accepts single bytes (e.g., "10"),
+                                       comma-separated bytes (e.g., "0,1,5"),
+                                       ranges (e.g., "0-15"), or combinations (e.g.,
+                                       "0-10,12,15,20-25").
+                                       Valid values are between 0 and 62.
+                                    match:
+                                       Configuration to match specific bits and define custom payload-based hashing.
+
+                                       Subclass of AvdModel.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"udp": {"type": Udp}}
+                    udp: Udp
+                    """
+                    UDP-specific fields used in the load balancing hash.
+                    Requires EOS version 4.33.1F or higher.
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, udp: Udp | UndefinedType = Undefined) -> None:
+                            """
+                            Fields.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                udp:
+                                   UDP-specific fields used in the load balancing hash.
+                                   Requires EOS version 4.33.1F or higher.
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "fields": {"type": Fields}}
+                name: str
+                """Unique name of the load-balancing profile."""
+                fields: Fields
+                """
+                Configure packet fields used as input to the hash function for port-channel and ECMP load balancing.
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | UndefinedType = Undefined, fields: Fields | UndefinedType = Undefined) -> None:
+                        """
+                        SandProfilesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Unique name of the load-balancing profile.
+                            fields:
+                               Configure packet fields used as input to the hash function for port-channel and ECMP load balancing.
+                               Subclass of AvdModel.
+
+                        """
+
+            class SandProfiles(AvdIndexedList[str, SandProfilesItem]):
+                """Subclass of AvdIndexedList with `SandProfilesItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            SandProfiles._item_type = SandProfilesItem
+
+            _fields: ClassVar[dict] = {"sand_profiles": {"type": SandProfiles}}
+            sand_profiles: SandProfiles
+            """
+            List of load balancing profiles for SAND-based platforms, used for port-channel and ECMP hashing.
+            Subclass of AvdIndexedList with `SandProfilesItem` items. Primary key is `name` (`str`).
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, sand_profiles: SandProfiles | UndefinedType = Undefined) -> None:
+                    """
+                    Policies.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sand_profiles:
+                           List of load balancing profiles for SAND-based platforms, used for port-channel and ECMP hashing.
+                           Subclass of AvdIndexedList with `SandProfilesItem` items. Primary key is `name` (`str`).
+
+                    """
+
+        _fields: ClassVar[dict] = {"policies": {"type": Policies}}
+        policies: Policies
+        """
+        Collection of load balancing policy definitions.
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, policies: Policies | UndefinedType = Undefined) -> None:
+                """
+                LoadBalance.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    policies:
+                       Collection of load balancing policy definitions.
+
+                       Subclass of AvdModel.
+
+                """
+
     class LoadInterval(AvdModel):
         """Subclass of AvdModel."""
 
@@ -21411,15 +21890,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class VrfsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "enable": {"type": bool}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "enable": {"type": bool},
+                "ip_access_group_in": {"type": str},
+                "ipv6_access_group_in": {"type": str},
+            }
             name: str
             """VRF Name."""
             enable: bool | None
             """Enable SSH in VRF."""
+            ip_access_group_in: str | None
+            """
+            Standard ACL Name.
+            This should not be set for VRF 'default'. Use `management_ssh.ip_access_group_in`
+            instead.
+            """
+            ipv6_access_group_in: str | None
+            """
+            Standard IPv6 ACL Name.
+            This should not be set for VRF 'default'. Use
+            `management_ssh.ipv6_access_group_in` instead.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: str | UndefinedType = Undefined, enable: bool | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    enable: bool | None | UndefinedType = Undefined,
+                    ip_access_group_in: str | None | UndefinedType = Undefined,
+                    ipv6_access_group_in: str | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     VrfsItem.
 
@@ -21429,6 +21932,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: VRF Name.
                         enable: Enable SSH in VRF.
+                        ip_access_group_in:
+                           Standard ACL Name.
+                           This should not be set for VRF 'default'. Use `management_ssh.ip_access_group_in`
+                           instead.
+                        ipv6_access_group_in:
+                           Standard IPv6 ACL Name.
+                           This should not be set for VRF 'default'. Use
+                           `management_ssh.ipv6_access_group_in` instead.
 
                     """
 
@@ -21472,6 +21983,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "authentication": {"type": Authentication},
             "access_groups": {"type": AccessGroups},
             "ipv6_access_groups": {"type": Ipv6AccessGroups},
+            "ip_access_group_in": {"type": str},
+            "ipv6_access_group_in": {"type": str},
             "idle_timeout": {"type": int},
             "cipher": {"type": Cipher},
             "key_exchange": {"type": KeyExchange},
@@ -21490,6 +22003,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdList with `AccessGroupsItem` items."""
         ipv6_access_groups: Ipv6AccessGroups
         """Subclass of AvdList with `Ipv6AccessGroupsItem` items."""
+        ip_access_group_in: str | None
+        """Standard ACL Name."""
+        ipv6_access_group_in: str | None
+        """Standard IPv6 ACL Name."""
         idle_timeout: int | None
         """Idle timeout in minutes."""
         cipher: Cipher
@@ -21515,7 +22032,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         hostkey: Hostkey
         """Subclass of AvdModel."""
         enable: bool | None
-        """Enable SSH daemon."""
+        """Enable SSH for VRF default."""
         connection: Connection
         """Subclass of AvdModel."""
         vrfs: Vrfs
@@ -21533,6 +22050,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 authentication: Authentication | UndefinedType = Undefined,
                 access_groups: AccessGroups | UndefinedType = Undefined,
                 ipv6_access_groups: Ipv6AccessGroups | UndefinedType = Undefined,
+                ip_access_group_in: str | None | UndefinedType = Undefined,
+                ipv6_access_group_in: str | None | UndefinedType = Undefined,
                 idle_timeout: int | None | UndefinedType = Undefined,
                 cipher: Cipher | UndefinedType = Undefined,
                 key_exchange: KeyExchange | UndefinedType = Undefined,
@@ -21555,6 +22074,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     authentication: Subclass of AvdModel.
                     access_groups: Subclass of AvdList with `AccessGroupsItem` items.
                     ipv6_access_groups: Subclass of AvdList with `Ipv6AccessGroupsItem` items.
+                    ip_access_group_in: Standard ACL Name.
+                    ipv6_access_group_in: Standard IPv6 ACL Name.
                     idle_timeout: Idle timeout in minutes.
                     cipher:
                        Cryptographic ciphers for SSH to use.
@@ -21570,7 +22091,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of AvdList with `str` items.
                     fips_restrictions: Use FIPS compliant algorithms.
                     hostkey: Subclass of AvdModel.
-                    enable: Enable SSH daemon.
+                    enable: Enable SSH for VRF default.
                     connection: Subclass of AvdModel.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     log_level: SSH daemon log level.
@@ -23029,6 +23550,70 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class DigitalTwin(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "environment": {"type": str},
+                "node_type": {"type": str},
+                "ip_addr": {"type": str},
+                "version": {"type": str},
+                "username": {"type": str},
+                "password": {"type": str},
+            }
+            environment: Literal["act"] | None
+            """Targeted Digital Twin environment."""
+            node_type: str | None
+            """
+            Digital Twin's internal device type used for deploying a replica of the fabric device.
+            Possible
+            values depend on the target Digital Twin environment.
+            """
+            ip_addr: str | None
+            """
+            Management IPv4_address/Mask assigned to a replica of the fabric device within the Digital Twin
+            environment.
+            """
+            version: str | None
+            """OS version used for deploying a replica of the fabric device within the Digital Twin environment."""
+            username: str | None
+            """Local username assigned to a replica of the fabric device within the Digital Twin environment."""
+            password: str | None
+            """Local password assigned to a replica of the fabric device within the Digital Twin environment."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    environment: Literal["act"] | None | UndefinedType = Undefined,
+                    node_type: str | None | UndefinedType = Undefined,
+                    ip_addr: str | None | UndefinedType = Undefined,
+                    version: str | None | UndefinedType = Undefined,
+                    username: str | None | UndefinedType = Undefined,
+                    password: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DigitalTwin.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        environment: Targeted Digital Twin environment.
+                        node_type:
+                           Digital Twin's internal device type used for deploying a replica of the fabric device.
+                           Possible
+                           values depend on the target Digital Twin environment.
+                        ip_addr:
+                           Management IPv4_address/Mask assigned to a replica of the fabric device within the Digital Twin
+                           environment.
+                        version: OS version used for deploying a replica of the fabric device within the Digital Twin environment.
+                        username: Local username assigned to a replica of the fabric device within the Digital Twin environment.
+                        password: Local password assigned to a replica of the fabric device within the Digital Twin environment.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "platform": {"type": str},
             "system_mac_address": {"type": str},
@@ -23038,6 +23623,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "fabric_name": {"type": str},
             "cv_tags": {"type": CvTags},
             "cv_pathfinder": {"type": CvPathfinder},
+            "digital_twin": {"type": DigitalTwin},
         }
         platform: str | None
         system_mac_address: str | None
@@ -23050,6 +23636,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         cv_pathfinder: CvPathfinder
         """
         Metadata used for CV Pathfinder visualization on CloudVision.
+
+        Subclass of AvdModel.
+        """
+        digital_twin: DigitalTwin
+        """
+        Metadata used to generate Digital Twin topology.
 
         Subclass of AvdModel.
         """
@@ -23067,6 +23659,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 fabric_name: str | None | UndefinedType = Undefined,
                 cv_tags: CvTags | UndefinedType = Undefined,
                 cv_pathfinder: CvPathfinder | UndefinedType = Undefined,
+                digital_twin: DigitalTwin | UndefinedType = Undefined,
             ) -> None:
                 """
                 Metadata.
@@ -23084,6 +23677,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     cv_tags: Subclass of AvdModel.
                     cv_pathfinder:
                        Metadata used for CV Pathfinder visualization on CloudVision.
+
+                       Subclass of AvdModel.
+                    digital_twin:
+                       Metadata used to generate Digital Twin topology.
 
                        Subclass of AvdModel.
 
@@ -26194,46 +26791,223 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Mmu(AvdModel):
                 """Subclass of AvdModel."""
 
-                class HeadroomPoolLimit(AvdModel):
+                class HeadroomPool(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"bytes": {"type": int}, "cells": {"type": int}}
-                    bytes: int | None
+                    _fields: ClassVar[dict] = {"unit": {"type": str}, "limit": {"type": int}}
+                    unit: Literal["bytes", "cells"] | None
                     """
-                    Headroom pool limit in bytes.
-                    `bytes` and `cells` are mutually exclusive with `bytes` taking
-                    precedence.
+                    Unit to be used for the `headroom_pool` value.
+                    If not specified, default is bytes.
                     """
-                    cells: int | None
-                    """
-                    Headroom pool limit in cells.
-                    `bytes` and `cells` are mutually exclusive with `bytes` taking
-                    precedence.
-                    """
+                    limit: int | None
+                    """Max limit on headroom pool size."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, bytes: int | None | UndefinedType = Undefined, cells: int | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self, *, unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined, limit: int | None | UndefinedType = Undefined
+                        ) -> None:
                             """
-                            HeadroomPoolLimit.
+                            HeadroomPool.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                bytes:
-                                   Headroom pool limit in bytes.
-                                   `bytes` and `cells` are mutually exclusive with `bytes` taking
-                                   precedence.
-                                cells:
-                                   Headroom pool limit in cells.
-                                   `bytes` and `cells` are mutually exclusive with `bytes` taking
-                                   precedence.
+                                unit:
+                                   Unit to be used for the `headroom_pool` value.
+                                   If not specified, default is bytes.
+                                limit: Max limit on headroom pool size.
 
                             """
 
                 class QueueProfilesItem(AvdModel):
                     """Subclass of AvdModel."""
+
+                    class Ingress(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PriorityGroupsItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Reserved(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"unit": {"type": str}, "memory": {"type": int}}
+                                unit: Literal["bytes", "cells"] | None
+                                """
+                                Unit to be used for the `priority_groups` `reserved` value.
+                                If not specified, default is bytes.
+                                """
+                                memory: int | None
+                                """Specify the amount of memory that should be reserved."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined,
+                                        memory: int | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Reserved.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            unit:
+                                               Unit to be used for the `priority_groups` `reserved` value.
+                                               If not specified, default is bytes.
+                                            memory: Specify the amount of memory that should be reserved.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"id": {"type": int}, "threshold": {"type": str}, "reserved": {"type": Reserved}}
+                            id: int
+                            """Priority-group group number."""
+                            threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
+                            reserved: Reserved
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    id: int | UndefinedType = Undefined,
+                                    threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"]
+                                    | None
+                                    | UndefinedType = Undefined,
+                                    reserved: Reserved | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PriorityGroupsItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        id: Priority-group group number.
+                                        threshold: threshold
+                                        reserved: Subclass of AvdModel.
+
+                                    """
+
+                        class PriorityGroups(AvdIndexedList[int, PriorityGroupsItem]):
+                            """Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`)."""
+
+                            _primary_key: ClassVar[str] = "id"
+
+                        PriorityGroups._item_type = PriorityGroupsItem
+
+                        class Reserved(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"unit": {"type": str}, "memory": {"type": int}}
+                            unit: Literal["bytes", "cells"] | None
+                            """
+                            Unit to be used for the `reserved` value.
+                            If not specified, default is bytes.
+                            """
+                            memory: int | None
+                            """Specify the amount of memory that should be reserved."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    Reserved.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        unit:
+                                           Unit to be used for the `reserved` value.
+                                           If not specified, default is bytes.
+                                        memory: Specify the amount of memory that should be reserved.
+
+                                    """
+
+                        class Headroom(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"unit": {"type": str}, "memory": {"type": int}}
+                            unit: Literal["bytes", "cells"] | None
+                            """
+                            Unit to be used for the headroom value.
+                            If not specified, default is bytes.
+                            """
+                            memory: int | None
+                            """Specify the amount of memory that should be reserved."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    Headroom.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        unit:
+                                           Unit to be used for the headroom value.
+                                           If not specified, default is bytes.
+                                        memory: Specify the amount of memory that should be reserved.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "priority_groups": {"type": PriorityGroups},
+                            "threshold": {"type": str},
+                            "reserved": {"type": Reserved},
+                            "headroom": {"type": Headroom},
+                            "resume": {"type": int},
+                        }
+                        priority_groups: PriorityGroups
+                        """Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`)."""
+                        threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
+                        """Specify the dynamic shared memory threshold."""
+                        reserved: Reserved
+                        """Subclass of AvdModel."""
+                        headroom: Headroom
+                        """Subclass of AvdModel."""
+                        resume: int | None
+                        """Amount of memory that should be reserved (in bytes)"""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                priority_groups: PriorityGroups | UndefinedType = Undefined,
+                                threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
+                                reserved: Reserved | UndefinedType = Undefined,
+                                headroom: Headroom | UndefinedType = Undefined,
+                                resume: int | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Ingress.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    priority_groups: Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`).
+                                    threshold: Specify the dynamic shared memory threshold.
+                                    reserved: Subclass of AvdModel.
+                                    headroom: Subclass of AvdModel.
+                                    resume: Amount of memory that should be reserved (in bytes)
+
+                                """
 
                     class MulticastQueuesItem(AvdModel):
                         """Subclass of AvdModel."""
@@ -26283,7 +27057,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Amount of memory that should be reserved for this
                         queue.
                         """
-                        threshold: str | None
+                        threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
                         """Dynamic Shared Memory threshold."""
                         drop: Drop
                         """Subclass of AvdModel."""
@@ -26296,7 +27070,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 id: int | UndefinedType = Undefined,
                                 unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined,
                                 reserved: int | None | UndefinedType = Undefined,
-                                threshold: str | None | UndefinedType = Undefined,
+                                threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
                                 drop: Drop | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -26371,7 +27145,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Amount of memory that should be reserved for this
                         queue.
                         """
-                        threshold: str | None
+                        threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
                         """Dynamic Shared Memory threshold."""
                         drop: Drop
                         """Subclass of AvdModel."""
@@ -26384,7 +27158,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 id: int | UndefinedType = Undefined,
                                 unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined,
                                 reserved: int | None | UndefinedType = Undefined,
-                                threshold: str | None | UndefinedType = Undefined,
+                                threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
                                 drop: Drop | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -26411,12 +27185,29 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     UnicastQueues._item_type = UnicastQueuesItem
 
-                    _fields: ClassVar[dict] = {"name": {"type": str}, "multicast_queues": {"type": MulticastQueues}, "unicast_queues": {"type": UnicastQueues}}
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "ingress": {"type": Ingress},
+                        "multicast_queues": {"type": MulticastQueues},
+                        "unicast_queues": {"type": UnicastQueues},
+                    }
                     name: str
+                    ingress: Ingress
+                    """Subclass of AvdModel."""
                     multicast_queues: MulticastQueues
-                    """Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key is `id` (`int`)."""
+                    """
+                    Egress multicast queues.
+
+                    Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key
+                    is `id` (`int`).
+                    """
                     unicast_queues: UnicastQueues
-                    """Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is `id` (`int`)."""
+                    """
+                    Egress unicast queues.
+
+                    Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is
+                    `id` (`int`).
+                    """
 
                     if TYPE_CHECKING:
 
@@ -26424,6 +27215,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             name: str | UndefinedType = Undefined,
+                            ingress: Ingress | UndefinedType = Undefined,
                             multicast_queues: MulticastQueues | UndefinedType = Undefined,
                             unicast_queues: UnicastQueues | UndefinedType = Undefined,
                         ) -> None:
@@ -26435,8 +27227,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 name: name
-                                multicast_queues: Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key is `id` (`int`).
-                                unicast_queues: Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is `id` (`int`).
+                                ingress: Subclass of AvdModel.
+                                multicast_queues:
+                                   Egress multicast queues.
+
+                                   Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key
+                                   is `id` (`int`).
+                                unicast_queues:
+                                   Egress unicast queues.
+
+                                   Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is
+                                   `id` (`int`).
 
                             """
 
@@ -26447,19 +27248,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 QueueProfiles._item_type = QueueProfilesItem
 
-                _fields: ClassVar[dict] = {
-                    "active_profile": {"type": str},
-                    "headroom_pool_limit": {"type": HeadroomPoolLimit},
-                    "queue_profiles": {"type": QueueProfiles},
-                }
+                _fields: ClassVar[dict] = {"active_profile": {"type": str}, "headroom_pool": {"type": HeadroomPool}, "queue_profiles": {"type": QueueProfiles}}
                 active_profile: str | None
                 """The queue profile to be applied to the platform."""
-                headroom_pool_limit: HeadroomPoolLimit
-                """
-                Max limit on headroom pool size.
-
-                Subclass of AvdModel.
-                """
+                headroom_pool: HeadroomPool
+                """Subclass of AvdModel."""
                 queue_profiles: QueueProfiles
                 """Subclass of AvdIndexedList with `QueueProfilesItem` items. Primary key is `name` (`str`)."""
 
@@ -26469,7 +27262,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         active_profile: str | None | UndefinedType = Undefined,
-                        headroom_pool_limit: HeadroomPoolLimit | UndefinedType = Undefined,
+                        headroom_pool: HeadroomPool | UndefinedType = Undefined,
                         queue_profiles: QueueProfiles | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -26480,10 +27273,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             active_profile: The queue profile to be applied to the platform.
-                            headroom_pool_limit:
-                               Max limit on headroom pool size.
-
-                               Subclass of AvdModel.
+                            headroom_pool: Subclass of AvdModel.
                             queue_profiles: Subclass of AvdIndexedList with `QueueProfilesItem` items. Primary key is `name` (`str`).
 
                         """
@@ -27461,6 +28251,100 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Control-plane policy configuration.
 
                        Subclass of AvdModel.
+
+                """
+
+    class PortChannel(AvdModel):
+        """Subclass of AvdModel."""
+
+        class LoadBalanceTridentUdfItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "eth_type": {"type": str},
+                "ip_protocol": {"type": str},
+                "header": {"type": str},
+                "offset": {"type": int},
+                "mask": {"type": str},
+            }
+            eth_type: Literal["ipv4", "ipv6"]
+            """Ethernet type in the port channel hash."""
+            ip_protocol: str | None
+            """
+            IP protocol name like - gre, icmp, tcp, udp, mpls-over-gre, sctp.
+            IP protocol number within the
+            range <0-255>.
+            """
+            header: Literal["inner_l3", "inner_l4", "outer_l2", "outer_l3", "outer_l4"]
+            offset: int
+            """Offset starting from selected header in the packet."""
+            mask: str | None
+            """Mask of the offset. A hex value within the range 0x01-0xFF."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    eth_type: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                    ip_protocol: str | None | UndefinedType = Undefined,
+                    header: Literal["inner_l3", "inner_l4", "outer_l2", "outer_l3", "outer_l4"] | UndefinedType = Undefined,
+                    offset: int | UndefinedType = Undefined,
+                    mask: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    LoadBalanceTridentUdfItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        eth_type: Ethernet type in the port channel hash.
+                        ip_protocol:
+                           IP protocol name like - gre, icmp, tcp, udp, mpls-over-gre, sctp.
+                           IP protocol number within the
+                           range <0-255>.
+                        header: header
+                        offset: Offset starting from selected header in the packet.
+                        mask: Mask of the offset. A hex value within the range 0x01-0xFF.
+
+                    """
+
+        class LoadBalanceTridentUdf(AvdList[LoadBalanceTridentUdfItem]):
+            """Subclass of AvdList with `LoadBalanceTridentUdfItem` items."""
+
+        LoadBalanceTridentUdf._item_type = LoadBalanceTridentUdfItem
+
+        _fields: ClassVar[dict] = {"load_balance_trident_udf": {"type": LoadBalanceTridentUdf}, "load_balance_sand_profile": {"type": str}}
+        load_balance_trident_udf: LoadBalanceTridentUdf
+        """
+        Trident chip UDF fields load balancing.
+
+        Subclass of AvdList with `LoadBalanceTridentUdfItem` items.
+        """
+        load_balance_sand_profile: str | None
+        """Name of the load-balance profile for sand platform."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                load_balance_trident_udf: LoadBalanceTridentUdf | UndefinedType = Undefined,
+                load_balance_sand_profile: str | None | UndefinedType = Undefined,
+            ) -> None:
+                """
+                PortChannel.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    load_balance_trident_udf:
+                       Trident chip UDF fields load balancing.
+
+                       Subclass of AvdList with `LoadBalanceTridentUdfItem` items.
+                    load_balance_sand_profile: Name of the load-balance profile for sand platform.
 
                 """
 
@@ -56308,6 +57192,32 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class RouterPathSelection(AvdModel):
         """Subclass of AvdModel."""
 
+        class MtuDiscoveryHosts(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "fragmentation_needed_rate_limit": {"type": int}}
+            enabled: bool | None
+            """Enable MTU discovery for hosts."""
+            fragmentation_needed_rate_limit: int | None
+            """Maximum rate of ICMP packet generation per CPU core(packets per second)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, enabled: bool | None | UndefinedType = Undefined, fragmentation_needed_rate_limit: int | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    MtuDiscoveryHosts.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable MTU discovery for hosts.
+                        fragmentation_needed_rate_limit: Maximum rate of ICMP packet generation per CPU core(packets per second).
+
+                    """
+
         class PathGroupsItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -57022,6 +57932,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "peer_dynamic_source": {"type": str},
+            "mtu_discovery_interval": {"type": int},
+            "mtu_discovery_hosts": {"type": MtuDiscoveryHosts},
             "path_groups": {"type": PathGroups},
             "load_balance_policies": {"type": LoadBalancePolicies},
             "policies": {"type": Policies},
@@ -57031,6 +57943,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         peer_dynamic_source: Literal["stun"] | None
         """Source of dynamic peer discovery."""
+        mtu_discovery_interval: int | None
+        """MTU discovery interval in seconds."""
+        mtu_discovery_hosts: MtuDiscoveryHosts
+        """Subclass of AvdModel."""
         path_groups: PathGroups
         """Subclass of AvdIndexedList with `PathGroupsItem` items. Primary key is `name` (`str`)."""
         load_balance_policies: LoadBalancePolicies
@@ -57050,6 +57966,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 peer_dynamic_source: Literal["stun"] | None | UndefinedType = Undefined,
+                mtu_discovery_interval: int | None | UndefinedType = Undefined,
+                mtu_discovery_hosts: MtuDiscoveryHosts | UndefinedType = Undefined,
                 path_groups: PathGroups | UndefinedType = Undefined,
                 load_balance_policies: LoadBalancePolicies | UndefinedType = Undefined,
                 policies: Policies | UndefinedType = Undefined,
@@ -57065,6 +57983,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     peer_dynamic_source: Source of dynamic peer discovery.
+                    mtu_discovery_interval: MTU discovery interval in seconds.
+                    mtu_discovery_hosts: Subclass of AvdModel.
                     path_groups: Subclass of AvdIndexedList with `PathGroupsItem` items. Primary key is `name` (`str`).
                     load_balance_policies: Subclass of AvdIndexedList with `LoadBalancePoliciesItem` items. Primary key is `name` (`str`).
                     policies: Subclass of AvdIndexedList with `PoliciesItem` items. Primary key is `name` (`str`).
@@ -63813,6 +64733,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_verify_unicast_source_reachable_via": {"type": str},
             "ip_igmp": {"type": bool},
             "ip_igmp_version": {"type": int},
+            "ip_igmp_querier_address_virtual": {"type": bool},
             "ip_igmp_host_proxy": {"type": IpIgmpHostProxy},
             "ip_helpers": {"type": IpHelpers},
             "ip_dhcp_relay_all_subnets": {"type": bool},
@@ -63893,6 +64814,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None
         ip_igmp: bool | None
         ip_igmp_version: int | None
+        ip_igmp_querier_address_virtual: bool | None
         ip_igmp_host_proxy: IpIgmpHostProxy
         """Subclass of AvdModel."""
         ip_helpers: IpHelpers
@@ -64042,6 +64964,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None | UndefinedType = Undefined,
                 ip_igmp: bool | None | UndefinedType = Undefined,
                 ip_igmp_version: int | None | UndefinedType = Undefined,
+                ip_igmp_querier_address_virtual: bool | None | UndefinedType = Undefined,
                 ip_igmp_host_proxy: IpIgmpHostProxy | UndefinedType = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                 ip_dhcp_relay_all_subnets: bool | None | UndefinedType = Undefined,
@@ -64120,6 +65043,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_verify_unicast_source_reachable_via: ip_verify_unicast_source_reachable_via
                     ip_igmp: ip_igmp
                     ip_igmp_version: ip_igmp_version
+                    ip_igmp_querier_address_virtual: ip_igmp_querier_address_virtual
                     ip_igmp_host_proxy: Subclass of AvdModel.
                     ip_helpers:
                        List of DHCP servers.
@@ -64598,6 +65522,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class Encapsulations(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+                    ipv4: bool | None
+                    """Use IPv4 for VXLAN Encapsulation."""
+                    ipv6: bool | None
+                    """Use IPv6 for VXLAN Encapsulation."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            Encapsulations.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                ipv4: Use IPv4 for VXLAN Encapsulation.
+                                ipv6: Use IPv6 for VXLAN Encapsulation.
+
+                            """
+
                 class BfdVtepEvpn(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -64729,7 +65677,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     FloodVteps._item_type = str
 
-                    _fields: ClassVar[dict] = {"id": {"type": int}, "vni": {"type": int}, "multicast_group": {"type": str}, "flood_vteps": {"type": FloodVteps}}
+                    _fields: ClassVar[dict] = {
+                        "id": {"type": int},
+                        "vni": {"type": int},
+                        "multicast_group": {"type": str},
+                        "flood_vteps": {"type": FloodVteps},
+                        "flood_group": {"type": str},
+                    }
                     id: int
                     """VLAN ID."""
                     vni: int | None
@@ -64737,6 +65691,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """IP Multicast Group Address."""
                     flood_vteps: FloodVteps
                     """Subclass of AvdList with `str` items."""
+                    flood_group: str | None
+                    """Flood multicast group address."""
 
                     if TYPE_CHECKING:
 
@@ -64747,6 +65703,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             vni: int | None | UndefinedType = Undefined,
                             multicast_group: str | None | UndefinedType = Undefined,
                             flood_vteps: FloodVteps | UndefinedType = Undefined,
+                            flood_group: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             VlansItem.
@@ -64759,6 +65716,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 vni: vni
                                 multicast_group: IP Multicast Group Address.
                                 flood_vteps: Subclass of AvdList with `str` items.
+                                flood_group: Flood multicast group address.
 
                             """
 
@@ -64819,6 +65777,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "controller_client": {"type": ControllerClient},
                     "mlag_source_interface": {"type": str},
                     "udp_port": {"type": int},
+                    "encapsulations": {"type": Encapsulations},
                     "vtep_to_vtep_bridging": {"type": bool},
                     "virtual_router_encapsulation_mac_address": {"type": str},
                     "bfd_vtep_evpn": {"type": BfdVtepEvpn},
@@ -64841,6 +65800,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 mlag_source_interface: str | None
                 udp_port: int | None
+                encapsulations: Encapsulations
+                """Subclass of AvdModel."""
                 vtep_to_vtep_bridging: bool | None
                 """Enable bridging between different VTEPs in vxlan overlay."""
                 virtual_router_encapsulation_mac_address: str | None
@@ -64889,6 +65850,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         controller_client: ControllerClient | UndefinedType = Undefined,
                         mlag_source_interface: str | None | UndefinedType = Undefined,
                         udp_port: int | None | UndefinedType = Undefined,
+                        encapsulations: Encapsulations | UndefinedType = Undefined,
                         vtep_to_vtep_bridging: bool | None | UndefinedType = Undefined,
                         virtual_router_encapsulation_mac_address: str | None | UndefinedType = Undefined,
                         bfd_vtep_evpn: BfdVtepEvpn | UndefinedType = Undefined,
@@ -64914,6 +65876,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Subclass of AvdModel.
                             mlag_source_interface: mlag_source_interface
                             udp_port: udp_port
+                            encapsulations: Subclass of AvdModel.
                             vtep_to_vtep_bridging: Enable bridging between different VTEPs in vxlan overlay.
                             virtual_router_encapsulation_mac_address: "mlag-system-id" or ethernet_address (H.H.H).
                             bfd_vtep_evpn: Subclass of AvdModel.
@@ -65023,6 +65986,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class Encapsulations(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+                    ipv4: bool | None
+                    """Use IPv4 for VXLAN Encapsulation."""
+                    ipv6: bool | None
+                    """Use IPv6 for VXLAN Encapsulation."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            Encapsulations.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                ipv4: Use IPv4 for VXLAN Encapsulation.
+                                ipv6: Use IPv6 for VXLAN Encapsulation.
+
+                            """
+
                 class BfdVtepEvpn(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -65154,7 +66141,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     FloodVteps._item_type = str
 
-                    _fields: ClassVar[dict] = {"id": {"type": int}, "vni": {"type": int}, "multicast_group": {"type": str}, "flood_vteps": {"type": FloodVteps}}
+                    _fields: ClassVar[dict] = {
+                        "id": {"type": int},
+                        "vni": {"type": int},
+                        "multicast_group": {"type": str},
+                        "flood_vteps": {"type": FloodVteps},
+                        "flood_group": {"type": str},
+                    }
                     id: int
                     """VLAN ID."""
                     vni: int | None
@@ -65162,6 +66155,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """IP Multicast Group Address."""
                     flood_vteps: FloodVteps
                     """Subclass of AvdList with `str` items."""
+                    flood_group: str | None
+                    """Flood multicast group address."""
 
                     if TYPE_CHECKING:
 
@@ -65172,6 +66167,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             vni: int | None | UndefinedType = Undefined,
                             multicast_group: str | None | UndefinedType = Undefined,
                             flood_vteps: FloodVteps | UndefinedType = Undefined,
+                            flood_group: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             VlansItem.
@@ -65184,6 +66180,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 vni: vni
                                 multicast_group: IP Multicast Group Address.
                                 flood_vteps: Subclass of AvdList with `str` items.
+                                flood_group: Flood multicast group address.
 
                             """
 
@@ -65244,6 +66241,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "controller_client": {"type": ControllerClient},
                     "mlag_source_interface": {"type": str},
                     "udp_port": {"type": int},
+                    "encapsulations": {"type": Encapsulations},
                     "vtep_to_vtep_bridging": {"type": bool},
                     "virtual_router_encapsulation_mac_address": {"type": str},
                     "bfd_vtep_evpn": {"type": BfdVtepEvpn},
@@ -65266,6 +66264,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 mlag_source_interface: str | None
                 udp_port: int | None
+                encapsulations: Encapsulations
+                """Subclass of AvdModel."""
                 vtep_to_vtep_bridging: bool | None
                 """Enable bridging between different VTEPs in vxlan overlay."""
                 virtual_router_encapsulation_mac_address: str | None
@@ -65314,6 +66314,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         controller_client: ControllerClient | UndefinedType = Undefined,
                         mlag_source_interface: str | None | UndefinedType = Undefined,
                         udp_port: int | None | UndefinedType = Undefined,
+                        encapsulations: Encapsulations | UndefinedType = Undefined,
                         vtep_to_vtep_bridging: bool | None | UndefinedType = Undefined,
                         virtual_router_encapsulation_mac_address: str | None | UndefinedType = Undefined,
                         bfd_vtep_evpn: BfdVtepEvpn | UndefinedType = Undefined,
@@ -65339,6 +66340,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Subclass of AvdModel.
                             mlag_source_interface: mlag_source_interface
                             udp_port: udp_port
+                            encapsulations: Subclass of AvdModel.
                             vtep_to_vtep_bridging: Enable bridging between different VTEPs in vxlan overlay.
                             virtual_router_encapsulation_mac_address: "mlag-system-id" or ethernet_address (H.H.H).
                             bfd_vtep_evpn: Subclass of AvdModel.
@@ -65518,6 +66520,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "lacp": {"type": Lacp},
         "link_tracking_groups": {"type": LinkTrackingGroups},
         "lldp": {"type": Lldp},
+        "load_balance": {"type": LoadBalance},
         "load_interval": {"type": LoadInterval},
         "local_users": {"type": LocalUsers},
         "logging": {"type": Logging},
@@ -65556,6 +66559,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "platform": {"type": Platform},
         "poe": {"type": Poe},
         "policy_maps": {"type": PolicyMaps},
+        "port_channel": {"type": PortChannel},
         "port_channel_interfaces": {"type": PortChannelInterfaces},
         "prefix_lists": {"type": PrefixLists},
         "priority_flow_control": {"type": PriorityFlowControl},
@@ -65929,6 +66933,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdIndexedList with `LinkTrackingGroupsItem` items. Primary key is `name` (`str`)."""
     lldp: Lldp
     """Subclass of AvdModel."""
+    load_balance: LoadBalance
+    """
+    Configuration for load balancing behavior across port-channels and ECMP paths.
+
+    Subclass of
+    AvdModel.
+    """
     load_interval: LoadInterval
     """Subclass of AvdModel."""
     local_users: LocalUsers
@@ -66022,6 +67033,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     poe: Poe
     """Subclass of AvdModel."""
     policy_maps: PolicyMaps
+    """Subclass of AvdModel."""
+    port_channel: PortChannel
     """Subclass of AvdModel."""
     port_channel_interfaces: PortChannelInterfaces
     """Subclass of AvdIndexedList with `PortChannelInterfacesItem` items. Primary key is `name` (`str`)."""
@@ -66279,6 +67292,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             lacp: Lacp | UndefinedType = Undefined,
             link_tracking_groups: LinkTrackingGroups | UndefinedType = Undefined,
             lldp: Lldp | UndefinedType = Undefined,
+            load_balance: LoadBalance | UndefinedType = Undefined,
             load_interval: LoadInterval | UndefinedType = Undefined,
             local_users: LocalUsers | UndefinedType = Undefined,
             logging: Logging | UndefinedType = Undefined,
@@ -66317,6 +67331,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             platform: Platform | UndefinedType = Undefined,
             poe: Poe | UndefinedType = Undefined,
             policy_maps: PolicyMaps | UndefinedType = Undefined,
+            port_channel: PortChannel | UndefinedType = Undefined,
             port_channel_interfaces: PortChannelInterfaces | UndefinedType = Undefined,
             prefix_lists: PrefixLists | UndefinedType = Undefined,
             priority_flow_control: PriorityFlowControl | UndefinedType = Undefined,
@@ -66583,6 +67598,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 link_tracking_groups: Subclass of AvdIndexedList with `LinkTrackingGroupsItem` items. Primary key is `name` (`str`).
                 lldp: Subclass of AvdModel.
+                load_balance:
+                   Configuration for load balancing behavior across port-channels and ECMP paths.
+
+                   Subclass of
+                   AvdModel.
                 load_interval: Subclass of AvdModel.
                 local_users: Subclass of AvdIndexedList with `LocalUsersItem` items. Primary key is `name` (`str`).
                 logging: Subclass of AvdModel.
@@ -66635,6 +67655,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 poe: Subclass of AvdModel.
                 policy_maps: Subclass of AvdModel.
+                port_channel: Subclass of AvdModel.
                 port_channel_interfaces: Subclass of AvdIndexedList with `PortChannelInterfacesItem` items. Primary key is `name` (`str`).
                 prefix_lists: Subclass of AvdIndexedList with `PrefixListsItem` items. Primary key is `name` (`str`).
                 priority_flow_control:

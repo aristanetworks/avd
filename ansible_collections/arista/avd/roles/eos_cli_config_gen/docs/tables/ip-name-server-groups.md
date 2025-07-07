@@ -38,7 +38,7 @@
         # Set domain names to complete unqualified host names.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>ip_domain_lists</samp> instead.
+        # Use `ip_domain_lists` instead.
         ip_domain_list: <str>
 
         # Set domain names to complete unqualified host names.

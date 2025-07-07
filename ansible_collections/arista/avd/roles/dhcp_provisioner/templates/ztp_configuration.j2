@@ -4,11 +4,14 @@
  that can be found in the LICENSE file.
 #}
 {# HEADER -- LOGIC implementation #}
-{% set cvp_instance_ip = 'cvp_instance_ip is unset - please set' %}
-{% if hostvars[groups[fabric_group][0]]['cvp_instance_ips'] is arista.avd.defined %}
-{%     set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ips'][0] %}
-{% elif hostvars[groups[fabric_group][0]]['cvp_instance_ip'] is arista.avd.defined %}
-{%     set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ip'] %}
+{% if ztp_bootstrap_file is not arista.avd.defined %}
+{%     set cvp_instance_ip = '<ztp_bootstrap_file is unset - please set>' %}
+{%     if hostvars[groups[fabric_group][0]]['cvp_instance_ips'] is arista.avd.defined %}
+{%         set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ips'][0] %}
+{%     elif hostvars[groups[fabric_group][0]]['cvp_instance_ip'] is arista.avd.defined %}
+{%         set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ip'] %}
+{%     endif %}
+{%     set ztp_bootstrap_file = "http://" ~ cvp_instance_ip ~ "/ztp/bootstrap" %}
 {% endif %}
 {% set node_types = dict() %}
 {% if hostvars[groups[fabric_group][0]]['node_type_keys'] is arista.avd.defined %}
@@ -25,18 +28,31 @@
 {%         endif %}
 {%     endfor %}
 {% endfor %}
+{% set mgmt_interface_vrf = hostvars[groups[fabric_group][0]].mgmt_interface_vrf | arista.avd.default("MGMT") %}
+{# setting nameservers from old name_servers model or filtering dns_settings.servers for all devices with mgmt_interface_vrf either directly or indirectly. #}
+{% set nameservers = hostvars[groups[fabric_group][0]].name_servers | arista.avd.default([]) + (
+                         hostvars[groups[fabric_group][0]].dns_settings.servers | arista.avd.default([]) |
+                             selectattr("vrf", "arista.avd.defined", mgmt_interface_vrf) | map(attribute="ip_address")
+                     ) + (
+                         hostvars[groups[fabric_group][0]].dns_settings.servers | arista.avd.default([]) |
+                             selectattr("vrf", "arista.avd.defined", "use_mgmt_interface_vrf") | map(attribute="ip_address")
+                     ) + (
+                         hostvars[groups[fabric_group][0]].dns_settings.servers | arista.avd.default([]) |
+                             rejectattr("vrf", "arista.avd.defined") | map(attribute="ip_address")
+                             if default_mgmt_method | arista.avd.default("oob") == "oob" else []
+                     ) | unique %}
 {# DHCP YAML configuration rendering #}
 ---
 ztp:
   default:
-    registration: http://{{ cvp_instance_ip }}/ztp/bootstrap
+    registration: {{ ztp_bootstrap_file }}
 {% if hostvars[groups[fabric_group][0]]['mgmt_gateway'] is arista.avd.defined %}
     gateway: {{ hostvars[groups[fabric_group][0]]['mgmt_gateway'] }}
 {% endif %}
-{% if hostvars[groups[fabric_group][0]]['name_servers'] is arista.avd.defined %}
+{% if nameservers %}
     nameservers:
-{%     for name_server in hostvars[groups[fabric_group][0]]['name_servers'] | arista.avd.natural_sort %}
-      - {{ name_server }}
+{%     for nameserver in nameservers | arista.avd.natural_sort %}
+      - {{ nameserver }}
 {%     endfor %}
 {% endif %}
 {% if ztp_mac_source == 'system' %}
@@ -53,10 +69,10 @@ ztp:
 {% if hostvars[groups[fabric_group][0]]['mgmt_gateway'] is arista.avd.defined %}
         gateway: {{ hostvars[groups[fabric_group][0]]['mgmt_gateway'] }}
 {% endif %}
-{% if hostvars[groups[fabric_group][0]]['name_servers'] is arista.avd.defined %}
+{% if nameservers %}
         nameservers:
-{%     for name_server in hostvars[groups[fabric_group][0]]['name_servers'] | arista.avd.natural_sort %}
-          - {{ name_server }}
+{%     for nameserver in nameservers | arista.avd.natural_sort %}
+          - {{ nameserver }}
 {%     endfor %}
 {% endif %}
 {% if ztp_pool_start is arista.avd.defined %}
