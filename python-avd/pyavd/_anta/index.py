@@ -85,9 +85,6 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyStormControlDrops,
     ),
     TestSpec(
-        test_class=VerifyLANZ,
-    ),
-    TestSpec(
         test_class=VerifyLLDPNeighbors,
         conditional_keys=[StructuredConfigKey.ETHERNET_INTERFACES],
         input_factory=VerifyLLDPNeighborsInputFactory,
@@ -168,11 +165,6 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyTransceiversTemperature,
-    ),
-    TestSpec(
-        test_class=VerifyIpVirtualRouterMac,
-        conditional_keys=[StructuredConfigKey.IP_VIRTUAL_ROUTER_MAC],
-        input_factory=VerifyIpVirtualRouterMacInputFactory,
     ),
     TestSpec(
         test_class=VerifyZeroTouch,

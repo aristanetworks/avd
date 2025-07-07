@@ -20,11 +20,9 @@ from anta.tests.interfaces import (
     VerifyInterfaceErrors,
     VerifyInterfacesStatus,
     VerifyInterfaceUtilization,
-    VerifyIpVirtualRouterMac,
     VerifyPortChannels,
     VerifyStormControlDrops,
 )
-from anta.tests.lanz import VerifyLANZ
 from anta.tests.logging import VerifyLoggingErrors
 from anta.tests.mlag import (
     VerifyMlagConfigSanity,
@@ -68,8 +66,6 @@ __all__ = [
     "VerifyInterfaceErrors",
     "VerifyInterfaceUtilization",
     "VerifyInterfacesStatus",
-    "VerifyIpVirtualRouterMac",
-    "VerifyLANZ",
     "VerifyLLDPNeighbors",
     "VerifyLoggingErrors",
     "VerifyMaintenance",

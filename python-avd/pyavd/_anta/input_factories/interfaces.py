@@ -6,7 +6,7 @@ from __future__ import annotations
 from itertools import chain
 
 from anta.input_models.interfaces import InterfaceState
-from anta.tests.interfaces import VerifyInterfacesStatus, VerifyIpVirtualRouterMac, VerifyPortChannels
+from anta.tests.interfaces import VerifyInterfacesStatus, VerifyPortChannels
 
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
@@ -93,11 +93,3 @@ class VerifyPortChannelsInputFactory(AntaTestInputFactory):
                 continue
 
         return [VerifyPortChannels.Input(ignored_interfaces=natural_sort(ignored_interfaces))] if ignored_interfaces else [VerifyPortChannels.Input()]
-
-
-class VerifyIpVirtualRouterMacInputFactory(AntaTestInputFactory):
-    """Input factory class for the `VerifyIpVirtualRouterMac` test."""
-
-    def create(self) -> list[VerifyIpVirtualRouterMac.Input] | None:
-        """Create a input for the `VerifyIpVirtualRouterMac` test."""
-        return [VerifyIpVirtualRouterMac.Input(mac_address=self.structured_config.ip_virtual_router_mac_address)]

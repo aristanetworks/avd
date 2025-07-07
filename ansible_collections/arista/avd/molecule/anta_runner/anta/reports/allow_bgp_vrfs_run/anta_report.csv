@@ -17,10 +17,8 @@ dc1-leaf1a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in
 dc1-leaf1a,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc1-leaf1a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-leaf1a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc1-leaf1a,VerifyIpVirtualRouterMac,unset,,Verifies the IP virtual router MAC address.,Interfaces
 dc1-leaf1a,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-leaf1a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc1-leaf1a,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc1-leaf1a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf1a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-leaf1a,VerifyMlagDualPrimary,unset,,Verifies the MLAG dual-primary detection parameters.,MLAG
@@ -60,10 +58,8 @@ dc1-leaf1b,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in
 dc1-leaf1b,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc1-leaf1b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-leaf1b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc1-leaf1b,VerifyIpVirtualRouterMac,unset,,Verifies the IP virtual router MAC address.,Interfaces
 dc1-leaf1b,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-leaf1b,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc1-leaf1b,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc1-leaf1b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf1b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-leaf1b,VerifyMlagDualPrimary,unset,,Verifies the MLAG dual-primary detection parameters.,MLAG
@@ -101,7 +97,6 @@ dc1-leaf1c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc1-leaf1c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-leaf1c,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-leaf1c,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc1-leaf1c,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc1-leaf1c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf1c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-leaf1c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -135,10 +130,8 @@ dc1-leaf2a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in
 dc1-leaf2a,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc1-leaf2a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-leaf2a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc1-leaf2a,VerifyIpVirtualRouterMac,unset,,Verifies the IP virtual router MAC address.,Interfaces
 dc1-leaf2a,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-leaf2a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc1-leaf2a,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc1-leaf2a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf2a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-leaf2a,VerifyMlagDualPrimary,unset,,Verifies the MLAG dual-primary detection parameters.,MLAG
@@ -181,7 +174,6 @@ dc1-leaf2c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc1-leaf2c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-leaf2c,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-leaf2c,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc1-leaf2c,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc1-leaf2c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf2c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-leaf2c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -215,7 +207,6 @@ dc1-spine1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc1-spine1,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-spine1,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-spine1,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc1-spine1,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc1-spine1,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-spine1,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-spine1,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -249,7 +240,6 @@ dc1-spine2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc1-spine2,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-spine2,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-spine2,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc1-spine2,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc1-spine2,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-spine2,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-spine2,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -283,10 +273,8 @@ dc1-svc-leaf1a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interface
 dc1-svc-leaf1a,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc1-svc-leaf1a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-svc-leaf1a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc1-svc-leaf1a,VerifyIpVirtualRouterMac,unset,,Verifies the IP virtual router MAC address.,Interfaces
 dc1-svc-leaf1a,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-svc-leaf1a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc1-svc-leaf1a,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc1-svc-leaf1a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-svc-leaf1a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-svc-leaf1a,VerifyMlagDualPrimary,unset,,Verifies the MLAG dual-primary detection parameters.,MLAG
@@ -325,10 +313,8 @@ dc1-svc-leaf1b,VerifyInterfaceErrDisabled,unset,,Verifies there are no interface
 dc1-svc-leaf1b,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc1-svc-leaf1b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-svc-leaf1b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc1-svc-leaf1b,VerifyIpVirtualRouterMac,unset,,Verifies the IP virtual router MAC address.,Interfaces
 dc1-svc-leaf1b,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-svc-leaf1b,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc1-svc-leaf1b,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc1-svc-leaf1b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-svc-leaf1b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-svc-leaf1b,VerifyMlagDualPrimary,unset,,Verifies the MLAG dual-primary detection parameters.,MLAG
@@ -369,7 +355,6 @@ dc1-wan1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counter
 dc1-wan1,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-wan1,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-wan1,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc1-wan1,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc1-wan1,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-wan1,VerifySpecificPath,unset,,Verifies the DPS path and telemetry state of an IPv4 peer.,Path-Selection
 dc1-wan1,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
@@ -410,7 +395,6 @@ dc1-wan2,VerifyInterfaceUtilization,unset,,Verifies that the utilization of inte
 dc1-wan2,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-wan2,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-wan2,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc1-wan2,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc1-wan2,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-wan2,VerifySpecificPath,unset,,Verifies the DPS path and telemetry state of an IPv4 peer.,Path-Selection
 dc1-wan2,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
@@ -447,10 +431,8 @@ dc2-leaf1a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in
 dc2-leaf1a,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc2-leaf1a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf1a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc2-leaf1a,VerifyIpVirtualRouterMac,unset,,Verifies the IP virtual router MAC address.,Interfaces
 dc2-leaf1a,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf1a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc2-leaf1a,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc2-leaf1a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf1a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf1a,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -488,10 +470,8 @@ dc2-leaf1b,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in
 dc2-leaf1b,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc2-leaf1b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf1b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc2-leaf1b,VerifyIpVirtualRouterMac,unset,,Verifies the IP virtual router MAC address.,Interfaces
 dc2-leaf1b,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf1b,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc2-leaf1b,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc2-leaf1b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf1b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf1b,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -528,7 +508,6 @@ dc2-leaf1c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc2-leaf1c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf1c,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf1c,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc2-leaf1c,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc2-leaf1c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf1c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf1c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -562,10 +541,8 @@ dc2-leaf2a,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in
 dc2-leaf2a,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc2-leaf2a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf2a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc2-leaf2a,VerifyIpVirtualRouterMac,unset,,Verifies the IP virtual router MAC address.,Interfaces
 dc2-leaf2a,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf2a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc2-leaf2a,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc2-leaf2a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf2a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf2a,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -608,10 +585,8 @@ dc2-leaf2b,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in
 dc2-leaf2b,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc2-leaf2b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf2b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc2-leaf2b,VerifyIpVirtualRouterMac,unset,,Verifies the IP virtual router MAC address.,Interfaces
 dc2-leaf2b,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf2b,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc2-leaf2b,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc2-leaf2b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf2b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf2b,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -653,7 +628,6 @@ dc2-leaf2c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc2-leaf2c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf2c,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf2c,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc2-leaf2c,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc2-leaf2c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf2c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf2c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -687,10 +661,8 @@ dc2-leaf3a.arista.com,VerifyInterfaceErrDisabled,unset,,Verifies there are no in
 dc2-leaf3a.arista.com,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc2-leaf3a.arista.com,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf3a.arista.com,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc2-leaf3a.arista.com,VerifyIpVirtualRouterMac,unset,,Verifies the IP virtual router MAC address.,Interfaces
 dc2-leaf3a.arista.com,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf3a.arista.com,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc2-leaf3a.arista.com,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc2-leaf3a.arista.com,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf3a.arista.com,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf3a.arista.com,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -728,10 +700,8 @@ dc2-leaf3b.arista.com,VerifyInterfaceErrDisabled,unset,,Verifies there are no in
 dc2-leaf3b.arista.com,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc2-leaf3b.arista.com,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf3b.arista.com,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
-dc2-leaf3b.arista.com,VerifyIpVirtualRouterMac,unset,,Verifies the IP virtual router MAC address.,Interfaces
 dc2-leaf3b.arista.com,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf3b.arista.com,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc2-leaf3b.arista.com,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc2-leaf3b.arista.com,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf3b.arista.com,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf3b.arista.com,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -769,7 +739,6 @@ dc2-spine1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc2-spine1,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-spine1,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-spine1,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc2-spine1,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc2-spine1,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-spine1,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-spine1,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
@@ -803,7 +772,6 @@ dc2-spine2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc2-spine2,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-spine2,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-spine2,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
-dc2-spine2,VerifyLANZ,unset,,Verifies if LANZ is enabled.,LANZ
 dc2-spine2,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-spine2,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-spine2,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
