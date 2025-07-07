@@ -13,7 +13,7 @@ l3leaf:
 
 management_eapi:
   vrfs:
-    - name: VRF_Enable
+    - name: VRF-ENABLED
       enabled: true
     - name: VRF_Enable_1
       enabled: true
