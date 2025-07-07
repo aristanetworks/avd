@@ -516,8 +516,8 @@ class AvdStructuredConfigBaseProtocol(
                 default_services=self.inputs.management_eapi.default_services,
             )
 
-            # TODO: remove in AVD 6.0
-            # For backward compatibility checking in advance if we are using the default value
+            # TODO: For backward compatibility, checking in advance if we are using the default value
+            # remove in AVD 6.0 as well as the try/except below
             using_default_vrfs = self.inputs.management_eapi._get_defined_attr("vrfs") == Undefined
 
             for vrf in self.inputs.management_eapi.vrfs._natural_sorted():
