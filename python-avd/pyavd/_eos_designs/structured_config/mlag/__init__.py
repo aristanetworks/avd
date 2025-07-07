@@ -9,7 +9,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
 from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import AvdStringFormatter, default
-from pyavd._utils.password_utils.password import isis_encrypt, ospf_message_digest_encrypt
+from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import list_compress
 
