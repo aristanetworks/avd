@@ -34,5 +34,5 @@ def decrypt(value: Any, passwd_type: str | None = None, key: str | None = None, 
         msg = f"Type {passwd_type} is not supported for the decrypt filter"
         raise KeyError(msg) from exc
     if key is not None:
-        kwargs["key"] = key
+        kwargs["key"] = {"value": key}
     return decrypt_method(str(value), **kwargs)
