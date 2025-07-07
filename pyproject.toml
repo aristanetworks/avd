@@ -129,8 +129,6 @@ exclude = [
   "ansible_collections/arista/avd",                                      # TODO
   "python/avdutils/tests",                                               # TODO
   "python-avd/pyavd/api",                                                # TODO
-  "python-avd/pyavd/j2filters",                                          # TODO
-  "python-avd/pyavd/j2tests",                                            # TODO
   "python-avd/pyavd/_anta",                                              # TODO
   "python-avd/pyavd/_cv",                                                # TODO
   "python-avd/pyavd/_schema",                                            # TODO

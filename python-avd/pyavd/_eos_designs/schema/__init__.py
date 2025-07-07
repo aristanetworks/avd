@@ -3265,7 +3265,7 @@ class EosDesigns(EosDesignsRootModel):
         Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
         `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
         Can be set to `false` to avoid changes when
-        migrating from old `cv_instances` model.
+        migrating from the old `cv_instances` model.
 
         Default value: `True`
         """
@@ -3304,7 +3304,7 @@ class EosDesigns(EosDesignsRootModel):
                        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
                        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
                        Can be set to `false` to avoid changes when
-                       migrating from old `cv_instances` model.
+                       migrating from the old `cv_instances` model.
 
                 """
 
@@ -3582,18 +3582,96 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class DigitalTwin(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Fabric(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "act_os_version": {"type": str},
+                "act_username": {"type": str, "default": "admin"},
+                "act_password": {"type": str, "default": "admin"},
+            }
+            act_os_version: str | None
+            """OS version for ACT Digital Twin fabric devices."""
+            act_username: str
+            """
+            Username for ACT Digital Twin fabric devices.
+
+            Default value: `"admin"`
+            """
+            act_password: str
+            """
+            Cleartext password for ACT Digital Twin fabric devices.
+
+            Default value: `"admin"`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    act_os_version: str | None | UndefinedType = Undefined,
+                    act_username: str | UndefinedType = Undefined,
+                    act_password: str | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Fabric.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        act_os_version: OS version for ACT Digital Twin fabric devices.
+                        act_username: Username for ACT Digital Twin fabric devices.
+                        act_password: Cleartext password for ACT Digital Twin fabric devices.
+
+                    """
+
+        _fields: ClassVar[dict] = {"environment": {"type": str, "default": "act"}, "fabric": {"type": Fabric}}
+        environment: Literal["act"]
+        """
+        Targeted Digital Twin environment.
+
+        Default value: `"act"`
+        """
+        fabric: Fabric
+        """
+        Settings for Digital Twin fabric devices.
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, environment: Literal["act"] | UndefinedType = Undefined, fabric: Fabric | UndefinedType = Undefined) -> None:
+                """
+                DigitalTwin.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    environment: Targeted Digital Twin environment.
+                    fabric:
+                       Settings for Digital Twin fabric devices.
+
+                       Subclass of AvdModel.
+
+                """
+
     class DnsSettings(AvdModel):
         """Subclass of AvdModel."""
 
         class ServersItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"vrf": {"type": str}, "ip_address": {"type": str}, "priority": {"type": int}}
-            vrf: str | None
+            _fields: ClassVar[dict] = {"vrf": {"type": str, "default": "use_default_mgmt_method_vrf"}, "ip_address": {"type": str}, "priority": {"type": int}}
+            vrf: str
             """
-            If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-            The
-            value of `vrf` will be interpreted according to these rules:
+            The value of `vrf` will be interpreted according to these rules:
             - `use_mgmt_interface_vrf` will
             configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
             DNS lookup source-interface.
@@ -3603,9 +3681,13 @@ class EosDesigns(EosDesignsRootModel):
             with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
               An
             error will be raised if inband management is not configured for the device.
-            - Any other string will
-            be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if
-            needed.
+            -
+            `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+            above depending on the value of `default_mgmt_method`.
+            - Any other string will be used directly as
+            the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
+
+            Default value: `"use_default_mgmt_method_vrf"`
             """
             ip_address: str
             """IPv4 or IPv6 address for DNS server."""
@@ -3615,11 +3697,7 @@ class EosDesigns(EosDesignsRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self,
-                    *,
-                    vrf: str | None | UndefinedType = Undefined,
-                    ip_address: str | UndefinedType = Undefined,
-                    priority: int | None | UndefinedType = Undefined,
+                    self, *, vrf: str | UndefinedType = Undefined, ip_address: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     ServersItem.
@@ -3629,9 +3707,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         vrf:
-                           If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-                           The
-                           value of `vrf` will be interpreted according to these rules:
+                           The value of `vrf` will be interpreted according to these rules:
                            - `use_mgmt_interface_vrf` will
                            configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
                            DNS lookup source-interface.
@@ -3641,9 +3717,11 @@ class EosDesigns(EosDesignsRootModel):
                            with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
                              An
                            error will be raised if inband management is not configured for the device.
-                           - Any other string will
-                           be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if
-                           needed.
+                           -
+                           `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+                           above depending on the value of `default_mgmt_method`.
+                           - Any other string will be used directly as
+                           the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
                         ip_address: IPv4 or IPv6 address for DNS server.
                         priority: Priority value (lower is first).
 
@@ -3706,10 +3784,10 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         set_source_interfaces: bool
         """
-        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and
-        `use_inband_mgmt_vrf`.
-        Can be set to `false` to avoid changes when migrating from old `name_servers`
-        model.
+        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+        Can be set to `false` to avoid changes when
+        migrating from the old `name_servers` model.
 
         Default value: `True`
         """
@@ -3735,10 +3813,10 @@ class EosDesigns(EosDesignsRootModel):
                     servers: Subclass of AvdList with `ServersItem` items.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     set_source_interfaces:
-                       Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and
-                       `use_inband_mgmt_vrf`.
-                       Can be set to `false` to avoid changes when migrating from old `name_servers`
-                       model.
+                       Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+                       `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                       Can be set to `false` to avoid changes when
+                       migrating from the old `name_servers` model.
 
                 """
 
@@ -7892,18 +7970,16 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
-                "vrf": {"type": str},
+                "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
                 "protocol": {"type": str, "default": "udp"},
                 "ports": {"type": Ports},
                 "ssl_profile": {"type": str},
             }
             name: str
             """Syslog server name."""
-            vrf: str | None
+            vrf: str
             """
-            If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-            The
-            value of `vrf` will be interpreted according to these rules:
+            The value of `vrf` will be interpreted according to these rules:
             - `use_mgmt_interface_vrf` will
             configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the
             `mgmt_interface` as logging source-interface.
@@ -7914,8 +7990,12 @@ class EosDesigns(EosDesignsRootModel):
             source-interface.
               An error will be raised if inband management is not configured for the device.
             -
-            Any other string will be used directly as the VRF name. Remember to set the
-            `logging_settings.vrfs[].source_interface` if needed.
+            `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+            above depending on the value of `default_mgmt_method`.
+            - Any other string will be used directly as
+            the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed.
+
+            Default value: `"use_default_mgmt_method_vrf"`
             """
             protocol: Literal["tcp", "udp", "tls"]
             """Default value: `"udp"`"""
@@ -7930,7 +8010,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
-                    vrf: str | None | UndefinedType = Undefined,
+                    vrf: str | UndefinedType = Undefined,
                     protocol: Literal["tcp", "udp", "tls"] | UndefinedType = Undefined,
                     ports: Ports | UndefinedType = Undefined,
                     ssl_profile: str | None | UndefinedType = Undefined,
@@ -7944,9 +8024,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Syslog server name.
                         vrf:
-                           If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-                           The
-                           value of `vrf` will be interpreted according to these rules:
+                           The value of `vrf` will be interpreted according to these rules:
                            - `use_mgmt_interface_vrf` will
                            configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the
                            `mgmt_interface` as logging source-interface.
@@ -7957,8 +8035,10 @@ class EosDesigns(EosDesignsRootModel):
                            source-interface.
                              An error will be raised if inband management is not configured for the device.
                            -
-                           Any other string will be used directly as the VRF name. Remember to set the
-                           `logging_settings.vrfs[].source_interface` if needed.
+                           `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+                           above depending on the value of `default_mgmt_method`.
+                           - Any other string will be used directly as
+                           the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed.
                         protocol: protocol
                         ports: Subclass of AvdList with `int` items.
                         ssl_profile: Used when host protocol is 'tls'. Profiles are defined under `management_security.ssl_profiles`.
@@ -10880,12 +10960,90 @@ class EosDesigns(EosDesignsRootModel):
 
         Servers._item_type = ServersItem
 
+        class AuthenticationKeysItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "key": {"type": str},
+                "cleartext_key": {"type": str},
+                "key_type": {"type": str},
+                "id": {"type": int},
+                "hash_algorithm": {"type": str},
+            }
+            key: str | None
+            """
+            Authentication provided using the `key_type` format.
+            Will be rendered as such.
+            Takes precedence over
+            `cleartext_key`.
+            """
+            cleartext_key: str | None
+            """
+            Cleartext key for the NTP authentication key. Encrypted to Type 7 by AVD.
+            `key_type` does not
+            influence this key.
+            To protect the password at rest it is strongly recommended to make use of a
+            vault or similar.
+            """
+            key_type: Literal["0", "7", "8a"] | None
+            """
+            Key type of the `key`.
+            Does not have any influence on `cleartext_key`.
+            """
+            id: int
+            """Key identifier."""
+            hash_algorithm: Literal["md5", "sha1"]
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    key: str | None | UndefinedType = Undefined,
+                    cleartext_key: str | None | UndefinedType = Undefined,
+                    key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                    id: int | UndefinedType = Undefined,
+                    hash_algorithm: Literal["md5", "sha1"] | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    AuthenticationKeysItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        key:
+                           Authentication provided using the `key_type` format.
+                           Will be rendered as such.
+                           Takes precedence over
+                           `cleartext_key`.
+                        cleartext_key:
+                           Cleartext key for the NTP authentication key. Encrypted to Type 7 by AVD.
+                           `key_type` does not
+                           influence this key.
+                           To protect the password at rest it is strongly recommended to make use of a
+                           vault or similar.
+                        key_type:
+                           Key type of the `key`.
+                           Does not have any influence on `cleartext_key`.
+                        id: Key identifier.
+                        hash_algorithm: hash_algorithm
+
+                    """
+
+        class AuthenticationKeys(AvdIndexedList[int, AuthenticationKeysItem]):
+            """Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`)."""
+
+            _primary_key: ClassVar[str] = "id"
+
+        AuthenticationKeys._item_type = AuthenticationKeysItem
+
         _fields: ClassVar[dict] = {
             "server_vrf": {"type": str},
             "servers": {"type": Servers},
             "authenticate": {"type": bool},
             "authenticate_servers_only": {"type": bool},
-            "authentication_keys": {"type": EosCliConfigGen.Ntp.AuthenticationKeys},
+            "authentication_keys": {"type": AuthenticationKeys},
             "trusted_keys": {"type": str},
         }
         server_vrf: str | None
@@ -10914,7 +11072,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         authenticate: bool | None
         authenticate_servers_only: bool | None
-        authentication_keys: EosCliConfigGen.Ntp.AuthenticationKeys
+        authentication_keys: AuthenticationKeys
+        """Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`)."""
         trusted_keys: str | None
         """List of trusted-keys as string ex. 10-12,15."""
 
@@ -10927,7 +11086,7 @@ class EosDesigns(EosDesignsRootModel):
                 servers: Servers | UndefinedType = Undefined,
                 authenticate: bool | None | UndefinedType = Undefined,
                 authenticate_servers_only: bool | None | UndefinedType = Undefined,
-                authentication_keys: EosCliConfigGen.Ntp.AuthenticationKeys | UndefinedType = Undefined,
+                authentication_keys: AuthenticationKeys | UndefinedType = Undefined,
                 trusted_keys: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -10959,7 +11118,7 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdList with `ServersItem` items.
                     authenticate: authenticate
                     authenticate_servers_only: authenticate_servers_only
-                    authentication_keys: authentication_keys
+                    authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).
                     trusted_keys: List of trusted-keys as string ex. 10-12,15.
 
                 """
@@ -11789,6 +11948,42 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class DigitalTwin(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}}
+            platform: str | None
+            """
+            Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
+            The
+            `platform_settings` for the regular `platform` is used if this is not set.
+            """
+            act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None
+            """ACT node type."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    platform: str | None | UndefinedType = Undefined,
+                    act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DigitalTwin.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        platform:
+                           Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
+                           The
+                           `platform_settings` for the regular `platform` is used if this is not set.
+                        act_node_type: ACT node type.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "platforms": {"type": Platforms},
             "trident_forwarding_table_partition": {"type": str},
@@ -11800,6 +11995,7 @@ class EosDesigns(EosDesignsRootModel):
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
+            "digital_twin": {"type": DigitalTwin},
             "structured_config": {"type": EosCliConfigGen},
             "raw_eos_cli": {"type": str},
         }
@@ -11832,6 +12028,15 @@ class EosDesigns(EosDesignsRootModel):
         Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
         Subclass of AvdModel.
         """
+        digital_twin: DigitalTwin
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Digital Twin settings applied when `avd_digital_twin_mode` is `true`.
+
+        Subclass
+        of AvdModel.
+        """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
         raw_eos_cli: str | None
@@ -11852,6 +12057,7 @@ class EosDesigns(EosDesignsRootModel):
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
+                digital_twin: DigitalTwin | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -11880,6 +12086,13 @@ class EosDesigns(EosDesignsRootModel):
                     security_entropy_sources:
                        Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
                        Subclass of AvdModel.
+                    digital_twin:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Digital Twin settings applied when `avd_digital_twin_mode` is `true`.
+
+                       Subclass
+                       of AvdModel.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -12428,6 +12641,42 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class DigitalTwin(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}}
+            platform: str | None
+            """
+            Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
+            The
+            `platform_settings` for the regular `platform` is used if this is not set.
+            """
+            act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None
+            """ACT node type."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    platform: str | None | UndefinedType = Undefined,
+                    act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DigitalTwin.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        platform:
+                           Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
+                           The
+                           `platform_settings` for the regular `platform` is used if this is not set.
+                        act_node_type: ACT node type.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "platforms": {"type": Platforms},
             "trident_forwarding_table_partition": {"type": str},
@@ -12439,6 +12688,7 @@ class EosDesigns(EosDesignsRootModel):
             "feature_support": {"type": FeatureSupport},
             "management_interface": {"type": str, "default": "Management1"},
             "security_entropy_sources": {"type": SecurityEntropySources},
+            "digital_twin": {"type": DigitalTwin},
             "structured_config": {"type": EosCliConfigGen},
             "raw_eos_cli": {"type": str},
         }
@@ -12471,6 +12721,15 @@ class EosDesigns(EosDesignsRootModel):
         Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
         Subclass of AvdModel.
         """
+        digital_twin: DigitalTwin
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Digital Twin settings applied when `avd_digital_twin_mode` is `true`.
+
+        Subclass
+        of AvdModel.
+        """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
         raw_eos_cli: str | None
@@ -12491,6 +12750,7 @@ class EosDesigns(EosDesignsRootModel):
                 feature_support: FeatureSupport | UndefinedType = Undefined,
                 management_interface: str | UndefinedType = Undefined,
                 security_entropy_sources: SecurityEntropySources | UndefinedType = Undefined,
+                digital_twin: DigitalTwin | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -12519,6 +12779,13 @@ class EosDesigns(EosDesignsRootModel):
                     security_entropy_sources:
                        Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
                        Subclass of AvdModel.
+                    digital_twin:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Digital Twin settings applied when `avd_digital_twin_mode` is `true`.
+
+                       Subclass
+                       of AvdModel.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -14673,9 +14940,8 @@ class EosDesigns(EosDesignsRootModel):
             configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
               An error will be raised if inband
             management is not configured for the device.
-            - `use_default_mgmt_method_vrf` will configure the VRF
-            and source-interface for one of the two options above depending on the value of
-            `default_mgmt_method`.
+            - `use_default_mgmt_method_vrf` will configure the SNMP
+            ACL under the VRF for one of the two options above depending on the value of `default_mgmt_method`.
             - Any other string will be used directly as the VRF name.
             """
             enable: bool | None
@@ -14683,8 +14949,11 @@ class EosDesigns(EosDesignsRootModel):
             source_interface: str | None
             """
             Source interface to use for SNMP hosts in this VRF.
-            If set for the VRFs defined by
-            `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+            If not set, the source interface may be set
+            automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+            `use_default_mgmt_method_vrf`.
+            If set for the VRFs defined by `mgmt_interface_vrf` or
+            `inband_mgmt_vrf`, this setting will take precedence.
             """
             ipv4_acl: str | None
             """IPv4 access-list name."""
@@ -14720,15 +14989,17 @@ class EosDesigns(EosDesignsRootModel):
                            configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
                              An error will be raised if inband
                            management is not configured for the device.
-                           - `use_default_mgmt_method_vrf` will configure the VRF
-                           and source-interface for one of the two options above depending on the value of
-                           `default_mgmt_method`.
+                           - `use_default_mgmt_method_vrf` will configure the SNMP
+                           ACL under the VRF for one of the two options above depending on the value of `default_mgmt_method`.
                            - Any other string will be used directly as the VRF name.
                         enable: Enable/disable SNMP for this VRF.
                         source_interface:
                            Source interface to use for SNMP hosts in this VRF.
-                           If set for the VRFs defined by
-                           `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+                           If not set, the source interface may be set
+                           automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                           `use_default_mgmt_method_vrf`.
+                           If set for the VRFs defined by `mgmt_interface_vrf` or
+                           `inband_mgmt_vrf`, this setting will take precedence.
                         ipv4_acl: IPv4 access-list name.
                         ipv6_acl: IPv6 access-list name.
 
@@ -14860,23 +15131,28 @@ class EosDesigns(EosDesignsRootModel):
             interface.
               An error will be raised if inband management is not configured for the device.
             -
-            `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
-            above depending on the value of `default_mgmt_method`.
-            - Any other string will be used directly as
-            the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+            `use_default_mgmt_method_vrf` will configure the SNMP host under the VRF and set the source-
+            interface for one of the two options above depending on the value of `default_mgmt_method`.
+            - Any
+            other string will be used directly as the VRF name. Remember to set the
+            `snmp_settings.vrfs[].source_interface` if needed.
             """
             use_mgmt_interface_vrf: bool | None
             """
-            Configure the SNMP host under the VRF set with "mgmt_interface_vrf". Ignored if 'mgmt_ip' or
+            Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
+            Ignored if 'mgmt_ip' or
             'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF,
-            the host will not be configured at all. Can be used in combination with "vrf" and
+            the host will not be configured at all.
+            Can be used in combination with "vrf" and
             "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
             """
             use_inband_mgmt_vrf: bool | None
             """
-            Configure the SNMP host under the VRF set with "inband_mgmt_vrf". Ignored if inband management is
+            Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+            Ignored if inband management is
             not configured for the device, so if the host is only configured with this VRF, the host will not be
-            configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
+            configured at all.
+            Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
             the SNMP host under multiple VRFs.
             """
             version: Literal["1", "2c", "3"] | None
@@ -14919,19 +15195,24 @@ class EosDesigns(EosDesignsRootModel):
                            interface.
                              An error will be raised if inband management is not configured for the device.
                            -
-                           `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
-                           above depending on the value of `default_mgmt_method`.
-                           - Any other string will be used directly as
-                           the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+                           `use_default_mgmt_method_vrf` will configure the SNMP host under the VRF and set the source-
+                           interface for one of the two options above depending on the value of `default_mgmt_method`.
+                           - Any
+                           other string will be used directly as the VRF name. Remember to set the
+                           `snmp_settings.vrfs[].source_interface` if needed.
                         use_mgmt_interface_vrf:
-                           Configure the SNMP host under the VRF set with "mgmt_interface_vrf". Ignored if 'mgmt_ip' or
+                           Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
+                           Ignored if 'mgmt_ip' or
                            'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF,
-                           the host will not be configured at all. Can be used in combination with "vrf" and
+                           the host will not be configured at all.
+                           Can be used in combination with "vrf" and
                            "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
                         use_inband_mgmt_vrf:
-                           Configure the SNMP host under the VRF set with "inband_mgmt_vrf". Ignored if inband management is
+                           Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+                           Ignored if inband management is
                            not configured for the device, so if the host is only configured with this VRF, the host will not be
-                           configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
+                           configured at all.
+                           Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
                            the SNMP host under multiple VRFs.
                         version: version
                         community: Community name. Required with version "1" or "2c".
@@ -25498,6 +25779,37 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class DigitalTwin(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        act_os_version: str | None
+                        """
+                        Desired ACT Digital Twin OS version.
+                        Overrides global `digital_twin.fabric.act_os_version` flag.
+                        """
+                        mgmt_ip: str | None
+                        """Desired management interface IPv4 address."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                DigitalTwin.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    act_os_version:
+                                       Desired ACT Digital Twin OS version.
+                                       Overrides global `digital_twin.fabric.act_os_version` flag.
+                                    mgmt_ip: Desired management interface IPv4 address.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "platform": {"type": str},
@@ -25617,6 +25929,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
                         "cv_tags_topology_type": {"type": str},
+                        "digital_twin": {"type": DigitalTwin},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -26471,6 +26784,15 @@ class EosDesigns(EosDesignsRootModel):
                     Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                     "edge" or "member-leaf".
                     """
+                    digital_twin: DigitalTwin
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Set the OS version and management IP address for the digital twin of the
+                    associated node(s).
+
+                    Subclass of AvdModel.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -26596,6 +26918,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
+                            digital_twin: DigitalTwin | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -27198,6 +27521,13 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type:
                                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                    "edge" or "member-leaf".
+                                digital_twin:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Set the OS version and management IP address for the digital twin of the
+                                   associated node(s).
+
+                                   Subclass of AvdModel.
 
                             """
 
@@ -29915,6 +30245,37 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class DigitalTwin(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            act_os_version: str | None
+                            """
+                            Desired ACT Digital Twin OS version.
+                            Overrides global `digital_twin.fabric.act_os_version` flag.
+                            """
+                            mgmt_ip: str | None
+                            """Desired management interface IPv4 address."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    DigitalTwin.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        act_os_version:
+                                           Desired ACT Digital Twin OS version.
+                                           Overrides global `digital_twin.fabric.act_os_version` flag.
+                                        mgmt_ip: Desired management interface IPv4 address.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "name": {"type": str},
                             "downlink_pools": {"type": DownlinkPools},
@@ -30036,6 +30397,7 @@ class EosDesigns(EosDesignsRootModel):
                             "campus_pod": {"type": str},
                             "campus_access_pod": {"type": str},
                             "cv_tags_topology_type": {"type": str},
+                            "digital_twin": {"type": DigitalTwin},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -30900,6 +31262,15 @@ class EosDesigns(EosDesignsRootModel):
                         Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                         "edge" or "member-leaf".
                         """
+                        digital_twin: DigitalTwin
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Set the OS version and management IP address for the digital twin of the
+                        associated node(s).
+
+                        Subclass of AvdModel.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -31027,6 +31398,7 @@ class EosDesigns(EosDesignsRootModel):
                                 campus_pod: str | None | UndefinedType = Undefined,
                                 campus_access_pod: str | None | UndefinedType = Undefined,
                                 cv_tags_topology_type: str | None | UndefinedType = Undefined,
+                                digital_twin: DigitalTwin | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -31636,6 +32008,13 @@ class EosDesigns(EosDesignsRootModel):
                                     cv_tags_topology_type:
                                        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                        "edge" or "member-leaf".
+                                    digital_twin:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Set the OS version and management IP address for the digital twin of the
+                                       associated node(s).
+
+                                       Subclass of AvdModel.
 
                                 """
 
@@ -34261,6 +34640,37 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class DigitalTwin(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        act_os_version: str | None
+                        """
+                        Desired ACT Digital Twin OS version.
+                        Overrides global `digital_twin.fabric.act_os_version` flag.
+                        """
+                        mgmt_ip: str | None
+                        """Desired management interface IPv4 address."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                DigitalTwin.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    act_os_version:
+                                       Desired ACT Digital Twin OS version.
+                                       Overrides global `digital_twin.fabric.act_os_version` flag.
+                                    mgmt_ip: Desired management interface IPv4 address.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "group": {"type": str},
                         "nodes": {"type": Nodes},
@@ -34382,6 +34792,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
                         "cv_tags_topology_type": {"type": str},
+                        "digital_twin": {"type": DigitalTwin},
                     }
                     group: str
                     """
@@ -35249,6 +35660,15 @@ class EosDesigns(EosDesignsRootModel):
                     Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                     "edge" or "member-leaf".
                     """
+                    digital_twin: DigitalTwin
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Set the OS version and management IP address for the digital twin of the
+                    associated node(s).
+
+                    Subclass of AvdModel.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -35376,6 +35796,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
+                            digital_twin: DigitalTwin | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -35987,6 +36408,13 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type:
                                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                    "edge" or "member-leaf".
+                                digital_twin:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Set the OS version and management IP address for the digital twin of the
+                                   associated node(s).
+
+                                   Subclass of AvdModel.
 
                             """
 
@@ -38687,6 +39115,37 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class DigitalTwin(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        act_os_version: str | None
+                        """
+                        Desired ACT Digital Twin OS version.
+                        Overrides global `digital_twin.fabric.act_os_version` flag.
+                        """
+                        mgmt_ip: str | None
+                        """Desired management interface IPv4 address."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                DigitalTwin.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    act_os_version:
+                                       Desired ACT Digital Twin OS version.
+                                       Overrides global `digital_twin.fabric.act_os_version` flag.
+                                    mgmt_ip: Desired management interface IPv4 address.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
                         "downlink_pools": {"type": DownlinkPools},
@@ -38808,6 +39267,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
                         "cv_tags_topology_type": {"type": str},
+                        "digital_twin": {"type": DigitalTwin},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -39672,6 +40132,15 @@ class EosDesigns(EosDesignsRootModel):
                     Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                     "edge" or "member-leaf".
                     """
+                    digital_twin: DigitalTwin
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Set the OS version and management IP address for the digital twin of the
+                    associated node(s).
+
+                    Subclass of AvdModel.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -39799,6 +40268,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
+                            digital_twin: DigitalTwin | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -40408,6 +40878,13 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type:
                                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                    "edge" or "member-leaf".
+                                digital_twin:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Set the OS version and management IP address for the digital twin of the
+                                   associated node(s).
+
+                                   Subclass of AvdModel.
 
                             """
 
@@ -50763,6 +51240,37 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class DigitalTwin(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        act_os_version: str | None
+                        """
+                        Desired ACT Digital Twin OS version.
+                        Overrides global `digital_twin.fabric.act_os_version` flag.
+                        """
+                        mgmt_ip: str | None
+                        """Desired management interface IPv4 address."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                DigitalTwin.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    act_os_version:
+                                       Desired ACT Digital Twin OS version.
+                                       Overrides global `digital_twin.fabric.act_os_version` flag.
+                                    mgmt_ip: Desired management interface IPv4 address.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "platform": {"type": str},
@@ -50882,6 +51390,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
                         "cv_tags_topology_type": {"type": str},
+                        "digital_twin": {"type": DigitalTwin},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -51736,6 +52245,15 @@ class EosDesigns(EosDesignsRootModel):
                     Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                     "edge" or "member-leaf".
                     """
+                    digital_twin: DigitalTwin
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Set the OS version and management IP address for the digital twin of the
+                    associated node(s).
+
+                    Subclass of AvdModel.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -51861,6 +52379,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
+                            digital_twin: DigitalTwin | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -52463,6 +52982,13 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type:
                                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                    "edge" or "member-leaf".
+                                digital_twin:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Set the OS version and management IP address for the digital twin of the
+                                   associated node(s).
+
+                                   Subclass of AvdModel.
 
                             """
 
@@ -55180,6 +55706,37 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class DigitalTwin(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            act_os_version: str | None
+                            """
+                            Desired ACT Digital Twin OS version.
+                            Overrides global `digital_twin.fabric.act_os_version` flag.
+                            """
+                            mgmt_ip: str | None
+                            """Desired management interface IPv4 address."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    DigitalTwin.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        act_os_version:
+                                           Desired ACT Digital Twin OS version.
+                                           Overrides global `digital_twin.fabric.act_os_version` flag.
+                                        mgmt_ip: Desired management interface IPv4 address.
+
+                                    """
+
                         _fields: ClassVar[dict] = {
                             "name": {"type": str},
                             "downlink_pools": {"type": DownlinkPools},
@@ -55301,6 +55858,7 @@ class EosDesigns(EosDesignsRootModel):
                             "campus_pod": {"type": str},
                             "campus_access_pod": {"type": str},
                             "cv_tags_topology_type": {"type": str},
+                            "digital_twin": {"type": DigitalTwin},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -56165,6 +56723,15 @@ class EosDesigns(EosDesignsRootModel):
                         Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                         "edge" or "member-leaf".
                         """
+                        digital_twin: DigitalTwin
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Set the OS version and management IP address for the digital twin of the
+                        associated node(s).
+
+                        Subclass of AvdModel.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -56292,6 +56859,7 @@ class EosDesigns(EosDesignsRootModel):
                                 campus_pod: str | None | UndefinedType = Undefined,
                                 campus_access_pod: str | None | UndefinedType = Undefined,
                                 cv_tags_topology_type: str | None | UndefinedType = Undefined,
+                                digital_twin: DigitalTwin | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -56901,6 +57469,13 @@ class EosDesigns(EosDesignsRootModel):
                                     cv_tags_topology_type:
                                        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                        "edge" or "member-leaf".
+                                    digital_twin:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Set the OS version and management IP address for the digital twin of the
+                                       associated node(s).
+
+                                       Subclass of AvdModel.
 
                                 """
 
@@ -59526,6 +60101,37 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class DigitalTwin(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        act_os_version: str | None
+                        """
+                        Desired ACT Digital Twin OS version.
+                        Overrides global `digital_twin.fabric.act_os_version` flag.
+                        """
+                        mgmt_ip: str | None
+                        """Desired management interface IPv4 address."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                DigitalTwin.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    act_os_version:
+                                       Desired ACT Digital Twin OS version.
+                                       Overrides global `digital_twin.fabric.act_os_version` flag.
+                                    mgmt_ip: Desired management interface IPv4 address.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "group": {"type": str},
                         "nodes": {"type": Nodes},
@@ -59647,6 +60253,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
                         "cv_tags_topology_type": {"type": str},
+                        "digital_twin": {"type": DigitalTwin},
                     }
                     group: str
                     """
@@ -60514,6 +61121,15 @@ class EosDesigns(EosDesignsRootModel):
                     Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                     "edge" or "member-leaf".
                     """
+                    digital_twin: DigitalTwin
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Set the OS version and management IP address for the digital twin of the
+                    associated node(s).
+
+                    Subclass of AvdModel.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -60641,6 +61257,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
+                            digital_twin: DigitalTwin | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -61252,6 +61869,13 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type:
                                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                    "edge" or "member-leaf".
+                                digital_twin:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Set the OS version and management IP address for the digital twin of the
+                                   associated node(s).
+
+                                   Subclass of AvdModel.
 
                             """
 
@@ -63952,6 +64576,37 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class DigitalTwin(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        act_os_version: str | None
+                        """
+                        Desired ACT Digital Twin OS version.
+                        Overrides global `digital_twin.fabric.act_os_version` flag.
+                        """
+                        mgmt_ip: str | None
+                        """Desired management interface IPv4 address."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                DigitalTwin.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    act_os_version:
+                                       Desired ACT Digital Twin OS version.
+                                       Overrides global `digital_twin.fabric.act_os_version` flag.
+                                    mgmt_ip: Desired management interface IPv4 address.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
                         "downlink_pools": {"type": DownlinkPools},
@@ -64073,6 +64728,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
                         "cv_tags_topology_type": {"type": str},
+                        "digital_twin": {"type": DigitalTwin},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -64937,6 +65593,15 @@ class EosDesigns(EosDesignsRootModel):
                     Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                     "edge" or "member-leaf".
                     """
+                    digital_twin: DigitalTwin
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Set the OS version and management IP address for the digital twin of the
+                    associated node(s).
+
+                    Subclass of AvdModel.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -65064,6 +65729,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
                             cv_tags_topology_type: str | None | UndefinedType = Undefined,
+                            digital_twin: DigitalTwin | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -65673,6 +66339,13 @@ class EosDesigns(EosDesignsRootModel):
                                 cv_tags_topology_type:
                                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                    "edge" or "member-leaf".
+                                digital_twin:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Set the OS version and management IP address for the digital twin of the
+                                   associated node(s).
+
+                                   Subclass of AvdModel.
 
                             """
 
@@ -65819,6 +66492,7 @@ class EosDesigns(EosDesignsRootModel):
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_6_behaviors": {"type": Avd6Behaviors},
         "avd_data_validation_mode": {"type": str, "default": "error"},
+        "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_debug": {"type": bool, "default": False},
         "avd_eos_designs_enforce_duplication_checks_across_all_models": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
@@ -65889,6 +66563,7 @@ class EosDesigns(EosDesignsRootModel):
         "default_underlay_p2p_port_channel_description": {"type": str, "default": "P2P_{peer}_{peer_interface}"},
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
         "design": {"type": Design},
+        "digital_twin": {"type": DigitalTwin},
         "dns_settings": {"type": DnsSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
@@ -65984,34 +66659,44 @@ class EosDesigns(EosDesignsRootModel):
             "type": PlatformSettings,
             "default": lambda cls: coerce_type(
                 [
-                    {"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}},
+                    {
+                        "platforms": ["default"],
+                        "feature_support": {"queue_monitor_length_notify": False},
+                        "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
                     {
                         "platforms": ["7050X3"],
                         "feature_support": {"queue_monitor_length_notify": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["720XP"],
                         "feature_support": {"poe": True, "queue_monitor_length_notify": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000",
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["750", "755", "758"],
                         "management_interface": "Management0",
                         "feature_support": {"poe": True, "queue_monitor_length_notify": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["720DP", "722XP", "710P"],
                         "feature_support": {"poe": True, "queue_monitor_length_notify": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7010TX"],
                         "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7280R", "7280R2", "7020R"],
@@ -66019,12 +66704,14 @@ class EosDesigns(EosDesignsRootModel):
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
                         "feature_support": {"private_vlan": False},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7280R3"],
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
                         "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7500R", "7500R2"],
@@ -66033,6 +66720,7 @@ class EosDesigns(EosDesignsRootModel):
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
                         "feature_support": {"private_vlan": False},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7500R3", "7800R3"],
@@ -66040,6 +66728,7 @@ class EosDesigns(EosDesignsRootModel):
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
                         "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7358X4"],
@@ -66051,13 +66740,20 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp_update_wait_for_convergence": True,
                             "bgp_update_wait_install": False,
                         },
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
-                    {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}},
+                    {
+                        "platforms": ["7368X4"],
+                        "management_interface": "Management0",
+                        "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"platform": "vEOS-lab"},
+                    },
                     {
                         "platforms": ["7300X3"],
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 1200, "non_mlag": 1320},
                         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"],
@@ -66069,6 +66765,7 @@ class EosDesigns(EosDesignsRootModel):
                             "evpn_gateway_all_active_multihoming": True,
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"act_node_type": "veos"},
                     },
                     {
                         "platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"],
@@ -66081,11 +66778,13 @@ class EosDesigns(EosDesignsRootModel):
                         },
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
+                        "digital_twin": {"act_node_type": "veos"},
                     },
                     {
                         "platforms": ["CloudEOS"],
                         "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False},
                         "p2p_uplinks_mtu": 9194,
+                        "digital_twin": {"act_node_type": "cloudeos"},
                     },
                     {
                         "platforms": ["AWE-5310", "AWE-7230R"],
@@ -66098,6 +66797,7 @@ class EosDesigns(EosDesignsRootModel):
                         },
                         "management_interface": "Management1/1",
                         "p2p_uplinks_mtu": 9194,
+                        "digital_twin": {"platform": "CloudEOS"},
                     },
                     {
                         "platforms": ["AWE-5510", "AWE-7250R"],
@@ -66110,6 +66810,7 @@ class EosDesigns(EosDesignsRootModel):
                         },
                         "management_interface": "Management1/1",
                         "p2p_uplinks_mtu": 9194,
+                        "digital_twin": {"platform": "CloudEOS"},
                     },
                     {
                         "platforms": ["AWE-7220R"],
@@ -66122,6 +66823,7 @@ class EosDesigns(EosDesignsRootModel):
                         },
                         "management_interface": "Management1",
                         "p2p_uplinks_mtu": 9194,
+                        "digital_twin": {"platform": "CloudEOS"},
                     },
                 ],
                 target_type=cls,
@@ -66241,6 +66943,21 @@ class EosDesigns(EosDesignsRootModel):
     "warning" will produce warning messages.
 
     Default value: `"error"`
+    """
+    avd_digital_twin_mode: bool
+    """
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
+    Enable generation of the Digital Twin version of the fabric (Digital Twin
+    topology, adjusted configuration, etc.).
+    By default, Digital Twin artifacts (such as the topology
+    file, adjusted structured and EOS configuration, device and fabric documentation) will replace
+    original fabric artifacts.
+    To keep Digital Twin artifacts separate, adjust the `output_dir_name` and
+    `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
+    dedicated output location.
+
+    Default value: `False`
     """
     avd_eos_designs_debug: bool
     """
@@ -66802,6 +67519,15 @@ class EosDesigns(EosDesignsRootModel):
     """
     design: Design
     """Subclass of AvdModel."""
+    digital_twin: DigitalTwin
+    """
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
+    Global settings to configure the Digital Twin of the Fabric.
+
+    Subclass of
+    AvdModel.
+    """
     dns_settings: DnsSettings
     """
     DNS settings
@@ -67610,7 +68336,7 @@ class EosDesigns(EosDesignsRootModel):
     `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000"}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "p2p_uplinks_mtu": 9194}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True, "private_vlan": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"act_node_type": "veos"}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"act_node_type": "cloudeos"}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """
@@ -68171,6 +68897,7 @@ class EosDesigns(EosDesignsRootModel):
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_6_behaviors: Avd6Behaviors | UndefinedType = Undefined,
             avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
+            avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
             avd_eos_designs_enforce_duplication_checks_across_all_models: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
@@ -68219,6 +68946,7 @@ class EosDesigns(EosDesignsRootModel):
             default_underlay_p2p_port_channel_description: str | UndefinedType = Undefined,
             default_vrf_diag_loopback_description: str | UndefinedType = Undefined,
             design: Design | UndefinedType = Undefined,
+            digital_twin: DigitalTwin | UndefinedType = Undefined,
             dns_settings: DnsSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
@@ -68402,6 +69130,17 @@ class EosDesigns(EosDesignsRootModel):
                    "error" will produce error messages and fail the
                    task.
                    "warning" will produce warning messages.
+                avd_digital_twin_mode:
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
+                   Enable generation of the Digital Twin version of the fabric (Digital Twin
+                   topology, adjusted configuration, etc.).
+                   By default, Digital Twin artifacts (such as the topology
+                   file, adjusted structured and EOS configuration, device and fabric documentation) will replace
+                   original fabric artifacts.
+                   To keep Digital Twin artifacts separate, adjust the `output_dir_name` and
+                   `documentation_dir_name` variables for both `eos_designs` and `eos_cli_config_gen` to point to a
+                   dedicated output location.
                 avd_eos_designs_debug: Dump all vars and facts per device after generating `avd_switch_facts`.
                 avd_eos_designs_enforce_duplication_checks_across_all_models:
                    PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
@@ -68825,6 +69564,13 @@ class EosDesigns(EosDesignsRootModel):
                    By default the description is
                    templated from the VRF name.
                 design: Subclass of AvdModel.
+                digital_twin:
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
+                   Global settings to configure the Digital Twin of the Fabric.
+
+                   Subclass of
+                   AvdModel.
                 dns_settings:
                    DNS settings
 

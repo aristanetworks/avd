@@ -3,11 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError
+from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._utils.password_utils import ntp_encrypt
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigBaseProtocol
@@ -32,7 +33,24 @@ class NtpMixin(Protocol):
             authenticate_servers_only=ntp_settings.authenticate_servers_only,
             trusted_keys=ntp_settings.trusted_keys,
         )
-        self.structured_config.ntp.authentication_keys = ntp_settings.authentication_keys._cast_as(EosCliConfigGen.Ntp.AuthenticationKeys)
+        for authentication_key in ntp_settings.authentication_keys:
+            # `key` takes precedence over `cleartext_key`
+            if authentication_key.key is not None:
+                self.structured_config.ntp.authentication_keys.append(
+                    authentication_key._cast_as(EosCliConfigGen.Ntp.AuthenticationKeysItem, ignore_extra_keys=True)
+                )
+            elif authentication_key.cleartext_key is not None:
+                # always type 7
+                # deterministic salt based on the key ID
+                salt = cast("Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]", authentication_key.id % 16)
+                output_key = ntp_encrypt(authentication_key.cleartext_key, salt=salt)
+                self.structured_config.ntp.authentication_keys.append_new(
+                    id=authentication_key.id, key_type="7", key=output_key, hash_algorithm=authentication_key.hash_algorithm
+                )
+            else:
+                path_prefix = f"ntp_settings.authentication_keys[id={authentication_key.id}]"
+                msg = f"`{path_prefix}.key` or `{path_prefix}.cleartext_key`"
+                raise AristaAvdMissingVariableError(msg)
 
         if not ntp_settings.servers:
             # Quick return if we have no servers.
