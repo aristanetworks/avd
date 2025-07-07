@@ -4,6 +4,19 @@ Arista.Avd Release Notes
 
 .. contents:: Topics
 
+v5.5.1
+======
+
+Release Summary
+---------------
+
+Release 5.5.1 - See documentation on avd.arista.com for details.
+
+Bugfixes
+--------
+
+- Fix(eos_cli_config_gen): Fix documentation generation when using vrf default for SSH (#5592) by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5593
+
 v5.5.0
 ======
 
