@@ -72,6 +72,13 @@ ethernet_interfaces:
   peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet5
+  description: TAC_DC1-INET-3
+  shutdown: false
+  ip_address: 100.64.3.2/24
+  peer_type: l3_interface
+  switchport:
+    enabled: false
 flow_tracking:
   hardware:
     trackers:
@@ -207,6 +214,14 @@ metadata:
         value: isp-1
       - name: Circuit
         value: DC1-INET-3
+    - interface: Ethernet5
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: TAC
+      - name: Circuit
+        value: DC1-INET-3
   cv_pathfinder:
     role: edge
     region: Global
@@ -226,6 +241,10 @@ metadata:
       carrier: isp-1
       circuit_id: DC1-INET-3
       pathgroup: internet
+    - name: Ethernet5
+      carrier: TAC
+      circuit_id: DC1-INET-3
+      pathgroup: TAC
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -522,6 +541,13 @@ router_path_selection:
       name: dc1-leaf1b
       ipv4_addresses:
       - 100.64.2.2
+  - name: TAC
+    id: 103
+    ipsec_profile: CP-PROFILE
+    local_interfaces:
+    - name: Ethernet5
+    dynamic_peers:
+      enabled: true
   - name: LAN_HA
     id: 65535
     ipsec_profile: DP-PROFILE
@@ -540,11 +566,13 @@ router_path_selection:
     path_groups:
     - name: internet
     - name: mpls
+    - name: TAC
     - name: LAN_HA
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: internet
     - name: mpls
+    - name: TAC
     - name: LAN_HA
   tcp_mss_ceiling:
     ipv4: auto

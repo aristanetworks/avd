@@ -1,0 +1,18 @@
+---
+type: l2leaf
+l2leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+  nodes:
+    - name: missing-ntp-authentication-key
+      id: 42
+      bgp_as: 65042
+
+ntp_settings:
+  authentication_keys:
+    - id: 666
+      hash_algorithm: md5
+      # missing key and cleartext_key so raising
+
+expected_error_message: >-
+  '`ntp_settings.authentication_keys[id=666].key` or `ntp_settings.authentication_keys[id=666].cleartext_key`' is required but was not found.

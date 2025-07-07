@@ -49,7 +49,7 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: 1-9,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
+      allowed_vlan: 1-10,110-111,130-131,136-137,140-141,150,210-211,230-231,240-241,250-252,256-257,260,310-311,330-331,550,4092
 service_routing_protocols_model: multi-agent
 static_routes:
 - vrf: MGMT
@@ -115,6 +115,9 @@ vlans:
   tenant: Tenant_B
 - id: 9
   name: MULTICAST_ENABLED_9
+  tenant: Tenant_B
+- id: 10
+  name: MULTICAST_VXLAN_FLOOD_ENABLED_WITH_UNDERLAY_MULTICAST_GROUP
   tenant: Tenant_B
 - id: 330
   name: L3_MULTICAST_DISABLED_330

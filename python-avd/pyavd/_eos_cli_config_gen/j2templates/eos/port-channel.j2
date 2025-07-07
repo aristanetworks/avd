@@ -1,0 +1,20 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - port channel #}
+{% if port_channel.load_balance_trident_udf is arista.avd.defined %}
+!
+{%     for udf_field in port_channel.load_balance_trident_udf %}
+{%         set udf_header_cli = "port-channel load-balance trident udf eth-type " ~ udf_field.eth_type | replace("ip", "IP") %}
+{%         if udf_field.ip_protocol is arista.avd.defined %}
+{%             set udf_header_cli = udf_header_cli ~ " ip-protocol " ~ udf_field.ip_protocol %}
+{%         endif %}
+{%         set udf_header_cli = udf_header_cli ~ " header " ~ udf_field.header | replace("_", " ") ~ " offset " ~ udf_field.offset %}
+{%         if udf_field.mask is arista.avd.defined %}
+{%             set udf_header_cli = udf_header_cli ~ " mask " ~ udf_field.mask %}
+{%         endif %}
+{{ udf_header_cli }}
+{%     endfor %}
+{% endif %}

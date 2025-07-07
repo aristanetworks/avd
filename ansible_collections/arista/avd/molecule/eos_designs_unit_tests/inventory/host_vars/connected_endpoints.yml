@@ -11,6 +11,37 @@ l2leaf:
       filter:
         only_vlans_in_use: true
 
+custom_connected_endpoints_keys:
+  - key: servers
+    type: custom_server
+  - key: monitor
+    type: monitor
+
+connected_endpoints_keys:
+  - key: Testing_1
+    type: Testing_Type_1
+
+Testing_1:
+  - name: testing
+    adapters:
+      - endpoint_ports: [Nic1]
+        switch_ports: [Ethernet111]
+        switches: [connected_endpoints]
+        trunk_groups: [TG_NOT_MATCHING_ANY_VLANS]
+
+# This should not impact structured config since `connected_endpoints_keys`
+# is overwritten in this file and so `firewall` is not a valid connected endpoint key.
+firewalls:
+  - name: FIREWALL01
+    rack: RackB
+    adapters:
+      - endpoint_ports: [E0]
+        switch_ports: [Ethernet20]
+        switches: [connected_endpoints]
+        port_channel:
+          endpoint_port_channel: PortChanne1
+          mode: active
+
 servers:
   # port-channel provide physical and port-channel descriptions as templates with all fields
   - name: OLD_SW-1/2
@@ -62,20 +93,21 @@ servers:
     adapters:
       - switches: [connected_endpoints, connected_endpoints]
         switch_ports: [Ethernet10, Ethernet11]
-        descriptions: ["PHYSICAL_PORT_DESCRIPTION_1", "PHYSICAL_PORT_DESCRIPTION_2"]
+        descriptions:
+          ["PHYSICAL_PORT_DESCRIPTION_1", "PHYSICAL_PORT_DESCRIPTION_2"]
         port_channel:
           mode: "active"
           description: "PORT_CHANNEL_DESCRIPTION"
   - name: OLD_SW-1/8
     adapters:
-      - switches: [ connected_endpoints ]
-        switch_ports: [ Ethernet19 ]
-        endpoint_ports: [ Endpoint_port4 ]
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet19]
+        endpoint_ports: [Endpoint_port4]
         mode: trunk
   - name: OLD_SW-1/9
     adapters:
-      - switches: [ connected_endpoints, connected_endpoints ]
-        switch_ports: [ Ethernet20, Ethernet21 ]
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet20, Ethernet21]
         port_channel:
           mode: active
           subinterfaces:
@@ -110,12 +142,12 @@ servers:
           lacp_fallback:
             mode: individual
             individual:
-              profile: INDIVIDUAL_TRUNK  # Notice that poe and dot1x are _not_ inherited from the fallback profile.
+              profile: INDIVIDUAL_TRUNK # Notice that poe and dot1x are _not_ inherited from the fallback profile.
   - name: DOT1X_UNAUTHORIZED
     adapters:
       - switches: [connected_endpoints]
         switch_ports: [Ethernet14]
-        profile: INDIVIDUAL_TRUNK  # Notice that poe and dot1x _are_ inherited from the main profile.
+        profile: INDIVIDUAL_TRUNK # Notice that poe and dot1x _are_ inherited from the main profile.
   - name: INDIVIDUAL_2_TRUNK_PHONE
     adapters:
       - switches: [connected_endpoints, connected_endpoints]
@@ -130,7 +162,7 @@ servers:
     adapters:
       - switches: [connected_endpoints, connected_endpoints]
         switch_ports: [Ethernet17, Ethernet18]
-        profile: INDIVIDUAL_TRUNK  # Notice that poe and dot1x _are_ inherited from the main profile and applied to the member interfaces.
+        profile: INDIVIDUAL_TRUNK # Notice that poe and dot1x _are_ inherited from the main profile and applied to the member interfaces.
         port_channel:
           mode: active
 port_profiles:
@@ -158,3 +190,10 @@ port_profiles:
     phone_vlan: 321
     link_tracking:
       enabled: true
+
+monitor:
+  - name: custom_connected_endpoint
+    adapters:
+      - endpoint_ports: [Nic101]
+        switch_ports: [Ethernet31]
+        switches: [connected_endpoints]

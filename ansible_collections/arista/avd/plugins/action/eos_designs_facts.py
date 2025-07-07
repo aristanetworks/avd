@@ -52,6 +52,7 @@ class ActionModule(ActionBase):
 
         self.template_output = self._task.args.get("template_output", False)
         self._validation_mode = self._task.args.get("validation_mode")
+        self._digital_twin = self._task.args.get("digital_twin", False)
         output_dir = self._task.args.get("output_dir")
 
         groups = task_vars.get("groups", {})
@@ -168,7 +169,7 @@ class ActionModule(ActionBase):
             AnsibleActionFail for every AristaAvdError raised by pyavd.
         """
         try:
-            all_facts = get_facts(all_inputs=all_inputs, pool_manager=pool_manager, all_hostvars=all_hostvars, templar=templar)
+            all_facts = get_facts(all_inputs=all_inputs, pool_manager=pool_manager, all_hostvars=all_hostvars, templar=templar, digital_twin=self._digital_twin)
         except AristaAvdError as e:
             raise AnsibleActionFail(message=str(e)) from e
 

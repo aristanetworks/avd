@@ -1,0 +1,45 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: missing-network-services-l3-port-channel-ospf-authentication-message-digest-key
+      id: 101
+      bgp_as: 101
+
+tenants:
+  - name: L3PO
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TESTING
+        vrf_id: 2
+        # missing authenication-key for both vrf and l3_interface
+        ospf:
+          enabled: true
+          authentication: message-digest
+        l3_port_channels:
+          - name: Port-Channel1111
+            mode: active
+            peer: inet-cloud
+            peer_port_channel: Po1111
+            enabled: true
+            ospf:
+              enabled: true
+              area: 0
+              message_digest_keys:
+                - id: 1
+                  # missing key or cleartext_key
+            node: missing-network-services-l3-port-channel-ospf-authentication-message-digest-key
+            member_interfaces:
+              - name: Ethernet4
+                peer_interface: Ethernet8
+                peer: inet-cloud
+
+expected_error_message: >-
+  '`tenants[name=L3PO].vrfs[name=TESTING].l3_port_channels[name=Port-Channel1111].ospf.message_digest_keys[key=1].key`
+  or `tenants[name=L3PO].vrfs[name=TESTING].l3_port_channels[name=Port-Channel1111].ospf.message_digest_keys[key=1].cleartext_key`'
+  is required but was not found.

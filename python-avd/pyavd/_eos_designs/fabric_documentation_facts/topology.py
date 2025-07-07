@@ -29,10 +29,10 @@ class Topology:
         self.node_edges.setdefault(node2, set()).add(edge)
         return edge
 
-    def get_edges(self) -> tuple[Edge]:
+    def get_edges(self) -> tuple[Edge, ...]:
         return tuple(self.edges)
 
-    def get_edges_by_node(self) -> dict[str, tuple[Edge]]:
+    def get_edges_by_node(self) -> dict[str, tuple[Edge, ...]]:
         return {node: tuple(edges) for node, edges in self.node_edges.items()}
 
     def get_edges_by_node_unidirectional_sorted(self) -> dict[str, tuple[Edge]]:

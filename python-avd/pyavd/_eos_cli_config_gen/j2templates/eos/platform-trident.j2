@@ -8,6 +8,41 @@
 {%     for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 !
 platform trident mmu queue profile {{ profile.name }}
+{%         if profile.ingress.reserved.memory is arista.avd.defined %}
+{%             set ingress_reserved = "ingress reserved " %}
+{%             if profile.ingress.reserved.unit is arista.avd.defined %}
+{%                 set ingress_reserved = ingress_reserved ~ profile.ingress.reserved.unit ~ " " %}
+{%             endif %}
+{%             set ingress_reserved = ingress_reserved ~ profile.ingress.reserved.memory %}
+    {{ ingress_reserved }}
+{%         endif %}
+{%         if profile.ingress.threshold is arista.avd.defined %}
+    ingress threshold {{ profile.ingress.threshold }}
+{%         endif %}
+{%         if profile.ingress.headroom.memory is arista.avd.defined %}
+{%             set ingress_headroom = "ingress headroom " %}
+{%             if profile.ingress.headroom.unit is arista.avd.defined %}
+{%                 set ingress_headroom = ingress_headroom ~ profile.ingress.headroom.unit ~ " " %}
+{%             endif %}
+{%             set ingress_headroom = ingress_headroom ~ profile.ingress.headroom.memory %}
+    {{ ingress_headroom }}
+{%         endif %}
+{%         if profile.ingress.resume is arista.avd.defined %}
+    ingress resume {{ profile.ingress.resume }}
+{%         endif %}
+{%         for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort('id') %}
+{%             if priority_group.reserved.memory is arista.avd.defined %}
+{%                 set priority_group_reserved = "ingress priority-group " ~ priority_group.id ~ " reserved " %}
+{%                 if priority_group.reserved.unit is arista.avd.defined %}
+{%                     set priority_group_reserved = priority_group_reserved ~ priority_group.reserved.unit ~ " " %}
+{%                 endif %}
+{%                 set priority_group_reserved = priority_group_reserved ~ priority_group.reserved.memory %}
+    {{ priority_group_reserved }}
+{%             endif %}
+{%             if priority_group.threshold is arista.avd.defined %}
+    ingress priority-group {{ priority_group.id }} threshold {{ priority_group.threshold }}
+{%             endif %}
+{%         endfor %}
 {%         for queue in profile.unicast_queues | arista.avd.natural_sort('id') %}
 {%             if queue.reserved is arista.avd.defined %}
 {%                 set reserved_cli = "egress unicast queue " ~ queue.id ~ " reserved" %}

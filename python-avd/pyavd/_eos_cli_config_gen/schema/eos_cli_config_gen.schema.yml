@@ -4007,6 +4007,31 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address.
+              peer_authentication:
+                type: dict
+                keys:
+                  mode:
+                    type: str
+                    description: Authentication mode.
+                    valid_values:
+                    - text
+                    - ietf-md5
+                    required: true
+                  key:
+                    type: str
+                    required: true
+                    description: Authentication key.
+                    convert_types:
+                    - int
+                  key_type:
+                    type: str
+                    convert_types:
+                    - int
+                    description: Authentication key type.
+                    valid_values:
+                    - '0'
+                    - '7'
+                    - 8a
         validate_state:
           type: bool
           description: Set to false to disable interface state and LLDP topology validation
@@ -4628,9 +4653,22 @@ keys:
                 type: str
                 convert_types:
                 - int
+            srlgs:
+              description: List of SRLGs.
+              type: list
+              items:
+                type: str
+                description: SRLG name or number.
+                convert_types:
+                - int
             srlg:
               description: SRLG name or number.
               type: str
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: srlgs
               convert_types:
               - int
             metric:
@@ -4965,6 +5003,85 @@ keys:
               format_ipfix_standard_timestamps_counters:
                 type: bool
                 description: Enable software export of IPFIX data records.
+      mirror_on_drop:
+        type: dict
+        keys:
+          encapsulation:
+            type: dict
+            keys:
+              ipv4_ipv6:
+                description: 'Set IPv4 and IPv6 encapsulations.
+
+                  Both IPv4 and IPv6 encapsulations must be set together.'
+                type: bool
+              mpls:
+                type: bool
+          sample_limit:
+            description: Limit the number of packets sampled.
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967295
+          trackers:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Tracker Name.
+                record_export:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/record_export
+                exporters:
+                  type: list
+                  primary_key: name
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        description: Exporter Name.
+                      collectors:
+                        type: list
+                        primary_key: host
+                        items:
+                          type: dict
+                          $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/collector
+                          keys:
+                            host:
+                              type: str
+                              description: 'Flow collector name.
+
+                                The collector name can be an IPv4 address, IPv6 address,
+                                fully qualified domain name or `"sflow"`.'
+                      format:
+                        type: str
+                        description: Configure flow export format. Valid values are
+                          platform dependent.
+                        valid_values:
+                        - sflow
+                        - drop-report
+                      local_interface:
+                        type: str
+                        description: Local source interface.
+                      template_interval:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 5000
+                        max: 3600000
+                        description: Template interval in milliseconds.
+                      dscp:
+                        type: int
+                        min: 0
+                        max: 63
+                        convert_types:
+                        - str
+          shutdown:
+            type: bool
   flow_trackings:
     documentation_options:
       table: flow-tracking
@@ -6945,6 +7062,104 @@ keys:
               type: bool
       run:
         type: bool
+  load_balance:
+    type: dict
+    description: Configuration for load balancing behavior across port-channels and
+      ECMP paths.
+    keys:
+      policies:
+        type: dict
+        description: Collection of load balancing policy definitions.
+        keys:
+          sand_profiles:
+            type: list
+            description: List of load balancing profiles for SAND-based platforms,
+              used for port-channel and ECMP hashing.
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Unique name of the load-balancing profile.
+                fields:
+                  type: dict
+                  description: Configure packet fields used as input to the hash function
+                    for port-channel and ECMP load balancing.
+                  keys:
+                    udp:
+                      type: dict
+                      description: 'UDP-specific fields used in the load balancing
+                        hash.
+
+                        Requires EOS version 4.33.1F or higher.'
+                      keys:
+                        dst_port:
+                          type: int
+                          required: true
+                          min: 0
+                          max: 65535
+                          description: Use the UDP destination port as a hash input.
+                          convert_types:
+                          - str
+                        payload_bytes:
+                          type: str
+                          description: 'Specifies the UDP payload bytes to use in
+                            hash calculation.
+
+                            Accepts single bytes (e.g., "10"), comma-separated bytes
+                            (e.g., "0,1,5"),
+
+                            ranges (e.g., "0-15"), or combinations (e.g., "0-10,12,15,20-25").
+
+                            Valid values are between 0 and 62.'
+                          convert_types:
+                          - int
+                        match:
+                          type: dict
+                          description: Configuration to match specific bits and define
+                            custom payload-based hashing.
+                          keys:
+                            payload_bits:
+                              type: str
+                              required: true
+                              description: 'Specifies the bit positions within the
+                                UDP payload to match for hashing.
+
+                                Accepts a single bit (e.g., "12"), a comma-separated
+                                list (e.g., "0,3,8"),
+
+                                a range (e.g., "0-15"), or combinations (e.g., "0-7,9,12-15").
+
+                                Valid values must be in the range 0 to 503.
+
+                                Matching is limited to a maximum of 16 bits total.'
+                              convert_types:
+                              - int
+                            pattern:
+                              type: str
+                              required: true
+                              description: 'Bit pattern to match in the UDP payload.
+
+                                The value should be given as an hexadecimal format
+                                `0x...`.
+
+                                The valid range is from 0 to (2^N - 1), where N is
+                                the number of bits selected in `payload_bits`.'
+                            hash_payload_bytes:
+                              type: str
+                              required: true
+                              description: 'Specifies the UDP payload byte positions
+                                to include in the hash after pattern match.
+
+                                Accepts a single byte (e.g., "5"), a comma-separated
+                                list (e.g., "0,3,7"),
+
+                                a range (e.g., "0-15"), or a combination (e.g., "0-5,8,12-14").
+
+                                All byte positions must be within the range 0 to 62.'
+                              convert_types:
+                              - int
   load_interval:
     type: dict
     keys:
@@ -8010,6 +8225,75 @@ keys:
               convert_types:
               - str
               description: ZTP vlan number.
+        redundancy:
+          type: dict
+          keys:
+            fallback_delay:
+              type: str
+              description: 'The duration to wait before falling back to the higher-priority
+                interface.
+
+                Accepts a value between 0 and 3600 seconds, or the string `infinity`
+                to disable fallback.'
+              convert_types:
+              - int
+            monitor:
+              type: dict
+              keys:
+                link_state:
+                  type: bool
+                  description: 'Link state of interface.
+
+                    `neighbor` and `link_state` are mutually exclusive and `link_state`
+                    takes precedence.'
+                neighbor:
+                  type: dict
+                  description: 'To configure an IPv6 neighbor as monitor, `fallback_delay`
+                    must be set as infinity.
+
+                    `neighbor` and `link_state` are mutually exclusive and `link_state`
+                    takes precedence.'
+                  keys:
+                    ipv6_address:
+                      required: true
+                      type: str
+                    interval:
+                      type: int
+                      description: Interval between neighbor probes in milliseconds.
+                      min: 1
+                      max: 300000
+                      convert_types:
+                      - str
+                    multiplier:
+                      type: int
+                      description: Number of missed neighbor replies after which it
+                        is timed out.
+                      min: 1
+                      max: 100
+                      convert_types:
+                      - str
+            supervisor_1:
+              type: dict
+              description: Configuration for supervisor 1, including its primary and
+                backup management interfaces.
+              keys:
+                primary_management_interface:
+                  type: str
+                  description: Primary management interface name like 'Management1/1'.
+                  required: true
+                backup_management_interfaces:
+                  type: list
+                  description: Backup management interfaces.
+                  required: true
+                  min_length: 1
+                  items:
+                    type: str
+                    description: Management interface name like 'Management2/1'.
+            supervisor_2:
+              type: dict
+              description: Configuration for supervisor 2, including its primary and
+                backup management interfaces.
+              $ref: eos_cli_config_gen#/keys/management_interfaces/items/keys/redundancy/keys/supervisor_1
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the management interface
@@ -8033,6 +8317,15 @@ keys:
           hardware_exclusive:
             type: bool
             description: Only use entropy from the hardware source.
+      signature_verification:
+        type: dict
+        description: Verify the SWIX signatures.
+        keys:
+          enabled:
+            type: bool
+            required: true
+          ssl_profile:
+            type: str
       password:
         type: dict
         keys:
@@ -8330,6 +8623,10 @@ keys:
             description: Allowed SSH authentication methods.
       access_groups:
         type: list
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: ip_access_group_in or vrfs.ip_access_group_in
         items:
           type: dict
           keys:
@@ -8343,6 +8640,10 @@ keys:
               - int
       ipv6_access_groups:
         type: list
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: ipv6_access_group_in or vrfs.ipv6_access_group_in
         items:
           type: dict
           keys:
@@ -8354,6 +8655,16 @@ keys:
               description: VRF Name.
               convert_types:
               - int
+      ip_access_group_in:
+        type: str
+        description: Standard ACL Name.
+        convert_types:
+        - int
+      ipv6_access_group_in:
+        type: str
+        description: Standard IPv6 ACL Name.
+        convert_types:
+        - int
       idle_timeout:
         type: int
         convert_types:
@@ -8394,7 +8705,7 @@ keys:
             type: bool
             description: Enforce strict host key checking.
       enable:
-        description: Enable SSH daemon.
+        description: Enable SSH for VRF default.
         type: bool
       connection:
         type: dict
@@ -8427,6 +8738,22 @@ keys:
             enable:
               description: Enable SSH in VRF.
               type: bool
+            ip_access_group_in:
+              type: str
+              description: 'Standard ACL Name.
+
+                This should not be set for VRF ''default''. Use `management_ssh.ip_access_group_in`
+                instead.'
+              convert_types:
+              - int
+            ipv6_access_group_in:
+              type: str
+              description: 'Standard IPv6 ACL Name.
+
+                This should not be set for VRF ''default''. Use `management_ssh.ipv6_access_group_in`
+                instead.'
+              convert_types:
+              - int
       log_level:
         type: str
         description: SSH daemon log level.
@@ -8904,6 +9231,37 @@ keys:
                           type: str
                         category:
                           type: str
+      digital_twin:
+        type: dict
+        description: Metadata used to generate Digital Twin topology.
+        keys:
+          environment:
+            type: str
+            description: Targeted Digital Twin environment.
+            valid_values:
+            - act
+          node_type:
+            type: str
+            description: 'Digital Twin''s internal device type used for deploying
+              a replica of the fabric device.
+
+              Possible values depend on the target Digital Twin environment.'
+          ip_addr:
+            type: str
+            description: Management IPv4_address/Mask assigned to a replica of the
+              fabric device within the Digital Twin environment.
+          version:
+            type: str
+            description: OS version used for deploying a replica of the fabric device
+              within the Digital Twin environment.
+          username:
+            type: str
+            description: Local username assigned to a replica of the fabric device
+              within the Digital Twin environment.
+          password:
+            type: str
+            description: Local password assigned to a replica of the fabric device
+              within the Digital Twin environment.
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -10191,6 +10549,22 @@ keys:
                 description: 'The queue profile to be applied to the platform.
 
                   '
+              headroom_pool:
+                type: dict
+                keys:
+                  unit:
+                    type: str
+                    valid_values:
+                    - bytes
+                    - cells
+                    description: 'Unit to be used for the `headroom_pool` value.
+
+                      If not specified, default is bytes.'
+                  limit:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Max limit on headroom pool size.
               queue_profiles:
                 type: list
                 primary_key: name
@@ -10199,9 +10573,117 @@ keys:
                   keys:
                     name:
                       type: str
+                    ingress:
+                      type: dict
+                      keys:
+                        priority_groups:
+                          type: list
+                          primary_key: id
+                          items:
+                            type: dict
+                            keys:
+                              id:
+                                type: int
+                                convert_types:
+                                - str
+                                description: Priority-group group number.
+                                min: 0
+                                max: 7
+                              threshold:
+                                type: str
+                                convert_types:
+                                - int
+                                valid_values:
+                                - '1'
+                                - 1/128
+                                - 1/16
+                                - 1/2
+                                - 1/32
+                                - 1/4
+                                - 1/64
+                                - 1/8
+                                - '2'
+                                - '4'
+                                - '8'
+                              reserved:
+                                type: dict
+                                keys:
+                                  unit:
+                                    type: str
+                                    valid_values:
+                                    - bytes
+                                    - cells
+                                    description: 'Unit to be used for the `priority_groups`
+                                      `reserved` value.
+
+                                      If not specified, default is bytes.'
+                                  memory:
+                                    type: int
+                                    convert_types:
+                                    - str
+                                    description: Specify the amount of memory that
+                                      should be reserved.
+                        threshold:
+                          type: str
+                          convert_types:
+                          - int
+                          description: Specify the dynamic shared memory threshold.
+                          valid_values:
+                          - '1'
+                          - 1/128
+                          - 1/16
+                          - 1/2
+                          - 1/32
+                          - 1/4
+                          - 1/64
+                          - 1/8
+                          - '2'
+                          - '4'
+                          - '8'
+                        reserved:
+                          type: dict
+                          keys:
+                            unit:
+                              type: str
+                              valid_values:
+                              - bytes
+                              - cells
+                              description: 'Unit to be used for the `reserved` value.
+
+                                If not specified, default is bytes.'
+                            memory:
+                              type: int
+                              convert_types:
+                              - str
+                              description: Specify the amount of memory that should
+                                be reserved.
+                        headroom:
+                          type: dict
+                          keys:
+                            unit:
+                              type: str
+                              valid_values:
+                              - bytes
+                              - cells
+                              description: 'Unit to be used for the headroom value.
+
+                                If not specified, default is bytes.'
+                            memory:
+                              type: int
+                              convert_types:
+                              - str
+                              description: Specify the amount of memory that should
+                                be reserved.
+                        resume:
+                          type: int
+                          convert_types:
+                          - str
+                          description: Amount of memory that should be reserved (in
+                            bytes)
                     multicast_queues:
                       type: list
                       primary_key: id
+                      description: Egress multicast queues.
                       items:
                         type: dict
                         keys:
@@ -10238,6 +10720,18 @@ keys:
                             description: 'Dynamic Shared Memory threshold.
 
                               '
+                            valid_values:
+                            - '1'
+                            - 1/128
+                            - 1/16
+                            - 1/2
+                            - 1/32
+                            - 1/4
+                            - 1/64
+                            - 1/8
+                            - '2'
+                            - '4'
+                            - '8'
                           drop:
                             type: dict
                             keys:
@@ -10261,6 +10755,7 @@ keys:
                     unicast_queues:
                       type: list
                       primary_key: id
+                      description: Egress unicast queues.
                       items:
                         type: dict
                         keys:
@@ -10297,6 +10792,18 @@ keys:
                             description: 'Dynamic Shared Memory threshold.
 
                               '
+                            valid_values:
+                            - '1'
+                            - 1/128
+                            - 1/16
+                            - 1/2
+                            - 1/32
+                            - 1/4
+                            - 1/64
+                            - 1/8
+                            - '2'
+                            - '4'
+                            - '8'
                           drop:
                             type: dict
                             keys:
@@ -10436,6 +10943,18 @@ keys:
                 description: 'RSS interface profile name to apply for the platform.
 
                   Needs system reload or Sfe agent restart for change to take effect.'
+      fap:
+        type: dict
+        keys:
+          buffering_egress:
+            type: dict
+            keys:
+              profile:
+                description: Preferred traffic profile for egress fap buffering.
+                type: str
+                valid_values:
+                - unicast
+                - balanced
   poe:
     type: dict
     keys:
@@ -10652,6 +11171,53 @@ keys:
                   valid_values:
                   - pps
                   - kbps
+  port_channel:
+    type: dict
+    keys:
+      load_balance_trident_udf:
+        description: Trident chip UDF fields load balancing.
+        type: list
+        items:
+          type: dict
+          keys:
+            eth_type:
+              description: Ethernet type in the port channel hash.
+              type: str
+              valid_values:
+              - ipv4
+              - ipv6
+              required: true
+            ip_protocol:
+              type: str
+              convert_types:
+              - int
+              description: 'IP protocol name like - gre, icmp, tcp, udp, mpls-over-gre,
+                sctp.
+
+                IP protocol number within the range <0-255>.'
+            header:
+              type: str
+              valid_values:
+              - inner_l3
+              - inner_l4
+              - outer_l2
+              - outer_l3
+              - outer_l4
+              required: true
+            offset:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 64
+              required: true
+              description: Offset starting from selected header in the packet.
+            mask:
+              type: str
+              description: Mask of the offset. A hex value within the range 0x01-0xFF.
+      load_balance_sand_profile:
+        description: Name of the load-balance profile for sand platform.
+        type: str
   port_channel_interfaces:
     type: list
     primary_key: name
@@ -12122,9 +12688,22 @@ keys:
                 type: str
                 convert_types:
                 - int
+            srlgs:
+              description: List of SRLGs.
+              type: list
+              items:
+                type: str
+                description: SRLG name or number.
+                convert_types:
+                - int
             srlg:
               description: SRLG name or number.
               type: str
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: srlgs
               convert_types:
               - int
             metric:
@@ -13088,6 +13667,57 @@ keys:
       tx_latency:
         type: bool
         description: Enable tx-latency mode.
+      mirror:
+        description: Enable frame mirroring during congestion.
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          destination:
+            description: Mirror destination.
+            type: dict
+            keys:
+              cpu:
+                type: bool
+                description: CPU ports.
+              ethernet_interfaces:
+                type: list
+                items:
+                  type: str
+                  description: Ethernet interface name.
+              tunnel_mode_gre:
+                type: dict
+                keys:
+                  source:
+                    type: str
+                    required: true
+                    description: Source IP address of GRE tunnel.
+                  destination:
+                    type: str
+                    required: true
+                    description: Destination IP address of GRE tunnel.
+                  dscp:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 63
+                    description: DSCP of the GRE tunnel. EOS default is 0.
+                  ttl:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 255
+                    description: TTL range. EOS default is 128.
+                  protocol:
+                    type: str
+                    description: 'Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+
+                      EOS default is 0x88BE.'
+                  vrf:
+                    type: str
+                    description: VRF name of the GRE tunnel. EOS default is "default".
   queue_monitor_streaming:
     type: dict
     keys:
@@ -20803,6 +21433,27 @@ keys:
         valid_values:
         - stun
         description: Source of dynamic peer discovery.
+      mtu_discovery_interval:
+        type: int
+        description: MTU discovery interval in seconds.
+        min: 60
+        max: 600
+        convert_types:
+        - str
+      mtu_discovery_hosts:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Enable MTU discovery for hosts.
+          fragmentation_needed_rate_limit:
+            type: int
+            convert_types:
+            - str
+            description: Maximum rate of ICMP packet generation per CPU core(packets
+              per second).
+            min: 1
+            max: 500
       path_groups:
         type: list
         primary_key: name
@@ -23070,6 +23721,8 @@ keys:
           - str
           min: 1
           max: 3
+        ip_igmp_querier_address_virtual:
+          type: bool
         ip_igmp_host_proxy:
           type: dict
           keys:
@@ -23845,6 +24498,15 @@ keys:
                 type: int
                 convert_types:
                 - str
+              encapsulations:
+                type: dict
+                keys:
+                  ipv4:
+                    type: bool
+                    description: Use IPv4 for VXLAN Encapsulation.
+                  ipv6:
+                    type: bool
+                    description: Use IPv6 for VXLAN Encapsulation.
               vtep_to_vtep_bridging:
                 type: bool
                 description: Enable bridging between different VTEPs in vxlan overlay.
@@ -23945,6 +24607,9 @@ keys:
                       items:
                         type: str
                         description: Remote VTEP IP Address.
+                    flood_group:
+                      type: str
+                      description: Flood multicast group address.
               vrfs:
                 type: list
                 primary_key: name
@@ -24176,7 +24841,6 @@ $defs:
                     description: Template interval in milliseconds.
       shutdown:
         type: bool
-        default: false
   interface_ip_nat:
     type: dict
     keys:

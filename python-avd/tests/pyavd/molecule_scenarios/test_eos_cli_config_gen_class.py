@@ -30,6 +30,7 @@ SCHEMA = create_store()["eos_cli_config_gen"]
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
     "eos_cli_config_gen",
+    "example-single-dc-l3ls-ipv6",
     "eos_cli_config_gen_deprecated_vars",
 )
 def test_eos_cli_config_gen_initialize_dict_with_valid_data(molecule_host: MoleculeHost) -> None:
@@ -61,6 +62,7 @@ def test_eos_cli_config_gen_initialize_dict_with_valid_data(molecule_host: Molec
     "example-isis-ldp-ipvpn",
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
+    "example-single-dc-l3ls-ipv6",
     "eos_cli_config_gen",
     "eos_cli_config_gen_deprecated_vars",
 )

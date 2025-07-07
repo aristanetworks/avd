@@ -39,6 +39,7 @@ def merge_schema_from_ref(schema: dict, resolve_schema: Literal["eos_designs", "
 
     pure_ref_schema = (
         {"type", "$ref", "description", "documentation_options", "deprecation", "relaxed_validation"}.issuperset(schema.keys())
+        and schema["type"] in ["list", "dict"]
         and resolve_schema not in [None, "all"]
         and not schema["$ref"].startswith(f"{resolve_schema}#")
         and "$defs" not in schema["$ref"]

@@ -43,6 +43,10 @@ l3leaf:
       bgp_as: 65007
       id: 7
       mgmt_ip: 192.168.200.107/24
+    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF8
+      bgp_as: 65008
+      id: 8
+      mgmt_ip: 192.168.200.108/24
 
 tenants:
 # igmp_snooping_querier enable on Tenant

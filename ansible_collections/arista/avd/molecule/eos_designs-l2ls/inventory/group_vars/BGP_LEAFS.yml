@@ -8,10 +8,33 @@ l2leaf:
     filter:
       only_vlans_in_use: true
     inband_mgmt_subnet: 172.23.254.0/24
-  nodes:
-    - name: BGP-LEAF1
-      id: 1
-      uplink_switch_interfaces: [ Ethernet1, Ethernet1 ]
-    - name: BGP-LEAF2
-      id: 2
-      uplink_switch_interfaces: [ Ethernet2, Ethernet2 ]
+    campus_pod: Downtown_office
+
+    mlag_peer_ipv4_pool: 192.168.0.0/24
+
+  node_groups:
+    - group: BGP-LEAFS
+      mlag: true
+      mlag_interfaces: [Ethernet4, Ethernet5]
+      campus_access_pod: Floor_2
+      nodes:
+        - name: BGP-LEAF1
+          id: 1
+          uplink_switch_interfaces: [ Ethernet1, Ethernet1 ]
+          mgmt_ip: 172.16.99.1/24
+        - name: BGP-LEAF2
+          id: 2
+          uplink_switch_interfaces: [ Ethernet2, Ethernet2 ]
+          mgmt_ip: 172.16.99.2/24
+
+    - group: BGP-MEMBER-LEAFS
+      mlag: false
+      cv_tags_topology_type: member-leaf
+      nodes:
+        - name: BGP-LEAF3
+          id: 3
+          uplink_switches: [BGP-LEAF1, BGP-LEAF2 ]
+          uplink_interfaces: [ Ethernet1, Ethernet2 ]
+          uplink_switch_interfaces: [ Ethernet3, Ethernet3 ]
+          campus_access_pod: Floor_3
+          mgmt_ip: 172.16.99.3/24

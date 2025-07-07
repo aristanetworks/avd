@@ -67,11 +67,11 @@
           # Group Name.
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
-          # Use <samp>methods.group</samp> instead.
+          # Use `methods.group` instead.
           group: <str>
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
-          # Use <samp>methods.method</samp> instead.
+          # Use `methods.method` instead.
           logging: <bool>
           methods: # >=1 items
             - method: <str; "logging" | "group"; required>
@@ -85,11 +85,11 @@
           # Group Name.
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
-          # Use <samp>methods.group</samp> instead.
+          # Use `methods.group` instead.
           group: <str>
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
-          # Use <samp>methods.method</samp> instead.
+          # Use `methods.method` instead.
           logging: <bool>
           methods: # >=1 items
             - method: <str; "logging" | "group"; required>
@@ -104,7 +104,7 @@
           # Group Name.
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
-          # Use <samp>methods.group</samp> instead.
+          # Use `methods.group` instead.
           group: <str>
           methods: # >=1 items
             - method: <str; "logging" | "group"; required>
@@ -119,7 +119,7 @@
           # Group Name.
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
-          # Use <samp>methods.group</samp> instead.
+          # Use `methods.group` instead.
           group: <str>
           methods: # >=1 items
 
@@ -141,11 +141,11 @@
             # Group Name.
             # This key is deprecated.
             # Support will be removed in AVD version 6.0.0.
-            # Use <samp>methods.group</samp> instead.
+            # Use `methods.group` instead.
             group: <str>
             # This key is deprecated.
             # Support will be removed in AVD version 6.0.0.
-            # Use <samp>methods.method</samp> instead.
+            # Use `methods.method` instead.
             logging: <bool>
             methods: # >=1 items
               - method: <str; "logging" | "group"; required>
@@ -162,11 +162,11 @@
             # Group Name.
             # This key is deprecated.
             # Support will be removed in AVD version 6.0.0.
-            # Use <samp>methods.group</samp> instead.
+            # Use `methods.group` instead.
             group: <str>
             # This key is deprecated.
             # Support will be removed in AVD version 6.0.0.
-            # Use <samp>methods.method</samp> instead.
+            # Use `methods.method` instead.
             logging: <bool>
             methods: # >=1 items
               - method: <str; "logging" | "group"; required>
