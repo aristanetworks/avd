@@ -26,7 +26,7 @@ version_added: "3.8.0"
 short_description: Decrypt supported EOS passwords.
 description: |-
   - The filter is used to decrypt supported EOS passwords into clear text.
-  - The filter only supports decryption from type `7` and not type `8a` for OSPF, BGP and TACACS+ passwords.
+  - The filter only supports decryption from type `7` and not type `8a` for BGP, ISIS, NTP, OSPF, and TACACS+ passwords.
 positional: _input
 options:
   _input:
@@ -40,8 +40,9 @@ options:
       `bgp` and `ospf_simple` requires the `password` and `key` inputs.
       `ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.
       `isis` requires the `password`, `key` and `mode` inputs.
+      `ntp` requires the `password` input.
       `tacacs` requires the `password` input.
-    choices: ["bgp", "ospf_simple", "ospf_message_digest", "isis"]
+    choices: ["bgp", "ospf_simple", "ospf_message_digest", "isis", "ntp", "tacacs"]
     required: true
   key:
     type: string
@@ -50,7 +51,6 @@ options:
       For BGP passwords the key is the Neighbor IP or the BGP Peer Group Name in EOS.
       For OSPF passwords the key is the interface name (e.g., `Ethernet1`).
       For ISIS passwords the key is the ISIS instance name (from `router isis <instance name>` or `isis enable <instance name>`).
-    required: true
   hash_algorithm:
     type: string
     description: Hash algorithm to use with `passwd_type=ospf_message_digest`.
@@ -76,6 +76,15 @@ EXAMPLES = r"""
 
 - # Decrypt OSPF message digest password for Ethernet1, MD5 and key id 1
   cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
+
+- # Decrypt ISIS password for instance EVPN-UNDERLAY using sha-512
+  cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='isis', key='EVPN_UNDERLAY', mode='sha-512') }}"
+
+- # Decrypt NTP password for NTP authentication key
+  cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='ntp') }}"
+
+- # Decrypt TACACS+ password
+  cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='tacacs') }}"
 """
 
 RETURN = r"""
