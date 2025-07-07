@@ -52,6 +52,9 @@ Decrypt supported EOS passwords.
 
 - # Decrypt TACACS+ password
   cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='tacacs') }}"
+
+- # Decrypt RADIUS password
+  cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='radius') }}"
 ```
 
 ## Return Values

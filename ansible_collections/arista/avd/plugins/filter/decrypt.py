@@ -41,8 +41,8 @@ options:
       `ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.
       `isis` requires the `password`, `key` and `mode` inputs.
       `ntp` requires the `password` input.
-      `tacacs` requires the `password` input.
-    choices: ["bgp", "ospf_simple", "ospf_message_digest", "isis", "ntp", "tacacs"]
+      `tacacs` and `radius` require the `password` input.
+    choices: ["bgp", "isis", "ntp", "ospf_message_digest", "ospf_simple", "radius", "tacacs"]
     required: true
   key:
     type: string
@@ -85,6 +85,9 @@ EXAMPLES = r"""
 
 - # Decrypt TACACS+ password
   cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='tacacs') }}"
+
+- # Decrypt RADIUS password
+  cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='radius') }}"
 """
 
 RETURN = r"""

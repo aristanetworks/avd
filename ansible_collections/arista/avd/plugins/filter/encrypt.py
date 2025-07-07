@@ -42,8 +42,8 @@ options:
       `isis` requires the `password`, `key` and `mode` inputs.
       `ntp` requires the `password` and `salt` inputs.
       `ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.
-      `tacacs` requires the `password` and `salt` inputs.
-    choices: ["bgp", "ospf_simple", "ospf_message_digest", "isis", "ntp", "tacacs"]
+      `tacacs` and 'radius` require the `password` and `salt` inputs.
+    choices: ["bgp", "isis", "ntp", "ospf_message_digest", "ospf_simple", "radius", "tacacs"]
     required: true
   key:
     type: string
@@ -122,6 +122,13 @@ EXAMPLES = r"""
       - host: 10.10.10.159
         vrf: default
         key: "{{ tacacs_vault_password | arista.avd.encrypt(passwd_type='tacacs', salt = 6) }}"
+
+- # Encrypt the vaulted RADIUS password
+  radius_servers:
+    hosts:
+      - host: 10.10.10.159
+        vrf: default
+        key: "{{ radius_vault_password | arista.avd.encrypt(passwd_type='radius', salt = 6) }}"
 """
 
 RETURN = r"""
