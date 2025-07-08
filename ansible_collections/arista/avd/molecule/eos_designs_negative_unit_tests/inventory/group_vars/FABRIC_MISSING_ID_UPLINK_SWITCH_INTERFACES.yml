@@ -4,7 +4,7 @@ default_node_types:
   - node_type: l3leaf
     match_hostnames: [.*l3leaf]
   - node_type: l2leaf
-    match_hostnames: [.*l2leaf]
+    match_hostnames: [.*l2leaf.*]
 
 l3leaf:
   defaults:
