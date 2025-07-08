@@ -30,6 +30,11 @@ ntp:
   salt: 0
   expected_encrypted_password: 0005010F174F0A
 
+radius:
+  clear_password: arista
+  salt: 12
+  expected_encrypted_password: 1218171E011F0D
+
 tacacs:
   clear_password: arista
   salt: 9
