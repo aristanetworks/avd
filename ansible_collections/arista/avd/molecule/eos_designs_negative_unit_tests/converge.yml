@@ -790,7 +790,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_MULTIPLE_UPLINKS_FOR_UPLINK_TYPE_LAN
+  hosts: missing-underlay-router-and-network-services-for-uplink-type-lan
   connection: local
   tasks:
     - name: Run failure scenario Test
