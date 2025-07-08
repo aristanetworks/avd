@@ -16,6 +16,7 @@ ethernet_interfaces:
 - name: Ethernet11
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet11
   shutdown: false
+  speed: forced 100gfull
   channel_group:
     id: 11
     mode: active
@@ -25,6 +26,7 @@ ethernet_interfaces:
 - name: Ethernet12
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet12
   shutdown: false
+  speed: forced 100gfull
   channel_group:
     id: 11
     mode: active
@@ -34,6 +36,7 @@ ethernet_interfaces:
 - name: Ethernet13
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet13
   shutdown: false
+  speed: forced 100gfull
   channel_group:
     id: 11
     mode: active
@@ -43,6 +46,7 @@ ethernet_interfaces:
 - name: Ethernet14
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet14
   shutdown: false
+  speed: forced 100gfull
   channel_group:
     id: 11
     mode: active
@@ -52,6 +56,7 @@ ethernet_interfaces:
 - name: Ethernet15
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet15
   shutdown: false
+  speed: forced 100gfull
   channel_group:
     id: 11
     mode: active
@@ -61,6 +66,7 @@ ethernet_interfaces:
 - name: Ethernet16
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet16
   shutdown: false
+  speed: forced 100gfull
   channel_group:
     id: 11
     mode: active
@@ -70,6 +76,7 @@ ethernet_interfaces:
 - name: Ethernet17
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet17
   shutdown: false
+  speed: forced 100gfull
   channel_group:
     id: 11
     mode: active
@@ -79,6 +86,7 @@ ethernet_interfaces:
 - name: Ethernet18
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet18
   shutdown: false
+  speed: forced 100gfull
   channel_group:
     id: 11
     mode: active
@@ -88,6 +96,7 @@ ethernet_interfaces:
 - name: Ethernet19
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet19
   shutdown: false
+  speed: forced 100gfull
   channel_group:
     id: 11
     mode: active
@@ -97,6 +106,7 @@ ethernet_interfaces:
 - name: Ethernet20
   description: MLAG_inband-mgmt-parent-dualstack2_Ethernet20
   shutdown: false
+  speed: forced 100gfull
   channel_group:
     id: 11
     mode: active
