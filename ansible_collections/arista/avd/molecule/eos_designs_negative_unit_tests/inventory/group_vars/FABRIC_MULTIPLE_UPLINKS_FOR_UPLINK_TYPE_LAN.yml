@@ -1,5 +1,5 @@
 ---
-fabric_name: FABRIC_MULTIPLE_UPLINKS_FOR_UPLINK_TYPE_LAN.yml
+fabric_name: FABRIC_MULTIPLE_UPLINK_INTERFACES_FOR_UPLINK_TYPE_LAN
 type: l3spine
 
 l3spine:
