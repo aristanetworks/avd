@@ -3349,6 +3349,7 @@ class EosDesigns(EosDesignsRootModel):
             "platforms": {"type": Platforms},
             "uplink_interfaces": {"type": UplinkInterfaces},
             "mlag_interfaces": {"type": MlagInterfaces},
+            "mlag_interfaces_speed": {"type": str},
             "downlink_interfaces": {"type": DownlinkInterfaces},
             "uplink_interface_speed": {"type": str},
         }
@@ -3379,6 +3380,12 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList with `str` items.
         """
+        mlag_interfaces_speed: str | None
+        """
+        Set MLAG interfaces speed.
+        Speed should be set in the format `<interface_speed>` or `forced
+        <interface_speed>` or `auto <interface_speed>`.
+        """
         downlink_interfaces: DownlinkInterfaces
         """
         List of downlink interfaces or downlink interface ranges.
@@ -3397,6 +3404,7 @@ class EosDesigns(EosDesignsRootModel):
                 platforms: Platforms | UndefinedType = Undefined,
                 uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
                 mlag_interfaces: MlagInterfaces | UndefinedType = Undefined,
+                mlag_interfaces_speed: str | None | UndefinedType = Undefined,
                 downlink_interfaces: DownlinkInterfaces | UndefinedType = Undefined,
                 uplink_interface_speed: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -3426,6 +3434,10 @@ class EosDesigns(EosDesignsRootModel):
                        List of MLAG interfaces or MLAG interface ranges.
 
                        Subclass of AvdList with `str` items.
+                    mlag_interfaces_speed:
+                       Set MLAG interfaces speed.
+                       Speed should be set in the format `<interface_speed>` or `forced
+                       <interface_speed>` or `auto <interface_speed>`.
                     downlink_interfaces:
                        List of downlink interfaces or downlink interface ranges.
 

@@ -778,6 +778,9 @@ management ssh
    no shutdown
    log-level debug
    !
+   vrf default
+      no shutdown
+   !
    vrf mgt
       no shutdown
 ```
