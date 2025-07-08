@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: evpn_gateway_all_active_mh_gw
+hostname: evpn_gateway_l2_evpn_role_server
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -13,11 +13,11 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.1/32
+  ip_address: 192.168.255.3/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 192.168.254.1/32
+  ip_address: 192.168.254.3/32
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -27,7 +27,7 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.0.204/24
+  ip_address: 192.168.0.206/24
   type: oob
 metadata:
   platform: vEOS
@@ -53,15 +53,13 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65233'
-  router_id: 192.168.255.1
+  router_id: 192.168.255.3
   maximum_paths:
     paths: 4
     ecmp: 4
   bgp:
     default:
       ipv4_unicast: false
-    bestpath:
-      d_path: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -69,6 +67,7 @@ router_bgp:
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
     type: evpn
+    next_hop_unchanged: true
     update_source: Loopback0
     bfd: true
     ebgp_multihop: 3
@@ -81,12 +80,6 @@ router_bgp:
     ebgp_multihop: 15
     send_community: all
     maximum_routes: 0
-  neighbors:
-  - ip_address: 192.168.100.10
-    peer_group: EVPN-OVERLAY-CORE
-    remote_as: '65002'
-    peer: DCI_TEST
-    description: DCI_TEST
   redistribute:
     connected:
       enabled: true
@@ -94,10 +87,10 @@ router_bgp:
   vlans:
   - id: 11
     tenant: EVPN_GATEWAY_TESTS
-    rd: 192.168.255.1:10011
+    rd: 192.168.255.3:10011
     rd_evpn_domain:
       domain: remote
-      rd: 192.168.255.1:10011
+      rd: 192.168.255.3:10011
     route_targets:
       both:
       - 10011:10011
@@ -108,10 +101,10 @@ router_bgp:
     - learned
   - id: 12
     tenant: EVPN_GATEWAY_TESTS
-    rd: 192.168.255.1:10012
+    rd: 192.168.255.3:10012
     rd_evpn_domain:
       domain: remote
-      rd: 192.168.255.1:10012
+      rd: 192.168.255.3:10012
     route_targets:
       both:
       - 10012:10012
@@ -122,10 +115,10 @@ router_bgp:
     - learned
   - id: 21
     tenant: EVPN_GATEWAY_TESTS
-    rd: 192.168.255.1:10021
+    rd: 192.168.255.3:10021
     rd_evpn_domain:
       domain: remote
-      rd: 192.168.255.1:10021
+      rd: 192.168.255.3:10021
     route_targets:
       both:
       - 10021:10021
@@ -136,10 +129,10 @@ router_bgp:
     - learned
   - id: 22
     tenant: EVPN_GATEWAY_TESTS
-    rd: 192.168.255.1:10022
+    rd: 192.168.255.3:10022
     rd_evpn_domain:
       domain: remote
-      rd: 192.168.255.1:10022
+      rd: 192.168.255.3:10022
     route_targets:
       both:
       - 10022:10022
@@ -150,10 +143,10 @@ router_bgp:
     - learned
   - id: 300
     tenant: EVPN_GATEWAY_TESTS
-    rd: 192.168.255.1:10300
+    rd: 192.168.255.3:10300
     rd_evpn_domain:
       domain: remote
-      rd: 192.168.255.1:10300
+      rd: 192.168.255.3:10300
     route_targets:
       both:
       - 10300:10300
@@ -164,10 +157,10 @@ router_bgp:
     - learned
   - id: 3401
     tenant: EVPN_GATEWAY_TESTS
-    rd: 192.168.255.1:13401
+    rd: 192.168.255.3:13401
     rd_evpn_domain:
       domain: remote
-      rd: 192.168.255.1:13401
+      rd: 192.168.255.3:13401
     route_targets:
       both:
       - 13401:13401
@@ -178,10 +171,10 @@ router_bgp:
     - learned
   - id: 3402
     tenant: EVPN_GATEWAY_TESTS
-    rd: 192.168.255.1:13402
+    rd: 192.168.255.3:13402
     rd_evpn_domain:
       domain: remote
-      rd: 192.168.255.1:13402
+      rd: 192.168.255.3:13402
     route_targets:
       both:
       - 13402:13402
@@ -191,26 +184,18 @@ router_bgp:
     redistribute_routes:
     - learned
   address_family_evpn:
-    domain_identifier: '65200:2'
-    domain_identifier_remote: '65100:1'
-    neighbor_default:
-      next_hop_self_received_evpn_routes:
-        enable: true
-        inter_domain: true
     peer_groups:
     - name: EVPN-OVERLAY-CORE
       activate: true
       domain_remote: true
     - name: EVPN-OVERLAY-PEERS
       activate: true
-    evpn_ethernet_segment:
-    - domain: all
-      identifier: 0000:0001:0001:0000:0509
-      route_target_import: 00:00:00:00:07:09
   address_family_rtc:
     peer_groups:
     - name: EVPN-OVERLAY-CORE
       activate: true
+      default_route_target:
+        only: true
     - name: EVPN-OVERLAY-PEERS
       activate: true
   address_family_ipv4:
@@ -223,7 +208,7 @@ router_bgp:
       activate: false
   vrfs:
   - name: VRF10
-    rd: 192.168.255.1:10
+    rd: 192.168.255.3:10
     route_targets:
       import:
       - address_family: evpn
@@ -233,12 +218,12 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
-    router_id: 192.168.255.1
+    router_id: 192.168.255.3
     redistribute:
       connected:
         enabled: true
   - name: VRF11
-    rd: 192.168.255.1:11
+    rd: 192.168.255.3:11
     route_targets:
       import:
       - address_family: evpn
@@ -248,7 +233,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '11:11'
-    router_id: 192.168.255.1
+    router_id: 192.168.255.3
     redistribute:
       connected:
         enabled: true
@@ -322,7 +307,7 @@ vrfs:
   tenant: EVPN_GATEWAY_TESTS
 vxlan_interface:
   vxlan1:
-    description: evpn_gateway_all_active_mh_gw_VTEP
+    description: evpn_gateway_l2_evpn_role_server_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

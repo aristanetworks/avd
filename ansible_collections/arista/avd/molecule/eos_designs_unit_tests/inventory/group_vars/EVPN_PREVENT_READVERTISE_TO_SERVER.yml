@@ -24,3 +24,8 @@ l3leaf:
       id: 105
       bgp_as: 65003
       evpn_role: server
+      # Test for evpn_role none
+    - name: evpn-prevent-readvertise-to-server-4
+      id: 105
+      bgp_as: 65003
+      evpn_role: none

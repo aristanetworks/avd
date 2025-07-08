@@ -3,21 +3,20 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: evpn-vtep-with-default-vrf-not-evpn
+hostname: evpn-prevent-readvertise-to-server-4
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.109/32
+  ip_address: 192.168.255.113/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 192.168.254.109/32
+  ip_address: 192.168.254.113/32
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -38,14 +37,9 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3
 router_bgp:
-  as: '101'
-  router_id: 192.168.255.109
+  as: '65003'
+  router_id: 192.168.255.113
   maximum_paths:
     paths: 4
     ecmp: 4
@@ -59,64 +53,31 @@ router_bgp:
     type: ipv4
     send_community: all
     maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    type: evpn
-    update_source: Loopback0
-    bfd: true
-    ebgp_multihop: 3
-    send_community: all
-    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-  vlans:
-  - id: 110
-    tenant: MY_FABRIC
-    rd: 192.168.255.109:10110
-    route_targets:
-      both:
-      - 10110:10110
-    redistribute_routes:
-    - learned
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
-    route:
-      import_match_failure_action: discard
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
 service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
 transceiver_qsfp_default_mode_4x10: true
-vlan_interfaces:
-- name: Vlan110
-  description: SVI-110
-  shutdown: false
-  ip_address_virtual: 10.1.10.1
-  tenant: MY_FABRIC
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
-vlans:
-- id: 110
-  name: SVI-110
-  tenant: MY_FABRIC
 vrfs:
 - name: MGMT
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: evpn-vtep-with-default-vrf-not-evpn_VTEP
+    description: evpn-prevent-readvertise-to-server-4_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
-      vlans:
-      - id: 110
-        vni: 10110

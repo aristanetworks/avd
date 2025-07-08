@@ -3,32 +3,16 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-ethernet_interfaces:
-- name: Ethernet1
-  description: P2P_underlay_filter_peer_as_evpn_2_Ethernet1
-  shutdown: false
-  mtu: 9214
-  ip_address: 192.168.153.1/31
-  peer: underlay_filter_peer_as_evpn_2
-  peer_interface: Ethernet1
-  peer_type: l3leaf
-  switchport:
-    enabled: false
-- name: Ethernet2
-  description: P2P_underlay_filter_peer_as_evpn_3_Ethernet1
-  shutdown: false
-  mtu: 9214
-  ip_address: 192.168.153.3/31
-  peer: underlay_filter_peer_as_evpn_3
-  peer_interface: Ethernet1
-  peer_type: l3leaf
-  switchport:
-    enabled: false
-hostname: underlay_filter_peer_as_evpn_1
+hostname: evpn_overlay_mpls_route_reflectors_ibgp
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 192.168.254.1:1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
 is_deployed: true
 loopback_interfaces:
 - name: Loopback0
@@ -43,7 +27,15 @@ management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.204/24
+  type: oob
 metadata:
+  platform: vEOS
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
@@ -59,27 +51,32 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-- name: RM-BGP-AS64513-OUT
+- name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
     type: deny
     match:
-    - as 64513
+    - extcommunity ECL-EVPN-SOO
   - sequence: 20
     type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 192.168.254.1:1 additive
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '64512'
+  as: '65233'
   router_id: 192.168.255.1
   maximum_paths:
     paths: 4
     ecmp: 4
-  updates:
-    wait_install: true
+  bgp_cluster_id: 192.168.255.1
   bgp:
     default:
       ipv4_unicast: false
@@ -88,53 +85,37 @@ router_bgp:
     type: ipv4
     send_community: all
     maximum_routes: 12000
-  - name: EVPN-OVERLAY-PEERS
-    type: evpn
+  - name: MPLS-OVERLAY-PEERS
+    type: mpls
+    remote_as: '65233'
     update_source: Loopback0
+    route_reflector_client: true
     bfd: true
-    ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
-  neighbors:
-  - ip_address: 192.168.153.0
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '64513'
-    peer: underlay_filter_peer_as_evpn_2
-    description: underlay_filter_peer_as_evpn_2_Ethernet1
-    route_map_out: RM-BGP-AS64513-OUT
-  - ip_address: 192.168.153.2
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '64513'
-    peer: underlay_filter_peer_as_evpn_3
-    description: underlay_filter_peer_as_evpn_3_Ethernet1
-    route_map_out: RM-BGP-AS64513-OUT
-  - ip_address: 192.168.255.2
-    peer_group: EVPN-OVERLAY-PEERS
-    remote_as: '64513'
-    peer: underlay_filter_peer_as_evpn_2
-    description: underlay_filter_peer_as_evpn_2_Loopback0
-  - ip_address: 192.168.255.3
-    peer_group: EVPN-OVERLAY-PEERS
-    remote_as: '64513'
-    peer: underlay_filter_peer_as_evpn_3
-    description: underlay_filter_peer_as_evpn_3_Loopback0
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
   address_family_evpn:
+    neighbor_default:
+      encapsulation: mpls
     peer_groups:
-    - name: EVPN-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
       activate: true
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
   address_family_rtc:
     peer_groups:
-    - name: EVPN-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
       activate: true
+      default_route_target:
+        only: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
       activate: false
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
@@ -148,7 +129,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: underlay_filter_peer_as_evpn_1_VTEP
+    description: evpn_overlay_mpls_route_reflectors_ibgp_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
