@@ -5489,8 +5489,7 @@ keys:
     documentation_options:
       table: isis-settings
     type: str
-    description: 'Cleartext password. `underlay_isis_authentication_key` takes precedence
-      over this key.
+    description: 'Cleartext password.
 
       Encrypted to Type 7 by AVD.
 
@@ -5500,7 +5499,12 @@ keys:
     documentation_options:
       table: isis-settings
     type: str
-    description: Type-7 encrypted password.
+    description: 'Type-7 encrypted password.
+
+      Takes precedence over `underlay_isis_authentication_cleartext_key`.
+
+      To protect the password at rest it is strongly recommended to make use of a
+      vault or similar.'
   underlay_isis_authentication_mode:
     documentation_options:
       table: isis-settings
@@ -11933,11 +11937,17 @@ $defs:
           - text
         isis_authentication_key:
           type: str
-          description: Type-7 encrypted password.
+          description: 'Type-7 encrypted password.
+
+            Takes precedence over `isis_authentication_cleartext_key`.
+
+            To protect the password at rest it is strongly recommended to make use
+            of a vault or similar.
+
+            '
         isis_authentication_cleartext_key:
           type: str
-          description: 'Cleartext password. `isis_authentication_key` takes precedence
-            over this key.
+          description: 'Cleartext password.
 
             Encrypted to Type 7 by AVD.
 

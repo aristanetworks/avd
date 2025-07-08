@@ -68,5 +68,11 @@ l3_edge:
     - nodes: [l3_edge_isis, peer2]
       interfaces: [ethernet5, ethernet5]
       ip: [192.168.0.4/31, 192.168.0.5/31]
-      isis_authentication_mode: text
+      isis_authentication_mode: md5
+      isis_authentication_cleartext_key: arista
+
+      # Use ISIS mode from root settings.
+    - nodes: [l3_edge_isis, peer2]
+      interfaces: [ethernet6, ethernet6]
+      ip: [192.168.0.6/31, 192.168.0.7/31]
       isis_authentication_cleartext_key: arista
