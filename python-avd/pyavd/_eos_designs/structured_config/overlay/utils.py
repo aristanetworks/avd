@@ -63,13 +63,19 @@ class UtilsMixin(Protocol):
     # The next three should probably be moved to facts
     @cached_property
     def _is_mpls_server(self: AvdStructuredConfigOverlayProtocol) -> bool:
-        return self.shared_utils.mpls_overlay_role == "server" or (self.shared_utils.evpn_role == "server" and self.shared_utils.overlay_evpn_mpls)
+        if self.shared_utils.overlay_evpn_mpls:
+            return self.shared_utils.evpn_role == "server"
+        return self.shared_utils.mpls_overlay_role == "server"
 
     def _is_peer_mpls_client(self: AvdStructuredConfigOverlayProtocol, peer_facts: EosDesignsFactsProtocol) -> bool:
-        return peer_facts.mpls_overlay_role == "client" or (peer_facts.evpn_role == "client" and peer_facts.overlay.evpn_mpls)
+        if peer_facts.overlay.evpn_mpls:
+            return peer_facts.evpn_role == "client"
+        return peer_facts.mpls_overlay_role == "client"
 
     def _is_peer_mpls_server(self: AvdStructuredConfigOverlayProtocol, peer_facts: EosDesignsFactsProtocol) -> bool:
-        return peer_facts.mpls_overlay_role == "server" or (peer_facts.evpn_role == "server" and peer_facts.overlay.evpn_mpls)
+        if peer_facts.overlay.evpn_mpls:
+            return peer_facts.evpn_role == "server"
+        return peer_facts.mpls_overlay_role == "server"
 
     @cached_property
     def _mpls_route_reflectors(self: AvdStructuredConfigOverlayProtocol) -> dict:
