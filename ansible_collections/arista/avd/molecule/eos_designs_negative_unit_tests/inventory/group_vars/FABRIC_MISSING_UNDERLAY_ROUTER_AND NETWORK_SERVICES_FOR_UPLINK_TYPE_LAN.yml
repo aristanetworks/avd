@@ -1,10 +1,10 @@
 ---
-fabric_name: FABRIC_UPLINK_TYPE_LAN_NO_NETWORK_SERVICES_UNDERLAY_ROUTER
+fabric_name: FABRIC_MISSING_UNDERLAY_ROUTER_AND_NETWORK_SERVICES_FOR_UPLINK_TYPE_LAN
 type: spine
 
 spine:
   nodes:
-    - name: uplink-type-lan-no-network-services-underlay-router
+    - name: missing-underlay-router-and-network-services-for-uplink-type-lan
       loopback_ipv4_pool: 192.168.255.0/24
       id: 1
       bgp_as: 65000

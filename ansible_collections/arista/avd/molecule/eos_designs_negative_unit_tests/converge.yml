@@ -773,7 +773,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_UPLINK_TYPE_LAN_NO_NETWORK_SERVICES_UNDERLAY_ROUTER
+  hosts: multiple-uplink-interfaces-for-uplink-type-lan
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -789,7 +789,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_UPLINK_TYPE_LAN_MULTIPLE_UPLINKS
+  hosts: FABRIC_MULTIPLE_UPLINKS_FOR_UPLINK_TYPE_LAN
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -821,7 +821,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: no-downlink-interfaces-spine
+  hosts: missing-downlink-interfaces-spine
   connection: local
   tasks:
     - name: Run failure scenario Test

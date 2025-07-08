@@ -1,4 +1,4 @@
-fabric_name: FABRIC_UPLINK_SWITCH_INTERFACES_MISSING_ID
+fabric_name: FABRIC_MISSING_ID_UPLINK_SWITCH_INTERFACES
 
 default_node_types:
   - node_type: l3leaf
@@ -20,8 +20,8 @@ l2leaf:
     uplink_interfaces: [Ethernet1]
     uplink_switches: [uplink-switch-l3leaf]
   nodes:
-    - name: uplink-switch-interfaces-missing-id-l2leaf
+    - name: missing-id-on-l2leaf-uplink-switch-interfaces
       mgmt_ip: 192.168.0.2/24
 
 expected_error_message: >-
-  'id' is not set on 'uplink-switch-interfaces-missing-id-l2leaf'.
+  'id' is not set on 'missing-id-on-l2leaf-uplink-switch-interfaces'.
