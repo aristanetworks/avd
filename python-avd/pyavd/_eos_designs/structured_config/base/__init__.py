@@ -654,7 +654,7 @@ class AvdStructuredConfigBaseProtocol(
                 vrf_input=server.vrf,
                 vrfs=vrfs,
                 set_source_interfaces=True,
-                context=f"aaa_settings.radius.servers[ip_address={server.host}].vrf",
+                context=f"aaa_settings.radius.servers[host={server.host}].vrf",
             )
             if source_interface:
                 self.structured_config.ip_radius_source_interfaces.append_unique(
@@ -691,7 +691,7 @@ class AvdStructuredConfigBaseProtocol(
                 vrf_input=server.vrf,
                 vrfs=vrfs,
                 set_source_interfaces=True,
-                context=f"aaa_settings.tacacs.servers[ip_address={server.host}].vrf",
+                context=f"aaa_settings.tacacs.servers[host={server.host}].vrf",
             )
             if source_interface:
                 self.structured_config.ip_tacacs_source_interfaces.append_unique(

@@ -76,7 +76,7 @@ aaa_settings:
         groups:
           - RADIUS1
 
-      # No VRF, so it should honor default_mgmt_method which is oob in this case
+      # No VRF, so it should honor default_mgmt_method which is inband in this case
       - host: 11.10.10.3
         key: 071B245F5A
         groups:

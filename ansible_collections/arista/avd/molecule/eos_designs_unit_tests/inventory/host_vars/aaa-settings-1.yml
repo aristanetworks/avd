@@ -91,36 +91,36 @@ aaa_settings:
         type: start-stop
         methods:
           - method: group
-            group: TACACS
+            group: TACACS1
           - method: group
-            group: RADIUS
+            group: RADIUS1
           - method: logging
       default:
         type: start-stop
         methods:
           - method: group
-            group: TACACS
+            group: TACACS1
           - method: group
-            group: RADIUS
+            group: RADIUS1
           - method: logging
     system:
       default:
         type: start-stop
         methods:
           - method: group
-            group: TACACS
+            group: TACACS1
           - method: group
-            group: RADIUS
+            group: RADIUS1
           - method: logging
     dot1x:
       default:
         type: start-stop
         methods:
           - method: group
-            group: RADIUS
+            group: radius
             multicast: true
           - method: group
-            group: TACACS
+            group: radius
           - method: logging
     commands:
       console:
@@ -128,17 +128,17 @@ aaa_settings:
           type: start-stop
           methods:
             - method: group
-              group: TACACS
+              group: TACACS1
             - method: group
-              group: RADIUS
+              group: RADIUS1
             - method: logging
         - commands: 0
           type: start-stop
           methods:
             - method: group
-              group: RADIUS
+              group: RADIUS1
             - method: group
-              group: TACACS
+              group: TACACS1
             - method: logging
         - commands: 1
           type: start-stop
@@ -146,7 +146,7 @@ aaa_settings:
             - method: group
               group: TACACS1
             - method: group
-              group: RADIUS
+              group: RADIUS1
         # As type is none hence logging will not render in config as per actual EOS
         - commands: 2
           type: none
@@ -159,9 +159,9 @@ aaa_settings:
           type: start-stop
           methods:
             - method: group
-              group: TACACS
+              group: TACACS1
             - method: group
-              group: RADIUS
+              group: RADIUS1
             - method: logging
         - commands: 0
           type: start-stop
@@ -171,9 +171,9 @@ aaa_settings:
           type: start-stop
           methods:
             - method: group
-              group: TACACS
+              group: TACACS1
             - method: group
-              group: RADIUS
+              group: RADIUS1
         - commands: 2
           type: none
           methods:
@@ -185,11 +185,11 @@ aaa_settings:
   ## AAA Authentication
   authentication:
     login:
-      default: group TACACS local
+      default: group TACACS1 local
       command_api: local
       console: local
     enable:
-      default: group TACACS local
+      default: group TACACS1 local
     dot1x:
       default: group RADIUS1
     policies:
@@ -206,7 +206,7 @@ aaa_settings:
     policy:
       local_default_role: network-admin
     exec:
-      default: group TACACS local
+      default: group TACACS1 local
     config_commands: true
     serial_console: true
     dynamic:
@@ -214,7 +214,7 @@ aaa_settings:
         - radius
         - RADIUS1
     commands:
-      all_default: group TACACS
+      all_default: group TACACS1
       privilege:
         - level: "10,15"
           default: "group tacacs+ local"
