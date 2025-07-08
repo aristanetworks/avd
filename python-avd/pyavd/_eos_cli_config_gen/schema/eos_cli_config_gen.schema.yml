@@ -24833,8 +24833,8 @@ $defs:
                           type: str
                           description: 'Flow collector name.
 
-                            The collector name can be an IPv4 address, IPv6 address,
-                            fully qualified domain name.'
+                            The collector name can be an IPv4 address, IPv6 address
+                            and fully qualified domain name.'
                         port:
                           type: int
                           description: Collector Port Number.

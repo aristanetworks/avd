@@ -12738,8 +12738,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         host: str
                         """
                         Flow collector name.
-                        The collector name can be an IPv4 address, IPv6 address, fully qualified domain
-                        name.
+                        The collector name can be an IPv4 address, IPv6 address and fully qualified
+                        domain name.
                         """
                         port: int | None
                         """Collector Port Number."""
@@ -12756,8 +12756,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Args:
                                     host:
                                        Flow collector name.
-                                       The collector name can be an IPv4 address, IPv6 address, fully qualified domain
-                                       name.
+                                       The collector name can be an IPv4 address, IPv6 address and fully qualified
+                                       domain name.
                                     port: Collector Port Number.
 
                                 """
@@ -13020,8 +13020,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         host: str
                         """
                         Flow collector name.
-                        The collector name can be an IPv4 address, IPv6 address, fully qualified domain
-                        name.
+                        The collector name can be an IPv4 address, IPv6 address and fully qualified
+                        domain name.
                         """
                         port: int | None
                         """Collector Port Number."""
@@ -13038,8 +13038,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Args:
                                     host:
                                        Flow collector name.
-                                       The collector name can be an IPv4 address, IPv6 address, fully qualified domain
-                                       name.
+                                       The collector name can be an IPv4 address, IPv6 address and fully qualified
+                                       domain name.
                                     port: Collector Port Number.
 
                                 """

@@ -30,7 +30,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].collector.host") | String |  |  |  | Collector IPv4 address or IPv6 address or fully qualified domain name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].collector.port") | Integer |  |  | Min: 1<br>Max: 65535 | Collector Port Number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;collectors</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].collectors") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].collectors.[].host") | String | Required, Unique |  |  | Flow collector name.<br>The collector name can be an IPv4 address, IPv6 address, fully qualified domain name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].collectors.[].host") | String | Required, Unique |  |  | Flow collector name.<br>The collector name can be an IPv4 address, IPv6 address and fully qualified domain name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].collectors.[].port") | Integer |  |  | Min: 1<br>Max: 65535 | Collector Port Number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;format</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].format") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipfix_version</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].format.ipfix_version") | Integer |  |  |  |  |
@@ -51,7 +51,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].collector.host") | String |  |  |  | Collector IPv4 address or IPv6 address or fully qualified domain name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].collector.port") | Integer |  |  | Min: 1<br>Max: 65535 | Collector Port Number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;collectors</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].collectors") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].collectors.[].host") | String | Required, Unique |  |  | Flow collector name.<br>The collector name can be an IPv4 address, IPv6 address, fully qualified domain name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].collectors.[].host") | String | Required, Unique |  |  | Flow collector name.<br>The collector name can be an IPv4 address, IPv6 address and fully qualified domain name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].collectors.[].port") | Integer |  |  | Min: 1<br>Max: 65535 | Collector Port Number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;format</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].format") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipfix_version</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].format.ipfix_version") | Integer |  |  |  |  |
@@ -152,7 +152,7 @@
                 collectors:
 
                     # Flow collector name.
-                    # The collector name can be an IPv4 address, IPv6 address, fully qualified domain name.
+                    # The collector name can be an IPv4 address, IPv6 address and fully qualified domain name.
                   - host: <str; required; unique>
 
                     # Collector Port Number.
@@ -199,7 +199,7 @@
                 collectors:
 
                     # Flow collector name.
-                    # The collector name can be an IPv4 address, IPv6 address, fully qualified domain name.
+                    # The collector name can be an IPv4 address, IPv6 address and fully qualified domain name.
                   - host: <str; required; unique>
 
                     # Collector Port Number.
