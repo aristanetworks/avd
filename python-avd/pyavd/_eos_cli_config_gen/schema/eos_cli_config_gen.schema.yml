@@ -13129,8 +13129,8 @@ keys:
         keys:
           shape_rate_percent_adaptive:
             type: bool
-            description: "Use the parent\u2019s available bandwidth for txQueue percentage-based
-              allocation."
+            description: Use the parent available bandwidth for txQueue percentage-based
+              allocation.
   qos_profiles:
     type: list
     primary_key: name
