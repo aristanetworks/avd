@@ -67035,7 +67035,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     underlay_isis_authentication_cleartext_key: str | None
     """
-    Cleartext password. `underlay_isis_authentication_key` takes precedence over this key. Encrypted to
+    Cleartext password. `underlay_isis_authentication_key` takes precedence over this key.
+    Encrypted to
     Type 7 by AVD.
     To protect the password at rest it is strongly recommended to make use of a vault or
     similar.
@@ -68761,7 +68762,8 @@ class EosDesigns(EosDesignsRootModel):
                      - vtep_vvtep_ip
                      - inband_ztp
                 underlay_isis_authentication_cleartext_key:
-                   Cleartext password. `underlay_isis_authentication_key` takes precedence over this key. Encrypted to
+                   Cleartext password. `underlay_isis_authentication_key` takes precedence over this key.
+                   Encrypted to
                    Type 7 by AVD.
                    To protect the password at rest it is strongly recommended to make use of a vault or
                    similar.
