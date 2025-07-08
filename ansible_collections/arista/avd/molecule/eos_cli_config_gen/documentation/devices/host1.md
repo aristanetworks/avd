@@ -4032,12 +4032,12 @@ interface Dps1
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override |
-| --------- | --------------------- | -------------- |
-| Ethernet7 | - | 100gbase-ar4 |
-| Ethernet67 | 190050.000 | - |
-| Ethernet68 | 190080.000 ghz | 100gbase-ar4 |
-| Ethernet73 | - | 100gbase-ar4 |
+| Interface | Transceiver Frequency | Media Override | Application Override |
+| --------- | --------------------- | -------------- | -------------------- |
+| Ethernet7 | - | 100gbase-ar4 | 10 |
+| Ethernet67 | 190050.000 | - | - |
+| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
+| Ethernet73 | - | 100gbase-ar4 | - |
 
 ##### Link Tracking Groups
 
@@ -4537,6 +4537,7 @@ interface Ethernet7
    spanning-tree bpdufilter enable
    vmtracer vmware-esx
    transceiver media override 100gbase-ar4
+   transceiver application override 10
 !
 interface Ethernet8
    description to WAN-ISP1-01 Ethernet2
@@ -5098,6 +5099,7 @@ interface Ethernet68
    no shutdown
    switchport
    transceiver media override 100gbase-ar4
+   transceiver application override 100gbase-srbd
    transceiver frequency 190080.000 ghz
 !
 interface Ethernet68.1

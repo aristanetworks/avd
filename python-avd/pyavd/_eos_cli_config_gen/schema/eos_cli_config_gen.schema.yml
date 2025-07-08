@@ -3661,6 +3661,13 @@ keys:
                 override:
                   type: str
                   description: Transceiver type.
+            application_override:
+              type: str
+              description: 'Set CMIS transceiver applications.
+
+                Valid values are application number in range 0-15 or `100gbase-srbd`.'
+              convert_types:
+              - int
         ip_proxy_arp:
           type: bool
         traffic_policy:

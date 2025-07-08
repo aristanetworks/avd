@@ -9057,13 +9057,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"frequency": {"type": str}, "frequency_unit": {"type": str}, "media": {"type": Media}}
+            _fields: ClassVar[dict] = {
+                "frequency": {"type": str},
+                "frequency_unit": {"type": str},
+                "media": {"type": Media},
+                "application_override": {"type": str},
+            }
             frequency: str | None
             """Transceiver Laser Frequency in GHz (min 190000, max 200000)."""
             frequency_unit: Literal["ghz"] | None
             """Unit of Transceiver Laser Frequency."""
             media: Media
             """Subclass of AvdModel."""
+            application_override: str | None
+            """
+            Set CMIS transceiver applications.
+            Valid values are application number in range 0-15 or `100gbase-
+            srbd`.
+            """
 
             if TYPE_CHECKING:
 
@@ -9073,6 +9084,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     frequency: str | None | UndefinedType = Undefined,
                     frequency_unit: Literal["ghz"] | None | UndefinedType = Undefined,
                     media: Media | UndefinedType = Undefined,
+                    application_override: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Transceiver.
@@ -9084,6 +9096,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         frequency: Transceiver Laser Frequency in GHz (min 190000, max 200000).
                         frequency_unit: Unit of Transceiver Laser Frequency.
                         media: Subclass of AvdModel.
+                        application_override:
+                           Set CMIS transceiver applications.
+                           Valid values are application number in range 0-15 or `100gbase-
+                           srbd`.
 
                     """
 

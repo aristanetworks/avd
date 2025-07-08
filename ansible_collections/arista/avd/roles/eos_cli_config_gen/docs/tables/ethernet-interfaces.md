@@ -425,6 +425,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frequency_unit</samp>](## "ethernet_interfaces.[].transceiver.frequency_unit") | String |  |  | Valid Values:<br>- <code>ghz</code> | Unit of Transceiver Laser Frequency. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "ethernet_interfaces.[].transceiver.media") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.media.override") | String |  |  |  | Transceiver type. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override</samp>](## "ethernet_interfaces.[].transceiver.application_override") | String |  |  |  | Set CMIS transceiver applications.<br>Valid values are application number in range 0-15 or `100gbase-srbd`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_proxy_arp</samp>](## "ethernet_interfaces.[].ip_proxy_arp") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "ethernet_interfaces.[].traffic_policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "ethernet_interfaces.[].traffic_policy.input") | String |  |  |  | Ingress traffic policy. |
@@ -1519,6 +1520,10 @@
 
             # Transceiver type.
             override: <str>
+
+          # Set CMIS transceiver applications.
+          # Valid values are application number in range 0-15 or `100gbase-srbd`.
+          application_override: <str>
         ip_proxy_arp: <bool>
         traffic_policy:
 
