@@ -1,0 +1,105 @@
+# Testing with both inband and oob management, overriding source interfaces on both.
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: aaa-settings-3
+      mgmt_ip: 192.168.0.2/24
+      inband_mgmt_ip: 192.168.1.2/24
+      inband_mgmt_vrf: INBAND_MGMT
+
+default_mgmt_method: oob
+
+aaa_settings:
+  tacacs:
+    servers:
+      - host: 10.10.10.11
+        vrf: default
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      - host: 10.10.10.1
+        vrf: use_inband_mgmt_vrf
+        key: 071B245F5A
+        groups:
+          - TACACS1
+          - TACACS2
+
+      - host: 10.10.10.2
+        vrf: INBAND_MGMT
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      # No VRF, so it should honor default_mgmt_method which is oob in this case
+      - host: 10.10.10.3
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      # Duplicate host with different vrf
+      - host: 10.10.10.2
+        vrf: other_vrf
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      - host: 10.10.10.4
+        vrf: use_mgmt_interface_vrf
+        key: 071B245F5A
+        groups:
+          - TACACS2
+
+    vrfs:
+      # Testing override of source for VRF default - no VRF in output source interface model.
+      - name: default
+        source_interface: Vlan123
+      - name: MGMT1
+        source_interface: Vlan125
+
+  radius:
+    servers:
+      - host: 11.10.10.11
+        vrf: default
+        key: 071B245F5A
+        groups:
+          - RADIUS1
+
+      - host: 11.10.10.1
+        vrf: use_inband_mgmt_vrf
+        key: 071B245F5A
+        groups:
+          - RADIUS1
+          - RADIUS2
+
+      - host: 11.10.10.2
+        vrf: INBAND_MGMT
+        key: 071B245F5A
+        groups:
+          - RADIUS1
+
+      # No VRF, so it should honor default_mgmt_method which is oob in this case
+      - host: 11.10.10.3
+        key: 071B245F5A
+        groups:
+          - RADIUS1
+
+      - host: 11.10.10.4
+        vrf: other_vrf
+        key: 071B245F5A
+        groups:
+          - RADIUS1
+
+      - host: 11.10.10.5
+        vrf: use_mgmt_interface_vrf
+        key: 071B245F5A
+        groups:
+          - RADIUS2
+
+    vrfs:
+      - name: MGMT
+        source_interface: Ma1/1
+      - name: INBAND_MGMT
+        source_interface: Vlan123
