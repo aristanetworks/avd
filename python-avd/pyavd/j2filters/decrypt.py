@@ -33,4 +33,6 @@ def decrypt(value: Any, passwd_type: str | None = None, key: str | None = None, 
     except KeyError as exc:
         msg = f"Type {passwd_type} is not supported for the decrypt filter"
         raise KeyError(msg) from exc
-    return decrypt_method(str(value), key=key, **kwargs)
+    if key is not None:
+        kwargs["key"] = key
+    return decrypt_method(str(value), **kwargs)

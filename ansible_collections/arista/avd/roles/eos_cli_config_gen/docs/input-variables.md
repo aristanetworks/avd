@@ -1085,6 +1085,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ptp.md
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/redundancy.md
 --8<--
 
+### Load Balance
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/load-balance.md
+--8<--
+
 ### System
 
 --8<--

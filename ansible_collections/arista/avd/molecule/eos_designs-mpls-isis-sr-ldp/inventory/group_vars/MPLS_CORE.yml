@@ -148,7 +148,11 @@ rr:
         - name: SITE2-RR1
           id: 9
           mgmt_ip: 10.30.30.109/24
-
+        - name: SITE3-RR1
+          id: 12
+          mgmt_ip: 10.30.30.120/24
+          # test with no overlay_address_families
+          overlay_address_families: []
 # Core underlay interfaces
 core_interfaces:
   p2p_links_ip_pools:

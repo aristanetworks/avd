@@ -1567,6 +1567,26 @@ $defs:
             description: |-
               Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core", "edge" or "member-leaf".
             type: str
+          digital_twin:
+            documentation_options:
+              table: node-type-digital-twin-configuration
+            description: |-
+              PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+              Set the OS version and management IP address for the digital twin of the associated node(s).
+            type: dict
+            keys:
+              act_os_version:
+                type: str
+                description: |-
+                  Desired ACT Digital Twin OS version.
+                  Overrides global `digital_twin.fabric.act_os_version` flag.
+              mgmt_ip:
+                type: str
+                description: |-
+                  Desired management interface IPv4 address.
+                # TODO: Add this in a separate PR.
+                # Overrides the dynamically generated (from the pool `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
+                format: cidr
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
