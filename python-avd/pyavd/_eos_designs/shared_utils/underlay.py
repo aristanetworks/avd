@@ -118,7 +118,7 @@ class UnderlayMixin(Protocol):
         if self.inputs.underlay_isis_authentication_cleartext_key is None:
             return None
         return isis_encrypt(
-            password=cast("str", self.inputs.underlay_isis_authentication_cleartext_key),
-            mode=cast("str", self.inputs.underlay_isis_authentication_mode),
+            password=self.inputs.underlay_isis_authentication_cleartext_key,
+            mode=cast("str", self.inputs.underlay_isis_authentication_mode or 'none'),
             key=cast("str", self.isis_instance_name),
         )

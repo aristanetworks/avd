@@ -297,7 +297,7 @@ class UtilsMixin(Protocol):
                     interface.isis_authentication.both._update(
                         key=isis_encrypt(
                             password=p2p_link.isis_authentication_cleartext_key,
-                            key=cast("str", self.shared_utils.isis_instance_name),
+                            key=cast("str", self.shared_utils.isis_instance_name or 'none'),
                             mode=cast("str", mode),
                         ),
                         key_type="7",
