@@ -49,7 +49,7 @@ ip_radius_source_interfaces:
 ip_tacacs_source_interfaces:
 - name: Vlan123
   vrf: default
-- name: Vlan4092
+- name: Vlan126
   vrf: INBAND_MGMT
 - name: Vlan125
   vrf: MGMT1

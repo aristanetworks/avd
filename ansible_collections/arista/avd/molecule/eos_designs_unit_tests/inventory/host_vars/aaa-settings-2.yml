@@ -51,6 +51,8 @@ aaa_settings:
         source_interface: Vlan123
       - name: MGMT1
         source_interface: Vlan125
+      - name: INBAND_MGMT
+        source_interface: Vlan126
 
     policy:
       ignore_unknown_mandatory_attribute: false
