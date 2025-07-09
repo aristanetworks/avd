@@ -23,9 +23,17 @@ LOGGER = getLogger(__name__)
 class BgpNeighbor:
     """Represents a BGP neighbor from the structured configuration."""
 
-    ip_address: IPv4Address
+    ip_address: IPv4Address | IPv6Address
     vrf: str
     update_source: str | None = None
+
+
+@dataclass(frozen=True)
+class BgpNeighborInterface:
+    """Represents a BGP neighbor interface (RFC5549) from the structured configuration."""
+
+    interface: str
+    vrf: str
 
 
 @dataclass
@@ -69,6 +77,64 @@ class DeviceTestContext:
 
         return neighbors
 
+    @cached_property
+    def bgp_neighbor_interfaces(self) -> list[BgpNeighborInterface]:
+        """Generate a list of BGP neighbor interfaces (RFC5549) for the device."""
+        neighbor_interfaces = [
+            bgp_neighbor_interface
+            for neighbor_intf in self.structured_config.router_bgp.neighbor_interfaces
+            if (bgp_neighbor_interface := self._process_bgp_neighbor_interface(neighbor_intf, "default"))
+        ]
+
+        # Skip VRF processing if disabled
+        if not self.input_factory_settings.allow_bgp_vrfs:
+            LOGGER.debug("<%s> Skipped BGP VRF RFC5549 peers - VRF processing disabled", self.hostname)
+            return neighbor_interfaces
+
+        # Add VRF neighbor interfaces to the list
+        neighbor_interfaces.extend(
+            bgp_neighbor_interface
+            for vrf in self.structured_config.router_bgp.vrfs
+            for neighbor_intf in vrf.neighbor_interfaces
+            if (bgp_neighbor_interface := self._process_bgp_neighbor_interface(neighbor_intf, vrf.name))
+        )
+
+        return neighbor_interfaces
+
+    def _process_bgp_neighbor_interface(
+        self, neighbor_interface: EosCliConfigGen.RouterBgp.NeighborInterfacesItem | EosCliConfigGen.RouterBgp.VrfsItem.NeighborInterfacesItem, vrf: str
+    ) -> BgpNeighborInterface | None:
+        """
+        Process a BGP neighbor interface (RFC5549) from the structured configuration and return a `BgpNeighborInterface` object.
+
+        Returns `None` if the neighbor interface should be skipped.
+        """
+        from_default_vrf = isinstance(neighbor_interface, EosCliConfigGen.RouterBgp.NeighborInterfacesItem)
+        if from_default_vrf:
+            identifier = f"{neighbor_interface.name}" if neighbor_interface.peer is None else f"{neighbor_interface.peer} ({neighbor_interface.name})"
+        else:
+            identifier = f"{neighbor_interface.name} (VRF {vrf})"
+
+        # Skip neighbor interfaces in shutdown peer groups
+        if (
+            neighbor_interface.peer_group
+            and neighbor_interface.peer_group in self.structured_config.router_bgp.peer_groups
+            and self.structured_config.router_bgp.peer_groups[neighbor_interface.peer_group].shutdown is True
+        ):
+            LOGGER.debug("<%s> Skipped BGP peer %s - Peer group %s shutdown", self.hostname, identifier, neighbor_interface.peer_group)
+            return None
+
+        # When peer field is set, check if the peer device is in the fabric and deployed
+        if (
+            from_default_vrf
+            and neighbor_interface.peer
+            and (neighbor_interface.peer not in self.minimal_structured_configs or not self.minimal_structured_configs[neighbor_interface.peer].is_deployed)
+        ):
+            LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
+            return None
+
+        return BgpNeighborInterface(interface=neighbor_interface.name, vrf=vrf)
+
     def _process_bgp_neighbor(
         self, neighbor: EosCliConfigGen.RouterBgp.NeighborsItem | EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem, vrf: str
     ) -> BgpNeighbor | None:
@@ -77,7 +143,8 @@ class DeviceTestContext:
 
         Returns `None` if the neighbor should be skipped.
         """
-        if isinstance(neighbor, EosCliConfigGen.RouterBgp.NeighborsItem):
+        from_default_vrf = isinstance(neighbor, EosCliConfigGen.RouterBgp.NeighborsItem)
+        if from_default_vrf:
             identifier = f"{neighbor.ip_address}" if neighbor.peer is None else f"{neighbor.peer} ({neighbor.ip_address})"
         else:
             identifier = f"{neighbor.ip_address} (VRF {vrf})"
@@ -98,17 +165,11 @@ class DeviceTestContext:
 
         # When peer field is set, check if the peer device is in the fabric and deployed
         if (
-            isinstance(neighbor, EosCliConfigGen.RouterBgp.NeighborsItem)
+            from_default_vrf
             and neighbor.peer
             and (neighbor.peer not in self.minimal_structured_configs or not self.minimal_structured_configs[neighbor.peer].is_deployed)
         ):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
-            return None
-
-        # TODO: IPv6 neighbors are not supported in ANTA yet
-        ip_address = ip_interface(neighbor.ip_address).ip
-        if isinstance(ip_address, IPv6Address):
-            LOGGER.debug("<%s> Skipped BGP peer %s - IPv6 not supported", self.hostname, identifier)
             return None
 
         update_source = neighbor.update_source or (
@@ -117,4 +178,4 @@ class DeviceTestContext:
             else None
         )
 
-        return BgpNeighbor(ip_address=ip_address, vrf=vrf, update_source=update_source)
+        return BgpNeighbor(ip_address=ip_interface(neighbor.ip_address).ip, vrf=vrf, update_source=update_source)

@@ -69,7 +69,15 @@ ip_name_servers:
   vrf: default
 - ip_address: 8.8.8.8
   vrf: default
+ip_radius_source_interfaces:
+- name: Management1
+- name: Vlan10
+  vrf: INBANDMGMT
 ip_routing: true
+ip_tacacs_source_interfaces:
+- name: Management1
+- name: Vlan10
+  vrf: INBANDMGMT
 ipv6_static_routes:
 - vrf: default
   prefix: ::/0
