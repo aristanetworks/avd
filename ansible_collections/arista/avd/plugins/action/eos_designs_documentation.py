@@ -7,6 +7,7 @@ import json
 import logging
 from dataclasses import asdict
 from pathlib import Path
+from re import MULTILINE, sub
 from typing import Any
 
 import yaml
@@ -21,6 +22,7 @@ PLUGIN_NAME = "arista.avd.eos_designs_documentation"
 try:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._utils import get, strip_empties_from_dict
+    from pyavd.api.fabric_documentation import ACTDigitalTwin
     from pyavd.get_fabric_documentation import get_fabric_documentation
 except ImportError as e:
     EosDesignsFacts = get = strip_empties_from_dict = get_fabric_documentation = RaiseOnUse(
@@ -121,8 +123,19 @@ class ActionModule(ActionBase):
 
         if output.digital_twin:
             content = {str(key).replace("_", "-"): value for key, value in asdict(output.digital_twin).items() if value is not None}
+            # Adjust formatting of the dumped Digital Twin artifact
+            match output.digital_twin:
+                case ACTDigitalTwin():
+                    serialized_content = "---\n" + sub(
+                        r"^(\s*-|\s{4})",
+                        lambda match: (" " * 4 + text) if (text := match.group(0)).startswith("  -") else (" " * 2 + text),
+                        yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130),
+                        flags=MULTILINE,
+                    )
+                case _:
+                    serialized_content = (yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130),)
             changed = write_file(
-                content=yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130),
+                content=serialized_content,
                 filename=validated_args["digital_twin_file"],
                 file_mode=validated_args["mode"],
             )
