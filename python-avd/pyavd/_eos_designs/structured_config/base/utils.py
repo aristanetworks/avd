@@ -31,6 +31,8 @@ if TYPE_CHECKING:
         EosDesigns.LoggingSettings.Vrfs,
         EosDesigns.SflowSettings.Vrfs,
         EosDesigns.SnmpSettings.Vrfs,
+        EosDesigns.AaaSettings.Tacacs.Vrfs,
+        EosDesigns.AaaSettings.Radius.Vrfs,
     )
 
 
