@@ -53,7 +53,7 @@ aaa_settings:
         source_interface: Vlan125
 
     policy:
-      ignore_unknown_mandatory_attribute: true
+      ignore_unknown_mandatory_attribute: false
 
   radius:
     servers:

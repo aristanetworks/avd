@@ -114,7 +114,7 @@ tacacs_servers:
   - host: 10.10.10.4
     vrf: MGMT
     key: 071B245F5A
-  policy_unknown_mandatory_attribute_ignore: true
+  policy_unknown_mandatory_attribute_ignore: false
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4092

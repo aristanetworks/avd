@@ -59,9 +59,6 @@ aaa_settings:
       - name: MGMT1
         source_interface: Vlan125
 
-    policy:
-      ignore_unknown_mandatory_attribute: true
-
   radius:
     servers:
       - host: 11.10.10.11

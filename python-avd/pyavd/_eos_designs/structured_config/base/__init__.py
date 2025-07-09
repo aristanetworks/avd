@@ -247,11 +247,6 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.vlan_internal_order = self.inputs.internal_vlan_order._cast_as(EosCliConfigGen.VlanInternalOrder)
 
     @structured_config_contributor
-    def aaa_root(self) -> None:
-        """aaa_root.disable is always set to match EOS default config and historic configs."""
-        self.structured_config.aaa_root.disabled = True
-
-    @structured_config_contributor
     def config_end(self) -> None:
         """config_end is always set to match EOS default config and historic configs."""
         self.structured_config.config_end = True
@@ -648,11 +643,10 @@ class AvdStructuredConfigBaseProtocol(
         if not self.inputs.aaa_settings.radius:
             return
 
-        vrfs = self.inputs.aaa_settings.radius.vrfs
         for server in self.inputs.aaa_settings.radius.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
-                vrfs=vrfs,
+                vrfs=self.inputs.aaa_settings.radius.vrfs,
                 set_source_interfaces=True,
                 context=f"aaa_settings.radius.servers[host={server.host}].vrf",
             )
@@ -685,11 +679,10 @@ class AvdStructuredConfigBaseProtocol(
         if not self.inputs.aaa_settings.tacacs:
             return
 
-        vrfs = self.inputs.aaa_settings.tacacs.vrfs
         for server in self.inputs.aaa_settings.tacacs.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
-                vrfs=vrfs,
+                vrfs=self.inputs.aaa_settings.tacacs.vrfs,
                 set_source_interfaces=True,
                 context=f"aaa_settings.tacacs.servers[host={server.host}].vrf",
             )

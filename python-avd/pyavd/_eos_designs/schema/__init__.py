@@ -112,8 +112,8 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 Source interface to use for TACACS hosts in this VRF.
                 If not set, the source interface may be set
-                automatically when tacacs server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
-                `use_default_mgmt_method_vrf`.
+                automatically when the TACACS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                or `use_default_mgmt_method_vrf`.
                 If set for the VRFs defined by `mgmt_interface_vrf` or
                 `inband_mgmt_vrf`, this setting will take precedence.
                 """
@@ -132,8 +132,8 @@ class EosDesigns(EosDesignsRootModel):
                             source_interface:
                                Source interface to use for TACACS hosts in this VRF.
                                If not set, the source interface may be set
-                               automatically when tacacs server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
-                               `use_default_mgmt_method_vrf`.
+                               automatically when the TACACS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                               or `use_default_mgmt_method_vrf`.
                                If set for the VRFs defined by `mgmt_interface_vrf` or
                                `inband_mgmt_vrf`, this setting will take precedence.
 
@@ -282,8 +282,8 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 Source interface to use for RADIUS hosts in this VRF.
                 If not set, the source interface may be set
-                automatically when radius server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
-                `use_default_mgmt_method_vrf`.
+                automatically when the RADIUS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                or `use_default_mgmt_method_vrf`.
                 If set for the VRFs defined by `mgmt_interface_vrf` or
                 `inband_mgmt_vrf`, this setting will take precedence.
                 """
@@ -302,8 +302,8 @@ class EosDesigns(EosDesignsRootModel):
                             source_interface:
                                Source interface to use for RADIUS hosts in this VRF.
                                If not set, the source interface may be set
-                               automatically when radius server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
-                               `use_default_mgmt_method_vrf`.
+                               automatically when the RADIUS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                               or `use_default_mgmt_method_vrf`.
                                If set for the VRFs defined by `mgmt_interface_vrf` or
                                `inband_mgmt_vrf`, this setting will take precedence.
 
