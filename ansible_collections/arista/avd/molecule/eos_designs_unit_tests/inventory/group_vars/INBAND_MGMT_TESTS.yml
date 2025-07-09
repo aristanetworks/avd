@@ -24,6 +24,8 @@ default_interfaces:
     uplink_interfaces: [ Ethernet1-10 ]
     mlag_interfaces: [ Ethernet11-20 ]
     downlink_interfaces: [ Ethernet21-30 ]
+    # Test for setting mlag interfaces speed via default_interfaces
+    mlag_interfaces_speed: forced 100gfull
 
 default_mgmt_method: inband
 
@@ -92,6 +94,8 @@ l3leaf:
     - group: inband-mgmt-parents-ipv6
       mlag_peer_ipv4_pool: 100.64.0.0/24
       mlag_peer_l3_ipv4_pool: 100.64.1.0/24
+      # Test for taking the precdence of node config mlag_interfaces_speed over default_interfaces
+      mlag_interfaces_speed: forced 40gfull
       nodes:
         - name: inband-mgmt-parent-ipv6-1
           id: 5
