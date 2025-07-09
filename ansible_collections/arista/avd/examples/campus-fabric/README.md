@@ -115,6 +115,10 @@ ansible_collections/arista/avd/examples/campus-fabric/inventory.yml
 
 This example configures a dedicated management network on port Management0 (vrf: MGMT) and an in-band management network using SVI VLAN 10 (vrf: default). In-band management is easily configured with two variables under the leaf defaults key in `SITE1_LEAFS.yml`. First, it auto-generates an SVI and default route on each leaf node. Then, on the Spine nodes, it will build a matching SVI for VLAN 10 and create a Virtual-IP (10.10.10.1) for the defined subnet.
 
+???+ note
+
+    The Management0 interface is only present in cEOS-lab variants of EOS.
+
 ``` yaml
 leaf:
   defaults:
@@ -137,7 +141,7 @@ Details on this feature can be found [here](../../roles/eos_designs/docs/data-mo
 | LEAF3D | 172.16.100.109 | 10.10.10.12 |
 | LEAF3E | 172.16.100.110 | 10.10.10.13 |
 
-In Campus Networks, having a dedicated out-of-band management network in each IDF is uncommon. Therefore, you can easily disable configuring the Management0 interface and the management VRF by adding these variables to the `SITE1_LEAFS.yml` group_vars.
+In Campus Networks, having a dedicated out-of-band management network in each IDF is uncommon. Therefore, you can easily disable configuring the Management interface and the management VRF by adding these variables to the `SITE1_LEAFS.yml` group_vars.
 
 ``` yaml
 mgmt_gateway: null

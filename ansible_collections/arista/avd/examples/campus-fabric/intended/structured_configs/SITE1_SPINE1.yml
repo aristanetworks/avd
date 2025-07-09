@@ -1,6 +1,3 @@
-aaa_authorization:
-  exec:
-    default: local
 aaa_root:
   disabled: true
 config_end: true
@@ -74,6 +71,10 @@ ethernet_interfaces:
   switchport:
     enabled: false
 hostname: SITE1_SPINE1
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management0
+    vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:

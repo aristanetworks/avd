@@ -3,7 +3,7 @@
 
 port_profiles:
   - profile: PP-DOT1X
-    mode: trunk phone
+    mode: 'trunk phone'
     spanning_tree_portfast: edge
     spanning_tree_bpduguard: enabled
     poe:
@@ -39,7 +39,7 @@ network_ports:
       - SITE1_LEAF1[AB] # regex match LEAF1A & LEAF1B
     switch_ports:
       - Ethernet1-48
-    description: IDF1 Standard Port
+    description: 'IDF1 Standard Port'
     profile: PP-DOT1X
     native_vlan: 110
     mode: "trunk phone"
@@ -56,7 +56,7 @@ network_ports:
       - SITE1_LEAF2A
     switch_ports:
       - Ethernet3-7/1-48
-    description: IDF2 Standard Port
+    description: 'IDF2 Standard Port'
     profile: PP-DOT1X
     native_vlan: 210
     mode: "trunk phone"
@@ -73,7 +73,7 @@ network_ports:
       - SITE1_LEAF3[ABCDE] # regex match LEAF3A, LEAF3B, LEAF3C, LEAF3D, LEAF3E
     switch_ports:
       - Ethernet1-96
-    description: IDF3 Standard Port
+    description: 'IDF3 Standard Port'
     profile: PP-DOT1X
     native_vlan: 310
     mode: "trunk phone"
