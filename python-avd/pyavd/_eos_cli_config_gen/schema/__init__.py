@@ -33728,7 +33728,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         tx_queue: TxQueue
         """
-        Global txQueue settings.
+        Global transmit queue settings.
 
         Subclass of AvdModel.
         """
@@ -33757,7 +33757,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                        Subclass of AvdModel.
                     tx_queue:
-                       Global txQueue settings.
+                       Global transmit queue settings.
 
                        Subclass of AvdModel.
 
