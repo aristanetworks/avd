@@ -339,6 +339,9 @@ router_bgp:
   - ip_address: 10.1.1.1
     peer_group: EVPN-OVERLAY-PEERS
     description: External peer
+  neighbor_interfaces:
+  - name: Ethernet1
+    remote_as: '577'
   redistribute:
     attached_host:
       enabled: true
