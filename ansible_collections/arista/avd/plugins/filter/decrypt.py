@@ -26,7 +26,7 @@ version_added: "3.8.0"
 short_description: Decrypt supported EOS passwords.
 description: |-
   - The filter is used to decrypt supported EOS passwords into clear text.
-  - The filter only supports decryption from type `7` and not type `8a` for BGP, ISIS, NTP, OSPF, and TACACS+ passwords.
+  - The filter only supports decryption from type `7` and not type `8a` for BGP, ISIS, NTP, OSPF, RADIUS and TACACS+ passwords.
 positional: _input
 options:
   _input:
@@ -40,9 +40,8 @@ options:
       `bgp` and `ospf_simple` requires the `password` and `key` inputs.
       `ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.
       `isis` requires the `password`, `key` and `mode` inputs.
-      `ntp` requires the `password` input.
-      `tacacs` requires the `password` input.
-    choices: ["bgp", "ospf_simple", "ospf_message_digest", "isis", "ntp", "tacacs"]
+      `ntp`, `radius` and `tacacs` require the `password` input.
+    choices: ["bgp", "isis", "ntp", "ospf_message_digest", "ospf_simple", "radius", "tacacs"]
     required: true
   key:
     type: string
@@ -85,6 +84,9 @@ EXAMPLES = r"""
 
 - # Decrypt TACACS+ password
   cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='tacacs') }}"
+
+- # Decrypt RADIUS password
+  cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='radius') }}"
 """
 
 RETURN = r"""
