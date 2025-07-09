@@ -24,7 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "qos.random_detect.ecn.allow_non_ect.enabled") | Boolean |  |  |  | Allow non-ect and set drop-precedence 1 in a policy map simultaneously.<br>Check which command is required for your platform. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;chip_based</samp>](## "qos.random_detect.ecn.allow_non_ect.chip_based") | Boolean |  |  |  | Allow non-ect chip-based. |
     | [<samp>&nbsp;&nbsp;tx_queue</samp>](## "qos.tx_queue") | Dictionary |  |  |  | Global txQueue settings. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shape_rate_percent_adaptive</samp>](## "qos.tx_queue.shape_rate_percent_adaptive") | Boolean |  |  |  | Use the parent available bandwidth for txQueue percentage-based allocation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shape_rate_percent_adaptive</samp>](## "qos.tx_queue.shape_rate_percent_adaptive") | Boolean |  |  |  | Use the parent available bandwidth for transmit queue percentage-based allocation. |
 
 === "YAML"
 
@@ -66,6 +66,6 @@
       # Global txQueue settings.
       tx_queue:
 
-        # Use the parent available bandwidth for txQueue percentage-based allocation.
+        # Use the parent available bandwidth for transmit queue percentage-based allocation.
         shape_rate_percent_adaptive: <bool>
     ```

@@ -33700,7 +33700,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"shape_rate_percent_adaptive": {"type": bool}}
             shape_rate_percent_adaptive: bool | None
-            """Use the parent available bandwidth for txQueue percentage-based allocation."""
+            """Use the parent available bandwidth for transmit queue percentage-based allocation."""
 
             if TYPE_CHECKING:
 
@@ -33712,7 +33712,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        shape_rate_percent_adaptive: Use the parent available bandwidth for txQueue percentage-based allocation.
+                        shape_rate_percent_adaptive: Use the parent available bandwidth for transmit queue percentage-based allocation.
 
                     """
 

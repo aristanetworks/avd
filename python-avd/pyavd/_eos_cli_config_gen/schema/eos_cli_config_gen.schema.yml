@@ -13129,7 +13129,7 @@ keys:
         keys:
           shape_rate_percent_adaptive:
             type: bool
-            description: Use the parent available bandwidth for txQueue percentage-based
+            description: Use the parent available bandwidth for transmit queue percentage-based
               allocation.
   qos_profiles:
     type: list
