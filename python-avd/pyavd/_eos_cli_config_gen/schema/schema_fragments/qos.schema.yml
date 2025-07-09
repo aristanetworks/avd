@@ -59,7 +59,7 @@ keys:
                     description: Allow non-ect chip-based.
       tx_queue:
         type: dict
-        description: Global txQueue settings.
+        description: Global transmit queue settings.
         keys:
           shape_rate_percent_adaptive:
             type: bool

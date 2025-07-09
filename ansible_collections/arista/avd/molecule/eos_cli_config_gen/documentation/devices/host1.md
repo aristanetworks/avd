@@ -12632,7 +12632,7 @@ QOS rewrite DSCP: **enabled**
 
 QOS random-detect ECN is set to allow **non-ect** **chip-based**
 
-QOS txQueue percentage-based allocation: **enabled**
+QOS adaptive transmit queue percentage-based allocation: **enabled**
 
 ##### QOS Mappings
 
