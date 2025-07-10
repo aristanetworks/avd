@@ -161,8 +161,8 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             uplink_switch = uplink_switches[uplink_index]
             uplink_switch_interface = uplink_switch_interfaces[uplink_index]
 
-            if (uplink := get_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)) is not None:
-                uplinks.append(uplink)
+            uplink = get_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)
+            uplinks.append(uplink)
 
         return uplinks
 
