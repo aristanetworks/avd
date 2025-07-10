@@ -28,6 +28,7 @@
 | MPLS_CORE | p | SITE2-LSR2 | 192.168.200.104/24 | 7280SR | Provisioned | - |
 | MPLS_CORE | rr | SITE2-RR1 | 10.30.30.109/24 | 7280SR3 | Provisioned | - |
 | MPLS_CORE | pe | SITE3-LER1 | 192.168.200.110/24 | 7280SR3 | Provisioned | - |
+| MPLS_CORE | rr | SITE3-RR1 | 10.30.30.120/24 | 7280SR3 | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -77,7 +78,7 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 100.70.0.0/24 | 256 | 10 | 3.91 % |
+| 100.70.0.0/24 | 256 | 11 | 4.3 % |
 
 ### Loopback0 Interfaces Node Allocation
 
@@ -93,6 +94,7 @@
 | MPLS_CORE | SITE2-LSR2 | 100.70.0.4/32 |
 | MPLS_CORE | SITE2-RR1 | 100.70.0.9/32 |
 | MPLS_CORE | SITE3-LER1 | 100.70.0.10/32 |
+| MPLS_CORE | SITE3-RR1 | 100.70.0.12/32 |
 
 ### ISIS CLNS interfaces
 
@@ -108,6 +110,7 @@
 | MPLS_CORE | SITE2-LSR2 | 49.0001.1000.7000.0004.00 |
 | MPLS_CORE | SITE2-RR1 | 49.0001.1000.7000.0009.00 |
 | MPLS_CORE | SITE3-LER1 | 49.0001.1000.7000.0010.00 |
+| MPLS_CORE | SITE3-RR1 | 49.0001.1000.7000.0012.00 |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 

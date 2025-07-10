@@ -177,7 +177,7 @@ class RouterInternetExitMixin(Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg)
 
-            tunnel_id_range: list[int] = range_expand(interface_policy_config.tunnel_interface_numbers)
+            tunnel_id_range: list[int] = [int(tunnel_id) for tunnel_id in range_expand(interface_policy_config.tunnel_interface_numbers)]
 
             zscaler_endpoints = (self._zscaler_endpoints.primary, self._zscaler_endpoints.secondary, self._zscaler_endpoints.tertiary)
             for index, zscaler_endpoint in enumerate(zscaler_endpoints):
