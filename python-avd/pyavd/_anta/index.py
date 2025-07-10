@@ -88,6 +88,9 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyLoggingErrors,
     ),
     TestSpec(
+        test_class=VerifyMaintenance,
+    ),
+    TestSpec(
         test_class=VerifyMemoryUtilization,
     ),
     TestSpec(

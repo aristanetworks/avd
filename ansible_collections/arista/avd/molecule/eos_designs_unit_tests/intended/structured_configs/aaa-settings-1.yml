@@ -1,0 +1,247 @@
+aaa_accounting:
+  exec:
+    console:
+      type: start-stop
+      methods:
+      - method: group
+        group: TACACS1
+      - method: group
+        group: RADIUS1
+      - method: logging
+    default:
+      type: start-stop
+      methods:
+      - method: group
+        group: TACACS1
+      - method: group
+        group: RADIUS1
+      - method: logging
+  system:
+    default:
+      type: start-stop
+      methods:
+      - method: group
+        group: TACACS1
+      - method: group
+        group: RADIUS1
+      - method: logging
+  dot1x:
+    default:
+      type: start-stop
+      methods:
+      - multicast: true
+        method: group
+        group: radius
+      - method: group
+        group: radius
+      - method: logging
+  commands:
+    console:
+    - commands: all
+      type: start-stop
+      methods:
+      - method: group
+        group: TACACS1
+      - method: group
+        group: RADIUS1
+      - method: logging
+    - commands: '0'
+      type: start-stop
+      methods:
+      - method: group
+        group: RADIUS1
+      - method: group
+        group: TACACS1
+      - method: logging
+    - commands: '1'
+      type: start-stop
+      methods:
+      - method: group
+        group: TACACS1
+      - method: group
+        group: RADIUS1
+    - commands: '2'
+      type: none
+      methods:
+      - method: logging
+    - commands: '3'
+      type: start-stop
+    default:
+    - commands: all
+      type: start-stop
+      methods:
+      - method: group
+        group: TACACS1
+      - method: group
+        group: RADIUS1
+      - method: logging
+    - commands: '0'
+      type: start-stop
+      methods:
+      - method: logging
+    - commands: '1'
+      type: start-stop
+      methods:
+      - method: group
+        group: TACACS1
+      - method: group
+        group: RADIUS1
+    - commands: '2'
+      type: none
+      methods:
+      - method: logging
+    - commands: '3'
+      type: start-stop
+      methods:
+      - method: logging
+aaa_authentication:
+  login:
+    default: group TACACS1 local
+    command_api: local
+    console: local
+  enable:
+    default: group TACACS1 local
+  dot1x:
+    default: group RADIUS1
+  policies:
+    on_failure_log: true
+    on_success_log: true
+    local:
+      allow_nopassword: true
+    lockout:
+      failure: 3
+      duration: 300
+      window: 900
+aaa_authorization:
+  policy:
+    local_default_role: network-admin
+  exec:
+    default: group TACACS1 local
+  config_commands: true
+  serial_console: true
+  dynamic:
+    dot1x_additional_groups:
+    - radius
+    - RADIUS1
+  commands:
+    all_default: group TACACS1
+    privilege:
+    - level: 10,15
+      default: group tacacs+ local
+    - level: '5'
+      default: group radius
+    - level: '6'
+    - default: group radius
+aaa_root:
+  disabled: false
+  secret:
+    sha512_password: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.
+aaa_server_groups:
+- name: RADIUS1
+  type: radius
+  servers:
+  - server: 11.10.10.11
+    vrf: default
+  - server: 11.10.10.1
+    vrf: MGMT
+  - server: 11.10.10.2
+    vrf: MGMT
+  - server: 11.10.10.3
+    vrf: MGMT
+- name: RADIUS2
+  type: radius
+  servers:
+  - server: 11.10.10.1
+    vrf: MGMT
+- name: TACACS1
+  type: tacacs+
+  servers:
+  - server: 10.10.10.11
+    vrf: default
+  - server: 10.10.10.1
+    vrf: MGMT
+  - server: 10.10.10.2
+    vrf: MGMT
+  - server: 10.10.10.3
+    vrf: MGMT
+  - server: 10.10.10.2
+    vrf: MGMT1
+- name: TACACS2
+  type: tacacs+
+  servers:
+  - server: 10.10.10.1
+    vrf: MGMT
+config_end: true
+enable_password:
+  disabled: true
+hostname: aaa-settings-1
+ip_igmp_snooping:
+  globally_enabled: true
+ip_radius_source_interfaces:
+- name: Vlan123
+  vrf: default
+- name: Vlan125
+  vrf: MGMT
+ip_tacacs_source_interfaces:
+- name: Vlan123
+  vrf: default
+- name: Management1
+  vrf: MGMT
+- name: Vlan125
+  vrf: MGMT1
+is_deployed: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  type: oob
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+radius_server:
+  hosts:
+  - host: 11.10.10.11
+    vrf: default
+    key: 071B245F5A
+  - host: 11.10.10.1
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 11.10.10.2
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 11.10.10.3
+    vrf: MGMT
+    key: 071B245F5A
+service_routing_protocols_model: multi-agent
+tacacs_servers:
+  hosts:
+  - host: 10.10.10.11
+    vrf: default
+    key: 071B245F5A
+  - host: 10.10.10.1
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 10.10.10.2
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 10.10.10.3
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 10.10.10.2
+    vrf: MGMT1
+    key: 071B245F5A
+  policy_unknown_mandatory_attribute_ignore: true
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
