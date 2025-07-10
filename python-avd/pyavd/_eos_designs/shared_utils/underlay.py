@@ -116,6 +116,7 @@ class UnderlayMixin(Protocol):
     def underlay_isis_authentication_key(self: SharedUtilsProtocol) -> str | None:
         """
         Returns 'underlay_isis_authentication_key' or encrypted(type-7) 'underlay_isis_authentication_cleartext_key'.
+
         If both keys are not defined then returns 'None'.
         """
         if self.inputs.underlay_isis_authentication_key is not None:
