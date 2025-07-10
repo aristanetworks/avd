@@ -11656,7 +11656,7 @@ router segment-security
 | Settings | Value |
 | -------- | ----- |
 | Dynamic Authorization | True |
-| Client Key | <removed> |
+| Client Type-7 Key | <removed> |
 | Client Session Idle-timeout (seconds) | 46 |
 
 ### Client Group: CG_1
@@ -11667,8 +11667,8 @@ Server Groups: aaa bbb ccc
 
 ##### Ipv4 Clients
 
-| Address | Key |
-| ------- | --- |
+| Address | Type-7 Key |
+| ------- | ---------- |
 | 1.2.10.10 | <removed> |
 | 1.2.10.6 | - |
 | 2.2.1.1 | - |
@@ -11676,16 +11676,16 @@ Server Groups: aaa bbb ccc
 
 ##### Ipv6 Clients
 
-| Address | Key |
-| ------- | --- |
+| Address | Type-7 Key |
+| ------- | ---------- |
 | 2001:db8::1 | <removed> |
 | ::1 | - |
 | fd00::1234 | <removed> |
 
 ##### Host Clients
 
-| Name | Key |
-| ---- | --- |
+| Name | Type-7 Key |
+| ---- | ---------- |
 | host1 | <removed> |
 | host2 | - |
 | host3 | <removed> |
@@ -11694,8 +11694,8 @@ Server Groups: aaa bbb ccc
 
 ##### Ipv4 Clients
 
-| Address | Key |
-| ------- | --- |
+| Address | Type-7 Key |
+| ------- | ---------- |
 | 1.1.10.10 | <removed> |
 | 1.1.10.6 | - |
 | 2.1.1.1 | - |
@@ -11717,8 +11717,8 @@ Server Groups: -
 
 ##### Host Clients
 
-| Name | Key |
-| ---- | --- |
+| Name | Type-7 Key |
+| ---- | ---------- |
 | host11 | <removed> |
 | host12 | - |
 | host13 | <removed> |
@@ -11727,8 +11727,8 @@ Server Groups: -
 
 ##### Ipv4 Clients
 
-| Address | Key |
-| ------- | --- |
+| Address | Type-7 Key |
+| ------- | ---------- |
 | 1.2.10.11 | <removed> |
 | 1.2.10.16 | - |
 | 2.2.1.11 | - |
@@ -11742,11 +11742,57 @@ Server Groups: -
 
 ##### Ipv6 Clients
 
-| Address | Key |
-| ------- | --- |
+| Address | Type-7 Key |
+| ------- | ---------- |
 | 2001:db8::11 | <removed> |
 | ::12 | - |
 | fd0::1234 | <removed> |
+
+#### RADIUS Proxy Configuration
+
+```eos
+!
+radius proxy
+   dynamic-authorization
+   client key 7 <removed>
+   client session idle-timeout 46 seconds
+   !
+   client group CG_1
+      client ipv4 1.1.10.10 vrf vrf_2 key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
+      client ipv4 1.1.10.6 vrf vrf_2
+      client ipv4 2.1.1.1 vrf vrf_2
+      client ipv4 1.1.10.8 vrf vrf_2 key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
+      client ipv4 1.2.10.10 vrf vrf_1 key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
+      client ipv4 1.2.10.6 vrf vrf_1
+      client ipv4 2.2.1.1 vrf vrf_1
+      client ipv4 1.2.10.8 vrf vrf_1 key 13161211190910157A6478732627101513173E04 7 <removed>
+      client ipv6 2001:db8::1 vrf vrf_1 key 06150A225E4B1D265457424B1F012939213C0C3C3205512952 7 <removed>
+      client ipv6 ::1 vrf vrf_1
+      client ipv6 fd00::1234 vrf vrf_1 key 0832494D1B1C1128434B5C44392E273A36211D1A1700553E04 7 <removed>
+      client host host1 vrf vrf_1 key 06150A225E4B1D265457424B1F012939213C0C3C3205512952 7 <removed>
+      client host host2 vrf vrf_1
+      client host host3 vrf vrf_1 key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
+      server group aaa bbb ccc
+   !
+   client group CG_2
+   !
+   client group CG_3
+      server group ddd
+   !
+   client group CG_4
+      client ipv4 1.2.10.11 vrf vrf_only_ipv4 key 06150A225E4B1D265457424B1F012939213C0C3C3205512952 7 <removed>
+      client ipv4 1.2.10.16 vrf vrf_only_ipv4
+      client ipv4 2.2.1.11 vrf vrf_only_ipv4
+      client ipv4 1.2.10.18 vrf vrf_only_ipv4 key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
+      client host host11 vrf vrf_only_host key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
+      client host host12 vrf vrf_only_host
+      client host host13 vrf vrf_only_host key 06150A225E4B1D265457424B1F012939213C0C3C3205512952 7 <removed>
+   !
+   client group CG_5
+      client ipv6 2001:db8::11 vrf vrf_only_ipv6 key 06150A225E4B1D265457424B1F012939213C0C3C3205512952 7 <removed>
+      client ipv6 ::12 vrf vrf_only_ipv6
+      client ipv6 fd0::1234 vrf vrf_only_ipv6 key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
+```
 
 ### Router Path-selection
 

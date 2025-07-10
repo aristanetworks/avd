@@ -11,7 +11,7 @@
 | Settings | Value |
 | -------- | ----- |
 | Dynamic Authorization | {{ radius_proxy.dynamic_authorization | arista.avd.default('-') }} |
-| Client Key | {{ radius_proxy.client_key | arista.avd.hide_passwords(hide_passwords) | arista.avd.default('-') }} |
+| Client Type-7 Key | {{ radius_proxy.client_key | arista.avd.hide_passwords(hide_passwords) | arista.avd.default('-') }} |
 | Client Session Idle-timeout (seconds) | {{ radius_proxy.client_session_idle_timeout | arista.avd.default('-') }} |
 {%     if radius_proxy.client_groups is arista.avd.defined %}
 {%         for client_group in radius_proxy.client_groups %}
@@ -27,8 +27,8 @@ Server Groups: {{ server_groups }}
 
 ##### Ipv4 Clients
 
-| Address | Key |
-| ------- | --- |
+| Address | Type-7 Key |
+| ------- | ---------- |
 {%                     for ipv4_client in vrf.ipv4_clients %}
 {%                         if ipv4_client.key is arista.avd.defined %}
 {%                             set ipv4_client_key = ipv4_client.key | arista.avd.hide_passwords(hide_passwords) %}
@@ -42,8 +42,8 @@ Server Groups: {{ server_groups }}
 
 ##### Ipv6 Clients
 
-| Address | Key |
-| ------- | --- |
+| Address | Type-7 Key |
+| ------- | ---------- |
 {%                     for ipv6_client in vrf.ipv6_clients %}
 {%                         if ipv6_client.key is arista.avd.defined %}
 {%                             set ipv6_client_key = ipv6_client.key | arista.avd.hide_passwords(hide_passwords) %}
@@ -57,8 +57,8 @@ Server Groups: {{ server_groups }}
 
 ##### Host Clients
 
-| Name | Key |
-| ---- | --- |
+| Name | Type-7 Key |
+| ---- | ---------- |
 {%                     for host_client in vrf.host_clients %}
 {%                         if host_client.key is arista.avd.defined %}
 {%                             set host_client_key = host_client.key | arista.avd.hide_passwords(hide_passwords) %}
@@ -71,4 +71,9 @@ Server Groups: {{ server_groups }}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
+#### RADIUS Proxy Configuration
+
+```eos
+{%     include 'eos/radius-proxy.j2' %}
+```
 {% endif %}
