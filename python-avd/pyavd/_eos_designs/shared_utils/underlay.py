@@ -113,10 +113,17 @@ class UnderlayMixin(Protocol):
         return self.inputs.underlay_ipv6_numbered
 
     @cached_property
-    def underlay_isis_authentication_encrypted_cleartext_key(self: SharedUtilsProtocol) -> str | None:
-        """Returns the encrypted key for underlay isis authentication."""
+    def underlay_isis_authentication_key(self: SharedUtilsProtocol) -> str | None:
+        """
+        Returns 'underlay_isis_authentication_key' or encrypted(type-7) 'underlay_isis_authentication_cleartext_key'.
+        If both keys are not defined then returns 'None'.
+        """
+        if self.inputs.underlay_isis_authentication_key is not None:
+            return self.inputs.underlay_isis_authentication_key
+
         if self.inputs.underlay_isis_authentication_cleartext_key is None:
             return None
+
         return isis_encrypt(
             password=self.inputs.underlay_isis_authentication_cleartext_key,
             mode=cast("str", self.inputs.underlay_isis_authentication_mode or "none"),
