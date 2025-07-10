@@ -128,7 +128,7 @@ class EthernetInterfacesMixin(Protocol):
                     if self.inputs.underlay_isis_authentication_mode:
                         ethernet_interface.isis_authentication.both.mode = self.inputs.underlay_isis_authentication_mode
 
-                    if (isis_authentication_key:=self.shared_utils.underlay_isis_authentication_key) is not None:
+                    if (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                         ethernet_interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
                 if link.underlay_multicast:
