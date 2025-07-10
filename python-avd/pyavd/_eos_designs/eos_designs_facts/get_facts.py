@@ -56,10 +56,12 @@ def get_facts(
     for hostname, generator in peer_facts_generators.items():
         try:
             all_facts[hostname] = generator.render()
-        except AristaAvdMissingVariableError as e:
-            raise type(e)(variable=e.variable, host=e.host, fact_host=hostname) from e
+        except AristaAvdMissingVariableError as e:  # noqa: PERF203
+            raise AristaAvdMissingVariableError(variable=e.variable, host=e.host or hostname) from e
         except AristaAvdError as e:
-            raise type(e)(e.message, fact_host=hostname) from e
+            host = e.host if hasattr(e, "host") and e.host else hostname
+            msg = f"{str(e).removesuffix('.')} for host '{host}'."
+            raise type(e)(msg, host=host) from e
 
     return all_facts
 

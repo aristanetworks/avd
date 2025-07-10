@@ -4,11 +4,11 @@
 
 
 class AristaAvdError(Exception):
-    def __init__(self, message: str = "An Error has occurred in an arista.avd plugin", fact_host: str | None = None) -> None:
-        if fact_host:
-            self.message = f"{message.removesuffix('.')} while generating the facts for '{fact_host}'."
-        else:
-            self.message = message
+    host: str | None
+
+    def __init__(self, message: str = "An Error has occurred in an arista.avd plugin", host: str | None = None) -> None:
+        self.host = host
+        self.message = message
         super().__init__(self.message)
 
     def _json_path_to_string(self, json_path: list[str | int]) -> str:
@@ -25,21 +25,23 @@ class AristaAvdError(Exception):
 
 
 class AristaAvdInvalidInputsError(AristaAvdError):
-    def __init__(self, message: str, fact_host: str | None = None) -> None:
-        super().__init__(message, fact_host=fact_host)
+    host: str | None
+
+    def __init__(self, message: str, host: str | None = None) -> None:
+        super().__init__(message, host=host)
 
 
 class AristaAvdMissingVariableError(AristaAvdError):
     variable: str | None
     host: str | None
 
-    def __init__(self, variable: str | None = None, host: str | None = None, fact_host: str | None = None) -> None:
+    def __init__(self, variable: str | None = None, host: str | None = None) -> None:
         """Fact host message is used only if host is set as well."""
         self.variable = variable
         self.host = host
         host_msg = f" for host '{host}'" if host else ""
         message = f"'{variable}' is required but was not found{host_msg}."
-        super().__init__(message, fact_host=fact_host)
+        super().__init__(message, host=host)
 
 
 class AvdSchemaError(AristaAvdError):
@@ -103,8 +105,8 @@ class AvdDeprecationWarning(AristaAvdError):  # noqa: N818
 
 
 class AristaAvdDuplicateDataError(AristaAvdError):
-    def __init__(self, context: str, context_item_a: str, context_item_b: str) -> None:
+    def __init__(self, context: str, context_item_a: str, context_item_b: str, host: str | None = None) -> None:
         self.message = (
             f"Found duplicate objects with conflicting data while generating configuration for {context}. {context_item_a} conflicts with {context_item_b}."
         )
-        super().__init__(self.message)
+        super().__init__(self.message, host=host)
