@@ -1,0 +1,228 @@
+# Testing with oob management
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: aaa-settings-1
+      mgmt_ip: 192.168.0.2/24
+
+aaa_settings:
+  tacacs:
+    servers:
+      - host: 10.10.10.11
+        vrf: default
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      - host: 10.10.10.1
+        vrf: use_mgmt_interface_vrf
+        key: 071B245F5A
+        groups:
+          - TACACS1
+          - TACACS2
+
+      - host: 10.10.10.2
+        vrf: MGMT
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      # No VRF, so it should honor default_mgmt_method which is oob in this case
+      - host: 10.10.10.3
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+      # Duplicate host with different vrf
+      - host: 10.10.10.2
+        vrf: MGMT1
+        key: 071B245F5A
+        groups:
+          - TACACS1
+
+    vrfs:
+      # Testing override of source for VRF default - no VRF in output source interface model.
+      - name: default
+        source_interface: Vlan123
+      - name: MGMT1
+        source_interface: Vlan125
+
+    policy:
+      ignore_unknown_mandatory_attribute: true
+
+  radius:
+    servers:
+      - host: 11.10.10.11
+        vrf: default
+        key: 071B245F5A
+        groups:
+          - RADIUS1
+
+      - host: 11.10.10.1
+        vrf: use_mgmt_interface_vrf
+        key: 071B245F5A
+        groups:
+          - RADIUS1
+          - RADIUS2
+
+      - host: 11.10.10.2
+        vrf: MGMT
+        key: 071B245F5A
+        groups:
+          - RADIUS1
+
+      # No VRF, so it should honor default_mgmt_method which is oob in this case
+      - host: 11.10.10.3
+        key: 071B245F5A
+        groups:
+          - RADIUS1
+
+    vrfs:
+      - name: default
+        source_interface: Vlan123
+      - name: MGMT
+        source_interface: Vlan125
+
+  ## AAA Accounting
+  accounting:
+    exec:
+      console:
+        type: start-stop
+        methods:
+          - method: group
+            group: TACACS1
+          - method: group
+            group: RADIUS1
+          - method: logging
+      default:
+        type: start-stop
+        methods:
+          - method: group
+            group: TACACS1
+          - method: group
+            group: RADIUS1
+          - method: logging
+    system:
+      default:
+        type: start-stop
+        methods:
+          - method: group
+            group: TACACS1
+          - method: group
+            group: RADIUS1
+          - method: logging
+    dot1x:
+      default:
+        type: start-stop
+        methods:
+          - method: group
+            group: radius
+            multicast: true
+          - method: group
+            group: radius
+          - method: logging
+    commands:
+      console:
+        - commands: all
+          type: start-stop
+          methods:
+            - method: group
+              group: TACACS1
+            - method: group
+              group: RADIUS1
+            - method: logging
+        - commands: 0
+          type: start-stop
+          methods:
+            - method: group
+              group: RADIUS1
+            - method: group
+              group: TACACS1
+            - method: logging
+        - commands: 1
+          type: start-stop
+          methods:
+            - method: group
+              group: TACACS1
+            - method: group
+              group: RADIUS1
+        # As type is none hence logging will not render in config as per actual EOS
+        - commands: 2
+          type: none
+          methods:
+            - method: logging
+        - commands: 3
+          type: start-stop
+      default:
+        - commands: all
+          type: start-stop
+          methods:
+            - method: group
+              group: TACACS1
+            - method: group
+              group: RADIUS1
+            - method: logging
+        - commands: 0
+          type: start-stop
+          methods:
+            - method: logging
+        - commands: 1
+          type: start-stop
+          methods:
+            - method: group
+              group: TACACS1
+            - method: group
+              group: RADIUS1
+        - commands: 2
+          type: none
+          methods:
+            - method: logging
+        - commands: 3
+          type: start-stop
+          methods:
+            - method: logging
+  ## AAA Authentication
+  authentication:
+    login:
+      default: group TACACS1 local
+      command_api: local
+      console: local
+    enable:
+      default: group TACACS1 local
+    dot1x:
+      default: group RADIUS1
+    policies:
+      on_failure_log: true
+      on_success_log: true
+      local:
+        allow_nopassword: true
+      lockout:
+        failure: 3
+        duration: 300
+        window: 900
+  ## AAA Authorization
+  authorization:
+    policy:
+      local_default_role: network-admin
+    exec:
+      default: group TACACS1 local
+    config_commands: true
+    serial_console: true
+    dynamic:
+      dot1x_additional_groups:
+        - radius
+        - RADIUS1
+    commands:
+      all_default: group TACACS1
+      privilege:
+        - level: "10,15"
+          default: "group tacacs+ local"
+        - level: "5"
+          default: "group radius"
+        # To handle the not defined cases
+        - level: "6"
+        - default: "group radius"
+  root_login:
+    enabled: true
+    sha512_password: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.

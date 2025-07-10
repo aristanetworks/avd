@@ -454,7 +454,6 @@ class RouterBgpMixin(Protocol):
                     remote_as=data["bgp_as"],
                     overlay_peering_interface=data.get("overlay_peering_interface"),
                 )
-
                 if self.inputs.evpn_prevent_readvertise_to_server:
                     neighbor.route_map_out = f"RM-EVPN-FILTER-AS{data['bgp_as']}"
                 neighbors.append(neighbor)
