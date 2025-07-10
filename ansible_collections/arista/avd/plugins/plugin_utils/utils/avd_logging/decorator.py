@@ -19,7 +19,7 @@ from .handlers import AnsibleDisplayHandler, ContextFilter, SaveToResultHandler
 
 def avd_logging(
     add_hostname_context: bool = False,
-    add_role_context: bool = True,
+    add_role_context: bool = False,
     target_loggers: list[str] | None = None,
     display: Display | None = None,
 ) -> Callable:
@@ -35,8 +35,6 @@ def avd_logging(
         display: An optional, pre-existing Ansible Display object. Primarily used for testing.
     """
     display = display or Display()
-    if display.verbosity < 1:
-        display.display("Use -v for details.")
 
     def decorator(func: Callable) -> Callable:
         if func.__name__ != "run_plugin":

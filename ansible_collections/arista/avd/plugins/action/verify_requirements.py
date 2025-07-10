@@ -392,7 +392,7 @@ def check_running_from_source() -> bool:
 
 
 class ActionModule(AvdActionPlugin):
-    @avd_logging(target_loggers=["ansible_collections.arista.avd", "pyavd", "schema_tools"])
+    @avd_logging(add_role_context=True, target_loggers=["ansible_collections.arista.avd", "pyavd", "schema_tools"])
     def run_plugin(self, task_vars: dict[str, Any]) -> dict[str, Any]:
         if not HAS_PACKAGING:
             msg = "packaging is required to run this plugin"
