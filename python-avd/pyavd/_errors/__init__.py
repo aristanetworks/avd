@@ -4,8 +4,11 @@
 
 
 class AristaAvdError(Exception):
-    def __init__(self, message: str = "An Error has occurred in an arista.avd plugin") -> None:
-        self.message = message
+    def __init__(self, message: str = "An Error has occurred in an arista.avd plugin", fact_host: str | None = None) -> None:
+        if fact_host:
+            self.message = f"{message.removesuffix('.')} while generating the facts for '{fact_host}'."
+        else:
+            self.message = message
         super().__init__(self.message)
 
     def _json_path_to_string(self, json_path: list[str | int]) -> str:
@@ -22,20 +25,21 @@ class AristaAvdError(Exception):
 
 
 class AristaAvdInvalidInputsError(AristaAvdError):
-    def __init__(self, message: str) -> None:
-        super().__init__(message)
+    def __init__(self, message: str, fact_host: str | None = None) -> None:
+        super().__init__(message, fact_host=fact_host)
 
 
 class AristaAvdMissingVariableError(AristaAvdError):
     variable: str | None
     host: str | None
 
-    def __init__(self, variable: str | None = None, host: str | None = None) -> None:
+    def __init__(self, variable: str | None = None, host: str | None = None, fact_host: str | None = None) -> None:
+        """Fact host message is used only if host is set as well."""
         self.variable = variable
         self.host = host
         host_msg = f" for host '{host}'" if host else ""
         message = f"'{variable}' is required but was not found{host_msg}."
-        super().__init__(message)
+        super().__init__(message, fact_host=fact_host)
 
 
 class AvdSchemaError(AristaAvdError):
