@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 
 import os
+import logging
 from collections import namedtuple
 from importlib.metadata import PackageNotFoundError
 from pathlib import Path
@@ -35,7 +36,7 @@ def test__validate_python_version(mocked_version, expected_return) -> None:
     version_info = namedtuple("version_info", "major minor micro releaselevel serial")
     with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys:
         mocked_sys.version_info = version_info(*mocked_version)
-        ret = _validate_python_version(info, result)
+        ret = _validate_python_version(info)
     assert ret == expected_return
     assert info["python_version_info"] == {
         "major": mocked_version[0],
@@ -50,14 +51,14 @@ def test__validate_python_version(mocked_version, expected_return) -> None:
 def test__validate_python_version_deprecation_message() -> None:
     """Test to verify the deprecation message."""
     info: dict[str, str | int] = {}
-    result = {}  # As in ansible module result
     version_info = namedtuple("version_info", "major minor micro releaselevel serial")
     with (
         patch("ansible_collections.arista.avd.plugins.action.verify_requirements.DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION", True),
         patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys,
+        pytest.warns(DeprecationWarning, match="will drop support for Python version") as recorded_warnings,
     ):
         mocked_sys.version_info = version_info(*MIN_PYTHON_SUPPORTED_VERSION, 42, "final", 0)
-        ret = _validate_python_version(info, result)
+        ret = _validate_python_version(info)
     assert ret is True
     assert info["python_version_info"] == {
         "major": MIN_PYTHON_SUPPORTED_VERSION[0],
@@ -68,7 +69,7 @@ def test__validate_python_version_deprecation_message() -> None:
     }
     assert bool(info["python_path"])
     # Check for deprecation of PYTHON min version
-    assert len(result["deprecations"]) == 1
+    assert len(recorded_warnings) == 1
 
 
 @pytest.mark.parametrize(
@@ -201,7 +202,7 @@ def test__validate_ansible_version(mocked_running_version, deprecated_version, e
     """TODO: - check that the requires_ansible is picked up from the correct place."""
     info = {}
     result = {}  # As in ansible module result
-    ret = _validate_ansible_version("arista.avd", mocked_running_version, info, result)
+    ret = _validate_ansible_version("arista.avd", mocked_running_version, info)
     assert ret == expected_return
     if expected_return is True and deprecated_version is True:
         # Check for depreecation of old Ansible versions (Not used right now)
@@ -259,7 +260,7 @@ def test__validate_ansible_collections(n_reqs, mocked_version, requirement_versi
         assert ret == expected_return
 
 
-def test__get_running_collection_version_git_not_installed() -> None:
+def test__get_running_collection_version_git_not_installed(caplog: pytest.LogCaptureFixture) -> None:
     """Verify that when git is not found in PATH the function returns properly."""
     # setting PATH to empty string to make sure git is not present
     os.environ["PATH"] = ""
@@ -272,13 +273,14 @@ def test__get_running_collection_version_git_not_installed() -> None:
         patch(
             "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version",
         ) as patched__get_collection_version,
-        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.display") as patched_display,
     ):
         patched__get_collection_path.return_value = "."
         patched__get_collection_version.return_value = "42.0.0"
         # TODO: Path is less kind than os.path was
         patched_Path.return_value = Path("/collections/foo/bar/__synthetic__/blah")
 
-        _get_running_collection_version("dummy", result)
-        patched_display.vvv.assert_called_once_with("Could not find 'git' executable, returning collection version")
+        with caplog.at_level(logging.DEBUG):
+            _get_running_collection_version("dummy", result)
+
     assert result == {"collection": {"name": "dummy", "path": "/collections/foo/bar", "version": "42.0.0"}}
+    assert "Could not find 'git' executable, returning collection version" in caplog.text
