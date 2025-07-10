@@ -239,11 +239,8 @@
   - [Segment Definitions](#segment-definitions)
   - [Router MSS-G Device Configuration](#router-mss-g-device-configuration)
 - [Radius Proxy](#radius-proxy)
-  - [Client Group: CG_1](#client-group-cg_1)
-  - [Client Group: CG_2](#client-group-cg_2)
-  - [Client Group: CG_3](#client-group-cg_3)
-  - [Client Group: CG_4](#client-group-cg_4)
-  - [Client Group: CG_5](#client-group-cg_5)
+  - [Client Group Summary](#client-group-summary)
+  - [RADIUS Proxy Configuration](#radius-proxy-configuration)
   - [Router Path-selection](#router-path-selection)
   - [Router Internet Exit](#router-internet-exit)
 - [Router L2 VPN](#router-l2-vpn)
@@ -11659,13 +11656,15 @@ router segment-security
 | Client Type-7 Key | <removed> |
 | Client Session Idle-timeout (seconds) | 46 |
 
-### Client Group: CG_1
+### Client Group Summary
+
+#### Client Group: CG_1
 
 Server Groups: aaa bbb ccc
 
-#### Vrf: vrf_1
+##### Vrf: vrf_1
 
-##### Ipv4 Clients
+###### Ipv4 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -11674,7 +11673,7 @@ Server Groups: aaa bbb ccc
 | 2.2.1.1 | - |
 | 1.2.10.8 | <removed> |
 
-##### Ipv6 Clients
+###### Ipv6 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -11682,7 +11681,7 @@ Server Groups: aaa bbb ccc
 | ::1 | - |
 | fd00::1234 | <removed> |
 
-##### Host Clients
+###### Host Clients
 
 | Name | Type-7 Key |
 | ---- | ---------- |
@@ -11690,9 +11689,9 @@ Server Groups: aaa bbb ccc
 | host2 | - |
 | host3 | <removed> |
 
-#### Vrf: vrf_2
+##### Vrf: vrf_2
 
-##### Ipv4 Clients
+###### Ipv4 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -11701,21 +11700,17 @@ Server Groups: aaa bbb ccc
 | 2.1.1.1 | - |
 | 1.1.10.8 | <removed> |
 
-### Client Group: CG_2
+#### Client Group: CG_2
 
-Server Groups: -
-
-### Client Group: CG_3
+#### Client Group: CG_3
 
 Server Groups: ddd
 
-### Client Group: CG_4
+#### Client Group: CG_4
 
-Server Groups: -
+##### Vrf: vrf_only_host
 
-#### Vrf: vrf_only_host
-
-##### Host Clients
+###### Host Clients
 
 | Name | Type-7 Key |
 | ---- | ---------- |
@@ -11723,9 +11718,9 @@ Server Groups: -
 | host12 | - |
 | host13 | <removed> |
 
-#### Vrf: vrf_only_ipv4
+##### Vrf: vrf_only_ipv4
 
-##### Ipv4 Clients
+###### Ipv4 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -11734,13 +11729,11 @@ Server Groups: -
 | 2.2.1.11 | - |
 | 1.2.10.18 | <removed> |
 
-### Client Group: CG_5
+#### Client Group: CG_5
 
-Server Groups: -
+##### Vrf: vrf_only_ipv6
 
-#### Vrf: vrf_only_ipv6
-
-##### Ipv6 Clients
+###### Ipv6 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -11748,7 +11741,7 @@ Server Groups: -
 | ::12 | - |
 | fd0::1234 | <removed> |
 
-#### RADIUS Proxy Configuration
+### RADIUS Proxy Configuration
 
 ```eos
 !
