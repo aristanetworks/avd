@@ -297,15 +297,15 @@ class UtilsMixin(Protocol):
                     interface.isis_authentication.both._update(
                         key=isis_encrypt(
                             password=p2p_link.isis_authentication_cleartext_key,
-                            key=cast("str", self.shared_utils.isis_instance_name or "none"),
-                            mode=cast("str", mode),
+                            key=cast("str", self.shared_utils.isis_instance_name),
+                            mode=cast("str", mode or 'none'),
                         ),
                         key_type="7",
                     )
                 elif self.inputs.underlay_isis_authentication_key is not None:
                     interface.isis_authentication.both._update(key=self.inputs.underlay_isis_authentication_key, key_type="7")
-                elif self.shared_utils.underlay_isis_authentication_cleartext_key is not None:
-                    interface.isis_authentication.both._update(key=self.shared_utils.underlay_isis_authentication_cleartext_key, key_type="7")
+                elif (isis_authentication_key:=self.shared_utils.underlay_isis_authentication_encrypted_cleartext_key) is not None:
+                    interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
         if p2p_link.macsec_profile:
             interface.mac_security.profile = p2p_link.macsec_profile
