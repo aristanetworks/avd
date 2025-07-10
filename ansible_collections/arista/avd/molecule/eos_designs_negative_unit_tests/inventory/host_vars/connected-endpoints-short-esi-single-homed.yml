@@ -22,5 +22,5 @@ servers:
           short_esi: '0303:0202:0101'
 
 expected_error_message: >-
-  The length of servers[name=server01_ESI].adapters[0].switches is less than 2.
+  The length of 'servers[name=server01_ESI].adapters[0].switches' is less than 2.
   Short ESI can be configured for multihoming devices.
