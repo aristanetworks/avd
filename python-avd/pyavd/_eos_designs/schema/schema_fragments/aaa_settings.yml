@@ -36,8 +36,15 @@ keys:
                     - int
                 key:
                   type: str
-                  description: Encrypted type-7 key.
-                  required: true
+                  description: |-
+                    Encrypted type-7 key.
+                    Takes precedence over `cleartext_key`.
+                cleartext_key:
+                  type: str
+                  description: |-
+                    Cleartext password.
+                    Encrypted to Type 7 by AVD.
+                    To protect the password at rest it is strongly recommended to make use of a vault or similar.
           vrfs:
             type: list
             primary_key: name
@@ -94,8 +101,15 @@ keys:
                     - int
                 key:
                   type: str
-                  description: Encrypted key.
-                  required: true
+                  description: |-
+                    Encrypted type-7 key.
+                    Takes precedence over `cleartext_key`.
+                cleartext_key:
+                  type: str
+                  description: |-
+                    Cleartext password.
+                    Encrypted to Type 7 by AVD.
+                    To protect the password at rest it is strongly recommended to make use of a vault or similar.
           vrfs:
             type: list
             primary_key: name

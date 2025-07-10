@@ -12,12 +12,14 @@ aaa_settings:
       - host: 10.10.10.11
         vrf: default
         key: 071B245F5A
+        # key take precedence over cleartext_key
+        cleartext_key: arista
         groups:
           - TACACS1
 
       - host: 10.10.10.1
         vrf: use_mgmt_interface_vrf
-        key: 071B245F5A
+        cleartext_key: arista
         groups:
           - TACACS1
           - TACACS2
@@ -56,12 +58,14 @@ aaa_settings:
       - host: 11.10.10.11
         vrf: default
         key: 071B245F5A
+        # key take precedence over cleartext_key
+        cleartext_key: arista
         groups:
           - RADIUS1
 
       - host: 11.10.10.1
         vrf: use_mgmt_interface_vrf
-        key: 071B245F5A
+        cleartext_key: arista
         groups:
           - RADIUS1
           - RADIUS2

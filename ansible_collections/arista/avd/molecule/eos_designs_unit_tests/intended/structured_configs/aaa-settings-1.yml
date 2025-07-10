@@ -210,7 +210,7 @@ radius_server:
     key: 071B245F5A
   - host: 11.10.10.1
     vrf: MGMT
-    key: 071B245F5A
+    key: 0112140D481F07
   - host: 11.10.10.2
     vrf: MGMT
     key: 071B245F5A
@@ -225,7 +225,7 @@ tacacs_servers:
     key: 071B245F5A
   - host: 10.10.10.1
     vrf: MGMT
-    key: 071B245F5A
+    key: 0112140D481F07
   - host: 10.10.10.2
     vrf: MGMT
     key: 071B245F5A
