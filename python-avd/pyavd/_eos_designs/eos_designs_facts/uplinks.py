@@ -125,9 +125,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         These facts are leveraged by templates for this device when rendering uplinks
         and by templates for peer devices when rendering downlinks
         """
-        if self.shared_utils.uplink_type == "p2p":
-            get_uplink = self._get_p2p_uplink
-        elif self.shared_utils.uplink_type == "port-channel":
+        if self.shared_utils.uplink_type == "port-channel":
             get_uplink = self._get_port_channel_uplink
         elif self.shared_utils.uplink_type == "p2p-vrfs":
             if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
@@ -145,10 +143,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 # uplink_type: lan' only supports a single uplink interface.
                 # Got {self._uplink_interfaces}. Consider 'uplink_type: lan-port-channel' if applicable.
             get_uplink = self._get_l2_uplink
-        # This condition does not occur.
         else:
-            msg = f"Invalid uplink_type '{self.shared_utils.uplink_type}'."
-            raise AristaAvdError(msg)
+            # Uplink type is 'p2p'.
+            get_uplink = self._get_p2p_uplink
 
         uplinks = EosDesignsFactsProtocol.Uplinks()
         uplink_switches = self.shared_utils.uplink_switches
