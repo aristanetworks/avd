@@ -109,7 +109,6 @@ dc1-leaf1c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-leaf1c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
-dc1-leaf1c,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-leaf2a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-leaf2a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-leaf2a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -184,7 +183,6 @@ dc1-leaf2c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf2c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-leaf2c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf2c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
-dc1-leaf2c,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-spine1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-spine1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -216,7 +214,6 @@ dc1-spine1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-spine1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-spine1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-spine1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
-dc1-spine1,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-spine2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-spine2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-spine2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -248,7 +245,6 @@ dc1-spine2,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-spine2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-spine2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-spine2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
-dc1-spine2,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-svc-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-svc-leaf1a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-svc-leaf1a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
@@ -441,7 +437,6 @@ dc2-leaf1c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf1c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
-dc2-leaf1c,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf2a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf2a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf2a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -558,7 +553,6 @@ dc2-leaf2c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf2c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf2c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf2c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
-dc2-leaf2c,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf3a.arista.com,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf3a.arista.com,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf3a.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -666,7 +660,6 @@ dc2-spine1,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc2-spine1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-spine1,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-spine1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
-dc2-spine1,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-spine2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-spine2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-spine2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -698,4 +691,3 @@ dc2-spine2,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc2-spine2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-spine2,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-spine2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
-dc2-spine2,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
