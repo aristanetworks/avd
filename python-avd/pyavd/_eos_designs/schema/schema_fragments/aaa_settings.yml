@@ -45,6 +45,8 @@ keys:
                     Cleartext password.
                     Encrypted to Type 7 by AVD.
                     To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                  convert_types:
+                    - int
           vrfs:
             type: list
             primary_key: name
@@ -110,6 +112,8 @@ keys:
                     Cleartext password.
                     Encrypted to Type 7 by AVD.
                     To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                  convert_types:
+                    - int
           vrfs:
             type: list
             primary_key: name

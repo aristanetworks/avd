@@ -17,7 +17,8 @@ aaa_settings:
         groups:
           - TACACS1
 
-      - host: 10.10.10.1
+      # Test with host as domain name and cleartext_key to AVD type-7 encrypt key
+      - host: nodomain.co
         vrf: use_mgmt_interface_vrf
         cleartext_key: arista
         groups:
@@ -31,7 +32,7 @@ aaa_settings:
           - TACACS1
 
       # No VRF, so it should honor default_mgmt_method which is oob in this case
-      - host: 10.10.10.3
+      - host: "1:1:1:1:1:1:1:1"
         key: 071B245F5A
         groups:
           - TACACS1
@@ -63,7 +64,8 @@ aaa_settings:
         groups:
           - RADIUS1
 
-      - host: 11.10.10.1
+      # Test with host as domain name and cleartext_key to AVD type-7 encrypt key
+      - host: nodomain.co
         vrf: use_mgmt_interface_vrf
         cleartext_key: arista
         groups:
@@ -77,7 +79,7 @@ aaa_settings:
           - RADIUS1
 
       # No VRF, so it should honor default_mgmt_method which is oob in this case
-      - host: 11.10.10.3
+      - host: "1:1:1:1:1:1:1:1"
         key: 071B245F5A
         groups:
           - RADIUS1

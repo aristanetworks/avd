@@ -3,15 +3,18 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+import hashlib
+import ipaddress
+from typing import TYPE_CHECKING, Literal, Protocol, cast
 
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._eos_designs.schema import EosDesigns
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils.password_utils.password import radius_encrypt, tacacs_encrypt
 
 if TYPE_CHECKING:
     from typing import TypeVar
 
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-    from pyavd._eos_designs.schema import EosDesigns
 
     from . import AvdStructuredConfigBaseProtocol
 
@@ -34,6 +37,8 @@ if TYPE_CHECKING:
         EosDesigns.AaaSettings.Tacacs.Vrfs,
         EosDesigns.AaaSettings.Radius.Vrfs,
     )
+
+    T_RadiusOrTacacsServer = TypeVar("T_RadiusOrTacacsServer", EosDesigns.AaaSettings.Radius.ServersItem, EosDesigns.AaaSettings.Tacacs.ServersItem)
 
 
 class UtilsMixin(Protocol):
@@ -195,3 +200,48 @@ class UtilsMixin(Protocol):
                 return self.shared_utils.inband_mgmt_vrf or "default"
             case _:
                 return vrf_input
+
+    def _get_tacacs_or_radius_server_password(self: AvdStructuredConfigBaseProtocol, radius_or_tacacs_server: T_RadiusOrTacacsServer) -> str:
+        """
+        Retrieve the type 7 encrypted key for a RADIUS or TACACS+ server.
+
+        This function checks for a pre-encrypted key or a cleartext key to generate
+        the encrypted password. If neither is provided, it raises an error.
+
+        Args:
+            radius_or_tacacs_server: A server object from either RADIUS or TACACS+ configuration.
+
+        Returns:
+            The type 7 encrypted password.
+
+        Raises:
+            AristaAvdMissingVariableError: If both `key` and `cleartext_key` are missing.
+        """
+        if isinstance(radius_or_tacacs_server, EosDesigns.AaaSettings.Radius.ServersItem):
+            encrypt_func = radius_encrypt
+            path_prefix = f"aaa_settings.radius.servers[host={radius_or_tacacs_server.host}]"
+        else:
+            encrypt_func = tacacs_encrypt
+            path_prefix = f"aaa_settings.tacacs.servers[host={radius_or_tacacs_server.host}]"
+
+        if radius_or_tacacs_server.key is not None:
+            return radius_or_tacacs_server.key
+
+        if radius_or_tacacs_server.cleartext_key is not None:
+            salt = self.get_salt_for_host(radius_or_tacacs_server.host)
+            return encrypt_func(radius_or_tacacs_server.cleartext_key, salt)
+
+        msg = f"`{path_prefix}.key` or `{path_prefix}.cleartext_key`"
+        raise AristaAvdMissingVariableError(msg)
+
+    def get_salt_for_host(
+        self: AvdStructuredConfigBaseProtocol, host: str | ipaddress.IPv4Address | ipaddress.IPv6Address
+    ) -> Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
+        """Calculate the type 7 salt based on the host IP address or hostname."""
+        if isinstance(host, (ipaddress.IPv4Address, ipaddress.IPv6Address)):
+            salt_value = int(ipaddress.ip_address(host)) % 16
+        else:
+            # Fallback for domain names using a SHA256 hash
+            salt_value = int(hashlib.sha256(host.encode()).hexdigest(), 16) % 16
+
+        return cast("Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]", salt_value)

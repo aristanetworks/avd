@@ -3,16 +3,15 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import ipaddress
 from functools import cached_property
-from typing import TYPE_CHECKING, Literal, Protocol, cast
+from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get
-from pyavd._utils.password_utils.password import radius_encrypt, simple_7_encrypt, tacacs_encrypt
+from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
@@ -441,34 +440,3 @@ class MiscMixin(Protocol):
     def is_campus_device(self: SharedUtilsProtocol) -> bool:
         """Return True if generation of the Campus tags is globally enabled and current device is a Campus device."""
         return bool(self.inputs.generate_cv_tags.campus_fabric and default(self.node_config.campus, self.inputs.campus))
-
-    def get_tacacs_or_radius_server_password(self: SharedUtilsProtocol, radius_or_tacacs_server: RadiusOrTacacsServer) -> str:
-        """
-        Retrieve the type 7 encrypted key for a RADIUS or TACACS+ server.
-
-        The function checks for a pre-encrypted key or a cleartext key to generate
-        the encrypted password. If neither is provided, it raises an error.
-
-        Args:
-            radius_or_tacacs_server: A server object from either RADIUS or TACACS+ configuration.
-
-        Returns:
-            str: Type 7 encrypted password.
-
-        Raises:
-            AristaAvdMissingVariableError: If both `key` and `cleartext_key` are missing.
-        """
-        if radius_or_tacacs_server.key is not None:
-            return radius_or_tacacs_server.key
-        if radius_or_tacacs_server.cleartext_key is not None:
-            salt = cast("Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]", int(ipaddress.ip_address(radius_or_tacacs_server.host)) % 16)
-            if isinstance(radius_or_tacacs_server, EosDesigns.AaaSettings.Radius.ServersItem):
-                return radius_encrypt(radius_or_tacacs_server.cleartext_key, salt)
-            return tacacs_encrypt(radius_or_tacacs_server.cleartext_key, salt)
-        if isinstance(radius_or_tacacs_server, EosDesigns.AaaSettings.Radius.ServersItem):
-            path_prefix = f"aaa_settings.radius.servers[host={radius_or_tacacs_server.host}]"
-        else:
-            path_prefix = f"aaa_settings.tacacs.servers[host={radius_or_tacacs_server.host}]"
-
-        msg = f"`{path_prefix}.key` or `{path_prefix}.cleartext_key`"
-        raise AristaAvdMissingVariableError(msg)

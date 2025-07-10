@@ -142,34 +142,34 @@ aaa_server_groups:
   servers:
   - server: 11.10.10.11
     vrf: default
-  - server: 11.10.10.1
+  - server: nodomain.co
     vrf: MGMT
   - server: 11.10.10.2
     vrf: MGMT
-  - server: 11.10.10.3
+  - server: '1:1:1:1:1:1:1:1'
     vrf: MGMT
 - name: RADIUS2
   type: radius
   servers:
-  - server: 11.10.10.1
+  - server: nodomain.co
     vrf: MGMT
 - name: TACACS1
   type: tacacs+
   servers:
   - server: 10.10.10.11
     vrf: default
-  - server: 10.10.10.1
+  - server: nodomain.co
     vrf: MGMT
   - server: 10.10.10.2
     vrf: MGMT
-  - server: 10.10.10.3
+  - server: '1:1:1:1:1:1:1:1'
     vrf: MGMT
   - server: 10.10.10.2
     vrf: MGMT1
 - name: TACACS2
   type: tacacs+
   servers:
-  - server: 10.10.10.1
+  - server: nodomain.co
     vrf: MGMT
 config_end: true
 enable_password:
@@ -208,13 +208,13 @@ radius_server:
   - host: 11.10.10.11
     vrf: default
     key: 071B245F5A
-  - host: 11.10.10.1
+  - host: nodomain.co
     vrf: MGMT
-    key: 0112140D481F07
+    key: 03054902151B20
   - host: 11.10.10.2
     vrf: MGMT
     key: 071B245F5A
-  - host: 11.10.10.3
+  - host: '1:1:1:1:1:1:1:1'
     vrf: MGMT
     key: 071B245F5A
 service_routing_protocols_model: multi-agent
@@ -223,13 +223,13 @@ tacacs_servers:
   - host: 10.10.10.11
     vrf: default
     key: 071B245F5A
-  - host: 10.10.10.1
+  - host: nodomain.co
     vrf: MGMT
-    key: 0112140D481F07
+    key: 03054902151B20
   - host: 10.10.10.2
     vrf: MGMT
     key: 071B245F5A
-  - host: 10.10.10.3
+  - host: '1:1:1:1:1:1:1:1'
     vrf: MGMT
     key: 071B245F5A
   - host: 10.10.10.2
