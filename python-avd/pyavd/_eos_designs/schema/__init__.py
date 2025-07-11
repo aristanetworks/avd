@@ -66657,9 +66657,9 @@ class EosDesigns(EosDesignsRootModel):
     Note: Entries defined in `ipv4_prefix_list_catalog` will only be rendered
     in the final configuration
     if they are explicitly referenced in a node's
-    `l3_interfaces.bgp.ipv4_prefix_list_in` / `ipv4_prefix_list_out`
+    `l3_interfaces.[].bgp.ipv4_prefix_list_in` / `ipv4_prefix_list_out`
     or
-    `l3_port_channels.bgp.ipv4_prefix_list_in` / `ipv4_prefix_list_out`.
+    `l3_port_channels.[].bgp.ipv4_prefix_list_in` / `ipv4_prefix_list_out`.
 
     Subclass of AvdIndexedList
     with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
@@ -68619,9 +68619,9 @@ class EosDesigns(EosDesignsRootModel):
                    Note: Entries defined in `ipv4_prefix_list_catalog` will only be rendered
                    in the final configuration
                    if they are explicitly referenced in a node's
-                   `l3_interfaces.bgp.ipv4_prefix_list_in` / `ipv4_prefix_list_out`
+                   `l3_interfaces.[].bgp.ipv4_prefix_list_in` / `ipv4_prefix_list_out`
                    or
-                   `l3_port_channels.bgp.ipv4_prefix_list_in` / `ipv4_prefix_list_out`.
+                   `l3_port_channels.[].bgp.ipv4_prefix_list_in` / `ipv4_prefix_list_out`.
 
                    Subclass of AvdIndexedList
                    with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
