@@ -66657,12 +66657,12 @@ class EosDesigns(EosDesignsRootModel):
     Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in
     the configuration when
     they are explicitly referenced in one of the following node config keys:
-    *
+    -
     `l3_interfaces.[].bgp.ipv4_prefix_list_in`
-    * `l3_interfaces.[].bgp.ipv4_prefix_list_out`
-    *
+    - `l3_interfaces.[].bgp.ipv4_prefix_list_out`
+    -
     `l3_port_channels.[].bgp.ipv4_prefix_list_in`
-    * `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
+    - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
     Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
     """
     ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks
@@ -68620,12 +68620,12 @@ class EosDesigns(EosDesignsRootModel):
                    Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in
                    the configuration when
                    they are explicitly referenced in one of the following node config keys:
-                   *
+                   -
                    `l3_interfaces.[].bgp.ipv4_prefix_list_in`
-                   * `l3_interfaces.[].bgp.ipv4_prefix_list_out`
-                   *
+                   - `l3_interfaces.[].bgp.ipv4_prefix_list_out`
+                   -
                    `l3_port_channels.[].bgp.ipv4_prefix_list_in`
-                   * `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
+                   - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
                    Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
                 ipv6_mgmt_destination_networks:
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
