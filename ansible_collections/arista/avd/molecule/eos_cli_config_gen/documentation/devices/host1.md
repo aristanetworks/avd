@@ -12774,6 +12774,8 @@ QOS rewrite DSCP: **enabled**
 
 QOS random-detect ECN is set to allow **non-ect** **chip-based**
 
+QOS adaptive transmit queue percentage-based allocation: **enabled**
+
 ##### QOS Mappings
 
 | COS to Traffic Class mappings |
@@ -12802,6 +12804,7 @@ QOS random-detect ECN is set to allow **non-ect** **chip-based**
 ```eos
 !
 qos rewrite dscp
+qos tx-queue shape rate percent adaptive
 qos map cos 1 2 3 4 to traffic-class 2
 qos map cos 3 to traffic-class 3
 qos map dscp 8 9 10 11 12 13 14 15 16 17 19 21 23 24 25 27 29 31 32 33 35 37 39 40 41 42 43 44 45 47 49 50 51 52 53 54 55 57 58 59 60 61 62 63 to traffic-class 1
