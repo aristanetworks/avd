@@ -2663,7 +2663,20 @@ keys:
   ipv4_prefix_list_catalog:
     type: list
     primary_key: name
-    description: IPv4 prefix-list catalog.
+    description: 'IPv4 prefix-list catalog.
+
+      Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in the
+      configuration when
+
+      they are explicitly referenced in one of the following node config keys:
+
+      - `l3_interfaces.[].bgp.ipv4_prefix_list_in`
+
+      - `l3_interfaces.[].bgp.ipv4_prefix_list_out`
+
+      - `l3_port_channels.[].bgp.ipv4_prefix_list_in`
+
+      - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.'
     items:
       type: dict
       keys:
@@ -11643,12 +11656,16 @@ $defs:
               description: 'Prefix List Name. Accept routes for only these prefixes
                 from the peer.
 
-                Required for wan interfaces.'
+                Required for wan interfaces.
+
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
             ipv4_prefix_list_out:
               type: str
               description: 'Prefix List Name. Advertise routes for only these prefixes.
 
-                If not specified, nothing would be advertised.'
+                If not specified, nothing would be advertised.
+
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
@@ -11887,12 +11904,16 @@ $defs:
               description: 'Prefix List Name. Accept routes for only these prefixes
                 from the peer.
 
-                Required for wan interfaces.'
+                Required for wan interfaces.
+
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
             ipv4_prefix_list_out:
               type: str
               description: 'Prefix List Name. Advertise routes for only these prefixes.
 
-                If not specified, nothing would be advertised.'
+                If not specified, nothing would be advertised.
+
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
