@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 from ipaddress import ip_network
+from typing import cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
@@ -37,7 +38,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
 
         if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
             self.structured_config.vlan_interfaces.append_new(
-                name=self.shared_utils.inband_mgmt_interface,
+                name=cast("str", self.shared_utils.inband_mgmt_interface),
                 description=self.shared_utils.node_config.inband_mgmt_description,
                 shutdown=False,
                 mtu=self.shared_utils.inband_mgmt_mtu,

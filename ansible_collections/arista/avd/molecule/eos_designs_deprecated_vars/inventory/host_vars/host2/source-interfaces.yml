@@ -1,0 +1,5 @@
+source_interfaces:
+  # source_interfaces.radius is deprecated. To be removed in 6.0.0
+  radius:
+    mgmt_interface: false
+    inband_mgmt_interface: false

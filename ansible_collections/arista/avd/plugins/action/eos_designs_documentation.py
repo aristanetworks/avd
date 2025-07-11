@@ -5,12 +5,14 @@ from __future__ import annotations
 
 import json
 import logging
+from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
+import yaml
 from ansible.errors import AnsibleActionFail
+from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
-from yaml import load
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, write_file
@@ -44,6 +46,8 @@ ARGUMENT_SPEC = {
     "p2p_links_csv_file": {"type": "str", "required": True},
     "p2p_links_csv": {"type": "bool", "default": False},
     "toc": {"type": "bool", "default": True},
+    "digital_twin_file": {"type": "str", "default": "DIGITAL-TWIN-TOPOLOGY.yml"},
+    "digital_twin": {"type": "bool", "default": False},
 }
 
 
@@ -91,6 +95,7 @@ class ActionModule(ActionBase):
             topology_csv=validated_args["topology_csv"],
             p2p_links_csv=validated_args["p2p_links_csv"],
             toc=validated_args["toc"],
+            digital_twin=validated_args["digital_twin"],
         )
         if output.fabric_documentation:
             result["changed"] = write_file(
@@ -110,6 +115,15 @@ class ActionModule(ActionBase):
             changed = write_file(
                 content=output.p2p_links_csv,
                 filename=validated_args["p2p_links_csv_file"],
+                file_mode=validated_args["mode"],
+            )
+            result["changed"] = result.get("changed") or changed
+
+        if output.digital_twin:
+            content = {str(key).replace("_", "-"): value for key, value in asdict(output.digital_twin).items() if value is not None}
+            changed = write_file(
+                content=yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130),
+                filename=validated_args["digital_twin_file"],
                 file_mode=validated_args["mode"],
             )
             result["changed"] = result.get("changed") or changed
@@ -136,7 +150,7 @@ class ActionModule(ActionBase):
 
         with path.open(encoding="UTF-8") as stream:
             if structured_config_suffix in ["yml", "yaml"]:
-                return load(stream, Loader=YamlLoader)  # noqa: S506
+                return yaml.load(stream, Loader=YamlLoader)  # noqa: S506
 
             # JSON
             return json.load(stream)

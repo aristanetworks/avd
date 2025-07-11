@@ -38,10 +38,24 @@ wan_router:
               peer_ip: 100.64.3.1
               static_routes:
                 - prefix: 100.64.0.0/16
+            # Added to cover the skip static_peers case for anta test VerifyAVTSpecificPath.
+            - name: Ethernet5
+              ip_address: 100.64.3.2/24
+              wan_carrier: TAC
+              wan_circuit_id: DC1-INET-3
         - name: dc1-wan2
           id: 2
           mgmt_ip: 172.16.1.16/24
           uplink_switch_interfaces: [Ethernet7, Ethernet7]
+          # Test for collect the source ip_address for local interface from port_channel_interfaces
+          l3_port_channels:
+            - name: Port-Channel1
+              ip_address: 170.18.4.2/24
+              wan_carrier: mpls-sp-1
+              wan_circuit_id: DC1-MPLS-4
+              peer_ip: 170.18.4.1
+              static_routes:
+                - prefix: 170.18.0.0/16
           l3_interfaces:
             - name: Ethernet3
               ip_address: 172.18.4.2/24
@@ -55,5 +69,13 @@ wan_router:
               wan_carrier: isp-1
               wan_circuit_id: DC1-INET-4
               peer_ip: 100.64.4.1
+              static_routes:
+                - prefix: 100.64.0.0/16
+            # Test for skip the anta test VerifySpecificPath when ip_address on interface is dhcp.
+            - name: Ethernet5
+              ip_address: dhcp
+              wan_carrier: Phone
+              wan_circuit_id: DC1-INET-4
+              peer_ip: 100.64.5.1
               static_routes:
                 - prefix: 100.64.0.0/16

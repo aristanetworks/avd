@@ -32,6 +32,8 @@ from .wan import WanMixin
 if TYPE_CHECKING:
     from collections.abc import Mapping
 
+    from ansible.template import Templar
+
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd.api.pool_manager import PoolManager
@@ -66,9 +68,10 @@ class SharedUtilsProtocol(
     hostname: str
     hostvars: Mapping
     inputs: EosDesigns
-    templar: object
+    templar: Templar | None
     peer_facts: Mapping[str, EosDesignsFactsProtocol]
     pool_manager: PoolManager | None
+    digital_twin: bool
 
 
 class SharedUtils(SharedUtilsProtocol):
@@ -89,9 +92,10 @@ class SharedUtils(SharedUtilsProtocol):
         hostname: str,
         hostvars: Mapping,
         inputs: EosDesigns,
-        templar: object,
+        templar: Templar | None,
         peer_facts: Mapping[str, EosDesignsFactsProtocol],
         pool_manager: PoolManager | None = None,
+        digital_twin: bool = False,
     ) -> None:
         self.hostname = hostname
         self.hostvars = hostvars
@@ -99,3 +103,4 @@ class SharedUtils(SharedUtilsProtocol):
         self.templar = templar
         self.peer_facts = peer_facts
         self.pool_manager = pool_manager
+        self.digital_twin = digital_twin

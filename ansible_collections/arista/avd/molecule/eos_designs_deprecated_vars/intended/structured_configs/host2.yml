@@ -1,8 +1,37 @@
 aaa_root:
   disabled: true
 config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.12:9910
+  - 192.168.200.13:9910
+  - apiserver.arista.io:443
+  cvauth:
+    method: token-secure
+    token_file: /tmp/anothertoken
+  cvvrf: MGMT
+  disable_aaa: false
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet42
+  description: P2P_host1_Ethernet42
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.42.200/31
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  mpls:
+    ip: true
+  peer: host1
+  peer_interface: Ethernet42
+  peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: host2
 ip_igmp_snooping:
   globally_enabled: true
@@ -22,6 +51,13 @@ management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.100.123/24
+  type: oob
 metadata:
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 mpls:
@@ -75,6 +111,15 @@ router_isis:
     enabled: true
     router_id: 10.42.0.102
 service_routing_protocols_model: multi-agent
+snmp_server:
+  hosts:
+  - host: 10.6.75.127
+    vrf: MGMT
+    version: 2c
+    community: SNMP-COMMUNITY-2
+  vrfs:
+  - name: MGMT
+    enable: true
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

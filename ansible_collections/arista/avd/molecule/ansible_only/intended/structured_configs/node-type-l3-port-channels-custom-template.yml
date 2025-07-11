@@ -1,0 +1,74 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1/4
+  description: peerDevice2_Ethernet1/12
+  shutdown: false
+  speed: forced 10000full
+  channel_group:
+    id: 5
+    mode: passive
+  peer: peerDevice2
+  peer_interface: Ethernet1/12
+  peer_type: l3_port_channel_member
+hostname: node-type-l3-port-channels-custom-template
+ip_routing: true
+is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.0.255.2/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 10.1.1.2/24
+  type: oob
+metadata:
+  fabric_name: ANSIBLE_ONLY
+port_channel_interfaces:
+- name: Port-Channel5
+  description: custom_template_description_StreamFast
+  shutdown: false
+  ip_address: 192.168.1.105/31
+  peer: peer2
+  peer_interface: Port-Channel15
+  peer_type: l3_port_channel
+  switchport:
+    enabled: false
+- name: Port-Channel5.100
+  description: custom_template_description_StreamFast
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 100
+  ip_address: 192.168.100.115/31
+  peer_type: l3_port_channel
+- name: Port-Channel5.105
+  description: custom_template_description_Telstra
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 105
+  ip_address: 192.168.100.116/31
+  peer: peer3
+  peer_type: l3_port_channel
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

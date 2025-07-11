@@ -1,0 +1,132 @@
+type: dict
+keys:
+  aaa_settings:
+    type: dict
+    keys:
+      tacacs:
+        type: dict
+        keys:
+          servers:
+            type: list
+            items:
+              type: dict
+              keys:
+                host:
+                  type: str
+                  description: Host IP address or name.
+                  required: true
+                groups:
+                  type: list
+                  required: true
+                  min_length: 1
+                  items:
+                    type: str
+                vrf:
+                  type: str
+                  description: |-
+                    VRF name.
+                    The value will be interpreted according to these rules:
+                    - `use_mgmt_interface_vrf` will configure the TACACS host under the VRF set with `mgmt_interface_vrf`.
+                      An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                    - `use_inband_mgmt_vrf` will configure the TACACS host under the VRF set with `inband_mgmt_vrf`.
+                      An error will be raised if inband management is not configured for the device.
+                    - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
+                    - Any other string will be used directly as the VRF name.
+                  convert_types:
+                    - int
+                key:
+                  type: str
+                  description: Encrypted type-7 key.
+                  required: true
+          vrfs:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: VRF Name.
+                  convert_types:
+                    - int
+                source_interface:
+                  type: str
+                  description: |-
+                    Source interface to use for TACACS hosts in this VRF.
+                    If not set, the source interface may be set automatically when the TACACS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                    If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+          policy:
+            type: dict
+            keys:
+              ignore_unknown_mandatory_attribute:
+                type: bool
+                default: false
+      radius:
+        type: dict
+        keys:
+          servers:
+            type: list
+            items:
+              type: dict
+              keys:
+                host:
+                  type: str
+                  description: Host IP address or name.
+                  required: true
+                groups:
+                  type: list
+                  required: true
+                  min_length: 1
+                  items:
+                    type: str
+                vrf:
+                  type: str
+                  description: |-
+                    VRF name.
+                    The value will be interpreted according to these rules:
+                    - `use_mgmt_interface_vrf` will configure the Radius host under the VRF set with `mgmt_interface_vrf`.
+                      An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                    - `use_inband_mgmt_vrf` will configure the Radius host under the VRF set with `inband_mgmt_vrf`.
+                      An error will be raised if inband management is not configured for the device.
+                    - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
+                    - Any other string will be used directly as the VRF name.
+                  convert_types:
+                    - int
+                key:
+                  type: str
+                  description: Encrypted key.
+                  required: true
+          vrfs:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: VRF Name.
+                  convert_types:
+                    - int
+                source_interface:
+                  type: str
+                  description: |-
+                    Source interface to use for RADIUS hosts in this VRF.
+                    If not set, the source interface may be set automatically when the RADIUS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                    If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+      authentication:
+        type: dict
+        $ref: "eos_cli_config_gen#/keys/aaa_authentication"
+      authorization:
+        type: dict
+        $ref: "eos_cli_config_gen#/keys/aaa_authorization"
+      accounting:
+        type: dict
+        $ref: "eos_cli_config_gen#/keys/aaa_accounting"
+      root_login:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: false
+          sha512_password:
+            type: str

@@ -52,8 +52,9 @@ class UtilsMixin(Protocol):
 
         Adapters are filtered to contain only the ones connected to this switch.
         """
+        connected_endpoints = self.shared_utils.all_connected_endpoints
         filtered_connected_endpoints = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints()
-        for connected_endpoints_key in self.inputs._dynamic_keys.connected_endpoints:
+        for connected_endpoints_key in connected_endpoints:
             for connected_endpoint in connected_endpoints_key.value:
                 filtered_adapters = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.Adapters()
                 for adapter_index, adapter in enumerate(connected_endpoint.adapters):
@@ -78,7 +79,7 @@ class UtilsMixin(Protocol):
                 if filtered_adapters:
                     # The object was deepcopied inside "get_merged_adapter_settings" so we can modify it here.
                     connected_endpoint.adapters = filtered_adapters
-                    connected_endpoint._internal_data.type = self.inputs.connected_endpoints_keys[connected_endpoints_key.key].type
+                    connected_endpoint._internal_data.type = connected_endpoints_key._internal_data.type
                     filtered_connected_endpoints.append(connected_endpoint)
 
         return filtered_connected_endpoints
@@ -132,7 +133,7 @@ class UtilsMixin(Protocol):
         if short_esi.lower() == "auto":
             esi_hash = sha256(
                 "".join(
-                    [hash_extra_value] + adapter.switches[:2] + adapter.switch_ports[:2] + endpoint_ports[:2] + [str(channel_group_id)],
+                    [hash_extra_value, *adapter.switches[:2], *adapter.switch_ports[:2], *endpoint_ports[:2], str(channel_group_id)],
                 ).encode("UTF-8"),
             ).hexdigest()
             short_esi = re.sub(r"([0-9a-f]{4})", "\\1:", esi_hash)[:14]
@@ -286,3 +287,23 @@ class UtilsMixin(Protocol):
             raise AristaAvdError(msg)
 
         return output_type(trunk=adapter.phone_trunk_mode, vlan=adapter.phone_vlan)
+
+    def _get_adapter_l2_mtu(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> int | None:
+        """Return l2_mtu for one adapter."""
+        if self.shared_utils.platform_settings.feature_support.per_interface_l2_mtu and adapter.l2_mtu:
+            return adapter.l2_mtu
+
+        return None
+
+    def _get_adapter_l2_mru(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> int | None:
+        """Return l2_mru for one adapter."""
+        if self.shared_utils.platform_settings.feature_support.per_interface_l2_mru and adapter.l2_mru:
+            return adapter.l2_mru
+
+        return None

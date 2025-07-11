@@ -81,7 +81,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
         * `peer` device is deployed - `is_deployed=True`
         * `peer_interface` on the `peer` device has a defined static `ip_address` - *not* 'dhcp' and *not* 'unnumbered'
 
-    - IPv4 BGP Neighbors:
+    - BGP Neighbors:
         Inputs are generated for BGP neighbors that meet all the following criteria:
         * `update_source` IP address defined
     """
@@ -150,7 +150,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
 
         Only support BGP neighbors with an update source configured for now.
         """
-        description = "Verifies reachability to IPv4 BGP neighbors with an update source configured."
+        description = "Verifies reachability to BGP neighbors with an update source configured."
         hosts = [
             Host(
                 destination=neighbor.ip_address,

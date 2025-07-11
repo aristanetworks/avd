@@ -68,11 +68,11 @@ class MonitorSessionsMixin(Protocol):
                 monitor_session._update(
                     encapsulation_gre_metadata_tx=session_settings.encapsulation_gre_metadata_tx,
                     header_remove_size=session_settings.header_remove_size,
-                    access_group=session_settings.access_group,
+                    access_group=session_settings.access_group._cast_as(EosCliConfigGen.MonitorSessionsItem.AccessGroup),
                     rate_limit_per_ingress_chip=session_settings.rate_limit_per_ingress_chip,
                     rate_limit_per_egress_chip=session_settings.rate_limit_per_egress_chip,
                     sample=session_settings.sample,
-                    truncate=session_settings.truncate,
+                    truncate=session_settings.truncate._cast_as(EosCliConfigGen.MonitorSessionsItem.Truncate),
                 )
 
             self.structured_config.monitor_sessions.append(monitor_session)

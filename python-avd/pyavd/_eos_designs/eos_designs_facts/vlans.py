@@ -89,8 +89,8 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         if self.shared_utils.configure_inband_mgmt:
             vlans.add(self.shared_utils.node_config.inband_mgmt_vlan)
-
-        for connected_endpoints_key in self.inputs._dynamic_keys.connected_endpoints:
+        connected_endpoints = self.shared_utils.all_connected_endpoints
+        for connected_endpoints_key in connected_endpoints:
             for connected_endpoint in connected_endpoints_key.value:
                 for adapter in connected_endpoint.adapters:
                     adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)

@@ -126,11 +126,16 @@ class UtilsMixin(Protocol):
     ) -> EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem:
         """Returns common structured_configuration for L3 interface or L3 Port-Channel."""
         # variables being set for constructing appropriate validation error
+        # Also set flow_tracker to avoid type checking issues.
         if isinstance(l3_generic_interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem):
-            interface = EosCliConfigGen.EthernetInterfacesItem()
+            interface = EosCliConfigGen.EthernetInterfacesItem(
+                flow_tracker=self.shared_utils.get_flow_tracker(l3_generic_interface.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
+            )
         else:
             # implies interface is "L3 Port-Channel"
-            interface = EosCliConfigGen.PortChannelInterfacesItem()
+            interface = EosCliConfigGen.PortChannelInterfacesItem(
+                flow_tracker=self.shared_utils.get_flow_tracker(l3_generic_interface.flow_tracking, EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
+            )
 
         # logic below is common to l3_interface and l3_port_channel interface types
         # TODO: catch if ip_address is not valid or not dhcp
@@ -145,7 +150,6 @@ class UtilsMixin(Protocol):
             shutdown=not l3_generic_interface.enabled,
             service_profile=l3_generic_interface.qos_profile,
             eos_cli=l3_generic_interface.raw_eos_cli,
-            flow_tracker=self.shared_utils.get_flow_tracker(l3_generic_interface.flow_tracking, interface.FlowTracker),
         )
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 
@@ -176,7 +180,7 @@ class UtilsMixin(Protocol):
                     if svi.id not in vlans:
                         continue
 
-                    interfaces.append(self._get_l2_as_subint(link, svi, vrf))
+                    interfaces.append(self._get_l2_as_subint(link, svi, vrf, tenant))
 
         # If we have the main interface covered, we can just remove it from the list and return as main interface.
         # Otherwise we return an almost empty dict as the main interface since it was already covered by the calling function.
@@ -203,6 +207,7 @@ class UtilsMixin(Protocol):
         link: EosDesignsFacts.UplinksItem,
         svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> EosCliConfigGen.EthernetInterfacesItem:
         """
         Return structured config for one subinterface representing the given SVI.
@@ -224,7 +229,7 @@ class UtilsMixin(Protocol):
             ip_address=svi.ip_address,
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
-            mtu=svi.mtu if self.shared_utils.platform_settings.feature_support.per_interface_mtu else None,
+            mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
 
@@ -256,7 +261,7 @@ class UtilsMixin(Protocol):
             pass
 
         # Adding IP helpers and OSPF via a common function also used for SVIs on L3 switches.
-        self.shared_utils.get_additional_svi_config(subinterface, svi, vrf)
+        self.shared_utils.get_additional_svi_config(subinterface, svi, vrf, tenant)
 
         return subinterface
 

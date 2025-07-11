@@ -1,0 +1,202 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet5
+  shutdown: false
+  vrf: VRF10
+  ip_address: 10.10.40.4/24
+  peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: SERVER_TEST_POE_ETH4_WITH_POE
+  shutdown: false
+  l2_mtu: 1001
+  poe:
+    reboot:
+      action: maintain
+  peer: TEST_POE
+  peer_interface: ETH4_WITH_POE
+  peer_type: server
+  switchport:
+    enabled: true
+- name: Ethernet8
+  description: SERVER_TEST_MTU_MRU
+  shutdown: false
+  channel_group:
+    id: 8
+    mode: active
+  peer: TEST_MTU_MRU
+  peer_type: server
+- name: Ethernet6
+  description: SERVER_TEST_INTERFACE_STORM_CONTROL_ETH14_WITH_STORM_CONTROL
+  shutdown: false
+  storm_control:
+    all:
+      level: '10'
+  peer: TEST_INTERFACE_STORM_CONTROL
+  peer_interface: ETH14_WITH_STORM_CONTROL
+  peer_type: server
+  switchport:
+    enabled: true
+hardware:
+  speed_groups:
+  - speed_group: '1'
+    serdes: 10g
+hardware_counters:
+  features:
+  - name: gre tunnel interface
+    direction: out
+  - name: ip
+    direction: in
+  - name: multicast
+    address_type: ipv4
+  - name: route
+    address_type: ipv4
+    prefix: 1.1.1.1/32
+  - name: subinterface
+    direction: in
+  - name: vlan-interface
+    direction: in
+  - name: vni decap
+  - name: vni encap
+  - name: vtep decap
+  - name: vtep encap
+hostname: HARDWARE_FEATURES_720XP
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.10.10.4/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 10.10.20.4/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+metadata:
+  platform: 720XP
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel8
+  description: SERVER_TEST_MTU_MRU_PO_MTU_MRU_1
+  shutdown: false
+  l2_mtu: 2001
+  switchport:
+    enabled: true
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.10.0/24 eq 32
+  - sequence: 20
+    action: permit 10.10.20.0/24 eq 32
+queue_monitor_length:
+  enabled: true
+queue_monitor_streaming:
+  enable: true
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65001'
+  router_id: 10.10.10.4
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  vrfs:
+  - name: VRF10
+    rd: 10.10.10.4:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    router_id: 10.10.10.4
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: 10.10.40.100
+      remote_as: '65002'
+    redistribute:
+      connected:
+        enabled: true
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.10.40.100
+        activate: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF10
+  ip_routing: true
+  tenant: TENANT1
+vxlan_interface:
+  vxlan1:
+    description: HARDWARE_FEATURES_720XP_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vrfs:
+      - name: VRF10
+        vni: 10

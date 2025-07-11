@@ -22,7 +22,7 @@ if TYPE_CHECKING:
     from .type_vars import T_AvdModel
 
 
-class AvdModel(AvdBase):
+class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
     """Base class used for schema-based data classes holding dictionaries loaded from AVD inputs."""
 
     __slots__ = ("_custom_data", "_field_source")

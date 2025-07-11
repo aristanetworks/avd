@@ -83,6 +83,8 @@ router_bgp:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
+    route:
+      import_match_failure_action: discard
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS

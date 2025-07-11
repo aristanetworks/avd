@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 """Centralized package to import all the tests of the ANTA framework."""
 
-from anta.tests.avt import VerifyAVTPathHealth, VerifyAVTRole
+from anta.tests.avt import VerifyAVTSpecificPath
 from anta.tests.configuration import VerifyRunningConfigDiffs, VerifyZeroTouch
 from anta.tests.connectivity import VerifyLLDPNeighbors, VerifyReachability
 from anta.tests.hardware import (
@@ -31,17 +31,17 @@ from anta.tests.mlag import (
     VerifyMlagReloadDelay,
     VerifyMlagStatus,
 )
-from anta.tests.path_selection import VerifyPathsHealth
+from anta.tests.path_selection import VerifySpecificPath
 from anta.tests.routing.bgp import VerifyBGPPeerSession
 from anta.tests.routing.generic import VerifyRoutingProtocolModel
-from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn, VerifyTelnetStatus
+from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn
 from anta.tests.services import VerifyDNSServers
-from anta.tests.stp import VerifySTPBlockedPorts, VerifySTPCounters
-from anta.tests.stun import VerifyStunClientTranslation
+from anta.tests.stp import VerifySTPCounters
 from anta.tests.system import (
     VerifyAgentLogs,
     VerifyCoredump,
     VerifyFileSystemUtilization,
+    VerifyMaintenance,
     VerifyMemoryUtilization,
     VerifyNTP,
     VerifyReloadCause,
@@ -49,8 +49,7 @@ from anta.tests.system import (
 
 __all__ = [
     "VerifyAPIHttpsSSL",
-    "VerifyAVTPathHealth",
-    "VerifyAVTRole",
+    "VerifyAVTSpecificPath",
     "VerifyAgentLogs",
     "VerifyBGPPeerSession",
     "VerifyCoredump",
@@ -67,6 +66,7 @@ __all__ = [
     "VerifyInterfacesStatus",
     "VerifyLLDPNeighbors",
     "VerifyLoggingErrors",
+    "VerifyMaintenance",
     "VerifyMemoryUtilization",
     "VerifyMlagConfigSanity",
     "VerifyMlagDualPrimary",
@@ -74,18 +74,15 @@ __all__ = [
     "VerifyMlagReloadDelay",
     "VerifyMlagStatus",
     "VerifyNTP",
-    "VerifyPathsHealth",
     "VerifyPortChannels",
     "VerifyReachability",
     "VerifyReloadCause",
     "VerifyRoutingProtocolModel",
     "VerifyRunningConfigDiffs",
-    "VerifySTPBlockedPorts",
     "VerifySTPCounters",
     "VerifySpecificIPSecConn",
+    "VerifySpecificPath",
     "VerifyStormControlDrops",
-    "VerifyStunClientTranslation",
-    "VerifyTelnetStatus",
     "VerifyTemperature",
     "VerifyTransceiversTemperature",
     "VerifyZeroTouch",

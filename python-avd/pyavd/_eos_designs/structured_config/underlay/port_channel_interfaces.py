@@ -158,18 +158,24 @@ class PortChannelInterfacesMixin(Protocol):
         # build common portion of the interface cfg
         interface = self._get_l3_common_interface_cfg(l3_port_channel)
 
-        interface_description = l3_port_channel.description
-        if not interface_description:
-            interface_description = self.shared_utils.interface_descriptions.underlay_port_channel_interface(
-                InterfaceDescriptionData(
-                    shared_utils=self.shared_utils,
-                    interface=l3_port_channel.name,
-                    peer=l3_port_channel.peer,
-                    peer_interface=l3_port_channel.peer_port_channel,
-                    wan_carrier=l3_port_channel.wan_carrier,
-                    wan_circuit_id=l3_port_channel.wan_circuit_id,
-                ),
-            )
+        if "." in l3_port_channel.name:
+            parent_port_channel_name = l3_port_channel.name.split(".", maxsplit=1)[0]
+            main_interface_wan_carrier = self.shared_utils.node_config.l3_port_channels[parent_port_channel_name].wan_carrier
+        else:
+            main_interface_wan_carrier = None
+
+        interface_description = self.shared_utils.interface_descriptions.underlay_port_channel_interface(
+            InterfaceDescriptionData(
+                shared_utils=self.shared_utils,
+                interface=l3_port_channel.name,
+                port_channel_description=l3_port_channel.description,
+                peer=l3_port_channel.peer,
+                peer_interface=l3_port_channel.peer_port_channel,
+                wan_carrier=l3_port_channel.wan_carrier,
+                wan_circuit_id=l3_port_channel.wan_circuit_id,
+                main_interface_wan_carrier=main_interface_wan_carrier,
+            ),
+        )
         interface._update(
             description=interface_description or None,
             peer_type="l3_port_channel",
