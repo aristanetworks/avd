@@ -181,7 +181,7 @@ ansible_collections/arista/avd/examples/single-dc-l3ls/inventory_without_ip.yml
 
    - Please note that the username (`ansible`) and password (`ansible`) defined here must exist in CloudVision.
 
-   - More information is available [here](https://avd.arista.com/stable/roles/eos_config_deploy_cvp/index.html?h=is_deployed#inputs)
+   - More information is available [here](https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_config_deploy_cvp/index.html)
 
 2. `NETWORK_SERVICES`
 
