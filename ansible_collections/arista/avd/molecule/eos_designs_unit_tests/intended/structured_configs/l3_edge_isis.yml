@@ -41,7 +41,7 @@ ethernet_interfaces:
   isis_authentication:
     both:
       key_type: '7'
-      key: $1c$sTNAlR6rKSw=
+      key: 7h4BlaA7By3z4DS4JcikPQ==
       mode: md5
   peer: peer2
   peer_interface: ethernet2

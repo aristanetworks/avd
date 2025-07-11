@@ -49,7 +49,7 @@ l3_edge:
       isis_metric: 60
       isis_circuit_type: level-2
       isis_authentication_mode: md5
-      isis_authentication_key: $1c$sTNAlR6rKSw=
+      isis_authentication_key: 7h4BlaA7By3z4DS4JcikPQ==
       # To confirm  'isis_authentication_key' taking precedence over 'isis_authentication_cleartext_key'.
       isis_authentication_cleartext_key: arista
 
