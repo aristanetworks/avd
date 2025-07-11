@@ -14,7 +14,7 @@ keys:
       Name of Node ID pool or template used to render the name of each Node ID pool.
       For each device the Node ID is assigned from a pool shared by all devices rendering the same pool name.
       This can be modified to include fewer or more fields to keep separate pools or to use the same pool across areas.
-      This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+      This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
       The available template fields are:
         - `fabric_name`: The `fabric_name` assigned to the device.
         - `dc_name`: The `dc_name` assigned to the device.
