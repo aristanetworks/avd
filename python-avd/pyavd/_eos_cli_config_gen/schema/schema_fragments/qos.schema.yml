@@ -57,3 +57,10 @@ keys:
                   chip_based:
                     type: bool
                     description: Allow non-ect chip-based.
+      tx_queue:
+        type: dict
+        description: Global transmit queue settings.
+        keys:
+          shape_rate_percent_adaptive:
+            type: bool
+            description: Use the parent available bandwidth for transmit queue percentage-based allocation.
