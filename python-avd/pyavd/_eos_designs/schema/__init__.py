@@ -7661,12 +7661,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             Prefix List Name. Accept routes for only these prefixes from the peer.
             Required for wan interfaces.
+            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
             """
             ipv4_prefix_list_out: str | None
             """
             Prefix List Name. Advertise routes for only these prefixes.
             If not specified, nothing would be
             advertised.
+            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
             """
 
             if TYPE_CHECKING:
@@ -7693,10 +7695,12 @@ class EosDesigns(EosDesignsRootModel):
                         ipv4_prefix_list_in:
                            Prefix List Name. Accept routes for only these prefixes from the peer.
                            Required for wan interfaces.
+                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                         ipv4_prefix_list_out:
                            Prefix List Name. Advertise routes for only these prefixes.
                            If not specified, nothing would be
                            advertised.
+                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                     """
 
@@ -24848,12 +24852,14 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Prefix List Name. Accept routes for only these prefixes from the peer.
                             Required for wan interfaces.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
                             ipv4_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these prefixes.
                             If not specified, nothing would be
                             advertised.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -24880,10 +24886,12 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv4_prefix_list_in:
                                            Prefix List Name. Accept routes for only these prefixes from the peer.
                                            Required for wan interfaces.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv4_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these prefixes.
                                            If not specified, nothing would be
                                            advertised.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                     """
 
@@ -25561,12 +25569,14 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Prefix List Name. Accept routes for only these prefixes from the peer.
                             Required for wan interfaces.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
                             ipv4_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these prefixes.
                             If not specified, nothing would be
                             advertised.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -25593,10 +25603,12 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv4_prefix_list_in:
                                            Prefix List Name. Accept routes for only these prefixes from the peer.
                                            Required for wan interfaces.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv4_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these prefixes.
                                            If not specified, nothing would be
                                            advertised.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                     """
 
@@ -29125,12 +29137,14 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 Prefix List Name. Accept routes for only these prefixes from the peer.
                                 Required for wan interfaces.
+                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                 """
                                 ipv4_prefix_list_out: str | None
                                 """
                                 Prefix List Name. Advertise routes for only these prefixes.
                                 If not specified, nothing would be
                                 advertised.
+                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                 """
 
                                 if TYPE_CHECKING:
@@ -29157,10 +29171,12 @@ class EosDesigns(EosDesignsRootModel):
                                             ipv4_prefix_list_in:
                                                Prefix List Name. Accept routes for only these prefixes from the peer.
                                                Required for wan interfaces.
+                                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                             ipv4_prefix_list_out:
                                                Prefix List Name. Advertise routes for only these prefixes.
                                                If not specified, nothing would be
                                                advertised.
+                                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                         """
 
@@ -29844,12 +29860,14 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 Prefix List Name. Accept routes for only these prefixes from the peer.
                                 Required for wan interfaces.
+                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                 """
                                 ipv4_prefix_list_out: str | None
                                 """
                                 Prefix List Name. Advertise routes for only these prefixes.
                                 If not specified, nothing would be
                                 advertised.
+                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                 """
 
                                 if TYPE_CHECKING:
@@ -29876,10 +29894,12 @@ class EosDesigns(EosDesignsRootModel):
                                             ipv4_prefix_list_in:
                                                Prefix List Name. Accept routes for only these prefixes from the peer.
                                                Required for wan interfaces.
+                                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                             ipv4_prefix_list_out:
                                                Prefix List Name. Advertise routes for only these prefixes.
                                                If not specified, nothing would be
                                                advertised.
+                                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                         """
 
@@ -33347,12 +33367,14 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Prefix List Name. Accept routes for only these prefixes from the peer.
                             Required for wan interfaces.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
                             ipv4_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these prefixes.
                             If not specified, nothing would be
                             advertised.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -33379,10 +33401,12 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv4_prefix_list_in:
                                            Prefix List Name. Accept routes for only these prefixes from the peer.
                                            Required for wan interfaces.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv4_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these prefixes.
                                            If not specified, nothing would be
                                            advertised.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                     """
 
@@ -34060,12 +34084,14 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Prefix List Name. Accept routes for only these prefixes from the peer.
                             Required for wan interfaces.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
                             ipv4_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these prefixes.
                             If not specified, nothing would be
                             advertised.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -34092,10 +34118,12 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv4_prefix_list_in:
                                            Prefix List Name. Accept routes for only these prefixes from the peer.
                                            Required for wan interfaces.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv4_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these prefixes.
                                            If not specified, nothing would be
                                            advertised.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                     """
 
@@ -37641,12 +37669,14 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Prefix List Name. Accept routes for only these prefixes from the peer.
                             Required for wan interfaces.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
                             ipv4_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these prefixes.
                             If not specified, nothing would be
                             advertised.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -37673,10 +37703,12 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv4_prefix_list_in:
                                            Prefix List Name. Accept routes for only these prefixes from the peer.
                                            Required for wan interfaces.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv4_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these prefixes.
                                            If not specified, nothing would be
                                            advertised.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                     """
 
@@ -38354,12 +38386,14 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Prefix List Name. Accept routes for only these prefixes from the peer.
                             Required for wan interfaces.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
                             ipv4_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these prefixes.
                             If not specified, nothing would be
                             advertised.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -38386,10 +38420,12 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv4_prefix_list_in:
                                            Prefix List Name. Accept routes for only these prefixes from the peer.
                                            Required for wan interfaces.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv4_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these prefixes.
                                            If not specified, nothing would be
                                            advertised.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                     """
 
@@ -49585,12 +49621,14 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Prefix List Name. Accept routes for only these prefixes from the peer.
                             Required for wan interfaces.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
                             ipv4_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these prefixes.
                             If not specified, nothing would be
                             advertised.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -49617,10 +49655,12 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv4_prefix_list_in:
                                            Prefix List Name. Accept routes for only these prefixes from the peer.
                                            Required for wan interfaces.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv4_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these prefixes.
                                            If not specified, nothing would be
                                            advertised.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                     """
 
@@ -50298,12 +50338,14 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Prefix List Name. Accept routes for only these prefixes from the peer.
                             Required for wan interfaces.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
                             ipv4_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these prefixes.
                             If not specified, nothing would be
                             advertised.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -50330,10 +50372,12 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv4_prefix_list_in:
                                            Prefix List Name. Accept routes for only these prefixes from the peer.
                                            Required for wan interfaces.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv4_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these prefixes.
                                            If not specified, nothing would be
                                            advertised.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                     """
 
@@ -53862,12 +53906,14 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 Prefix List Name. Accept routes for only these prefixes from the peer.
                                 Required for wan interfaces.
+                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                 """
                                 ipv4_prefix_list_out: str | None
                                 """
                                 Prefix List Name. Advertise routes for only these prefixes.
                                 If not specified, nothing would be
                                 advertised.
+                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                 """
 
                                 if TYPE_CHECKING:
@@ -53894,10 +53940,12 @@ class EosDesigns(EosDesignsRootModel):
                                             ipv4_prefix_list_in:
                                                Prefix List Name. Accept routes for only these prefixes from the peer.
                                                Required for wan interfaces.
+                                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                             ipv4_prefix_list_out:
                                                Prefix List Name. Advertise routes for only these prefixes.
                                                If not specified, nothing would be
                                                advertised.
+                                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                         """
 
@@ -54581,12 +54629,14 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 Prefix List Name. Accept routes for only these prefixes from the peer.
                                 Required for wan interfaces.
+                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                 """
                                 ipv4_prefix_list_out: str | None
                                 """
                                 Prefix List Name. Advertise routes for only these prefixes.
                                 If not specified, nothing would be
                                 advertised.
+                                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                 """
 
                                 if TYPE_CHECKING:
@@ -54613,10 +54663,12 @@ class EosDesigns(EosDesignsRootModel):
                                             ipv4_prefix_list_in:
                                                Prefix List Name. Accept routes for only these prefixes from the peer.
                                                Required for wan interfaces.
+                                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                             ipv4_prefix_list_out:
                                                Prefix List Name. Advertise routes for only these prefixes.
                                                If not specified, nothing would be
                                                advertised.
+                                               The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                         """
 
@@ -58084,12 +58136,14 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Prefix List Name. Accept routes for only these prefixes from the peer.
                             Required for wan interfaces.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
                             ipv4_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these prefixes.
                             If not specified, nothing would be
                             advertised.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -58116,10 +58170,12 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv4_prefix_list_in:
                                            Prefix List Name. Accept routes for only these prefixes from the peer.
                                            Required for wan interfaces.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv4_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these prefixes.
                                            If not specified, nothing would be
                                            advertised.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                     """
 
@@ -58797,12 +58853,14 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Prefix List Name. Accept routes for only these prefixes from the peer.
                             Required for wan interfaces.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
                             ipv4_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these prefixes.
                             If not specified, nothing would be
                             advertised.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -58829,10 +58887,12 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv4_prefix_list_in:
                                            Prefix List Name. Accept routes for only these prefixes from the peer.
                                            Required for wan interfaces.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv4_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these prefixes.
                                            If not specified, nothing would be
                                            advertised.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                     """
 
@@ -62378,12 +62438,14 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Prefix List Name. Accept routes for only these prefixes from the peer.
                             Required for wan interfaces.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
                             ipv4_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these prefixes.
                             If not specified, nothing would be
                             advertised.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -62410,10 +62472,12 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv4_prefix_list_in:
                                            Prefix List Name. Accept routes for only these prefixes from the peer.
                                            Required for wan interfaces.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv4_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these prefixes.
                                            If not specified, nothing would be
                                            advertised.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                     """
 
@@ -63091,12 +63155,14 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Prefix List Name. Accept routes for only these prefixes from the peer.
                             Required for wan interfaces.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
                             ipv4_prefix_list_out: str | None
                             """
                             Prefix List Name. Advertise routes for only these prefixes.
                             If not specified, nothing would be
                             advertised.
+                            The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                             """
 
                             if TYPE_CHECKING:
@@ -63123,10 +63189,12 @@ class EosDesigns(EosDesignsRootModel):
                                         ipv4_prefix_list_in:
                                            Prefix List Name. Accept routes for only these prefixes from the peer.
                                            Required for wan interfaces.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
                                         ipv4_prefix_list_out:
                                            Prefix List Name. Advertise routes for only these prefixes.
                                            If not specified, nothing would be
                                            advertised.
+                                           The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
 
                                     """
 
@@ -66685,9 +66753,16 @@ class EosDesigns(EosDesignsRootModel):
     ipv4_prefix_list_catalog: Ipv4PrefixListCatalog
     """
     IPv4 prefix-list catalog.
-
-    Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items.
-    Primary key is `name` (`str`).
+    Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in
+    the configuration when
+    they are explicitly referenced in one of the following node config keys:
+    -
+    `l3_interfaces.[].bgp.ipv4_prefix_list_in`
+    - `l3_interfaces.[].bgp.ipv4_prefix_list_out`
+    -
+    `l3_port_channels.[].bgp.ipv4_prefix_list_in`
+    - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
+    Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
     """
     ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks
     """
@@ -68639,9 +68714,16 @@ class EosDesigns(EosDesignsRootModel):
                    `Ipv4AclsItem` items. Primary key is `name` (`str`).
                 ipv4_prefix_list_catalog:
                    IPv4 prefix-list catalog.
-
-                   Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items.
-                   Primary key is `name` (`str`).
+                   Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in
+                   the configuration when
+                   they are explicitly referenced in one of the following node config keys:
+                   -
+                   `l3_interfaces.[].bgp.ipv4_prefix_list_in`
+                   - `l3_interfaces.[].bgp.ipv4_prefix_list_out`
+                   -
+                   `l3_port_channels.[].bgp.ipv4_prefix_list_in`
+                   - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
+                   Subclass of AvdIndexedList with `Ipv4PrefixListCatalogItem` items. Primary key is `name` (`str`).
                 ipv6_mgmt_destination_networks:
                    List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface
                    gateway.
