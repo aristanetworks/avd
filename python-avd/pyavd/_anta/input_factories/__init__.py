@@ -5,7 +5,7 @@
 
 from __future__ import annotations
 
-from .avt import VerifyAVTRoleInputFactory, VerifyAVTSpecificPathInputFactory
+from .avt import VerifyAVTSpecificPathInputFactory
 from .connectivity import VerifyLLDPNeighborsInputFactory, VerifyReachabilityInputFactory
 from .hardware import VerifyEnvironmentCoolingInputFactory, VerifyEnvironmentPowerInputFactory
 from .interfaces import VerifyInterfacesStatusInputFactory, VerifyPortChannelsInputFactory
@@ -15,12 +15,10 @@ from .routing_bgp import VerifyBGPPeerSessionInputFactory
 from .routing_generic import VerifyRoutingProtocolModelInputFactory
 from .security import VerifyAPIHttpsSSLInputFactory, VerifySpecificIPSecConnInputFactory
 from .services import VerifyDNSServersInputFactory
-from .stun import VerifyStunClientTranslationInputFactory
 from .system import VerifyReloadCauseInputFactory
 
 __all__ = [
     "VerifyAPIHttpsSSLInputFactory",
-    "VerifyAVTRoleInputFactory",
     "VerifyAVTSpecificPathInputFactory",
     "VerifyBGPPeerSessionInputFactory",
     "VerifyDNSServersInputFactory",
@@ -36,5 +34,4 @@ __all__ = [
     "VerifyRoutingProtocolModelInputFactory",
     "VerifySpecificIPSecConnInputFactory",
     "VerifySpecificPathInputFactory",
-    "VerifyStunClientTranslationInputFactory",
 ]
