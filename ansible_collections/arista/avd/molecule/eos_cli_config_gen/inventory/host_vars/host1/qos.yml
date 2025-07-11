@@ -21,3 +21,5 @@ qos:
       allow_non_ect:
         enabled: true
         chip_based: true
+  tx_queue:
+    shape_rate_percent_adaptive: true
