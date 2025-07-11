@@ -29,15 +29,13 @@ radius proxy
 {%             endfor %}
 {%         endfor %}
 {%         for vrf in client_group.vrfs | arista.avd.default([]) | selectattr("ipv6_clients", "arista.avd.defined") %}
-{%             if vrf.ipv6_clients is arista.avd.defined %}
-{%                 for ipv6 in vrf.ipv6_clients %}
-{%                     set client_ipv6 = "client ipv6 " ~ ipv6.address ~ " vrf " ~ vrf.name %}
-{%                     if ipv6.key is arista.avd.defined %}
-{%                         set client_ipv6 = client_ipv6 ~ " key "  ~ ipv6.key ~ " 7 " ~ ipv6.key | arista.avd.hide_passwords(hide_passwords) %}
-{%                     endif %}
+{%             for ipv6 in vrf.ipv6_clients %}
+{%                 set client_ipv6 = "client ipv6 " ~ ipv6.address ~ " vrf " ~ vrf.name %}
+{%                 if ipv6.key is arista.avd.defined %}
+{%                     set client_ipv6 = client_ipv6 ~ " key "  ~ ipv6.key ~ " 7 " ~ ipv6.key | arista.avd.hide_passwords(hide_passwords) %}
+{%                 endif %}
       {{ client_ipv6 }}
-{%                 endfor %}
-{%             endif %}
+{%             endfor %}
 {%         endfor %}
 {%         for vrf in client_group.vrfs | arista.avd.default([]) | selectattr("host_clients", "arista.avd.defined") %}
 {%             for host in vrf.host_clients %}
