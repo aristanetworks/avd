@@ -806,7 +806,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: uplink-switch-l3leaf
+  hosts: missing-id-on-l2leaf-uplink-switch-interfaces
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -838,7 +838,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: incorrect-uplink-port-channel-id-l2leaf1a
+  hosts: incorrect-uplink-port-channel-id-l2leaf1b
   connection: local
   tasks:
     - name: Run failure scenario Test
