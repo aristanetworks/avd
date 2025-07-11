@@ -16,6 +16,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "default_interfaces.[].uplink_interfaces.[]") | String |  |  |  | Interface range or interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces</samp>](## "default_interfaces.[].mlag_interfaces") | List, items: String |  |  |  | List of MLAG interfaces or MLAG interface ranges. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "default_interfaces.[].mlag_interfaces.[]") | String |  |  |  | Interface range or interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "default_interfaces.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interfaces speed.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;downlink_interfaces</samp>](## "default_interfaces.[].downlink_interfaces") | List, items: String |  |  |  | List of downlink interfaces or downlink interface ranges. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "default_interfaces.[].downlink_interfaces.[]") | String |  |  |  | Interface range or interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interface_speed</samp>](## "default_interfaces.[].uplink_interface_speed") | String |  |  |  | Set point-to-Point uplink interface speed. |
@@ -48,6 +49,10 @@
 
             # Interface range or interface.
           - <str>
+
+        # Set MLAG interfaces speed.
+        # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+        mlag_interfaces_speed: <str>
 
         # List of downlink interfaces or downlink interface ranges.
         downlink_interfaces:
