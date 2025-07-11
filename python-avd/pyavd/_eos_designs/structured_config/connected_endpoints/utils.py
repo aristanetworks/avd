@@ -128,7 +128,7 @@ class UtilsMixin(Protocol):
 
         if len(set(adapter.switches)) < 2:
             # Only configure ESI for multi-homing.
-            msg = f"The length of '{adapter._internal_data.context}.switches' is less than 2. Short ESI can be configured for multihoming devices."
+            msg = f"The length of '{adapter._internal_data.context}.switches' should be greater than 1 to configure short ESI."
             raise AristaAvdInvalidInputsError(msg)
 
         if not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
