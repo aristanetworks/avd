@@ -21,11 +21,6 @@ AVD_TEST_INDEX: list[TestSpec] = [
         input_factory=VerifyAPIHttpsSSLInputFactory,
     ),
     TestSpec(
-        test_class=VerifyAVTRole,
-        conditional_keys=[StructuredConfigKey.ROUTER_AVT],
-        input_factory=VerifyAVTRoleInputFactory,
-    ),
-    TestSpec(
         test_class=VerifyAVTSpecificPath,
         conditional_keys=[StructuredConfigKey.ROUTER_AVT, StructuredConfigKey.ROUTER_PATH_SELECTION],
         input_factory=VerifyAVTSpecificPathInputFactory,
@@ -147,18 +142,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
         input_factory=VerifySpecificIPSecConnInputFactory,
     ),
     TestSpec(
-        test_class=VerifySTPBlockedPorts,
-    ),
-    TestSpec(
         test_class=VerifySTPCounters,
-    ),
-    TestSpec(
-        test_class=VerifyStunClientTranslation,
-        conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
-        input_factory=VerifyStunClientTranslationInputFactory,
-    ),
-    TestSpec(
-        test_class=VerifyTelnetStatus,
     ),
     TestSpec(
         test_class=VerifyTemperature,
