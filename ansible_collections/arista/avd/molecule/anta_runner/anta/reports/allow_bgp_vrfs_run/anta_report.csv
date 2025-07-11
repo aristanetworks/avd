@@ -37,6 +37,7 @@ dc1-leaf1a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-leaf1a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf1a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-leaf1a,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1a,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -77,6 +78,7 @@ dc1-leaf1b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-leaf1b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf1b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-leaf1b,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-leaf1b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1b,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -109,6 +111,7 @@ dc1-leaf1c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-leaf1c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf1c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-leaf1c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-leaf1c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -148,6 +151,7 @@ dc1-leaf2a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-leaf2a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf2a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf2a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-leaf2a,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-leaf2a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf2a,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-leaf2a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -185,6 +189,7 @@ dc1-leaf2c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-leaf2c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf2c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf2c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-leaf2c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-leaf2c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf2c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-leaf2c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -217,6 +222,7 @@ dc1-spine1,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-spine1,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-spine1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-spine1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-spine1,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-spine1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-spine1,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-spine1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -249,6 +255,7 @@ dc1-spine2,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-spine2,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-spine2,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-spine2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-spine2,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-spine2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-spine2,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-spine2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -288,6 +295,7 @@ dc1-svc-leaf1a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU 
 dc1-svc-leaf1a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-svc-leaf1a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-svc-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-svc-leaf1a,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-svc-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-svc-leaf1a,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-svc-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -328,6 +336,7 @@ dc1-svc-leaf1b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU 
 dc1-svc-leaf1b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-svc-leaf1b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-svc-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-svc-leaf1b,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-svc-leaf1b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-svc-leaf1b,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-svc-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -366,6 +375,7 @@ dc1-wan1,VerifyStunClientTranslation,unset,,Verifies the translation for a sourc
 dc1-wan1,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-wan1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-wan1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-wan1,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-wan1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-wan1,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-wan1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -406,6 +416,7 @@ dc1-wan2,VerifyStunClientTranslation,unset,,Verifies the translation for a sourc
 dc1-wan2,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-wan2,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-wan2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-wan2,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-wan2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-wan2,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-wan2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -445,6 +456,7 @@ dc2-leaf1a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-leaf1a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf1a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf1a,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1a,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -484,6 +496,7 @@ dc2-leaf1b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-leaf1b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf1b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf1b,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf1b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1b,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -516,6 +529,7 @@ dc2-leaf1c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-leaf1c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf1c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf1c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf1c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -554,6 +568,7 @@ dc2-leaf2a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-leaf2a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf2a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf2a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf2a,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf2a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf2a,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf2a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -598,6 +613,7 @@ dc2-leaf2b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-leaf2b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf2b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf2b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf2b,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf2b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf2b,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf2b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -635,6 +651,7 @@ dc2-leaf2c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-leaf2c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf2c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf2c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf2c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf2c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf2c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf2c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -673,6 +690,7 @@ dc2-leaf3a.arista.com,VerifySTPCounters,unset,,Verifies there is no errors in ST
 dc2-leaf3a.arista.com,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf3a.arista.com,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf3a.arista.com,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf3a.arista.com,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf3a.arista.com,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf3a.arista.com,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf3a.arista.com,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -712,6 +730,7 @@ dc2-leaf3b.arista.com,VerifySTPCounters,unset,,Verifies there is no errors in ST
 dc2-leaf3b.arista.com,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf3b.arista.com,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf3b.arista.com,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf3b.arista.com,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf3b.arista.com,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf3b.arista.com,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf3b.arista.com,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -745,6 +764,7 @@ dc2-spine1,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-spine1,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-spine1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-spine1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-spine1,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-spine1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-spine1,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-spine1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -777,6 +797,7 @@ dc2-spine2,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-spine2,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-spine2,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-spine2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-spine2,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-spine2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-spine2,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-spine2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
