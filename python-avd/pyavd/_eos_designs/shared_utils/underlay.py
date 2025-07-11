@@ -121,7 +121,7 @@ class UnderlayMixin(Protocol):
             str or None: The 'underlay_isis_authentication_key' if defined,
                 or the encrypted (type-7) 'underlay_isis_authentication_cleartext_key'.
                 Returns None if neither key is defined.
-    """
+        """
         if self.inputs.underlay_isis_authentication_key is not None:
             return self.inputs.underlay_isis_authentication_key
 
