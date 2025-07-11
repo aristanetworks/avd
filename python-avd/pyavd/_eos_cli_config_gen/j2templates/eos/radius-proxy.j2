@@ -40,15 +40,13 @@ radius proxy
 {%             endif %}
 {%         endfor %}
 {%         for vrf in client_group.vrfs | arista.avd.default([]) | selectattr("host_clients", "arista.avd.defined") %}
-{%             if vrf.host_clients is arista.avd.defined %}
-{%                 for host in vrf.host_clients %}
-{%                     set client_host = "client host " ~ host.name ~ " vrf " ~ vrf.name %}
-{%                     if host.key is arista.avd.defined %}
-{%                         set client_host = client_host ~ " key "  ~ host.key ~ " 7 " ~ host.key | arista.avd.hide_passwords(hide_passwords) %}
-{%                     endif %}
+{%             for host in vrf.host_clients %}
+{%                 set client_host = "client host " ~ host.name ~ " vrf " ~ vrf.name %}
+{%                 if host.key is arista.avd.defined %}
+{%                     set client_host = client_host ~ " key "  ~ host.key ~ " 7 " ~ host.key | arista.avd.hide_passwords(hide_passwords) %}
+{%                 endif %}
       {{ client_host }}
-{%                 endfor %}
-{%             endif %}
+{%             endfor %}
 {%         endfor %}
 {%         if client_group.server_groups is arista.avd.defined %}
       server group {{ client_group.server_groups | join(" ") }}
