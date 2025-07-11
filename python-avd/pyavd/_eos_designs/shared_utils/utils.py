@@ -132,7 +132,7 @@ class UtilsMixin(Protocol):
             return adapter_or_network_port_settings
 
         adapter_profile = self.get_merged_port_profile(profile_name, adapter_or_network_port_settings._source)
-  
+
         # Need this to assist the type checker.
         if isinstance(adapter_or_network_port_settings, EosDesigns.NetworkPortsItem):  # NOSONAR, this is for the type checker
             profile_as_adapter_or_network_port_settings = adapter_profile._cast_as(type(adapter_or_network_port_settings))
