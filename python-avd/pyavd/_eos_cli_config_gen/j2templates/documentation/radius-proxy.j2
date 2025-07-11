@@ -63,10 +63,8 @@ Server Groups: {{ client_group.server_groups | join(", ") }}
 {%                     for host_client in vrf.host_clients %}
 {%                         if host_client.key is arista.avd.defined %}
 {%                             set host_client_key = host_client.key | arista.avd.hide_passwords(hide_passwords) %}
-{%                         else %}
-{%                             set host_client_key = "-" %}
 {%                         endif %}
-| {{ host_client.name }} | {{ host_client_key }} |
+| {{ host_client.name }} | {{ host_client_key | arista.avd.default("-") }} |
 {%                     endfor %}
 {%                 endif %}
 {%             endfor %}
