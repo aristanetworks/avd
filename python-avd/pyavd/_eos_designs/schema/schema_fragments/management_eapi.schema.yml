@@ -56,7 +56,7 @@ keys:
               type: bool
               required: true
               description: |-
-                Enable/disable Management EAPI for this VRF.
+                Enable/disable Management eAPI for this VRF.
             ipv4_acl:
               type: str
               description: IPv4 access-list name.
