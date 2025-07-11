@@ -36,6 +36,12 @@
       - ntp.clear_password | arista.avd.encrypt(passwd_type='ntp', salt=ntp.salt) == ntp.expected_encrypted_password
       - ntp.expected_encrypted_password | arista.avd.decrypt(passwd_type='ntp') == ntp.clear_password
 
+- name: Test Encrypt & Decrypt for RADIUS passwords
+  ansible.builtin.assert:
+    that:
+      - radius.clear_password | arista.avd.encrypt(passwd_type='radius', salt=radius.salt) == radius.expected_encrypted_password
+      - radius.expected_encrypted_password | arista.avd.decrypt(passwd_type='radius') == radius.clear_password
+
 - name: Test Encrypt & Decrypt for TACACS+ passwords
   ansible.builtin.assert:
     that:

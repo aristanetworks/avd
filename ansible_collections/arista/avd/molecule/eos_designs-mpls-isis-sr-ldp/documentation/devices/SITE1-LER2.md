@@ -775,6 +775,9 @@ router bgp 65000
    address-family ipv4
       no neighbor MPLS-OVERLAY-PEERS activate
    !
+   address-family rt-membership
+      neighbor MPLS-OVERLAY-PEERS activate
+   !
    address-family vpn-ipv4
       neighbor MPLS-OVERLAY-PEERS activate
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
