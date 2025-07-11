@@ -1,0 +1,6 @@
+{% if link.main_interface_wan_carrier and link.peer is arista.avd.defined %}
+{{ link.main_interface_wan_carrier }}_{{ link.peer }}
+{% endif %}
+{% if link.wan_circuit_id and link.wan_carrier is arista.avd.defined %}
+{{ link.wan_carrier }}_{{ link.wan_circuit_id }}
+{% endif %}
