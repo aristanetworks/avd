@@ -66372,11 +66372,9 @@ class EosDesigns(EosDesignsRootModel):
     management_eapi: ManagementEapi
     """
     Default is HTTPS management eAPI enabled.
-    The VRF is set to < use_mgmt_interface_vrf >.
 
 
-    Subclass
-    of AvdModel.
+    Subclass of AvdModel.
     """
     mgmt_destination_networks: MgmtDestinationNetworks
     """
@@ -68287,11 +68285,9 @@ class EosDesigns(EosDesignsRootModel):
                 mac_address_table: mac_address_table
                 management_eapi:
                    Default is HTTPS management eAPI enabled.
-                   The VRF is set to < use_mgmt_interface_vrf >.
 
 
-                   Subclass
-                   of AvdModel.
+                   Subclass of AvdModel.
                 mgmt_destination_networks:
                    List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
                    Replaces the default route.

@@ -2792,8 +2792,6 @@ keys:
       table: management-settings
     description: 'Default is HTTPS management eAPI enabled.
 
-      The VRF is set to < use_mgmt_interface_vrf >.
-
       '
     type: dict
     keys:

@@ -520,14 +520,13 @@ class AvdStructuredConfigBaseProtocol(
             # remove in AVD 6.0 as well as the try/except below
             using_default_vrfs = self.inputs.management_eapi._get_defined_attr("vrfs") == Undefined
 
-            for vrf in self.inputs.management_eapi.vrfs._natural_sorted():
+            for vrf in self.inputs.management_eapi.vrfs:
                 if vrf.enabled:
                     try:
                         vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
-                    except AristaAvdInvalidInputsError as e:
+                    except AristaAvdInvalidInputsError:
                         if not using_default_vrfs:
-                            msg = f"'self.inputs.management_eapi.vrfs[name={vrf.name}]' is set but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
-                            raise AristaAvdInvalidInputsError(msg) from e
+                            raise
                         vrf_name = self.inputs.mgmt_interface_vrf
                     self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
 
