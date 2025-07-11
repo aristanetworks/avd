@@ -2814,24 +2814,27 @@ keys:
           enabled: true
         type: list
         primary_key: name
-        description: 'Note: For backward compatibility, the default behavior does
-          not enforce `mgmt_ip` to be present in VRFs.
+        description: 'Note: For backward compatibility, `mgmt_ip` presence is not
+          enforced when `vrfs` is **not** configured and the default value of `use_mgmt_interface_vrf`
+          is used.
 
-          If this enforcement is desired, users must explicitly define VRFs. This
-          behavior applies up to AVD version 6.0.'
+          To enforce the presence of `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`,
+          explicitly define an entry in `vrfs` using `name: use_mgmt_interface_vrf`.
+
+          This behavior will be removed in AVD 6.0.'
         items:
           type: dict
           keys:
             name:
               type: str
               description: "VRF name.\nThe value will be interpreted according to
-                these rules:\n- `use_mgmt_interface_vrf` will configure the eAPI ACL
-                under the VRF set with `mgmt_interface_vrf`.\n  An error will be raised
+                these rules:\n- `use_mgmt_interface_vrf` will configure the eAPI under
+                the VRF set with `mgmt_interface_vrf`.\n  An error will be raised
                 if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n-
-                `use_inband_mgmt_vrf` will configure the eAPI ACL under the VRF set
-                with `inband_mgmt_vrf`.\n  An error will be raised if inband management
+                `use_inband_mgmt_vrf` will configure the eAPI under the VRF set with
+                `inband_mgmt_vrf`.\n  An error will be raised if inband management
                 is not configured for the device.\n- `use_default_mgmt_method_vrf`
-                will configure the eAPI ACL under VRF for one of the two options above
+                will configure the eAPI under VRF for one of the two options above
                 depending on the value of `default_mgmt_method`.\n- Any other string
                 will be used directly as the VRF name."
               convert_types:
@@ -2839,7 +2842,7 @@ keys:
             enabled:
               type: bool
               required: true
-              description: Enable/disable Management EAPI for this VRF.
+              description: Enable/disable Management eAPI for this VRF.
             ipv4_acl:
               type: str
               description: IPv4 access-list name.

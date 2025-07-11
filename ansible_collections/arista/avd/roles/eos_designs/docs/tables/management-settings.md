@@ -109,9 +109,9 @@
     | [<samp>&nbsp;&nbsp;enable_http</samp>](## "management_eapi.enable_http") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enable_https</samp>](## "management_eapi.enable_https") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;default_services</samp>](## "management_eapi.default_services") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "management_eapi.vrfs") | List, items: Dictionary |  | See (+) on YAML tab |  | Note: For backward compatibility, the default behavior does not enforce `mgmt_ip` to be present in VRFs.<br>If this enforcement is desired, users must explicitly define VRFs. This behavior applies up to AVD version 6.0. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_eapi.vrfs.[].name") | String | Required, Unique |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the eAPI ACL under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the eAPI ACL under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the eAPI ACL under VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "management_eapi.vrfs.[].enabled") | Boolean | Required |  |  | Enable/disable Management EAPI for this VRF. |
+    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "management_eapi.vrfs") | List, items: Dictionary |  | See (+) on YAML tab |  | Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not** configured and the default value of `use_mgmt_interface_vrf` is used.<br>To enforce the presence of `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using `name: use_mgmt_interface_vrf`.<br>This behavior will be removed in AVD 6.0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_eapi.vrfs.[].name") | String | Required, Unique |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the eAPI under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the eAPI under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the eAPI under VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "management_eapi.vrfs.[].enabled") | Boolean | Required |  |  | Enable/disable Management eAPI for this VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "management_eapi.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 access-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl</samp>](## "management_eapi.vrfs.[].ipv6_acl") | String |  |  |  | IPv6 access-list name. |
     | [<samp>name_servers</samp>](## "name_servers") <span style="color:red">deprecated</span> | List, items: String |  |  |  | List of DNS servers. The VRF is set to < mgmt_interface_vrf >.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>dns_settings.servers</samp> instead.</span> |
@@ -424,21 +424,22 @@
       enable_https: <bool; default=True>
       default_services: <bool>
 
-      # Note: For backward compatibility, the default behavior does not enforce `mgmt_ip` to be present in VRFs.
-      # If this enforcement is desired, users must explicitly define VRFs. This behavior applies up to AVD version 6.0.
+      # Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not** configured and the default value of `use_mgmt_interface_vrf` is used.
+      # To enforce the presence of `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using `name: use_mgmt_interface_vrf`.
+      # This behavior will be removed in AVD 6.0.
       vrfs: # (1)!
 
           # VRF name.
           # The value will be interpreted according to these rules:
-          # - `use_mgmt_interface_vrf` will configure the eAPI ACL under the VRF set with `mgmt_interface_vrf`.
+          # - `use_mgmt_interface_vrf` will configure the eAPI under the VRF set with `mgmt_interface_vrf`.
           #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-          # - `use_inband_mgmt_vrf` will configure the eAPI ACL under the VRF set with `inband_mgmt_vrf`.
+          # - `use_inband_mgmt_vrf` will configure the eAPI under the VRF set with `inband_mgmt_vrf`.
           #   An error will be raised if inband management is not configured for the device.
-          # - `use_default_mgmt_method_vrf` will configure the eAPI ACL under VRF for one of the two options above depending on the value of `default_mgmt_method`.
+          # - `use_default_mgmt_method_vrf` will configure the eAPI under VRF for one of the two options above depending on the value of `default_mgmt_method`.
           # - Any other string will be used directly as the VRF name.
         - name: <str; required; unique>
 
-          # Enable/disable Management EAPI for this VRF.
+          # Enable/disable Management eAPI for this VRF.
           enabled: <bool; required>
 
           # IPv4 access-list name.

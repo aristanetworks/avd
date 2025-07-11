@@ -8095,20 +8095,20 @@ class EosDesigns(EosDesignsRootModel):
             VRF name.
             The value will be interpreted according to these rules:
             - `use_mgmt_interface_vrf` will
-            configure the eAPI ACL under the VRF set with `mgmt_interface_vrf`.
+            configure the eAPI under the VRF set with `mgmt_interface_vrf`.
               An error will be raised if
             `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
             - `use_inband_mgmt_vrf` will
-            configure the eAPI ACL under the VRF set with `inband_mgmt_vrf`.
+            configure the eAPI under the VRF set with `inband_mgmt_vrf`.
               An error will be raised if inband
             management is not configured for the device.
             - `use_default_mgmt_method_vrf` will configure the eAPI
-            ACL under VRF for one of the two options above depending on the value of `default_mgmt_method`.
-            -
-            Any other string will be used directly as the VRF name.
+            under VRF for one of the two options above depending on the value of `default_mgmt_method`.
+            - Any
+            other string will be used directly as the VRF name.
             """
             enabled: bool
-            """Enable/disable Management EAPI for this VRF."""
+            """Enable/disable Management eAPI for this VRF."""
             ipv4_acl: str | None
             """IPv4 access-list name."""
             ipv6_acl: str | None
@@ -8135,18 +8135,18 @@ class EosDesigns(EosDesignsRootModel):
                            VRF name.
                            The value will be interpreted according to these rules:
                            - `use_mgmt_interface_vrf` will
-                           configure the eAPI ACL under the VRF set with `mgmt_interface_vrf`.
+                           configure the eAPI under the VRF set with `mgmt_interface_vrf`.
                              An error will be raised if
                            `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
                            - `use_inband_mgmt_vrf` will
-                           configure the eAPI ACL under the VRF set with `inband_mgmt_vrf`.
+                           configure the eAPI under the VRF set with `inband_mgmt_vrf`.
                              An error will be raised if inband
                            management is not configured for the device.
                            - `use_default_mgmt_method_vrf` will configure the eAPI
-                           ACL under VRF for one of the two options above depending on the value of `default_mgmt_method`.
-                           -
-                           Any other string will be used directly as the VRF name.
-                        enabled: Enable/disable Management EAPI for this VRF.
+                           under VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                           - Any
+                           other string will be used directly as the VRF name.
+                        enabled: Enable/disable Management eAPI for this VRF.
                         ipv4_acl: IPv4 access-list name.
                         ipv6_acl: IPv6 access-list name.
 
@@ -8178,12 +8178,15 @@ class EosDesigns(EosDesignsRootModel):
         default_services: bool | None
         vrfs: Vrfs
         """
-        Note: For backward compatibility, the default behavior does not enforce `mgmt_ip` to be present in
-        VRFs.
-        If this enforcement is desired, users must explicitly define VRFs. This behavior applies up to
-        AVD version 6.0.
+        Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not**
+        configured and the default value of `use_mgmt_interface_vrf` is used.
+        To enforce the presence of
+        `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using
+        `name: use_mgmt_interface_vrf`.
+        This behavior will be removed in AVD 6.0.
 
-        Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+        Subclass of
+        AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
         Default value: `lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)`
         """
@@ -8211,12 +8214,15 @@ class EosDesigns(EosDesignsRootModel):
                     enable_https: enable_https
                     default_services: default_services
                     vrfs:
-                       Note: For backward compatibility, the default behavior does not enforce `mgmt_ip` to be present in
-                       VRFs.
-                       If this enforcement is desired, users must explicitly define VRFs. This behavior applies up to
-                       AVD version 6.0.
+                       Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not**
+                       configured and the default value of `use_mgmt_interface_vrf` is used.
+                       To enforce the presence of
+                       `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using
+                       `name: use_mgmt_interface_vrf`.
+                       This behavior will be removed in AVD 6.0.
 
-                       Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                       Subclass of
+                       AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
 
