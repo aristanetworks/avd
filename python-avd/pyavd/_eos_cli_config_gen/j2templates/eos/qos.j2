@@ -9,6 +9,9 @@
 {%     if qos.rewrite_dscp is arista.avd.defined(true) %}
 qos rewrite dscp
 {%     endif %}
+{%     if qos.tx_queue.shape_rate_percent_adaptive is arista.avd.defined(true) %}
+qos tx-queue shape rate percent adaptive
+{%     endif %}
 {%     for cos_map in qos.map.cos | arista.avd.natural_sort %}
 qos map cos {{ cos_map }}
 {%     endfor %}

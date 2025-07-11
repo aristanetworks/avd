@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd.j2filters import natural_sort, snmp_hash
 
 if TYPE_CHECKING:
@@ -108,7 +108,7 @@ class SnmpServerMixin(Protocol):
 
             case "system_mac":
                 if self.shared_utils.system_mac_address is None:
-                    msg = "default_engine_id_from_system_mac: true requires system_mac_address to be set."
+                    msg = "'compute_local_engineid_source: system_mac' requires 'system_mac_address' to be set."
                     raise AristaAvdInvalidInputsError(msg)
                 if not snmp_settings._get("compute_local_engineid_rfc3411", None):
                     # This generation algorithm is not RFC3411 compliant, but matches the behaviour in existing EOS at time of writing.
@@ -126,7 +126,7 @@ class SnmpServerMixin(Protocol):
                 # Unknown mode
                 msg = f"'{snmp_settings.compute_local_engineid_source}' is not a valid value to compute the engine ID, \
                 accepted values are 'hostname_and_ip', 'system_mac', 'hostname_inband_ip', 'hostname_oob_ip'."
-                raise AristaAvdError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
         self.structured_config.snmp_server.engine_ids.local = local_engine_id
 

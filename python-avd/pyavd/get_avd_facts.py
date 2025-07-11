@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from pyavd.api.pool_manager import PoolManager
 
 
-def get_avd_facts(all_inputs: dict[str, dict], pool_manager: PoolManager | None = None) -> dict[str, EosDesignsFacts]:
+def get_avd_facts(all_inputs: dict[str, dict], pool_manager: PoolManager | None = None, digital_twin: bool = False) -> dict[str, EosDesignsFacts]:
     """
     Build avd_facts using the AVD eos_designs_facts logic.
 
@@ -30,6 +30,7 @@ def get_avd_facts(all_inputs: dict[str, dict], pool_manager: PoolManager | None 
         pool_manager: PREVIEW: Optional instance of pyavd.avd.PoolManager or subclass hereof,
             implementing ".get_assignment(pool_type: PoolType, shared_utils: SharedUtils)".
             Used for dynamic ID allocations using the "pool_manager" feature.
+        digital_twin: PREVIEW: Optional flag to enable digital-twin mode.
 
     Returns:
         Dictionary with various internal "facts" keyed by device hostname. The full dict must be given as argument to `pyavd.get_device_structured_config`.
@@ -39,4 +40,4 @@ def get_avd_facts(all_inputs: dict[str, dict], pool_manager: PoolManager | None 
 
     all_input_classes: dict[str, EosDesigns] = {}
     all_input_classes = {hostname: EosDesigns._from_dict(hostvars) for hostname, hostvars in all_inputs.items()}
-    return get_facts(all_inputs=all_input_classes, pool_manager=pool_manager, all_hostvars=all_inputs)
+    return get_facts(all_inputs=all_input_classes, pool_manager=pool_manager, all_hostvars=all_inputs, digital_twin=digital_twin)

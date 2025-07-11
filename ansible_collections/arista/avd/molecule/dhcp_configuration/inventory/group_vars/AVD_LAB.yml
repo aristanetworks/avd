@@ -13,12 +13,16 @@ local_users:
     role: network-admin
     sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
 
-# Cloud Vision server
+# CloudVision server
 cv_settings:
   onprem_clusters:
     - name: test
       servers:
         - name: 192.168.200.11
+
+# Note! The arista.avd.dhcp_provisioner role does not support cv_settings.
+# Instead the ZTP URL can be set with 'ztp_bootstrap_file'
+ztp_bootstrap_file: http://192.168.200.11/ztp/bootstrap
 
 # OOB Management network default gateway.
 mgmt_gateway: 192.168.200.5

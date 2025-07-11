@@ -98,6 +98,9 @@
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Custom TCAM Profiles](#custom-tcam-profiles)
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
+- [Load Balance](#load-balance)
+  - [Load Balance Profiles](#load-balance-profiles)
+  - [Load Balance Configuration](#load-balance-configuration)
   - [Link Tracking](#link-tracking)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
@@ -774,6 +777,9 @@ management ssh
    client-alive count-max 42
    no shutdown
    log-level debug
+   !
+   vrf default
+      no shutdown
    !
    vrf mgt
       no shutdown
@@ -3237,6 +3243,46 @@ hardware tcam
    system profile traffic_policy
 ```
 
+## Load Balance
+
+### Load Balance Profiles
+
+#### Profile_A
+
+##### UDP Fields Settings
+
+| Setting | Value |
+| ------- | ----- |
+| Destination Port | 101 |
+| UDP Payload | 25 |
+
+#### Profile_B
+
+##### UDP Fields Settings
+
+| Setting | Value |
+| ------- | ----- |
+| Destination Port | 100 |
+| Match Payload Bits | 10 |
+| Match Pattern | 0x7d1 |
+| Match Hash Payload Bytes | 10 |
+| UDP Payload | 10-20 |
+
+### Load Balance Configuration
+
+```eos
+!
+load-balance policies
+   load-balance sand profile Profile_A
+      fields udp dst-port 101
+         payload bytes 25
+   !
+   load-balance sand profile Profile_B
+      fields udp dst-port 100
+         match payload bits 10 pattern 0x7d1 hash payload bytes 10
+         payload bytes 10-20
+```
+
 ### Link Tracking
 
 #### Link Tracking Groups Summary
@@ -3471,6 +3517,8 @@ sync-e
 ## Port-Channel
 
 ### Port-Channel Summary
+
+Port-Channel load balance Sand platform profile: Profile_B
 
 #### Port-channel Load-balance Trident UDF Eth-type Headers
 
@@ -6877,8 +6925,8 @@ interface Vlan4094
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
 | 110 | 10110 | - | 239.9.1.4 |
-| 111 | 10111 | 10.1.1.10<br/>10.1.1.11 | - |
-| 112 | - | - | 239.9.1.6 |
+| 111 | 10111 | 10.1.1.10<br/>10.1.1.11<br/>232.1.1.21 | - |
+| 112 | - | 232.1.1.22 | 239.9.1.6 |
 
 ##### VRF to VNI and Multicast Group Mappings
 
@@ -6915,6 +6963,8 @@ interface Vxlan1
    bfd vtep evpn prefix-list PL-TEST
    vxlan flood vtep 10.1.0.10 10.1.0.11
    vxlan vlan 111 flood vtep 10.1.1.10 10.1.1.11
+   vxlan vlan 111 flood group 232.1.1.21
+   vxlan vlan 112 flood group 232.1.1.22
    vxlan vlan 110 multicast group 239.9.1.4
    vxlan vlan 112 multicast group 239.9.1.6
    vxlan vrf Tenant_A_OP_Zone multicast group 232.0.0.10
@@ -11253,6 +11303,8 @@ platform fap buffering egress profile unicast
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7
 platform sand qos map traffic-class 2 to network-qos 15
+!
+port-channel load-balance sand profile Profile_B
 platform sand multicast replication default ingress
 platform sand mdb profile l3-xxl
 platform sfe data-plane cpu allocation maximum 42
@@ -12580,6 +12632,8 @@ QOS rewrite DSCP: **enabled**
 
 QOS random-detect ECN is set to allow **non-ect** **chip-based**
 
+QOS adaptive transmit queue percentage-based allocation: **enabled**
+
 ##### QOS Mappings
 
 | COS to Traffic Class mappings |
@@ -12608,6 +12662,7 @@ QOS random-detect ECN is set to allow **non-ect** **chip-based**
 ```eos
 !
 qos rewrite dscp
+qos tx-queue shape rate percent adaptive
 qos map cos 1 2 3 4 to traffic-class 2
 qos map cos 3 to traffic-class 3
 qos map dscp 8 9 10 11 12 13 14 15 16 17 19 21 23 24 25 27 29 31 32 33 35 37 39 40 41 42 43 44 45 47 49 50 51 52 53 54 55 57 58 59 60 61 62 63 to traffic-class 1

@@ -7,3 +7,11 @@ source_interfaces:
   snmp:
     mgmt_interface: true
     inband_mgmt_interface: true
+  # source_interfaces.radius is deprecated. To be removed in 6.0.0
+  radius:
+    mgmt_interface: true
+    inband_mgmt_interface: true
+  # source_interfaces.tacacs is deprecated. To be removed in 6.0.0
+  tacacs:
+    mgmt_interface: true
+    inband_mgmt_interface: true

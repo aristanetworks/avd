@@ -336,6 +336,48 @@ def isis_decrypt(password: str, key: str, mode: str) -> str:
 
 
 ########
+# Radius
+########
+def radius_encrypt(password: str, salt: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) -> str:
+    """
+    Encrypt (obfuscate) a Radius key with insecure type-7.
+
+    Args:
+        password: The clear text Radius key.
+        salt: A number within the range 0-15.
+
+    Returns:
+        str: The encrypted Radius key as a string.
+    """
+    if not isinstance(password, str) or not password:
+        msg = "Password MUST be a string with at least 1 character."
+        raise ValueError(msg)
+
+    if not isinstance(salt, int) or salt < 0 or salt > 15:
+        msg = "Salt MUST be an integer within the range 0-15."
+        raise ValueError(msg)
+
+    return simple_7_encrypt(password, salt)
+
+
+def radius_decrypt(password: str) -> str:
+    """
+    Decrypt (deobfuscate) a Radius key from insecure type-7.
+
+    Args:
+        password: The encrypted Radius key to be decrypted.
+
+    Returns:
+        str: The decrypted Radius key as a string.
+    """
+    if not isinstance(password, str) or not password:
+        msg = "Password MUST be a string with at least 1 character."
+        raise ValueError(msg)
+
+    return simple_7_decrypt(password)
+
+
+########
 # Tacacs
 ########
 def tacacs_encrypt(password: str, salt: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) -> str:
@@ -369,6 +411,50 @@ def tacacs_decrypt(password: str) -> str:
 
     Returns:
         str: The decrypted Tacacs key as a string.
+    """
+    if not isinstance(password, str) or not password:
+        msg = "Password MUST be a string with at least 1 character."
+        raise ValueError(msg)
+
+    return simple_7_decrypt(password)
+
+
+########
+# NTP
+########
+# TODO: discuss with @Claus to merge the functions between tacacs, ntp and -soon- radius
+# probably can move the salt check in simple_7_xxx and use only one function
+def ntp_encrypt(password: str, salt: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) -> str:
+    """
+    Encrypt (obfuscate) an NTP key with insecure type-7.
+
+    Args:
+        password: The clear text NTP key.
+        salt: A number within the range 0-15.
+
+    Returns:
+        str: The encrypted NTP key as a string.
+    """
+    if not isinstance(password, str) or not password:
+        msg = "Password MUST be a string with at least 1 character."
+        raise ValueError(msg)
+
+    if not isinstance(salt, int) or salt < 0 or salt > 15:
+        msg = "Salt MUST be an integer within the range 0-15."
+        raise ValueError(msg)
+
+    return simple_7_encrypt(password, salt)
+
+
+def ntp_decrypt(password: str) -> str:
+    """
+    Decrypt (deobfuscate) a NTP key from insecure type-7.
+
+    Args:
+        password: The encrypted NTP key to be decrypted.
+
+    Returns:
+        str: The decrypted NTP key as a string.
     """
     if not isinstance(password, str) or not password:
         msg = "Password MUST be a string with at least 1 character."

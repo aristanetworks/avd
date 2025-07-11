@@ -4,6 +4,9 @@ custom_structured_configuration_router_bgp:
     - ip_address: 10.1.1.1
       description: External peer
       peer_group: EVPN-OVERLAY-PEERS
+  neighbor_interfaces:
+    - name: Ethernet1
+      remote_as: "577"
 
 # Custom router path selection structured_config to test negative case for STUN client test case
 custom_structured_configuration_router_path_selection:

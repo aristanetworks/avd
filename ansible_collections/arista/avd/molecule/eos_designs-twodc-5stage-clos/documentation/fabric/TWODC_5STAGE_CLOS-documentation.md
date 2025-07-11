@@ -21,9 +21,9 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | - | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | - | CUSTOM-PLATFORM | Provisioned | - |
 | DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2A | - | vEOS-LAB | Provisioned | - |
-| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2B | 192.168.1.12/24 | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2B | 192.168.1.12/24 | - | Provisioned | - |
 | DC1_POD1 | l3leaf | DC1-POD1-LEAF1A | - | vEOS-LAB | Provisioned | - |
 | DC1_POD1 | l3leaf | DC1-POD1-LEAF2B | 192.168.1.9/16 | vEOS-LAB | Provisioned | - |
 | DC1_POD1 | spine | DC1-POD1-SPINE1 | - | vEOS-LAB | Provisioned | - |
@@ -259,6 +259,7 @@
 | server-1 | Eth4 | DC1-POD1-LEAF2B | Ethernet17 | Set using structured_config on server adapter | False | access | 110 | - | TENANT_A |
 | server-1 | Eth6 | DC1-POD1-LEAF2B | Ethernet18 | SERVER_server-1_Eth6 | False | access | 110 | - | NESTED_TENANT_A |
 | server-1 | Eth8 | DC1-POD1-LEAF2B | Ethernet19 | SERVER_server-1_Eth8 | False | access | 110 | - | NESTED_TENANT_A |
+| server-1 | Eth9 | DC1-POD1-L2LEAF1A | Ethernet2 | SERVER_server-1_Eth9 | False | - | - | - | - |
 
 ### Port Profiles
 

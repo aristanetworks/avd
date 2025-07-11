@@ -55,7 +55,30 @@ keys:
         type: bool
       authentication_keys:
         type: list
-        $ref: eos_cli_config_gen#/keys/ntp/keys/authentication_keys
+        primary_key: id
+        items:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/ntp/keys/authentication_keys/items
+          keys:
+            key:
+              type: str
+              description: |-
+                Authentication provided using the `key_type` format.
+                Will be rendered as such.
+                Takes precedence over `cleartext_key`.
+              # Need to overwrite required: true from eos_cli_config_gen to allow cleartext_key only
+              required: false
+            cleartext_key:
+              type: str
+              description: |-
+                Cleartext key for the NTP authentication key. Encrypted to Type 7 by AVD.
+                `key_type` does not influence this key.
+                To protect the password at rest it is strongly recommended to make use of a vault or similar.
+            key_type:
+              type: str
+              description: |-
+                Key type of the `key`.
+                Does not have any influence on `cleartext_key`.
       trusted_keys:
         type: str
         $ref: eos_cli_config_gen#/keys/ntp/keys/trusted_keys
