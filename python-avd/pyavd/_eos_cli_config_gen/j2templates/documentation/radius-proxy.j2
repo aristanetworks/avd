@@ -50,10 +50,8 @@ Server Groups: {{ client_group.server_groups | join(", ") }}
 {%                     for ipv6_client in vrf.ipv6_clients %}
 {%                         if ipv6_client.key is arista.avd.defined %}
 {%                             set ipv6_client_key = ipv6_client.key | arista.avd.hide_passwords(hide_passwords) %}
-{%                         else %}
-{%                             set ipv6_client_key = "-" %}
 {%                         endif %}
-| {{ ipv6_client.address }} | {{ ipv6_client_key }} |
+| {{ ipv6_client.address }} | {{ ipv6_client_key | arista.avd.default("-") }} |
 {%                     endfor %}
 {%                 endif %}
 {%                 if vrf.host_clients is arista.avd.defined %}
