@@ -26,9 +26,7 @@ from anta.tests.interfaces import (
 from anta.tests.logging import VerifyLoggingErrors
 from anta.tests.mlag import (
     VerifyMlagConfigSanity,
-    VerifyMlagDualPrimary,
     VerifyMlagInterfaces,
-    VerifyMlagReloadDelay,
     VerifyMlagStatus,
 )
 from anta.tests.path_selection import VerifySpecificPath
@@ -69,9 +67,7 @@ __all__ = [
     "VerifyMaintenance",
     "VerifyMemoryUtilization",
     "VerifyMlagConfigSanity",
-    "VerifyMlagDualPrimary",
     "VerifyMlagInterfaces",
-    "VerifyMlagReloadDelay",
     "VerifyMlagStatus",
     "VerifyNTP",
     "VerifyPortChannels",
