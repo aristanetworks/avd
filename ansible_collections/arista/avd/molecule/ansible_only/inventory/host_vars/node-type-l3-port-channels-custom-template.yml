@@ -1,0 +1,45 @@
+---
+node_type_keys:
+  - key: l3spine
+    type: l3spine
+    default_underlay_routing_protocol: none
+    default_overlay_routing_protocol: ibgp
+    network_services:
+      l3: true
+    interface_descriptions:
+      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
+
+type: l3spine
+l3spine:
+  defaults:
+    bgp_as: 65001
+    spanning_tree_mode: none
+    loopback_ipv4_pool: 192.0.255.0/24
+    uplink_ipv4_pool: 10.255.1.0/24
+    mlag_interfaces: [Ethernet10]
+    mlag_peer_ipv4_pool: "10.10.10.0/24"
+    mlag_peer_l3_ipv4_pool: "10.10.20.0/24"
+  nodes:
+    - name: node-type-l3-port-channels-custom-template
+      id: 2
+      mgmt_ip: 10.1.1.2/24
+      l3_port_channels:
+        - name: Port-Channel5
+          mode: passive
+          member_interfaces:
+            - name: Ethernet1/4
+              peer: peerDevice2
+              peer_interface: Ethernet1/12
+              speed: "forced 10000full"
+          ip_address: 192.168.1.105/31
+          peer: peer2
+          peer_port_channel: Port-Channel15
+          wan_carrier: StreamFast
+          wan_circuit_id: 102
+          # sub-interface for Port-Channel without wan_carrier set
+        - name: Port-Channel5.100
+          ip_address: 192.168.100.115/31
+        - name: Port-Channel5.105
+          ip_address: 192.168.100.116/31
+          peer: peer3
+          wan_carrier: Telstra

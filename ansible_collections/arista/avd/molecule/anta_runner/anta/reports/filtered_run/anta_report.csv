@@ -5,7 +5,7 @@ dc1-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc1-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-leaf1a,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc1-leaf1a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-leaf1a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-leaf1a,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc1-leaf1a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -37,6 +37,7 @@ dc1-leaf1a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-leaf1a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf1a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-leaf1a,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
@@ -44,7 +45,7 @@ dc1-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc1-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-leaf1b,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc1-leaf1b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-leaf1b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-leaf1b,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc1-leaf1b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -75,6 +76,7 @@ dc1-leaf1b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-leaf1b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf1b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-leaf1b,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-leaf1b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-leaf1c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
@@ -105,6 +107,7 @@ dc1-leaf1c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-leaf1c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf1c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-leaf1c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-leaf1c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-leaf2a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
@@ -112,7 +115,7 @@ dc1-leaf2a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc1-leaf2a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf2a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf2a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-leaf2a,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc1-leaf2a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-leaf2a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-leaf2a,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc1-leaf2a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -143,6 +146,7 @@ dc1-leaf2a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-leaf2a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf2a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf2a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-leaf2a,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-leaf2a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf2a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-leaf2a,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and UDP port.,VXLAN
@@ -178,6 +182,7 @@ dc1-leaf2c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-leaf2c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf2c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf2c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-leaf2c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-leaf2c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf2c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-spine1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
@@ -185,7 +190,7 @@ dc1-spine1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc1-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-spine1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-spine1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-spine1,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc1-spine1,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-spine1,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-spine1,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc1-spine1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -209,6 +214,7 @@ dc1-spine1,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-spine1,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-spine1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-spine1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-spine1,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-spine1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-spine1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-spine2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
@@ -216,7 +222,7 @@ dc1-spine2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc1-spine2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-spine2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-spine2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-spine2,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc1-spine2,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-spine2,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-spine2,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc1-spine2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -240,15 +246,16 @@ dc1-spine2,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc1-spine2,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-spine2,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-spine2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-spine2,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-spine2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-spine2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-svc-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-svc-leaf1a,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc1-svc-leaf1a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-svc-leaf1a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-svc-leaf1a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-svc-leaf1a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
 dc1-svc-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-svc-leaf1b,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc1-svc-leaf1b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-svc-leaf1b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-svc-leaf1b,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-svc-leaf1b,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
@@ -259,7 +266,7 @@ dc1-wan1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between
 dc1-wan1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-wan1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-wan1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-wan1,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc1-wan1,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-wan1,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-wan1,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc1-wan1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -286,6 +293,7 @@ dc1-wan1,VerifyStunClientTranslation,unset,,Verifies the translation for a sourc
 dc1-wan1,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-wan1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-wan1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-wan1,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-wan1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-wan1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-wan2,VerifyAVTRole,unset,,Verifies the AVT role of a device.,AVT
@@ -295,7 +303,7 @@ dc1-wan2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between
 dc1-wan2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-wan2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-wan2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc1-wan2,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc1-wan2,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc1-wan2,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc1-wan2,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc1-wan2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -324,6 +332,7 @@ dc1-wan2,VerifyStunClientTranslation,unset,,Verifies the translation for a sourc
 dc1-wan2,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-wan2,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-wan2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc1-wan2,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc1-wan2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-wan2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
@@ -331,7 +340,7 @@ dc2-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc2-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf1a,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc2-leaf1a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf1a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc2-leaf1a,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc2-leaf1a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -361,6 +370,7 @@ dc2-leaf1a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-leaf1a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf1a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf1a,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
@@ -368,7 +378,7 @@ dc2-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc2-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf1b,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc2-leaf1b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf1b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc2-leaf1b,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc2-leaf1b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -398,6 +408,7 @@ dc2-leaf1b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-leaf1b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf1b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf1b,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf1b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf1c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
@@ -428,6 +439,7 @@ dc2-leaf1c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-leaf1c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf1c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf1c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf1c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf2a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
@@ -435,7 +447,7 @@ dc2-leaf2a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc2-leaf2a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf2a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf2a,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc2-leaf2a,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf2a,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc2-leaf2a,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc2-leaf2a,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -465,6 +477,7 @@ dc2-leaf2a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-leaf2a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf2a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf2a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf2a,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf2a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf2a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf2a,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and UDP port.,VXLAN
@@ -477,7 +490,7 @@ dc2-leaf2b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference betwe
 dc2-leaf2b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf2b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf2b,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc2-leaf2b,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf2b,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc2-leaf2b,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc2-leaf2b,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -507,6 +520,7 @@ dc2-leaf2b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-leaf2b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf2b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf2b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf2b,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf2b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf2b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf2b,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and UDP port.,VXLAN
@@ -542,6 +556,7 @@ dc2-leaf2c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-leaf2c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf2c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf2c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf2c,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf2c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf2c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf3a.arista.com,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
@@ -549,7 +564,7 @@ dc2-leaf3a.arista.com,VerifyRunningConfigDiffs,unset,,Verifies there is no diffe
 dc2-leaf3a.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf3a.arista.com,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf3a.arista.com,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf3a.arista.com,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc2-leaf3a.arista.com,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf3a.arista.com,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc2-leaf3a.arista.com,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc2-leaf3a.arista.com,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -579,6 +594,7 @@ dc2-leaf3a.arista.com,VerifySTPCounters,unset,,Verifies there is no errors in ST
 dc2-leaf3a.arista.com,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf3a.arista.com,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf3a.arista.com,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf3a.arista.com,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf3a.arista.com,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf3a.arista.com,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf3b.arista.com,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
@@ -586,7 +602,7 @@ dc2-leaf3b.arista.com,VerifyRunningConfigDiffs,unset,,Verifies there is no diffe
 dc2-leaf3b.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf3b.arista.com,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf3b.arista.com,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-leaf3b.arista.com,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc2-leaf3b.arista.com,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-leaf3b.arista.com,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc2-leaf3b.arista.com,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc2-leaf3b.arista.com,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -616,13 +632,14 @@ dc2-leaf3b.arista.com,VerifySTPCounters,unset,,Verifies there is no errors in ST
 dc2-leaf3b.arista.com,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf3b.arista.com,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf3b.arista.com,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-leaf3b.arista.com,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-leaf3b.arista.com,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf3b.arista.com,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-spine1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-spine1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-spine1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-spine1,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc2-spine1,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-spine1,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc2-spine1,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc2-spine1,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -646,6 +663,7 @@ dc2-spine1,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-spine1,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-spine1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-spine1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-spine1,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-spine1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-spine1,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-spine1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
@@ -653,7 +671,7 @@ dc2-spine2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,
 dc2-spine2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-spine2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-spine2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
-dc2-spine2,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
+dc2-spine2,VerifyReachability,unset,,Verifies reachability to BGP neighbors with an update source configured.,Connectivity
 dc2-spine2,VerifyEnvironmentCooling,unset,,Verifies the status of power supply fans and all fan trays.,Hardware
 dc2-spine2,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardware
 dc2-spine2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
@@ -677,6 +695,7 @@ dc2-spine2,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU pack
 dc2-spine2,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-spine2,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-spine2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
+dc2-spine2,VerifyMaintenance,unset,,Verifies that the device is not currently under or entering maintenance.,System
 dc2-spine2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-spine2,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-spine2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System

@@ -386,6 +386,10 @@ router_bgp:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
       activate: true
+  address_family_rtc:
+    peer_groups:
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
