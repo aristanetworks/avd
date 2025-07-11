@@ -2744,7 +2744,7 @@ event-handler without-trigger-key
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
 | T2 | T2-E1 | 42.42.42.42 | - | No local interface |
-| T3 | T3-E1 | dead:beaf::cafe | 666 | No local interface |
+| T3 | T3-E1 | 10.10.10.1<br>dead:beaf::cafe | 555<br>666 | No local interface |
 | T3 | T3-E2 | 10.10.10.10 | 777 | No local interface |
 | T3 | T3-E3 | this.is.my.awesome.collector.dns.name | 888 | Management1 |
 | T3 | T3-E4 | dead:beef::cafe | - | No local interface |
@@ -2766,7 +2766,7 @@ Software export of IPFIX data records enabled.
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
 | T2 | T2-E1 | 42.42.42.42 | - | No local interface |
-| T3 | T3-E1 | dead:beaf::cafe | 666 | No local interface |
+| T3 | T3-E1 | 10.10.10.1<br>dead:beaf::cafe | 555<br>666 | No local interface |
 | T3 | T3-E2 | 10.10.10.10 | 777 | No local interface |
 | T3 | T3-E3 | this.is.my.awesome.collector.dns.name | 888 | Management1 |
 | T3 | T3-E4 | dead:beef::cafe | - | No local interface |
@@ -2808,6 +2808,7 @@ flow tracking hardware
    !
    tracker T3
       exporter T3-E1
+         collector 10.10.10.1 port 555
          collector dead:beaf::cafe port 666
       !
       exporter T3-E2
@@ -2842,6 +2843,7 @@ flow tracking sampled
    tracker T3
       flow table size 100000 entries
       exporter T3-E1
+         collector 10.10.10.1 port 555
          collector dead:beaf::cafe port 666
       !
       exporter T3-E2

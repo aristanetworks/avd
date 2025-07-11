@@ -38,6 +38,8 @@ flow_tracking:
             collectors:
               - host: dead:beaf::cafe
                 port: 666
+              - host: 10.10.10.1
+                port: 555
           - name: T3-E2
             collectors:
               - host: 10.10.10.10
@@ -76,6 +78,8 @@ flow_tracking:
             collectors:
               - host: dead:beaf::cafe
                 port: 666
+              - host: 10.10.10.1
+                port: 555
           - name: T3-E2
             collectors:
               - host: 10.10.10.10
