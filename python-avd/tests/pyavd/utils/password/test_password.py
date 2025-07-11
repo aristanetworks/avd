@@ -16,6 +16,8 @@ from pyavd._utils.password_utils import (
     ospf_message_digest_encrypt,
     ospf_simple_decrypt,
     ospf_simple_encrypt,
+    radius_decrypt,
+    radius_encrypt,
     tacacs_decrypt,
     tacacs_encrypt,
 )
@@ -312,3 +314,53 @@ def test_ntp_input_validation() -> None:
 
     with pytest.raises(ValueError):  # noqa: PT011
         ntp_decrypt(None)
+
+
+########
+# Radius
+########
+@pytest.mark.parametrize(
+    ("salt", "password", "encrypted_password"),
+    [
+        pytest.param(1, "foo", "0115090B"),
+        pytest.param(6, "foo", "0600002E"),
+        pytest.param(9, "foo", "094A4106"),
+        pytest.param(3, "foo", "03025404"),
+        pytest.param(12, "foo", "121F0A18"),
+        pytest.param(10, "foo", "10480616"),
+        pytest.param(15, "foo", "15140403"),
+    ],
+)
+def test_radius(salt: int, password: str, encrypted_password: str) -> None:
+    """Test radius encrypt and decrypt."""
+    assert radius_encrypt(password, salt) == encrypted_password
+    assert radius_decrypt(encrypted_password) == password
+
+
+def test_radius_input_validation() -> None:
+    with pytest.raises(ValueError):  # noqa: PT011
+        radius_encrypt(["foo"], 1)
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        radius_encrypt("foo", "foo")
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        radius_encrypt("foo", -1)
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        radius_encrypt("", 1)
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        radius_encrypt("foo", None)
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        radius_encrypt(None, 1)
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        radius_decrypt(111)
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        radius_decrypt("")
+
+    with pytest.raises(ValueError):  # noqa: PT011
+        radius_decrypt(None)
