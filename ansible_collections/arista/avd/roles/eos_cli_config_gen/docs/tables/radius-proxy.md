@@ -12,11 +12,11 @@
     | [<samp>&nbsp;&nbsp;client_session_idle_timeout</samp>](## "radius_proxy.client_session_idle_timeout") | Integer |  |  | Min: 1<br>Max: 86400 | Idle timeout in seconds. |
     | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "radius_proxy.dynamic_authorization") | Boolean |  |  |  | To change or revoke a user's access dynamically after authentication,<br>without requiring the user to reconnect or reauthenticate. |
     | [<samp>&nbsp;&nbsp;client_groups</samp>](## "radius_proxy.client_groups") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "radius_proxy.client_groups.[].name") | String | Required, Unique |  |  | Name of client group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "radius_proxy.client_groups.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_groups</samp>](## "radius_proxy.client_groups.[].server_groups") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "radius_proxy.client_groups.[].server_groups.[]") | String |  |  |  | RADIUS server-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "radius_proxy.client_groups.[].vrfs") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "radius_proxy.client_groups.[].vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "radius_proxy.client_groups.[].vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_clients</samp>](## "radius_proxy.client_groups.[].vrfs.[].ipv4_clients") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "radius_proxy.client_groups.[].vrfs.[].ipv4_clients.[].address") | String | Required, Unique |  | Format: ipv4 | IPv4 address "A.B.C.D" or prefix "A.B.C.D/E". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_proxy.client_groups.[].vrfs.[].ipv4_clients.[].key") | String |  |  |  | Key for this client (overrides global).<br>Only type 7 supported. |
@@ -46,16 +46,12 @@
       # without requiring the user to reconnect or reauthenticate.
       dynamic_authorization: <bool>
       client_groups:
-
-          # Name of client group.
         - name: <str; required; unique>
           server_groups:
 
               # RADIUS server-group names.
             - <str>
           vrfs:
-
-              # VRF name.
             - name: <str; required; unique>
               ipv4_clients:
 

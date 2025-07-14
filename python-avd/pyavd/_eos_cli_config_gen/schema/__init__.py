@@ -35190,7 +35190,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "host_clients": {"type": HostClients},
                 }
                 name: str
-                """VRF name."""
                 ipv4_clients: Ipv4Clients
                 """Subclass of AvdIndexedList with `Ipv4ClientsItem` items. Primary key is `address` (`str`)."""
                 ipv6_clients: Ipv6Clients
@@ -35215,7 +35214,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: VRF name.
+                            name: name
                             ipv4_clients: Subclass of AvdIndexedList with `Ipv4ClientsItem` items. Primary key is `address` (`str`).
                             ipv6_clients: Subclass of AvdIndexedList with `Ipv6ClientsItem` items. Primary key is `address` (`str`).
                             host_clients: Subclass of AvdIndexedList with `HostClientsItem` items. Primary key is `name` (`str`).
@@ -35231,7 +35230,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"name": {"type": str}, "server_groups": {"type": ServerGroups}, "vrfs": {"type": Vrfs}}
             name: str
-            """Name of client group."""
             server_groups: ServerGroups
             """Subclass of AvdList with `str` items."""
             vrfs: Vrfs
@@ -35253,7 +35251,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: Name of client group.
+                        name: name
                         server_groups: Subclass of AvdList with `str` items.
                         vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
