@@ -4,7 +4,7 @@ type: l3leaf
 l3leaf:
   defaults:
     loopback_ipv4_pool: 10.10.10.0/24
-    vtep_loopback_ipv4_pool: 10.10.10.0/24
+    vtep_loopback_ipv4_pool: 10.10.11.0/24
     bgp_as: 65042
   nodes:
     - name: management-eapi-vrfs
