@@ -67353,7 +67353,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     It acts
     as a middle layer that helps route, manage, and control authentication,
     authorization, and
-    accounting (AAA) traffic
+    accounting (AAA) traffic.
 
     Subclass of AvdModel.
     """
@@ -67974,7 +67974,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    It acts
                    as a middle layer that helps route, manage, and control authentication,
                    authorization, and
-                   accounting (AAA) traffic
+                   accounting (AAA) traffic.
 
                    Subclass of AvdModel.
                 radius_server: Subclass of AvdModel.
