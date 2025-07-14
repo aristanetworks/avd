@@ -5319,6 +5319,7 @@ keys:
               - tapagg
               - traffic-class
               - traffic-policy
+              - traffic-policy vlan-interface
               - vlan
               - vlan-interface
               - vni decap
@@ -5340,6 +5341,9 @@ keys:
                 This validation IS NOT made by the schemas.
 
                 '
+            enabled:
+              type: bool
+              default: true
             address_type:
               type: str
               valid_values:
