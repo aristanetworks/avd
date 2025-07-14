@@ -26,7 +26,7 @@ l3spine:
       mgmt_ip: 10.1.1.2/24
       l3_interfaces:
         - name: Ethernet1
-          description: overriden using template
+          description: overridden using template
           peer: Eth1
           wan_circuit_id: WAN_CIRCUIT_1
           wan_carrier: Tata
