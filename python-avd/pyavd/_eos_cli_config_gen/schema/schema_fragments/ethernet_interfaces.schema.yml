@@ -1723,7 +1723,7 @@ keys:
                 Warning: This should not be combined with `ethernet_interfaces[].type = routed`.
             mode:
               type: str
-              valid_values: ["access", "dot1q-tunnel", "trunk", "trunk phone"]
+              valid_values: ["access", "dot1q-tunnel", "trunk", "trunk phone", "tap", "tool", "tap-tool"]
               # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].mode` is removed in AVD6.0
               description: |-
                 Warning: This should not be combined with `ethernet_interfaces[].mode`.
