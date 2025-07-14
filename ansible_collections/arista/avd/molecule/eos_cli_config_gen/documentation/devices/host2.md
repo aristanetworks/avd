@@ -1626,10 +1626,10 @@ mac security
 
 #### IPv6 Field Sets
 
-| Field Set Name | IPv6 Prefixes |
-| -------------- | ------------- |
-| IPv6-DEMO-1 | 11:22:33:44:55:66:77:88 |
-| IPv6-DEMO-2 | - |
+| Field Set Name | IPv6 Prefixes | Excluded Prefixes |
+| -------------- | ------------- | ----------------- |
+| IPv6-DEMO-1 | 11:22:33:44:55:66:77:88 | - |
+| IPv6-DEMO-2 | - | - |
 
 #### Traffic Policies Device Configuration
 

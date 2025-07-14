@@ -31,6 +31,11 @@ keys:
                   items:
                     type: str
                     description: IPv4 Prefix.
+                except:
+                  type: list
+                  items:
+                    type: str
+                    description: IPv4 prefix to exclude
           ipv6:
             type: list
             primary_key: name
@@ -45,6 +50,11 @@ keys:
                   items:
                     type: str
                     description: IPv6 Prefix.
+                except:
+                  type: list
+                  items:
+                    type: str
+                    description: IPv6 prefix to exclude
           ports:
             type: list
             primary_key: name
