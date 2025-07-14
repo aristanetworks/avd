@@ -566,29 +566,7 @@ keys:
                     description: Virtual IPv6 address.
               peer_authentication:
                 type: dict
-                keys:
-                  mode:
-                    type: str
-                    description: Authentication mode.
-                    valid_values:
-                      - text
-                      - ietf-md5
-                    required: true
-                  key:
-                    type: str
-                    required: true
-                    description: Authentication key.
-                    convert_types:
-                      - int
-                  key_type:
-                    type: str
-                    convert_types:
-                      - int
-                    description: Authentication key type.
-                    valid_values:
-                      - "0"
-                      - "7"
-                      - "8a"
+                $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids/items/keys/peer_authentication"
         ip_attached_host_route_export:
           type: dict
           keys:
