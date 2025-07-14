@@ -156,7 +156,6 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     key=isis_authentication_key,
                     key_type="7",
                 )
-
         if self.shared_utils.underlay_multicast:
             vlan_interface.pim.ipv4.sparse_mode = True
 
