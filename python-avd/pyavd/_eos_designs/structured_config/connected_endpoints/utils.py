@@ -125,7 +125,7 @@ class UtilsMixin(Protocol):
         # short_esi is only set when called from sub-interface port-channels.
         if not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
             return None
-        
+
         if (short_esi is None) and (short_esi := adapter.ethernet_segment.short_esi) is None:
             return None
 
