@@ -12,7 +12,7 @@ keys:
       table: default-network-ports-description
     description: |-
       Default description or description template to be used on all port-channels defined under `network_ports`.
-      This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+      This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
       The available template fields are:
         - `endpoint_type`: Always set to `network_port`.
         - `endpoint`: The value of the `endpoint` key if set.
