@@ -123,6 +123,9 @@ class UtilsMixin(Protocol):
     ) -> str | None:
         """Return short_esi for one adapter."""
         # short_esi is only set when called from sub-interface port-channels.
+        if not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
+            return None
+        
         if (short_esi is None) and (short_esi := adapter.ethernet_segment.short_esi) is None:
             return None
 
@@ -130,9 +133,6 @@ class UtilsMixin(Protocol):
             # Only configure ESI for multi-homing.
             msg = f"The length of '{adapter._internal_data.context}.switches' should be greater than 1 to configure short ESI."
             raise AristaAvdInvalidInputsError(msg)
-
-        if not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
-            return None
 
         endpoint_ports = adapter.endpoint_ports
         short_esi = str(short_esi)
