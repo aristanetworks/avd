@@ -38,7 +38,6 @@ keys:
           keys:
             name:
               type: str
-              description: Name of client group.
             server_groups:
               type: list
               items:
