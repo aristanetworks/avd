@@ -52,7 +52,6 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: VRF name.
                   ipv4_clients:
                     type: list
                     primary_key: address
