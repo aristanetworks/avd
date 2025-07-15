@@ -54,7 +54,7 @@ keys:
                   type: list
                   items:
                     type: str
-                    description: IPv6 prefix to exclude
+                    description: IPv6 prefix to exclude.
           ports:
             type: list
             primary_key: name
