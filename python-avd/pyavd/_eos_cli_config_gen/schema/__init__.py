@@ -64545,6 +64545,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class PeerAuthentication(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "key": {"type": str}, "key_type": {"type": str}}
+                mode: Literal["text", "ietf-md5"]
+                """Authentication mode."""
+                key: str
+                """Authentication key."""
+                key_type: Literal["0", "7", "8a"] | None
+                """Authentication key type."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        mode: Literal["text", "ietf-md5"] | UndefinedType = Undefined,
+                        key: str | UndefinedType = Undefined,
+                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PeerAuthentication.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: Authentication mode.
+                            key: Authentication key.
+                            key_type: Authentication key type.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "id": {"type": int},
                 "priority_level": {"type": int},
@@ -64554,6 +64587,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "tracked_object": {"type": TrackedObject},
                 "ipv4": {"type": Ipv4},
                 "ipv6": {"type": Ipv6},
+                "peer_authentication": {"type": PeerAuthentication},
             }
             id: int
             """VRID."""
@@ -64571,6 +64605,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             ipv6: Ipv6
             """Subclass of AvdModel."""
+            peer_authentication: PeerAuthentication
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -64585,6 +64621,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     tracked_object: TrackedObject | UndefinedType = Undefined,
                     ipv4: Ipv4 | UndefinedType = Undefined,
                     ipv6: Ipv6 | UndefinedType = Undefined,
+                    peer_authentication: PeerAuthentication | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VrrpIdsItem.
@@ -64601,6 +64638,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         tracked_object: Subclass of AvdIndexedList with `TrackedObjectItem` items. Primary key is `name` (`str`).
                         ipv4: Subclass of AvdModel.
                         ipv6: Subclass of AvdModel.
+                        peer_authentication: Subclass of AvdModel.
 
                     """
 
