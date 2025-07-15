@@ -35,7 +35,7 @@ keys:
                   type: list
                   items:
                     type: str
-                    description: IPv4 prefix to exclude.
+                    description: IPv4 prefix to exclude. Added in 4.30.2F.
           ipv6:
             type: list
             primary_key: name
@@ -54,7 +54,7 @@ keys:
                   type: list
                   items:
                     type: str
-                    description: IPv6 prefix to exclude.
+                    description: IPv6 prefix to exclude. Added in 4.30.2F.
           ports:
             type: list
             primary_key: name
