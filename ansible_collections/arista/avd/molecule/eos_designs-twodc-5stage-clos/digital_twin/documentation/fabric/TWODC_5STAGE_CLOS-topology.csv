@@ -24,6 +24,9 @@ l3leaf,DC1-POD1-LEAF2B,Ethernet4,l2leaf,DC1-POD1-L2LEAF2B,Ethernet2,True
 l3leaf,DC1-POD1-LEAF2B,Ethernet5,mlag_peer,DC1.POD1.LEAF2A,Ethernet5,True
 l3leaf,DC1-POD1-LEAF2B,Ethernet6,mlag_peer,DC1.POD1.LEAF2A,Ethernet6,True
 l3leaf,DC1-POD1-LEAF2B,Ethernet7,l3leaf,DC2-POD1-LEAF1A,Ethernet7,True
+l3leaf,DC1-POD1-LEAF2B,Ethernet10,l3_interface,,,True
+l3leaf,DC1-POD1-LEAF2B,Ethernet10.100,l3_interface,,,True
+l3leaf,DC1-POD1-LEAF2B,Ethernet10.101,l3_interface,,,True
 l3leaf,DC1-POD1-LEAF2B,Ethernet11,spine,DC1-POD1-SPINE1,Ethernet8,True
 l3leaf,DC1-POD1-LEAF2B,Ethernet12,spine,DC1-POD1-SPINE2,Ethernet8,True
 l3leaf,DC1-POD1-LEAF2B,Ethernet16,server,server-1,Eth2,True
@@ -82,6 +85,9 @@ l3leaf,DC1.POD1.LEAF2A,Ethernet4,l2leaf,DC1-POD1-L2LEAF2B,Ethernet1,True
 l3leaf,DC1.POD1.LEAF2A,Ethernet5,mlag_peer,DC1-POD1-LEAF2B,Ethernet5,True
 l3leaf,DC1.POD1.LEAF2A,Ethernet6,mlag_peer,DC1-POD1-LEAF2B,Ethernet6,True
 l3leaf,DC1.POD1.LEAF2A,Ethernet7,l3leaf,DC2-POD1-LEAF1A,Ethernet6,True
+l3leaf,DC1.POD1.LEAF2A,Ethernet10,l3_interface,,,True
+l3leaf,DC1.POD1.LEAF2A,Ethernet10.100,l3_interface,,,True
+l3leaf,DC1.POD1.LEAF2A,Ethernet10.101,l3_interface,,,True
 l3leaf,DC1.POD1.LEAF2A,Ethernet11,spine,DC1-POD1-SPINE1,Ethernet7,True
 l3leaf,DC1.POD1.LEAF2A,Ethernet12,spine,DC1-POD1-SPINE2,Ethernet7,True
 l3leaf,DC1.POD1.LEAF2A,Ethernet16,server,server-1,Eth1,True

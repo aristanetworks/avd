@@ -197,9 +197,11 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                                 for ethernet_interface in get(
                                     fabric_documentation_facts.structured_configs, f"{device}..ethernet_interfaces", [], separator=".."
                                 )
+                                if "." not in ethernet_interface["name"]
                             ),
                             # Extract digits from the interface names and use them to sort interfaces using the natural order
                             # Can not use natural_sort utility here directly due to the triggered CI deps import failure
+                            # TODO: Make natural_sort importable without breaking CI
                             key=lambda interface_name: list(map(int, re_findall(r"\d+", interface_name))),
                         )
                     )

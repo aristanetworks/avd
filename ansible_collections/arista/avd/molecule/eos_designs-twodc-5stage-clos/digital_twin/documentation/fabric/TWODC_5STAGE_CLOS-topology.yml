@@ -44,6 +44,7 @@ nodes:
     - Ethernet5
     - Ethernet6
     - Ethernet7
+    - Ethernet10
     - Ethernet11
     - Ethernet12
     - Ethernet16
@@ -152,6 +153,7 @@ nodes:
     - Ethernet5
     - Ethernet6
     - Ethernet7
+    - Ethernet10
     - Ethernet11
     - Ethernet12
     - Ethernet16
