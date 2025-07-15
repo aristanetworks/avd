@@ -13,6 +13,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_pool
+from pyavd._utils.password_utils.password import isis_encrypt
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
@@ -290,7 +291,18 @@ class UtilsMixin(Protocol):
                 mode: Literal["md5", "text"] | None = default(p2p_link.isis_authentication_mode, self.inputs.underlay_isis_authentication_mode)
                 interface.isis_authentication.both.mode = mode
 
-                if isis_authentication_key := default(p2p_link.isis_authentication_key, self.inputs.underlay_isis_authentication_key):
+                if p2p_link.isis_authentication_key is not None:
+                    interface.isis_authentication.both._update(key=p2p_link.isis_authentication_key, key_type="7")
+                elif p2p_link.isis_authentication_cleartext_key is not None:
+                    interface.isis_authentication.both._update(
+                        key=isis_encrypt(
+                            password=p2p_link.isis_authentication_cleartext_key,
+                            key=cast("str", self.shared_utils.isis_instance_name),
+                            mode=mode or "none",
+                        ),
+                        key_type="7",
+                    )
+                elif (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                     interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
         if p2p_link.macsec_profile:

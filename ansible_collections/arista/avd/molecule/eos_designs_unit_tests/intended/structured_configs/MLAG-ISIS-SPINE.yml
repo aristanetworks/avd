@@ -42,6 +42,44 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet32
+  description: P2P_isis-cleartext-keys-leaf1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.100.6/31
+  isis_enable: EVPN_UNDERLAY
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_authentication:
+    both:
+      key_type: '7'
+      key: $1c$sTNAlR6rKSw=
+      mode: md5
+  peer: isis-cleartext-keys-leaf1
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet33
+  description: P2P_isis-cleartext-keys-leaf2_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.100.8/31
+  isis_enable: EVPN_UNDERLAY
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_authentication:
+    both:
+      key_type: '7'
+      key: $1c$sTNAlR6rKSw=
+      mode: md5
+  peer: isis-cleartext-keys-leaf2
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: MLAG-ISIS-SPINE
 ip_routing: true
 is_deployed: true
@@ -84,6 +122,16 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   neighbors:
+  - ip_address: 192.168.254.36
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65161'
+    peer: isis-cleartext-keys-leaf1
+    description: isis-cleartext-keys-leaf1_Loopback0
+  - ip_address: 192.168.254.37
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65161'
+    peer: isis-cleartext-keys-leaf2
+    description: isis-cleartext-keys-leaf2_Loopback0
   - ip_address: 192.168.255.36
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65161'
