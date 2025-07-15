@@ -7,7 +7,7 @@ import json
 from copy import deepcopy
 from functools import cached_property
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
@@ -49,6 +49,13 @@ class MoleculeHost:
             return {}
 
         return load(structured_config_path.read_text(), CSafeLoader)
+
+    @cached_property
+    def test_catalog(self) -> dict[Any, Any]:
+        test_catalog_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "anta/avd_catalogs/default_run", f"{self.name}.json")
+        if not test_catalog_path.exists():
+            return {}
+        return load(test_catalog_path.read_text(), CSafeLoader)
 
     @cached_property
     def config(self) -> str | None:
