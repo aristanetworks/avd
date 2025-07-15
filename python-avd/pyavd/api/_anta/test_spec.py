@@ -33,10 +33,10 @@ class TestSpec(BaseModel):
         Required field if the ANTA test needs inputs.
     """
 
+    model_config = ConfigDict(extra="forbid")
     test_class: type[AntaTest]
     conditional_keys: list[StructuredConfigKey] | None = None
     input_factory: type[AntaTestInputFactory] | None = None
-    model_config = ConfigDict(extra="forbid")
 
     @model_validator(mode="after")
     def check_inputs(self) -> Self:
