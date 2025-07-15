@@ -54,6 +54,7 @@ def get_files_in_folder(folder_path: str) -> list:
         for filename in filenames
     ]
 
+
 def load_one_structured_config(device: str, structured_config_dir: str, structured_config_suffix: str) -> dict:
     """Load the structured configuration for a device from the provided directory."""
     path = Path(structured_config_dir) / f"{device}.{structured_config_suffix}"

@@ -60,7 +60,6 @@ def test_get_device_test_catalog(molecule_host: MoleculeHost) -> None:
     result_catalog_json = result_catalog.dump().to_json()
     result_catalog_data = json.loads(result_catalog_json)
 
-
     # 3. Assert that the generated catalog data matches the expected data.
     #    The structures should now be identical (dict grouped by category).
 
