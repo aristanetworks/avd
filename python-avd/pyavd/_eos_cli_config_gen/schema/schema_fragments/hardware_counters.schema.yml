@@ -85,7 +85,6 @@ keys:
                 - tapagg
                 - traffic-class
                 - traffic-policy
-                - traffic-policy vlan-interface
                 - vlan
                 - vlan-interface
                 - vni decap
