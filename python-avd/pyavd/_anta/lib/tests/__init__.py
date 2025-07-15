@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 """Centralized package to import all the tests of the ANTA framework."""
 
-from anta.tests.avt import VerifyAVTRole, VerifyAVTSpecificPath
+from anta.tests.avt import VerifyAVTSpecificPath
 from anta.tests.configuration import VerifyRunningConfigDiffs, VerifyZeroTouch
 from anta.tests.connectivity import VerifyLLDPNeighbors, VerifyReachability
 from anta.tests.hardware import (
@@ -26,22 +26,20 @@ from anta.tests.interfaces import (
 from anta.tests.logging import VerifyLoggingErrors
 from anta.tests.mlag import (
     VerifyMlagConfigSanity,
-    VerifyMlagDualPrimary,
     VerifyMlagInterfaces,
-    VerifyMlagReloadDelay,
     VerifyMlagStatus,
 )
 from anta.tests.path_selection import VerifySpecificPath
 from anta.tests.routing.bgp import VerifyBGPPeerSession
 from anta.tests.routing.generic import VerifyRoutingProtocolModel
-from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn, VerifyTelnetStatus
+from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn
 from anta.tests.services import VerifyDNSServers
-from anta.tests.stp import VerifySTPBlockedPorts, VerifySTPCounters
-from anta.tests.stun import VerifyStunClientTranslation
+from anta.tests.stp import VerifySTPCounters
 from anta.tests.system import (
     VerifyAgentLogs,
     VerifyCoredump,
     VerifyFileSystemUtilization,
+    VerifyMaintenance,
     VerifyMemoryUtilization,
     VerifyNTP,
     VerifyReloadCause,
@@ -49,7 +47,6 @@ from anta.tests.system import (
 
 __all__ = [
     "VerifyAPIHttpsSSL",
-    "VerifyAVTRole",
     "VerifyAVTSpecificPath",
     "VerifyAgentLogs",
     "VerifyBGPPeerSession",
@@ -67,11 +64,10 @@ __all__ = [
     "VerifyInterfacesStatus",
     "VerifyLLDPNeighbors",
     "VerifyLoggingErrors",
+    "VerifyMaintenance",
     "VerifyMemoryUtilization",
     "VerifyMlagConfigSanity",
-    "VerifyMlagDualPrimary",
     "VerifyMlagInterfaces",
-    "VerifyMlagReloadDelay",
     "VerifyMlagStatus",
     "VerifyNTP",
     "VerifyPortChannels",
@@ -79,13 +75,10 @@ __all__ = [
     "VerifyReloadCause",
     "VerifyRoutingProtocolModel",
     "VerifyRunningConfigDiffs",
-    "VerifySTPBlockedPorts",
     "VerifySTPCounters",
     "VerifySpecificIPSecConn",
     "VerifySpecificPath",
     "VerifyStormControlDrops",
-    "VerifyStunClientTranslation",
-    "VerifyTelnetStatus",
     "VerifyTemperature",
     "VerifyTransceiversTemperature",
     "VerifyZeroTouch",

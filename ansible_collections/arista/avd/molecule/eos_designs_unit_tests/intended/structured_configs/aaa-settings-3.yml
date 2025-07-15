@@ -1,0 +1,139 @@
+aaa_root:
+  disabled: true
+aaa_server_groups:
+- name: RADIUS1
+  type: radius
+  servers:
+  - server: 11.10.10.11
+    vrf: default
+  - server: 11.10.10.1
+    vrf: INBAND_MGMT
+  - server: 11.10.10.2
+    vrf: INBAND_MGMT
+  - server: 11.10.10.3
+    vrf: MGMT
+  - server: 11.10.10.4
+    vrf: other_vrf
+- name: RADIUS2
+  type: radius
+  servers:
+  - server: 11.10.10.1
+    vrf: INBAND_MGMT
+  - server: 11.10.10.5
+    vrf: MGMT
+- name: TACACS1
+  type: tacacs+
+  servers:
+  - server: 10.10.10.11
+    vrf: default
+  - server: 10.10.10.1
+    vrf: INBAND_MGMT
+  - server: 10.10.10.2
+    vrf: INBAND_MGMT
+  - server: 10.10.10.3
+    vrf: MGMT
+  - server: 10.10.10.2
+    vrf: other_vrf
+- name: TACACS2
+  type: tacacs+
+  servers:
+  - server: 10.10.10.1
+    vrf: INBAND_MGMT
+  - server: 10.10.10.4
+    vrf: MGMT
+config_end: true
+enable_password:
+  disabled: true
+hostname: aaa-settings-3
+ip_igmp_snooping:
+  globally_enabled: true
+ip_radius_source_interfaces:
+- name: Vlan123
+  vrf: INBAND_MGMT
+- name: Ma1/1
+  vrf: MGMT
+ip_tacacs_source_interfaces:
+- name: Vlan123
+  vrf: default
+- name: Vlan4092
+  vrf: INBAND_MGMT
+- name: Management1
+  vrf: MGMT
+is_deployed: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  type: oob
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+radius_server:
+  hosts:
+  - host: 11.10.10.11
+    vrf: default
+    key: 071B245F5A
+  - host: 11.10.10.1
+    vrf: INBAND_MGMT
+    key: 071B245F5A
+  - host: 11.10.10.2
+    vrf: INBAND_MGMT
+    key: 071B245F5A
+  - host: 11.10.10.3
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 11.10.10.4
+    vrf: other_vrf
+    key: 071B245F5A
+  - host: 11.10.10.5
+    vrf: MGMT
+    key: 071B245F5A
+service_routing_protocols_model: multi-agent
+tacacs_servers:
+  hosts:
+  - host: 10.10.10.11
+    vrf: default
+    key: 071B245F5A
+  - host: 10.10.10.1
+    vrf: INBAND_MGMT
+    key: 071B245F5A
+  - host: 10.10.10.2
+    vrf: INBAND_MGMT
+    key: 071B245F5A
+  - host: 10.10.10.3
+    vrf: MGMT
+    key: 071B245F5A
+  - host: 10.10.10.2
+    vrf: other_vrf
+    key: 071B245F5A
+  - host: 10.10.10.4
+    vrf: MGMT
+    key: 071B245F5A
+  policy_unknown_mandatory_attribute_ignore: false
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  vrf: INBAND_MGMT
+  ip_address: 192.168.1.2/24
+  mtu: 1500
+  type: inband_mgmt
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4092
+  name: INBAND_MGMT
+  tenant: system
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: INBAND_MGMT

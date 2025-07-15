@@ -34,9 +34,17 @@ from pyavd.j2filters import encrypt
         ),
         pytest.param("arista", "ospf_simple", "Ethernet1", {}, does_not_raise(), id="Implemented Type OSPF simple"),
         pytest.param("arista", "ospf_message_digest", "Ethernet1", {"hash_algorithm": "sha512", "key_id": 66}, does_not_raise(), id="Implemented Type OSPF MD"),
+        pytest.param("arista", "ntp", None, {"salt": 13}, does_not_raise(), id="NTP with salt"),
+        pytest.param(
+            "arista", "ntp", None, {"salt": 42}, pytest.raises(ValueError, match="Salt MUST be an integer within the range 0-15."), id="NTP with bad salt"
+        ),
+        pytest.param("arista", "tacacs", None, {"salt": 15}, does_not_raise(), id="TACACS with salt"),
+        pytest.param(
+            "arista", "tacacs", None, {"salt": 42}, pytest.raises(ValueError, match="Salt MUST be an integer within the range 0-15."), id="TACACS with bad salt"
+        ),
     ],
 )
-def test_encrypt(password: str | int, passwd_type: str | None, key: str, kwargs: dict, expected_raise: AbstractContextManager) -> None:
+def test_encrypt(password: str | int, passwd_type: str | None, key: str | None, kwargs: dict, expected_raise: AbstractContextManager) -> None:
     """Test encrypt method for non-existing and existing type."""
     with expected_raise:
         encrypt(password, passwd_type=passwd_type, key=key, **kwargs)
