@@ -13529,6 +13529,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "tapagg",
                 "traffic-class",
                 "traffic-policy",
+                "traffic-policy vlan-interface",
                 "vlan",
                 "vlan-interface",
                 "vni decap",
@@ -13598,6 +13599,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "tapagg",
                         "traffic-class",
                         "traffic-policy",
+                        "traffic-policy vlan-interface",
                         "vlan",
                         "vlan-interface",
                         "vni decap",
@@ -33695,13 +33697,40 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"map": {"type": Map}, "rewrite_dscp": {"type": bool}, "random_detect": {"type": RandomDetect}}
+        class TxQueue(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"shape_rate_percent_adaptive": {"type": bool}}
+            shape_rate_percent_adaptive: bool | None
+            """Use the parent available bandwidth for transmit queue percentage-based allocation."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, shape_rate_percent_adaptive: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    TxQueue.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        shape_rate_percent_adaptive: Use the parent available bandwidth for transmit queue percentage-based allocation.
+
+                    """
+
+        _fields: ClassVar[dict] = {"map": {"type": Map}, "rewrite_dscp": {"type": bool}, "random_detect": {"type": RandomDetect}, "tx_queue": {"type": TxQueue}}
         map: Map
         """Subclass of AvdModel."""
         rewrite_dscp: bool | None
         random_detect: RandomDetect
         """
         Global random-detect settings.
+
+        Subclass of AvdModel.
+        """
+        tx_queue: TxQueue
+        """
+        Global transmit queue settings.
 
         Subclass of AvdModel.
         """
@@ -33714,6 +33743,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 map: Map | UndefinedType = Undefined,
                 rewrite_dscp: bool | None | UndefinedType = Undefined,
                 random_detect: RandomDetect | UndefinedType = Undefined,
+                tx_queue: TxQueue | UndefinedType = Undefined,
             ) -> None:
                 """
                 Qos.
@@ -33726,6 +33756,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     rewrite_dscp: rewrite_dscp
                     random_detect:
                        Global random-detect settings.
+
+                       Subclass of AvdModel.
+                    tx_queue:
+                       Global transmit queue settings.
 
                        Subclass of AvdModel.
 
@@ -64511,6 +64545,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class PeerAuthentication(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "key": {"type": str}, "key_type": {"type": str}}
+                mode: Literal["text", "ietf-md5"]
+                """Authentication mode."""
+                key: str
+                """Authentication key."""
+                key_type: Literal["0", "7", "8a"] | None
+                """Authentication key type."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        mode: Literal["text", "ietf-md5"] | UndefinedType = Undefined,
+                        key: str | UndefinedType = Undefined,
+                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PeerAuthentication.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: Authentication mode.
+                            key: Authentication key.
+                            key_type: Authentication key type.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "id": {"type": int},
                 "priority_level": {"type": int},
@@ -64520,6 +64587,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "tracked_object": {"type": TrackedObject},
                 "ipv4": {"type": Ipv4},
                 "ipv6": {"type": Ipv6},
+                "peer_authentication": {"type": PeerAuthentication},
             }
             id: int
             """VRID."""
@@ -64537,6 +64605,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             ipv6: Ipv6
             """Subclass of AvdModel."""
+            peer_authentication: PeerAuthentication
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -64551,6 +64621,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     tracked_object: TrackedObject | UndefinedType = Undefined,
                     ipv4: Ipv4 | UndefinedType = Undefined,
                     ipv6: Ipv6 | UndefinedType = Undefined,
+                    peer_authentication: PeerAuthentication | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VrrpIdsItem.
@@ -64567,6 +64638,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         tracked_object: Subclass of AvdIndexedList with `TrackedObjectItem` items. Primary key is `name` (`str`).
                         ipv4: Subclass of AvdModel.
                         ipv6: Subclass of AvdModel.
+                        peer_authentication: Subclass of AvdModel.
 
                     """
 

@@ -5319,6 +5319,7 @@ keys:
               - tapagg
               - traffic-class
               - traffic-policy
+              - traffic-policy vlan-interface
               - vlan
               - vlan-interface
               - vni decap
@@ -13123,6 +13124,14 @@ keys:
                   chip_based:
                     type: bool
                     description: Allow non-ect chip-based.
+      tx_queue:
+        type: dict
+        description: Global transmit queue settings.
+        keys:
+          shape_rate_percent_adaptive:
+            type: bool
+            description: Use the parent available bandwidth for transmit queue percentage-based
+              allocation.
   qos_profiles:
     type: list
     primary_key: name
@@ -24217,6 +24226,9 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address.
+              peer_authentication:
+                type: dict
+                $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids/items/keys/peer_authentication
         ip_attached_host_route_export:
           type: dict
           keys:
