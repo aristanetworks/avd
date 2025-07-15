@@ -19,32 +19,49 @@ radius proxy
 {%     for client_group in radius_proxy.client_groups | arista.avd.natural_sort("name") %}
    !
    client group {{ client_group.name }}
-{%         for vrf in client_group.vrfs | arista.avd.default([]) | selectattr("ipv4_clients", "arista.avd.defined") %}
-{%             for ipv4 in vrf.ipv4_clients | sort(attribute='address') %}
-{%                 set client_ipv4 = "client ipv4 " ~ ipv4.address ~ " vrf " ~ vrf.name %}
-{%                 if ipv4.key is arista.avd.defined %}
-{%                     set client_ipv4 = client_ipv4 ~ " key " ~ ipv4.key ~ " 7 " ~ ipv4.key | arista.avd.hide_passwords(hide_passwords) %}
-{%                 endif %}
+{%         set all_ipv4_clients = [] %}
+{%         set all_ipv6_clients = [] %}
+{%         set all_host_clients = [] %}
+{%         for vrf in client_group.vrfs | arista.avd.default([]) %}
+{%             if vrf.ipv4_clients is arista.avd.defined %}
+{%                 for ipv4 in vrf.ipv4_clients %}
+{%                     set _ = all_ipv4_clients.append({"vrf": vrf.name, "address": ipv4.address,
+                            "key": ipv4.key if ipv4.key is defined else none}) %}
+{%                 endfor %}
+{%             endif %}
+{%             if vrf.ipv6_clients is arista.avd.defined %}
+{%                 for ipv6 in vrf.ipv6_clients %}
+{%                     set _ = all_ipv6_clients.append({"vrf": vrf.name, "address": ipv6.address,
+                            "key": ipv6.key if ipv6.key is defined else none}) %}
+{%                 endfor %}
+{%             endif %}
+{%             if vrf.host_clients is arista.avd.defined %}
+{%                 for host in vrf.host_clients %}
+{%                     set _ = all_host_clients.append({"vrf": vrf.name, "name": host.name,
+                            "key": host.key if host.key is defined else none}) %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%         for client in all_ipv4_clients | sort(attribute='address') %}
+{%             set client_ipv4 = "client ipv4 " ~ client.address ~ " vrf " ~ client.vrf %}
+{%             if client.key is defined %}
+{%                 set client_ipv4 = client_ipv4 ~ " key " ~ client.key ~ " 7 " ~ client.key | arista.avd.hide_passwords(hide_passwords) %}
+{%             endif %}
       {{ client_ipv4 }}
-{%             endfor %}
 {%         endfor %}
-{%         for vrf in client_group.vrfs | arista.avd.default([]) | selectattr("ipv6_clients", "arista.avd.defined") %}
-{%             for ipv6 in vrf.ipv6_clients | sort(attribute='address') %}
-{%                 set client_ipv6 = "client ipv6 " ~ ipv6.address ~ " vrf " ~ vrf.name %}
-{%                 if ipv6.key is arista.avd.defined %}
-{%                     set client_ipv6 = client_ipv6 ~ " key "  ~ ipv6.key ~ " 7 " ~ ipv6.key | arista.avd.hide_passwords(hide_passwords) %}
-{%                 endif %}
+{%         for client in all_ipv6_clients | sort(attribute='address') %}
+{%             set client_ipv6 = "client ipv6 " ~ client.address ~ " vrf " ~ client.vrf %}
+{%             if client.key is defined %}
+{%                 set client_ipv6 = client_ipv6 ~ " key " ~ client.key ~ " 7 " ~ client.key | arista.avd.hide_passwords(hide_passwords) %}
+{%             endif %}
       {{ client_ipv6 }}
-{%             endfor %}
 {%         endfor %}
-{%         for vrf in client_group.vrfs | arista.avd.default([]) | selectattr("host_clients", "arista.avd.defined") %}
-{%             for host in vrf.host_clients | sort(attribute='name') %}
-{%                 set client_host = "client host " ~ host.name ~ " vrf " ~ vrf.name %}
-{%                 if host.key is arista.avd.defined %}
-{%                     set client_host = client_host ~ " key "  ~ host.key ~ " 7 " ~ host.key | arista.avd.hide_passwords(hide_passwords) %}
-{%                 endif %}
+{%         for client in all_host_clients | sort(attribute='name') %}
+{%             set client_host = "client ipv4 " ~ client.name ~ " vrf " ~ client.vrf %}
+{%             if client.key is defined %}
+{%                 set client_host = client_host ~ " key " ~ client.key ~ " 7 " ~ client.key | arista.avd.hide_passwords(hide_passwords) %}
+{%             endif %}
       {{ client_host }}
-{%             endfor %}
 {%         endfor %}
 {%         if client_group.server_groups is arista.avd.defined %}
       server group {{ client_group.server_groups | join(" ") }}
