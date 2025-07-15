@@ -33695,13 +33695,40 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"map": {"type": Map}, "rewrite_dscp": {"type": bool}, "random_detect": {"type": RandomDetect}}
+        class TxQueue(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"shape_rate_percent_adaptive": {"type": bool}}
+            shape_rate_percent_adaptive: bool | None
+            """Use the parent available bandwidth for transmit queue percentage-based allocation."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, shape_rate_percent_adaptive: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    TxQueue.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        shape_rate_percent_adaptive: Use the parent available bandwidth for transmit queue percentage-based allocation.
+
+                    """
+
+        _fields: ClassVar[dict] = {"map": {"type": Map}, "rewrite_dscp": {"type": bool}, "random_detect": {"type": RandomDetect}, "tx_queue": {"type": TxQueue}}
         map: Map
         """Subclass of AvdModel."""
         rewrite_dscp: bool | None
         random_detect: RandomDetect
         """
         Global random-detect settings.
+
+        Subclass of AvdModel.
+        """
+        tx_queue: TxQueue
+        """
+        Global transmit queue settings.
 
         Subclass of AvdModel.
         """
@@ -33714,6 +33741,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 map: Map | UndefinedType = Undefined,
                 rewrite_dscp: bool | None | UndefinedType = Undefined,
                 random_detect: RandomDetect | UndefinedType = Undefined,
+                tx_queue: TxQueue | UndefinedType = Undefined,
             ) -> None:
                 """
                 Qos.
@@ -33726,6 +33754,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     rewrite_dscp: rewrite_dscp
                     random_detect:
                        Global random-detect settings.
+
+                       Subclass of AvdModel.
+                    tx_queue:
+                       Global transmit queue settings.
 
                        Subclass of AvdModel.
 

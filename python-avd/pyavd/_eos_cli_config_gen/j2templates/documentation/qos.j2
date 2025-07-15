@@ -24,6 +24,10 @@ QOS rewrite DSCP: **disabled**
 
 {{ ecn_command }}
 {%     endif %}
+{%     if qos.tx_queue.shape_rate_percent_adaptive is arista.avd.defined(true) %}
+
+QOS adaptive transmit queue percentage-based allocation: **enabled**
+{%     endif %}
 {%     if qos.map is arista.avd.defined %}
 
 ##### QOS Mappings

@@ -247,11 +247,6 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.vlan_internal_order = self.inputs.internal_vlan_order._cast_as(EosCliConfigGen.VlanInternalOrder)
 
     @structured_config_contributor
-    def aaa_root(self) -> None:
-        """aaa_root.disable is always set to match EOS default config and historic configs."""
-        self.structured_config.aaa_root.disabled = True
-
-    @structured_config_contributor
     def config_end(self) -> None:
         """config_end is always set to match EOS default config and historic configs."""
         self.structured_config.config_end = True
@@ -640,7 +635,32 @@ class AvdStructuredConfigBaseProtocol(
         if source_interfaces := self._build_source_interfaces(
             inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Radius", output_type=EosCliConfigGen.IpRadiusSourceInterfaces
         ):
-            self.structured_config.ip_radius_source_interfaces = source_interfaces
+            self.structured_config.ip_radius_source_interfaces.extend(source_interfaces)
+
+    @structured_config_contributor
+    def radius_servers(self) -> None:
+        """Parse AAA radius server configurations and update structured config with server and source interface details."""
+        if not self.inputs.aaa_settings.radius:
+            return
+
+        for server in self.inputs.aaa_settings.radius.servers:
+            server_vrf, source_interface = self._get_vrf_and_source_interface(
+                vrf_input=server.vrf,
+                vrfs=self.inputs.aaa_settings.radius.vrfs,
+                set_source_interfaces=True,
+                context=f"aaa_settings.radius.servers[host={server.host}].vrf",
+            )
+            if source_interface:
+                self.structured_config.ip_radius_source_interfaces.append_unique(
+                    EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
+                )
+
+            self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server.key)
+
+            for group in server.groups:
+                radius_group = self.structured_config.aaa_server_groups.obtain(group)
+                radius_group.type = "radius"
+                radius_group.servers.append_new(server=server.host, vrf=server_vrf)
 
     @structured_config_contributor
     def ip_tacacs_source_interfaces(self) -> None:
@@ -651,7 +671,64 @@ class AvdStructuredConfigBaseProtocol(
         if source_interfaces := self._build_source_interfaces(
             inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Tacacs", output_type=EosCliConfigGen.IpTacacsSourceInterfaces
         ):
-            self.structured_config.ip_tacacs_source_interfaces = source_interfaces
+            self.structured_config.ip_tacacs_source_interfaces.extend(source_interfaces)
+
+    @structured_config_contributor
+    def tacacs_servers(self) -> None:
+        """Parse AAA tacacs server configurations and update structured config with server and source interface details."""
+        if not self.inputs.aaa_settings.tacacs:
+            return
+
+        for server in self.inputs.aaa_settings.tacacs.servers:
+            server_vrf, source_interface = self._get_vrf_and_source_interface(
+                vrf_input=server.vrf,
+                vrfs=self.inputs.aaa_settings.tacacs.vrfs,
+                set_source_interfaces=True,
+                context=f"aaa_settings.tacacs.servers[host={server.host}].vrf",
+            )
+            if source_interface:
+                self.structured_config.ip_tacacs_source_interfaces.append_unique(
+                    EosCliConfigGen.IpTacacsSourceInterfacesItem(name=source_interface, vrf=server_vrf)
+                )
+
+            self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server.key)
+
+            for group in server.groups:
+                tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
+                tacacs_group.type = "tacacs+"
+                tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
+
+        self.structured_config.tacacs_servers.policy_unknown_mandatory_attribute_ignore = (
+            self.inputs.aaa_settings.tacacs.policy.ignore_unknown_mandatory_attribute
+        )
+
+    @structured_config_contributor
+    def aaa_authentication(self) -> None:
+        """Assign AAA authentication configuration from inputs to structured config."""
+        if not (aaa_authentication := self.inputs.aaa_settings.authentication):
+            return
+        self.structured_config.aaa_authentication = aaa_authentication
+
+    @structured_config_contributor
+    def aaa_authorization(self) -> None:
+        """Assign AAA authorization configuration from inputs to structured config."""
+        if not (aaa_authorization := self.inputs.aaa_settings.authorization):
+            return
+        self.structured_config.aaa_authorization = aaa_authorization
+
+    @structured_config_contributor
+    def aaa_accounting(self) -> None:
+        """Assign AAA accounting configuration from inputs to structured config."""
+        if not (aaa_accounting := self.inputs.aaa_settings.accounting):
+            return
+        self.structured_config.aaa_accounting = aaa_accounting
+
+    @structured_config_contributor
+    def aaa_root_login(self) -> None:
+        """Assign AAA root login configuration from inputs to structured config."""
+        aaa_root_login = self.inputs.aaa_settings.root_login
+        self.structured_config.aaa_root.disabled = not aaa_root_login.enabled
+        self.structured_config.aaa_root.secret.sha512_password = aaa_root_login.sha512_password
 
     @structured_config_contributor
     def ip_ssh_client_source_interfaces(self) -> None:
