@@ -1462,7 +1462,7 @@ keys:
       table: default-connected-endpoints-description
     description: "Default description or description template to be used on all ports
       to connected endpoints.\nThis can be a template using the AVD string formatter
-      syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `endpoint_type`: The `type` from `connected_endpoints_keys`
       like `server`, `router` etc.\n  - `endpoint`: The name of the connected endpoint\n
       \ - `endpoint_port`: The value from `endpoint_ports` for this switch port if
@@ -1476,7 +1476,7 @@ keys:
       table: default-connected-endpoints-description
     description: "Default description or description template to be used on all port-channels
       to connected endpoints.\nThis can be a template using the AVD string formatter
-      syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `endpoint_type`: The `type` from `connected_endpoints_keys`
       like `server`, `router` etc.\n  - `endpoint`: The name of the connected endpoint\n
       \ - `endpoint_port_channel`: The value of `endpoint_port_channel` if set.\n
@@ -1590,7 +1590,7 @@ keys:
       table: default-network-ports-description
     description: "Default description or description template to be used on all ports
       defined under `network_ports`.\nThis can be a template using the AVD string
-      formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `endpoint_type`: Always set to `network_port`.\n
       \ - `endpoint`: The value of the `endpoint` key if set.\n  - `port_channel_id`:
       The port-channel number for the switch.\n\nBy default the description is templated
@@ -1602,7 +1602,7 @@ keys:
       table: default-network-ports-description
     description: "Default description or description template to be used on all port-channels
       defined under `network_ports`.\nThis can be a template using the AVD string
-      formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `endpoint_type`: Always set to `network_port`.\n
       \ - `endpoint`: The value of the `endpoint` key if set.\n  - `endpoint_port_channel`:
       The value of `endpoint_port_channel` if set.\n  - `port_channel_id`: The port-channel
@@ -1638,7 +1638,7 @@ keys:
     description: "The default description or description template to be used on L3
       point-to-point ethernet interfaces.\nThe interfaces using this are the routed
       uplinks and `p2p_links` defined under `l3_edge` or `core_interfaces`.\nThis
-      can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `peer`: The name of the peer.\n  - `interface`:
       The local interface name.\n  - `peer_interface`: The interface on the peer.\n
       \ - `vrf`: The name of the VRF if set (Only applicable for `uplink_type: p2p-vrfs`).\n\nBy
@@ -1651,7 +1651,7 @@ keys:
     description: "The default description or description template to be used on L3
       point-to-point port-channel interfaces.\nThe port-channels using this are `p2p_links`
       defined under `l3_edge` or `core_interfaces`.\nThis can be a template using
-      the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `peer`: The name of the peer.\n  - `interface`:
       The local interface name.\n  - `peer_interface`: The interface on the peer.\n
       \ - `port_channel_id`: The local port-channel ID.\n  - `peer_port_channel_id`:
@@ -1664,7 +1664,7 @@ keys:
       table: fabric-settings
     description: "The default description or description template to be used on VRF
       diagnostic loopback interfaces.\nThis can be a template using the AVD string
-      formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `interface`: The Loopback interface name.\n
       \ - `vrf`: The VRF name.\n  - `tenant`: The tenant name.\n\nBy default the description
       is templated from the VRF name."
@@ -2283,7 +2283,7 @@ keys:
       Node ID pool.\nFor each device the Node ID is assigned from a pool shared by
       all devices rendering the same pool name.\nThis can be modified to include fewer
       or more fields to keep separate pools or to use the same pool across areas.\nThis
-      can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `fabric_name`: The `fabric_name` assigned
       to the device.\n  - `dc_name`: The `dc_name` assigned to the device.\n  - `pod_name`:
       The `pod_name` assigned to the device.\n  - `type`: The `type` assigned to the
@@ -3023,7 +3023,7 @@ keys:
       table: fabric-settings
     description: "Description or description template to be used on the MLAG BGP peers
       including those in VRFs.\nThis can be a template using the AVD string formatter
-      syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `interface`: The local MLAG L3 VLAN interface.\n  - `peer_interface`: The
       MLAG L3 VLAN interface on the MLAG peer.\n  - `vrf`: The name of the VRF. Not
@@ -3035,7 +3035,7 @@ keys:
     documentation_options:
       table: fabric-settings
     description: "Description or description template to be used on the MLAG BGP peer-group.\nThis
-      can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n\nThe
       default description is the name of the MLAG peers."
     default: '{mlag_peer}'
@@ -3070,7 +3070,7 @@ keys:
       table: fabric-settings
     description: "Description or description template to be used on MLAG peer-link
       ethernet interfaces.\nThis can be a template using the AVD string formatter
-      syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `interface`: The local MLAG port-channel interface.\n  - `peer_interface`:
       The port-channel interface on the MLAG peer.\n  - `mlag_port_channel_id`: The
@@ -3094,7 +3094,7 @@ keys:
       table: fabric-settings
     description: "Description or description template to be used on MLAG L3 peering
       SVI (Interface Vlan4093 by default).\nThis can be a template using the AVD string
-      formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `interface`: The MLAG L3 peering SVI name.\n  - `mlag_peer_l3_vlan`: The
       MLAG L3 peering VLAN ID."
@@ -3104,7 +3104,7 @@ keys:
     documentation_options:
       table: fabric-settings
     description: "Name or name template to be used on MLAG L3 VLAN (VLAN 4093 by default).\nThis
-      can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `mlag_peer_l3_vlan`: The MLAG L3 peering VLAN ID."
     default: MLAG_L3
@@ -3114,7 +3114,7 @@ keys:
       table: fabric-settings
     description: "Description or description template to be used on MLAG L3 peering
       SVI for VRFs.\nThis can be a template using the AVD string formatter syntax:
-      https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `interface`: The MLAG L3 VRF peering SVI name.\n  - `vlan`: The MLAG L3
       VRF peering VLAN ID.\n  - `vrf`: The VRF name."
@@ -3124,7 +3124,7 @@ keys:
     documentation_options:
       table: fabric-settings
     description: "Name or name template to be used on MLAG L3 peering VLAN for VRFs.\nThis
-      can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `vlan`: The MLAG L3 VRF peering VLAN ID.\n  - `vrf`: The VRF name."
     default: MLAG_L3_VRF_{vrf}
@@ -3134,7 +3134,7 @@ keys:
       table: fabric-settings
     description: "Description or description template to be used on MLAG peering SVI
       (Interface Vlan4094 by default).\nThis can be a template using the AVD string
-      formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `interface`: The MLAG peering SVI name.\n  - `mlag_peer_vlan`: The MLAG
       peering VLAN ID."
@@ -3145,7 +3145,7 @@ keys:
       table: fabric-settings
     description: "Name or name template to be used on MLAG peering VLAN (VLAN 4094
       by default).\nThis can be a template using the AVD string formatter syntax:
-      https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `mlag_peer_vlan`: The MLAG peering VLAN ID."
     default: MLAG
@@ -3155,7 +3155,7 @@ keys:
       table: fabric-settings
     description: "Description or description template to be used on MLAG peer-link
       port-channel interfaces.\nThis can be a template using the AVD string formatter
-      syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `interface`: The local MLAG port-channel interface.\n  - `peer_interface`:
       The port-channel interface on the MLAG peer.\n  - `mlag_port_channel_id`: The
@@ -3213,7 +3213,7 @@ keys:
         description:
           type: str
           description: "Description or description template to be used on all ports.\nThis
-            can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+            can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
             available template fields are:\n  - `endpoint_type` - always set to `network_port`.\n
             \ - `endpoint` - content of the `endpoint` key if set.\n  - `port_channel_id`:
             The port-channel number for the switch.\n\nThe default description is
@@ -3682,7 +3682,7 @@ keys:
     documentation_options:
       table: overlay-settings
     description: "Description or description template to be used on the overlay BGP
-      peers.\nThis can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      peers.\nThis can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `peer`: The name of the BGP peer.\n  - `peer_interface`:
       The interface on the BGP peer if available.\n\nThe default description is built
       from the name and interface of the BGP peer."
@@ -5678,7 +5678,7 @@ keys:
       table: fabric-settings
     description: "The description or description template to be used on L2 ethernet
       interfaces.\nThe interfaces using this are the member interfaces of port-channel
-      uplinks.\nThis can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      uplinks.\nThis can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `peer`: The name of the peer.\n  - `interface`:
       The local interface name.\n  - `peer_interface`: The interface on the peer.\n\nBy
       default the description is templated from the hostname and interface of the
@@ -5690,7 +5690,7 @@ keys:
       table: fabric-settings
     description: "The description or description template to be used on L2 port-channel
       interfaces.\nThe interfaces using this are port-channel uplinks.\nThis can be
-      a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `peer`: The name of the peer.\n  - `interface`:
       The local interface name.\n  - `peer_interface`: The interface on the peer.\n
       \ - `port_channel_id`: The local port-channel ID.\n  - `peer_port_channel_id`:
@@ -6550,7 +6550,7 @@ $defs:
       description:
         type: str
         description: "Description or description template to be used on all ports.\nThis
-          can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+          can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
           available template fields are:\n  - `endpoint_type` - the `type` from `connected_endpoints_keys`
           like `server`, `router` etc.\n  - `endpoint` - The name of the connected
           endpoint\n  - `endpoint_port` - The value from `endpoint_ports` for this
@@ -6947,7 +6947,7 @@ $defs:
             type: str
             description: "Description or description template to be used on the port-channel
               interface.\nThis can be a template using the AVD string formatter syntax:
-              https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+              https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
               available template fields are:\n  - `endpoint_type` - the `type` from
               `connected_endpoints_keys` like `server`, `router` etc.\n  - `endpoint`
               - The name of the connected endpoint\n  - `endpoint_port_channel` -
@@ -7226,7 +7226,7 @@ $defs:
                 type: list
                 description: "Unique description per port. When set, takes priority
                   over description.\nThis can be a template using the AVD string formatter
-                  syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                  syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
                   available template fields are:\n  - `endpoint_type` - the `type`
                   from `connected_endpoints_keys` like `server`, `router` etc.\n  -
                   `endpoint` - The name of the connected endpoint\n  - `endpoint_port`
@@ -7937,7 +7937,7 @@ $defs:
                     type: str
                     description: "Provide a custom description or description template
                       to be used on the VRF diagnostic loopback interface.\nThis can
-                      be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                      be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
                       available template fields are:\n  - `interface`: The Loopback
                       interface name.\n  - `vrf`: The VRF name.\n  - `tenant`: The
                       tenant name.\n\nThe default description is set by `default_vrf_diag_loopback_description`.\nBy
@@ -12063,7 +12063,7 @@ $defs:
             type: str
             description: "Description or description template to be used on the ethernet
               interface.\nThis can be a template using the AVD string formatter syntax:
-              https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+              https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
               available template fields are:\n  - `peer`: The name of the peer.\n
               \ - `interface`: The local interface name.\n  - `peer_interface`: The
               interface on the peer.\n\nThe default description is set by `default_underlay_p2p_ethernet_description`.\nBy
@@ -12164,7 +12164,7 @@ $defs:
               type: str
               description: "Description or description template to be used on the
                 port-channel interface.\nThis can be a template using the AVD string
-                formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
                 available template fields are:\n  - `peer`: The name of the peer.\n
                 \ - `interface`: The local port-channel interface name.\n  - `peer_interface`:
                 The port-channel interface on the peer.\n  - `port_channel_id`: The

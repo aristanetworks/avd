@@ -9,7 +9,6 @@ from .avt import VerifyAVTSpecificPathInputFactory
 from .connectivity import VerifyLLDPNeighborsInputFactory, VerifyReachabilityInputFactory
 from .hardware import VerifyEnvironmentCoolingInputFactory, VerifyEnvironmentPowerInputFactory
 from .interfaces import VerifyInterfacesStatusInputFactory, VerifyPortChannelsInputFactory
-from .mlag import VerifyMlagDualPrimaryInputFactory, VerifyMlagReloadDelayInputFactory
 from .router_path_selection import VerifySpecificPathInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
 from .routing_generic import VerifyRoutingProtocolModelInputFactory
@@ -26,8 +25,6 @@ __all__ = [
     "VerifyEnvironmentPowerInputFactory",
     "VerifyInterfacesStatusInputFactory",
     "VerifyLLDPNeighborsInputFactory",
-    "VerifyMlagDualPrimaryInputFactory",
-    "VerifyMlagReloadDelayInputFactory",
     "VerifyPortChannelsInputFactory",
     "VerifyReachabilityInputFactory",
     "VerifyReloadCauseInputFactory",
