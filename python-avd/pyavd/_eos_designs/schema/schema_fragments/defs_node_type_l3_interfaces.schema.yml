@@ -115,11 +115,13 @@ $defs:
               description: |-
                 Prefix List Name. Accept routes for only these prefixes from the peer.
                 Required for wan interfaces.
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
             ipv4_prefix_list_out:
               type: str
               description: |-
                 Prefix List Name. Advertise routes for only these prefixes.
                 If not specified, nothing would be advertised.
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.
         ipv4_acl_in:
           description: |-
             Name of the IPv4 access-list to be assigned in the ingress direction.
