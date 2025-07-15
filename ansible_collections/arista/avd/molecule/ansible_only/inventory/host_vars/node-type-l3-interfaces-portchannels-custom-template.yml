@@ -26,6 +26,8 @@ l3spine:
       mgmt_ip: 10.1.1.2/24
       l3_interfaces:
         - name: Ethernet1
+          # This descrition is not configured in cfg as there
+          # is no matching condition for this in template.
           description: overridden using template
           peer: Eth1
           wan_circuit_id: WAN_CIRCUIT_1
