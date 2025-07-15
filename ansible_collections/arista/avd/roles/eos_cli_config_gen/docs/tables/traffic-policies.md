@@ -16,7 +16,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefixes</samp>](## "traffic_policies.field_sets.ipv4.[].prefixes") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.field_sets.ipv4.[].prefixes.[]") | String |  |  |  | IPv4 Prefix. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;except</samp>](## "traffic_policies.field_sets.ipv4.[].except") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.field_sets.ipv4.[].except.[]") | String |  |  |  | IPv4 prefix to exclude |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.field_sets.ipv4.[].except.[]") | String |  |  |  | IPv4 prefix to exclude. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "traffic_policies.field_sets.ipv6") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "traffic_policies.field_sets.ipv6.[].name") | String | Required, Unique |  |  | IPv6 Prefix Field Set Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefixes</samp>](## "traffic_policies.field_sets.ipv6.[].prefixes") | List, items: String |  |  |  |  |
@@ -92,7 +92,7 @@
               - <str>
             except:
 
-                # IPv4 prefix to exclude
+                # IPv4 prefix to exclude.
               - <str>
         ipv6:
 
