@@ -56,7 +56,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             - vrf
             - wan_carrier
             - wan_circuit_id
-            - main_interface_wan_carrier.
+            - main_interface_wan_carrier
         """
         # This is historic behavior for these two modules where the defined description
         # should take precedence over anything. This was broken from AVD 5.0 to 5.3
