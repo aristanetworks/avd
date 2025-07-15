@@ -2547,7 +2547,7 @@ no sflow hardware acceleration module Linecard3
 | Feature | Enabled | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
 | ------- | ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |
 | acl | True | out | mac | - | - | - | - |
-| acl | False | - | - | - | - | - | - |
+| acl | False | in | - | - | - | - | - |
 | gre tunnel interface | True | out | - | - | - | - | - |
 | ip | True | in | - | - | False | - | False |
 | ip | True | out | - | - | True | - | True |
@@ -2564,7 +2564,7 @@ hardware port-group 1 select Et32/1-4
 hardware port-group 2 select Et32/1,Et32/3,Et34
 !
 hardware counter feature acl out mac
-no hardware counter feature acl
+no hardware counter feature acl in
 hardware counter feature gre tunnel interface out
 hardware counter feature ip in
 hardware counter feature ip out layer3 units packets

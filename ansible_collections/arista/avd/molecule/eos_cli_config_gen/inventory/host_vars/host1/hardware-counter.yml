@@ -28,3 +28,4 @@ hardware_counters:
       direction: in
     - name: acl
       enabled: false
+      direction: in
