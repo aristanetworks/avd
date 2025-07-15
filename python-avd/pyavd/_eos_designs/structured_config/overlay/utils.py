@@ -115,7 +115,9 @@ class UtilsMixin(Protocol):
         }.
         """
         bgp_as = peer_facts.bgp_as
-        # Unable to add a test for this condition. Either the test doesn't reach this condition, or if it does, overlay peering address is always there.
+
+        # Cannot add a test for this condition: it's either never reached, or when it is, 'overlay.peering_address' is always present.
+        # Keeping it as a safeguard for any unexpected behavior.
         if not (ip_address := peer_facts.overlay.peering_address):
             msg = f"switch.overlay.peering_address for {peer_name} is required."
             raise AristaAvdInvalidInputsError(msg)
