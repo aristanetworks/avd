@@ -111,7 +111,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;methods</samp>](## "aaa_settings.accounting.commands.default.[].methods") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;method</samp>](## "aaa_settings.accounting.commands.default.[].methods.[].method") | String | Required |  | Valid Values:<br>- <code>logging</code><br>- <code>group</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.commands.default.[].methods.[].group") | String |  |  |  | Specify the server group to be used.<br>This option is applicable only when the `method` key is explicitly set to `group`. |
-    | [<samp>&nbsp;&nbsp;root_login</samp>](## "aaa_settings.root_login") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;root_login</samp>](## "aaa_settings.root_login") | Dictionary |  |  |  | Note: EOS designs by default sets `no aaa root`. To override this use `custom_structured_configuration`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "aaa_settings.root_login.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sha512_password</samp>](## "aaa_settings.root_login.sha512_password") | String |  |  |  |  |
 
@@ -376,6 +376,8 @@
                   # Specify the server group to be used.
                   # This option is applicable only when the `method` key is explicitly set to `group`.
                   group: <str>
+
+      # Note: EOS designs by default sets `no aaa root`. To override this use `custom_structured_configuration`.
       root_login:
         enabled: <bool; default=False>
         sha512_password: <str>

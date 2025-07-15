@@ -376,7 +376,12 @@ class EosDesigns(EosDesignsRootModel):
         authorization: EosCliConfigGen.AaaAuthorization
         accounting: EosCliConfigGen.AaaAccounting
         root_login: RootLogin
-        """Subclass of AvdModel."""
+        """
+        Note: EOS designs by default sets `no aaa root`. To override this use
+        `custom_structured_configuration`.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -402,7 +407,11 @@ class EosDesigns(EosDesignsRootModel):
                     authentication: authentication
                     authorization: authorization
                     accounting: accounting
-                    root_login: Subclass of AvdModel.
+                    root_login:
+                       Note: EOS designs by default sets `no aaa root`. To override this use
+                       `custom_structured_configuration`.
+
+                       Subclass of AvdModel.
 
                 """
 

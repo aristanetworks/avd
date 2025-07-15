@@ -143,6 +143,8 @@ keys:
         $ref: eos_cli_config_gen#/keys/aaa_accounting
       root_login:
         type: dict
+        description: 'Note: EOS designs by default sets `no aaa root`. To override
+          this use `custom_structured_configuration`.'
         keys:
           enabled:
             type: bool
