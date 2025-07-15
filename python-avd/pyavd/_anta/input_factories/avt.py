@@ -4,30 +4,12 @@
 from __future__ import annotations
 
 from anta.input_models.avt import AVTPath
-from anta.tests.avt import VerifyAVTRole, VerifyAVTSpecificPath
+from anta.tests.avt import VerifyAVTSpecificPath
 
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
-
-
-class VerifyAVTRoleInputFactory(AntaTestInputFactory):
-    """
-    Input factory class for the `VerifyAVTRole` test.
-
-    It collects the expected AVT `topology_role` and reverses the role name
-    if it is either `transit region` or `transit zone` to match EOS output.
-    """
-
-    def create(self) -> list[VerifyAVTRole.Input] | None:
-        """Create a list of inputs for the `VerifyAVTRole` test."""
-        role = self.structured_config.router_adaptive_virtual_topology.topology_role
-        # Reverse the role name if it is either `transit region` or `transit zone` to match EOS
-        if role and role in ["transit region", "transit zone"]:
-            role = " ".join(reversed(role.split()))
-
-        return [VerifyAVTRole.Input(role=role)] if role else None
 
 
 class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory):

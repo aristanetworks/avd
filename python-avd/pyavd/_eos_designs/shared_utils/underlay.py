@@ -4,10 +4,11 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._utils.password_utils.password import isis_encrypt
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -110,3 +111,25 @@ class UnderlayMixin(Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg)
         return self.inputs.underlay_ipv6_numbered
+
+    @cached_property
+    def underlay_isis_authentication_key(self: SharedUtilsProtocol) -> str | None:
+        """
+        Retrieves the ISIS authentication key configuration.
+
+        Returns:
+            str or None: The 'underlay_isis_authentication_key' if defined,
+                or the encrypted (type-7) 'underlay_isis_authentication_cleartext_key'.
+                Returns None if neither key is defined.
+        """
+        if self.inputs.underlay_isis_authentication_key is not None:
+            return self.inputs.underlay_isis_authentication_key
+
+        if self.inputs.underlay_isis_authentication_cleartext_key is None:
+            return None
+
+        return isis_encrypt(
+            password=self.inputs.underlay_isis_authentication_cleartext_key,
+            mode=self.inputs.underlay_isis_authentication_mode or "none",
+            key=cast("str", self.isis_instance_name),
+        )

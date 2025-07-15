@@ -72,7 +72,7 @@ $defs:
             type: str
             description: |-
               Description or description template to be used on the ethernet interface.
-              This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+              This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
               The available template fields are:
                 - `peer`: The name of the peer.
                 - `interface`: The local interface name.
@@ -104,7 +104,17 @@ $defs:
             - text
         isis_authentication_key:
           type: str
-          description: Type-7 encrypted password.
+          description: |
+            Type-7 encrypted password.
+            Takes precedence over 'underlay_isis_authentication_key', 'underlay_isis_authentication_cleartext_key'
+            and `isis_authentication_cleartext_key`.
+        isis_authentication_cleartext_key:
+          type: str
+          description: |
+            Cleartext password.
+            Encrypted to Type 7 by AVD.
+            Takes precedence over 'underlay_isis_authentication_key' and 'underlay_isis_authentication_cleartext_key'.
+            To protect the password at rest it is strongly recommended to make use of a vault or similar.
         isis_network_type:
           type: str
           default: point-to-point
@@ -175,7 +185,7 @@ $defs:
               type: str
               description: |-
                 Description or description template to be used on the port-channel interface.
-                This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
                 The available template fields are:
                   - `peer`: The name of the peer.
                   - `interface`: The local port-channel interface name.
