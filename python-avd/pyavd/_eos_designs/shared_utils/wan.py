@@ -35,7 +35,7 @@ class WanMixin(Protocol):
         wan_role = self.node_config.wan_role or default_wan_role
         if wan_role is not None and not self.platform_settings.feature_support.wan:
             msg = f"The WAN features are not compatible with the '{self.node_config.platform}' platform used by node '{self.hostname}'."
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
         return wan_role
 
     @cached_property
