@@ -20,7 +20,7 @@ radius proxy
    !
    client group {{ client_group.name }}
 {%         for vrf in client_group.vrfs | arista.avd.default([]) | selectattr("ipv4_clients", "arista.avd.defined") %}
-{%             for ipv4 in vrf.ipv4_clients %}
+{%             for ipv4 in vrf.ipv4_clients | sort(attribute='address') %}
 {%                 set client_ipv4 = "client ipv4 " ~ ipv4.address ~ " vrf " ~ vrf.name %}
 {%                 if ipv4.key is arista.avd.defined %}
 {%                     set client_ipv4 = client_ipv4 ~ " key " ~ ipv4.key ~ " 7 " ~ ipv4.key | arista.avd.hide_passwords(hide_passwords) %}
@@ -29,7 +29,7 @@ radius proxy
 {%             endfor %}
 {%         endfor %}
 {%         for vrf in client_group.vrfs | arista.avd.default([]) | selectattr("ipv6_clients", "arista.avd.defined") %}
-{%             for ipv6 in vrf.ipv6_clients %}
+{%             for ipv6 in vrf.ipv6_clients | sort(attribute='address') %}
 {%                 set client_ipv6 = "client ipv6 " ~ ipv6.address ~ " vrf " ~ vrf.name %}
 {%                 if ipv6.key is arista.avd.defined %}
 {%                     set client_ipv6 = client_ipv6 ~ " key "  ~ ipv6.key ~ " 7 " ~ ipv6.key | arista.avd.hide_passwords(hide_passwords) %}
@@ -38,7 +38,7 @@ radius proxy
 {%             endfor %}
 {%         endfor %}
 {%         for vrf in client_group.vrfs | arista.avd.default([]) | selectattr("host_clients", "arista.avd.defined") %}
-{%             for host in vrf.host_clients %}
+{%             for host in vrf.host_clients | sort(attribute='name') %}
 {%                 set client_host = "client host " ~ host.name ~ " vrf " ~ vrf.name %}
 {%                 if host.key is arista.avd.defined %}
 {%                     set client_host = client_host ~ " key "  ~ host.key ~ " 7 " ~ host.key | arista.avd.hide_passwords(hide_passwords) %}
