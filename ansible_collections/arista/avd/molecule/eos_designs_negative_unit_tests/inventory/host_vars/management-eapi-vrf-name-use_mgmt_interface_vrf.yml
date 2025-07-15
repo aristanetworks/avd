@@ -13,7 +13,7 @@ l3leaf:
 
 management_eapi:
   vrfs:
-    # Assigning default value (use_mgmt_interface_vrf) as user defined to test negative scenario.
+    # Assigning default value (`use_mgmt_interface_vrf`) as user-defined to test negative scenario because AVD is currently ignoring the error for backward-compatibility. This will change in AVD 6.0
     - name: use_mgmt_interface_vrf
       enabled: true
 
