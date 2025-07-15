@@ -32,6 +32,7 @@ SCHEMA = AvdSchemaTools(schema_id="eos_cli_config_gen").avdschema._schema
     "example-single-dc-l3ls-ipv6",
     "eos_cli_config_gen",
     "eos_cli_config_gen_deprecated_vars",
+    "anta_runner",
 )
 @pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos")
 def test_validate_structured_config_with_valid_data(molecule_host: MoleculeHost) -> None:
