@@ -14,7 +14,7 @@ servers:
     adapters:
       - endpoint_ports: [ Eth1]
         switch_ports: [ Ethernet10]
-        switches: [ connected-endpoints-short-esi-single-homed]
+        switches: [connected-endpoints-short-esi-single-homed]
         port_channel:
           description: PortChanne1
           mode: active
