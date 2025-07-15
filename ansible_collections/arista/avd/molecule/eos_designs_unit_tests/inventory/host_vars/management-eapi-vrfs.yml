@@ -1,5 +1,7 @@
 ---
+# Testing with both inband and oob management, overriding source interfaces on both.
 type: l3leaf
+default_mgmt_method: oob
 
 l3leaf:
   defaults:
@@ -11,6 +13,7 @@ l3leaf:
       loopback_ipv4_address: 10.42.42.42
       mgmt_ip: 192.168.66.22/24
       inband_mgmt_interface: Vlan123
+      inband_mgmt_vrf: use_inband_mgmt_vrf
       id: 12
 
 management_eapi:
