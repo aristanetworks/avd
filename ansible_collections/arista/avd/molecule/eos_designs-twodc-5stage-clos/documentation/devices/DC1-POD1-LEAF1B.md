@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Management](#management)
+  - [Management Interfaces](#management-interfaces)
   - [IP Domain-list](#ip-domain-list)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
@@ -38,6 +39,33 @@
 - [EOS CLI Device Configuration](#eos-cli-device-configuration)
 
 ## Management
+
+### Management Interfaces
+
+#### Management Interfaces Summary
+
+##### IPv4
+
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.1.26/24 | 192.168.1.254 |
+
+##### IPv6
+
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
+
+#### Management Interfaces Device Configuration
+
+```eos
+!
+interface Management1
+   description OOB_MANAGEMENT
+   no shutdown
+   vrf MGMT
+   ip address 192.168.1.26/24
+```
 
 ### IP Domain-list
 

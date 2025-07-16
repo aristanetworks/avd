@@ -154,6 +154,14 @@ management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.1.26/24
+  type: oob
+  gateway: 192.168.1.254
 metadata:
   platform: vEOS-LAB
   pod_name: DC1_POD1
@@ -162,7 +170,7 @@ metadata:
   digital_twin:
     environment: act
     node_type: veos
-    ip_addr: 192.168.1.13/24
+    ip_addr: 192.168.1.26/24
     version: 4.33.1.1F
     username: admin
     password: admin
