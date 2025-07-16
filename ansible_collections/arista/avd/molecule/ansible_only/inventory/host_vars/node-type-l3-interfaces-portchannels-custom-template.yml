@@ -8,6 +8,7 @@ node_type_keys:
       l3: true
     interface_descriptions:
       underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
+      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
 
 type: l3spine
 l3spine:
@@ -20,9 +21,21 @@ l3spine:
     mlag_peer_ipv4_pool: "10.10.10.0/24"
     mlag_peer_l3_ipv4_pool: "10.10.20.0/24"
   nodes:
-    - name: node-type-l3-port-channels-custom-template
+    - name: node-type-l3-interfaces-portchannels-custom-template
       id: 2
       mgmt_ip: 10.1.1.2/24
+      l3_interfaces:
+        - name: Ethernet1
+          # This description is not configured in cfg as there
+          # is no matching condition for this in template.
+          description: overridden using template
+          peer: Eth1
+          wan_circuit_id: WAN_CIRCUIT_1
+          wan_carrier: Tata
+          ip_address: 10.10.1.1/24
+        - name: Ethernet1.1
+          peer: PE1
+          ip_address: 10.10.1.2/24
       l3_port_channels:
         - name: Port-Channel5
           mode: passive

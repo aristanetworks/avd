@@ -501,6 +501,19 @@ interface {{ vlan_interface.name }}
 {%             if vrid.timers.delay.reload is arista.avd.defined %}
    vrrp {{ vrid.id }} timers delay reload {{ vrid.timers.delay.reload }}
 {%             endif %}
+{%             if vrid.peer_authentication is arista.avd.defined %}
+{%                 set peer_auth_cli = "vrrp " ~ vrid.id ~ " peer authentication" %}
+{%                 if vrid.peer_authentication.mode == "ietf-md5" %}
+{%                     set peer_auth_cli = peer_auth_cli ~ " ietf-md5 key-string" %}
+{%                 else %}
+{%                     set peer_auth_cli = peer_auth_cli ~ " text" %}
+{%                 endif %}
+{%                 if vrid.peer_authentication.key_type is arista.avd.defined %}
+{%                     set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key_type %}
+{%                 endif %}
+{%                 set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key | arista.avd.hide_passwords(hide_passwords) %}
+   {{ peer_auth_cli }}
+{%             endif %}
 {%             if vrid.ipv4.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv4 {{ vrid.ipv4.address }}
 {%             endif %}
