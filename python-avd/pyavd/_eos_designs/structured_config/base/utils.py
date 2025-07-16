@@ -217,15 +217,15 @@ class UtilsMixin(Protocol):
         Raises:
             AristaAvdMissingVariableError: If both `key` and `cleartext_key` are missing.
         """
+        if radius_or_tacacs_server.key is not None:
+            return radius_or_tacacs_server.key
+
         if isinstance(radius_or_tacacs_server, EosDesigns.AaaSettings.Radius.ServersItem):
             encrypt_func = radius_encrypt
             path_prefix = f"aaa_settings.radius.servers[host={radius_or_tacacs_server.host}]"
         else:
             encrypt_func = tacacs_encrypt
             path_prefix = f"aaa_settings.tacacs.servers[host={radius_or_tacacs_server.host}]"
-
-        if radius_or_tacacs_server.key is not None:
-            return radius_or_tacacs_server.key
 
         if radius_or_tacacs_server.cleartext_key is not None:
             salt = self.get_salt_for_host(radius_or_tacacs_server.host)

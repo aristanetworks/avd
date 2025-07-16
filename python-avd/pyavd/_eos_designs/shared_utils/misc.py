@@ -19,8 +19,6 @@ from pyavd.j2filters import range_expand
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
 
-    RadiusOrTacacsServer = EosDesigns.AaaSettings.Radius.ServersItem | EosDesigns.AaaSettings.Tacacs.ServersItem
-
 
 class MiscMixin(Protocol):
     """
