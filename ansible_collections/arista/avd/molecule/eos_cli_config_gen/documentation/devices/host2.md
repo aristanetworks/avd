@@ -1628,7 +1628,7 @@ mac security
 
 | Field Set Name | IPv6 Prefixes | Excluded Prefixes |
 | -------------- | ------------- | ----------------- |
-| IPv6-DEMO-1 | 11:22:33:44:55:66:77:88 | - |
+| IPv6-DEMO-1 | 11:22:33:44:55:66:77:88 | 22:33:44:55:66:77:88:11 |
 | IPv6-DEMO-2 | - | - |
 
 #### Traffic Policies Device Configuration
@@ -1638,6 +1638,7 @@ mac security
 traffic-policies
    field-set ipv6 prefix IPv6-DEMO-1
       11:22:33:44:55:66:77:88
+      except 22:33:44:55:66:77:88:11
    !
    field-set ipv6 prefix IPv6-DEMO-2
 ```
