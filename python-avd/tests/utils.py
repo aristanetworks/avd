@@ -53,16 +53,3 @@ def get_files_in_folder(folder_path: str) -> list:
         for root, _, filenames in Path(folder_path).walk()
         for filename in filenames
     ]
-
-
-def load_one_structured_config(device: str, structured_config_dir: str, structured_config_suffix: str) -> dict:
-    """Load the structured configuration for a device from the provided directory."""
-    path = Path(structured_config_dir) / f"{device}.{structured_config_suffix}"
-    if not path.exists():
-        msg = f"Structured configuration file for device '{device}' not found: {path}"
-        raise FileNotFoundError(msg)
-
-    with path.open(encoding="UTF-8") as stream:
-        if structured_config_suffix in {"yml", "yaml"}:
-            yaml_load(stream, Loader=CSafeLoader)
-        return json_loads(stream)

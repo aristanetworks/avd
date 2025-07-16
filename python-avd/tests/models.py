@@ -51,6 +51,26 @@ class MoleculeHost:
         return load(structured_config_path.read_text(), CSafeLoader)
 
     @cached_property
+    def structured_configs(self) -> dict[str, dict[Any, Any]]:
+        """A dictionary of intended structured configs for all hosts in the scenario, keyed by hostname."""
+        # Define the path to the directory containing all structured configs
+        configs_dir = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "intended/structured_configs")
+
+        # Return an empty dictionary if the directory doesn't exist
+        if not configs_dir.is_dir():
+            return {}
+
+        all_configs: dict[str, dict[Any, Any]] = {}
+        # Find every file ending with .yml in the directory
+        for config_file in configs_dir.glob("*.yml"):
+            # The filename without the extension is the hostname
+            hostname = config_file.stem
+            # Load the YAML content and add it to the dictionary
+            all_configs[hostname] = load(config_file.read_text(), CSafeLoader)
+
+        return all_configs
+
+    @cached_property
     def test_catalog(self) -> dict[Any, Any]:
         test_catalog_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "anta/avd_catalogs/default_run", f"{self.name}.json")
         if not test_catalog_path.exists():
