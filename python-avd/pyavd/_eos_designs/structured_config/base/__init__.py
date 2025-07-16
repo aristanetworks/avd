@@ -504,13 +504,22 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def management_api_http(self) -> None:
         """management_api_http set based on management_eapi data-model."""
+        # Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced
+        act_backdoor_eapi_management: bool = (
+            self.shared_utils.digital_twin and self.inputs.digital_twin.environment == "act" and self.inputs.digital_twin.fabric.act_backdoor_management
+        )
         if self.inputs.management_eapi.enabled:
             self.structured_config.management_api_http.enable_vrfs.append_new(name=self.inputs.mgmt_interface_vrf)
             self.structured_config.management_api_http._update(
                 enable_http=self.inputs.management_eapi.enable_http,
-                enable_https=self.inputs.management_eapi.enable_https,
+                enable_https=self.inputs.management_eapi.enable_https if not act_backdoor_eapi_management else True,
                 default_services=self.inputs.management_eapi.default_services,
             )
+            if act_backdoor_eapi_management and "default" not in self.structured_config.management_api_http.enable_vrfs:
+                self.structured_config.management_api_http.enable_vrfs.append_new(name="default")
+        elif act_backdoor_eapi_management:
+            self.structured_config.management_api_http.enable_https = True
+            self.structured_config.management_api_http.enable_vrfs.append_new(name="default")
 
     @structured_config_contributor
     def link_tracking_groups(self) -> None:

@@ -3980,6 +3980,7 @@ class EosDesigns(EosDesignsRootModel):
                 "act_os_version": {"type": str},
                 "act_username": {"type": str, "default": "admin"},
                 "act_password": {"type": str, "default": "admin"},
+                "act_backdoor_management": {"type": bool, "default": False},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -3995,6 +3996,26 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `"admin"`
             """
+            act_backdoor_management: bool
+            """
+            Enforces generated Digital Twin version of the EOS configuration for `veos` and `cloudeos` node
+            types to always allow eAPI management in default VRF.
+            By default, ACT allocates a dedicated private
+            (RFC1918) management IP address to each deployed node, which is routable only over the ACT VPN. This
+            interface provides both eAPI and SSH access.
+            If a virtual vEOS or CloudEOS device's configuration
+            later disables the eAPI service in the default VRF, it will also block ACT's eAPI access to the
+            device. This prevents all eAPI access through the dedicated management interface, including access
+            from the ACT UI's `command-api` and direct eAPI calls over the ACT VPN.
+            When this key is set to
+            `True`, the generated Digital Twin configuration (`management api http-commands` section) will be
+            updated to enable the eAPI service in the default VRF, ensuring access is maintained.
+            No adjustments
+            are needed for the SSH service, as its access via the dedicated management interface cannot be
+            blocked by the `management ssh` EOS configuration.
+
+            Default value: `False`
+            """
 
             if TYPE_CHECKING:
 
@@ -4004,6 +4025,7 @@ class EosDesigns(EosDesignsRootModel):
                     act_os_version: str | None | UndefinedType = Undefined,
                     act_username: str | UndefinedType = Undefined,
                     act_password: str | UndefinedType = Undefined,
+                    act_backdoor_management: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -4015,6 +4037,22 @@ class EosDesigns(EosDesignsRootModel):
                         act_os_version: OS version for ACT Digital Twin fabric devices.
                         act_username: Username for ACT Digital Twin fabric devices.
                         act_password: Cleartext password for ACT Digital Twin fabric devices.
+                        act_backdoor_management:
+                           Enforces generated Digital Twin version of the EOS configuration for `veos` and `cloudeos` node
+                           types to always allow eAPI management in default VRF.
+                           By default, ACT allocates a dedicated private
+                           (RFC1918) management IP address to each deployed node, which is routable only over the ACT VPN. This
+                           interface provides both eAPI and SSH access.
+                           If a virtual vEOS or CloudEOS device's configuration
+                           later disables the eAPI service in the default VRF, it will also block ACT's eAPI access to the
+                           device. This prevents all eAPI access through the dedicated management interface, including access
+                           from the ACT UI's `command-api` and direct eAPI calls over the ACT VPN.
+                           When this key is set to
+                           `True`, the generated Digital Twin configuration (`management api http-commands` section) will be
+                           updated to enable the eAPI service in the default VRF, ensuring access is maintained.
+                           No adjustments
+                           are needed for the SSH service, as its access via the dedicated management interface cannot be
+                           blocked by the `management ssh` EOS configuration.
 
                     """
 

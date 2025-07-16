@@ -59,3 +59,9 @@ l3leaf:
           # id: 1 Using pool manager for ID
           mgmt_ip: 192.168.1.15/24
           uplink_switch_interfaces: ["Ethernet3", "Ethernet3"]
+
+# Test enforcement of the ACT Digital Twin eAPI in default VRF
+digital_twin:
+  environment: act
+  fabric:
+    act_backdoor_management: true

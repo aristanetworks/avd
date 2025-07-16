@@ -1721,6 +1721,30 @@ keys:
             type: str
             description: Cleartext password for ACT Digital Twin fabric devices.
             default: admin
+          act_backdoor_management:
+            type: bool
+            description: 'Enforces generated Digital Twin version of the EOS configuration
+              for `veos` and `cloudeos` node types to always allow eAPI management
+              in default VRF.
+
+              By default, ACT allocates a dedicated private (RFC1918) management IP
+              address to each deployed node, which is routable only over the ACT VPN.
+              This interface provides both eAPI and SSH access.
+
+              If a virtual vEOS or CloudEOS device''s configuration later disables
+              the eAPI service in the default VRF, it will also block ACT''s eAPI
+              access to the device. This prevents all eAPI access through the dedicated
+              management interface, including access from the ACT UI''s `command-api`
+              and direct eAPI calls over the ACT VPN.
+
+              When this key is set to `True`, the generated Digital Twin configuration
+              (`management api http-commands` section) will be updated to enable the
+              eAPI service in the default VRF, ensuring access is maintained.
+
+              No adjustments are needed for the SSH service, as its access via the
+              dedicated management interface cannot be blocked by the `management
+              ssh` EOS configuration.'
+            default: false
   dns_settings:
     documentation_options:
       table: management-settings
