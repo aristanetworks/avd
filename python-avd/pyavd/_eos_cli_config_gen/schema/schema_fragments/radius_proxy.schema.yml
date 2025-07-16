@@ -9,9 +9,7 @@ keys:
   radius_proxy:
     type: dict
     description: |-
-      It forwards RADIUS requests and responses between clients (NAS devices) and RADIUS servers.
-      It acts as a middle layer that helps route, manage, and control authentication,
-      authorization, and accounting (AAA) traffic.
+      Configure RADIUS proxy parameters/
     keys:
       client_key:
         type: str
