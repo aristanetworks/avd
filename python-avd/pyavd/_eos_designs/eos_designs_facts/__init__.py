@@ -109,7 +109,7 @@ class EosDesignsFactsGeneratorProtocol(
             return None
         if self.inputs.evpn_multicast and self.shared_utils.vtep:
             if not (self.shared_utils.underlay_multicast_pim_sm_enabled and self.shared_utils.igmp_snooping_enabled):
-                msg = "'evpn_multicast: true' is only supported in combination with 'underlay_multicast: true' or 'underlay_multicast_pim_sm: true'"
+                msg = "'evpn_multicast: true' is only supported in combination with 'underlay_multicast_pim_sm: true' or 'underlay_multicast: true'"
                 " and 'igmp_snooping_enabled : true'"
                 raise AristaAvdError(msg)
 

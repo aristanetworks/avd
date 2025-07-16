@@ -104,7 +104,17 @@ $defs:
             - text
         isis_authentication_key:
           type: str
-          description: Type-7 encrypted password.
+          description: |
+            Type-7 encrypted password.
+            Takes precedence over 'underlay_isis_authentication_key', 'underlay_isis_authentication_cleartext_key'
+            and `isis_authentication_cleartext_key`.
+        isis_authentication_cleartext_key:
+          type: str
+          description: |
+            Cleartext password.
+            Encrypted to Type 7 by AVD.
+            Takes precedence over 'underlay_isis_authentication_key' and 'underlay_isis_authentication_cleartext_key'.
+            To protect the password at rest it is strongly recommended to make use of a vault or similar.
         isis_network_type:
           type: str
           default: point-to-point

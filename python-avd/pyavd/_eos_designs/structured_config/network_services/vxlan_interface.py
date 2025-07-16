@@ -205,7 +205,8 @@ class VxlanInterfaceMixin(Protocol):
 
         if default(vlan.vxlan_flood_multicast.enabled, tenant.vxlan_flood_multicast.enabled):
             if not self.shared_utils.underlay_multicast_pim_sm_enabled:
-                msg = "'vxlan_flood_multicast' is only supported in combination with 'underlay_multicast: True' or `underlay_multicast_pim_sm: true`."
+                # TODO: 6.0 remove the underlay_multicast reference when removing the key
+                msg = "'vxlan_flood_multicast' is only supported in combination with `underlay_multicast_pim_sm: true` or 'underlay_multicast: true'."
                 raise AristaAvdError(msg)
             vxlan_vlan.flood_group = (
                 vlan.vxlan_flood_multicast.underlay_multicast_group

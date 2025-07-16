@@ -200,7 +200,7 @@ core_interfaces:
       ptp:
         enabled: true
 
-    # P2P core links with multicast_pim_sm(pim-sparse) and multicast_static enabled.
+    # P2P core links with multicast_pim_sm(pim-sparse) enabled.
     - nodes: [ core-4-multicast, peer1 ]
       id: 10
       as: [65001, 65002]
@@ -209,7 +209,7 @@ core_interfaces:
       multicast_pim_sm: true
       ip_pool: underlay_pool
 
-     # P2P core links with multicast_pim_sm(pim-sparse) and multicast_static disabled.
+     # P2P core links with multicast_pim_sm(pim-sparse) disabled.
     - nodes: [ core-4-multicast, peer2 ]
       id: 11
       as: [65001, 65003]

@@ -12,7 +12,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default, get_v2
+from pyavd._utils import Undefined, default, get_v2
 from pyavd.j2filters import natural_sort
 
 from .daemon_terminattr import DaemonTerminattrMixin
@@ -505,12 +505,25 @@ class AvdStructuredConfigBaseProtocol(
     def management_api_http(self) -> None:
         """management_api_http set based on management_eapi data-model."""
         if self.inputs.management_eapi.enabled:
-            self.structured_config.management_api_http.enable_vrfs.append_new(name=self.inputs.mgmt_interface_vrf)
             self.structured_config.management_api_http._update(
                 enable_http=self.inputs.management_eapi.enable_http,
                 enable_https=self.inputs.management_eapi.enable_https,
                 default_services=self.inputs.management_eapi.default_services,
             )
+
+            # TODO: For backward compatibility, checking in advance if we are using the default value
+            # remove in AVD 6.0 as well as the try/except below
+            using_default_vrfs = self.inputs.management_eapi._get_defined_attr("vrfs") == Undefined
+
+            for vrf in self.inputs.management_eapi.vrfs:
+                if vrf.enabled:
+                    try:
+                        vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
+                    except AristaAvdInvalidInputsError:
+                        if not using_default_vrfs:
+                            raise
+                        vrf_name = self.inputs.mgmt_interface_vrf
+                    self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
 
     @structured_config_contributor
     def link_tracking_groups(self) -> None:
