@@ -7,7 +7,7 @@ l3leaf:
     vtep_loopback_ipv4_pool: 10.10.10.0/24
     bgp_as: 65042
   nodes:
-    - name: management-eapi-vrf-name-use_inband_mgmt_vrf
+    - name: management-eapi-vrf-name-use-inband-mgmt-vrf
       loopback_ipv4_address: 10.42.42.42
       id: 12
 
