@@ -1258,7 +1258,7 @@ interface {{ ethernet_interface.name }}
 {%             if application_override.application_number is arista.avd.defined %}
 {%                 set application_override_cli = "transceiver application override " ~ application_override.application_number %}
 {%                 if application_override.lanes is arista.avd.defined %}
-{%                      set application_override_cli = application_override_cli ~ " lanes start " ~ application_override.lanes.start %}
+{%                     set application_override_cli = application_override_cli ~ " lanes start " ~ application_override.lanes.start %}
 {%                 endif %}
 {%                 if application_override.lanes.end is arista.avd.defined %}
 {%                     set application_override_cli = application_override_cli ~ " end " ~ application_override.lanes.end %}

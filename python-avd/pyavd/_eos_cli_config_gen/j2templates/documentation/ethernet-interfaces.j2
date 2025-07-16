@@ -315,7 +315,7 @@
 {%                     do applications.append(application_override.application_number) %}
 {%                 endfor %}
 {%             else %}
-{%                  do applications.append("-") %}
+{%                 do applications.append("-") %}
 {%             endif %}
 {%             set m_override = transceiver_setting.transceiver.media.override | arista.avd.default('-') %}
 | {{ interface }} | {{ frequency }} | {{ m_override }} | {{ applications | join(", ") }} |
