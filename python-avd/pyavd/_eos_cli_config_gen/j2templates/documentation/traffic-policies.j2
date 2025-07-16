@@ -27,8 +27,8 @@
 | Field Set Name | IPv6 Prefixes | Excluded Prefixes |
 | -------------- | ------------- | ----------------- |
 {%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.natural_sort('name') %}
-{%                 set value = field_set_ipv6.prefixes | arista.avd.default("-") | arista.avd.natural_sort | join('<br/>') %}
-{%                 set except_value = field_set_ipv6.except | arista.avd.default("-") | arista.avd.natural_sort | join('<br/>') %}
+{%                 set value = field_set_ipv6.prefixes | arista.avd.default(["-"]) | arista.avd.natural_sort | join('<br/>') %}
+{%                 set except_value = field_set_ipv6.except | arista.avd.default(["-"]) | arista.avd.natural_sort | join('<br/>') %}
 | {{ field_set_ipv6.name }} | {{ value }} | {{ except_value }} |
 {%             endfor %}
 {%         endif %}
