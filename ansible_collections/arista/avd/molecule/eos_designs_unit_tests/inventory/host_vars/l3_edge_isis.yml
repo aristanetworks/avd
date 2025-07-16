@@ -49,7 +49,9 @@ l3_edge:
       isis_metric: 60
       isis_circuit_type: level-2
       isis_authentication_mode: md5
-      isis_authentication_key: $1c$sTNAlR6rKSw=
+      isis_authentication_key: 7h4BlaA7By3z4DS4JcikPQ==
+      # To confirm  'isis_authentication_key' taking precedence over 'isis_authentication_cleartext_key'.
+      isis_authentication_cleartext_key: arista
 
       # P2P link with underlay routing and IP set as subnet.
     - nodes: [l3_edge_isis, peer3]
@@ -61,3 +63,16 @@ l3_edge:
       interfaces: [ethernet4, ethernet4]
       ip_pool: pool1
       id: 4
+
+      # Test isis_authentication_cleartext_key.
+    - nodes: [l3_edge_isis, peer2]
+      interfaces: [ethernet5, ethernet5]
+      ip: [192.168.0.4/31, 192.168.0.5/31]
+      isis_authentication_mode: md5
+      isis_authentication_cleartext_key: arista
+
+      # Use ISIS mode from root settings.
+    - nodes: [l3_edge_isis, peer2]
+      interfaces: [ethernet6, ethernet6]
+      ip: [192.168.0.6/31, 192.168.0.7/31]
+      isis_authentication_cleartext_key: arista
