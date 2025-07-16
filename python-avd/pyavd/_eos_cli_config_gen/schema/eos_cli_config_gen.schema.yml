@@ -13749,12 +13749,7 @@ keys:
         - int
   radius_proxy:
     type: dict
-    description: 'It forwards RADIUS requests and responses between clients (NAS devices)
-      and RADIUS servers.
-
-      It acts as a middle layer that helps route, manage, and control authentication,
-
-      authorization, and accounting (AAA) traffic.'
+    description: Configure RADIUS proxy parameters/
     keys:
       client_key:
         type: str
@@ -13770,9 +13765,7 @@ keys:
         - str
       dynamic_authorization:
         type: bool
-        description: 'To change or revoke a user''s access dynamically after authentication,
-
-          without requiring the user to reconnect or reauthenticate.'
+        description: Enable/Disable dynamic authorization.
       client_groups:
         type: list
         primary_key: name

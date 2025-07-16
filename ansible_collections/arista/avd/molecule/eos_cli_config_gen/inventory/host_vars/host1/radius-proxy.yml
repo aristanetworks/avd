@@ -22,6 +22,7 @@ radius_proxy:
           ipv4_clients:
             - address: 1.2.10.10
               key: 00171605165E1F395E611C0E1A1C0605171F3355
+            - address: 1.1.10.10
             - address: 1.2.10.6
             - address: 2.2.1.1
             - address: 1.2.10.8
@@ -38,9 +39,9 @@ radius_proxy:
             - name: host2
             - name: host3
               key: 00171605165E1F395E611C0E1A1C0605171F3355
-    - name: CG_2
     - name: CG_3
       server_groups: [ ddd ]
+    - name: CG_2
     - name: CG_4
       vrfs:
         - name: vrf_only_host

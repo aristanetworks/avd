@@ -35278,11 +35278,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         client_session_idle_timeout: int | None
         """Idle timeout in seconds."""
         dynamic_authorization: bool | None
-        """
-        To change or revoke a user's access dynamically after authentication,
-        without requiring the user to
-        reconnect or reauthenticate.
-        """
+        """Enable/Disable dynamic authorization."""
         client_groups: ClientGroups
         """Subclass of AvdIndexedList with `ClientGroupsItem` items. Primary key is `name` (`str`)."""
 
@@ -35307,10 +35303,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Set client secret key, allowed max size is 128.
                        Only type 7 supported.
                     client_session_idle_timeout: Idle timeout in seconds.
-                    dynamic_authorization:
-                       To change or revoke a user's access dynamically after authentication,
-                       without requiring the user to
-                       reconnect or reauthenticate.
+                    dynamic_authorization: Enable/Disable dynamic authorization.
                     client_groups: Subclass of AvdIndexedList with `ClientGroupsItem` items. Primary key is `name` (`str`).
 
                 """
@@ -67347,11 +67340,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     radius_proxy: RadiusProxy
     """
-    It forwards RADIUS requests and responses between clients (NAS devices) and RADIUS servers.
-    It acts
-    as a middle layer that helps route, manage, and control authentication,
-    authorization, and
-    accounting (AAA) traffic.
+    Configure RADIUS proxy parameters/
 
     Subclass of AvdModel.
     """
@@ -67968,11 +67957,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 queue_monitor_length: Subclass of AvdModel.
                 queue_monitor_streaming: Subclass of AvdModel.
                 radius_proxy:
-                   It forwards RADIUS requests and responses between clients (NAS devices) and RADIUS servers.
-                   It acts
-                   as a middle layer that helps route, manage, and control authentication,
-                   authorization, and
-                   accounting (AAA) traffic.
+                   Configure RADIUS proxy parameters/
 
                    Subclass of AvdModel.
                 radius_server: Subclass of AvdModel.

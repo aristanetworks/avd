@@ -7,10 +7,10 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>radius_proxy</samp>](## "radius_proxy") | Dictionary |  |  |  | It forwards RADIUS requests and responses between clients (NAS devices) and RADIUS servers.<br>It acts as a middle layer that helps route, manage, and control authentication,<br>authorization, and accounting (AAA) traffic. |
+    | [<samp>radius_proxy</samp>](## "radius_proxy") | Dictionary |  |  |  | Configure RADIUS proxy parameters/ |
     | [<samp>&nbsp;&nbsp;client_key</samp>](## "radius_proxy.client_key") | String |  |  |  | Set client secret key, allowed max size is 128.<br>Only type 7 supported. |
     | [<samp>&nbsp;&nbsp;client_session_idle_timeout</samp>](## "radius_proxy.client_session_idle_timeout") | Integer |  |  | Min: 1<br>Max: 86400 | Idle timeout in seconds. |
-    | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "radius_proxy.dynamic_authorization") | Boolean |  |  |  | To change or revoke a user's access dynamically after authentication,<br>without requiring the user to reconnect or reauthenticate. |
+    | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "radius_proxy.dynamic_authorization") | Boolean |  |  |  | Enable/Disable dynamic authorization. |
     | [<samp>&nbsp;&nbsp;client_groups</samp>](## "radius_proxy.client_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "radius_proxy.client_groups.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_groups</samp>](## "radius_proxy.client_groups.[].server_groups") | List, items: String |  |  |  |  |
@@ -30,9 +30,7 @@
 === "YAML"
 
     ```yaml
-    # It forwards RADIUS requests and responses between clients (NAS devices) and RADIUS servers.
-    # It acts as a middle layer that helps route, manage, and control authentication,
-    # authorization, and accounting (AAA) traffic.
+    # Configure RADIUS proxy parameters/
     radius_proxy:
 
       # Set client secret key, allowed max size is 128.
@@ -42,8 +40,7 @@
       # Idle timeout in seconds.
       client_session_idle_timeout: <int; 1-86400>
 
-      # To change or revoke a user's access dynamically after authentication,
-      # without requiring the user to reconnect or reauthenticate.
+      # Enable/Disable dynamic authorization.
       dynamic_authorization: <bool>
       client_groups:
         - name: <str; required; unique>
