@@ -104,11 +104,16 @@
     | [<samp>&nbsp;&nbsp;level</samp>](## "logging_settings.level") | List, items: Dictionary |  |  |  | Configure logging severity. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;facility</samp>](## "logging_settings.level.[].facility") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;severity</samp>](## "logging_settings.level.[].severity") | String |  |  | Valid Values:<br>- <code>alerts</code><br>- <code>critical</code><br>- <code>debugging</code><br>- <code>emergencies</code><br>- <code>errors</code><br>- <code>informational</code><br>- <code>notifications</code><br>- <code>warnings</code><br>- <code>0</code><br>- <code>1</code><br>- <code>2</code><br>- <code>3</code><br>- <code>4</code><br>- <code>5</code><br>- <code>6</code><br>- <code>7</code> | Severity of facility. Below are the supported severities.<br>emergencies    System is unusable                (severity=0)<br>alerts         Immediate action needed           (severity=1)<br>critical       Critical conditions               (severity=2)<br>errors         Error conditions                  (severity=3)<br>warnings       Warning conditions                (severity=4)<br>notifications  Normal but significant conditions (severity=5)<br>informational  Informational messages            (severity=6)<br>debugging      Debugging messages                (severity=7)<br><0-7>          Severity level value |
-    | [<samp>management_eapi</samp>](## "management_eapi") | Dictionary |  |  |  | Default is HTTPS management eAPI enabled.<br>The VRF is set to < mgmt_interface_vrf >.<br> |
+    | [<samp>management_eapi</samp>](## "management_eapi") | Dictionary |  |  |  | Default is HTTPS management eAPI enabled.<br> |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "management_eapi.enabled") | Boolean |  | `True` |  | Enable/Disable api http-commands. |
     | [<samp>&nbsp;&nbsp;enable_http</samp>](## "management_eapi.enable_http") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enable_https</samp>](## "management_eapi.enable_https") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;default_services</samp>](## "management_eapi.default_services") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "management_eapi.vrfs") | List, items: Dictionary |  | See (+) on YAML tab |  | Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not** configured and the default value of `use_mgmt_interface_vrf` is used.<br>To enforce the presence of `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using `name: use_mgmt_interface_vrf`.<br>This behavior will be removed in AVD 6.0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_eapi.vrfs.[].name") | String | Required, Unique |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the eAPI under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the eAPI under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the eAPI under VRF for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "management_eapi.vrfs.[].enabled") | Boolean | Required |  |  | Enable/disable Management eAPI for this VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "management_eapi.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 access-list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl</samp>](## "management_eapi.vrfs.[].ipv6_acl") | String |  |  |  | IPv6 access-list name. |
     | [<samp>name_servers</samp>](## "name_servers") <span style="color:red">deprecated</span> | List, items: String |  |  |  | List of DNS servers. The VRF is set to < mgmt_interface_vrf >.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>dns_settings.servers</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "name_servers.[]") | String |  |  |  | IPv4 or IPv6 address. |
     | [<samp>ntp_settings</samp>](## "ntp_settings") | Dictionary |  |  |  | NTP settings |
@@ -410,7 +415,6 @@
           severity: <str; "alerts" | "critical" | "debugging" | "emergencies" | "errors" | "informational" | "notifications" | "warnings" | "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7">
 
     # Default is HTTPS management eAPI enabled.
-    # The VRF is set to < mgmt_interface_vrf >.
     management_eapi:
 
       # Enable/Disable api http-commands.
@@ -418,6 +422,30 @@
       enable_http: <bool>
       enable_https: <bool; default=True>
       default_services: <bool>
+
+      # Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not** configured and the default value of `use_mgmt_interface_vrf` is used.
+      # To enforce the presence of `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using `name: use_mgmt_interface_vrf`.
+      # This behavior will be removed in AVD 6.0.
+      vrfs: # (1)!
+
+          # VRF name.
+          # The value will be interpreted according to these rules:
+          # - `use_mgmt_interface_vrf` will configure the eAPI under the VRF set with `mgmt_interface_vrf`.
+          #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+          # - `use_inband_mgmt_vrf` will configure the eAPI under the VRF set with `inband_mgmt_vrf`.
+          #   An error will be raised if inband management is not configured for the device.
+          # - `use_default_mgmt_method_vrf` will configure the eAPI under VRF for one of the two options above depending on the value of `default_mgmt_method`.
+          # - Any other string will be used directly as the VRF name.
+        - name: <str; required; unique>
+
+          # Enable/disable Management eAPI for this VRF.
+          enabled: <bool; required>
+
+          # IPv4 access-list name.
+          ipv4_acl: <str>
+
+          # IPv6 access-list name.
+          ipv6_acl: <str>
 
     # List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
     # This key is deprecated.
@@ -507,3 +535,11 @@
     # Clock timezone like "CET" or "US/Pacific".
     timezone: <str>
     ```
+
+    1. Default Value
+
+        ```yaml
+        vrfs:
+        - enabled: true
+          name: use_mgmt_interface_vrf
+        ```
