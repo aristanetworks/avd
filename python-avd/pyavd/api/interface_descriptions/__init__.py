@@ -55,7 +55,8 @@ class AvdInterfaceDescriptions(AvdFacts):
             - type
             - vrf
             - wan_carrier
-            - wan_circuit_id.
+            - wan_circuit_id
+            - main_interface_wan_carrier
         """
         # This is historic behavior for these two modules where the defined description
         # should take precedence over anything. This was broken from AVD 5.0 to 5.3
@@ -78,6 +79,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "type": data.link_type,
                     "peer": data.peer,
                     "peer_interface": data.peer_interface,
+                    "wan_carrier": data.wan_carrier,
+                    "wan_circuit_id": data.wan_circuit_id,
+                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
                 },
             )
 
@@ -99,6 +103,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "peer": data.peer,
                     "peer_interface": data.peer_interface,
                     "vrf": data.vrf,
+                    "wan_carrier": data.wan_carrier,
+                    "wan_circuit_id": data.wan_circuit_id,
+                    "main_interface_wan_carrier": data.main_interface_wan_carrier,
                 }
             ),
         )

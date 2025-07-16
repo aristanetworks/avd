@@ -5648,11 +5648,26 @@ keys:
       \ - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n  - inband_ztp\n"
     type: bool
     default: false
+  underlay_isis_authentication_cleartext_key:
+    documentation_options:
+      table: isis-settings
+    type: str
+    description: 'Cleartext password.
+
+      Encrypted to Type 7 by AVD.
+
+      To protect the password at rest it is strongly recommended to make use of a
+      vault or similar.'
   underlay_isis_authentication_key:
     documentation_options:
       table: isis-settings
     type: str
-    description: Type-7 encrypted password.
+    description: 'Type-7 encrypted password.
+
+      Takes precedence over `underlay_isis_authentication_cleartext_key`.
+
+      To protect the password at rest it is strongly recommended to make use of a
+      vault or similar.'
   underlay_isis_authentication_mode:
     documentation_options:
       table: isis-settings
@@ -12093,7 +12108,25 @@ $defs:
           - text
         isis_authentication_key:
           type: str
-          description: Type-7 encrypted password.
+          description: 'Type-7 encrypted password.
+
+            Takes precedence over ''underlay_isis_authentication_key'', ''underlay_isis_authentication_cleartext_key''
+
+            and `isis_authentication_cleartext_key`.
+
+            '
+        isis_authentication_cleartext_key:
+          type: str
+          description: 'Cleartext password.
+
+            Encrypted to Type 7 by AVD.
+
+            Takes precedence over ''underlay_isis_authentication_key'' and ''underlay_isis_authentication_cleartext_key''.
+
+            To protect the password at rest it is strongly recommended to make use
+            of a vault or similar.
+
+            '
         isis_network_type:
           type: str
           default: point-to-point
