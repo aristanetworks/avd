@@ -11212,7 +11212,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             enabled: bool | None
             """Warning: This should not be combined with `ethernet_interfaces[].type = routed`."""
-            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone", "tap", "tool", "tap-tool"] | None
             """Warning: This should not be combined with `ethernet_interfaces[].mode`."""
             access_vlan: int | None
             """
@@ -11286,7 +11286,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     enabled: bool | None | UndefinedType = Undefined,
-                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone", "tap", "tool", "tap-tool"] | None | UndefinedType = Undefined,
                     access_vlan: int | None | UndefinedType = Undefined,
                     trunk: Trunk | UndefinedType = Undefined,
                     phone: Phone | UndefinedType = Undefined,

@@ -4056,6 +4056,9 @@ keys:
               - dot1q-tunnel
               - trunk
               - trunk phone
+              - tap
+              - tool
+              - tap-tool
               description: 'Warning: This should not be combined with `ethernet_interfaces[].mode`.'
             access_vlan:
               type: int
