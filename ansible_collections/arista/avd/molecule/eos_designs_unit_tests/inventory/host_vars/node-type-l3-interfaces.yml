@@ -33,7 +33,16 @@ spine:
           name: Ethernet43
           enabled: false
           ip_address: 192.168.42.42/24
-
+        - name: Ethernet44
+          enabled: true
+          ip_address: 192.168.44.44/24
+          wan_carrier: Telecom
+          wan_circuit_id: "10220"
+        - # Access main_interface_wan_carrier.
+          name: Ethernet44.10
+          enabled: true
+          description: "{main_interface_wan_carrier}"
+          ip_address: 192.168.44.45/24
 l3_interface_profiles:
   - profile: profile1
     speed: "forced 10000full"
