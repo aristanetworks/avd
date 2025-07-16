@@ -21,11 +21,6 @@ AVD_TEST_INDEX: list[TestSpec] = [
         input_factory=VerifyAPIHttpsSSLInputFactory,
     ),
     TestSpec(
-        test_class=VerifyAVTRole,
-        conditional_keys=[StructuredConfigKey.ROUTER_AVT],
-        input_factory=VerifyAVTRoleInputFactory,
-    ),
-    TestSpec(
         test_class=VerifyAVTSpecificPath,
         conditional_keys=[StructuredConfigKey.ROUTER_AVT, StructuredConfigKey.ROUTER_PATH_SELECTION],
         input_factory=VerifyAVTSpecificPathInputFactory,
@@ -103,18 +98,8 @@ AVD_TEST_INDEX: list[TestSpec] = [
         conditional_keys=[StructuredConfigKey.MLAG_CONFIGURATION],
     ),
     TestSpec(
-        test_class=VerifyMlagDualPrimary,
-        conditional_keys=[StructuredConfigKey.MLAG_DUAL_PRIMARY_DETECTION_DELAY],
-        input_factory=VerifyMlagDualPrimaryInputFactory,
-    ),
-    TestSpec(
         test_class=VerifyMlagInterfaces,
         conditional_keys=[StructuredConfigKey.MLAG_CONFIGURATION],
-    ),
-    TestSpec(
-        test_class=VerifyMlagReloadDelay,
-        conditional_keys=[StructuredConfigKey.RELOAD_DELAY_MLAG, StructuredConfigKey.RELOAD_DELAY_NON_MLAG],
-        input_factory=VerifyMlagReloadDelayInputFactory,
     ),
     TestSpec(
         test_class=VerifyMlagStatus,
@@ -147,18 +132,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
         input_factory=VerifySpecificIPSecConnInputFactory,
     ),
     TestSpec(
-        test_class=VerifySTPBlockedPorts,
-    ),
-    TestSpec(
         test_class=VerifySTPCounters,
-    ),
-    TestSpec(
-        test_class=VerifyStunClientTranslation,
-        conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
-        input_factory=VerifyStunClientTranslationInputFactory,
-    ),
-    TestSpec(
-        test_class=VerifyTelnetStatus,
     ),
     TestSpec(
         test_class=VerifyTemperature,
@@ -166,6 +140,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     TestSpec(
         test_class=VerifyTransceiversTemperature,
     ),
+    TestSpec(test_class=VerifyVxlanConfigSanity, conditional_keys=[StructuredConfigKey.VXLAN1_INTERFACE]),
     TestSpec(
         test_class=VerifyZeroTouch,
     ),

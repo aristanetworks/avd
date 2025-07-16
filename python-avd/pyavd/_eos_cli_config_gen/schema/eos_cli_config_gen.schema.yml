@@ -4056,6 +4056,9 @@ keys:
               - dot1q-tunnel
               - trunk
               - trunk phone
+              - tap
+              - tool
+              - tap-tool
               description: 'Warning: This should not be combined with `ethernet_interfaces[].mode`.'
             access_vlan:
               type: int
@@ -5315,6 +5318,7 @@ keys:
               - tapagg
               - traffic-class
               - traffic-policy
+              - traffic-policy vlan-interface
               - vlan
               - vlan-interface
               - vni decap
@@ -5336,6 +5340,9 @@ keys:
                 This validation IS NOT made by the schemas.
 
                 '
+            enabled:
+              type: bool
+              default: true
             address_type:
               type: str
               valid_values:
@@ -24221,6 +24228,9 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address.
+              peer_authentication:
+                type: dict
+                $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids/items/keys/peer_authentication
         ip_attached_host_route_export:
           type: dict
           keys:

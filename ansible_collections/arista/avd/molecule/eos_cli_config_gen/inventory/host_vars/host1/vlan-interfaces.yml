@@ -591,12 +591,19 @@ vlan_interfaces:
             reload: 800
         ipv4:
           address: 192.0.2.1
+        peer_authentication:
+          mode: ietf-md5
+          key: auth_key
       - id: 2
         preempt:
           enabled: true
           delay:
         ipv6:
           address: 2001:db8:667::1
+        peer_authentication:
+          mode: text
+          key: auth_key
+          key_type: "0"
 
   - name: Vlan333
     description: Multiple VRIDs and tracking
@@ -623,12 +630,19 @@ vlan_interfaces:
             decrement: 5
           - name: ID1TrackedObjectShutdown
             shutdown: true
+        peer_authentication:
+          mode: ietf-md5
+          key: auth_key
+          key_type: "0"
       - id: 2
         preempt:
           enabled: true
           delay:
         ipv6:
           address: 2001:db8:333::1
+        peer_authentication:
+          mode: text
+          key: auth_key
         tracked_object:
           - name: ID2TrackedObjectDecrement
             decrement: 10

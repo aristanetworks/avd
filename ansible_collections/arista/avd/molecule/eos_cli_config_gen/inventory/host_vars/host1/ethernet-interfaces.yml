@@ -1944,6 +1944,7 @@ ethernet_interfaces:
   - name: Ethernet82
     description: Switchport_tap_tool
     switchport:
+      mode: tap-tool
       tap:
         allowed_vlan: 25
         default:
@@ -2010,6 +2011,7 @@ ethernet_interfaces:
   - name: Ethernet83
     description: Test_tap_tool
     switchport:
+      mode: tap-tool
       tap:
         identity:
           id: 5
@@ -2028,6 +2030,7 @@ ethernet_interfaces:
 
   - name: Ethernet84
     switchport:
+      mode: tap
       tap:
         encapsulation:
           gre:
