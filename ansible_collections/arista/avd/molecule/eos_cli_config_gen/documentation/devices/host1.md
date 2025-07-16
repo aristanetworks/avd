@@ -12593,6 +12593,8 @@ traffic-policies
       match ipv6-all-default ipv6
    !
    traffic-policy BLUE-C3-POLICY
+      counter test
+      !
       match ipv4-all-default ipv4
          actions
             count test
@@ -12602,6 +12604,8 @@ traffic-policies
       match ipv6-all-default ipv6
    !
    traffic-policy BLUE-C4-POLICY
+      counter test
+      !
       match ipv4-all-default ipv4
       !
       match ipv6-all-default ipv6
