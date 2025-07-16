@@ -2544,16 +2544,17 @@ no sflow hardware acceleration module Linecard3
 
 **NOTE:** Not all options (columns) in the table below are compatible with every available feature, it is the user responsibility to configure valid options for each feature.
 
-| Feature | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
-| ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |
-| acl | out | mac | - | - | - | - |
-| gre tunnel interface | out | - | - | - | - | - |
-| ip | in | - | - | False | - | False |
-| ip | out | - | - | True | - | True |
-| mpls lfib | - | - | - | - | - | True |
-| route | - | ipv4 | test | - | 192.168.0.0/24 | - |
-| route | - | ipv6 | - | - | 2001:db8:cafe::/64 | - |
-| segment-security | in | - | - | - | - | - |
+| Feature | Enabled | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
+| ------- | ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |
+| acl | True | out | mac | - | - | - | - |
+| acl | False | in | - | - | - | - | - |
+| gre tunnel interface | True | out | - | - | - | - | - |
+| ip | True | in | - | - | False | - | False |
+| ip | True | out | - | - | True | - | True |
+| mpls lfib | True | - | - | - | - | - | True |
+| route | True | - | ipv4 | test | - | 192.168.0.0/24 | - |
+| route | True | - | ipv6 | - | - | 2001:db8:cafe::/64 | - |
+| segment-security | True | in | - | - | - | - | - |
 
 #### Hardware Device Configuration
 
@@ -2563,6 +2564,7 @@ hardware port-group 1 select Et32/1-4
 hardware port-group 2 select Et32/1,Et32/3,Et34
 !
 hardware counter feature acl out mac
+no hardware counter feature acl in
 hardware counter feature gre tunnel interface out
 hardware counter feature ip in
 hardware counter feature ip out layer3 units packets

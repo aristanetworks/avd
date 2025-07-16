@@ -13498,6 +13498,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "direction": {"type": str},
+                "enabled": {"type": bool, "default": True},
                 "address_type": {"type": str},
                 "layer3": {"type": bool},
                 "vrf": {"type": str},
@@ -13544,6 +13545,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             NOT have any direction.
             This validation IS NOT made by the schemas.
             """
+            enabled: bool
+            """Default value: `True`"""
             address_type: Literal["ipv4", "ipv6", "mac"] | None
             """
             Supported only for the following features:
@@ -13609,6 +13612,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ]
                     | UndefinedType = Undefined,
                     direction: Literal["in", "out", "cpu"] | None | UndefinedType = Undefined,
+                    enabled: bool | UndefinedType = Undefined,
                     address_type: Literal["ipv4", "ipv6", "mac"] | None | UndefinedType = Undefined,
                     layer3: bool | None | UndefinedType = Undefined,
                     vrf: str | None | UndefinedType = Undefined,
@@ -13628,6 +13632,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Some features DO
                            NOT have any direction.
                            This validation IS NOT made by the schemas.
+                        enabled: enabled
                         address_type:
                            Supported only for the following features:
                            - acl: [ipv4, ipv6, mac] if direction is 'out'
