@@ -4037,7 +4037,7 @@ interface Dps1
 
 | Interface | Transceiver Frequency | Media Override | Application Override |
 | --------- | --------------------- | -------------- | -------------------- |
-| Ethernet7 | - | 100gbase-ar4 | 10 |
+| Ethernet7 | - | 100gbase-ar4 | 10, 5 |
 | Ethernet67 | 190050.000 | - | - |
 | Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
 | Ethernet73 | - | 100gbase-ar4 | - |
@@ -4540,7 +4540,8 @@ interface Ethernet7
    spanning-tree bpdufilter enable
    vmtracer vmware-esx
    transceiver media override 100gbase-ar4
-   transceiver application override 10
+   transceiver application override 10 lanes start 1 end 1
+   transceiver application override 5 lanes start 2
 !
 interface Ethernet8
    description to WAN-ISP1-01 Ethernet2

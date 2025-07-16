@@ -307,9 +307,18 @@
 {%             else %}
 {%                 set frequency = '-' %}
 {%             endif %}
-{%             set application_override = transceiver_setting.transceiver.application_override | arista.avd.default('-') %}
+{%             set applications = [] %}
+{%             if transceiver_setting.transceiver.application_override_100gbase_srbd is arista.avd.defined(true) %}
+{%                 do applications.append("100gbase-srbd") %}
+{%             elif transceiver_setting.transceiver.application_overrides is arista.avd.defined %}
+{%                 for application_override in transceiver_setting.transceiver.application_overrides | arista.avd.default([]) %}
+{%                     do applications.append(application_override.application_number) %}
+{%                 endfor %}
+{%             else %}
+{%                  do applications.append("-") %}
+{%             endif %}
 {%             set m_override = transceiver_setting.transceiver.media.override | arista.avd.default('-') %}
-| {{ interface }} | {{ frequency }} | {{ m_override }} | {{ application_override }} |
+| {{ interface }} | {{ frequency }} | {{ m_override }} | {{ applications | join(", ") }} |
 {%         endfor %}
 {%     endif %}
 {# Link Tracking Groups #}

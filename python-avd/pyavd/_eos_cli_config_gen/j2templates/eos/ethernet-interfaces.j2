@@ -1251,8 +1251,21 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.transceiver.media.override is arista.avd.defined %}
    transceiver media override {{ ethernet_interface.transceiver.media.override }}
 {%     endif %}
-{%     if ethernet_interface.transceiver.application_override is arista.avd.defined %}
-   transceiver application override {{ ethernet_interface.transceiver.application_override }}
+{%     if ethernet_interface.transceiver.application_override_100gbase_srbd is arista.avd.defined %}
+   transceiver application override 100gbase-srbd
+{%     elif ethernet_interface.transceiver.application_overrides is arista.avd.defined %}
+{%         for application_override in ethernet_interface.transceiver.application_overrides %}
+{%             if application_override.application_number is arista.avd.defined %}
+{%                 set application_override_cli = "transceiver application override " ~ application_override.application_number %}
+{%                 if application_override.lanes is arista.avd.defined %}
+{%                      set application_override_cli = application_override_cli ~ " lanes start " ~ application_override.lanes.start %}
+{%                 endif %}
+{%                 if application_override.lanes.end is arista.avd.defined %}
+{%                     set application_override_cli = application_override_cli ~ " end " ~ application_override.lanes.end %}
+{%                 endif %}
+{%             endif %}
+   {{ application_override_cli }}
+{%         endfor %}
 {%     endif %}
 {%     if ethernet_interface.transceiver.frequency is arista.avd.defined %}
 {%         set frequency_cli = 'transceiver frequency ' ~ "%.3f" | format(ethernet_interface.transceiver.frequency | float) %}

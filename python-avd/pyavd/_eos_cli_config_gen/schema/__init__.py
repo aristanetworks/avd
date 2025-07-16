@@ -9057,11 +9057,69 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class ApplicationOverridesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Lanes(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"start": {"type": int}, "end": {"type": int}}
+                    start: int
+                    end: int | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, start: int | UndefinedType = Undefined, end: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            Lanes.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                start: start
+                                end: end
+
+                            """
+
+                _fields: ClassVar[dict] = {"application_number": {"type": int}, "lanes": {"type": Lanes}}
+                application_number: int
+                lanes: Lanes
+                """
+                Set host lanes for which overrides should be applied.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, application_number: int | UndefinedType = Undefined, lanes: Lanes | UndefinedType = Undefined) -> None:
+                        """
+                        ApplicationOverridesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            application_number: application_number
+                            lanes:
+                               Set host lanes for which overrides should be applied.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            class ApplicationOverrides(AvdList[ApplicationOverridesItem]):
+                """Subclass of AvdList with `ApplicationOverridesItem` items."""
+
+            ApplicationOverrides._item_type = ApplicationOverridesItem
+
             _fields: ClassVar[dict] = {
                 "frequency": {"type": str},
                 "frequency_unit": {"type": str},
                 "media": {"type": Media},
-                "application_override": {"type": str},
+                "application_override_100gbase_srbd": {"type": bool},
+                "application_overrides": {"type": ApplicationOverrides},
             }
             frequency: str | None
             """Transceiver Laser Frequency in GHz (min 190000, max 200000)."""
@@ -9069,11 +9127,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Unit of Transceiver Laser Frequency."""
             media: Media
             """Subclass of AvdModel."""
-            application_override: str | None
+            application_override_100gbase_srbd: bool | None
+            """
+            Set legacy mode for 100GBASE-SRBD interoperability.
+            This key is mutually exclusive with
+            `application_overrides`.
+            """
+            application_overrides: ApplicationOverrides
             """
             Set CMIS transceiver applications.
-            Valid values are application number in range 0-15 or `100gbase-
-            srbd`.
+
+            Subclass of AvdList with `ApplicationOverridesItem` items.
             """
 
             if TYPE_CHECKING:
@@ -9084,7 +9148,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     frequency: str | None | UndefinedType = Undefined,
                     frequency_unit: Literal["ghz"] | None | UndefinedType = Undefined,
                     media: Media | UndefinedType = Undefined,
-                    application_override: str | None | UndefinedType = Undefined,
+                    application_override_100gbase_srbd: bool | None | UndefinedType = Undefined,
+                    application_overrides: ApplicationOverrides | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Transceiver.
@@ -9096,10 +9161,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         frequency: Transceiver Laser Frequency in GHz (min 190000, max 200000).
                         frequency_unit: Unit of Transceiver Laser Frequency.
                         media: Subclass of AvdModel.
-                        application_override:
+                        application_override_100gbase_srbd:
+                           Set legacy mode for 100GBASE-SRBD interoperability.
+                           This key is mutually exclusive with
+                           `application_overrides`.
+                        application_overrides:
                            Set CMIS transceiver applications.
-                           Valid values are application number in range 0-15 or `100gbase-
-                           srbd`.
+
+                           Subclass of AvdList with `ApplicationOverridesItem` items.
 
                     """
 

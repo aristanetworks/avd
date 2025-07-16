@@ -478,8 +478,14 @@ ethernet_interfaces:
     transceiver:
       media:
         override: 100gbase-ar4
-      application_override: 10
-
+      application_overrides:
+        - application_number: 10
+          lanes:
+            start: 1
+            end: 1
+        - application_number: 5
+          lanes:
+            start: 2
   - name: Ethernet8
     description: to WAN-ISP1-01 Ethernet2
     switchport:
@@ -510,7 +516,6 @@ ethernet_interfaces:
         random_detect:
           ecn:
             count: true
-
   - name: Ethernet8.101
     description: to WAN-ISP-01 Ethernet2.101 - VRF-C1
     encapsulation_dot1q:
@@ -524,7 +529,6 @@ ethernet_interfaces:
         key_type: 0
         key: password
         mode: md5
-
   - name: Ethernet9
     description: interface_with_mpls_enabled
     switchport:
@@ -554,7 +558,6 @@ ethernet_interfaces:
     lldp:
       transmit: true
       receive: false
-
   - name: Ethernet10
     description: interface_with_mpls_disabled
     switchport:
@@ -1595,8 +1598,7 @@ ethernet_interfaces:
       frequency_unit: ghz
       media:
         override: 100gbase-ar4
-      application_override: 100gbase-srbd
-
+      application_override_100gbase_srbd: true
   - name: Ethernet68.1
     description: Test_encapsulation_vlan1
     encapsulation_vlan:

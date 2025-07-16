@@ -425,7 +425,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frequency_unit</samp>](## "ethernet_interfaces.[].transceiver.frequency_unit") | String |  |  | Valid Values:<br>- <code>ghz</code> | Unit of Transceiver Laser Frequency. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "ethernet_interfaces.[].transceiver.media") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.media.override") | String |  |  |  | Transceiver type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override</samp>](## "ethernet_interfaces.[].transceiver.application_override") | String |  |  |  | Set CMIS transceiver applications.<br>Valid values are application number in range 0-15 or `100gbase-srbd`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override_100gbase_srbd</samp>](## "ethernet_interfaces.[].transceiver.application_override_100gbase_srbd") | Boolean |  |  |  | Set legacy mode for 100GBASE-SRBD interoperability.<br>This key is mutually exclusive with `application_overrides`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_overrides</samp>](## "ethernet_interfaces.[].transceiver.application_overrides") | List, items: Dictionary |  |  |  | Set CMIS transceiver applications. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;application_number</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].application_number") | Integer | Required |  | Min: 0<br>Max: 15 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lanes</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].lanes") | Dictionary |  |  |  | Set host lanes for which overrides should be applied. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].lanes.start") | Integer | Required |  | Min: 1<br>Max: 8 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].lanes.end") | Integer |  |  | Min: 1<br>Max: 8 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_proxy_arp</samp>](## "ethernet_interfaces.[].ip_proxy_arp") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "ethernet_interfaces.[].traffic_policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "ethernet_interfaces.[].traffic_policy.input") | String |  |  |  | Ingress traffic policy. |
@@ -1521,9 +1526,18 @@
             # Transceiver type.
             override: <str>
 
+          # Set legacy mode for 100GBASE-SRBD interoperability.
+          # This key is mutually exclusive with `application_overrides`.
+          application_override_100gbase_srbd: <bool>
+
           # Set CMIS transceiver applications.
-          # Valid values are application number in range 0-15 or `100gbase-srbd`.
-          application_override: <str>
+          application_overrides:
+            - application_number: <int; 0-15; required>
+
+              # Set host lanes for which overrides should be applied.
+              lanes:
+                start: <int; 1-8; required>
+                end: <int; 1-8>
         ip_proxy_arp: <bool>
         traffic_policy:
 
