@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import json
@@ -22,20 +22,15 @@ def test_get_device_test_catalog(molecule_host: MoleculeHost) -> None:
     This test compares the generated catalog against the expected output file
     from the molecule scenario to ensure correctness and prevent regressions.
     """
-    # --- Setup ---
-    # Get structured configs for all devices to generate the minimal configs.
-    # Note: Assumes `molecule_host.all_structured_configs` is the new cached property.
     all_configs = deepcopy(molecule_host.structured_configs)
     minimal_configs = get_minimal_structured_configs(all_configs)
 
     # Get the configuration for the specific host under test.
     host_config = deepcopy(molecule_host.structured_config)
 
-    # --- Execution ---
     # Generate the ANTA catalog for the device.
     result_catalog = get_device_test_catalog(molecule_host.name, host_config, minimal_configs)
 
-    # --- Assertions ---
     # 1. Verify the function returns the correct object type.
     assert isinstance(result_catalog, AntaCatalog)
 
