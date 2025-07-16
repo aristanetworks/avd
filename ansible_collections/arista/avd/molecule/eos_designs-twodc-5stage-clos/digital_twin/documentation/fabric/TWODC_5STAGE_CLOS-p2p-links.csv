@@ -2,6 +2,8 @@ Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer
 l3leaf,DC1-POD1-LEAF1A,Ethernet1,172.17.110.1/31,spine,DC1-POD1-SPINE1,Ethernet3,172.17.110.0/31
 l3leaf,DC1-POD1-LEAF1A,Ethernet2,172.17.110.3/31,spine,DC1-POD1-SPINE2,Ethernet3,172.17.110.2/31
 l3leaf,DC1-POD1-LEAF1A,Ethernet4,172.17.10.4/31,overlay-controller,DC1-RS1,Ethernet3,172.17.10.5/31
+l3leaf,DC1-POD1-LEAF1B,Ethernet1,172.17.110.13/31,l3leaf,DC1.POD1.LEAF2A,Ethernet13,172.17.110.12/31
+l3leaf,DC1-POD1-LEAF1B,Ethernet2,172.17.110.15/31,l3leaf,DC1-POD1-LEAF2B,Ethernet13,172.17.110.14/31
 l3leaf,DC1-POD1-LEAF2B,Ethernet1,172.17.110.17/31,spine,DC1-POD1-SPINE1,Ethernet5,172.17.110.16/31
 l3leaf,DC1-POD1-LEAF2B,Ethernet2,172.17.110.19/31,spine,DC1-POD1-SPINE2,Ethernet5,172.17.110.18/31
 l3leaf,DC1-POD1-LEAF2B,Ethernet7,11.1.0.38/31,l3leaf,DC2-POD1-LEAF1A,Ethernet7,11.1.0.39/31
