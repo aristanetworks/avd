@@ -26,8 +26,7 @@ keys:
       dynamic_authorization:
         type: bool
         description: |-
-          To change or revoke a user's access dynamically after authentication,
-          without requiring the user to reconnect or reauthenticate.
+          Enable/Disable dynamic authorization.
       client_groups:
         type: list
         primary_key: name
