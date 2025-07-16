@@ -10658,7 +10658,7 @@ ip as-path access-list mylist2 deny _64517$ igp
 
 | Service type | Framed MTU | LLDP System Name | LLDP System Request List | DHCP Hostname | DHCP Parameter Request List | DHCP Vendor Class ID | Filter Delimiter Period | Filter IPv4 IPv6 | Filter Multiple |
 | ------------ | ---------- | ---------------- | ------------------------ | ------------- | --------------------------- | -------------------- | ----------------------- | ---------------- | --------------- |
-| True | 1500 | True(auth-only) | True(auth-only) | True(auth-only) | True(auth-only) | True(auth-only) | True | True | True |
+| True | 1500 | True (auth-only) | True (auth-only) | True (auth-only) | True (auth-only) | True (auth-only) | True | True | True |
 
 #### 802.1X Captive-portal authentication
 
