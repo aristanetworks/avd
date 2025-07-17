@@ -24,7 +24,7 @@ radius proxy
 {%         set all_host_clients = [] %}
 {%         for vrf in client_group.vrfs | arista.avd.default([]) | sort(attribute='name') %}
 {%             for ipv4 in vrf.ipv4_clients | arista.avd.default([]) %}
-{%                 set _ = all_ipv4_clients.append({"vrf": vrf.name, "address": ipv4.address,
+{%                 do all_ipv4_clients.append({"vrf": vrf.name, "address": ipv4.address,
          "key": ipv4.key if ipv4.key is defined else none}) %}
 {%             endfor %}
 {%             for ipv6 in vrf.ipv6_clients | arista.avd.default([]) %}
