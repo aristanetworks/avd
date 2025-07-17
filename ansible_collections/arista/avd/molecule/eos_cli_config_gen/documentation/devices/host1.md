@@ -3283,6 +3283,15 @@ load-balance policies
       fields udp dst-port 100
          match payload bits 10 pattern 0x7d1 hash payload bytes 10
          payload bytes 10-20
+!
+load-balance cluster
+   forwarding type routed ipv4
+   destination grouping BGP field-set
+   load-balance method flow round-robin
+   flow monitor
+   !
+   flow source learning
+      aging timeout 45 seconds
 ```
 
 ### Link Tracking

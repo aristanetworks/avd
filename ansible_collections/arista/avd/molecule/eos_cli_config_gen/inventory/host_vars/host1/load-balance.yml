@@ -15,3 +15,10 @@ load_balance:
           udp:
             dst_port: 101
             payload_bytes: 25
+  cluster:
+    forwarding_type: routed ipv4
+    flow:
+      monitor: true
+      source_learning_aging_timeout: 45
+    load_balance_method_flow_round_robin: true
+    destination_grouping: BGP field-set

@@ -23,3 +23,29 @@ load-balance policies
 {%         endif %}
 {%     endfor %}
 {% endif %}
+{% if load_balance.cluster is arista.avd.defined %}
+!
+load-balance cluster
+{%     if load_balance.cluster.forwarding_type is arista.avd.defined %}
+   forwarding type {{ load_balance.cluster.forwarding_type }}
+{%     endif %}
+{%     if load_balance.cluster.destination_grouping is arista.avd.defined %}
+{%         set dest_grouping_cli = "destination grouping " ~ load_balance.cluster.destination_grouping %}
+{%         if load_balance.cluster.destination_grouping is arista.avd.defined("prefix length") and load_balance.cluster.prefix_length is arista.avd.defined %}
+   {{ dest_grouping_cli }} {{ load_balance.cluster.prefix_length }}
+{%         else %}
+   {{ dest_grouping_cli }}
+{%         endif %}
+{%     endif %}
+{%     if load_balance.cluster.load_balance_method_flow_round_robin is arista.avd.defined(true) %}
+   load-balance method flow round-robin
+{%     endif %}
+{%     if load_balance.cluster.flow.monitor is arista.avd.defined(true) %}
+   flow monitor
+{%     endif %}
+{%     if load_balance.cluster.flow.source_learning_aging_timeout is arista.avd.defined %}
+   !
+   flow source learning
+      aging timeout {{ load_balance.cluster.flow.source_learning_aging_timeout }} seconds
+{%     endif %}
+{% endif %}
