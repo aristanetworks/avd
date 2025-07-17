@@ -1436,9 +1436,9 @@ router pim sparse-mode
 
 #### 802.1X Radius AV pair
 
-| Service type | Framed MTU | LLDP System Name | LLDP System Request List | DHCP Hostname | DHCP Parameter Request List | DHCP Vendor Class ID | Filter Delimiter Period | Filter IPv4 IPv6 | Filter Multiple |
-| ------------ | ---------- | ---------------- | ------------------------ | ------------- | --------------------------- | -------------------- | ----------------------- | ---------------- | --------------- |
-| True | 1500 | - | - | - | True | True | - | - | - |
+| Service type | Framed MTU |
+| ------------ | ---------- |
+| True | 1500 |
 
 ## Platform
 
