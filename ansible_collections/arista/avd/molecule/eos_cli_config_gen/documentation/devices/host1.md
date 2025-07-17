@@ -1324,7 +1324,7 @@ ip tacacs source-interface loopback10
 
 ## Radius Proxy
 
-| Settings | Value |
+| Setting | Value |
 | -------- | ----- |
 | Dynamic Authorization | True |
 | Client Type-7 Key | <removed> |
