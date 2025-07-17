@@ -174,4 +174,4 @@ keys:
                             - str
                           min: 0
                           max: 11
-                          description: Packet traffic-class vlaue.  
+                          description: Packet traffic-class vlaue.
