@@ -1251,7 +1251,7 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.transceiver.media.override is arista.avd.defined %}
    transceiver media override {{ ethernet_interface.transceiver.media.override }}
 {%     endif %}
-{%     if ethernet_interface.transceiver.application_override_100gbase_srbd is arista.avd.defined %}
+{%     if ethernet_interface.transceiver.application_override_100gbase_srbd is arista.avd.defined(true) %}
    transceiver application override 100gbase-srbd
 {%     elif ethernet_interface.transceiver.application_overrides is arista.avd.defined %}
 {%         for application_override in ethernet_interface.transceiver.application_overrides %}

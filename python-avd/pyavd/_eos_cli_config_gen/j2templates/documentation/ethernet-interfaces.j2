@@ -311,7 +311,7 @@
 {%             if transceiver_setting.transceiver.application_override_100gbase_srbd is arista.avd.defined(true) %}
 {%                 do applications.append("100gbase-srbd") %}
 {%             elif transceiver_setting.transceiver.application_overrides is arista.avd.defined %}
-{%                 for application_override in transceiver_setting.transceiver.application_overrides | arista.avd.default([]) %}
+{%                 for application_override in transceiver_setting.transceiver.application_overrides %}
 {%                     do applications.append(application_override.application_number) %}
 {%                 endfor %}
 {%             else %}
