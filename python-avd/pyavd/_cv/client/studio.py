@@ -221,16 +221,17 @@ class StudioMixin(Protocol):
 
         return studio_inputs or default_value
 
+    # TODO: aalyze the actual return
     @GRPCRequestHandler()
     async def get_studio_inputs_with_path(
         self: CVClientProtocol,
         studio_id: str,
         workspace_id: str,
         input_path: list[str],
-        default_value: Any = None,
+        default_value: dict[str, Any] | None = None,
         time: datetime | None = None,
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> Any:
+    ) -> dict[str, Any] | None:
         """
         Get Studio Inputs for a specific path using arista.studio.v1.InputsService.GetOne and arista.studio.v1.InputsConfigServer.GetAll APIs.
 

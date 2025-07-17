@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import cast
 
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException
@@ -120,6 +121,9 @@ async def deploy_to_cv(
     """
     LOGGER.info("deploy_to_cv:")
     result = DeployToCvResult(workspace=workspace or CVWorkspace(), change_control=change_control)
+    # Helping the type checker as result.workspace cannot be None
+    result.workspace = cast("CVWorkspace", result.workspace)
+
     if device_tags is None:
         device_tags = []
     if interface_tags is None:

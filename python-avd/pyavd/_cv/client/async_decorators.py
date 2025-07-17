@@ -42,7 +42,7 @@ class LimitCvVersion:
     The decorator will only work in CvClient class methods since it expects the _cv_client attribute on 'self'.
     """
 
-    versioned_funcs: ClassVar[dict[str, dict[tuple[CvVersion, CvVersion], Callable]]] = {}
+    versioned_funcs: ClassVar[dict[str, dict[tuple[CvVersion, CvVersion], Callable[..., Any]]]] = {}
     """
     Map of versioned functions keyed by function name.
 
@@ -67,7 +67,7 @@ class LimitCvVersion:
             )
             raise ValueError(msg)
 
-    def __call__(self, func: Callable) -> Callable:
+    def __call__(self, func: Callable[..., Any]) -> Callable[..., Any]:
         """
         Store the method in the map of versioned functions after checking for overlapping decorators for the same method.
 
@@ -84,7 +84,7 @@ class LimitCvVersion:
         LimitCvVersion.versioned_funcs.setdefault(func.__name__, {})[(self.min_version, self.max_version)] = func
 
         @wraps(func)
-        async def wrapper_cv_version(*args: Any, **kwargs: Any) -> list:
+        async def wrapper_cv_version(*args: Any, **kwargs: Any) -> Any:
             """
             Call the appropriate original method depending on the _cv_version attribute of 'self'.
 
@@ -127,10 +127,13 @@ class GRPCRequestHandler:
     factor: int
     list_field: str | None
     min_items_for_splitting_attempt: int
-    func: Callable
-    func_signature: Signature
-    bound_arguments: BoundArguments
-    current_arguments_dict: dict
+
+    # These instance variables are set when the decorator is called
+    # Mark them as Optional and initialize to None for Pyright's sake.
+    func: Callable[..., Any] | None = None
+    func_signature: Signature | None = None
+    bound_arguments: BoundArguments | None = None
+    current_arguments_dict: dict[str, Any] | None = None
 
     def __init__(
         self,
@@ -146,7 +149,7 @@ class GRPCRequestHandler:
         self.list_field = list_field
         self.min_items_for_splitting_attempt = max(2, min_items_for_splitting_attempt)
 
-    def __call__(self, func: Callable) -> Callable:
+    def __call__(self, func: Callable[..., Any]) -> Callable[..., Any]:
         self.func = func
         self.func_signature = signature(func)
 
@@ -175,7 +178,7 @@ class GRPCRequestHandler:
                 raise TypeError(msg)
 
         @wraps(func)
-        async def wrapper(*args: Any, **kwargs: Any) -> Callable:
+        async def wrapper(*args: Any, **kwargs: Any) -> Callable[..., Any]:
             return await self._execute_with_splitting(args, kwargs)
 
         return wrapper
@@ -198,8 +201,11 @@ class GRPCRequestHandler:
 
         return _string_based_annotation is list or get_origin(annotation) is list, _string_based_annotation
 
-    async def _execute_single_call_with_retries(self, call_args: tuple, call_kwargs: dict) -> None:
+    async def _execute_single_call_with_retries(self, call_args: tuple[Any], call_kwargs: dict[str, Any]) -> None:
         """Executes a single call to self.func with retry logic for gRPC UNAVAILABLE."""
+        if self.func is None:
+            # TODO: Add exception to indicate it should not be used directly
+            return None
         func_name = self.func.__name__
 
         for attempt in range(1, self.max_retries + 2):
@@ -254,7 +260,11 @@ class GRPCRequestHandler:
         # Required by ruff
         return None
 
-    async def _execute_with_splitting(self, original_call_args: tuple, original_call_kwargs: dict) -> Any:
+    async def _execute_with_splitting(self, original_call_args: tuple[Any], original_call_kwargs: dict[str, Any]) -> Any:
+        if self.func is None:
+            # TODO: Add exception to indicate it should not be used directly
+            return None
+
         func_name = self.func.__name__
 
         if not (self.list_field and self.func_signature):
@@ -264,7 +274,7 @@ class GRPCRequestHandler:
         bound_arguments = self.func_signature.bind(*original_call_args, **original_call_kwargs)
         current_arguments_dict = bound_arguments.arguments
 
-        list_value: list = current_arguments_dict[self.list_field]
+        list_value: list[Any] = current_arguments_dict[self.list_field]
         if not isinstance(list_value, list):
             msg = (
                 f"{self.__class__.__name__} decorator expected the value of the list_field '{self.list_field}' for function '{func_name}' "

@@ -4,13 +4,13 @@
 from __future__ import annotations
 
 from itertools import islice
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from collections.abc import Generator, Iterable
 
 
-def batch(iterable: Iterable, size: int) -> Generator[Iterable]:
+def batch(iterable: Iterable[Any], size: int) -> Generator[list[Any]]:
     """Returns a Generator of lists containing 'size' items. The final list may be shorter."""
     iterator = iter(iterable)
     while batch := list(islice(iterator, size)):

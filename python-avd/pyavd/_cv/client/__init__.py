@@ -40,7 +40,7 @@ class CVClientProtocol(
     """Protocol for the CVClient class."""
 
     _channel: Channel | None = None
-    _metadata: dict
+    _metadata: dict[str, str]
     _servers: list[str]
     _port: int
     _verify_certs: bool
@@ -74,7 +74,9 @@ class CVClientProtocol(
         if self._channel is None:
             self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
 
-        self._metadata = {"authorization": "Bearer " + self._token}
+        if self._token is not None:
+            self._metadata = {"authorization": "Bearer " + self._token}
+            # TODO: Should we raise if not token is given
 
     def _ssl_context(self) -> ssl.SSLContext | bool:
         """

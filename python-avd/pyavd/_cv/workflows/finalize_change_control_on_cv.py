@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal, cast
 
 from pyavd._cv.api.arista.changecontrol.v1 import ChangeControl, ChangeControlStatus
 from pyavd._cv.client.exceptions import CVChangeControlFailed
@@ -16,20 +16,22 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 
-CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP = {
+CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP: dict[int, Literal["completed", "running", "scheduled"] | None] = {
     ChangeControlStatus.COMPLETED: "completed",
     ChangeControlStatus.RUNNING: "running",
     ChangeControlStatus.SCHEDULED: "scheduled",
     ChangeControlStatus.UNSPECIFIED: None,
 }
 
-CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP = {True: "approved", False: None}
+CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP: dict[bool, Literal["approved"] | None] = {True: "approved", False: None}
 
 
-def get_change_control_state(cv_change_control: ChangeControl) -> str:
+def get_change_control_state(
+    cv_change_control: ChangeControl,
+) -> Literal["pending approval", "approved", "running", "completed", "deleted", "failed", "scheduled"] | None:
     return (
-        CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP[cv_change_control.status]
-        or CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[cv_change_control.approve.value]
+        CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP[cast("int", cv_change_control.status)]
+        or CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP[cast("bool", cv_change_control.approve.value)]
         or "failed"
         if cv_change_control.error is not None
         else "pending approval"

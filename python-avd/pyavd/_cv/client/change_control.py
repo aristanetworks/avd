@@ -15,7 +15,6 @@ from pyavd._cv.api.arista.changecontrol.v1 import (
     ChangeControlConfig,
     ChangeControlConfigServiceStub,
     ChangeControlConfigSetRequest,
-    ChangeControlConfigSetResponse,
     ChangeControlKey,
     ChangeControlRequest,
     ChangeControlServiceStub,
@@ -69,6 +68,11 @@ class ChangeControlMixin(Protocol):
         Returns:
             ChangeControl object matching the change_control_id
         """
+        if self._channel is None:
+            msg = "'get_change_control' was called with _channel set to None"
+            raise RuntimeError(msg)
+
+        # TODO: discuss with @Claus - the protobuf typehint is wrong as time should be optional as per its description..
         request = ChangeControlRequest(
             key=ChangeControlKey(id=change_control_id),
             time=time,
@@ -86,7 +90,7 @@ class ChangeControlMixin(Protocol):
         name: str | None = None,
         description: str | None = None,
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> ChangeControlConfigSetResponse:
+    ) -> ChangeControlConfig:
         """
         Set Change Control details using arista.changecontrol.v1.ChangeControlConfigService.Set API.
 
@@ -100,6 +104,10 @@ class ChangeControlMixin(Protocol):
         Returns:
             ChangeControlConfig object after being set including any server-generated values.
         """
+        if self._channel is None:
+            msg = "'set_change_control' was called with _channel set to None"
+            raise RuntimeError(msg)
+
         request = ChangeControlConfigSetRequest(
             value=ChangeControlConfig(
                 key=ChangeControlKey(id=change_control_id),
@@ -134,6 +142,10 @@ class ChangeControlMixin(Protocol):
             ApproveConfig object carrying all the values given in the ApproveConfigSetRequest as well
             as any server-generated values.
         """
+        if self._channel is None:
+            msg = "'approve_change_control' was called with _channel set to None"
+            raise RuntimeError(msg)
+
         request = ApproveConfigSetRequest(
             value=ApproveConfig(
                 key=ChangeControlKey(id=change_control_id),
@@ -165,6 +177,10 @@ class ChangeControlMixin(Protocol):
         Returns:
             ChangeControlConfig object including any server-generated values.
         """
+        if self._channel is None:
+            msg = "'start_change_control' was called with _channel set to None"
+            raise RuntimeError(msg)
+
         request = ChangeControlConfigSetRequest(
             value=ChangeControlConfig(
                 key=ChangeControlKey(id=change_control_id),
@@ -197,6 +213,10 @@ class ChangeControlMixin(Protocol):
         Returns:
             Full change control object
         """
+        if self._channel is None:
+            msg = "'wait_for_change_control_state' was called with _channel set to None"
+            raise RuntimeError(msg)
+
         request = ChangeControlStreamRequest(
             partial_eq_filter=[
                 ChangeControl(

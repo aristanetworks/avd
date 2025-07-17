@@ -33,6 +33,10 @@ async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvRes
     if not configs:
         return
 
+    if not result.workspace:
+        # TODO: Consider raising if there is no workspace
+        return
+
     # Build todo with CVEosConfig objects that exist on CloudVision. Add the rest to skipped.
     result.skipped_configs.extend(config for config in configs if not config.device._exists_on_cv)
     LOGGER.info("deploy_configs_to_cv: %s skipped configs because the devices are missing from CloudVision.", len(result.skipped_configs))

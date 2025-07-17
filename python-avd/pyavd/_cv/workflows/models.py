@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Literal
+from typing import Any, Literal, Protocol
 from uuid import uuid4
 
 
@@ -33,7 +33,7 @@ class CVChangeControl:
     - `"completed"`: Approve and start the Change Control. Wait for the Change Control to be completed.
     - `"deleted"`: Create and delete the Change Control. Used for dry-run where no changes will be committed to the network.
     """
-    state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
+    state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed", "scheduled"] | None = None
 
 
 @dataclass
@@ -56,6 +56,14 @@ class CVInterfaceTag:
     device: CVDevice | None = None
     interface: str | None = None
     """Must be set if device is set"""
+
+
+class BaseCVTagProtocol(Protocol):
+    """Protocol for common attributes shared by CVDeviceTag and CVInterfaceTag."""
+
+    label: str
+    value: str
+    device: CVDevice | None
 
 
 @dataclass

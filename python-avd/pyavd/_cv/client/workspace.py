@@ -68,6 +68,10 @@ class WorkspaceMixin(Protocol):
         Returns:
             Workspace object matching the workspace_id
         """
+        if self._channel is None:
+            msg = "'get_workspace' was called with _channel set to None"
+            raise RuntimeError(msg)
+
         request = WorkspaceRequest(
             key=WorkspaceKey(
                 workspace_id=workspace_id,
@@ -100,6 +104,10 @@ class WorkspaceMixin(Protocol):
         Returns:
             WorkspaceConfig object after being set including any server-generated values.
         """
+        if self._channel is None:
+            msg = "'create_workspace' was called with _channel set to None"
+            raise RuntimeError(msg)
+
         request = WorkspaceConfigSetRequest(
             WorkspaceConfig(
                 key=WorkspaceKey(workspace_id=workspace_id),
@@ -127,6 +135,10 @@ class WorkspaceMixin(Protocol):
         Returns:
             WorkspaceConfig object after being set including any server-generated values.
         """
+        if self._channel is None:
+            msg = "'abandon_workspace' was called with _channel set to None"
+            raise RuntimeError(msg)
+
         request = WorkspaceConfigSetRequest(
             WorkspaceConfig(
                 key=WorkspaceKey(workspace_id=workspace_id),
@@ -156,6 +168,10 @@ class WorkspaceMixin(Protocol):
         Returns:
             WorkspaceConfig object after being set including any server-generated values.
         """
+        if self._channel is None:
+            msg = "'build_workspace' was called with _channel set to None"
+            raise RuntimeError(msg)
+
         request = WorkspaceConfigSetRequest(
             WorkspaceConfig(
                 key=WorkspaceKey(workspace_id=workspace_id),
@@ -185,6 +201,10 @@ class WorkspaceMixin(Protocol):
         Returns:
             WorkspaceConfig object after being set including any server-generated values.
         """
+        if self._channel is None:
+            msg = "'delete_workspace' was called with _channel set to None"
+            raise RuntimeError(msg)
+
         request = WorkspaceConfigDeleteRequest(key=WorkspaceKey(workspace_id=workspace_id))
         client = WorkspaceConfigServiceStub(self._channel)
         response = await client.delete(request, metadata=self._metadata, timeout=timeout)
@@ -208,6 +228,10 @@ class WorkspaceMixin(Protocol):
         Returns:
             WorkspaceConfig object after being set including any server-generated values.
         """
+        if self._channel is None:
+            msg = "'submit_workspace' was called with _channel set to None"
+            raise RuntimeError(msg)
+
         request = WorkspaceConfigSetRequest(
             WorkspaceConfig(
                 key=WorkspaceKey(workspace_id=workspace_id),
@@ -241,6 +265,10 @@ class WorkspaceMixin(Protocol):
         Returns:
             Tuple of (<Response object for the request_id>, <Full Workspace object>)
         """
+        if self._channel is None:
+            msg = "'wait_for_workspace_response' was called with _channel set to None"
+            raise RuntimeError(msg)
+
         request = WorkspaceStreamRequest(
             partial_eq_filter=[
                 Workspace(
