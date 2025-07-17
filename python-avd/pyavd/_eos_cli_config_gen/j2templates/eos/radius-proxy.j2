@@ -32,7 +32,7 @@ radius proxy
          "key": ipv6.key if ipv6.key is arista.avd.defined }) %}
 {%             endfor %}
 {%             for host in vrf.host_clients | arista.avd.default([]) %}
-{%                 set _ = all_host_clients.append({"vrf": vrf.name, "name": host.name,
+{%                 do all_host_clients.append({"vrf": vrf.name, "name": host.name,
          "key": host.key if host.key is arista.avd.defined }) %}
 {%             endfor %}
 {%         endfor %}
