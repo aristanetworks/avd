@@ -1255,11 +1255,9 @@ interface {{ ethernet_interface.name }}
    transceiver application override 100gbase-srbd
 {%     elif ethernet_interface.transceiver.application_overrides is arista.avd.defined %}
 {%         for application_override in ethernet_interface.transceiver.application_overrides %}
-{%             if application_override.application_number is arista.avd.defined %}
-{%                 set application_override_cli = "transceiver application override " ~ application_override.application_number %}
-{%                 if application_override.lanes is arista.avd.defined %}
-{%                     set application_override_cli = application_override_cli ~ " lanes start " ~ application_override.lanes.start %}
-{%                 endif %}
+{%             set application_override_cli = "transceiver application override " ~ application_override.application_number %}
+{%             if application_override.lanes is arista.avd.defined %}
+{%                 set application_override_cli = application_override_cli ~ " lanes start " ~ application_override.lanes.start %}
 {%                 if application_override.lanes.end is arista.avd.defined %}
 {%                     set application_override_cli = application_override_cli ~ " end " ~ application_override.lanes.end %}
 {%                 endif %}
