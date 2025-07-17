@@ -268,28 +268,29 @@ class UtilsMixin(Protocol):
             interface.ip_address = p2p_link_data["ip"]
 
         if p2p_link.include_in_underlay_protocol:
-            multicast_pim_sm = default(p2p_link.multicast_pim_sm, self.shared_utils.underlay_multicast_pim_sm_enabled)
-            if multicast_pim_sm and self.shared_utils.underlay_multicast_pim_sm_enabled:
+            if p2p_link.multicast_pim_sm:
+                if not self.shared_utils.underlay_multicast_pim_sm_enabled:
+                    msg = (
+                        f"{self.data_model}.p2p_links has `include_in_underlay_protocol: true` and "
+                        "`multicast_pim_sm: true`, which requires the global setting `underlay_multicast_pim_sm` "
+                        "to also be set to `true`."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
                 interface.pim.ipv4.sparse_mode = True
-            elif multicast_pim_sm and not self.shared_utils.underlay_multicast_pim_sm_enabled:
-                msg = (
-                    f"{self.data_model}.p2p_links has `include_in_underlay_protocol: true` and "
-                    "`multicast_pim_sm: true`, which requires the global setting `underlay_multicast_pim_sm` "
-                    "to also be set to `true`."
-                )
+            elif p2p_link.multicast_pim_sm is not False and self.shared_utils.underlay_multicast_pim_sm_enabled:
+                interface.pim.ipv4.sparse_mode = True
 
-                raise AristaAvdInvalidInputsError(msg)
-
-            multicast_static = default(p2p_link.multicast_static, self.shared_utils.underlay_multicast_static_enabled)
-            if multicast_static and self.shared_utils.underlay_multicast_static_enabled:
+            if p2p_link.multicast_static:
+                if not self.shared_utils.underlay_multicast_static_enabled:
+                    msg = (
+                        f"{self.data_model}.p2p_links has `include_in_underlay_protocol: true` and "
+                        "`multicast_static: true`, which requires the global setting `underlay_multicast_static` "
+                        "to also be set to `true`."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
                 interface.multicast.ipv4.static = True
-            elif multicast_static and not self.shared_utils.underlay_multicast_static_enabled:
-                msg = (
-                    f"{self.data_model}.p2p_links has `include_in_underlay_protocol: true` and "
-                    "`multicast_static: true`, which requires the global setting `underlay_multicast_static` "
-                    "to also be set to `true`."
-                )
-                raise AristaAvdInvalidInputsError(msg)
+            elif p2p_link.multicast_static is not False and self.shared_utils.underlay_multicast_static_enabled:
+                interface.multicast.ipv4.static = True
 
             if p2p_link.underlay_multicast and self.shared_utils.underlay_multicast_pim_sm_enabled:
                 interface.pim.ipv4.sparse_mode = True

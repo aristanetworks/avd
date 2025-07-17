@@ -100,7 +100,7 @@ class UnderlayMixin(Protocol):
             if self.is_wan_router:
                 msg = "Invalid combination of inputs. WAN is not yet supported with IPv6 underlay"
                 raise AristaAvdInvalidInputsError(msg)
-            if self.underlay_multicast_rp_interfaces or self.underlay_multicast_pim_sm_enabled or self.underlay_multicast_static_enabled:
+            if self.underlay_multicast_rp_interfaces or self.underlay_multicast_static_enabled:
                 msg = "Invalid combination of inputs. Underlay multicast is not yet supported with IPv6 underlay"
                 raise AristaAvdInvalidInputsError(msg)
             if self.inputs.underlay_rfc5549:
