@@ -6,7 +6,7 @@
 {# doc - radius-proxy #}
 {% if radius_proxy is arista.avd.defined %}
 
-## Radius Proxy
+### Radius Proxy
 
 | Settings | Value |
 | -------- | ----- |
@@ -15,20 +15,20 @@
 | Client Session Idle-timeout (seconds) | {{ radius_proxy.client_session_idle_timeout | arista.avd.default('-') }} |
 {%     if radius_proxy.client_groups is arista.avd.defined %}
 
-### Client Group Summary
+#### Client Group Summary
 {%         for client_group in radius_proxy.client_groups | arista.avd.natural_sort("name") %}
 
-#### Client Group: {{ client_group.name }}
+##### Client Group: {{ client_group.name }}
 {%             if client_group.server_groups is arista.avd.defined %}
 
 Server Groups: {{ client_group.server_groups | join(", ") }}
 {%             endif %}
 {%             for vrf in client_group.vrfs | arista.avd.natural_sort("name") %}
 
-##### VRF: {{ vrf.name }}
+###### VRF: {{ vrf.name }}
 {%                 if vrf.ipv4_clients is arista.avd.defined %}
 
-###### IPv4 Clients
+####### IPv4 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -41,7 +41,7 @@ Server Groups: {{ client_group.server_groups | join(", ") }}
 {%                 endif %}
 {%                 if vrf.ipv6_clients is arista.avd.defined %}
 
-###### IPv6 Clients
+####### IPv6 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -54,7 +54,7 @@ Server Groups: {{ client_group.server_groups | join(", ") }}
 {%                 endif %}
 {%                 if vrf.host_clients is arista.avd.defined %}
 
-###### Host Clients
+####### Host Clients
 
 | Name | Type-7 Key |
 | ---- | ---------- |
@@ -69,7 +69,7 @@ Server Groups: {{ client_group.server_groups | join(", ") }}
 {%         endfor %}
 {%     endif %}
 
-### RADIUS Proxy Configuration
+#### RADIUS Proxy Configuration
 
 ```eos
 {%     include 'eos/radius-proxy.j2' %}

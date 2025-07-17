@@ -34,9 +34,7 @@
   - [Management defaults](#management-defaults)
   - [TACACS Servers](#tacacs-servers)
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
-- [Radius Proxy](#radius-proxy)
-  - [Client Group Summary](#client-group-summary)
-  - [RADIUS Proxy Configuration](#radius-proxy-configuration)
+  - [Radius Proxy](#radius-proxy)
   - [RADIUS Server](#radius-server)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
   - [AAA Server Groups](#aaa-server-groups)
@@ -1322,7 +1320,7 @@ ip tacacs vrf TEST1 source-interface lo3
 ip tacacs source-interface loopback10
 ```
 
-## Radius Proxy
+### Radius Proxy
 
 | Settings | Value |
 | -------- | ----- |
@@ -1330,15 +1328,15 @@ ip tacacs source-interface loopback10
 | Client Type-7 Key | <removed> |
 | Client Session Idle-timeout (seconds) | 46 |
 
-### Client Group Summary
+#### Client Group Summary
 
-#### Client Group: CG_1
+##### Client Group: CG_1
 
 Server Groups: aaa bbb ccc
 
-##### VRF: vrf_1
+###### VRF: vrf_1
 
-###### IPv4 Clients
+####### IPv4 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -1348,7 +1346,7 @@ Server Groups: aaa bbb ccc
 | 2.2.1.1 | - |
 | 1.2.10.8 | <removed> |
 
-###### IPv6 Clients
+####### IPv6 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -1356,7 +1354,7 @@ Server Groups: aaa bbb ccc
 | ::1 | - |
 | fd00::1234 | <removed> |
 
-###### Host Clients
+####### Host Clients
 
 | Name | Type-7 Key |
 | ---- | ---------- |
@@ -1364,9 +1362,9 @@ Server Groups: aaa bbb ccc
 | host2 | - |
 | host3 | <removed> |
 
-##### VRF: vrf_2
+###### VRF: vrf_2
 
-###### IPv4 Clients
+####### IPv4 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -1375,17 +1373,17 @@ Server Groups: aaa bbb ccc
 | 2.1.1.1 | - |
 | 1.1.10.8 | <removed> |
 
-#### Client Group: CG_2
+##### Client Group: CG_2
 
-#### Client Group: CG_3
+##### Client Group: CG_3
 
 Server Groups: ddd
 
-#### Client Group: CG_4
+##### Client Group: CG_4
 
-##### VRF: vrf_only_host
+###### VRF: vrf_only_host
 
-###### Host Clients
+####### Host Clients
 
 | Name | Type-7 Key |
 | ---- | ---------- |
@@ -1393,9 +1391,9 @@ Server Groups: ddd
 | host12 | - |
 | host13 | <removed> |
 
-##### VRF: vrf_only_ipv4
+###### VRF: vrf_only_ipv4
 
-###### IPv4 Clients
+####### IPv4 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -1404,11 +1402,11 @@ Server Groups: ddd
 | 2.2.1.11 | - |
 | 1.2.10.18 | <removed> |
 
-#### Client Group: CG_5
+##### Client Group: CG_5
 
-##### VRF: vrf_only_ipv6
+###### VRF: vrf_only_ipv6
 
-###### IPv6 Clients
+####### IPv6 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -1416,7 +1414,7 @@ Server Groups: ddd
 | ::12 | - |
 | fd0::1234 | <removed> |
 
-### RADIUS Proxy Configuration
+#### RADIUS Proxy Configuration
 
 ```eos
 !
