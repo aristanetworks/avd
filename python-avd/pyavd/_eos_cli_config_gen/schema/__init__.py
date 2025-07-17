@@ -67385,7 +67385,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     radius_proxy: RadiusProxy
     """
-    Configure RADIUS proxy parameters/
+    Configure RADIUS proxy parameters.
 
     Subclass of AvdModel.
     """
@@ -68002,7 +68002,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 queue_monitor_length: Subclass of AvdModel.
                 queue_monitor_streaming: Subclass of AvdModel.
                 radius_proxy:
-                   Configure RADIUS proxy parameters/
+                   Configure RADIUS proxy parameters.
 
                    Subclass of AvdModel.
                 radius_server: Subclass of AvdModel.

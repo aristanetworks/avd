@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>radius_proxy</samp>](## "radius_proxy") | Dictionary |  |  |  | Configure RADIUS proxy parameters/ |
+    | [<samp>radius_proxy</samp>](## "radius_proxy") | Dictionary |  |  |  | Configure RADIUS proxy parameters. |
     | [<samp>&nbsp;&nbsp;client_key</samp>](## "radius_proxy.client_key") | String |  |  |  | Set client secret key, allowed max size is 128.<br>Only type 7 supported. |
     | [<samp>&nbsp;&nbsp;client_session_idle_timeout</samp>](## "radius_proxy.client_session_idle_timeout") | Integer |  |  | Min: 1<br>Max: 86400 | Idle timeout in seconds. |
     | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "radius_proxy.dynamic_authorization") | Boolean |  |  |  | Enable/Disable dynamic authorization. |
@@ -30,7 +30,7 @@
 === "YAML"
 
     ```yaml
-    # Configure RADIUS proxy parameters/
+    # Configure RADIUS proxy parameters.
     radius_proxy:
 
       # Set client secret key, allowed max size is 128.

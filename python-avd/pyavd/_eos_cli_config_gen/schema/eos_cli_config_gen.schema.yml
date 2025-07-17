@@ -13756,7 +13756,7 @@ keys:
         - int
   radius_proxy:
     type: dict
-    description: Configure RADIUS proxy parameters/
+    description: Configure RADIUS proxy parameters.
     keys:
       client_key:
         type: str
