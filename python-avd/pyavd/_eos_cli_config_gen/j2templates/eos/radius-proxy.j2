@@ -53,7 +53,7 @@ radius proxy
 {%         for client in all_host_clients | sort(attribute='name') %}
 {%             set client_host = "client host " ~ client.name ~ " vrf " ~ client.vrf %}
 {%             if client.key is defined %}
-{%                 set client_host = client_host ~ " key " ~ client.key ~ " 7 " ~ client.key | arista.avd.hide_passwords(hide_passwords) %}
+{%                 set client_host = client_host ~ " key 7 " ~ client.key | arista.avd.hide_passwords(hide_passwords) %}
 {%             endif %}
       {{ client_host }}
 {%         endfor %}
