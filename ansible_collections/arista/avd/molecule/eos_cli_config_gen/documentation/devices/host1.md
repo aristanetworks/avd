@@ -1375,11 +1375,11 @@ Server Groups: aaa bbb ccc
 | 2.1.1.1 | - |
 | 1.1.10.8 | <removed> |
 
+#### Client Group: CG_2
+
 #### Client Group: CG_3
 
 Server Groups: ddd
-
-#### Client Group: CG_2
 
 #### Client Group: CG_4
 
