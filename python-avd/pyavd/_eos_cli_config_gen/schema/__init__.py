@@ -9109,8 +9109,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class ApplicationOverrides(AvdList[ApplicationOverridesItem]):
-                """Subclass of AvdList with `ApplicationOverridesItem` items."""
+            class ApplicationOverrides(AvdIndexedList[int, ApplicationOverridesItem]):
+                """
+                Subclass of AvdIndexedList with `ApplicationOverridesItem` items. Primary key is
+                `application_number` (`int`).
+                """
+
+                _primary_key: ClassVar[str] = "application_number"
 
             ApplicationOverrides._item_type = ApplicationOverridesItem
 
@@ -9131,13 +9136,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             Set legacy mode for 100GBASE-SRBD interoperability.
             This key is mutually exclusive with
-            `application_overrides`.
+            `application_overrides` and takes precedence over it.
             """
             application_overrides: ApplicationOverrides
             """
             Set CMIS transceiver applications.
 
-            Subclass of AvdList with `ApplicationOverridesItem` items.
+            Subclass of AvdIndexedList with `ApplicationOverridesItem`
+            items. Primary key is `application_number` (`int`).
             """
 
             if TYPE_CHECKING:
@@ -9164,11 +9170,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         application_override_100gbase_srbd:
                            Set legacy mode for 100GBASE-SRBD interoperability.
                            This key is mutually exclusive with
-                           `application_overrides`.
+                           `application_overrides` and takes precedence over it.
                         application_overrides:
                            Set CMIS transceiver applications.
 
-                           Subclass of AvdList with `ApplicationOverridesItem` items.
+                           Subclass of AvdIndexedList with `ApplicationOverridesItem`
+                           items. Primary key is `application_number` (`int`).
 
                     """
 

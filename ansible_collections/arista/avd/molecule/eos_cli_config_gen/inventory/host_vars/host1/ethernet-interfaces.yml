@@ -517,6 +517,7 @@ ethernet_interfaces:
         random_detect:
           ecn:
             count: true
+
   - name: Ethernet8.101
     description: to WAN-ISP-01 Ethernet2.101 - VRF-C1
     encapsulation_dot1q:
@@ -530,6 +531,7 @@ ethernet_interfaces:
         key_type: 0
         key: password
         mode: md5
+
   - name: Ethernet9
     description: interface_with_mpls_enabled
     switchport:
@@ -559,6 +561,7 @@ ethernet_interfaces:
     lldp:
       transmit: true
       receive: false
+
   - name: Ethernet10
     description: interface_with_mpls_disabled
     switchport:
