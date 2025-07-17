@@ -1324,7 +1324,7 @@ ip tacacs source-interface loopback10
 
 ## Radius Proxy
 
-| Setting | Value |
+| Settings | Value |
 | -------- | ----- |
 | Dynamic Authorization | True |
 | Client Type-7 Key | <removed> |
@@ -1336,9 +1336,9 @@ ip tacacs source-interface loopback10
 
 Server Groups: aaa bbb ccc
 
-##### Vrf: vrf_1
+##### VRF: vrf_1
 
-###### Ipv4 Clients
+###### IPv4 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -1348,7 +1348,7 @@ Server Groups: aaa bbb ccc
 | 2.2.1.1 | - |
 | 1.2.10.8 | <removed> |
 
-###### Ipv6 Clients
+###### IPv6 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -1364,9 +1364,9 @@ Server Groups: aaa bbb ccc
 | host2 | - |
 | host3 | <removed> |
 
-##### Vrf: vrf_2
+##### VRF: vrf_2
 
-###### Ipv4 Clients
+###### IPv4 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -1383,7 +1383,7 @@ Server Groups: ddd
 
 #### Client Group: CG_4
 
-##### Vrf: vrf_only_host
+##### VRF: vrf_only_host
 
 ###### Host Clients
 
@@ -1393,9 +1393,9 @@ Server Groups: ddd
 | host12 | - |
 | host13 | <removed> |
 
-##### Vrf: vrf_only_ipv4
+##### VRF: vrf_only_ipv4
 
-###### Ipv4 Clients
+###### IPv4 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -1406,9 +1406,9 @@ Server Groups: ddd
 
 #### Client Group: CG_5
 
-##### Vrf: vrf_only_ipv6
+##### VRF: vrf_only_ipv6
 
-###### Ipv6 Clients
+###### IPv6 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
@@ -1426,20 +1426,20 @@ radius proxy
    client session idle-timeout 46 seconds
    !
    client group CG_1
-      client ipv4 1.1.10.10 vrf vrf_1 key None 7 <removed>
+      client ipv4 1.1.10.10 vrf vrf_1
       client ipv4 1.1.10.10 vrf vrf_2 key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
-      client ipv4 1.1.10.6 vrf vrf_2 key None 7 <removed>
+      client ipv4 1.1.10.6 vrf vrf_2
       client ipv4 1.1.10.8 vrf vrf_2 key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
       client ipv4 1.2.10.10 vrf vrf_1 key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
-      client ipv4 1.2.10.6 vrf vrf_1 key None 7 <removed>
+      client ipv4 1.2.10.6 vrf vrf_1
       client ipv4 1.2.10.8 vrf vrf_1 key 13161211190910157A6478732627101513173E04 7 <removed>
-      client ipv4 2.1.1.1 vrf vrf_2 key None 7 <removed>
-      client ipv4 2.2.1.1 vrf vrf_1 key None 7 <removed>
+      client ipv4 2.1.1.1 vrf vrf_2
+      client ipv4 2.2.1.1 vrf vrf_1
       client ipv6 2001:db8::1 vrf vrf_1 key 06150A225E4B1D265457424B1F012939213C0C3C3205512952 7 <removed>
-      client ipv6 ::1 vrf vrf_1 key None 7 <removed>
+      client ipv6 ::1 vrf vrf_1
       client ipv6 fd00::1234 vrf vrf_1 key 0832494D1B1C1128434B5C44392E273A36211D1A1700553E04 7 <removed>
       client host host1 vrf vrf_1 key 06150A225E4B1D265457424B1F012939213C0C3C3205512952 7 <removed>
-      client host host2 vrf vrf_1 key None 7 <removed>
+      client host host2 vrf vrf_1
       client host host3 vrf vrf_1 key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
       server group aaa bbb ccc
    !
@@ -1450,16 +1450,16 @@ radius proxy
    !
    client group CG_4
       client ipv4 1.2.10.11 vrf vrf_only_ipv4 key 06150A225E4B1D265457424B1F012939213C0C3C3205512952 7 <removed>
-      client ipv4 1.2.10.16 vrf vrf_only_ipv4 key None 7 <removed>
+      client ipv4 1.2.10.16 vrf vrf_only_ipv4
       client ipv4 1.2.10.18 vrf vrf_only_ipv4 key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
-      client ipv4 2.2.1.11 vrf vrf_only_ipv4 key None 7 <removed>
+      client ipv4 2.2.1.11 vrf vrf_only_ipv4
       client host host11 vrf vrf_only_host key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
-      client host host12 vrf vrf_only_host key None 7 <removed>
+      client host host12 vrf vrf_only_host
       client host host13 vrf vrf_only_host key 06150A225E4B1D265457424B1F012939213C0C3C3205512952 7 <removed>
    !
    client group CG_5
       client ipv6 2001:db8::11 vrf vrf_only_ipv6 key 06150A225E4B1D265457424B1F012939213C0C3C3205512952 7 <removed>
-      client ipv6 ::12 vrf vrf_only_ipv6 key None 7 <removed>
+      client ipv6 ::12 vrf vrf_only_ipv6
       client ipv6 fd0::1234 vrf vrf_only_ipv6 key 00171605165E1F395E611C0E1A1C0605171F3355 7 <removed>
 ```
 

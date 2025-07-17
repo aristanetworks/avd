@@ -35090,7 +35090,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """IPv4 address "A.B.C.D" or prefix "A.B.C.D/E"."""
                     key: str | None
                     """
-                    Key for this client (overrides global).
+                    Key for this client. Overrides`radius_proxy.client_key`.
                     Only type 7 supported.
                     """
 
@@ -35106,7 +35106,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 address: IPv4 address "A.B.C.D" or prefix "A.B.C.D/E".
                                 key:
-                                   Key for this client (overrides global).
+                                   Key for this client. Overrides`radius_proxy.client_key`.
                                    Only type 7 supported.
 
                             """
@@ -35126,7 +35126,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """IPv6 address "A:B:C:D:E:F:G:H" prefix "A:B:C:D:E:F:G:H/I"."""
                     key: str | None
                     """
-                    Key for this client (overrides global).
+                    Key for this client. Overrides`radius_proxy.client_key`.
                     Only type 7 supported.
                     """
 
@@ -35142,7 +35142,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 address: IPv6 address "A:B:C:D:E:F:G:H" prefix "A:B:C:D:E:F:G:H/I".
                                 key:
-                                   Key for this client (overrides global).
+                                   Key for this client. Overrides`radius_proxy.client_key`.
                                    Only type 7 supported.
 
                             """
@@ -35162,7 +35162,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Hostname."""
                     key: str | None
                     """
-                    Key for this client (overrides global).
+                    Key for this client. Overrides`radius_proxy.client_key`.
                     Only type 7 supported.
                     """
 
@@ -35178,7 +35178,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 name: Hostname.
                                 key:
-                                   Key for this client (overrides global).
+                                   Key for this client. Overrides`radius_proxy.client_key`.
                                    Only type 7 supported.
 
                             """

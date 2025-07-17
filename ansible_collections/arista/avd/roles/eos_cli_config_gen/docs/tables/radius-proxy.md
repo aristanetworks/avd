@@ -19,13 +19,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "radius_proxy.client_groups.[].vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_clients</samp>](## "radius_proxy.client_groups.[].vrfs.[].ipv4_clients") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "radius_proxy.client_groups.[].vrfs.[].ipv4_clients.[].address") | String | Required, Unique |  | Format: ipv4 | IPv4 address "A.B.C.D" or prefix "A.B.C.D/E". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_proxy.client_groups.[].vrfs.[].ipv4_clients.[].key") | String |  |  |  | Key for this client (overrides global).<br>Only type 7 supported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_proxy.client_groups.[].vrfs.[].ipv4_clients.[].key") | String |  |  |  | Key for this client. Overrides`radius_proxy.client_key`.<br>Only type 7 supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_clients</samp>](## "radius_proxy.client_groups.[].vrfs.[].ipv6_clients") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;address</samp>](## "radius_proxy.client_groups.[].vrfs.[].ipv6_clients.[].address") | String | Required, Unique |  | Format: ipv6 | IPv6 address "A:B:C:D:E:F:G:H" prefix "A:B:C:D:E:F:G:H/I". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_proxy.client_groups.[].vrfs.[].ipv6_clients.[].key") | String |  |  |  | Key for this client (overrides global).<br>Only type 7 supported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_proxy.client_groups.[].vrfs.[].ipv6_clients.[].key") | String |  |  |  | Key for this client. Overrides`radius_proxy.client_key`.<br>Only type 7 supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_clients</samp>](## "radius_proxy.client_groups.[].vrfs.[].host_clients") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "radius_proxy.client_groups.[].vrfs.[].host_clients.[].name") | String | Required, Unique |  |  | Hostname. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_proxy.client_groups.[].vrfs.[].host_clients.[].key") | String |  |  |  | Key for this client (overrides global).<br>Only type 7 supported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_proxy.client_groups.[].vrfs.[].host_clients.[].key") | String |  |  |  | Key for this client. Overrides`radius_proxy.client_key`.<br>Only type 7 supported. |
 
 === "YAML"
 
@@ -55,7 +55,7 @@
                   # IPv4 address "A.B.C.D" or prefix "A.B.C.D/E".
                 - address: <str; required; unique>
 
-                  # Key for this client (overrides global).
+                  # Key for this client. Overrides`radius_proxy.client_key`.
                   # Only type 7 supported.
                   key: <str>
               ipv6_clients:
@@ -63,7 +63,7 @@
                   # IPv6 address "A:B:C:D:E:F:G:H" prefix "A:B:C:D:E:F:G:H/I".
                 - address: <str; required; unique>
 
-                  # Key for this client (overrides global).
+                  # Key for this client. Overrides`radius_proxy.client_key`.
                   # Only type 7 supported.
                   key: <str>
               host_clients:
@@ -71,7 +71,7 @@
                   # Hostname.
                 - name: <str; required; unique>
 
-                  # Key for this client (overrides global).
+                  # Key for this client. Overrides`radius_proxy.client_key`.
                   # Only type 7 supported.
                   key: <str>
     ```

@@ -25,15 +25,15 @@ radius proxy
 {%         for vrf in client_group.vrfs | arista.avd.default([]) | sort(attribute='name') %}
 {%             for ipv4 in vrf.ipv4_clients | arista.avd.default([]) %}
 {%                 do all_ipv4_clients.append({"vrf": vrf.name, "address": ipv4.address,
-         "key": ipv4.key if ipv4.key is defined else none}) %}
+         "key": ipv4.key if ipv4.key is arista.avd.defined }) %}
 {%             endfor %}
 {%             for ipv6 in vrf.ipv6_clients | arista.avd.default([]) %}
 {%                 set _ = all_ipv6_clients.append({"vrf": vrf.name, "address": ipv6.address,
-         "key": ipv6.key if ipv6.key is defined else none}) %}
+         "key": ipv6.key if ipv6.key is arista.avd.defined }) %}
 {%             endfor %}
 {%             for host in vrf.host_clients | arista.avd.default([]) %}
 {%                 set _ = all_host_clients.append({"vrf": vrf.name, "name": host.name,
-         "key": host.key if host.key is defined else none}) %}
+         "key": host.key if host.key is arista.avd.defined }) %}
 {%             endfor %}
 {%         endfor %}
 {%         for client in all_ipv4_clients | sort(attribute='address') %}

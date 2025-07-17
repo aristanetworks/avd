@@ -13806,7 +13806,7 @@ keys:
                           description: IPv4 address "A.B.C.D" or prefix "A.B.C.D/E".
                         key:
                           type: str
-                          description: 'Key for this client (overrides global).
+                          description: 'Key for this client. Overrides`radius_proxy.client_key`.
 
                             Only type 7 supported.'
                   ipv6_clients:
@@ -13821,7 +13821,7 @@ keys:
                           description: IPv6 address "A:B:C:D:E:F:G:H" prefix "A:B:C:D:E:F:G:H/I".
                         key:
                           type: str
-                          description: 'Key for this client (overrides global).
+                          description: 'Key for this client. Overrides`radius_proxy.client_key`.
 
                             Only type 7 supported.'
                   host_clients:
@@ -13835,7 +13835,7 @@ keys:
                           description: Hostname.
                         key:
                           type: str
-                          description: 'Key for this client (overrides global).
+                          description: 'Key for this client. Overrides`radius_proxy.client_key`.
 
                             Only type 7 supported.'
   radius_server:

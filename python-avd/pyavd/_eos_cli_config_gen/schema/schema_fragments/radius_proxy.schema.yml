@@ -59,7 +59,7 @@ keys:
                         key:
                           type: str
                           description: |-
-                            Key for this client (overrides global).
+                            Key for this client. Overrides`radius_proxy.client_key`.
                             Only type 7 supported.
                   ipv6_clients:
                     type: list
@@ -74,7 +74,7 @@ keys:
                         key:
                           type: str
                           description: |-
-                            Key for this client (overrides global).
+                            Key for this client. Overrides`radius_proxy.client_key`.
                             Only type 7 supported.
                   host_clients:
                     type: list
@@ -88,5 +88,5 @@ keys:
                         key:
                           type: str
                           description: |-
-                            Key for this client (overrides global).
+                            Key for this client. Overrides`radius_proxy.client_key`.
                             Only type 7 supported.
