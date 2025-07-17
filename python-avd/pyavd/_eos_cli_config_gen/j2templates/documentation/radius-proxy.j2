@@ -28,7 +28,7 @@ Server Groups: {{ client_group.server_groups | join(", ") }}
 ##### VRF: {{ vrf.name }}
 {%                 if vrf.ipv4_clients is arista.avd.defined %}
 
-###### Ipv4 Clients
+###### IPv4 Clients
 
 | Address | Type-7 Key |
 | ------- | ---------- |
