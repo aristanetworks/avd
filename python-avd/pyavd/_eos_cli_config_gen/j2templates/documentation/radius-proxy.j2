@@ -16,7 +16,7 @@
 {%     if radius_proxy.client_groups is arista.avd.defined %}
 
 ### Client Group Summary
-{%         for client_group in radius_proxy.client_groups %}
+{%         for client_group in radius_proxy.client_groups | arista.avd.natural_sort("name") %}
 
 #### Client Group: {{ client_group.name }}
 {%             if client_group.server_groups is arista.avd.defined %}
