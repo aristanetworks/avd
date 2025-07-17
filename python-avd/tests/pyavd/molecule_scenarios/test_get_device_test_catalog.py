@@ -3,43 +3,73 @@
 # that can be found in the LICENSE file.
 import json
 from copy import deepcopy
+from typing import Any
 
 import pytest
 
 from pyavd import get_device_test_catalog
 from pyavd._anta.lib import AntaCatalog
-from pyavd.api._anta import get_minimal_structured_configs
+from pyavd.api._anta import AvdCatalogGenerationSettings, InputFactorySettings, get_minimal_structured_configs
 from tests.models import MoleculeHost
 
 
-@pytest.mark.molecule_scenarios(
-    "anta_runner",
-)
-def test_get_device_test_catalog(molecule_host: MoleculeHost) -> None:
-    """
-    Verify that get_device_test_catalog generates the correct ANTA catalog.
+# Helper Function for Filter Logic
+def _get_filtered_settings_for_host(molecule_host: MoleculeHost) -> AvdCatalogGenerationSettings:
+    """Replicates the Ansible plugin logic to get the correct filtered settings for a host."""
+    # Filter rules are defined here, mirroring the playbook converge file.
+    avd_catalogs_filters: list[dict[str, Any]] = [
+        {"skip_tests": ["VerifyNTP"]},
+        {"device_list_group": "DC1_SVC_LEAVES", "run_tests": ["VerifyReachability"]},
+        {"device_list_group": "DC2_SPINES", "run_tests": ["VerifyLLDPNeighbors"], "skip_tests": ["VerifyLLDPNeighbors"]},
+    ]
 
-    This test compares the generated catalog against the expected output file
-    from the molecule scenario to ensure correctness and prevent regressions.
-    """
+    host_groups = molecule_host.hostvars.get("group_names", [])
+    final_filters: dict[str, Any] = {}
+
+    # Apply filters based on the host's group membership.
+    for filter_config in avd_catalogs_filters:
+        device_list_group = filter_config.get("device_list_group")
+        if device_list_group and device_list_group not in host_groups:
+            continue
+
+        # "Last filter wins" logic updates the dictionary.
+        if "run_tests" in filter_config:
+            final_filters["run_tests"] = filter_config["run_tests"]
+        if "skip_tests" in filter_config:
+            final_filters["skip_tests"] = filter_config["skip_tests"]
+
+    return AvdCatalogGenerationSettings(**final_filters)
+
+
+@pytest.mark.molecule_scenarios("anta_runner")
+@pytest.mark.parametrize(
+    ("run_name", "expected_catalog_property_name"),
+    [
+        ("default", "default_test_catalog"),
+        ("allow_bgp_vrfs", "allow_bgp_vrfs_test_catalog"),
+        ("filtered", "filtered_test_catalog"),
+    ],
+    ids=["default_run", "allow_bgp_vrfs_run", "filtered_run"],
+)
+def test_get_device_test_catalog(molecule_host: MoleculeHost, run_name: str, expected_catalog_property_name: str) -> None:
+    """Verify get_device_test_catalog generates the correct ANTA catalog."""
     all_configs = deepcopy(molecule_host.structured_configs)
     minimal_configs = get_minimal_structured_configs(all_configs)
-
-    # Get the configuration for the specific host under test.
     host_config = deepcopy(molecule_host.structured_config)
 
-    # Generate the ANTA catalog for the device.
-    result_catalog = get_device_test_catalog(molecule_host.name, host_config, minimal_configs)
+    settings = None
+    if run_name == "allow_bgp_vrfs":
+        settings = AvdCatalogGenerationSettings(input_factory_settings=InputFactorySettings(allow_bgp_vrfs=True))
+    elif run_name == "filtered":
+        settings = _get_filtered_settings_for_host(molecule_host)
 
-    # 1. Verify the function returns the correct object type.
+    expected_data_property = getattr(molecule_host, expected_catalog_property_name)
+    expected_data = deepcopy(expected_data_property)
+    if not expected_data:
+        pytest.skip(f"Expected catalog not found for test case: {expected_catalog_property_name}")
+
+    result_catalog = get_device_test_catalog(molecule_host.name, host_config, minimal_configs, settings=settings)
+
     assert isinstance(result_catalog, AntaCatalog)
-
-    # 2. Compare the generated catalog with the expected data.
-    expected_data = deepcopy(molecule_host.test_catalog)
-
-    # Use the .dump() method to serialize the result into the same categorized
-    # dictionary format as the expected data file.
     result_data = json.loads(result_catalog.dump().to_json())
-
-    # The final assertion ensures the generated content is identical to the expected output.
     assert result_data == expected_data

@@ -42,7 +42,7 @@ class MoleculeHost:
         self.scenario = scenario
 
     @cached_property
-    def structured_config(self) -> dict:
+    def structured_config(self) -> dict[str, Any]:
         """The intended structured config for the host, as read from the YAML file in the molecule scenario."""
         structured_config_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "intended/structured_configs", f"{self.name}.yml")
         if not structured_config_path.exists():
@@ -71,8 +71,25 @@ class MoleculeHost:
         return all_configs
 
     @cached_property
-    def test_catalog(self) -> dict[Any, Any]:
+    def default_test_catalog(self) -> dict[str, Any]:
+        """The expected ANTA catalog for the 'default_run'."""
         test_catalog_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "anta/avd_catalogs/default_run", f"{self.name}.json")
+        if not test_catalog_path.exists():
+            return {}
+        return load(test_catalog_path.read_text(), CSafeLoader)
+
+    @cached_property
+    def allow_bgp_vrfs_test_catalog(self) -> dict[str, Any]:
+        """The expected ANTA catalog for the 'allow_bgp_vrfs_run'."""
+        test_catalog_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "anta/avd_catalogs/allow_bgp_vrfs_run", f"{self.name}.json")
+        if not test_catalog_path.exists():
+            return {}
+        return load(test_catalog_path.read_text(), CSafeLoader)
+
+    @cached_property
+    def filtered_test_catalog(self) -> dict[str, Any]:
+        """The expected ANTA catalog for the 'filtered_run'."""
+        test_catalog_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "anta/avd_catalogs/filtered_run", f"{self.name}.json")
         if not test_catalog_path.exists():
             return {}
         return load(test_catalog_path.read_text(), CSafeLoader)
@@ -96,7 +113,7 @@ class MoleculeHost:
         return doc_path.read_text()
 
     @cached_property
-    def hostvars(self) -> dict:
+    def hostvars(self) -> dict[str, Any]:
         """The input vars for the host, as read from the Ansible inventory in the molecule scenario."""
         hostvars = json.loads(json.dumps(self.scenario._vars.get_vars(host=self.ansible_host)))
 
