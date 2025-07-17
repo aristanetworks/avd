@@ -98,6 +98,8 @@ class VlansMixin(Protocol):
             name=vlan.name,
             tenant=tenant.name,
         )
+        if vlan.address_locking:
+            vlans_vlan.address_locking = vlan.address_locking
         if self.inputs.enable_trunk_groups:
             trunk_groups = vlan.trunk_groups
             if self.shared_utils.only_local_vlan_trunk_groups:

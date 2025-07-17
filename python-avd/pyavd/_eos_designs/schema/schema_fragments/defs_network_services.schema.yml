@@ -751,6 +751,9 @@ $defs:
                       type: str
                       description: VLAN name.
                       required: true
+                    address_locking:
+                      type: dict
+                      $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking"
                     profile:
                       type: str
                       description: |
@@ -1571,6 +1574,9 @@ $defs:
                 min: 1
                 max: 4094
                 description: VLAN ID.
+              address_locking:
+                type: dict
+                $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking"
               vni_override:
                 type: int
                 convert_types:

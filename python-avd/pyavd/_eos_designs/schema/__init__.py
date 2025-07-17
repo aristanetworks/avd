@@ -43893,6 +43893,7 @@ class EosDesigns(EosDesignsRootModel):
                         _fields: ClassVar[dict] = {
                             "id": {"type": int},
                             "name": {"type": str},
+                            "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking},
                             "profile": {"type": str},
                             "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                             "evpn_vlan_bundle": {"type": str},
@@ -43933,6 +43934,7 @@ class EosDesigns(EosDesignsRootModel):
                         """SVI interface id and VLAN id."""
                         name: str
                         """VLAN name."""
+                        address_locking: EosCliConfigGen.VlansItem.AddressLocking
                         profile: str | None
                         """
                         SVI profile name to apply.
@@ -44157,6 +44159,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 id: int | UndefinedType = Undefined,
                                 name: str | UndefinedType = Undefined,
+                                address_locking: EosCliConfigGen.VlansItem.AddressLocking | UndefinedType = Undefined,
                                 profile: str | None | UndefinedType = Undefined,
                                 tags: Tags | UndefinedType = Undefined,
                                 evpn_vlan_bundle: str | None | UndefinedType = Undefined,
@@ -44202,6 +44205,7 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     id: SVI interface id and VLAN id.
                                     name: VLAN name.
+                                    address_locking: address_locking
                                     profile:
                                        SVI profile name to apply.
                                        SVI can refer to one svi_profile which again can refer to another
@@ -47505,6 +47509,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
+                        "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking},
                         "vni_override": {"type": int},
                         "rt_override": {"type": str},
                         "rd_override": {"type": str},
@@ -47524,6 +47529,7 @@ class EosDesigns(EosDesignsRootModel):
                     }
                     id: int
                     """VLAN ID."""
+                    address_locking: EosCliConfigGen.VlansItem.AddressLocking
                     vni_override: int | None
                     """
                     By default the VNI will be derived from mac_vrf_vni_base.
@@ -47633,6 +47639,7 @@ class EosDesigns(EosDesignsRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
+                            address_locking: EosCliConfigGen.VlansItem.AddressLocking | UndefinedType = Undefined,
                             vni_override: int | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
                             rd_override: str | None | UndefinedType = Undefined,
@@ -47658,6 +47665,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 id: VLAN ID.
+                                address_locking: address_locking
                                 vni_override:
                                    By default the VNI will be derived from mac_vrf_vni_base.
                                    The vni_override, allows to override this
