@@ -25,7 +25,7 @@ Server Groups: {{ client_group.server_groups | join(", ") }}
 {%             endif %}
 {%             for vrf in client_group.vrfs | arista.avd.natural_sort("name") %}
 
-##### Vrf: {{ vrf.name }}
+##### VRF: {{ vrf.name }}
 {%                 if vrf.ipv4_clients is arista.avd.defined %}
 
 ###### Ipv4 Clients
