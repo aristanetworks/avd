@@ -48,12 +48,12 @@ class DeviceTestContext:
     @cached_property
     def is_vtep(self) -> bool:
         """Check if the device is a VTEP."""
-        return bool(self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface)
+        return bool(self.structured_config.vxlan_interface.vxlan1.vxlan._get("source_interface"))
 
     @cached_property
     def is_wan_router(self) -> bool:
         """Check if the device is a WAN router."""
-        return self.is_vtep and "Dps" in self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface
+        return self.is_vtep and "Dps" in self.structured_config.vxlan_interface.vxlan1.vxlan._get("source_interface")
 
     @cached_property
     def bgp_neighbors(self) -> list[BgpNeighbor]:
