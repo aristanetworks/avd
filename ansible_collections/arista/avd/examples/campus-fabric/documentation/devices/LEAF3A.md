@@ -2729,6 +2729,11 @@ ip route vrf MGMT 0.0.0.0/0 172.16.100.1
 | Ethernet95 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
 | Ethernet96 | authenticator | auto | - | True | allow vlan 330 | multi-host | True | - |
 
+#### Dot1x Configuration
+
+```eos
+```
+
 ## VRF Instances
 
 ### VRF Instances Summary
