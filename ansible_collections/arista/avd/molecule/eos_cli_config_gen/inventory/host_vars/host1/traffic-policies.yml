@@ -16,6 +16,10 @@ traffic_policies:
         prefixes:
           - 10.0.0.0/8
           - 192.168.0.0/16
+        except:
+          - 172.16.0.0/16
+          - 10.10.0.0/16
+          - 10.2.2.2/32
       - name: DEMO-03
   policies:
     - name: BLUE-C1-POLICY

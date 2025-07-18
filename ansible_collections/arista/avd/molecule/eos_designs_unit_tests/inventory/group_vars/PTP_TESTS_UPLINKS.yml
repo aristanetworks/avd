@@ -28,3 +28,11 @@ l3leaf:
       uplink_switch_interfaces: [Ethernet17, Ethernet17]
       ptp:
         enabled: true
+    - name: ptp-tests-leaf6
+      id: 4
+      uplink_switch_interfaces: [Ethernet18, Ethernet18]
+      ptp:
+        enabled: false
+      # Enable ptp only on uplinks using 'uplink_ptp.enable: true'
+      uplink_ptp:
+        enable: true
