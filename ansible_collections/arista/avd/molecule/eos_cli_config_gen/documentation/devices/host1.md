@@ -10656,35 +10656,21 @@ ip as-path access-list mylist2 deny _64517$ igp
 | ----- | ----------- |
 | 300 | 300 |
 
-#### 802.1X Radius AV pair username format
-
-| Delimiter | MAC String Case |
-| --------- | --------------- |
-| colon | lowercase |
-
 #### 802.1X Radius AV pair
 
-| Service type | Framed MTU |
-| ------------ | ---------- |
-| True | 1500 |
-
-##### LLDP Radius AV pair
-
-| System Name | System Request List |
-| ----------- | ------------------- |
-| True (auth-only) | True (auth-only) |
-
-##### DHCP Radius AV pair
-
-| Hostname | Parameter Request List | Vendor Class ID |
-| -------- | ---------------------- | --------------- |
-| True (auth-only) | True (auth-only) | True (auth-only) |
-
-##### Filter ID Radius AV pair
-
-| Delimiter Period | IPv4 IPv6 | Multiple |
-| ---------------- | --------- | -------- |
-| True | True | True |
+| Type | Value | Auth Only |
+| ---- | ----- | --------- |
+| Service Type | True | "-" |
+| Framed MTU |  1500 | "-" |
+| LLDP System-name | True | True |
+| LLDP System-description | True | True |
+| DHCP Hostname | True | True |
+| DHCP Parameter Request List | True | True |
+| DHCP Vendor Class ID | True | True |
+| Filter ID Delimiter Period | True | "-" |
+| Filter ID IPv4 IPv6 Required | True | "-" |
+| Filter ID Muliple | True | "-" |
+| Username Format | delimiter: colon</br>MAC string case: lowercase | "-" |
 
 #### 802.1X Captive-portal authentication
 
