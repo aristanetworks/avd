@@ -10660,17 +10660,17 @@ ip as-path access-list mylist2 deny _64517$ igp
 
 | Type | Value | Auth Only |
 | ---- | ----- | --------- |
-| Service Type | True | "-" |
-| Framed MTU | 1500 | "-" |
+| Service Type | True | - |
+| Framed MTU | 1500 | - |
 | LLDP System-name | True | True |
 | LLDP System-description | True | True |
 | DHCP Hostname | True | True |
 | DHCP Parameter Request List | True | True |
 | DHCP Vendor Class ID | True | True |
-| Filter ID Delimiter Period | True | "-" |
-| Filter ID IPv4 IPv6 Required | True | "-" |
-| Filter ID Muliple | True | "-" |
-| Username Format | delimiter: colon</br>MAC string case: lowercase | "-" |
+| Filter ID Delimiter Period | True | - |
+| Filter ID IPv4 IPv6 Required | True | - |
+| Filter ID Muliple | True | - |
+| Username Format | delimiter: colon</br>MAC string case: lowercase | - |
 
 #### 802.1X Captive-portal authentication
 

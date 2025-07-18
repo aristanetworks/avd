@@ -42,18 +42,18 @@
 
 | Type | Value | Auth Only |
 | ---- | ----- | --------- |
-| Service Type | {{ dot1x.radius_av_pair.service_type | arista.avd.default('-') }} | "-" |
-| Framed MTU | {{ dot1x.radius_av_pair.framed_mtu | arista.avd.default('-') }} | "-" |
+| Service Type | {{ dot1x.radius_av_pair.service_type | arista.avd.default('-') }} | - |
+| Framed MTU | {{ dot1x.radius_av_pair.framed_mtu | arista.avd.default('-') }} | - |
 | LLDP System-name | {{ dot1x.radius_av_pair.lldp.system_name.enabled | arista.avd.default('-') }} | {{ dot1x.radius_av_pair.lldp.system_name.auth_only | arista.avd.default('-') }} |
 | LLDP System-description | {{ dot1x.radius_av_pair.lldp.system_description.enabled | arista.avd.default('-') }} | {{ dot1x.radius_av_pair.lldp.system_description.auth_only | arista.avd.default('-') }} |
 | DHCP Hostname | {{ dot1x.radius_av_pair.dhcp.hostname.enabled | arista.avd.default('-') }} | {{ dot1x.radius_av_pair.dhcp.hostname.auth_only | arista.avd.default('-') }} |
 | DHCP Parameter Request List | {{ dot1x.radius_av_pair.dhcp.parameter_request_list.enabled | arista.avd.default('-') }} | {{ dot1x.radius_av_pair.dhcp.parameter_request_list.auth_only | arista.avd.default('-') }} |
 | DHCP Vendor Class ID | {{ dot1x.radius_av_pair.dhcp.vendor_class_id.enabled | arista.avd.default('-') }} | {{ dot1x.radius_av_pair.dhcp.vendor_class_id.auth_only | arista.avd.default('-') }} |
-| Filter ID Delimiter Period | {{ dot1x.radius_av_pair.filter_id.delimiter_period | arista.avd.default("-") }} | "-" |
-| Filter ID IPv4 IPv6 Required | {{ dot1x.radius_av_pair.filter_id.ipv4_ipv6_required | arista.avd.default("-") }} | "-" |
-| Filter ID Muliple | {{ dot1x.radius_av_pair.filter_id.multiple | arista.avd.default("-") }} | "-" |
+| Filter ID Delimiter Period | {{ dot1x.radius_av_pair.filter_id.delimiter_period | arista.avd.default("-") }} | - |
+| Filter ID IPv4 IPv6 Required | {{ dot1x.radius_av_pair.filter_id.ipv4_ipv6_required | arista.avd.default("-") }} | - |
+| Filter ID Muliple | {{ dot1x.radius_av_pair.filter_id.multiple | arista.avd.default("-") }} | - |
 {%             if dot1x.radius_av_pair_username_format is arista.avd.defined %}
-| Username Format | delimiter: {{ dot1x.radius_av_pair_username_format.delimiter }}</br>MAC string case: {{ dot1x.radius_av_pair_username_format.mac_string_case }} | "-" |
+| Username Format | delimiter: {{ dot1x.radius_av_pair_username_format.delimiter }}</br>MAC string case: {{ dot1x.radius_av_pair_username_format.mac_string_case }} | - |
 {%             endif %}
 {%         endif %}
 {%         if dot1x.captive_portal.enabled is arista.avd.defined(true) %}
