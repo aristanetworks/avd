@@ -10662,11 +10662,11 @@ ip as-path access-list mylist2 deny _64517$ igp
 | ---- | ----- | --------- |
 | Service Type | - | - |
 | Framed MTU | 1500 | - |
-| LLDP System-name | - | True |
-| LLDP System-description | - | True |
-| DHCP Hostname | - | True |
-| DHCP Parameter Request List | - | True |
-| DHCP Vendor Class ID | - | True |
+| LLDP System-name | - | Yes |
+| LLDP System-description | - | Yes |
+| DHCP Hostname | - | Yes |
+| DHCP Parameter Request List | - | Yes |
+| DHCP Vendor Class ID | - | Yes |
 | Filter ID Delimiter Period | - | - |
 | Filter ID IPv4 IPv6 Required | - | - |
 | Filter ID Multiple | - | - |
