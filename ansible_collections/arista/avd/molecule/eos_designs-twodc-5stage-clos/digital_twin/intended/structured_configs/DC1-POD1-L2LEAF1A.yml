@@ -42,11 +42,11 @@ metadata:
   fabric_name: TWODC_5STAGE_CLOS
   digital_twin:
     environment: act
-    node_type: tools-server
+    node_type: third-party
     ip_addr: 192.168.1.10/24
-    version: ubuntu-2204-lts
-    username: admin
-    password: admin
+    version: byod
+    username: ansible
+    password: ansible
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC1-POD1-LEAF1A_Port-Channel3

@@ -88,8 +88,8 @@ metadata:
     node_type: veos
     ip_addr: 192.168.1.7/24
     version: 4.33.1.1F
-    username: admin
-    password: admin
+    username: cvpadmin
+    password: cvp123!
 port_channel_interfaces:
 - name: Port-Channel3
   description: L2_DC1-POD1-L2LEAF1A_Port-Channel1

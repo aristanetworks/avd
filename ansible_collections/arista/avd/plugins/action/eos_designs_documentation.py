@@ -18,12 +18,15 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, write_file
 
 PLUGIN_NAME = "arista.avd.eos_designs_documentation"
+
+
 try:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
+    from pyavd._eos_designs.schema import EosDesigns
     from pyavd._utils import get, strip_empties_from_dict
     from pyavd.get_fabric_documentation import get_fabric_documentation
 except ImportError as e:
-    EosDesignsFacts = get = strip_empties_from_dict = get_fabric_documentation = RaiseOnUse(
+    EosDesignsFacts = EosDesigns = get = strip_empties_from_dict = get_fabric_documentation = RaiseOnUse(
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
@@ -86,6 +89,16 @@ class ActionModule(ActionBase):
             structured_config_suffix=validated_args["structured_config_suffix"],
         )
         fabric_name = get(task_vars, "fabric_name", required=True)
+
+        digital_twin: tuple[bool, EosDesigns.DigitalTwin | None]
+        if digital_twin_mode := validated_args["digital_twin"]:
+            groups = task_vars.get("groups", {})
+            first_fabric_host = next(iter(groups.get(fabric_name, [])))
+
+            digital_twin = (digital_twin_mode, EosDesigns._from_dict(dict(task_vars["hostvars"].get(first_fabric_host))).digital_twin)
+        else:
+            digital_twin = (digital_twin_mode, None)
+
         output = get_fabric_documentation(
             avd_facts=all_facts,
             structured_configs=structured_configs,
@@ -95,7 +108,7 @@ class ActionModule(ActionBase):
             topology_csv=validated_args["topology_csv"],
             p2p_links_csv=validated_args["p2p_links_csv"],
             toc=validated_args["toc"],
-            digital_twin=validated_args["digital_twin"],
+            digital_twin=digital_twin,
         )
         if output.fabric_documentation:
             result["changed"] = write_file(

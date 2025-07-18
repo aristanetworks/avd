@@ -3,10 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, Protocol
+from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdError
-from pyavd._utils import default, get
+from pyavd._utils import default
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigMetadataProtocol
@@ -18,17 +18,6 @@ class DigitalTwinMixin(Protocol):
 
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
-
-    DEFAULT_OS_VERSION_MAP: ClassVar[dict[str, dict[str, str]]] = {
-        "act": {
-            "cloudeos": "4.33.2F",
-            "cvp": "2024.3.2",
-            "generic": "ubuntu-2204-lts",
-            "third-party": "byod",
-            "tools-server": "ubuntu-2204-lts",
-            "veos": "4.33.1.1F",
-        },
-    }
 
     def _set_digital_twin(self: AvdStructuredConfigMetadataProtocol) -> None:
         """
@@ -54,13 +43,24 @@ class DigitalTwinMixin(Protocol):
                         " 'mgmt_ip' attribute must be set in the node configuration settings using either the 'digital_twin.mgmt_ip' or 'mgmt_ip' key."
                     )
                     raise AristaAvdError(msg)
-                version = default(
-                    self.shared_utils.node_config.digital_twin.act_os_version,
-                    self.inputs.digital_twin.fabric.act_os_version,
-                    get(self.DEFAULT_OS_VERSION_MAP, f"act..{digital_twin_node_type}", separator=".."),
-                )
-                username = self.inputs.digital_twin.fabric.act_username
-                password = self.inputs.digital_twin.fabric.act_password
+                # Identify default os_version, username and password based on the matched ACT node type
+                match digital_twin_node_type:
+                    case "cloudeos":
+                        default_os_version_for_node_type = self.inputs.digital_twin.act_cloudeos_os_version
+                        username = self.inputs.digital_twin.act_cloudeos_username
+                        password = self.inputs.digital_twin.act_cloudeos_password
+                    case "third-party":
+                        default_os_version_for_node_type = self.inputs.digital_twin.act_third_party_os_version
+                        username = self.inputs.digital_twin.act_third_party_username
+                        password = self.inputs.digital_twin.act_third_party_password
+                    case "veos":
+                        default_os_version_for_node_type = self.inputs.digital_twin.act_veos_os_version
+                        username = self.inputs.digital_twin.act_veos_username
+                        password = self.inputs.digital_twin.act_veos_password
+                    case _:
+                        # TODO: Raise
+                        raise ValueError
+                version = default(self.shared_utils.node_config.digital_twin.act_os_version, default_os_version_for_node_type)
                 self.structured_config.metadata.digital_twin._update(
                     environment=environment,
                     node_type=digital_twin_node_type,
