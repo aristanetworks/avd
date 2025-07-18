@@ -41,7 +41,7 @@ ethernet_interfaces:
   isis_authentication:
     both:
       key_type: '7'
-      key: $1c$sTNAlR6rKSw=
+      key: 7h4BlaA7By3z4DS4JcikPQ==
       mode: md5
   peer: peer2
   peer_interface: ethernet2
@@ -87,6 +87,48 @@ ethernet_interfaces:
       mode: text
   peer: peer4
   peer_interface: ethernet4
+  peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet5
+  description: P2P_peer2_ethernet5
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.4/31
+  isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_hello_padding: true
+  isis_authentication:
+    both:
+      key_type: '7'
+      key: m89QJMCtp4LRQGQz7SJF/Q==
+      mode: md5
+  peer: peer2
+  peer_interface: ethernet5
+  peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet6
+  description: P2P_peer2_ethernet6
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.6/31
+  isis_enable: EVPN_UNDERLAY
+  isis_bfd: true
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  isis_hello_padding: true
+  isis_authentication:
+    both:
+      key_type: '7'
+      key: CthgAX8QFfMSWvwSuEAhyw==
+      mode: text
+  peer: peer2
+  peer_interface: ethernet6
   peer_type: other
   switchport:
     enabled: false

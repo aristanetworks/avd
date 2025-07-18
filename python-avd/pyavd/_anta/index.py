@@ -98,18 +98,8 @@ AVD_TEST_INDEX: list[TestSpec] = [
         conditional_keys=[StructuredConfigKey.MLAG_CONFIGURATION],
     ),
     TestSpec(
-        test_class=VerifyMlagDualPrimary,
-        conditional_keys=[StructuredConfigKey.MLAG_DUAL_PRIMARY_DETECTION_DELAY],
-        input_factory=VerifyMlagDualPrimaryInputFactory,
-    ),
-    TestSpec(
         test_class=VerifyMlagInterfaces,
         conditional_keys=[StructuredConfigKey.MLAG_CONFIGURATION],
-    ),
-    TestSpec(
-        test_class=VerifyMlagReloadDelay,
-        conditional_keys=[StructuredConfigKey.RELOAD_DELAY_MLAG, StructuredConfigKey.RELOAD_DELAY_NON_MLAG],
-        input_factory=VerifyMlagReloadDelayInputFactory,
     ),
     TestSpec(
         test_class=VerifyMlagStatus,
@@ -150,6 +140,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     TestSpec(
         test_class=VerifyTransceiversTemperature,
     ),
+    TestSpec(test_class=VerifyVxlanConfigSanity, conditional_keys=[StructuredConfigKey.VXLAN1_INTERFACE]),
     TestSpec(
         test_class=VerifyZeroTouch,
     ),
