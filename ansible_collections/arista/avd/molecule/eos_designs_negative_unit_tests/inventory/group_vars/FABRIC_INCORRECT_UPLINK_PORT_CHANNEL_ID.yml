@@ -1,0 +1,50 @@
+fabric_name: FABRIC_INCORRECT_UPLINK_PORT_CHANNEL_ID
+default_node_types:
+  - match_hostnames:
+      - incorrect-uplink-port-channel-id-leaf.*
+    node_type: l3leaf
+  - match_hostnames:
+      - incorrect-uplink-port-channel-id-l2leaf.*
+    node_type: l2leaf
+
+l3leaf:
+  defaults:
+    uplink_ipv4_pool: 172.31.254.0/30
+    loopback_ipv4_pool: 172.31.253.0/24
+    vtep_loopback_ipv4_pool: 172.31.252.0/24
+  nodes:
+    - name: incorrect-uplink-port-channel-id-leaf
+      id: 4
+      mgmt_ip: 192.168.200.108/24
+      mac_address: '0c:1d:c0:1d:62:01'
+      bgp_as: 65103
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    uplink_switches: [incorrect-uplink-port-channel-id-leaf]
+    uplink_interfaces: [Ethernet1]
+    mlag: true
+    mlag_interfaces: [Ethernet3, Ethernet4]
+    mlag_peer_vlan: 4091
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+  node_groups:
+    - group: incorrect-uplink-port-channel-id-l2leaf1
+      uplink_port_channel_id: 1001
+      nodes:
+        - name: incorrect-uplink-port-channel-id-l2leaf1a
+          id: 9
+          mgmt_ip: 192.168.200.113/24
+          mac_address: '0c:1d:c0:1d:62:01'
+          uplink_switch_interfaces: [Ethernet7, Ethernet7]
+        - name: incorrect-uplink-port-channel-id-l2leaf1b
+          id: 10
+          mgmt_ip: 192.168.200.114/24
+          uplink_switch_port_channel_id: 100
+          mac_address: '0c:1d:c0:1d:62:01'
+          uplink_switch_interfaces: [Ethernet8, Ethernet8]
+
+expected_error_message: >-
+  'uplink_switch_port_channel_id' is set to 100 and is not matching 7 set on MLAG peer.
+  The 'uplink_switch_port_channel_id' must be matching on MLAG peers for
+  host 'incorrect-uplink-port-channel-id-l2leaf1b'.
