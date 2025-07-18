@@ -3978,17 +3978,21 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {"node_name": {"type": str}, "node_type": {"type": str}, "act_os_version": {"type": str}, "act_mgmt_ip": {"type": str}}
             node_name: str
-            """XXX"""
+            """Name of the auxiliary system."""
             node_type: Literal["act-tools-server"]
-            """XXX"""
+            """
+            Node type of the auxiliary system.
+            Naming convention: '<digital_twin_environment>-<node_type>'.
+            """
             act_os_version: str | None
             """
-            XXX
-            Overrides parent `digital_twin.act_<node_type>_os_version` value.
+            OS version of the auxiliary system.
+            Overrides parent `digital_twin.act_<node_type>_os_version`
+            value.
             """
             act_mgmt_ip: str | None
             """
-            Management interface IPv4 address for ACT Digital Twin.
+            Management interface IPv4 address of the auxiliary system.
             Required for ACT auxiliary system.
             """
 
@@ -4009,13 +4013,16 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        node_name: XXX
-                        node_type: XXX
+                        node_name: Name of the auxiliary system.
+                        node_type:
+                           Node type of the auxiliary system.
+                           Naming convention: '<digital_twin_environment>-<node_type>'.
                         act_os_version:
-                           XXX
-                           Overrides parent `digital_twin.act_<node_type>_os_version` value.
+                           OS version of the auxiliary system.
+                           Overrides parent `digital_twin.act_<node_type>_os_version`
+                           value.
                         act_mgmt_ip:
-                           Management interface IPv4 address for ACT Digital Twin.
+                           Management interface IPv4 address of the auxiliary system.
                            Required for ACT auxiliary system.
 
                     """
@@ -4165,9 +4172,11 @@ class EosDesigns(EosDesignsRootModel):
         """
         Auxiliary systems (e.g., CloudVision portal, general Linux servers) deployed as part of the Digital
         Twin infrastructure alongside the fabric devices.
+        Specific auxiliary system will be rendered only if
+        their 'node_type' is matching the targeted Digital Twin environment.
 
-        Subclass of AvdList with `AuxiliarySystemsItem`
-        items.
+        Subclass of AvdList with
+        `AuxiliarySystemsItem` items.
         """
 
         if TYPE_CHECKING:
@@ -4225,9 +4234,11 @@ class EosDesigns(EosDesignsRootModel):
                     auxiliary_systems:
                        Auxiliary systems (e.g., CloudVision portal, general Linux servers) deployed as part of the Digital
                        Twin infrastructure alongside the fabric devices.
+                       Specific auxiliary system will be rendered only if
+                       their 'node_type' is matching the targeted Digital Twin environment.
 
-                       Subclass of AvdList with `AuxiliarySystemsItem`
-                       items.
+                       Subclass of AvdList with
+                       `AuxiliarySystemsItem` items.
 
                 """
 

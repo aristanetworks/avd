@@ -35,6 +35,7 @@ class DigitalTwinMixin(Protocol):
                         f" 'digital_twin.{environment}_node_type' key is missing in platform settings."
                     )
                     raise AristaAvdError(msg)
+
                 ip_addr = default(self.shared_utils.node_config.digital_twin.mgmt_ip, self.shared_utils.node_config.mgmt_ip)
                 # TODO: Adjust once dynamic pool-based IP allocation is implemented.
                 if not (isinstance(ip_addr, str) and ip_addr):
@@ -43,6 +44,7 @@ class DigitalTwinMixin(Protocol):
                         " 'mgmt_ip' attribute must be set in the node configuration settings using either the 'digital_twin.mgmt_ip' or 'mgmt_ip' key."
                     )
                     raise AristaAvdError(msg)
+
                 # Identify default os_version, username and password based on the matched ACT node type
                 match digital_twin_node_type:
                     case "cloudeos":
@@ -57,10 +59,9 @@ class DigitalTwinMixin(Protocol):
                         default_os_version_for_node_type = self.inputs.digital_twin.act_veos_os_version
                         username = self.inputs.digital_twin.act_veos_username
                         password = self.inputs.digital_twin.act_veos_password
-                    case _:
-                        # TODO: Raise
-                        raise ValueError
+
                 version = default(self.shared_utils.node_config.digital_twin.act_os_version, default_os_version_for_node_type)
+
                 self.structured_config.metadata.digital_twin._update(
                     environment=environment,
                     node_type=digital_twin_node_type,
@@ -70,4 +71,5 @@ class DigitalTwinMixin(Protocol):
                     username=username,
                     password=password,
                 )
+
                 return

@@ -27,11 +27,11 @@
     | [<samp>&nbsp;&nbsp;act_veos_username</samp>](## "digital_twin.act_veos_username") | String |  | `cvpadmin` |  | Username for ACT Digital Twin 'veos' nodes. |
     | [<samp>&nbsp;&nbsp;act_veos_password</samp>](## "digital_twin.act_veos_password") | String |  | `cvp123!` |  | Password for ACT Digital Twin 'veos' nodes. |
     | [<samp>&nbsp;&nbsp;act_veos_os_version</samp>](## "digital_twin.act_veos_os_version") | String |  | `4.33.1.1F` |  | OS version for ACT Digital Twin 'veos' nodes. |
-    | [<samp>&nbsp;&nbsp;auxiliary_systems</samp>](## "digital_twin.auxiliary_systems") | List, items: Dictionary |  |  |  | Auxiliary systems (e.g., CloudVision portal, general Linux servers) deployed as part of the Digital Twin infrastructure alongside the fabric devices. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node_name</samp>](## "digital_twin.auxiliary_systems.[].node_name") | String | Required |  |  | XXX |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node_type</samp>](## "digital_twin.auxiliary_systems.[].node_type") | String | Required |  | Valid Values:<br>- <code>act-tools-server</code> | XXX |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "digital_twin.auxiliary_systems.[].act_os_version") | String |  |  |  | XXX<br>Overrides parent `digital_twin.act_<node_type>_os_version` value. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_mgmt_ip</samp>](## "digital_twin.auxiliary_systems.[].act_mgmt_ip") | String |  |  | Format: cidr | Management interface IPv4 address for ACT Digital Twin.<br>Required for ACT auxiliary system. |
+    | [<samp>&nbsp;&nbsp;auxiliary_systems</samp>](## "digital_twin.auxiliary_systems") | List, items: Dictionary |  |  |  | Auxiliary systems (e.g., CloudVision portal, general Linux servers) deployed as part of the Digital Twin infrastructure alongside the fabric devices.<br>Specific auxiliary system will be rendered only if their 'node_type' is matching the targeted Digital Twin environment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node_name</samp>](## "digital_twin.auxiliary_systems.[].node_name") | String | Required |  |  | Name of the auxiliary system. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node_type</samp>](## "digital_twin.auxiliary_systems.[].node_type") | String | Required |  | Valid Values:<br>- <code>act-tools-server</code> | Node type of the auxiliary system.<br>Naming convention: '<digital_twin_environment>-<node_type>'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "digital_twin.auxiliary_systems.[].act_os_version") | String |  |  |  | OS version of the auxiliary system.<br>Overrides parent `digital_twin.act_<node_type>_os_version` value. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_mgmt_ip</samp>](## "digital_twin.auxiliary_systems.[].act_mgmt_ip") | String |  |  | Format: cidr | Management interface IPv4 address of the auxiliary system.<br>Required for ACT auxiliary system. |
 
 === "YAML"
 
@@ -98,19 +98,21 @@
       act_veos_os_version: <str; default="4.33.1.1F">
 
       # Auxiliary systems (e.g., CloudVision portal, general Linux servers) deployed as part of the Digital Twin infrastructure alongside the fabric devices.
+      # Specific auxiliary system will be rendered only if their 'node_type' is matching the targeted Digital Twin environment.
       auxiliary_systems:
 
-          # XXX
+          # Name of the auxiliary system.
         - node_name: <str; required>
 
-          # XXX
+          # Node type of the auxiliary system.
+          # Naming convention: '<digital_twin_environment>-<node_type>'.
           node_type: <str; "act-tools-server"; required>
 
-          # XXX
+          # OS version of the auxiliary system.
           # Overrides parent `digital_twin.act_<node_type>_os_version` value.
           act_os_version: <str>
 
-          # Management interface IPv4 address for ACT Digital Twin.
+          # Management interface IPv4 address of the auxiliary system.
           # Required for ACT auxiliary system.
           act_mgmt_ip: <str>
     ```

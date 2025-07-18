@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get
 from pyavd.api.fabric_documentation import (
     ACTDigitalTwin,
@@ -29,7 +30,8 @@ def get_fabric_documentation(
     topology_csv: bool = False,
     p2p_links_csv: bool = False,
     toc: bool = True,
-    digital_twin: tuple[bool, EosDesigns.DigitalTwin | None] = (False, None),
+    digital_twin: bool = False,
+    inputs: EosDesigns | None = None,
 ) -> FabricDocumentation:
     """
     Build and return the AVD fabric documentation.
@@ -38,6 +40,7 @@ def get_fabric_documentation(
     - Fabric documentation as Markdown, optionally including connected endpoints.
     - Topology CSV containing the physical interface connections for every device.
     - P2P links CSV containing the Routed point-to-point links.
+    - Digital Twin artifacts.
 
     Args:
         avd_facts: Dictionary of avd_facts as returned from `pyavd.get_avd_facts`.
@@ -49,6 +52,7 @@ def get_fabric_documentation(
         p2p_links_csv: Returns P2P links CSV when set to True.
         toc: Skip TOC when set to False.
         digital_twin: PREVIEW: Returns Digital Twin topology when set to True.
+        inputs: EosDesigns object holding facts required to generate extra documentation artifacts.
 
     Returns:
         FabricDocumentation object containing the requested documentation areas.
@@ -74,8 +78,8 @@ def get_fabric_documentation(
         result.topology_csv = _get_topology_csv(fabric_documentation_facts)
     if p2p_links_csv:
         result.p2p_links_csv = _get_p2p_links_csv(fabric_documentation_facts)
-    if digital_twin[0] and digital_twin[1] is not None:
-        result.digital_twin = _get_digital_twin(fabric_documentation_facts, digital_twin[1])
+    if digital_twin and inputs is not None:
+        result.digital_twin = _get_digital_twin(fabric_documentation_facts, inputs)
 
     return result
 
@@ -117,15 +121,15 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
     return csv_content.read()
 
 
-def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts, digital_twin: EosDesigns.DigitalTwin) -> ACTDigitalTwin | None:
-    match digital_twin.environment:
+def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts, inputs: EosDesigns) -> ACTDigitalTwin | None:
+    match inputs.digital_twin.environment:
         case "act":
-            return _get_digital_twin_act(fabric_documentation_facts, digital_twin)
+            return _get_digital_twin_act(fabric_documentation_facts, inputs)
         case _:
             return None
 
 
-def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts, digital_twin: EosDesigns.DigitalTwin) -> ACTDigitalTwin:
+def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts, inputs: EosDesigns) -> ACTDigitalTwin:
     """
     Build and return the ACT topology data.
 
@@ -136,11 +140,12 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts, 
 
     Args:
         fabric_documentation_facts: FabricDocumentationFacts object holding facts used for generating Fabric Documentation.
-        digital_twin: EosDesigns.DigitalTwin object holding facts used to generate Digital Twin artifacts.
+        inputs: EosDesigns object holding facts used to generate Digital Twin artifacts.
 
     Returns:
         ACTDigitalTwin object containing information to render ACT topology file.
     """
+    # Dictionary to track required global node definitions.
     digital_twin_node_types: dict[str, ActNodeTypeSettings | None] = {
         "cloudeos": None,
         "cvp": None,
@@ -149,7 +154,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts, 
         "tools-server": None,
         "veos": None,
     }
-    digital_twin_devices: list[dict[str, ActNodeSettings]] = []
+    digital_twin_devices: dict[str, ActNodeSettings] = {}
     device_list: list[str] = list(fabric_documentation_facts.avd_facts)
     for device in sorted(device_list):
         if (
@@ -157,58 +162,73 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts, 
         ) in digital_twin_node_types and not digital_twin_node_types[digital_twin_node_type]:
             match digital_twin_node_type:
                 case "cloudeos":
-                    username = digital_twin.act_cloudeos_username
-                    password = digital_twin.act_cloudeos_password
+                    username = inputs.digital_twin.act_cloudeos_username
+                    password = inputs.digital_twin.act_cloudeos_password
                 case "third-party":
-                    username = digital_twin.act_third_party_username
-                    password = digital_twin.act_third_party_password
+                    username = inputs.digital_twin.act_third_party_username
+                    password = inputs.digital_twin.act_third_party_password
                 case "veos":
-                    username = digital_twin.act_veos_username
-                    password = digital_twin.act_veos_password
-                case _:
-                    # TODO: Raise
-                    raise ValueError
+                    username = inputs.digital_twin.act_veos_username
+                    password = inputs.digital_twin.act_veos_password
+                # TODO: pytest coverage for exceptions raised while generating fabric documentation
+                case _:  # pragma: no cover
+                    # AVD Fabric nodes can only be mapped to ACT's cloudeos, third-party or veos node types.
+                    msg = (
+                        f"Fabric node '{device}' can not be represented in ACT Digital Twin environment as node type '{digital_twin_node_type}'."
+                        "Allowed values are: ['cloudeos', 'third-party', 'veos']."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
             digital_twin_node_types[digital_twin_node_type] = ActNodeTypeSettings(username=username, password=password)
 
-        digital_twin_devices.append(
-            {
-                device: ActNodeSettings(
-                    # All three values are enforced as non-empty strings during the generation of the metadata part of the structured_config
-                    node_type=digital_twin_node_type,
-                    ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
-                    version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
-                )
-            }
+        digital_twin_devices[device] = ActNodeSettings(
+            # All three values are enforced as non-empty strings during the generation of the metadata part of the structured_config
+            node_type=digital_twin_node_type,
+            ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
+            version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
         )
 
-    # Process auxiliary_systems
-    if auxiliary_systems := digital_twin.auxiliary_systems:
+    # Process auxiliary_systems (eg., tools-servers, cvps)
+    if auxiliary_systems := inputs.digital_twin.auxiliary_systems:
         for auxiliary_system in auxiliary_systems:
             node_name = auxiliary_system.node_name
             node_type = auxiliary_system.node_type
             match node_type:
                 case "act-tools-server":
                     matched_node_type = "tools-server"
-                    username = digital_twin.act_tools_server_username
-                    password = digital_twin.act_tools_server_password
-                    if not (mgmt_ip := auxiliary_system.act_mgmt_ip):
-                        # TODO: Raise as IP is mandatory
-                        raise ValueError
-                    os_version = default(auxiliary_system.act_os_version, digital_twin.act_tools_server_os_version)
+                    username = inputs.digital_twin.act_tools_server_username
+                    password = inputs.digital_twin.act_tools_server_password
+
+                    # TODO: pytest coverage for exceptions raised while generating fabric documentation
+                    if not (mgmt_ip := auxiliary_system.act_mgmt_ip):  # pragma: no cover
+                        # ACT auxiliary systems must have an act_mgmt_ip attribute set.
+                        msg = f"digital_twin.auxiliary_systems.[name=={node_name}].act_mgmt_ip"
+                        raise AristaAvdMissingVariableError(msg)
+
+                    os_version = default(auxiliary_system.act_os_version, inputs.digital_twin.act_tools_server_os_version)
                 case _:
+                    # auxiliary_system is defined for another Digital Twin environment. Continue.
                     continue
-            # Update digital_twin_node_types if matching node type has not been defined yet
+
+            new_auxiliary_system = ActNodeSettings(node_type=matched_node_type, ip_addr=mgmt_ip, version=os_version)
+
+            # Check for overlapping names between fabric and auxiliary nodes
+            # TODO: pytest coverage for exceptions raised while generating fabric documentation
+            if node_name in digital_twin_devices:  # pragma: no cover
+                msg = (
+                    f"ACT Digital Twin auxiliary system {{'{node_name}': {new_auxiliary_system}}} has overlapping `name` with "
+                    f"{{'{node_name}': {digital_twin_devices[node_name]}}}. Node names in ACT topology file must be unique."
+                )
+                raise AristaAvdInvalidInputsError(msg)
+
+            # Update digital_twin_node_types if matching node type has not been populated yet
             if not digital_twin_node_types[matched_node_type]:
                 digital_twin_node_types[matched_node_type] = ActNodeTypeSettings(username=username, password=password)
-            # Check for overlapping names between fabric and auxiliary nodes
-            if node_name in digital_twin_devices:
-                # TODO: Raise, name of the auxiliary node matches the name of one of the fabrci devices
-                pass
-            # Append auxiliary node to the list of ACT nodes
-            digital_twin_devices.append({node_name: ActNodeSettings(node_type=matched_node_type, ip_addr=mgmt_ip, version=os_version)})
+
+            # Add new auxiliary system to the staged ACT nodes
+            digital_twin_devices[node_name] = new_auxiliary_system
 
     return ACTDigitalTwin(
-        nodes=tuple(digital_twin_devices),
+        nodes=tuple({node_name: node_value} for node_name, node_value in digital_twin_devices.items()),
         links=tuple(
             ActLinkSettings(
                 connection=(f"{topology_link['node']}:{topology_link['node_interface']}", f"{topology_link['peer']}:{topology_link['peer_interface']}")

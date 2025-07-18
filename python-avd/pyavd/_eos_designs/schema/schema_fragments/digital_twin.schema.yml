@@ -115,30 +115,32 @@ keys:
         type: list
         description: |-
           Auxiliary systems (e.g., CloudVision portal, general Linux servers) deployed as part of the Digital Twin infrastructure alongside the fabric devices.
+          Specific auxiliary system will be rendered only if their 'node_type' is matching the targeted Digital Twin environment.
         items:
           type: dict
           keys:
             node_name:
               type: str
               description: |-
-                XXX
+                Name of the auxiliary system.
               required: true
             node_type:
               type: str
               description: |-
-                XXX
+                Node type of the auxiliary system.
+                Naming convention: '<digital_twin_environment>-<node_type>'.
               required: true
               valid_values:
                 - act-tools-server
             act_os_version:
               type: str
               description: |-
-                XXX
+                OS version of the auxiliary system.
                 Overrides parent `digital_twin.act_<node_type>_os_version` value.
             act_mgmt_ip:
               type: str
               description: |-
-                Management interface IPv4 address for ACT Digital Twin.
+                Management interface IPv4 address of the auxiliary system.
                 Required for ACT auxiliary system.
               format: cidr
       # TODO: Add this in a separate PR.

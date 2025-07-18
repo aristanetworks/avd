@@ -18,8 +18,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, write_file
 
 PLUGIN_NAME = "arista.avd.eos_designs_documentation"
-
-
 try:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._eos_designs.schema import EosDesigns
@@ -90,14 +88,12 @@ class ActionModule(ActionBase):
         )
         fabric_name = get(task_vars, "fabric_name", required=True)
 
-        digital_twin: tuple[bool, EosDesigns.DigitalTwin | None]
-        if digital_twin_mode := validated_args["digital_twin"]:
+        inputs: EosDesigns | None = None
+        if digital_twin := validated_args["digital_twin"]:
             groups = task_vars.get("groups", {})
             first_fabric_host = next(iter(groups.get(fabric_name, [])))
 
-            digital_twin = (digital_twin_mode, EosDesigns._from_dict(dict(task_vars["hostvars"].get(first_fabric_host))).digital_twin)
-        else:
-            digital_twin = (digital_twin_mode, None)
+            inputs = EosDesigns._from_dict(dict(task_vars["hostvars"].get(first_fabric_host)))
 
         output = get_fabric_documentation(
             avd_facts=all_facts,
@@ -109,6 +105,7 @@ class ActionModule(ActionBase):
             p2p_links_csv=validated_args["p2p_links_csv"],
             toc=validated_args["toc"],
             digital_twin=digital_twin,
+            inputs=inputs,
         )
         if output.fabric_documentation:
             result["changed"] = write_file(
