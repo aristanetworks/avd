@@ -64,7 +64,7 @@ ntp serve ipv6 access-group test_ACL_v6 in
 #### PTP Summary
 
 | Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running | Free Running Source Clock Hardware |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------| ---------------------------------- |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | ------------ | ---------------------------------- |
 | - | - | - | - | - | - | - | - | False | - |
 
 #### PTP Device Configuration
