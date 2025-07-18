@@ -773,7 +773,6 @@
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
-
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: multiple-uplink-interfaces-for-uplink-type-lan
   connection: local
@@ -853,7 +852,7 @@
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
-              
+
 - name: Converge Negative tests for 'eos_designs_facts' - FABRIC_MISSING_BGP_AS_ON_UPLINK_SWITCH
   hosts: missing-bgp-as-on-uplink-switch-leaf
   connection: local
@@ -869,7 +868,7 @@
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
-              
+
 - name: Converge Negative tests for 'eos_designs_facts' - FABRIC_SMALL_BGP_AS_RANGE_ON_UPLINK_SWITCH
   hosts: small-bgp-as-range-on-uplink-switch-leaf
   connection: local
