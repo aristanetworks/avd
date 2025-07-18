@@ -26,9 +26,7 @@ from anta.tests.interfaces import (
 from anta.tests.logging import VerifyLoggingErrors
 from anta.tests.mlag import (
     VerifyMlagConfigSanity,
-    VerifyMlagDualPrimary,
     VerifyMlagInterfaces,
-    VerifyMlagReloadDelay,
     VerifyMlagStatus,
 )
 from anta.tests.path_selection import VerifySpecificPath
@@ -46,6 +44,7 @@ from anta.tests.system import (
     VerifyNTP,
     VerifyReloadCause,
 )
+from anta.tests.vxlan import VerifyVxlanConfigSanity
 
 __all__ = [
     "VerifyAPIHttpsSSL",
@@ -69,9 +68,7 @@ __all__ = [
     "VerifyMaintenance",
     "VerifyMemoryUtilization",
     "VerifyMlagConfigSanity",
-    "VerifyMlagDualPrimary",
     "VerifyMlagInterfaces",
-    "VerifyMlagReloadDelay",
     "VerifyMlagStatus",
     "VerifyNTP",
     "VerifyPortChannels",
@@ -85,5 +82,6 @@ __all__ = [
     "VerifyStormControlDrops",
     "VerifyTemperature",
     "VerifyTransceiversTemperature",
+    "VerifyVxlanConfigSanity",
     "VerifyZeroTouch",
 ]

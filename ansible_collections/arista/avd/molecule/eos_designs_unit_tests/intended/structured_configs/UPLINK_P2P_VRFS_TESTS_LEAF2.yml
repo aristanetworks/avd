@@ -9,6 +9,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ipv6_address: 2001:db8:3:8::2/64
+  pim:
+    ipv4:
+      sparse_mode: true
   mac_security:
     profile: TEST
   peer: UPLINK_P2P_VRFS_TESTS_SPINE1
@@ -43,6 +46,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ipv6_address: 2001:db8:3:9::2/64
+  pim:
+    ipv4:
+      sparse_mode: true
   mac_security:
     profile: TEST
   peer: UPLINK_P2P_VRFS_TESTS_SPINE2
