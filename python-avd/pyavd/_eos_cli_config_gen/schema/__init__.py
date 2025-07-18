@@ -18120,7 +18120,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class PortGroupItem(AvdModel):
+            class PortGroupsItem(AvdModel):
                 """Subclass of AvdModel."""
 
                 class Flow(AvdModel):
@@ -18133,7 +18133,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         dscp: int | None
                         """Packet DSCP value."""
                         traffic_class: int | None
-                        """Packet traffic-class vlaue."""
+                        """Packet traffic-class value."""
 
                         if TYPE_CHECKING:
 
@@ -18146,7 +18146,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     dscp: Packet DSCP value.
-                                    traffic_class: Packet traffic-class vlaue.
+                                    traffic_class: Packet traffic-class value.
 
                                 """
 
@@ -18193,11 +18193,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             """
 
                 _fields: ClassVar[dict] = {"group": {"type": str}, "balance_factor": {"type": int}, "interface": {"type": str}, "flow": {"type": Flow}}
-                group: str | None
+                group: str
                 """Port group name."""
                 balance_factor: int | None
                 interface: str | None
-                """Interface name"""
+                """
+                Ethernet interface/subinterface name. It could be a `,` separated list or range.
+                eg. Ethernet 2,
+                Ethernet 2-5,
+                    Ethernet 2.2,3.1,
+                    Ethernet 3.1-2
+                """
                 flow: Flow
                 """Subclass of AvdModel."""
 
@@ -18206,13 +18212,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        group: str | None | UndefinedType = Undefined,
+                        group: str | UndefinedType = Undefined,
                         balance_factor: int | None | UndefinedType = Undefined,
                         interface: str | None | UndefinedType = Undefined,
                         flow: Flow | UndefinedType = Undefined,
                     ) -> None:
                         """
-                        PortGroupItem.
+                        PortGroupsItem.
 
 
                         Subclass of AvdModel.
@@ -18220,15 +18226,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             group: Port group name.
                             balance_factor: balance_factor
-                            interface: Interface name
+                            interface:
+                               Ethernet interface/subinterface name. It could be a `,` separated list or range.
+                               eg. Ethernet 2,
+                               Ethernet 2-5,
+                                   Ethernet 2.2,3.1,
+                                   Ethernet 3.1-2
                             flow: Subclass of AvdModel.
 
                         """
 
-            class PortGroup(AvdList[PortGroupItem]):
-                """Subclass of AvdList with `PortGroupItem` items."""
+            class PortGroups(AvdIndexedList[str, PortGroupsItem]):
+                """Subclass of AvdIndexedList with `PortGroupsItem` items. Primary key is `group` (`str`)."""
 
-            PortGroup._item_type = PortGroupItem
+                _primary_key: ClassVar[str] = "group"
+
+            PortGroups._item_type = PortGroupsItem
 
             _fields: ClassVar[dict] = {
                 "destination_grouping": {"type": str},
@@ -18236,7 +18249,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "forwarding_type": {"type": str},
                 "load_balance_method_flow_round_robin": {"type": bool},
                 "flow": {"type": Flow},
-                "port_group": {"type": PortGroup},
+                "port_groups": {"type": PortGroups},
             }
             destination_grouping: Literal["BGP field-set", "prefix length", "vtep"] | None
             """Perform destination grouping using given setting."""
@@ -18250,11 +18263,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             load_balance_method_flow_round_robin: bool | None
             flow: Flow
             """Subclass of AvdModel."""
-            port_group: PortGroup
+            port_groups: PortGroups
             """
             Host ports settings.
 
-            Subclass of AvdList with `PortGroupItem` items.
+            Subclass of AvdIndexedList with `PortGroupsItem` items. Primary key is `group`
+            (`str`).
             """
 
             if TYPE_CHECKING:
@@ -18267,7 +18281,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     forwarding_type: Literal["bridged encapsulation vxlan ipv4", "routed ipv4"] | None | UndefinedType = Undefined,
                     load_balance_method_flow_round_robin: bool | None | UndefinedType = Undefined,
                     flow: Flow | UndefinedType = Undefined,
-                    port_group: PortGroup | UndefinedType = Undefined,
+                    port_groups: PortGroups | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Cluster.
@@ -18284,10 +18298,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         forwarding_type: forwarding_type
                         load_balance_method_flow_round_robin: load_balance_method_flow_round_robin
                         flow: Subclass of AvdModel.
-                        port_group:
+                        port_groups:
                            Host ports settings.
 
-                           Subclass of AvdList with `PortGroupItem` items.
+                           Subclass of AvdIndexedList with `PortGroupsItem` items. Primary key is `group`
+                           (`str`).
 
                     """
 

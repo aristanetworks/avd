@@ -1,0 +1,6 @@
+---
+load_balance:
+  cluster:
+    forwarding_type: bridged encapsulation vxlan ipv4
+    destination_grouping: prefix length
+    prefix_length: 10

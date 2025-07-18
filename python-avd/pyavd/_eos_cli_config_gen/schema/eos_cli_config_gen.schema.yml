@@ -7208,9 +7208,10 @@ keys:
                 - str
                 min: 30
                 max: 2147483647
-          port_group:
+          port_groups:
             description: Host ports settings.
             type: list
+            primary_key: group
             items:
               type: dict
               keys:
@@ -7225,7 +7226,9 @@ keys:
                   max: 4294967295
                 interface:
                   type: str
-                  description: Interface name
+                  description: "Ethernet interface/subinterface name. It could be
+                    a `,` separated list or range.\neg. Ethernet 2,\n    Ethernet
+                    2-5,\n    Ethernet 2.2,3.1,\n    Ethernet 3.1-2"
                 flow:
                   type: dict
                   keys:
@@ -7260,7 +7263,7 @@ keys:
                           - str
                           min: 0
                           max: 11
-                          description: Packet traffic-class vlaue.
+                          description: Packet traffic-class value.
   load_interval:
     type: dict
     keys:

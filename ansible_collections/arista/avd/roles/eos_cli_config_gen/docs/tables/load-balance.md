@@ -27,16 +27,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow</samp>](## "load_balance.cluster.flow") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;monitor</samp>](## "load_balance.cluster.flow.monitor") | Boolean |  |  |  | Monitor the flows without affecting forwarding. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_learning_aging_timeout</samp>](## "load_balance.cluster.flow.source_learning_aging_timeout") | Integer |  |  | Min: 30<br>Max: 2147483647 | Flow aging timeout in seconds for flow discovery by learning. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_group</samp>](## "load_balance.cluster.port_group") | List, items: Dictionary |  |  |  | Host ports settings. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "load_balance.cluster.port_group.[].group") | String |  |  |  | Port group name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;balance_factor</samp>](## "load_balance.cluster.port_group.[].balance_factor") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "load_balance.cluster.port_group.[].interface") | String |  |  |  | Interface name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow</samp>](## "load_balance.cluster.port_group.[].flow") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "load_balance.cluster.port_group.[].flow.limit") | Integer |  |  | Min: 0<br>Max: 4294967295 | Maximum number of flows per port https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning</samp>](## "load_balance.cluster.port_group.[].flow.warning") | Integer |  |  | Min: 0<br>Max: 4294967295 | Warning threshold of flows per port group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exhaustion_action</samp>](## "load_balance.cluster.port_group.[].flow.exhaustion_action") | Dictionary |  |  |  | Forwarding action when flows reach limits. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "load_balance.cluster.port_group.[].flow.exhaustion_action.dscp") | Integer |  |  | Min: 0<br>Max: 63 | Packet DSCP value. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "load_balance.cluster.port_group.[].flow.exhaustion_action.traffic_class") | Integer |  |  | Min: 0<br>Max: 11 | Packet traffic-class vlaue. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_groups</samp>](## "load_balance.cluster.port_groups") | List, items: Dictionary |  |  |  | Host ports settings. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "load_balance.cluster.port_groups.[].group") | String | Required, Unique |  |  | Port group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;balance_factor</samp>](## "load_balance.cluster.port_groups.[].balance_factor") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "load_balance.cluster.port_groups.[].interface") | String |  |  |  | Ethernet interface/subinterface name. It could be a `,` separated list or range.<br>eg. Ethernet 2,<br>    Ethernet 2-5,<br>    Ethernet 2.2,3.1,<br>    Ethernet 3.1-2 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow</samp>](## "load_balance.cluster.port_groups.[].flow") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "load_balance.cluster.port_groups.[].flow.limit") | Integer |  |  | Min: 0<br>Max: 4294967295 | Maximum number of flows per port https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning</samp>](## "load_balance.cluster.port_groups.[].flow.warning") | Integer |  |  | Min: 0<br>Max: 4294967295 | Warning threshold of flows per port group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exhaustion_action</samp>](## "load_balance.cluster.port_groups.[].flow.exhaustion_action") | Dictionary |  |  |  | Forwarding action when flows reach limits. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "load_balance.cluster.port_groups.[].flow.exhaustion_action.dscp") | Integer |  |  | Min: 0<br>Max: 63 | Packet DSCP value. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "load_balance.cluster.port_groups.[].flow.exhaustion_action.traffic_class") | Integer |  |  | Min: 0<br>Max: 11 | Packet traffic-class value. |
 
 === "YAML"
 
@@ -108,13 +108,17 @@
           source_learning_aging_timeout: <int; 30-2147483647>
 
         # Host ports settings.
-        port_group:
+        port_groups:
 
             # Port group name.
-          - group: <str>
+          - group: <str; required; unique>
             balance_factor: <int; 0-4294967295>
 
-            # Interface name
+            # Ethernet interface/subinterface name. It could be a `,` separated list or range.
+            # eg. Ethernet 2,
+            #     Ethernet 2-5,
+            #     Ethernet 2.2,3.1,
+            #     Ethernet 3.1-2
             interface: <str>
             flow:
 
@@ -130,6 +134,6 @@
                 # Packet DSCP value.
                 dscp: <int; 0-63>
 
-                # Packet traffic-class vlaue.
+                # Packet traffic-class value.
                 traffic_class: <int; 0-11>
     ```
