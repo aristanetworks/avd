@@ -62111,15 +62111,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Prefixes._item_type = str
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "prefixes": {"type": Prefixes}}
+                class Except(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Except._item_type = str
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "prefixes": {"type": Prefixes}, "field_except": {"type": Except}}
+                _field_to_key_map: ClassVar[dict] = {"field_except": "except"}
+                _key_to_field_map: ClassVar[dict] = {"except": "field_except"}
                 name: str
                 """IPv4 Prefix Field Set Name."""
                 prefixes: Prefixes
                 """Subclass of AvdList with `str` items."""
+                field_except: Except
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, prefixes: Prefixes | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        prefixes: Prefixes | UndefinedType = Undefined,
+                        field_except: Except | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Ipv4Item.
 
@@ -62129,6 +62144,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             name: IPv4 Prefix Field Set Name.
                             prefixes: Subclass of AvdList with `str` items.
+                            field_except: Subclass of AvdList with `str` items.
 
                         """
 
@@ -62147,15 +62163,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Prefixes._item_type = str
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "prefixes": {"type": Prefixes}}
+                class Except(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Except._item_type = str
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "prefixes": {"type": Prefixes}, "field_except": {"type": Except}}
+                _field_to_key_map: ClassVar[dict] = {"field_except": "except"}
+                _key_to_field_map: ClassVar[dict] = {"except": "field_except"}
                 name: str
                 """IPv6 Prefix Field Set Name."""
                 prefixes: Prefixes
                 """Subclass of AvdList with `str` items."""
+                field_except: Except
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | UndefinedType = Undefined, prefixes: Prefixes | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        prefixes: Prefixes | UndefinedType = Undefined,
+                        field_except: Except | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Ipv6Item.
 
@@ -62165,6 +62196,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             name: IPv6 Prefix Field Set Name.
                             prefixes: Subclass of AvdList with `str` items.
+                            field_except: Subclass of AvdList with `str` items.
 
                         """
 

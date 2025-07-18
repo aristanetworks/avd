@@ -12560,11 +12560,11 @@ mac security
 
 #### IPv4 Field Sets
 
-| Field Set Name | IPv4 Prefixes |
-| -------------- | ------------- |
-| DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16 |
-| DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8 |
-| DEMO-03 | - |
+| Field Set Name | IPv4 Prefixes | Excluded Prefixes |
+| -------------- | ------------- | ----------------- |
+| DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16 | 10.2.2.2/32<br/>10.10.0.0/16<br/>172.16.0.0/16 |
+| DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8 | - |
+| DEMO-03 | - | - |
 
 #### L4 Port Field Sets
 
@@ -12628,6 +12628,7 @@ traffic-policies
    field-set l4-port SERVICE-DEMO2
    field-set ipv4 prefix DEMO-01
       10.0.0.0/8 192.168.0.0/16
+      except 10.2.2.2/32 10.10.0.0/16 172.16.0.0/16
    !
    field-set ipv4 prefix DEMO-02
       172.16.0.0/12 224.0.0.0/8
