@@ -1440,6 +1440,7 @@ router pim sparse-mode
 | ---- | ----- | --------- |
 | Service Type | - | - |
 | Framed MTU | 1500 | - |
+
 #### Dot1x Configuration
 
 ```eos
@@ -1448,6 +1449,11 @@ dot1x
    aaa unresponsive action traffic allow
    radius av-pair service-type
    radius av-pair framed-mtu 1500
+!
+dot1x system-auth-control
+dot1x protocol lldp bypass
+dot1x protocol bpdu bypass
+dot1x dynamic-authorization
 ```
 
 ## Platform

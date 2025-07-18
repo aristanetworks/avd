@@ -10728,6 +10728,7 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Ethernet70 | - | - | - | - | - | - | - | - |
 | Ethernet71 | - | - | - | - | - | - | - | - |
 | Ethernet72 | - | - | - | - | - | - | - | - |
+
 #### Dot1x Configuration
 
 ```eos
@@ -10771,6 +10772,10 @@ dot1x
    radius av-pair dhcp parameter-request-list auth-only
    radius av-pair dhcp vendor-class-id auth-only
    supplicant logging
+!
+dot1x system-auth-control
+dot1x protocol lldp bypass
+dot1x dynamic-authorization
 ```
 
 ## Power Over Ethernet (PoE)
