@@ -10,7 +10,7 @@ import pytest
 from pyavd import get_device_test_catalog
 from pyavd._anta.lib import AntaCatalog
 from pyavd.api._anta import AvdCatalogGenerationSettings, InputFactorySettings, get_minimal_structured_configs
-from tests.models import MoleculeHost
+from tests.models import MoleculeHost, MoleculeScenario
 
 
 # Helper Function for Filter Logic
@@ -51,9 +51,9 @@ def _get_filtered_settings_for_host(molecule_host: MoleculeHost) -> AvdCatalogGe
     ],
     ids=["default_run", "allow_bgp_vrfs_run", "filtered_run"],
 )
-def test_get_device_test_catalog(molecule_host: MoleculeHost, run_name: str, expected_catalog_property_name: str) -> None:
+def test_get_device_test_catalog(molecule_host: MoleculeHost, molecule_scenario: MoleculeScenario, run_name: str, expected_catalog_property_name: str) -> None:
     """Verify get_device_test_catalog generates the correct ANTA catalog."""
-    all_configs = deepcopy(molecule_host.structured_configs)
+    all_configs = deepcopy(molecule_scenario.structured_configs)
     minimal_configs = get_minimal_structured_configs(all_configs)
     host_config = deepcopy(molecule_host.structured_config)
 

@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 from copy import deepcopy
 from functools import cached_property
+from itertools import chain
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -49,26 +50,6 @@ class MoleculeHost:
             return {}
 
         return load(structured_config_path.read_text(), CSafeLoader)
-
-    @cached_property
-    def structured_configs(self) -> dict[str, dict[Any, Any]]:
-        """A dictionary of intended structured configs for all hosts in the scenario, keyed by hostname."""
-        # Define the path to the directory containing all structured configs
-        configs_dir = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "intended/structured_configs")
-
-        # Return an empty dictionary if the directory doesn't exist
-        if not configs_dir.is_dir():
-            return {}
-
-        all_configs: dict[str, dict[Any, Any]] = {}
-        # Find every file ending with .yml in the directory
-        for config_file in configs_dir.glob("*.yml"):
-            # The filename without the extension is the hostname
-            hostname = config_file.stem
-            # Load the YAML content and add it to the dictionary
-            all_configs[hostname] = load(config_file.read_text(), CSafeLoader)
-
-        return all_configs
 
     @cached_property
     def default_test_catalog(self) -> dict[str, Any]:
@@ -242,3 +223,24 @@ class MoleculeScenario:
             raise LookupError(msg, files)
 
         return files[0].read_text("UTF-8")
+
+    @cached_property
+    def structured_configs(self) -> dict[str, dict[Any, Any]]:
+        """A dictionary of intended structured configs for all hosts in the scenario, keyed by hostname."""
+        # Define the path to the directory containing all structured configs
+        configs_dir = self.path.joinpath(self.artifacts_path_offset, "intended/structured_configs")
+
+        # Return an empty dictionary if the directory doesn't exist
+        if not configs_dir.is_dir():
+            return {}
+
+        all_configs: dict[str, dict[Any, Any]] = {}
+        # Find every file ending with .yml in the directory
+        config_files = chain(configs_dir.glob("*.yml"), configs_dir.glob("*.yaml"))
+        for config_file in config_files:
+            # The filename without the extension is the hostname
+            hostname = config_file.stem
+            # Load the YAML content and add it to the dictionary
+            all_configs[hostname] = load(config_file.read_text(), CSafeLoader)
+
+        return all_configs
