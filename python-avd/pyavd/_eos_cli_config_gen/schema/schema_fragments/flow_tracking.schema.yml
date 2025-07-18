@@ -116,9 +116,9 @@ keys:
                       collectors:
                         type: list
                         primary_key: host
+                        $ref: "eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/collectors"
                         items:
                           type: dict
-                          $ref: "eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/collector"
                           keys:
                             host:
                               type: str
@@ -134,14 +134,10 @@ keys:
                           - drop-report
                       local_interface:
                         type: str
-                        description: Local source interface.
+                        $ref: "eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/local_interface"
                       template_interval:
                         type: int
-                        convert_types:
-                          - str
-                        min: 5000
-                        max: 3600000
-                        description: Template interval in milliseconds.
+                        $ref: "eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/template_interval"
                       dscp:
                         type: int
                         min: 0

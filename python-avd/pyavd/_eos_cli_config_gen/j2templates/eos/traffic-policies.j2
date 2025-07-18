@@ -24,6 +24,9 @@ traffic-policies
 {%         if field_set_ipv4.prefixes is arista.avd.defined %}
       {{ field_set_ipv4.prefixes | arista.avd.natural_sort | join(' ') }}
 {%         endif %}
+{%         if field_set_ipv4.except is arista.avd.defined %}
+      except {{ field_set_ipv4.except | arista.avd.natural_sort | join(' ') }}
+{%         endif %}
 {%         if not loop.last %}
    !
 {%         endif %}
@@ -33,6 +36,9 @@ traffic-policies
    field-set ipv6 prefix {{ field_set_ipv6.name }}
 {%         if field_set_ipv6.prefixes is arista.avd.defined %}
       {{ field_set_ipv6.prefixes | arista.avd.natural_sort | join(' ') }}
+{%         endif %}
+{%         if field_set_ipv6.except is arista.avd.defined %}
+      except {{ field_set_ipv6.except | arista.avd.natural_sort | join(' ') }}
 {%         endif %}
 {%         if not loop.last %}
    !
