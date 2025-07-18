@@ -240,7 +240,6 @@ class UtilsMixin(Protocol):
         if isinstance(host, (ipaddress.IPv4Address, ipaddress.IPv6Address)):
             salt_value = int(ipaddress.ip_address(host)) % 16
         else:
-            # Fallback for domain names using a SHA256 hash
             salt_value = sum(ord(c) for c in host) % 16
 
         return cast("Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]", salt_value)
