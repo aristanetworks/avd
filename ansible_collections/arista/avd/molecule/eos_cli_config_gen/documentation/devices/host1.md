@@ -100,6 +100,7 @@
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
 - [Load Balance](#load-balance)
   - [Load Balance Profiles](#load-balance-profiles)
+  - [Load Balance cluster](#load-balance-cluster)
   - [Load Balance Configuration](#load-balance-configuration)
   - [Link Tracking](#link-tracking)
 - [MLAG](#mlag)
@@ -3269,6 +3270,24 @@ hardware tcam
 | Match Pattern | 0x7d1 |
 | Match Hash Payload Bytes | 10 |
 | UDP Payload | 10-20 |
+
+### Load Balance cluster
+
+| Setting | Value |
+| ------- | ----- |
+| Forwarding Type | routed ipv4 |
+| Destination Grouping | BGP field-set |
+| Load-balance Method Flow Round-robin | True |
+| Flow Monitor | True |
+| Flow Source Learning Aging Timeout | 45 seconds |
+
+#### Host Port Groups
+
+| Port Group | Interface | Flow Limit | Flow Warning | Balance Fcator | Exhaustion Action DSCP | Exhaustion Action Traffic-class |
+| ---------- | --------- | ---------- | ------------ | -------------- | ---------------------- | ------------------------------- |
+| host_group1 | Ethernet 2-5 | 12 | 25 | 10 | 5 | 7 |
+| host_group2 | Ethernet 2,3 | - | - | 10 | 45 | - |
+| host_group3 | Ethernet 2.2,3.1 | - | - | - | - | 9 |
 
 ### Load Balance Configuration
 
@@ -12513,6 +12532,7 @@ traffic-policies
    !
    field-set ipv4 prefix DEMO-03
    counter interface per-interface ingress
+   counter interface poll interval 10 seconds
    !
    traffic-policy BLUE-C1-POLICY
       counter DEMO-TRAFFIC DROP-PACKETS
