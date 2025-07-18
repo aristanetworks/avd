@@ -64,15 +64,20 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 key: str | None
                 """
-                Encrypted type-7 key.
-                Takes precedence over `cleartext_key`.
+                Encrypted Type 7 key.
+                Takes precedence over `cleartext_key` if both are provided.
+                Either `key` or
+                `cleartext_key` must be set to render the configuration;
+                otherwise, an error will be raised.
                 """
                 cleartext_key: str | None
                 """
-                Cleartext password.
-                Encrypted to Type 7 by AVD.
-                To protect the password at rest it is strongly
-                recommended to make use of a vault or similar.
+                Plaintext password that will be encrypted to Type 7 by AVD.
+                To protect the password at rest it is
+                strongly recommended to make use of a vault or similar.
+                Either `key` or `cleartext_key` must be set
+                to render the configuration;
+                otherwise, an error will be raised.
                 """
 
                 if TYPE_CHECKING:
@@ -111,13 +116,18 @@ class EosDesigns(EosDesignsRootModel):
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
                             key:
-                               Encrypted type-7 key.
-                               Takes precedence over `cleartext_key`.
+                               Encrypted Type 7 key.
+                               Takes precedence over `cleartext_key` if both are provided.
+                               Either `key` or
+                               `cleartext_key` must be set to render the configuration;
+                               otherwise, an error will be raised.
                             cleartext_key:
-                               Cleartext password.
-                               Encrypted to Type 7 by AVD.
-                               To protect the password at rest it is strongly
-                               recommended to make use of a vault or similar.
+                               Plaintext password that will be encrypted to Type 7 by AVD.
+                               To protect the password at rest it is
+                               strongly recommended to make use of a vault or similar.
+                               Either `key` or `cleartext_key` must be set
+                               to render the configuration;
+                               otherwise, an error will be raised.
 
                         """
 
