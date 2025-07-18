@@ -151,9 +151,9 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             if self.inputs.underlay_isis_authentication_mode:
                 vlan_interface.isis_authentication.both.mode = self.inputs.underlay_isis_authentication_mode
 
-            if self.inputs.underlay_isis_authentication_key is not None:
+            if (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                 vlan_interface.isis_authentication.both._update(
-                    key=self.inputs.underlay_isis_authentication_key,
+                    key=isis_authentication_key,
                     key_type="7",
                 )
         if self.shared_utils.underlay_multicast:
