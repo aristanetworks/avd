@@ -1438,17 +1438,8 @@ router pim sparse-mode
 
 | Type | Value | Auth Only |
 | ---- | ----- | --------- |
-| Service Type | True | - |
+| Service Type | - | - |
 | Framed MTU | 1500 | - |
-| LLDP System-name | - | - |
-| LLDP System-description | - | - |
-| DHCP Hostname | - | - |
-| DHCP Parameter Request List | - | - |
-| DHCP Vendor Class ID | - | - |
-| Filter ID Delimiter Period | - | - |
-| Filter ID IPv4 IPv6 Required | - | - |
-| Filter ID Muliple | - | - |
-
 #### Dot1x Configuration
 
 ```eos

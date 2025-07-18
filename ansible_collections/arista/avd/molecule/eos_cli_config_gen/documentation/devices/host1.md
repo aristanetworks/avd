@@ -10660,16 +10660,16 @@ ip as-path access-list mylist2 deny _64517$ igp
 
 | Type | Value | Auth Only |
 | ---- | ----- | --------- |
-| Service Type | True | - |
+| Service Type | - | - |
 | Framed MTU | 1500 | - |
-| LLDP System-name | True | True |
-| LLDP System-description | True | True |
-| DHCP Hostname | True | True |
-| DHCP Parameter Request List | True | True |
-| DHCP Vendor Class ID | True | True |
-| Filter ID Delimiter Period | True | - |
-| Filter ID IPv4 IPv6 Required | True | - |
-| Filter ID Muliple | True | - |
+| LLDP System-name | - | True |
+| LLDP System-description | - | True |
+| DHCP Hostname | - | True |
+| DHCP Parameter Request List | - | True |
+| DHCP Vendor Class ID | - | True |
+| Filter ID Delimiter Period | - | - |
+| Filter ID IPv4 IPv6 Required | - | - |
+| Filter ID Multiple | - | - |
 | Username Format | delimiter: colon</br>MAC string case: lowercase | - |
 
 #### 802.1X Captive-portal authentication
@@ -10728,7 +10728,6 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Ethernet70 | - | - | - | - | - | - | - | - |
 | Ethernet71 | - | - | - | - | - | - | - | - |
 | Ethernet72 | - | - | - | - | - | - | - | - |
-
 #### Dot1x Configuration
 
 ```eos
