@@ -197,14 +197,15 @@ ntp authenticate
 
 #### PTP Summary
 
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running | Free Running Source Clock Hardware |
 | -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
-| - | - | - | - | - | - | - | - |
+| - | - | - | - | - | - | - | - | True | - |
 
 #### PTP Device Configuration
 
 ```eos
 !
+ptp free-running
 no ptp monitor sequence-id
 ```
 

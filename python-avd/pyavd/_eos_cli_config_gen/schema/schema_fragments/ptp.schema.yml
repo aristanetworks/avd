@@ -166,3 +166,15 @@ keys:
                     max: 255
                     convert_types:
                     - str
+      free_running:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: |-
+              Enables PTP configuration in free-running mode.
+              When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+              When set to false, the clock will wait to lock to an upstream master before serving downstream.
+          source_clock_hardware:
+            type: bool
+            description: When enabled, the hardware clock is used as the source for PTP time while in free-running mode.

@@ -33491,6 +33491,41 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class FreeRunning(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_clock_hardware": {"type": bool}}
+            enabled: bool | None
+            """
+            Enables PTP configuration in free-running mode.
+            When set to true, the boundary clock can start
+            serving PTP downstream even before it locks to an upstream master.
+            When set to false, the clock will
+            wait to lock to an upstream master before serving downstream.
+            """
+            source_clock_hardware: bool | None
+            """When enabled, the hardware clock is used as the source for PTP time while in free-running mode."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, source_clock_hardware: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    FreeRunning.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Enables PTP configuration in free-running mode.
+                           When set to true, the boundary clock can start
+                           serving PTP downstream even before it locks to an upstream master.
+                           When set to false, the clock will
+                           wait to lock to an upstream master before serving downstream.
+                        source_clock_hardware: When enabled, the hardware clock is used as the source for PTP time while in free-running mode.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "mode": {"type": str},
             "profile": {"type": str},
@@ -33504,6 +33539,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "domain": {"type": int},
             "message_type": {"type": MessageType},
             "monitor": {"type": Monitor},
+            "free_running": {"type": FreeRunning},
         }
         mode: Literal["boundary", "disabled", "e2etransparent", "gptp", "ordinarymaster", "p2ptransparent"] | None
         profile: Literal["g8275.1", "g8275.2"] | None
@@ -33520,6 +33556,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         message_type: MessageType
         """Subclass of AvdModel."""
         monitor: Monitor
+        """Subclass of AvdModel."""
+        free_running: FreeRunning
         """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
@@ -33539,6 +33577,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 domain: int | None | UndefinedType = Undefined,
                 message_type: MessageType | UndefinedType = Undefined,
                 monitor: Monitor | UndefinedType = Undefined,
+                free_running: FreeRunning | UndefinedType = Undefined,
             ) -> None:
                 """
                 Ptp.
@@ -33559,6 +33598,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     domain: domain
                     message_type: Subclass of AvdModel.
                     monitor: Subclass of AvdModel.
+                    free_running: Subclass of AvdModel.
 
                 """
 
