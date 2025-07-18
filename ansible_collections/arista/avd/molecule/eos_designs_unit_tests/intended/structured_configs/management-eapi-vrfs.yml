@@ -1,0 +1,116 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: management-eapi-vrfs
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.42.42.42/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 10.10.11.12/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: VRF-ENABLED
+  - name: VRF_Enable_1
+    access_group: ACL_EAPI_IPv4
+    ipv6_access_group: ACL_EAPI_IPv6
+  - name: VRF_Enable_2
+    access_group: ACL_EAPI_IPv4_1
+  - name: VRF_Enable_3
+    ipv6_access_group: ACL_EAPI_IPv6_1
+  - name: inband_mgmt_1
+    access_group: ACL_EAPI_IPv4_3
+  - name: MGMT
+    access_group: ACL_EAPI_IPv4_4
+    ipv6_access_group: ACL_EAPI_IPv6_3
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.66.22/24
+  type: oob
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.10.0/24 eq 32
+  - sequence: 20
+    action: permit 10.10.11.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65042'
+  router_id: 10.42.42.42
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: management-eapi-vrfs_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
