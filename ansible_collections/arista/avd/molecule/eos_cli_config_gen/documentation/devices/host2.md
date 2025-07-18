@@ -1448,6 +1448,7 @@ router pim sparse-mode
 | Filter ID Delimiter Period | - | - |
 | Filter ID IPv4 IPv6 Required | - | - |
 | Filter ID Muliple | - | - |
+
 #### Dot1x Configuration
 
 ```eos
