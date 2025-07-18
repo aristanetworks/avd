@@ -32,6 +32,7 @@ l3leaf:
           id: 1
           mgmt_ip: 192.168.200.105/24
           uplink_switch_interfaces: [ Ethernet1 ]
+          uplink_bfd: true
         - name: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
           id: 2
           mgmt_ip: 192.168.200.107/24
