@@ -131,4 +131,9 @@
 | {{ ethernet_interface.name }} | {{ pae_mode }} | {{ state }} | {{ phone_state }} | {{ reauthentication }} | {{ auth_failure_action }} | {{ host_mode }} | {{ mac_based_authentication_enabled }} | {{ auth_failure_fallback_mba }} |
 {%         endfor %}
 {%     endif %}
+#### Dot1x Configuration
+
+```eos
+{%     include 'eos/dot1x.j2' %}
+```
 {% endif %}

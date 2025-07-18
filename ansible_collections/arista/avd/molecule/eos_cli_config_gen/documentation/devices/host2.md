@@ -1439,7 +1439,7 @@ router pim sparse-mode
 | Type | Value | Auth Only |
 | ---- | ----- | --------- |
 | Service Type | True | "-" |
-| Framed MTU |  1500 | "-" |
+| Framed MTU | 1500 | "-" |
 | LLDP System-name | - | - |
 | LLDP System-description | - | - |
 | DHCP Hostname | - | - |
@@ -1448,6 +1448,15 @@ router pim sparse-mode
 | Filter ID Delimiter Period | - | "-" |
 | Filter ID IPv4 IPv6 Required | - | "-" |
 | Filter ID Muliple | - | "-" |
+#### Dot1x Configuration
+
+```eos
+dot1x
+   aaa unresponsive phone action apply cached-results
+   aaa unresponsive action traffic allow
+   radius av-pair service-type
+   radius av-pair framed-mtu 1500
+```
 
 ## Platform
 

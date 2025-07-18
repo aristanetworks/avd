@@ -10661,7 +10661,7 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Type | Value | Auth Only |
 | ---- | ----- | --------- |
 | Service Type | True | "-" |
-| Framed MTU |  1500 | "-" |
+| Framed MTU | 1500 | "-" |
 | LLDP System-name | True | True |
 | LLDP System-description | True | True |
 | DHCP Hostname | True | True |
@@ -10728,6 +10728,50 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Ethernet70 | - | - | - | - | - | - | - | - |
 | Ethernet71 | - | - | - | - | - | - | - | - |
 | Ethernet72 | - | - | - | - | - | - | - | - |
+#### Dot1x Configuration
+
+```eos
+dot1x
+   supplicant profile Profile1
+      identity user_id1
+      eap-method tls
+      passphrase 0 <removed>
+      ssl profile PF1
+   !
+   supplicant profile Profile2
+      identity user_id2
+      passphrase 7 <removed>
+   !
+   supplicant profile Profile3
+      ssl profile PF2
+   aaa unresponsive phone action apply cached-results timeout 10 hours else traffic allow
+   aaa unresponsive action traffic allow vlan 10
+   aaa unresponsive eap response success
+   aaa accounting update interval 6 seconds
+   mac based authentication delay 300 seconds
+   mac based authentication hold period 300 seconds
+   radius av-pair service-type
+   radius av-pair filter-id multiple
+   radius av-pair filter-id delimiter period
+   radius av-pair filter-id ipv4 ipv6 required
+   radius av-pair framed-mtu 1500
+   mac-based-auth radius av-pair user-name delimiter colon lowercase
+   aaa unresponsive recovery action reauthenticate
+   supplicant disconnect cached-results timeout 79 seconds
+   captive-portal url http://portal-nacm08/captiveredirect/ ssl profile Profile1
+   captive-portal access-list ipv4 ACL
+   captive-portal start limit infinite
+   vlan assignment group Assignment_1 members 400-407
+   vlan assignment group Assignment_2 members 55
+   vlan assignment group Assignment_3 members 1,3,15-20
+   statistics packets dropped
+   radius av-pair lldp system-name auth-only
+   radius av-pair lldp system-description auth-only
+   radius av-pair dhcp hostname auth-only
+   radius av-pair dhcp parameter-request-list auth-only
+   radius av-pair dhcp vendor-class-id auth-only
+   supplicant logging
+```
 
 ## Power Over Ethernet (PoE)
 
