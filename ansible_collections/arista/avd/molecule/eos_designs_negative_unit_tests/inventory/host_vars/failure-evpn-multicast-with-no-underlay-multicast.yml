@@ -1,0 +1,17 @@
+fabric_name: FAILUTE_EVPN_MULTICAST_WITH_NO_UNDERLAY_MULTICAST
+type: l3leaf
+evpn_multicast: true
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+  nodes:
+    - name: failure-evpn-multicast-with-no-underlay-multicast
+      id: 3
+      bgp_as: 65101
+
+expected_error_message: >-
+  'evpn_multicast: true' is only supported in combination with 'underlay_multicast_pim_sm: true' or 'underlay_multicast: true'
+  for host 'failure-evpn-multicast-with-no-underlay-multicast'.

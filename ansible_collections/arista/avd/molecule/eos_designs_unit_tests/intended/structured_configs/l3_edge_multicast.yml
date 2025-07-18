@@ -9,6 +9,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.4/31
+  multicast:
+    ipv4:
+      static: true
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   peer: peer1
@@ -21,6 +24,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.2/31
+  multicast:
+    ipv4:
+      static: true
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   pim:
