@@ -31,7 +31,7 @@ aaa_settings:
           - TACACS1
 
       # No VRF, so it should honor default_mgmt_method which is oob in this case
-      - host: "1:1:1:1:1:1:1:1"
+      - host: 10.10.10.3
         key: 071B245F5A
         groups:
           - TACACS1
