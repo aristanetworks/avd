@@ -19,6 +19,21 @@ if TYPE_CHECKING:
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 
 
+def test_decorator_raises_on_invalid_function_name() -> None:
+    """Test that the @avd_logging decorator raises a TypeError if used on a function not named 'run_plugin'."""
+    with pytest.raises(TypeError) as exc_info:
+
+        @avd_logging()
+        def some_other_function(self: MagicMock, task_vars: dict[str, Any]) -> dict[str, Any]:
+            """A function with a name that is not 'run_plugin'."""
+            _unused = self, task_vars
+            return {}
+
+    # Verify that the exception message is exactly as expected
+    expected_msg = "The '@avd_logging' decorator can only be used on the 'run_plugin' method."
+    assert str(exc_info.value) == expected_msg
+
+
 @pytest.mark.parametrize(
     ("verbosity", "expected_levels"),
     [

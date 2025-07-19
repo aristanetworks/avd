@@ -23,7 +23,7 @@ def test_run_success(avd_action_plugin_instance: AvdActionPlugin) -> None:
 
 def test_run_failure(avd_action_plugin_instance: AvdActionPlugin) -> None:
     """Tests that run() catches an exception from run_plugin() and raises AnsibleActionFail."""
-    task_vars = {"some_var": "some_value"}
+    task_vars = None
     original_exception = ValueError("Something went wrong inside the plugin")
 
     with patch.object(avd_action_plugin_instance, "run_plugin", side_effect=original_exception) as mock_run_plugin:
