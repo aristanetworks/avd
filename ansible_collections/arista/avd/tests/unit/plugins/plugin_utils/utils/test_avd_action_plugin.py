@@ -30,6 +30,6 @@ def test_run_failure(avd_action_plugin_instance: AvdActionPlugin) -> None:
         with pytest.raises(AnsibleActionFail) as exc_info:
             avd_action_plugin_instance.run(task_vars=task_vars)
 
-        mock_run_plugin.assert_called_once_with(task_vars)
+        mock_run_plugin.assert_called_once_with({})
         assert "Error during plugin execution" in str(exc_info.value)
         assert str(original_exception) in str(exc_info.value)
