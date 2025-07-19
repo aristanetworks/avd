@@ -57,7 +57,7 @@ class AnsibleDisplayHandler(logging.Handler):
 class SaveToResultHandler(logging.Handler):
     """A handler that saves warning and error logs to the Ansible result dictionary."""
 
-    def __init__(self, result_dict: dict) -> None:
+    def __init__(self, result_dict: dict[str, Any]) -> None:
         """Initialize the handler."""
         super().__init__()
         self.result = result_dict

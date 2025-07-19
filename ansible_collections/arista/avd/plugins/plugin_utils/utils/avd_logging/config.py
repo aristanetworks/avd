@@ -57,7 +57,15 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
 """Map Ansible verbosity levels (0-6) to a dictionary of logger names and their desired logging level."""
 
 EXTERNAL_LIB_LOGGERS = ["asyncio", "httpcore", "httpx", "requests", "urllib3"]
-"""List of common third-party libraries whose log levels are managed collectively. Ignoring `hpack` logger since it is too noisy."""
+"""List of common third-party libraries whose log levels are managed collectively.
+
+- `asyncio`: Python built-in asynchronous framework.
+- `httpcore`, `httpx`: The HTTP client libraries used by ANTA.
+- `requests`, `urllib3`: Used by the `cv_workflow` action plugin for authentication.
+
+The `hpack` logger is intentionally omitted as it is too noisy. It is used by `grpclib`,
+which is a dependency of `cv_workflow`.
+"""
 
 
 def get_avd_log_level(logger_name: str, verbosity: int) -> int:
@@ -71,10 +79,11 @@ def get_avd_log_level(logger_name: str, verbosity: int) -> int:
     Returns:
         The calculated logging level.
     """
-    # If the level is higher than the max defined key (7), fall back to the highest defined level (6)
+    # Any verbosity level set above 6 will be treated as 6
     max_defined_verbosity = max(ANSIBLE_VERBOSITY_MAPPING.keys())
     effective_verbosity = min(verbosity, max_defined_verbosity)
 
     level_map = ANSIBLE_VERBOSITY_MAPPING[effective_verbosity]
 
+    # If the logger is not found, it is considered an external library
     return level_map.get(logger_name, level_map["external_libs"])

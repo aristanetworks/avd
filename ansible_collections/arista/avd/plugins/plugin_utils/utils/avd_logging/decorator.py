@@ -8,7 +8,6 @@ from contextlib import contextmanager
 from functools import wraps
 from typing import Any
 
-from ansible.errors import AnsibleActionFail
 from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AvdActionPlugin
@@ -75,14 +74,11 @@ def avd_logging(
                     logger_names=loggers_to_target, temp_handlers=temp_handlers, temp_filters=temp_filters, log_format=log_format, verbosity=display.verbosity
                 ),
             ):
+                # DeprecationWarning is ignored by default
                 warnings.simplefilter("always", DeprecationWarning)
 
-                try:
-                    final_result = func(self, *args, **kwargs)
-                except BaseException as exc:
-                    # Recast errors as AnsibleActionFail
-                    msg = f"Error during plugin execution: {exc}"
-                    raise AnsibleActionFail(msg) from exc
+                # Run the plugin
+                final_result = func(self, *args, **kwargs)
 
                 # Process captured Python warnings and update the result object
                 if captured_warnings:

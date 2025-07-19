@@ -4,6 +4,7 @@
 from abc import abstractmethod
 from typing import Any
 
+from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
 
 
@@ -23,7 +24,12 @@ class AvdActionPlugin(ActionBase):
         self.result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
 
-        return self.run_plugin(task_vars)
+        try:
+            return self.run_plugin(task_vars)
+        except BaseException as exc:
+            # Recast errors as AnsibleActionFail
+            msg = f"Error during plugin execution: {exc}"
+            raise AnsibleActionFail(msg) from exc
 
     @abstractmethod
     def run_plugin(self, task_vars: dict[str, Any]) -> dict[str, Any]:

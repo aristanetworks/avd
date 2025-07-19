@@ -4,6 +4,7 @@
 """Fixtures for testing the utils modules."""
 
 from pathlib import Path
+from typing import Any
 from unittest.mock import MagicMock
 
 import pytest
@@ -14,6 +15,8 @@ from ansible.playbook.block import Block
 from ansible.playbook.play import Play
 from ansible.playbook.task import Task
 from ansible.vars.manager import VariableManager
+
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AvdActionPlugin
 
 TESTS_PATH = Path(__file__).parents[4]
 DEFAULT_INVENTORY_PATH = TESTS_PATH / "inventory/inventory.yml"
@@ -58,17 +61,42 @@ def ansible_task(request: pytest.FixtureRequest) -> Task:
 
 @pytest.fixture
 def mock_display() -> MagicMock:
-    """Fixture for creating a mock Ansible Display object."""
+    """Fixture that provides a mock Ansible Display object."""
     mock = MagicMock(spec=Display)
     mock.verbosity = 0
     return mock
 
 
 @pytest.fixture
-def mock_action_plugin() -> MagicMock:
-    """Fixture that provides a mock of a generic AvdActionPlugin instance."""
+def mocked_plugin_object() -> MagicMock:
+    """Fixture that provides a MagicMock simulating a plugin for testing utilities that consume a plugin object."""
     plugin = MagicMock()
     plugin._task = MagicMock()
     plugin._task.args = {}
     plugin.result = {}
     return plugin
+
+
+@pytest.fixture
+def avd_action_plugin_instance() -> AvdActionPlugin:
+    """Fixture that provides an initialized AvdActionPlugin instance for testing the base class internal logic."""
+
+    class FakeActionModule(AvdActionPlugin):
+        """A concrete implementation for testing the base class."""
+
+        def run_plugin(self, task_vars: dict[str, Any]) -> dict[str, Any]:
+            # This method will be mocked in the actual tests
+            _unused = task_vars
+            self.result["msg"] = "Plugin executed!"
+            return self.result
+
+    # Create mock objects for the constructor arguments
+    mock_task = MagicMock()
+    mock_task.args = {}
+    mock_task.async_val = False
+    mock_task.check_mode = False
+
+    # Instantiate the nested class with the mocks
+    return FakeActionModule(
+        task=mock_task, connection=MagicMock(), play_context=MagicMock(), loader=MagicMock(), templar=MagicMock(), shared_loader_obj=MagicMock()
+    )
