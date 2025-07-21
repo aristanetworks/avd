@@ -222,7 +222,7 @@ traffic_policies:
             redirect:
               next_hop:
                 recursive:
-                  ipv4: # Test next_hop recursive ipv6 without VRF
+                  ipv6: # Test next_hop recursive ipv6 without VRF
                     addresses: [ 2606:4700:4700::1111, 2001:4860:4860::8888 ]
         - name: BLUE-C2-POLICY-03
           type: ipv4
