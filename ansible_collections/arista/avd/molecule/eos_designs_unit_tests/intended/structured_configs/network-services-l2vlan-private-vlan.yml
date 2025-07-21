@@ -95,12 +95,28 @@ router_bgp:
       - 10090:10090
     redistribute_routes:
     - learned
+  - id: 101
+    tenant: TENANT1
+    rd: 192.168.255.109:10101
+    route_targets:
+      both:
+      - 10101:10101
+    redistribute_routes:
+    - learned
   - id: 2
     tenant: TENANT2
     rd: 192.168.255.109:10003
     route_targets:
       both:
       - 10003:10003
+    redistribute_routes:
+    - learned
+  - id: 102
+    tenant: TENANT2
+    rd: 192.168.255.109:10103
+    route_targets:
+      both:
+      - 10103:10103
     redistribute_routes:
     - learned
   address_family_evpn:
@@ -138,6 +154,11 @@ vlan_interfaces:
   vrf: TEST_VRF
   ip_address_virtual: 10.1.40.1/24
   tenant: TENANT2
+- name: Vlan102
+  description: test-address-locking-2
+  shutdown: false
+  vrf: TEST_VRF
+  tenant: TENANT2
 vlan_internal_order:
   allocation: ascending
   range:
@@ -159,8 +180,21 @@ vlans:
     type: community
     primary_vlan: 10
   tenant: TENANT1
+- id: 101
+  name: test-address-locking-1
+  address_locking:
+    address_family:
+      ipv4: true
+    ipv4_enforcement_disabled: true
+  tenant: TENANT1
 - id: 2
   name: primary2
+  tenant: TENANT2
+- id: 102
+  name: test-address-locking-2
+  address_locking:
+    address_family:
+      ipv6: true
   tenant: TENANT2
 vrfs:
 - name: MGMT
@@ -181,8 +215,12 @@ vxlan_interface:
         vni: 10090
       - id: 100
         vni: 10100
+      - id: 101
+        vni: 10101
       - id: 2
         vni: 10003
+      - id: 102
+        vni: 10103
       vrfs:
       - name: TEST_VRF
         vni: 789654
