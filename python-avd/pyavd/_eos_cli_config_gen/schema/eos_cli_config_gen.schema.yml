@@ -3849,6 +3849,10 @@ keys:
                 - str
                 required: true
                 description: TX-Queue ID.
+              scheduler_profile_responsive:
+                type: bool
+                description: Set scheduler profile to optimize latency at the expense
+                  of burstiness.
               random_detect:
                 type: dict
                 keys:
@@ -10958,6 +10962,12 @@ keys:
                 valid_values:
                 - unicast
                 - balanced
+          voq:
+            type: dict
+            keys:
+              credit_rates_unified:
+                type: bool
+                description: Set Unified credit rates for all port speeds.
   poe:
     type: dict
     keys:
@@ -13134,6 +13144,23 @@ keys:
             type: bool
             description: Use the parent available bandwidth for transmit queue percentage-based
               allocation.
+          queues:
+            type: list
+            primary_key: id
+            items:
+              type: dict
+              keys:
+                id:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 7
+                  description: Queue ID.
+                scheduler_profile_responsive:
+                  type: bool
+                  description: Set scheduler profile to optimize latency at the expense
+                    of burstiness.
   qos_profiles:
     type: list
     primary_key: name

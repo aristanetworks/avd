@@ -1455,12 +1455,15 @@ router pim sparse-mode
 | Settings | Value |
 | -------- | ----- |
 | Buffering Egress Profile | balanced |
+| VOQ Credit Rates Unified | False |
 
 ### Platform Device Configuration
 
 ```eos
 !
 platform fap buffering egress profile balanced
+!
+platform fap voq credit rates unified
 !
 platform trident mmu headroom-pool limit 557
 ```

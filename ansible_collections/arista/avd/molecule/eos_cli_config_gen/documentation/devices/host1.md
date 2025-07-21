@@ -4656,7 +4656,10 @@ interface Ethernet6
    qos cos 2
    !
    tx-queue 2
+      scheduler profile responsive
       random-detect ecn count
+   !
+   tx-queue 3
    logging event storm-control discards
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
@@ -11447,6 +11450,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Settings | Value |
 | -------- | ----- |
 | Buffering Egress Profile | unicast |
+| VOQ Credit Rates Unified | True |
 
 ### Platform Device Configuration
 
@@ -11458,6 +11462,8 @@ platform sand forwarding mode arad
 platform sand lag mode 512x32
 platform sand lag hardware-only
 platform fap buffering egress profile unicast
+!
+platform fap voq credit rates unified
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7
 platform sand qos map traffic-class 2 to network-qos 15
@@ -12793,6 +12799,21 @@ QOS random-detect ECN is set to allow **non-ect** **chip-based**
 
 QOS adaptive transmit queue percentage-based allocation: **enabled**
 
+##### QOS Transmit Queue Parameters
+
+| Queue ID | Scheduler Profile Responsive |
+| -------- | ---------------------------- |
+| 1 | True |
+| Queue ID | Scheduler Profile Responsive |
+| -------- | ---------------------------- |
+| 2 | False |
+| Queue ID | Scheduler Profile Responsive |
+| -------- | ---------------------------- |
+| 3 | True |
+| Queue ID | Scheduler Profile Responsive |
+| -------- | ---------------------------- |
+| 4 | - |
+
 ##### QOS Mappings
 
 | COS to Traffic Class mappings |
@@ -12822,6 +12843,8 @@ QOS adaptive transmit queue percentage-based allocation: **enabled**
 !
 qos rewrite dscp
 qos tx-queue shape rate percent adaptive
+qos tx-queue 1 scheduler profile responsive
+qos tx-queue 3 scheduler profile responsive
 qos map cos 1 2 3 4 to traffic-class 2
 qos map cos 3 to traffic-class 3
 qos map dscp 8 9 10 11 12 13 14 15 16 17 19 21 23 24 25 27 29 31 32 33 35 37 39 40 41 42 43 44 45 47 49 50 51 52 53 54 55 57 58 59 60 61 62 63 to traffic-class 1
