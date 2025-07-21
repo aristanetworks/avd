@@ -3,17 +3,19 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import re
+from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
+
+from pyavd._eos_designs.schema import EosCliConfigGen
+from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import groupby_obj
 from pyavd.j2filters import range_expand
-from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-import re
-from functools import cached_property
-from pyavd._eos_designs.schema import EosCliConfigGen
+
 if TYPE_CHECKING:
-    
     from pyavd._eos_designs.schema import EosDesigns
+
     from . import AvdStructuredConfigBaseProtocol
 
 
@@ -135,7 +137,7 @@ class MonitorSessionsMixin(Protocol):
                     per_interface_monitor_session._internal_data.interface = ethernet_interface_name
                     per_interface_monitor_session._internal_data.context = network_port._internal_data.context
                     monitor_session_configs.append(per_interface_monitor_session)
-        
+
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 for l3_interface_index, l3_interface in enumerate(vrf.l3_interfaces):

@@ -3,11 +3,11 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import re
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
-import re
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -28,9 +28,7 @@ class FilteredNetworkPortsMixin(Protocol):
                 continue
             if network_port_settings.switches and not self.match_regexes(network_port_settings.switches, self.hostname):
                 continue
-            if network_port_settings.platforms and (
-                not self.platform or not self.match_regexes(network_port_settings.platforms, self.platform)
-            ):
+            if network_port_settings.platforms and (not self.platform or not self.match_regexes(network_port_settings.platforms, self.platform)):
                 continue
 
             filtered_network_ports.append(network_port_settings)

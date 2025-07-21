@@ -10,12 +10,10 @@ from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError
 
 if TYPE_CHECKING:
-
     from . import SharedUtilsProtocol
 
 
 class FilteredConnectedEndpointsMixin(Protocol):
-
     @cached_property
     def _filtered_connected_endpoints(
         self: SharedUtilsProtocol,
