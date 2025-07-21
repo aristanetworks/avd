@@ -661,8 +661,8 @@ PTP Profile: g8275.1
 
 #### PTP Summary
 
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running | Free Running Source Clock Hardware |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | ------------ | ---------------------------------- |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running Enabled | Free Running Source Clock Hardware |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------------- | ---------------------------------- |
 | 11:11:11:11:11:11 | 1.1.2.3 | 101 | 102 | 12 | 17 | boundary | True | True | True |
 
 #### PTP Device Configuration

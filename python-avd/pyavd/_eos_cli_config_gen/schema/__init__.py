@@ -33495,20 +33495,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
 
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_clock_hardware": {"type": bool}}
-            enabled: bool | None
+            enabled: bool
             """
             Enables PTP configuration in free-running mode.
             When set to true, the boundary clock can start
             serving PTP downstream even before it locks to an upstream master.
             When set to false, the clock will
-            wait to lock to an upstream master before serving downstream.
+            not start serving PTP downstream before it has successfully locked to an upstream master.
             """
             source_clock_hardware: bool | None
-            """When enabled, the hardware clock is used as the source for PTP time while in free-running mode."""
+            """When enabled, the hardware clock is used as the source for PTP time during free-running mode."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, source_clock_hardware: bool | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, source_clock_hardware: bool | None | UndefinedType = Undefined) -> None:
                     """
                     FreeRunning.
 
@@ -33521,8 +33521,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            When set to true, the boundary clock can start
                            serving PTP downstream even before it locks to an upstream master.
                            When set to false, the clock will
-                           wait to lock to an upstream master before serving downstream.
-                        source_clock_hardware: When enabled, the hardware clock is used as the source for PTP time while in free-running mode.
+                           not start serving PTP downstream before it has successfully locked to an upstream master.
+                        source_clock_hardware: When enabled, the hardware clock is used as the source for PTP time during free-running mode.
 
                     """
 
