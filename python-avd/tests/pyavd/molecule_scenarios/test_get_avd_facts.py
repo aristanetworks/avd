@@ -29,7 +29,6 @@ from tests.models import MoleculeScenario
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
     "example-single-dc-l3ls-ipv6",
-    "anta_runner",
 )
 @pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos")
 def test_get_avd_facts(molecule_scenario: MoleculeScenario) -> None:

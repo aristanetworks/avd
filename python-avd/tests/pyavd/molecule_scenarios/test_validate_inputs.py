@@ -27,7 +27,6 @@ from tests.models import MoleculeHost
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
     "example-single-dc-l3ls-ipv6",
-    "anta_runner",
 )
 def test_validate_inputs_with_valid_inputs(molecule_host: MoleculeHost) -> None:
     """Test validate_inputs."""

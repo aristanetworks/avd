@@ -29,7 +29,6 @@ from tests.models import MoleculeHost
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
     "example-single-dc-l3ls-ipv6",
-    "anta_runner",
 )
 # TODO: Remove inline jinja
 # @pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos")

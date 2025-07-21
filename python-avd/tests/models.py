@@ -8,7 +8,7 @@ from copy import deepcopy
 from functools import cached_property
 from itertools import chain
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
@@ -51,28 +51,25 @@ class MoleculeHost:
 
         return load(structured_config_path.read_text(), CSafeLoader)
 
-    @cached_property
-    def default_test_catalog(self) -> dict[str, Any]:
-        """The expected ANTA catalog for the 'default_run'."""
-        test_catalog_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "anta/avd_catalogs/default_run", f"{self.name}.json")
-        if not test_catalog_path.exists():
-            return {}
-        return load(test_catalog_path.read_text(), CSafeLoader)
+    def get_test_catalog(self, run_name: Literal["default_run", "allow_bgp_vrfs_run", "filtered_run"]) -> dict[str, Any]:
+        """
+        Gets the expected ANTA test catalog for a specific run.
 
-    @cached_property
-    def allow_bgp_vrfs_test_catalog(self) -> dict[str, Any]:
-        """The expected ANTA catalog for the 'allow_bgp_vrfs_run'."""
-        test_catalog_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "anta/avd_catalogs/allow_bgp_vrfs_run", f"{self.name}.json")
-        if not test_catalog_path.exists():
-            return {}
-        return load(test_catalog_path.read_text(), CSafeLoader)
+        Args:
+            run_name: The subdirectory name for the test run.
 
-    @cached_property
-    def filtered_test_catalog(self) -> dict[str, Any]:
-        """The expected ANTA catalog for the 'filtered_run'."""
-        test_catalog_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "anta/avd_catalogs/filtered_run", f"{self.name}.json")
+        Returns:
+            The test catalog as a dictionary, or an empty dict if not found.
+        """
+        test_catalog_path = self.scenario.path.joinpath(
+            self.scenario.artifacts_path_offset,
+            f"anta/avd_catalogs/{run_name}",
+            f"{self.name}.json",
+        )
+
         if not test_catalog_path.exists():
             return {}
+
         return load(test_catalog_path.read_text(), CSafeLoader)
 
     @cached_property
@@ -225,7 +222,7 @@ class MoleculeScenario:
         return files[0].read_text("UTF-8")
 
     @cached_property
-    def structured_configs(self) -> dict[str, dict[Any, Any]]:
+    def structured_configs(self) -> dict[str, dict[str, Any]]:
         """A dictionary of intended structured configs for all hosts in the scenario, keyed by hostname."""
         # Define the path to the directory containing all structured configs
         configs_dir = self.path.joinpath(self.artifacts_path_offset, "intended/structured_configs")

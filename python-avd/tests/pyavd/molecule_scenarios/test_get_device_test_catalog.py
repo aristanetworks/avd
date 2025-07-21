@@ -14,40 +14,46 @@ from tests.models import MoleculeHost, MoleculeScenario
 
 
 # Helper Function for Filter Logic
-def _get_filtered_settings_for_host(molecule_host: MoleculeHost) -> AvdCatalogGenerationSettings:
-    """Replicates the Ansible plugin logic to get the correct filtered settings for a host."""
-    # Filter rules are defined here, mirroring the playbook converge file.
-    avd_catalogs_filters: list[dict[str, Any]] = [
-        {"skip_tests": ["VerifyNTP"]},
-        {"device_list_group": "DC1_SVC_LEAVES", "run_tests": ["VerifyReachability"]},
-        {"device_list_group": "DC2_SPINES", "run_tests": ["VerifyLLDPNeighbors"], "skip_tests": ["VerifyLLDPNeighbors"]},
-    ]
+def _get_avd_catalog_generation_settings(molecule_host: MoleculeHost, run_name: str) -> AvdCatalogGenerationSettings | None:
+    """Create the AvdCatalogGenerationSettings object based on the test run name."""
+    if run_name == "allow_bgp_vrfs":
+        return AvdCatalogGenerationSettings(input_factory_settings=InputFactorySettings(allow_bgp_vrfs=True))
 
-    host_groups = molecule_host.hostvars.get("group_names", [])
-    final_filters: dict[str, Any] = {}
+    if run_name == "filtered":
+        # Filter rules defined here, mirroring the playbook.
+        avd_catalogs_filters: list[dict[str, Any]] = [
+            {"skip_tests": ["VerifyNTP"]},
+            {"device_list_group": "DC1_SVC_LEAVES", "run_tests": ["VerifyReachability"]},
+            {"device_list_group": "DC2_SPINES", "run_tests": ["VerifyLLDPNeighbors"], "skip_tests": ["VerifyLLDPNeighbors"]},
+        ]
 
-    # Apply filters based on the host's group membership.
-    for filter_config in avd_catalogs_filters:
-        device_list_group = filter_config.get("device_list_group")
-        if device_list_group and device_list_group not in host_groups:
-            continue
+        host_groups = molecule_host.hostvars.get("group_names", [])
+        final_filters: dict[str, Any] = {}
 
-        # "Last filter wins" logic updates the dictionary.
-        if "run_tests" in filter_config:
-            final_filters["run_tests"] = filter_config["run_tests"]
-        if "skip_tests" in filter_config:
-            final_filters["skip_tests"] = filter_config["skip_tests"]
+        for filter_config in avd_catalogs_filters:
+            device_list_group = filter_config.get("device_list_group")
+            if device_list_group and device_list_group not in host_groups:
+                continue
 
-    return AvdCatalogGenerationSettings(**final_filters)
+            # "Last filter wins" logic
+            if "run_tests" in filter_config:
+                final_filters["run_tests"] = filter_config["run_tests"]
+            if "skip_tests" in filter_config:
+                final_filters["skip_tests"] = filter_config["skip_tests"]
+
+        return AvdCatalogGenerationSettings(**final_filters)
+
+    # For the "default" run or any other case, return no settings.
+    return None
 
 
 @pytest.mark.molecule_scenarios("anta_runner")
 @pytest.mark.parametrize(
-    ("run_name", "expected_catalog_property_name"),
+    ("run_name"),
     [
-        ("default", "default_test_catalog"),
-        ("allow_bgp_vrfs", "allow_bgp_vrfs_test_catalog"),
-        ("filtered", "filtered_test_catalog"),
+        ("default_run"),
+        ("allow_bgp_vrfs_run"),
+        ("filtered_run"),
     ],
     ids=["default_run", "allow_bgp_vrfs_run", "filtered_run"],
 )
@@ -56,12 +62,7 @@ def test_get_device_test_catalog(molecule_host: MoleculeHost, molecule_scenario:
     all_configs = deepcopy(molecule_scenario.structured_configs)
     minimal_configs = get_minimal_structured_configs(all_configs)
     host_config = deepcopy(molecule_host.structured_config)
-
-    settings = None
-    if run_name == "allow_bgp_vrfs":
-        settings = AvdCatalogGenerationSettings(input_factory_settings=InputFactorySettings(allow_bgp_vrfs=True))
-    elif run_name == "filtered":
-        settings = _get_filtered_settings_for_host(molecule_host)
+    settings = _get_avd_catalog_generation_settings(molecule_host, run_name)
 
     expected_data_property = getattr(molecule_host, expected_catalog_property_name)
     expected_data = deepcopy(expected_data_property)
