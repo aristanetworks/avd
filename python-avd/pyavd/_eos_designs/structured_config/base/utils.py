@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import ipaddress
 from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_designs.schema import EosDesigns
@@ -227,19 +226,8 @@ class UtilsMixin(Protocol):
             path_prefix = f"aaa_settings.tacacs.servers[host={radius_or_tacacs_server.host}]"
 
         if radius_or_tacacs_server.cleartext_key is not None:
-            salt = self.get_salt_for_host(radius_or_tacacs_server.host)
+            salt = cast("Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]", sum(ord(c) for c in radius_or_tacacs_server.host) % 16)
             return encrypt_func(radius_or_tacacs_server.cleartext_key, salt)
 
         msg = f"`{path_prefix}.key` or `{path_prefix}.cleartext_key`"
         raise AristaAvdMissingVariableError(msg)
-
-    def get_salt_for_host(
-        self: AvdStructuredConfigBaseProtocol, host: str | ipaddress.IPv4Address | ipaddress.IPv6Address
-    ) -> Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]:
-        """Calculate the type 7 salt based on the host IP address or hostname."""
-        if isinstance(host, (ipaddress.IPv4Address, ipaddress.IPv6Address)):
-            salt_value = int(ipaddress.ip_address(host)) % 16
-        else:
-            salt_value = sum(ord(c) for c in host) % 16
-
-        return cast("Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]", salt_value)
