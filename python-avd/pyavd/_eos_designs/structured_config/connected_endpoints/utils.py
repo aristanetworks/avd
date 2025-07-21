@@ -4,19 +4,17 @@
 from __future__ import annotations
 
 import re
-from functools import cached_property
 from hashlib import sha256
 from typing import TYPE_CHECKING, Literal, Protocol
 
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import Undefined, UndefinedType, get_v2, short_esi_to_route_target
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
     from typing import TypeVar
 
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+    from pyavd._eos_designs.schema import EosDesigns
 
     from . import AvdStructuredConfigConnectedEndpointsProtocol
 
@@ -42,77 +40,6 @@ class UtilsMixin(Protocol):
 
     Class should only be used as Mixin to a AvdStructuredConfig class or other Mixins.
     """
-
-    @cached_property
-    def _filtered_connected_endpoints(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
-    ) -> EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints:
-        """
-        Return list of endpoints defined under one of the keys in "connected_endpoints_keys" which are connected to this switch.
-
-        Adapters are filtered to contain only the ones connected to this switch.
-        """
-        connected_endpoints = self.shared_utils.all_connected_endpoints
-        filtered_connected_endpoints = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints()
-        for connected_endpoints_key in connected_endpoints:
-            for connected_endpoint in connected_endpoints_key.value:
-                filtered_adapters = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.Adapters()
-                for adapter_index, adapter in enumerate(connected_endpoint.adapters):
-                    adapter._internal_data.context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{adapter_index}]"
-                    adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
-                    if not adapter_settings.switches or self.shared_utils.hostname not in adapter_settings.switches:
-                        continue
-
-                    # Verify that length of all lists are the same
-                    nodes_length = len(adapter_settings.switches)
-                    endpoint_ports = adapter_settings.endpoint_ports
-                    if len(adapter_settings.switch_ports) != nodes_length or (endpoint_ports and len(endpoint_ports) != nodes_length):
-                        msg = (
-                            f"Length of lists 'switches' ({len(adapter.switches)}), 'switch_ports' ({len(adapter.switch_ports)}), "
-                            f"'endpoint_ports' ({len(endpoint_ports) or '-'}) (if used) did not match on adapter {adapter_index} on"
-                            f" connected_endpoint '{connected_endpoint.name}' under '{connected_endpoints_key.key}'."
-                            " Notice that some or all of these variables could be inherited from 'port_profiles'"
-                        )
-                        raise AristaAvdError(msg)
-
-                    filtered_adapters.append(adapter_settings)
-
-                if filtered_adapters:
-                    # The object was deepcopied inside "get_merged_adapter_settings" so we can modify it here.
-                    connected_endpoint.adapters = filtered_adapters
-                    connected_endpoint._internal_data.type = connected_endpoints_key._internal_data.type
-                    filtered_connected_endpoints.append(connected_endpoint)
-
-        return filtered_connected_endpoints
-
-    @cached_property
-    def _filtered_network_ports(self: AvdStructuredConfigConnectedEndpointsProtocol) -> EosDesigns.NetworkPorts:
-        """Return list of endpoints defined under "network_ports" which are connected to this switch."""
-        filtered_network_ports = EosDesigns.NetworkPorts()
-        for index, network_port in enumerate(self.inputs.network_ports):
-            network_port._internal_data.context = f"network_ports[{index}]"
-            network_port_settings = self.shared_utils.get_merged_adapter_settings(network_port)
-
-            if not network_port_settings.switches and not network_port_settings.platforms:
-                continue
-            if network_port_settings.switches and not self._match_regexes(network_port_settings.switches, self.shared_utils.hostname):
-                continue
-            if network_port_settings.platforms and (
-                not self.shared_utils.platform or not self._match_regexes(network_port_settings.platforms, self.shared_utils.platform)
-            ):
-                continue
-
-            filtered_network_ports.append(network_port_settings)
-
-        return filtered_network_ports
-
-    def _match_regexes(self: AvdStructuredConfigConnectedEndpointsProtocol, regexes: Iterable[str], value: str) -> bool:
-        """
-        Match a list of regexes with the supplied value.
-
-        Regex must match the full value to pass.
-        """
-        return any(re.fullmatch(regex, value) for regex in regexes)
 
     def _get_short_esi(
         self: AvdStructuredConfigConnectedEndpointsProtocol,

@@ -8,6 +8,8 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_designs.schema import EosDesigns
 
 from .cv_topology import CvTopology
+from .filtered_connected_endpoints import FilteredConnectedEndpointsMixin
+from .filtered_network_ports import FilteredNetworkPortsMixin
 from .filtered_tenants import FilteredTenantsMixin
 from .flow_tracking import FlowTrackingMixin
 from .inband_management import InbandManagementMixin
@@ -61,6 +63,8 @@ class SharedUtilsProtocol(
     UnderlayMixin,
     UtilsMixin,
     FlowTrackingMixin,
+    FilteredConnectedEndpointsMixin,
+    FilteredNetworkPortsMixin,
     Protocol,
 ):
     """Protocol for the SharedUtils Class with commonly used methods / cached_properties to be shared between all the python modules loaded in eos_designs."""

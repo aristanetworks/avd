@@ -17,6 +17,7 @@ from pyavd.j2filters import natural_sort
 
 from .daemon_terminattr import DaemonTerminattrMixin
 from .management_ssh import ManagementSshMixin
+from .monitor_sessions import MonitorSessionsMixin
 from .ntp import NtpMixin
 from .platform_mixin import PlatformMixin
 from .router_general import RouterGeneralMixin
@@ -31,6 +32,7 @@ class AvdStructuredConfigBaseProtocol(
     SnmpServerMixin,
     RouterGeneralMixin,
     PlatformMixin,
+    MonitorSessionsMixin,
     UtilsMixin,
     StructuredConfigGeneratorProtocol,
     Protocol,
