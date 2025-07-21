@@ -15,8 +15,7 @@ from tests.models import MoleculeHost, MoleculeScenario
 RunName = Literal["default_run", "allow_bgp_vrfs_run", "filtered_run"]
 
 
-# Helper Function for Filter Logic
-def _get_avd_catalog_generation_settings(molecule_host: MoleculeHost, run_name: str) -> AvdCatalogGenerationSettings | None:
+def _get_avd_catalog_generation_settings(molecule_host: MoleculeHost, run_name: RunName) -> AvdCatalogGenerationSettings | None:
     """Create the AvdCatalogGenerationSettings object based on the test run name."""
     if run_name == "allow_bgp_vrfs_run":
         return AvdCatalogGenerationSettings(input_factory_settings=InputFactorySettings(allow_bgp_vrfs=True))
