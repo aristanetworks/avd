@@ -171,6 +171,16 @@ class OverlayMixin(Protocol):
         )
 
     @cached_property
+    def _wan_ha_peer_vtep_ip(self: SharedUtilsProtocol) -> str:
+        peer_facts = self.get_peer_facts(cast("str", self.wan_ha_peer))
+
+        # This condition is not expected to occur under normal circumstances, but is retained as a safeguard against unexpected behavior.
+        if not peer_facts.vtep_ip:
+            msg = f"'vtep_ip' is required but was not found for host '{self.wan_ha_peer}'"
+            raise AristaAvdInvalidInputsError(msg)
+        return peer_facts.vtep_ip
+
+    @cached_property
     def overlay_vpn_ipv4(self: SharedUtilsProtocol) -> bool:
         # Set overlay_vpn_ipv4 enable IP-VPN configuration on the node.
         if self.bgp is not True:
