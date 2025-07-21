@@ -18261,6 +18261,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             forwarding_type: Literal["bridged encapsulation vxlan ipv4", "routed ipv4"] | None
             load_balance_method_flow_round_robin: bool | None
+            """Enable round-robin load balancing for flow-based traffic."""
             flow: Flow
             """Subclass of AvdModel."""
             port_groups: PortGroups
@@ -18296,7 +18297,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            This setting must be
                            defined when `destination_grouping` is set to `prefix length`.
                         forwarding_type: forwarding_type
-                        load_balance_method_flow_round_robin: load_balance_method_flow_round_robin
+                        load_balance_method_flow_round_robin: Enable round-robin load balancing for flow-based traffic.
                         flow: Subclass of AvdModel.
                         port_groups:
                            Host ports settings.

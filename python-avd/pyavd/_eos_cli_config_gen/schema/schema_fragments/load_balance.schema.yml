@@ -109,6 +109,7 @@ keys:
               - "routed ipv4"
           load_balance_method_flow_round_robin:
             type: bool
+            description: Enable round-robin load balancing for flow-based traffic.
           flow:
             type: dict
             keys:

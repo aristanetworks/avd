@@ -772,6 +772,8 @@ Thisisnotaidealinput
 | ------- | ----- |
 | Forwarding Type | bridged encapsulation vxlan ipv4 |
 | Destination Grouping | prefix length 10 |
+| Load-balance Method Flow Round-robin | False |
+| Flow Monitor | False |
 
 ### Load Balance Configuration
 

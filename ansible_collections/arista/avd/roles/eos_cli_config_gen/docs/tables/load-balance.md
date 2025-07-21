@@ -23,7 +23,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination_grouping</samp>](## "load_balance.cluster.destination_grouping") | String |  |  | Valid Values:<br>- <code>BGP field-set</code><br>- <code>prefix length</code><br>- <code>vtep</code> | Perform destination grouping using given setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "load_balance.cluster.prefix_length") | Integer |  |  | Min: 0<br>Max: 129 | Network address prefix length for destination grouping using prefix length.<br>This setting must be defined when `destination_grouping` is set to `prefix length`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;forwarding_type</samp>](## "load_balance.cluster.forwarding_type") | String |  |  | Valid Values:<br>- <code>bridged encapsulation vxlan ipv4</code><br>- <code>routed ipv4</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;load_balance_method_flow_round_robin</samp>](## "load_balance.cluster.load_balance_method_flow_round_robin") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;load_balance_method_flow_round_robin</samp>](## "load_balance.cluster.load_balance_method_flow_round_robin") | Boolean |  |  |  | Enable round-robin load balancing for flow-based traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow</samp>](## "load_balance.cluster.flow") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;monitor</samp>](## "load_balance.cluster.flow.monitor") | Boolean |  |  |  | Monitor the flows without affecting forwarding. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_learning_aging_timeout</samp>](## "load_balance.cluster.flow.source_learning_aging_timeout") | Integer |  |  | Min: 30<br>Max: 2147483647 | Flow aging timeout in seconds for flow discovery by learning. |
@@ -98,6 +98,8 @@
         # This setting must be defined when `destination_grouping` is set to `prefix length`.
         prefix_length: <int; 0-129>
         forwarding_type: <str; "bridged encapsulation vxlan ipv4" | "routed ipv4">
+
+        # Enable round-robin load balancing for flow-based traffic.
         load_balance_method_flow_round_robin: <bool>
         flow:
 
