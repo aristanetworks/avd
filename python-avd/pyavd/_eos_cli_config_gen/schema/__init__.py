@@ -62089,12 +62089,262 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Actions(AvdModel):
                     """Subclass of AvdModel."""
 
+                    class Redirect(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class AggregationGroups(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        AggregationGroups._item_type = str
+
+                        class NextHop(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Ipv4(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Addresses(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                Addresses._item_type = str
+
+                                _fields: ClassVar[dict] = {"addresses": {"type": Addresses}, "vrf": {"type": str}}
+                                addresses: Addresses
+                                """Subclass of AvdList with `str` items."""
+                                vrf: str | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, addresses: Addresses | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined
+                                    ) -> None:
+                                        """
+                                        Ipv4.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            addresses: Subclass of AvdList with `str` items.
+                                            vrf: vrf
+
+                                        """
+
+                            class Ipv6(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Addresses(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                Addresses._item_type = str
+
+                                _fields: ClassVar[dict] = {"addresses": {"type": Addresses}, "vrf": {"type": str}}
+                                addresses: Addresses
+                                """Subclass of AvdList with `str` items."""
+                                vrf: str | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, addresses: Addresses | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined
+                                    ) -> None:
+                                        """
+                                        Ipv6.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            addresses: Subclass of AvdList with `str` items.
+                                            vrf: vrf
+
+                                        """
+
+                            class Groups(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Groups._item_type = str
+
+                            class Recursive(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Ipv4(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    class Addresses(AvdList[str]):
+                                        """Subclass of AvdList with `str` items."""
+
+                                    Addresses._item_type = str
+
+                                    _fields: ClassVar[dict] = {"addresses": {"type": Addresses}, "vrf": {"type": str}}
+                                    addresses: Addresses
+                                    """Subclass of AvdList with `str` items."""
+                                    vrf: str | None
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self, *, addresses: Addresses | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined
+                                        ) -> None:
+                                            """
+                                            Ipv4.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                addresses: Subclass of AvdList with `str` items.
+                                                vrf: vrf
+
+                                            """
+
+                                class Ipv6(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    class Addresses(AvdList[str]):
+                                        """Subclass of AvdList with `str` items."""
+
+                                    Addresses._item_type = str
+
+                                    _fields: ClassVar[dict] = {"addresses": {"type": Addresses}, "vrf": {"type": str}}
+                                    addresses: Addresses
+                                    """Subclass of AvdList with `str` items."""
+                                    vrf: str | None
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self, *, addresses: Addresses | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined
+                                        ) -> None:
+                                            """
+                                            Ipv6.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                addresses: Subclass of AvdList with `str` items.
+                                                vrf: vrf
+
+                                            """
+
+                                _fields: ClassVar[dict] = {"ipv4": {"type": Ipv4}, "ipv6": {"type": Ipv6}}
+                                ipv4: Ipv4
+                                """Subclass of AvdModel."""
+                                ipv6: Ipv6
+                                """Subclass of AvdModel."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, ipv4: Ipv4 | UndefinedType = Undefined, ipv6: Ipv6 | UndefinedType = Undefined) -> None:
+                                        """
+                                        Recursive.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            ipv4: Subclass of AvdModel.
+                                            ipv6: Subclass of AvdModel.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "ipv4": {"type": Ipv4},
+                                "ipv6": {"type": Ipv6},
+                                "groups": {"type": Groups},
+                                "recursive": {"type": Recursive},
+                            }
+                            ipv4: Ipv4
+                            """Subclass of AvdModel."""
+                            ipv6: Ipv6
+                            """Subclass of AvdModel."""
+                            groups: Groups
+                            """
+                            Set groups to redirect flow.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            recursive: Recursive
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    ipv4: Ipv4 | UndefinedType = Undefined,
+                                    ipv6: Ipv6 | UndefinedType = Undefined,
+                                    groups: Groups | UndefinedType = Undefined,
+                                    recursive: Recursive | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    NextHop.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        ipv4: Subclass of AvdModel.
+                                        ipv6: Subclass of AvdModel.
+                                        groups:
+                                           Set groups to redirect flow.
+
+                                           Subclass of AvdList with `str` items.
+                                        recursive: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"aggregation_groups": {"type": AggregationGroups}, "interface": {"type": str}, "next_hop": {"type": NextHop}}
+                        aggregation_groups: AggregationGroups
+                        """Subclass of AvdList with `str` items."""
+                        interface: str | None
+                        """
+                        The allowed hardware Ethernet interface, LAG interface.
+                        This option is mutually exclusive with ''.
+                        Ex:
+                          1. Ethernet 1
+                          2. Et 1,2
+                          3. Po 2-4.
+                        """
+                        next_hop: NextHop
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                aggregation_groups: AggregationGroups | UndefinedType = Undefined,
+                                interface: str | None | UndefinedType = Undefined,
+                                next_hop: NextHop | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Redirect.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    aggregation_groups: Subclass of AvdList with `str` items.
+                                    interface:
+                                       The allowed hardware Ethernet interface, LAG interface.
+                                       This option is mutually exclusive with ''.
+                                       Ex:
+                                         1. Ethernet 1
+                                         2. Et 1,2
+                                         3. Po 2-4.
+                                    next_hop: Subclass of AvdModel.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "dscp": {"type": int},
                         "traffic_class": {"type": int},
                         "count": {"type": str},
                         "drop": {"type": bool},
                         "log": {"type": bool},
+                        "redirect": {"type": Redirect},
                     }
                     dscp: int | None
                     traffic_class: int | None
@@ -62104,6 +62354,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
+                    redirect: Redirect
+                    """Subclass of AvdModel."""
 
                     if TYPE_CHECKING:
 
@@ -62115,6 +62367,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             count: str | None | UndefinedType = Undefined,
                             drop: bool | None | UndefinedType = Undefined,
                             log: bool | None | UndefinedType = Undefined,
+                            redirect: Redirect | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Actions.
@@ -62128,6 +62381,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 count: Counter name.
                                 drop: drop
                                 log: Only supported when action is set to drop.
+                                redirect: Subclass of AvdModel.
 
                             """
 

@@ -23455,6 +23455,57 @@ keys:
                       log:
                         type: bool
                         description: Only supported when action is set to drop.
+                      redirect:
+                        type: dict
+                        keys:
+                          aggregation_groups:
+                            type: list
+                            items:
+                              type: str
+                          interface:
+                            type: str
+                            description: "The allowed hardware Ethernet interface,
+                              LAG interface.\nThis option is mutually exclusive with
+                              ''.\nEx:\n  1. Ethernet 1\n  2. Et 1,2\n  3. Po 2-4."
+                          next_hop:
+                            type: dict
+                            keys:
+                              ipv4:
+                                type: dict
+                                keys:
+                                  addresses:
+                                    type: list
+                                    required: true
+                                    items:
+                                      type: str
+                                      description: Next hop IPv4 address.
+                                  vrf:
+                                    type: str
+                              ipv6:
+                                type: dict
+                                keys:
+                                  addresses:
+                                    type: list
+                                    required: true
+                                    items:
+                                      type: str
+                                      description: Next hop IPv6 address.
+                                  vrf:
+                                    type: str
+                              groups:
+                                type: list
+                                items:
+                                  type: str
+                                description: Set groups to redirect flow.
+                              recursive:
+                                type: dict
+                                keys:
+                                  ipv4:
+                                    type: dict
+                                    $ref: eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv4
+                                  ipv6:
+                                    type: dict
+                                    $ref: eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv6
             default_actions:
               type: dict
               keys:

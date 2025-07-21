@@ -130,6 +130,45 @@
 {%                         if match.actions.traffic_class is arista.avd.defined() %}
 {%                             do row.actions.append("traffic-class: " + match.actions.traffic_class | string) %}
 {%                         endif %}
+{%                         if match.actions.redirect.aggregation_groups is arista.avd.defined() %}
+{%                             do row.actions.append("redirect aggregation groups: " + match.actions.redirect.aggregation_groups | arista.avd.natural_sort | join(' ') | string) %}
+{%                         endif %}
+{%                         if match.actions.redirect.interface is arista.avd.defined() %}
+{%                             do row.actions.append("redirect interface: " + match.actions.redirect.interface | string) %}
+{%                         endif %}
+{%                         if not (match.actions.redirect.interface is arista.avd.defined or match.actions.redirect.aggregation_groups is arista.avd.defined) %}
+{%                             if match.actions.redirect.next_hop.ipv4.addresses is arista.avd.defined %}
+{%                                 set ipv4_addresses = match.actions.redirect.next_hop.ipv4.addresses | arista.avd.natural_sort | join(' ') %}
+{%                                 if match.actions.redirect.next_hop.ipv4.vrf is arista.avd.defined %}
+{%                                     do row.actions.append("redirect next-hop ipv4 address: " + ipv4_addresses + " vrf: " + match.actions.redirect.next_hop.ipv4.vrf | string) %}
+{%                                 else %}
+{%                                     do row.actions.append("redirect next-hop ipv4 address: " + ipv4_addresses | string) %}
+{%                                 endif %}
+{%                             elif match.actions.redirect.next_hop.ipv6.addresses is arista.avd.defined %}
+{%                                 set ipv6_addresses = match.actions.redirect.next_hop.ipv6.addresses | arista.avd.natural_sort | join(' ') %}
+{%                                 if match.actions.redirect.next_hop.ipv6.vrf is arista.avd.defined %}
+{%                                     do row.actions.append("redirect next-hop ipv6 address: " + ipv6_addresses + " vrf: " + match.actions.redirect.next_hop.ipv6.vrf | string) %}
+{%                                 else %}
+{%                                     do row.actions.append("redirect next-hop ipv6 address: " + ipv6_addresses | string) %}
+{%                                 endif %}
+{%                             elif match.actions.redirect.next_hop.groups is arista.avd.defined %}
+{%                                 do row.actions.append("redirect next-hop groups: " + match.actions.redirect.next_hop.groups | arista.avd.natural_sort | join(' ') | string) %}
+{%                             elif match.actions.redirect.next_hop.recursive.ipv4.addresses is arista.avd.defined %}
+{%                                 set ipv4_addresses = match.actions.redirect.next_hop.recursive.ipv4.addresses | arista.avd.natural_sort | join(' ') %}
+{%                                 if match.actions.redirect.next_hop.recursive.ipv4.vrf is arista.avd.defined %}
+{%                                     do row.actions.append("redirect next-hop recursive ipv4 address: " + ipv4_addresses + " vrf: " + match.actions.redirect.next_hop.recursive.ipv4.vrf | string) %}
+{%                                 else %}
+{%                                     do row.actions.append("redirect next-hop recursive ipv4 address: " + ipv4_addresses | string) %}
+{%                                 endif %}
+{%                             elif match.actions.redirect.next_hop.recursive.ipv6.addresses is arista.avd.defined %}
+{%                                 set ipv6_addresses = match.actions.redirect.next_hop.recursive.ipv6.addresses | arista.avd.natural_sort | join(' ') %}
+{%                                 if match.actions.redirect.next_hop.recursive.ipv6.vrf is arista.avd.defined %}
+{%                                     do row.actions.append("redirect next-hop recursive ipv6 address: " + ipv6_addresses + " vrf: " + match.actions.redirect.next_hop.recursive.ipv6.vrf | string) %}
+{%                                 else %}
+{%                                     do row.actions.append("redirect next-hop recursive ipv6 address: " + ipv6_addresses | string) %}
+{%                                 endif %}
+{%                             endif %}
+{%                         endif %}
 {%                     else %}
 {%                         do row.actions.append("default action: PASS") %}
 {%                     endif %}
