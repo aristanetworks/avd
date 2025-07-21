@@ -166,6 +166,7 @@
 | {{ ethernet_interface.name }} | {{ pae_mode }} | {{ state }} | {{ phone_state }} | {{ reauthentication }} | {{ auth_failure_action }} | {{ host_mode }} | {{ mac_based_authentication_enabled }} | {{ auth_failure_fallback_mba }} |
 {%         endfor %}
 {%     endif %}
+{%     if dot1x is arista.avd.defined %}
 
 #### Dot1x Configuration
 
@@ -173,4 +174,5 @@
 {%     include 'eos/dot1x.j2' %}
 {%     include 'eos/dot1x_part2.j2' %}
 ```
+{%     endif %}
 {% endif %}

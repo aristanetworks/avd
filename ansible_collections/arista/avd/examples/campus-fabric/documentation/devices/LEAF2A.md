@@ -7132,11 +7132,6 @@ ip route vrf MGMT 0.0.0.0/0 172.16.100.1
 | Ethernet7/47 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
 | Ethernet7/48 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
 
-#### Dot1x Configuration
-
-```eos
-```
-
 ## Power Over Ethernet (PoE)
 
 ### PoE Summary
