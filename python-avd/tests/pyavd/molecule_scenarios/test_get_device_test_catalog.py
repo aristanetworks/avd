@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 import json
 from copy import deepcopy
-from typing import Any
+from typing import Any, Literal
 
 import pytest
 
@@ -12,14 +12,16 @@ from pyavd._anta.lib import AntaCatalog
 from pyavd.api._anta import AvdCatalogGenerationSettings, InputFactorySettings, get_minimal_structured_configs
 from tests.models import MoleculeHost, MoleculeScenario
 
+RunName = Literal["default_run", "allow_bgp_vrfs_run", "filtered_run"]
+
 
 # Helper Function for Filter Logic
 def _get_avd_catalog_generation_settings(molecule_host: MoleculeHost, run_name: str) -> AvdCatalogGenerationSettings | None:
     """Create the AvdCatalogGenerationSettings object based on the test run name."""
-    if run_name == "allow_bgp_vrfs":
+    if run_name == "allow_bgp_vrfs_run":
         return AvdCatalogGenerationSettings(input_factory_settings=InputFactorySettings(allow_bgp_vrfs=True))
 
-    if run_name == "filtered":
+    if run_name == "filtered_run":
         # Filter rules defined here, mirroring the playbook.
         avd_catalogs_filters: list[dict[str, Any]] = [
             {"skip_tests": ["VerifyNTP"]},
@@ -57,18 +59,14 @@ def _get_avd_catalog_generation_settings(molecule_host: MoleculeHost, run_name: 
     ],
     ids=["default_run", "allow_bgp_vrfs_run", "filtered_run"],
 )
-def test_get_device_test_catalog(molecule_host: MoleculeHost, molecule_scenario: MoleculeScenario, run_name: str, expected_catalog_property_name: str) -> None:
+def test_get_device_test_catalog(molecule_host: MoleculeHost, molecule_scenario: MoleculeScenario, run_name: RunName) -> None:
     """Verify get_device_test_catalog generates the correct ANTA catalog."""
     all_configs = deepcopy(molecule_scenario.structured_configs)
     minimal_configs = get_minimal_structured_configs(all_configs)
     host_config = deepcopy(molecule_host.structured_config)
     settings = _get_avd_catalog_generation_settings(molecule_host, run_name)
 
-    expected_data_property = getattr(molecule_host, expected_catalog_property_name)
-    expected_data = deepcopy(expected_data_property)
-    if not expected_data:
-        pytest.skip(f"Expected catalog not found for test case: {expected_catalog_property_name}")
-
+    expected_data = deepcopy(molecule_host.get_test_catalog(run_name=run_name))
     result_catalog = get_device_test_catalog(molecule_host.name, host_config, minimal_configs, settings=settings)
 
     assert isinstance(result_catalog, AntaCatalog)
