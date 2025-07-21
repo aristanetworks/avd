@@ -231,7 +231,7 @@ class MoleculeScenario:
         if not configs_dir.is_dir():
             return {}
 
-        all_configs: dict[str, dict[Any, Any]] = {}
+        all_configs: dict[str, dict[str, Any]] = {}
         # Find every file ending with .yml in the directory
         config_files = chain(configs_dir.glob("*.yml"), configs_dir.glob("*.yaml"))
         for config_file in config_files:
