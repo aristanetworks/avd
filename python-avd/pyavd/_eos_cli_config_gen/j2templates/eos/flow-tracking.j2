@@ -27,7 +27,16 @@ flow tracking hardware
       !
 {%             endif %}
       exporter {{ exporter.name }}
-{%             if exporter.collector.host is arista.avd.defined %}
+{# TODO: Remove this condition once the `exporter.collector` key is removed in AVD 6.0 #}
+{%             if exporter.collectors is arista.avd.defined %}
+{%                 for collector in exporter.collectors | arista.avd.natural_sort %}
+{%                     set collector_cli = "collector " ~ collector.host %}
+{%                     if collector.port is arista.avd.defined %}
+{%                         set collector_cli =  collector_cli ~ " port " ~ collector.port %}
+{%                     endif %}
+         {{ collector_cli }}
+{%                 endfor %}
+{%             elif exporter.collector.host is arista.avd.defined %}
 {%                 set collector_cli = 'collector ' ~ exporter.collector.host %}
 {%                 if exporter.collector.port is arista.avd.defined %}
 {%                     set collector_cli = collector_cli ~ ' port ' ~ exporter.collector.port %}
@@ -109,7 +118,16 @@ flow tracking sampled
       !
 {%             endif %}
       exporter {{ exporter.name }}
-{%             if exporter.collector.host is arista.avd.defined %}
+{# TODO: Remove this condition once the `exporter.collector` key is removed in AVD 6.0 #}
+{%             if exporter.collectors is arista.avd.defined %}
+{%                 for collector in exporter.collectors | arista.avd.natural_sort %}
+{%                     set collector_cli = "collector " ~ collector.host %}
+{%                     if collector.port is arista.avd.defined %}
+{%                         set collector_cli =  collector_cli ~ " port " ~ collector.port %}
+{%                     endif %}
+         {{ collector_cli }}
+{%                 endfor %}
+{%             elif exporter.collector.host is arista.avd.defined %}
 {%                 set collector_cli = 'collector ' ~ exporter.collector.host %}
 {%                 if exporter.collector.port is arista.avd.defined %}
 {%                     set collector_cli = collector_cli ~ ' port ' ~ exporter.collector.port %}
