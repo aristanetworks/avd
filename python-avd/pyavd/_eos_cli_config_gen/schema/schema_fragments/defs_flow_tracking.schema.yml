@@ -57,6 +57,29 @@ $defs:
                         max: 65535
                         convert_types:
                           - str
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 6.0.0
+                      new_key: collectors
+                  collectors:
+                    type: list
+                    primary_key: host
+                    items:
+                      type: dict
+                      keys:
+                        host:
+                          type: str
+                          description: |-
+                            Flow collector name.
+                            The collector name can be an IPv4 address, IPv6 address and fully qualified domain name.
+                        port:
+                          type: int
+                          description: Collector Port Number.
+                          min: 1
+                          max: 65535
+                          convert_types:
+                            - str
                   format:
                     type: dict
                     keys:
