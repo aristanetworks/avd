@@ -300,7 +300,7 @@ class RouterBgpMixin(Protocol):
         if self.shared_utils.wan_ha:
             self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.enable = True
             self.structured_config.router_bgp.address_family_evpn.neighbors.append_new(
-                ip_address=self._wan_ha_peer_vtep_ip(),
+                ip_address=self.shared_utils._wan_ha_peer_vtep_ip,
                 activate=True,
                 encapsulation=self.inputs.wan_encapsulation,
             )
@@ -521,7 +521,7 @@ class RouterBgpMixin(Protocol):
 
             if self.shared_utils.wan_ha:
                 neighbors.append_new(
-                    ip_address=self._wan_ha_peer_vtep_ip(),
+                    ip_address=self.shared_utils._wan_ha_peer_vtep_ip,
                     peer=self.shared_utils.wan_ha_peer,
                     description=self.shared_utils.wan_ha_peer,
                     remote_as=self.shared_utils.bgp_as,

@@ -81,7 +81,7 @@ pe:
     overlay_address_families: [ evpn, vpn-ipv4, vpn-ipv6 ]
     bgp_defaults:
       - distance bgp 20 200 200
-    mpls_route_reflectors: [ SITE1-RR1, SITE2-RR1 ]
+    mpls_route_reflectors: [ SITE1-RR1, SITE2-RR1, SITE2-LER1, SITE1-LER2 ]
     raw_eos_cli: |
       management security
          password encryption-key common
