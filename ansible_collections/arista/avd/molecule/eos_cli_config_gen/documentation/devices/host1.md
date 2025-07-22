@@ -4658,8 +4658,6 @@ interface Ethernet6
    tx-queue 2
       scheduler profile responsive
       random-detect ecn count
-   !
-   tx-queue 3
    logging event storm-control discards
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
