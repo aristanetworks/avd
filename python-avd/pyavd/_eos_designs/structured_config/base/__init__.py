@@ -656,6 +656,7 @@ class AvdStructuredConfigBaseProtocol(
         if not self.inputs.aaa_settings.radius:
             return
 
+        seen_server_combinations: set[tuple[str, str]] = set()
         for server in self.inputs.aaa_settings.radius.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -663,6 +664,13 @@ class AvdStructuredConfigBaseProtocol(
                 set_source_interfaces=True,
                 context=f"aaa_settings.radius.servers[host={server.host}].vrf",
             )
+            # TODO: Temporary workaround to avoid duplicate configs; replace once schema supports unique (host, VRF) combinations.
+            server_key: tuple[str, str] = (server.host, server_vrf)
+            if server_key in seen_server_combinations:
+                msg = f"Duplicate RADIUS server found: Host '{server.host}' is already defined for VRF '{server.vrf}'."
+                raise AristaAvdInvalidInputsError(msg)
+            seen_server_combinations.add(server_key)
+
             if source_interface:
                 self.structured_config.ip_radius_source_interfaces.append_unique(
                     EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
@@ -692,6 +700,7 @@ class AvdStructuredConfigBaseProtocol(
         if not self.inputs.aaa_settings.tacacs:
             return
 
+        seen_server_combinations: set[tuple[str, str]] = set()
         for server in self.inputs.aaa_settings.tacacs.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -699,6 +708,13 @@ class AvdStructuredConfigBaseProtocol(
                 set_source_interfaces=True,
                 context=f"aaa_settings.tacacs.servers[host={server.host}].vrf",
             )
+            # TODO: Temporary workaround to avoid duplicate configs; replace once schema supports unique (host, VRF) combinations.
+            server_key: tuple[str, str] = (server.host, server_vrf)
+            if server_key in seen_server_combinations:
+                msg = f"Duplicate TACACS server found: Host '{server.host}' is already defined for VRF '{server.vrf}'."
+                raise AristaAvdInvalidInputsError(msg)
+            seen_server_combinations.add(server_key)
+
             if source_interface:
                 self.structured_config.ip_tacacs_source_interfaces.append_unique(
                     EosCliConfigGen.IpTacacsSourceInterfacesItem(name=source_interface, vrf=server_vrf)
