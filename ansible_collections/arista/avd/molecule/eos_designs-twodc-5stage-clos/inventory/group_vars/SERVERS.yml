@@ -73,3 +73,10 @@ servers:
           enabled: true
           description: PortChannel
           mode: active
+
+      - endpoint_ports: [ Eth9 ]
+        switch_ports: [ Ethernet2 ]
+        switches: [ DC1-POD1-L2LEAF1A ]
+        poe:
+          reboot:
+            action: maintain

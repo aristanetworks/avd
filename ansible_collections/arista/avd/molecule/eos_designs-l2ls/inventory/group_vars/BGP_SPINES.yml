@@ -9,6 +9,7 @@ l3spine:
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
+    campus_pod: Downtown_office
   node_groups:
     - group: BGP_SPINES
       bgp_as: 65001
@@ -17,3 +18,10 @@ l3spine:
           id: 1
         - name: BGP-SPINE2
           id: 2
+
+generate_cv_tags:
+  topology_hints: true
+  campus_fabric: true
+  interface_tags:
+    - name: Link-Type
+      value: AnotherValue

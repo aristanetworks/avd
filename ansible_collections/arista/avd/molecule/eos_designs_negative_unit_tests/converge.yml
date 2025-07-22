@@ -118,23 +118,6 @@
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
-- name: Converge Negative tests for 'eos_designs_facts' - mlag_same_subnet_1
-  hosts: mlag_same_subnet_1
-  gather_facts: false
-  connection: local
-  tasks:
-    - name: Run failure scenario Test
-      block:
-        - name: Trigger Error
-          ansible.builtin.import_role:
-            name: arista.avd.eos_designs
-      rescue:
-        - name: Assert eos_designs failed with the expected error message
-          ansible.builtin.assert:
-            that:
-              - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
-
 - name: Converge Negative tests for 'eos_designs_facts' - missing-mlag-peer-ipv4-pool
   hosts: missing-mlag-peer-ipv4-pool1
   gather_facts: false
@@ -279,10 +262,6 @@
           ansible.builtin.import_role:
             name: arista.avd.eos_designs
       rescue:
-        - name: Error message
-          run_once: true
-          ansible.builtin.debug:
-            var: ansible_failed_result.msg
         - name: Assert eos_designs failed with the expected error message
           run_once: true
           ansible.builtin.assert:
@@ -300,10 +279,6 @@
           ansible.builtin.import_role:
             name: arista.avd.eos_designs
       rescue:
-        - name: Error message
-          run_once: true
-          ansible.builtin.debug:
-            var: ansible_failed_result.msg
         - name: Assert eos_designs failed with the expected error message
           run_once: true
           ansible.builtin.assert:
@@ -321,10 +296,6 @@
           ansible.builtin.import_role:
             name: arista.avd.eos_designs
       rescue:
-        - name: Error message
-          run_once: true
-          ansible.builtin.debug:
-            var: ansible_failed_result.msg
         - name: Assert eos_designs failed with the expected error message
           run_once: true
           ansible.builtin.assert:
@@ -342,10 +313,6 @@
           ansible.builtin.import_role:
             name: arista.avd.eos_designs
       rescue:
-        - name: Error message
-          run_once: true
-          ansible.builtin.debug:
-            var: ansible_failed_result.msg
         - name: Assert eos_designs failed with the expected error message
           run_once: true
           ansible.builtin.assert:
@@ -363,10 +330,6 @@
           ansible.builtin.import_role:
             name: arista.avd.eos_designs
       rescue:
-        - name: Error message
-          run_once: true
-          ansible.builtin.debug:
-            var: ansible_failed_result.msg
         - name: Assert eos_designs failed with the expected error message
           run_once: true
           ansible.builtin.assert:
@@ -384,10 +347,6 @@
           ansible.builtin.import_role:
             name: arista.avd.eos_designs
       rescue:
-        - name: Error message
-          run_once: true
-          ansible.builtin.debug:
-            var: ansible_failed_result.msg
         - name: Assert eos_designs failed with the expected error message
           run_once: true
           ansible.builtin.assert:
@@ -405,10 +364,6 @@
           ansible.builtin.import_role:
             name: arista.avd.eos_designs
       rescue:
-        - name: Error message
-          run_once: true
-          ansible.builtin.debug:
-            var: ansible_failed_result.msg
         - name: Assert eos_designs failed with the expected error message
           run_once: true
           ansible.builtin.assert:
@@ -426,10 +381,6 @@
           ansible.builtin.import_role:
             name: arista.avd.eos_designs
       rescue:
-        - name: Error message
-          run_once: true
-          ansible.builtin.debug:
-            var: ansible_failed_result.msg
         - name: Assert eos_designs failed with the expected error message
           run_once: true
           ansible.builtin.assert:
@@ -438,7 +389,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FABRIC_ID_STATIC_AND_POOL_MANAGER
+  hosts: FABRIC_ID_STATIC_AND_POOL_MANAGER_INVALID
   connection: local
   tasks:
     - name: Run failure scenario Test
@@ -447,11 +398,24 @@
           ansible.builtin.import_role:
             name: arista.avd.eos_designs
       rescue:
-        - name: Error message
-          run_once: true
-          ansible.builtin.debug:
-            var: ansible_failed_result.msg
         - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts'
+  hosts: FABRIC_ID_STATIC_AND_POOL_MANAGER_COLLISION
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          run_once: true
           ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
@@ -467,10 +431,6 @@
           ansible.builtin.import_role:
             name: arista.avd.eos_designs
       rescue:
-        - name: Error message
-          run_once: true
-          ansible.builtin.debug:
-            var: ansible_failed_result.msg
         - name: Assert eos_designs failed with the expected error message
           ansible.builtin.assert:
             that:
@@ -538,10 +498,355 @@
           ansible.builtin.import_role:
             name: arista.avd.eos_designs
       rescue:
-        - name: Error message
-          run_once: true
-          ansible.builtin.debug:
-            var: ansible_failed_result.msg
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: missing-router-id-pool
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: missing-vtep-loopback-ipv6-pool
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: missing-mlag-peer-l3-ipv6-pool
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: unsupported-wan-router-underlay-ipv6-numbered
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: unsupported-underlay-multicast-underlay-ipv6-numbered
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: unsupported-rfc5549-underlay-ipv6-numbered
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: unsupported-vtep-vvtep-ip-underlay-ipv6-numbered
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: unsupported-inband-ztp-ip-underlay-ipv6-numbered
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: unsupported-non-ebgp-underlay-routing-protocol-ip-underlay-ipv6-numbered
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: missing-wan-interfaces
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: missing-wan-carriers
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: missing-wan-interfaces-ip-address
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_structured_config'
+  hosts: wan-server-with-interfaces-as-dhcp-address
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts'
+  hosts: FAILURE_OVERLAY_ROUTING_PROTOCOL_ADDRESS_FAMILY_IPV6
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts'
+  hosts: digital-twin-act-missing-node-type
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts'
+  hosts: digital-twin-act-missing-ip-addr
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts'
+  hosts: multiple-uplink-interfaces-for-uplink-type-lan
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts'
+  hosts: missing-underlay-router-and-network-services-for-uplink-type-lan
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts'
+  hosts: missing-id-on-l2leaf-uplink-switch-interfaces
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts'
+  hosts: missing-downlink-interfaces-spine
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts'
+  hosts: incorrect-uplink-port-channel-id-l2leaf1b
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
         - name: Assert eos_designs failed with the expected error message
           ansible.builtin.assert:
             that:

@@ -33,4 +33,11 @@ vlan {{ vlan.id }}
       locked-address ipv4 enforcement disabled
 {%         endif %}
 {%     endif %}
+{%     if vlan.e_tree.leaf_role is arista.avd.defined(true) %}
+   !
+   e-tree role leaf
+{%         if vlan.e_tree.remote_leaf_host_drop is arista.avd.defined(true) %}
+      remote leaf host drop
+{%         endif %}
+{%     endif %}
 {% endfor %}

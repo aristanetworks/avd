@@ -164,6 +164,19 @@ $defs:
               By default `redistribute igmp` is only configured when `evpn_l2_multicast` is True and `evpn_l3_multicast` for the VRF is False.
               Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is enabled will take up additional control-plane and data-plane resources,
               but it is required to support forwarding of TTL=1 multicast traffic within the VLAN.
+      vxlan_flood_multicast:
+        documentation_options:
+          table: network-services-multicast-settings
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: |-
+              Explicitly enable or disable vxlan_flood_multicast to override settings of `<network_services_key>.[].vxlan_flood_multicast`.
+          underlay_multicast_group:
+            description: |-
+              Specific multicast group to use for this SVI.
+            type: str
       evpn_l3_multicast:
         documentation_options:
           table: network-services-multicast-settings
@@ -249,9 +262,19 @@ $defs:
               - "message-digest"
           simple_auth_key:
             type: str
-            description: Password used with simple authentication.
+            description: |-
+              Type 7 encrypted key for OSPF simple authentication.
+              Takes precedence over `cleartext_simple_auth_key`
+          cleartext_simple_auth_key:
+            type: str
+            description: |-
+              Cleartext key for OSPF simple authentication.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
+            min_length: 1
+            max_length: 8
           message_digest_keys:
             type: list
+            # TODO: AVD 6.0.0: Make id primary_key and key required.
             items:
               type: dict
               keys:
@@ -270,7 +293,16 @@ $defs:
                   default: sha512
                 key:
                   type: str
-                  description: Type 7 encrypted key.
+                  description: |-
+                    Type 7 encrypted key for OSPF message-digest authentication.
+                    Takes precedence over `cleartext_key`.
+                cleartext_key:
+                  type: str
+                  description: |-
+                    Cleartext key for OSPF message-digest authentication
+                    To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                  min_length: 1
+                  max_length: 16
       bgp:
         type: dict
         keys:

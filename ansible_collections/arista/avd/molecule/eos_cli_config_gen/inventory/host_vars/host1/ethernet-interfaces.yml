@@ -1501,12 +1501,19 @@ ethernet_interfaces:
             reload: 800
         ipv4:
           address: 192.0.2.1
+        peer_authentication:
+          mode: ietf-md5
+          key: auth_key
+          key_type: "0"
       - id: 2
         preempt:
           enabled: true
           delay:
         ipv6:
           address: 2001:db8::1
+        peer_authentication:
+          mode: text
+          key: auth_key
 
   - name: Ethernet66
     description: Multiple VRIDs and tracking
@@ -1534,6 +1541,9 @@ ethernet_interfaces:
             decrement: 5
           - name: ID1TrackedObjectShutdown
             shutdown: true
+        peer_authentication:
+          mode: ietf-md5
+          key: auth_key
       - id: 2
         preempt:
           enabled: true
@@ -1545,6 +1555,10 @@ ethernet_interfaces:
             decrement: 10
           - name: ID2TrackedObjectShutdown
             shutdown: true
+        peer_authentication:
+          mode: text
+          key: auth_key
+          key_type: "0"
       - id: 3
         timers:
           delay:
@@ -1894,7 +1908,10 @@ ethernet_interfaces:
         - 3
         - 15-29
         - testgrp
-      srlg: TEST-SRLG
+      srlgs:
+        - 2
+        - TEST-SRLG
+        - ARISTA
       metric: 4
       bandwidth:
         number: 10
@@ -1915,7 +1932,6 @@ ethernet_interfaces:
         - 4
         - 7-100
         - testgrp
-      srlg: 16
       metric: 2
       bandwidth:
         number: 100
@@ -1928,6 +1944,7 @@ ethernet_interfaces:
   - name: Ethernet82
     description: Switchport_tap_tool
     switchport:
+      mode: tap-tool
       tap:
         allowed_vlan: 25
         default:
@@ -1994,6 +2011,7 @@ ethernet_interfaces:
   - name: Ethernet83
     description: Test_tap_tool
     switchport:
+      mode: tap-tool
       tap:
         identity:
           id: 5
@@ -2012,6 +2030,7 @@ ethernet_interfaces:
 
   - name: Ethernet84
     switchport:
+      mode: tap
       tap:
         encapsulation:
           gre:

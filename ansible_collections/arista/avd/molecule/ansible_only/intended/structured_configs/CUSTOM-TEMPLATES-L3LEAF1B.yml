@@ -68,6 +68,24 @@ ethernet_interfaces:
   peer: SERVER-2
   peer_interface: Nic2
   peer_type: server
+- name: Ethernet14
+  description: TEST_CUSTOM_PREFIX_SERVER-3_Nic1_
+  shutdown: false
+  channel_group:
+    id: 14
+    mode: active
+  peer: SERVER-3
+  peer_interface: Nic1
+  peer_type: server
+- name: Ethernet15
+  description: TEST_CUSTOM_PREFIX_SERVER-3_Nic2_
+  shutdown: false
+  channel_group:
+    id: 14
+    mode: active
+  peer: SERVER-3
+  peer_interface: Nic2
+  peer_type: server
 hostname: CUSTOM-TEMPLATES-L3LEAF1B
 ip_igmp_snooping:
   globally_enabled: true
@@ -126,6 +144,12 @@ port_channel_interfaces:
       allowed_vlan: none
 - name: Port-Channel12
   description: TEST_CUSTOM_PREFIX_SERVER-2_data_portchannel_12
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+- name: Port-Channel14
+  description: SERVER-3-port-channel1
   shutdown: false
   switchport:
     enabled: true

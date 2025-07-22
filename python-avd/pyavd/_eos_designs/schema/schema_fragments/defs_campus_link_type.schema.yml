@@ -1,0 +1,23 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  campus_link_type:
+    type: list
+    description: |-
+      PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+      Values for the CloudVision `Link-Type` user tags to be associated with an interface.
+      Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result in the same tags being associated with the parent Ethernet interface instead.
+      Attempting to associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being associated with the member Ethernet interfaces instead.
+    items:
+      type: str
+      valid_values:
+        - "downlink"
+        - "egress"
+        - "fabric"
+        - "mlag"
+        - "uplink"

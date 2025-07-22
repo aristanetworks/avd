@@ -13,11 +13,11 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 169.254.102.1/32
+  ip_address: 192.168.255.1/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 169.253.103.1/32
+  ip_address: 192.168.254.1/32
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -36,9 +36,9 @@ prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 169.254.102.0/24 eq 32
+    action: permit 192.168.255.0/24 eq 32
   - sequence: 20
-    action: permit 169.253.103.0/24 eq 32
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -53,7 +53,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65233'
-  router_id: 169.254.102.1
+  router_id: 192.168.255.1
   maximum_paths:
     paths: 4
     ecmp: 4
@@ -93,11 +93,11 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlans:
   - id: 11
-    tenant: TENANT1
-    rd: 169.254.102.1:10011
+    tenant: EVPN_GATEWAY_TESTS
+    rd: 192.168.255.1:10011
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.1:10011
+      rd: 192.168.255.1:10011
     route_targets:
       both:
       - 10011:10011
@@ -107,11 +107,11 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 12
-    tenant: TENANT1
-    rd: 169.254.102.1:10012
+    tenant: EVPN_GATEWAY_TESTS
+    rd: 192.168.255.1:10012
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.1:10012
+      rd: 192.168.255.1:10012
     route_targets:
       both:
       - 10012:10012
@@ -121,11 +121,11 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 21
-    tenant: TENANT1
-    rd: 169.254.102.1:10021
+    tenant: EVPN_GATEWAY_TESTS
+    rd: 192.168.255.1:10021
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.1:10021
+      rd: 192.168.255.1:10021
     route_targets:
       both:
       - 10021:10021
@@ -135,11 +135,11 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 22
-    tenant: TENANT1
-    rd: 169.254.102.1:10022
+    tenant: EVPN_GATEWAY_TESTS
+    rd: 192.168.255.1:10022
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.1:10022
+      rd: 192.168.255.1:10022
     route_targets:
       both:
       - 10022:10022
@@ -149,11 +149,11 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 300
-    tenant: TENANT1
-    rd: 169.254.102.1:10300
+    tenant: EVPN_GATEWAY_TESTS
+    rd: 192.168.255.1:10300
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.1:10300
+      rd: 192.168.255.1:10300
     route_targets:
       both:
       - 10300:10300
@@ -163,11 +163,11 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3401
-    tenant: TENANT1
-    rd: 169.254.102.1:13401
+    tenant: EVPN_GATEWAY_TESTS
+    rd: 192.168.255.1:13401
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.1:13401
+      rd: 192.168.255.1:13401
     route_targets:
       both:
       - 13401:13401
@@ -177,11 +177,11 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 3402
-    tenant: TENANT1
-    rd: 169.254.102.1:13402
+    tenant: EVPN_GATEWAY_TESTS
+    rd: 192.168.255.1:13402
     rd_evpn_domain:
       domain: remote
-      rd: 169.254.102.1:13402
+      rd: 192.168.255.1:13402
     route_targets:
       both:
       - 13402:13402
@@ -207,6 +207,12 @@ router_bgp:
     - domain: all
       identifier: 0000:0001:0001:0000:0509
       route_target_import: 00:00:00:00:07:09
+  address_family_rtc:
+    peer_groups:
+    - name: EVPN-OVERLAY-CORE
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
@@ -217,7 +223,7 @@ router_bgp:
       activate: false
   vrfs:
   - name: VRF10
-    rd: 169.254.102.1:10
+    rd: 192.168.255.1:10
     route_targets:
       import:
       - address_family: evpn
@@ -227,12 +233,12 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
-    router_id: 169.254.102.1
+    router_id: 192.168.255.1
     redistribute:
       connected:
         enabled: true
   - name: VRF11
-    rd: 169.254.102.1:11
+    rd: 192.168.255.1:11
     route_targets:
       import:
       - address_family: evpn
@@ -242,7 +248,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '11:11'
-    router_id: 169.254.102.1
+    router_id: 192.168.255.1
     redistribute:
       connected:
         enabled: true
@@ -254,30 +260,30 @@ vlan_interfaces:
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.11.1/24
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 - name: Vlan12
   description: VRF10_VLAN12
   shutdown: false
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 - name: Vlan21
   description: VRF11_VLAN21
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.21.1/24
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 - name: Vlan22
   description: VRF11_VLAN22
   shutdown: false
   vrf: VRF11
   ip_address_virtual: 10.10.22.1/24
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 - name: Vlan300
   description: VRF11_VLAN300
   shutdown: false
   vrf: VRF11
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 vlan_internal_order:
   allocation: ascending
   range:
@@ -286,34 +292,34 @@ vlan_internal_order:
 vlans:
 - id: 11
   name: VRF10_VLAN11
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 - id: 12
   name: VRF10_VLAN12
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 - id: 21
   name: VRF11_VLAN21
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 - id: 22
   name: VRF11_VLAN22
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 - id: 300
   name: VRF11_VLAN300
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 - id: 3401
   name: L2_VLAN3401
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 - id: 3402
   name: L2_VLAN3402
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF10
   ip_routing: true
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 - name: VRF11
   ip_routing: true
-  tenant: TENANT1
+  tenant: EVPN_GATEWAY_TESTS
 vxlan_interface:
   vxlan1:
     description: evpn_gateway_all_active_mh_gw_VTEP

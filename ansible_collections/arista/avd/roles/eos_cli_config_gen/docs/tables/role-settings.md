@@ -38,6 +38,6 @@
       toc: <bool; default=True>
     # This key is deprecated.
     # Support will be removed in AVD version 6.0.0.
-    # Use <samp>eos_cli_config_gen_documentation.enable</samp> instead.
+    # Use `eos_cli_config_gen_documentation.enable` instead.
     generate_device_documentation: <bool; default=True>
     ```

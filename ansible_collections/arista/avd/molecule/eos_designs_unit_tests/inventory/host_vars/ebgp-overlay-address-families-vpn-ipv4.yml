@@ -1,0 +1,54 @@
+---
+# Test when overlay_address_families is "vpn-ipv4", hence not an overlay_evpn
+type: wan_router
+
+overlay_routing_protocol: ebgp
+wan_use_evpn_node_settings_for_lan: true
+
+bgp_as: 65000
+
+cv_pathfinder_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    sites:
+      - name: Site422
+        id: 422
+        location: Somewhere
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.255.0/24
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
+    wan_role: client
+  nodes:
+    - name: ebgp-overlay-address-families-vpn-ipv4
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site422
+      overlay_address_families: [ vpn-ipv4 ]
+      id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: ATT
+          ip_address: dhcp
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: ATT
+    path_group: INET
+    trusted: true
