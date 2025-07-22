@@ -81,7 +81,7 @@ pe:
     overlay_address_families: [ evpn, vpn-ipv4, vpn-ipv6 ]
     bgp_defaults:
       - distance bgp 20 200 200
-    mpls_route_reflectors: [ SITE1-RR1, SITE2-RR1 ]
+    mpls_route_reflectors: [ SITE1-RR1, SITE2-RR1, SITE2-LER1, SITE1-LER2 ]
     raw_eos_cli: |
       management security
          password encryption-key common
@@ -148,7 +148,11 @@ rr:
         - name: SITE2-RR1
           id: 9
           mgmt_ip: 10.30.30.109/24
-
+        - name: SITE3-RR1
+          id: 12
+          mgmt_ip: 10.30.30.120/24
+          # test with no overlay_address_families
+          overlay_address_families: []
 # Core underlay interfaces
 core_interfaces:
   p2p_links_ip_pools:

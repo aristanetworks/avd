@@ -71,8 +71,7 @@ class Templar:
         self.import_filters_and_tests()
 
     def import_filters_and_tests(self) -> None:
-        # pylint: disable=import-outside-toplevel
-        from .j2filters import (
+        from .j2filters import (  # noqa: PLC0415
             add_md_toc,
             decrypt,
             default,
@@ -85,10 +84,8 @@ class Templar:
             snmp_hash,
             status_render,
         )
-        from .j2tests.contains import contains
-        from .j2tests.defined import defined
-
-        # pylint: enable=import-outside-toplevel
+        from .j2tests.contains import contains  # noqa: PLC0415
+        from .j2tests.defined import defined  # noqa: PLC0415
 
         self.environment.filters.update(
             {

@@ -74,7 +74,7 @@ requires = [
     "pydantic>=2.3.0",
     "cryptography>=38.0.4",
     "aristaproto>=0.1.1",
-    "ruff==0.11.12",
+    "ruff==0.12.3",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
@@ -143,6 +143,8 @@ exclude_also = [
     "@(abc\\.)?abstractmethod",
     # Don't complain about TYPE_CHECKING blocks
     "if TYPE_CHECKING:",
+    # Ignore typing overloads
+    "@overload",
     # Don't complain about Jinja2 internalcode
     # Note that except KeyError is a bit sad but this is the pattern
     "except KeyError:",
@@ -160,6 +162,7 @@ extend = "../pyproject.toml"
 [tool.pytest.ini_options]
 markers = [
     "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios.",
+    "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode.",
 ]
 asyncio_default_fixture_loop_scope = "function"
 

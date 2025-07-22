@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ipv4_prefix_list_catalog</samp>](## "ipv4_prefix_list_catalog") | List, items: Dictionary |  |  |  | IPv4 prefix-list catalog. |
+    | [<samp>ipv4_prefix_list_catalog</samp>](## "ipv4_prefix_list_catalog") | List, items: Dictionary |  |  |  | IPv4 prefix-list catalog.<br>Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in the configuration when<br>they are explicitly referenced in one of the following node config keys:<br>- `l3_interfaces.[].bgp.ipv4_prefix_list_in`<br>- `l3_interfaces.[].bgp.ipv4_prefix_list_out`<br>- `l3_port_channels.[].bgp.ipv4_prefix_list_in`<br>- `l3_port_channels.[].bgp.ipv4_prefix_list_out`. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ipv4_prefix_list_catalog.[].name") | String | Required, Unique |  |  | Prefix-list Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "ipv4_prefix_list_catalog.[].sequence_numbers") | List, items: Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;sequence</samp>](## "ipv4_prefix_list_catalog.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID. |
@@ -17,6 +17,12 @@
 
     ```yaml
     # IPv4 prefix-list catalog.
+    # Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in the configuration when
+    # they are explicitly referenced in one of the following node config keys:
+    # - `l3_interfaces.[].bgp.ipv4_prefix_list_in`
+    # - `l3_interfaces.[].bgp.ipv4_prefix_list_out`
+    # - `l3_port_channels.[].bgp.ipv4_prefix_list_in`
+    # - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
     ipv4_prefix_list_catalog:
 
         # Prefix-list Name.

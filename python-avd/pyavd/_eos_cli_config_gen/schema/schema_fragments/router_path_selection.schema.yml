@@ -15,6 +15,26 @@ keys:
         valid_values:
           - stun
         description: Source of dynamic peer discovery.
+      mtu_discovery_interval:
+        type: int
+        description: MTU discovery interval in seconds.
+        min: 60
+        max: 600
+        convert_types:
+          - str
+      mtu_discovery_hosts:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Enable MTU discovery for hosts.
+          fragmentation_needed_rate_limit:
+            type: int
+            convert_types:
+              - str
+            description: Maximum rate of ICMP packet generation per CPU core(packets per second).
+            min: 1
+            max: 500
       path_groups:
         type: list
         primary_key: name

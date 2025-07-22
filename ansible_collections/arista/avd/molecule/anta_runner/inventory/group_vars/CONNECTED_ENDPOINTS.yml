@@ -26,6 +26,7 @@ servers:
         port_channel:
           description: PortChannel dc1-leaf1-server1
           mode: active
+        validate_state: false
 
       - endpoint_ports: [iLO]
         switch_ports: [Ethernet5]

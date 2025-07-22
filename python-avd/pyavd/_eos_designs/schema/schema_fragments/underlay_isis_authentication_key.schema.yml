@@ -10,4 +10,7 @@ keys:
     documentation_options:
       table: isis-settings
     type: str
-    description: Type-7 encrypted password.
+    description: |-
+      Type-7 encrypted password.
+      Takes precedence over `underlay_isis_authentication_cleartext_key`.
+      To protect the password at rest it is strongly recommended to make use of a vault or similar.

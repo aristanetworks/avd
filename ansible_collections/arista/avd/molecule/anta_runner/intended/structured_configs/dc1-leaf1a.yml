@@ -81,6 +81,7 @@ ethernet_interfaces:
   peer: dc1-leaf1-server1
   peer_interface: PCI1
   peer_type: server
+  validate_state: false
 - name: Ethernet31
   description: WORKSTATION_dc1-leaf1-workstation1_e1
   shutdown: false
@@ -219,6 +220,7 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: 11-12,21-22
       native_vlan: 4092
+  validate_state: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -260,6 +262,8 @@ route_maps:
     - ip address prefix-list PL-MLAG-PEER-VRFS
   - sequence: 20
     type: permit
+router_adaptive_virtual_topology:
+  topology_role: edge
 router_bfd:
   multihop:
     interval: 300
@@ -335,6 +339,9 @@ router_bgp:
   - ip_address: 10.1.1.1
     peer_group: EVPN-OVERLAY-PEERS
     description: External peer
+  neighbor_interfaces:
+  - name: Ethernet1
+    remote_as: '577'
   redistribute:
     attached_host:
       enabled: true
