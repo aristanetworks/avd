@@ -192,13 +192,17 @@ keys:
                             type: str
                             description: |-
                               The allowed hardware Ethernet interface, LAG interface.
-                              This option is mutually exclusive with ''.
                               Ex:
                                 1. Ethernet 1
                                 2. Et 1,2
                                 3. Po 2-4.
                           next_hop:
                             type: dict
+                            description: |-
+                              Redirect to next-hop.
+                              This option is mutually exclusive with `aggregation_groups` and `interface`.
+                              If all three are defined, aggregation_groups and interface take precedence over next-hop.
+                              Only one of the below keys can be specified, in the order of precedence: ipv4, ipv6, groups, recursive.ipv4, recursive.ipv6.
                             keys:
                               ipv4:
                                 type: dict

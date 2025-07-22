@@ -62666,14 +62666,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         interface: str | None
                         """
                         The allowed hardware Ethernet interface, LAG interface.
-                        This option is mutually exclusive with ''.
                         Ex:
                           1. Ethernet 1
                           2. Et 1,2
                           3. Po 2-4.
                         """
                         next_hop: NextHop
-                        """Subclass of AvdModel."""
+                        """
+                        Redirect to next-hop.
+                        This option is mutually exclusive with `aggregation_groups` and `interface`.
+                        If all three are defined, aggregation_groups and interface take precedence over next-hop.
+                        Only one
+                        of the below keys can be specified, in the order of precedence: ipv4, ipv6, groups, recursive.ipv4,
+                        recursive.ipv6.
+
+                        Subclass of AvdModel.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -62694,12 +62702,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     aggregation_groups: Subclass of AvdList with `str` items.
                                     interface:
                                        The allowed hardware Ethernet interface, LAG interface.
-                                       This option is mutually exclusive with ''.
                                        Ex:
                                          1. Ethernet 1
                                          2. Et 1,2
                                          3. Po 2-4.
-                                    next_hop: Subclass of AvdModel.
+                                    next_hop:
+                                       Redirect to next-hop.
+                                       This option is mutually exclusive with `aggregation_groups` and `interface`.
+                                       If all three are defined, aggregation_groups and interface take precedence over next-hop.
+                                       Only one
+                                       of the below keys can be specified, in the order of precedence: ipv4, ipv6, groups, recursive.ipv4,
+                                       recursive.ipv6.
+
+                                       Subclass of AvdModel.
 
                                 """
 
