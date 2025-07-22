@@ -12804,14 +12804,8 @@ QOS adaptive transmit queue percentage-based allocation: **enabled**
 | Queue ID | Scheduler Profile Responsive |
 | -------- | ---------------------------- |
 | 1 | True |
-| Queue ID | Scheduler Profile Responsive |
-| -------- | ---------------------------- |
 | 2 | False |
-| Queue ID | Scheduler Profile Responsive |
-| -------- | ---------------------------- |
 | 3 | True |
-| Queue ID | Scheduler Profile Responsive |
-| -------- | ---------------------------- |
 | 4 | - |
 
 ##### QOS Mappings

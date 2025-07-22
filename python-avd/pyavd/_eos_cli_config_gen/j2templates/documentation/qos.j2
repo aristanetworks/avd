@@ -32,9 +32,9 @@ QOS adaptive transmit queue percentage-based allocation: **enabled**
 
 ##### QOS Transmit Queue Parameters
 
-{%         for queue in qos.tx_queue.queues | arista.avd.natural_sort("id") %}
 | Queue ID | Scheduler Profile Responsive |
 | -------- | ---------------------------- |
+{%         for queue in qos.tx_queue.queues | arista.avd.natural_sort("id") %}
 | {{ queue.id }} | {{ queue.scheduler_profile_responsive | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
