@@ -126,6 +126,15 @@ keys:
                         max: 65535
                         convert_types:
                           - str
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 6.0.0
+                      new_key: flow_tracking_settings.trackers[].exporters[].collectors
+                  collectors:
+                    type: list
+                    primary_key: host
+                    $ref: "eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/collectors"
                   format:
                     type: dict
                     keys:
