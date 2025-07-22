@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import re
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
@@ -11,8 +10,6 @@ from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
-
     from . import SharedUtilsProtocol
 
 
@@ -84,11 +81,3 @@ class ConnectedEndpointsMixin(Protocol):
             filtered_network_ports.append(network_port_settings)
 
         return filtered_network_ports
-
-    def match_regexes(self: SharedUtilsProtocol, regexes: Iterable[str], value: str) -> bool:
-        """
-        Match a list of regexes with the supplied value.
-
-        Regex must match the full value to pass.
-        """
-        return any(re.fullmatch(regex, value) for regex in regexes)
