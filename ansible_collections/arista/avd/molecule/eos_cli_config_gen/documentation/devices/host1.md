@@ -12595,6 +12595,7 @@ mac security
 | BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | any | tcp<br/>icmp | 1,10-20<br/>- | -<br/>- | any<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop recursive ipv6 address: 2a00:1450:4009:821::200e vrf: VRF_ipv6_recursive_1 |
 | BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | SERVICE-DEMO<br/>- | any<br/>- | -<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop recursive ipv6 address: 2001:4860:4860::8888 2606:4700:4700::1111 |
 | BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | any | tcp | any | - | any | - | action: DROP |
+| BLUE-C2-POLICY-04 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect interface: Ethernet 6 |
 
 ##### BLUE-C3-POLICY
 
@@ -12748,6 +12749,11 @@ traffic-policies
          !
          actions
             drop
+      !
+      match BLUE-C2-POLICY-04 ipv6
+         !
+         actions
+            redirect interface Ethernet 6
       !
       match ipv4-all-default ipv4
          actions

@@ -23576,6 +23576,7 @@ keys:
                                 keys:
                                   addresses:
                                     type: list
+                                    min_length: 1
                                     required: true
                                     items:
                                       type: str
@@ -23587,6 +23588,7 @@ keys:
                                 keys:
                                   addresses:
                                     type: list
+                                    min_length: 1
                                     required: true
                                     items:
                                       type: str

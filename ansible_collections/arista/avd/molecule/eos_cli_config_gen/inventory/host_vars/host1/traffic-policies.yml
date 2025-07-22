@@ -237,6 +237,12 @@ traffic_policies:
             - protocol: tcp
           actions:
             drop: true
+        # Test redirect for type: ipv6
+        - name: BLUE-C2-POLICY-04
+          type: ipv6
+          actions:
+            redirect:
+              interface: Ethernet 6
     - name: BLUE-C3-POLICY
       default_actions:
         ipv4:
