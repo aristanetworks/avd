@@ -64,4 +64,4 @@ l3leaf:
 digital_twin:
   environment: act
   fabric:
-    act_backdoor_management: true
+    act_ensure_eapi_access: true

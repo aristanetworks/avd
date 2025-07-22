@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from functools import cached_property
 from typing import Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -504,21 +505,12 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def management_api_http(self) -> None:
         """management_api_http set based on management_eapi data-model."""
-        # Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced
-        act_backdoor_eapi_management: bool = (
-            self.shared_utils.digital_twin and self.inputs.digital_twin.environment == "act" and self.inputs.digital_twin.fabric.act_backdoor_management
-        )
         if self.inputs.management_eapi.enabled:
             self.structured_config.management_api_http._update(
                 enable_http=self.inputs.management_eapi.enable_http,
-                enable_https=self.inputs.management_eapi.enable_https if not act_backdoor_eapi_management else True,
+                enable_https=self.inputs.management_eapi.enable_https,
                 default_services=self.inputs.management_eapi.default_services,
             )
-            if act_backdoor_eapi_management and "default" not in self.structured_config.management_api_http.enable_vrfs:
-                self.structured_config.management_api_http.enable_vrfs.append_new(name="default")
-        elif act_backdoor_eapi_management:
-            self.structured_config.management_api_http.enable_https = True
-            self.structured_config.management_api_http.enable_vrfs.append_new(name="default")
 
             # TODO: For backward compatibility, checking in advance if we are using the default value
             # remove in AVD 6.0 as well as the try/except below
@@ -533,6 +525,13 @@ class AvdStructuredConfigBaseProtocol(
                             raise
                         vrf_name = self.inputs.mgmt_interface_vrf
                     self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
+
+        # Enforce eAPI management access in default VRF for ACT Digital Twin if required
+        if self._act_ensure_eapi_access:
+            self.structured_config.management_api_http.enable_https = True
+
+            if "default" not in self.structured_config.management_api_http.enable_vrfs:
+                self.structured_config.management_api_http.enable_vrfs.append_new(name="default")
 
     @structured_config_contributor
     def link_tracking_groups(self) -> None:
@@ -797,6 +796,11 @@ class AvdStructuredConfigBaseProtocol(
     def struct_cfgs(self) -> None:
         if self.shared_utils.platform_settings.structured_config:
             self.custom_structured_configs.root.append(self.shared_utils.platform_settings.structured_config)
+
+    @cached_property
+    def _act_ensure_eapi_access(self) -> bool:
+        """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
+        return self.shared_utils.digital_twin and self.inputs.digital_twin.environment == "act" and self.inputs.digital_twin.fabric.act_ensure_eapi_access
 
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):
