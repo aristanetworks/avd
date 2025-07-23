@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import Protocol
+from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import (
@@ -11,7 +11,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGeneratorProtocol,
     structured_config_contributor,
 )
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdDuplicateDataError, AristaAvdInvalidInputsError
 from pyavd._utils import Undefined, default, get_v2
 from pyavd.j2filters import natural_sort
 
@@ -22,6 +22,9 @@ from .platform_mixin import PlatformMixin
 from .router_general import RouterGeneralMixin
 from .snmp_server import SnmpServerMixin
 from .utils import UtilsMixin
+
+if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
 
 
 class AvdStructuredConfigBaseProtocol(
@@ -656,7 +659,7 @@ class AvdStructuredConfigBaseProtocol(
         if not self.inputs.aaa_settings.radius:
             return
 
-        seen_server_combinations: set[tuple[str, str]] = set()
+        server_combinations: dict[tuple[str, str], EosDesigns.AaaSettings.Radius.ServersItem] = {}
         for server in self.inputs.aaa_settings.radius.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -666,10 +669,11 @@ class AvdStructuredConfigBaseProtocol(
             )
             # TODO: Temporary workaround to avoid duplicate configs; replace once schema supports unique (host, VRF) combinations.
             server_key: tuple[str, str] = (server.host, server_vrf)
-            if server_key in seen_server_combinations:
-                msg = f"Duplicate RADIUS server found: Host '{server.host}' is already defined for VRF '{server.vrf}'."
-                raise AristaAvdInvalidInputsError(msg)
-            seen_server_combinations.add(server_key)
+            if server_key in server_combinations:
+                original_server = server_combinations[server_key]
+                msg = "RADIUS servers"
+                raise AristaAvdDuplicateDataError(msg, str(original_server._as_dict()), str(server._as_dict()))
+            server_combinations[server_key] = server
 
             if source_interface:
                 self.structured_config.ip_radius_source_interfaces.append_unique(
@@ -700,7 +704,7 @@ class AvdStructuredConfigBaseProtocol(
         if not self.inputs.aaa_settings.tacacs:
             return
 
-        seen_server_combinations: set[tuple[str, str]] = set()
+        server_combinations: dict[tuple[str, str], EosDesigns.AaaSettings.Tacacs.ServersItem] = {}
         for server in self.inputs.aaa_settings.tacacs.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -710,10 +714,11 @@ class AvdStructuredConfigBaseProtocol(
             )
             # TODO: Temporary workaround to avoid duplicate configs; replace once schema supports unique (host, VRF) combinations.
             server_key: tuple[str, str] = (server.host, server_vrf)
-            if server_key in seen_server_combinations:
-                msg = f"Duplicate TACACS server found: Host '{server.host}' is already defined for VRF '{server.vrf}'."
-                raise AristaAvdInvalidInputsError(msg)
-            seen_server_combinations.add(server_key)
+            if server_key in server_combinations:
+                original_server = server_combinations[server_key]
+                msg = "TACACS servers"
+                raise AristaAvdDuplicateDataError(msg, str(original_server._as_dict()), str(server._as_dict()))
+            server_combinations[server_key] = server
 
             if source_interface:
                 self.structured_config.ip_tacacs_source_interfaces.append_unique(

@@ -21,4 +21,6 @@ aaa_settings:
           - TACACS1
 
 expected_error_message: >-
-  Duplicate TACACS server found: Host '10.10.10.11' is already defined for VRF 'MGMT1'.
+  Found duplicate objects with conflicting data while generating configuration for TACACS servers.
+  {'host': '10.10.10.11', 'groups': ['TACACS1'], 'vrf': 'MGMT1', 'key': '071B245F5A'} conflicts with
+  {'host': '10.10.10.11', 'groups': ['TACACS1'], 'vrf': 'MGMT1', 'key': '071B245F5A'}.
