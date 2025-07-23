@@ -154,7 +154,7 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      description: Maximum number of flows per port https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt
+                      description: Maximum number of flows per port.
                       min: 0
                       max: 4294967295
                     warning:
