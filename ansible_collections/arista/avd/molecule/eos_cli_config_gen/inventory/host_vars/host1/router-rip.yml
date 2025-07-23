@@ -1,0 +1,34 @@
+---
+router_rip:
+  enabled: true
+  distance: 100
+  timers:
+    update_interval: 100
+    expiration_time: 150
+    deletion_time: 200
+  vrf: VRF1
+  metric: 10
+  access_group: RIP-ACL
+  networks:
+    - 192.168.1.0/24
+    - 192.168.2.0/24
+    - 10.0.0.0/8
+  redistribute:
+    static:
+      enabled: true
+      route_map: Route-map1
+    connected:
+      enabled: true
+      route_map: Route-map1
+    bgp:
+      enabled: true
+      route_map: Route-map1
+    ospf:
+      enabled: true
+      route_map: Route-map1
+      match_external:
+        enabled: true
+        route_map: Route-map1
+      match_internal:
+        enabled: true
+        route_map: Route-map1

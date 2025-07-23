@@ -77,6 +77,7 @@
   - [Router Adaptive Virtual Topology](#router-adaptive-virtual-topology)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
+  - [Router RIP](#router-rip)
   - [PBR Policy Maps](#pbr-policy-maps)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
@@ -1193,6 +1194,26 @@ router bgp 65101
    !
    address-family path-selection
       no bgp additional-paths send
+```
+
+### Router RIP
+
+#### Router RIP Summary
+
+| Enabled | Distance | Metric | Timers | Access Group |
+| ------- | -------- | ------ | ------ | ------------ |
+| False | - | - | - | - |
+
+#### Router RIP Device Configuration
+
+```eos
+!
+router rip
+   redistribute ospf match internal
+   redistribute static
+   redistribute bgp
+   redistribute ospf match external
+   shutdown
 ```
 
 ### PBR Policy Maps

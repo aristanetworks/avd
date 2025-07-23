@@ -1,0 +1,44 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - router rip #}
+{% if router_rip is arista.avd.defined %}
+
+### Router RIP
+
+#### Router RIP Summary
+{%     set enabled = router_rip.enabled | arista.avd.default("-") %}
+{%     set distance = router_rip.distance | arista.avd.default("-") %}
+{%     set metric = router_rip.metric | arista.avd.default("-") %}
+{%     set access_group = router_rip.access_group | arista.avd.default("-") %}
+{%     set timers = [] %}
+{%     if router_rip.timers is arista.avd.defined %}
+{%         do timers.append("Update interval: " ~ router_rip.timers.update_interval) %}
+{%         do timers.append("Expiration time: " ~ router_rip.timers.expiration_time) %}
+{%         do timers.append("Deletion time: " ~ router_rip.timers.deletion_time) %}
+{%     else %}
+{%         do timers.append("-") %}
+{%     endif %}
+
+| Enabled | Distance | Metric | Timers | Access Group |
+| ------- | -------- | ------ | ------ | ------------ |
+| {{ enabled }} | {{ distance }} | {{ metric }} | {{ timers | join("<br>") }} | {{ access_group }} |
+{%     if router_rip.networks is arista.avd.defined %}
+
+#### Advertised Networks
+
+| Networks |
+| -------- |
+{%         for network in router_rip.networks | arista.avd.natural_sort %}
+| {{ network }} |
+{%         endfor %}
+{%     endif %}
+
+#### Router RIP Device Configuration
+
+```eos
+{%     include 'eos/router-rip.j2' %}
+```
+{% endif %}

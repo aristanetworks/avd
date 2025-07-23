@@ -172,6 +172,7 @@
   - [IPv6 Router OSPF](#ipv6-router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
+  - [Router RIP](#router-rip)
   - [PBR Policy Maps](#pbr-policy-maps)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
@@ -9869,6 +9870,41 @@ router bgp 65101
          route-target import 00:01:00:01:00:01
             !
             layer-2 fec in-place update
+```
+
+### Router RIP
+
+#### Router RIP Summary
+
+| Enabled | Distance | Metric | Timers | Access Group |
+| ------- | -------- | ------ | ------ | ------------ |
+| True | 100 | 10 | Update interval: 100<br>Expiration time: 150<br>Deletion time: 200 | RIP-ACL |
+
+#### Advertised Networks
+
+| Networks |
+| -------- |
+| 10.0.0.0/8 |
+| 192.168.1.0/24 |
+| 192.168.2.0/24 |
+
+#### Router RIP Device Configuration
+
+```eos
+!
+router rip vrf VRF1
+   distance 100
+   timers 100 150 200
+   metric default 10
+   network 10.0.0.0/8
+   network 192.168.1.0/24
+   network 192.168.2.0/24
+   redistribute ospf
+   redistribute static route-map Route-map1
+   redistribute bgp route-map Route-map1
+   redistribute ospf match external route-map Route-map1
+   redistribute connected route-map Route-map1
+   no shutdown
 ```
 
 ### PBR Policy Maps

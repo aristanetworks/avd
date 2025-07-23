@@ -1,0 +1,78 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - router rip #}
+{% if router_rip is arista.avd.defined %}
+!
+{%     set rip = "router rip" %}
+{%     if router_rip.vrf is arista.avd.defined %}
+{%         set rip = rip ~ " vrf " ~ router_rip.vrf %}
+{%     endif %}
+{{ rip }}
+{%     if router_rip.distance is arista.avd.defined %}
+   distance {{ router_rip.distance }}
+{%     endif %}
+{%     if router_rip.timers is arista.avd.defined %}
+   timers {{ router_rip.timers.update_interval }} {{ router_rip.timers.expiration_time }} {{ router_rip.timers.deletion_time }}
+{%     endif %}
+{%     if router_rip.metric is arista.avd.defined %}
+   metric default {{ router_rip.metric }}
+{%     endif %}
+{# Note: Natural sort on networks does not work perfectly #}
+{%     for network in router_rip.networks | arista.avd.natural_sort %}
+   network {{ network }}
+{%     endfor %}
+{%     if router_rip.redistribute is arista.avd.defined %}
+{%         if router_rip.redistribute.ospf.enabled is arista.avd.defined %}
+{%             set redistribute_ospf = "redistribute ospf" %}
+{%             if router_rip.redistribute_ospf.route_map is arista.avd.defined %}
+{%                 set redistribute_ospf = redistribute_ospf ~ " route-map " ~ router_rip.redistribute_ospf.route_map %}
+{%             endif %}
+   {{ redistribute_ospf }}
+{%         elif router_rip.redistribute.ospf.match_internal.enabled is arista.avd.defined(true) %}
+{%             set redistribute_ospf = "redistribute ospf match internal" %}
+{%             if router_rip.redistribute.ospf.match_internal.route_map is arista.avd.defined %}
+{%                 set redistribute_ospf = redistribute_ospf ~ " route-map " ~ router_rip.redistribute.ospf.match_internal.route_map %}
+{%             endif %}
+   {{ redistribute_ospf }}
+{%         endif %}
+{%         if router_rip.redistribute.static.enabled is arista.avd.defined(true) %}
+{%             set redistribute_static = "redistribute static" %}
+{%             if router_rip.redistribute.static.route_map is arista.avd.defined %}
+{%                 set redistribute_static = redistribute_static ~ " route-map " ~ router_rip.redistribute.static.route_map %}
+{%             endif %}
+   {{ redistribute_static }}
+{%         endif %}
+{%         if router_rip.redistribute.bgp.enabled is arista.avd.defined(true) %}
+{%             set redistribute_bgp = "redistribute bgp" %}
+{%             if router_rip.redistribute.bgp.route_map is arista.avd.defined %}
+{%                 set redistribute_bgp = redistribute_bgp ~ " route-map " ~ router_rip.redistribute.bgp.route_map %}
+{%             endif %}
+   {{ redistribute_bgp }}
+{%         endif %}
+{%         if router_rip.redistribute.ospf.match_external.enabled is arista.avd.defined(true) %}
+{%             set redistribute_ospf_external = "redistribute ospf match external" %}
+{%             if router_rip.redistribute.ospf.match_external.route_map is arista.avd.defined %}
+{%                 set redistribute_ospf_external = redistribute_ospf_external ~ " route-map " ~ router_rip.redistribute.ospf.match_external.route_map %}
+{%             endif %}
+   {{ redistribute_ospf_external }}
+{%         endif %}
+{%         if router_rip.redistribute.connected.enabled is arista.avd.defined(true) %}
+{%             set redistribute_connected = "redistribute connected" %}
+{%             if router_rip.redistribute.connected.route_map is arista.avd.defined %}
+{%                 set redistribute_connected = redistribute_connected ~ " route-map " ~ router_rip.redistribute.connected.route_map %}
+{%             endif %}
+   {{ redistribute_connected }}
+{%         endif %}
+{%     endif %}
+{%     if router_rip.enabled is arista.avd.defined(true) %}
+   no shutdown
+{%     else %}
+   shutdown
+{%     endif %}
+{%     if router_rip.ip_access_group is arista.avd.defined %}
+   ip access-group {{ router_rip.ip_access_group }}
+{%     endif %}
+{% endif %}
