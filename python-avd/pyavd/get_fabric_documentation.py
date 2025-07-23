@@ -193,7 +193,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                     if (
                         (
                             internet_access := get(
-                                fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..act_internet_access", separator=".."
+                                fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..internet_access", separator=".."
                             )
                         )
                         and digital_twin_node_type in ["cloudeos", "veos"]

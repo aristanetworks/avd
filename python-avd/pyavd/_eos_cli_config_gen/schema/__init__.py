@@ -23876,7 +23876,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "version": {"type": str},
                 "username": {"type": str},
                 "password": {"type": str},
-                "act_internet_access": {"type": bool},
+                "internet_access": {"type": bool},
             }
             environment: Literal["act"] | None
             """Targeted Digital Twin environment."""
@@ -23897,13 +23897,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Local username assigned to a replica of the fabric device within the Digital Twin environment."""
             password: str | None
             """Local password assigned to a replica of the fabric device within the Digital Twin environment."""
-            act_internet_access: bool | None
+            internet_access: bool | None
             """
             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
             This option
-            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+            applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node
             types.
-            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+            ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
             """
 
             if TYPE_CHECKING:
@@ -23917,7 +23917,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     version: str | None | UndefinedType = Undefined,
                     username: str | None | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
-                    act_internet_access: bool | None | UndefinedType = Undefined,
+                    internet_access: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -23937,12 +23937,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         version: OS version used for deploying a replica of the fabric device within the Digital Twin environment.
                         username: Local username assigned to a replica of the fabric device within the Digital Twin environment.
                         password: Local password assigned to a replica of the fabric device within the Digital Twin environment.
-                        act_internet_access:
+                        internet_access:
                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
                            This option
-                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                           applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node
                            types.
-                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                           ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
 
                     """
 

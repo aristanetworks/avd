@@ -78,6 +78,6 @@ class DigitalTwinMixin(Protocol):
                     )
                 ) and digital_twin_node_type in ["cloudeos", "veos"]:
                     self.structured_config.metadata.digital_twin._update(
-                        act_internet_access=act_internet_access,
+                        internet_access=act_internet_access,
                     )
                 return
