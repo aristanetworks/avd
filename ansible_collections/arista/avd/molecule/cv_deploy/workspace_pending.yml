@@ -64,7 +64,10 @@
           ansible.builtin.assert:
             that:
               # workspace
-              - cv_deploy_results.workspace.state == cv_deploy_results.workspace.requested_state
+              - cv_deploy_results.workspace.name == cv_workspace_name
+              - cv_deploy_results.workspace.description == cv_workspace_description
+              - cv_deploy_results.workspace.state == "built"
+              - cv_deploy_results.workspace.requested_state == "built"
 
       always:
 

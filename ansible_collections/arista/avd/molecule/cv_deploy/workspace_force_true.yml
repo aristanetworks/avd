@@ -73,6 +73,11 @@
             that:
               # errors and warnings
               - cv_deploy_results.errors == []
+              # Change control
+              - cv_deploy_results.change_control.name == cv_change_control_name
+              - cv_deploy_results.change_control.description == cv_change_control_description
+              - cv_deploy_results.change_control.requested_state == "pending approval"
+              - cv_deploy_results.change_control.state == "pending approval"
 
       always:
 
