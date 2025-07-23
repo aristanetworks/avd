@@ -61,7 +61,7 @@ keys:
               - str
             min: 5
             max: 2147483647
-            required: true    
+            required: true
       redistribute:
         type: dict
         keys:
