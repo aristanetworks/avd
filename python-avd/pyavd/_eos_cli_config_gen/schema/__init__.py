@@ -18238,10 +18238,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"limit": {"type": int}, "warning": {"type": int}, "exhaustion_action": {"type": ExhaustionAction}}
                     limit: int | None
-                    """
-                    Maximum number of flows per port https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test
-                    /_util/controller/sanity/pep8/current-ignore.txt
-                    """
+                    """Maximum number of flows per port."""
                     warning: int | None
                     """Warning threshold of flows per port group."""
                     exhaustion_action: ExhaustionAction
@@ -18267,9 +18264,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                limit:
-                                   Maximum number of flows per port https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test
-                                   /_util/controller/sanity/pep8/current-ignore.txt
+                                limit: Maximum number of flows per port.
                                 warning: Warning threshold of flows per port group.
                                 exhaustion_action:
                                    Forwarding action when flows reach limits.

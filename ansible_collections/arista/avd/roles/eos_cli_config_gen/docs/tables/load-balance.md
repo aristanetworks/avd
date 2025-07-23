@@ -32,7 +32,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;balance_factor</samp>](## "load_balance.cluster.port_groups.[].balance_factor") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "load_balance.cluster.port_groups.[].interface") | String |  |  |  | Ethernet interface/subinterface name. It could be a `,` separated list or range.<br>eg. Ethernet 2,<br>    Ethernet 2-5,<br>    Ethernet 2.2,3.1,<br>    Ethernet 3.1-2 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow</samp>](## "load_balance.cluster.port_groups.[].flow") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "load_balance.cluster.port_groups.[].flow.limit") | Integer |  |  | Min: 0<br>Max: 4294967295 | Maximum number of flows per port https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "load_balance.cluster.port_groups.[].flow.limit") | Integer |  |  | Min: 0<br>Max: 4294967295 | Maximum number of flows per port. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning</samp>](## "load_balance.cluster.port_groups.[].flow.warning") | Integer |  |  | Min: 0<br>Max: 4294967295 | Warning threshold of flows per port group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exhaustion_action</samp>](## "load_balance.cluster.port_groups.[].flow.exhaustion_action") | Dictionary |  |  |  | Forwarding action when flows reach limits. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "load_balance.cluster.port_groups.[].flow.exhaustion_action.dscp") | Integer |  |  | Min: 0<br>Max: 63 | Packet DSCP value. |
@@ -124,7 +124,7 @@
             interface: <str>
             flow:
 
-              # Maximum number of flows per port https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_util/controller/sanity/pep8/current-ignore.txt
+              # Maximum number of flows per port.
               limit: <int; 0-4294967295>
 
               # Warning threshold of flows per port group.
