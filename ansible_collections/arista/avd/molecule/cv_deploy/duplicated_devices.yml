@@ -176,8 +176,21 @@
           run_once: true
           ansible.builtin.fail:
             msg: "Previous task was expected to fail but something went wrong."
+          register: force_failure
 
       rescue:
+
+        - name: "(RESCUE) {{ test_id | upper }} Force failure"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.fail:
+            msg: "Call towards CV inside BLOCK was expected to FAIL but has not. Please investigate (check EOS/CV states and streaming, etc.)."
+          when: force_failure is defined
+
+        # Clear failed state of failed hosts for next engaged playbook (no impact within running playbook)
+        - name: "(RESCUE) {{ test_id | upper }} Reset ansible_play_hosts for next playbook (no impact within running playbook)"
+          tags: ["{{ test_id }}"]
+          ansible.builtin.meta: clear_host_errors
 
         - name: "(RESCUE) {{ test_id | upper }} Check and assert CVP returns"
           tags: ["{{ test_id }}"]
@@ -295,8 +308,3 @@
             structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
             cv_submit_workspace_force: true
             cv_run_change_control: true
-
-        # Clear failed state of failed hosts for next engaged playbook (no impact within running playbook)
-        - name: "(ALWAYS) {{ test_id | upper }} Reset ansible_play_hosts for next playbook (no impact within running playbook)"
-          tags: ["{{ test_id }}"]
-          ansible.builtin.meta: clear_host_errors

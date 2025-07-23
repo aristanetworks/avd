@@ -233,8 +233,3 @@
             structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
             cv_submit_workspace_force: true
             cv_run_change_control: true
-
-        # Clear failed state of failed hosts for next engaged playbook (no impact within running playbook)
-        - name: "(ALWAYS) {{ test_id | upper }} Reset ansible_play_hosts for next playbook (no impact within running playbook)"
-          tags: ["{{ test_id }}"]
-          ansible.builtin.meta: clear_host_errors
