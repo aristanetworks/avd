@@ -46,7 +46,7 @@ def main() -> int:
             print(f"- {file.relative_to(project_root).as_posix()}", file=sys.stderr)  # noqa: T201
         return 1
 
-    print("Success: All table documentation files are linked. ✨")  # noqa: T201
+    print("Success: All table documentation files are linked.")  # noqa: T201
     return 0
 
 
