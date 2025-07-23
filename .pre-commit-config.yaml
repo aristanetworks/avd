@@ -242,7 +242,6 @@ repos:
         name: Check for schema tables in documentation.
         entry: development/find_missing_tables.py
         language: python
-        additional_dependencies: ['PyYAML>=6.0.0']
         args:
           - --root-path
           - "ansible_collections/arista/avd"
