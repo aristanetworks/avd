@@ -25,7 +25,7 @@ def main() -> int:
     files_to_check = table_files - ignored_files
 
     if not files_to_check:
-        print("No table files to check after ignoring. Skipping.", file=sys.stderr)
+        print("No table files to check after ignoring. Skipping.", file=sys.stderr)  # noqa: T201
         return 0
 
     global_content = ""
@@ -40,13 +40,13 @@ def main() -> int:
             unlinked_files.append(table_file)
 
     if unlinked_files:
-        print("\n--- Table Documentation Link Check: FAILED ---", file=sys.stderr)
-        print("Error: The following table files are not linked by their relative path:", file=sys.stderr)
+        print("\n--- Table Documentation Link Check: FAILED ---", file=sys.stderr)  # noqa: T201
+        print("Error: The following table files are not linked by their relative path:", file=sys.stderr)  # noqa: T201
         for file in sorted(unlinked_files):
-            print(f"- {file.relative_to(project_root).as_posix()}", file=sys.stderr)
+            print(f"- {file.relative_to(project_root).as_posix()}", file=sys.stderr)  # noqa: T201
         return 1
 
-    print("Success: All table documentation files are linked. ✨")
+    print("Success: All table documentation files are linked. ✨")  # noqa: T201
     return 0
 
 

@@ -240,7 +240,7 @@ repos:
 
       - id: check-schema-tables-in-docs
         name: Check for schema tables in documentation.
-        entry: python-avd/scripts/find_missing_tables.py
+        entry: development/find_missing_tables.py
         language: python
         additional_dependencies: ['PyYAML>=6.0.0']
         args:
@@ -263,7 +263,6 @@ repos:
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/sync-e.md
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/transceiver.md
         pass_filenames: false
-        files: ansible_collections/arista/avd/roles/[a-z_]+/docs
 
       - id: templates
         name: Precompile Jinja2 templates
