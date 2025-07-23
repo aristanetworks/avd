@@ -5740,7 +5740,7 @@ class EosDesigns(EosDesignsRootModel):
                             "name": "FLOW-TRACKER",
                             "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000},
                             "exporters": [
-                                {"name": "CV-TELEMETRY", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 3600000}
+                                {"name": "CV-TELEMETRY", "collectors": [{"host": "127.0.0.1"}], "local_interface": "Loopback0", "template_interval": 3600000}
                             ],
                         }
                     ],
@@ -5764,7 +5764,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
 
-        Default value: `lambda cls: coerce_type([{"name": "FLOW-TRACKER", "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000}, "exporters": [{"name": "CV-TELEMETRY", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 3600000}]}], target_type=cls)`
+        Default value: `lambda cls: coerce_type([{"name": "FLOW-TRACKER", "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000}, "exporters": [{"name": "CV-TELEMETRY", "collectors": [{"host": "127.0.0.1"}], "local_interface": "Loopback0", "template_interval": 3600000}]}], target_type=cls)`
         """
 
         if TYPE_CHECKING:

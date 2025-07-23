@@ -235,8 +235,8 @@
         ```yaml
         trackers:
         - exporters:
-          - collector:
-              host: 127.0.0.1
+          - collectors:
+            - host: 127.0.0.1
             local_interface: Loopback0
             name: CV-TELEMETRY
             template_interval: 3600000
