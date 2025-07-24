@@ -205,8 +205,9 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                             key=lambda interface_name: list(map(int, re_findall(r"\d+", interface_name))),
                         )
                     )
+                    or None
                     if digital_twin_node_type == "veos"
-                    else (),
+                    else None,
                 )
             }
         )

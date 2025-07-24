@@ -21,7 +21,7 @@ class ActNodeSettings:
     node_type: str
     ip_addr: str
     version: str
-    ports: tuple[str, ...]
+    ports: tuple[str, ...] | None
 
 
 @dataclass(frozen=True)
