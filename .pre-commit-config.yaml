@@ -252,15 +252,8 @@ repos:
           - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md"
           - "ansible_collections/arista/avd/roles/eos_deisgns/docs/*.md"
           - --ignore-files
-          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ftp-client-source-interfaces.md
-          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-telnet-client-source-interfaces.md
-          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-tftp-client-source-interfaces.md
-          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-virtual-router-mac-address-advertisement-interval.md
-          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-virtual-router-mac-address-mlag-peer.md
-          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ipv6-neighbor.md
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/sync-e.md
-          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/transceiver.md
         pass_filenames: false
 
       - id: templates
