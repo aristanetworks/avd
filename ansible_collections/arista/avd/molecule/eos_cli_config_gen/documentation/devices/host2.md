@@ -1463,8 +1463,6 @@ router pim sparse-mode
 !
 platform fap buffering egress profile balanced
 !
-platform fap voq credit rates unified
-!
 platform trident mmu headroom-pool limit 557
 ```
 
