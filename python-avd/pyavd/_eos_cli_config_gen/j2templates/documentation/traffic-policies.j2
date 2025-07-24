@@ -12,26 +12,24 @@
 
 #### IPv4 Field Sets
 
-| Field Set Name | IPv4 Prefixes |
-| -------------- | ------------- |
+| Field Set Name | IPv4 Prefixes | Excluded Prefixes |
+| -------------- | ------------- | ----------------- |
 {%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.natural_sort('name') %}
-{%                 if field_set_ipv4.prefixes is arista.avd.defined %}
-{%                     set value = field_set_ipv4.prefixes | arista.avd.natural_sort | join('<br/>') %}
-{%                 endif %}
-| {{ field_set_ipv4.name }} | {{ value | arista.avd.default("-") }} |
+{%                 set value = field_set_ipv4.prefixes | arista.avd.default(["-"]) | arista.avd.natural_sort | join('<br/>') %}
+{%                 set except_value = field_set_ipv4.except | arista.avd.default(["-"]) | arista.avd.natural_sort | join('<br/>') %}
+| {{ field_set_ipv4.name }} | {{ value }} | {{ except_value }} |
 {%             endfor %}
 {%         endif %}
 {%         if traffic_policies.field_sets.ipv6 is arista.avd.defined %}
 
 #### IPv6 Field Sets
 
-| Field Set Name | IPv6 Prefixes |
-| -------------- | ------------- |
+| Field Set Name | IPv6 Prefixes | Excluded Prefixes |
+| -------------- | ------------- | ----------------- |
 {%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.natural_sort('name') %}
-{%                 if field_set_ipv6.prefixes is arista.avd.defined %}
-{%                     set value = field_set_ipv6.prefixes | arista.avd.natural_sort | join('<br/>') %}
-{%                 endif %}
-| {{ field_set_ipv6.name }} | {{ value | arista.avd.default("-") }} |
+{%                 set value = field_set_ipv6.prefixes | arista.avd.default(["-"]) | arista.avd.natural_sort | join('<br/>') %}
+{%                 set except_value = field_set_ipv6.except | arista.avd.default(["-"]) | arista.avd.natural_sort | join('<br/>') %}
+| {{ field_set_ipv6.name }} | {{ value }} | {{ except_value }} |
 {%             endfor %}
 {%         endif %}
 {%         if traffic_policies.field_sets.ports is arista.avd.defined %}
