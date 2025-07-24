@@ -34,6 +34,7 @@
   - [Management defaults](#management-defaults)
   - [TACACS Servers](#tacacs-servers)
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
+  - [Radius Proxy](#radius-proxy)
   - [RADIUS Server](#radius-server)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
   - [AAA Server Groups](#aaa-server-groups)
@@ -1319,6 +1320,147 @@ ip tacacs vrf TEST1 source-interface lo3
 ip tacacs source-interface loopback10
 ```
 
+### Radius Proxy
+
+| Settings | Value |
+| -------- | ----- |
+| Dynamic Authorization | True |
+| Client Type-7 Key | <removed> |
+| Client Session Idle-timeout (seconds) | 46 |
+
+#### Client Group Summary
+
+##### Client Group: CG_1
+
+Server Groups: aaa bbb ccc
+
+###### VRF: vrf_1
+
+####### IPv4 Clients
+
+| Address | Type-7 Key |
+| ------- | ---------- |
+| 1.2.10.10 | <removed> |
+| 1.1.10.10 | - |
+| 1.2.10.6 | - |
+| 2.2.1.1 | - |
+| 1.2.10.8 | <removed> |
+
+####### IPv6 Clients
+
+| Address | Type-7 Key |
+| ------- | ---------- |
+| 2001:db8::1 | <removed> |
+| ::1 | - |
+| fd00::1234 | <removed> |
+
+####### Host Clients
+
+| Name | Type-7 Key |
+| ---- | ---------- |
+| host1 | <removed> |
+| host2 | - |
+| host3 | <removed> |
+
+###### VRF: vrf_2
+
+####### IPv4 Clients
+
+| Address | Type-7 Key |
+| ------- | ---------- |
+| 1.1.10.10 | <removed> |
+| 1.1.10.6 | - |
+| 2.1.1.1 | - |
+| 1.1.10.8 | <removed> |
+
+##### Client Group: CG_2
+
+##### Client Group: CG_3
+
+Server Groups: ddd
+
+##### Client Group: CG_4
+
+###### VRF: vrf_only_host
+
+####### Host Clients
+
+| Name | Type-7 Key |
+| ---- | ---------- |
+| host11 | <removed> |
+| host12 | - |
+| host13 | <removed> |
+
+###### VRF: vrf_only_ipv4
+
+####### IPv4 Clients
+
+| Address | Type-7 Key |
+| ------- | ---------- |
+| 1.2.10.11 | <removed> |
+| 1.2.10.16 | - |
+| 2.2.1.11 | - |
+| 1.2.10.18 | <removed> |
+
+##### Client Group: CG_5
+
+###### VRF: vrf_only_ipv6
+
+####### IPv6 Clients
+
+| Address | Type-7 Key |
+| ------- | ---------- |
+| 2001:db8::11 | <removed> |
+| ::12 | - |
+| fd0::1234 | <removed> |
+
+#### RADIUS Proxy Configuration
+
+```eos
+!
+radius proxy
+   dynamic-authorization
+   client key 7 <removed>
+   client session idle-timeout 46 seconds
+   !
+   client group CG_1
+      client ipv4 1.1.10.10 vrf vrf_1
+      client ipv4 1.1.10.10 vrf vrf_2 key 7 <removed>
+      client ipv4 1.1.10.6 vrf vrf_2
+      client ipv4 1.1.10.8 vrf vrf_2 key 7 <removed>
+      client ipv4 1.2.10.10 vrf vrf_1 key 7 <removed>
+      client ipv4 1.2.10.6 vrf vrf_1
+      client ipv4 1.2.10.8 vrf vrf_1 key 7 <removed>
+      client ipv4 2.1.1.1 vrf vrf_2
+      client ipv4 2.2.1.1 vrf vrf_1
+      client ipv6 2001:db8::1 vrf vrf_1 key 7 <removed>
+      client ipv6 ::1 vrf vrf_1
+      client ipv6 fd00::1234 vrf vrf_1 key 7 <removed>
+      client host host1 vrf vrf_1 key 7 <removed>
+      client host host2 vrf vrf_1
+      client host host3 vrf vrf_1 key 7 <removed>
+      server group aaa bbb ccc
+   !
+   client group CG_2
+   !
+   client group CG_3
+      server group ddd
+   !
+   client group CG_4
+      client ipv4 1.2.10.11 vrf vrf_only_ipv4 key 7 <removed>
+      client ipv4 1.2.10.16 vrf vrf_only_ipv4
+      client ipv4 1.2.10.18 vrf vrf_only_ipv4 key 7 <removed>
+      client ipv4 2.2.1.11 vrf vrf_only_ipv4
+      client host host11 vrf vrf_only_host key 7 <removed>
+      client host host12 vrf vrf_only_host
+      client host host13 vrf vrf_only_host key 7 <removed>
+   !
+   client group CG_5
+      client ipv6 2001:db8::11 vrf vrf_only_ipv6 key 7 <removed>
+      client ipv6 ::12 vrf vrf_only_ipv6
+      client ipv6 fd0::1234 vrf vrf_only_ipv6 key 7 <removed>
+```
+
 ### RADIUS Server
 
 - Time to skip a non-responsive server is 10 minutes
@@ -2544,16 +2686,17 @@ no sflow hardware acceleration module Linecard3
 
 **NOTE:** Not all options (columns) in the table below are compatible with every available feature, it is the user responsibility to configure valid options for each feature.
 
-| Feature | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
-| ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |
-| acl | out | mac | - | - | - | - |
-| gre tunnel interface | out | - | - | - | - | - |
-| ip | in | - | - | False | - | False |
-| ip | out | - | - | True | - | True |
-| mpls lfib | - | - | - | - | - | True |
-| route | - | ipv4 | test | - | 192.168.0.0/24 | - |
-| route | - | ipv6 | - | - | 2001:db8:cafe::/64 | - |
-| segment-security | in | - | - | - | - | - |
+| Feature | Enabled | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
+| ------- | ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |
+| acl | True | out | mac | - | - | - | - |
+| acl | False | in | - | - | - | - | - |
+| gre tunnel interface | True | out | - | - | - | - | - |
+| ip | True | in | - | - | False | - | False |
+| ip | True | out | - | - | True | - | True |
+| mpls lfib | True | - | - | - | - | - | True |
+| route | True | - | ipv4 | test | - | 192.168.0.0/24 | - |
+| route | True | - | ipv6 | - | - | 2001:db8:cafe::/64 | - |
+| segment-security | True | in | - | - | - | - | - |
 
 #### Hardware Device Configuration
 
@@ -2563,6 +2706,7 @@ hardware port-group 1 select Et32/1-4
 hardware port-group 2 select Et32/1,Et32/3,Et34
 !
 hardware counter feature acl out mac
+no hardware counter feature acl in
 hardware counter feature gre tunnel interface out
 hardware counter feature ip in
 hardware counter feature ip out layer3 units packets
@@ -2746,11 +2890,11 @@ event-handler without-trigger-key
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-| T2 | T2-E1 | - | - | No local interface |
-| T3 | T3-E1 | - | - | No local interface |
-| T3 | T3-E2 | - | - | No local interface |
-| T3 | T3-E3 | - | - | Management1 |
-| T3 | T3-E4 | - | - | No local interface |
+| T2 | T2-E1 | 42.42.42.42 | - | No local interface |
+| T3 | T3-E1 | 10.10.10.1<br>dead:beaf::cafe | 555<br>666 | No local interface |
+| T3 | T3-E2 | 10.10.10.10 | 777 | No local interface |
+| T3 | T3-E3 | this.is.my.awesome.collector.dns.name | 888 | Management1 |
+| T3 | T3-E4 | dead:beef::cafe | - | No local interface |
 
 #### Flow Tracking Hardware
 
@@ -2768,11 +2912,11 @@ Software export of IPFIX data records enabled.
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-| T2 | T2-E1 | - | - | No local interface |
-| T3 | T3-E1 | - | - | No local interface |
-| T3 | T3-E2 | - | - | No local interface |
-| T3 | T3-E3 | - | - | Management1 |
-| T3 | T3-E4 | - | - | No local interface |
+| T2 | T2-E1 | 42.42.42.42 | - | No local interface |
+| T3 | T3-E1 | 10.10.10.1<br>dead:beaf::cafe | 555<br>666 | No local interface |
+| T3 | T3-E2 | 10.10.10.10 | 777 | No local interface |
+| T3 | T3-E3 | this.is.my.awesome.collector.dns.name | 888 | Management1 |
+| T3 | T3-E4 | dead:beef::cafe | - | No local interface |
 
 #### Flow Tracking mirror-on-drop
 
@@ -2811,6 +2955,8 @@ flow tracking hardware
    !
    tracker T3
       exporter T3-E1
+         collector 10.10.10.1 port 555
+         collector dead:beaf::cafe port 666
       !
       exporter T3-E2
          collector 10.10.10.10 port 777
@@ -2844,6 +2990,8 @@ flow tracking sampled
    tracker T3
       flow table size 100000 entries
       exporter T3-E1
+         collector 10.10.10.1 port 555
+         collector dead:beaf::cafe port 666
       !
       exporter T3-E2
          collector 10.10.10.10 port 777
@@ -3966,6 +4114,9 @@ interface Dps1
 | Ethernet80/4 | LAG Member LACP fallback | *trunk | *112 | *- | *- | 104 |
 | Ethernet81 | LAG Member | *access | *110 | *- | *- | 109 |
 | Ethernet81/2 | LAG Member LACP fallback LLDP ZTP VLAN | *trunk | *112 | *- | *- | 112 |
+| Ethernet82 | Switchport_tap_tool | tap-tool | - | - | - | - |
+| Ethernet83 | Test_tap_tool | tap-tool | - | - | - | - |
+| Ethernet84 | - | tap | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -5289,6 +5440,7 @@ interface Ethernet81/10
 !
 interface Ethernet82
    description Switchport_tap_tool
+   switchport mode tap-tool
    switchport tap native vlan 10
    switchport tap identity 3 inner 5
    switchport tap mac-address dest 01:00:00:00:00:00 src 01:23:45:67:89:ab
@@ -5316,6 +5468,7 @@ interface Ethernet82
 !
 interface Ethernet83
    description Test_tap_tool
+   switchport mode tap-tool
    switchport tap identity 5
    switchport tap mac-address dest 01:00:00:00:00:00
    switchport tap encapsulation vxlan strip
@@ -5325,6 +5478,7 @@ interface Ethernet83
    switchport tap truncation
 !
 interface Ethernet84
+   switchport mode tap
    switchport tap encapsulation gre protocol 0x1 strip
    switchport tap encapsulation gre protocol 0x2 feature header length 3 strip
    switchport tap encapsulation gre protocol 0x3 feature header length 2 strip re-encapsulation ethernet
@@ -12406,11 +12560,11 @@ mac security
 
 #### IPv4 Field Sets
 
-| Field Set Name | IPv4 Prefixes |
-| -------------- | ------------- |
-| DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16 |
-| DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8 |
-| DEMO-03 | - |
+| Field Set Name | IPv4 Prefixes | Excluded Prefixes |
+| -------------- | ------------- | ----------------- |
+| DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16 | 10.2.2.2/32<br/>10.10.0.0/16<br/>172.16.0.0/16 |
+| DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8 | - |
+| DEMO-03 | - | - |
 
 #### L4 Port Field Sets
 
@@ -12474,6 +12628,7 @@ traffic-policies
    field-set l4-port SERVICE-DEMO2
    field-set ipv4 prefix DEMO-01
       10.0.0.0/8 192.168.0.0/16
+      except 10.2.2.2/32 10.10.0.0/16 172.16.0.0/16
    !
    field-set ipv4 prefix DEMO-02
       172.16.0.0/12 224.0.0.0/8

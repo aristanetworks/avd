@@ -56,6 +56,11 @@ l3leaf:
     uplink_type: p2p-vrfs
     uplink_macsec:
       profile: TEST
+    # Adding uplink_structured_config to improve coverage.
+    uplink_structured_config:
+      pim:
+        ipv4:
+          sparse_mode: true
     filter:
       always_include_vrfs_in_tenants: [TenantA, TenantB]
   nodes:
@@ -77,6 +82,7 @@ l2leaf:
     platform: vEOS-LAB
     uplink_switches: [ UPLINK_P2P_VRFS_TESTS_LEAF1, UPLINK_P2P_VRFS_TESTS_LEAF1]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
+
   nodes:
     - name: UPLINK_P2P_VRFS_TESTS_L2LEAF1
       id: 4

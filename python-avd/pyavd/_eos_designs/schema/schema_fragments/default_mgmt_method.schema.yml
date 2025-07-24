@@ -15,6 +15,7 @@ keys:
         - `aaa_settings`
         - `cv_settings`
         - `logging_settings`
+        - `management_eapi`
         - `ntp_settings`
         - `sflow_settings`
         - `snmp_settings`
