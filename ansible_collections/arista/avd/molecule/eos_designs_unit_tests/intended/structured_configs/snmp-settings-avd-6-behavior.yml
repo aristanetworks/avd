@@ -24,13 +24,13 @@ metadata:
 service_routing_protocols_model: multi-agent
 snmp_server:
   ipv4_acls:
-  - name: acl-for-vrf-MGMT
   - name: acl-for-vrf-default
-    vrf: default
+  - name: acl-for-vrf-MGMT
+    vrf: MGMT
   ipv6_acls:
-  - name: acl-for-vrf-MGMT
   - name: acl-for-vrf-default
-    vrf: default
+  - name: acl-for-vrf-MGMT
+    vrf: MGMT
   local_interfaces:
   - name: Management1
     vrf: MGMT
@@ -47,6 +47,8 @@ snmp_server:
   vrfs:
   - name: default
     enable: false
+  - name: MGMT
+    enable: true
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
