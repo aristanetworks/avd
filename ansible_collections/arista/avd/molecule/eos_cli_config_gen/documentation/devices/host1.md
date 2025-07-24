@@ -9874,13 +9874,11 @@ router bgp 65101
 
 ### Router RIP
 
-#### Router RIP Summary
+#### VRF: default
 
-| Enabled | Distance | Metric | Timers | Access Group |
-| ------- | -------- | ------ | ------ | ------------ |
-| True | 100 | 10 | Update interval: 100<br>Expiration time: 150<br>Deletion time: 200 | RIP-ACL |
+Enabled: True
 
-#### Advertised Networks
+##### Advertised Networks
 
 | Networks |
 | -------- |
@@ -9888,23 +9886,42 @@ router bgp 65101
 | 192.168.1.0/24 |
 | 192.168.2.0/24 |
 
+#### VRF: VRF1
+
+Enabled: True
+Metric: 10
+
+##### Advertised Networks
+
+| Networks |
+| -------- |
+| 10.0.0.0/8 |
+| 192.168.1.0/24 |
+| 192.168.2.0/24 |
+
+#### VRF: vrf2
+
+Enabled: False
+
 #### Router RIP Device Configuration
 
 ```eos
 !
 router rip vrf VRF1
-   distance 100
-   timers 100 150 200
    metric default 10
    network 10.0.0.0/8
    network 192.168.1.0/24
    network 192.168.2.0/24
-   redistribute ospf
-   redistribute static route-map Route-map1
-   redistribute bgp route-map Route-map1
-   redistribute ospf match external route-map Route-map1
-   redistribute connected route-map Route-map1
    no shutdown
+!
+router rip
+   network 10.0.0.0/8
+   network 192.168.1.0/24
+   network 192.168.2.0/24
+   no shutdown
+!
+router rip vrf vrf2
+   shutdown
 ```
 
 ### PBR Policy Maps

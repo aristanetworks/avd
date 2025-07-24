@@ -7,34 +7,27 @@
 {% if router_rip is arista.avd.defined %}
 
 ### Router RIP
+{%     for rip in router_rip | arista.avd.natural_sort(sort_key='vrf') %}
 
-#### Router RIP Summary
-{%     set enabled = router_rip.enabled | arista.avd.default("-") %}
-{%     set distance = router_rip.distance | arista.avd.default("-") %}
-{%     set metric = router_rip.metric | arista.avd.default("-") %}
-{%     set access_group = router_rip.access_group | arista.avd.default("-") %}
-{%     set timers = [] %}
-{%     if router_rip.timers is arista.avd.defined %}
-{%         do timers.append("Update interval: " ~ router_rip.timers.update_interval) %}
-{%         do timers.append("Expiration time: " ~ router_rip.timers.expiration_time) %}
-{%         do timers.append("Deletion time: " ~ router_rip.timers.deletion_time) %}
-{%     else %}
-{%         do timers.append("-") %}
-{%     endif %}
+#### VRF: {{ rip.vrf }}
+{%         if rip.enabled is arista.avd.defined %}
 
-| Enabled | Distance | Metric | Timers | Access Group |
-| ------- | -------- | ------ | ------ | ------------ |
-| {{ enabled }} | {{ distance }} | {{ metric }} | {{ timers | join("<br>") }} | {{ access_group }} |
-{%     if router_rip.networks is arista.avd.defined %}
+Enabled: {{ rip.enabled }}
+{%         endif %}
+{%         if rip.metric is arista.avd.defined %}
+Metric: {{ rip.metric }}
+{%         endif %}
+{%         if rip.networks is arista.avd.defined %}
 
-#### Advertised Networks
+##### Advertised Networks
 
 | Networks |
 | -------- |
-{%         for network in router_rip.networks | arista.avd.natural_sort %}
+{%             for network in rip.networks | arista.avd.natural_sort %}
 | {{ network }} |
-{%         endfor %}
-{%     endif %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
 
 #### Router RIP Device Configuration
 

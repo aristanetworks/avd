@@ -7,115 +7,26 @@
 type: dict
 keys:
   router_rip:
-    type: dict
+    type: list
     description: Routing Information Protocol settings.
-    keys:
-      enabled:
-        type: bool
-      vrf:
-        type: str
-      metric:
-        type: int
-        description: Set default metric for the routes
-        min: 0
-        max: 16
-        convert_types:
-          - str
-      networks:
-        type: list
-        min_length: 1
-        items:
+    primary_key: vrf
+    items:
+      type: dict
+      keys:
+        enabled:
+          type: bool
+        vrf:
           type: str
-          description: Subnet/Mask. e.g. 192.168.10.0/24.
-      distance:
-        type: int
-        description: Administrative distance.
-        min: 1
-        max: 255
-        convert_types:
-          - str
-      access_group:
-        type: str
-      timers:
-        type: dict
-        keys:
-          update_interval:
-            type: int
-            convert_types:
-              - str
-            min: 5
-            max: 2147483647
-            required: true
-          expiration_time:
-            type: int
-            description: Expiration time of a route.
-            convert_types:
-              - str
-            min: 5
-            max: 2147483647
-            required: true
-          deletion_time:
-            type: int
-            description: Deletion time of a route after its expiry.
-            convert_types:
-              - str
-            min: 5
-            max: 2147483647
-            required: true
-      redistribute:
-        type: dict
-        keys:
-          bgp:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-              route_map:
-                type: str
-          connected:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-                required: true
-              route_map:
-                type: str
-                required: true
-                description: Route Map Name.
-          ospf:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-                description: Redistribute OSPF routes.
-              route_map:
-                type: str
-              match_external:
-                description: Redistribute OSPF routes learned from external sources.
-                type: dict
-                keys:
-                  enabled:
-                    type: bool
-                    required: true
-                  route_map:
-                    type: str
-              match_internal:
-                description: |
-                  Redistribute OSPF routes learned from internal sources.
-                  This is mutually exclusive with `redistribute.enabled` and `redistribute.route_map`.
-                  This key is least preferred.
-                type: dict
-                keys:
-                  enabled:
-                    type: bool
-                    required: true
-                  route_map:
-                    type: str
-          static:
-            type: dict
-            keys:
-              enabled:
-                type: bool
-              route_map:
-                type: str
-                description: Route Map Name.
+        metric:
+          type: int
+          description: Set default metric for the routes
+          min: 0
+          max: 16
+          convert_types:
+            - str
+        networks:
+          type: list
+          min_length: 1
+          items:
+            type: str
+            description: Subnet/Mask. e.g. 192.168.10.0/24.

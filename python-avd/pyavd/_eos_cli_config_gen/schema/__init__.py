@@ -58700,7 +58700,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
-    class RouterRip(AvdModel):
+    class RouterRipItem(AvdModel):
         """Subclass of AvdModel."""
 
         class Networks(AvdList[str]):
@@ -58708,275 +58708,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Networks._item_type = str
 
-        class Timers(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"update_interval": {"type": int}, "expiration_time": {"type": int}, "deletion_time": {"type": int}}
-            update_interval: int
-            expiration_time: int
-            """Expiration time of a route."""
-            deletion_time: int
-            """Deletion time of a route after its expiry."""
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    update_interval: int | UndefinedType = Undefined,
-                    expiration_time: int | UndefinedType = Undefined,
-                    deletion_time: int | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    Timers.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        update_interval: update_interval
-                        expiration_time: Expiration time of a route.
-                        deletion_time: Deletion time of a route after its expiry.
-
-                    """
-
-        class Redistribute(AvdModel):
-            """Subclass of AvdModel."""
-
-            class Bgp(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                enabled: bool | None
-                route_map: str | None
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                        """
-                        Bgp.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            enabled: enabled
-                            route_map: route_map
-
-                        """
-
-            class Connected(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                enabled: bool
-                route_map: str
-                """Route Map Name."""
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | UndefinedType = Undefined) -> None:
-                        """
-                        Connected.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            enabled: enabled
-                            route_map: Route Map Name.
-
-                        """
-
-            class Ospf(AvdModel):
-                """Subclass of AvdModel."""
-
-                class MatchExternal(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                    enabled: bool
-                    route_map: str | None
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                            """
-                            MatchExternal.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                enabled: enabled
-                                route_map: route_map
-
-                            """
-
-                class MatchInternal(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                    enabled: bool
-                    route_map: str | None
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                            """
-                            MatchInternal.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                enabled: enabled
-                                route_map: route_map
-
-                            """
-
-                _fields: ClassVar[dict] = {
-                    "enabled": {"type": bool},
-                    "route_map": {"type": str},
-                    "match_external": {"type": MatchExternal},
-                    "match_internal": {"type": MatchInternal},
-                }
-                enabled: bool | None
-                """Redistribute OSPF routes."""
-                route_map: str | None
-                match_external: MatchExternal
-                """
-                Redistribute OSPF routes learned from external sources.
-
-                Subclass of AvdModel.
-                """
-                match_internal: MatchInternal
-                """
-                Redistribute OSPF routes learned from internal sources.
-                This is mutually exclusive with
-                `redistribute.enabled` and `redistribute.route_map`.
-                This key is least preferred.
-
-
-                Subclass of
-                AvdModel.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        enabled: bool | None | UndefinedType = Undefined,
-                        route_map: str | None | UndefinedType = Undefined,
-                        match_external: MatchExternal | UndefinedType = Undefined,
-                        match_internal: MatchInternal | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        Ospf.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            enabled: Redistribute OSPF routes.
-                            route_map: route_map
-                            match_external:
-                               Redistribute OSPF routes learned from external sources.
-
-                               Subclass of AvdModel.
-                            match_internal:
-                               Redistribute OSPF routes learned from internal sources.
-                               This is mutually exclusive with
-                               `redistribute.enabled` and `redistribute.route_map`.
-                               This key is least preferred.
-
-
-                               Subclass of
-                               AvdModel.
-
-                        """
-
-            class Static(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "route_map": {"type": str}}
-                enabled: bool | None
-                route_map: str | None
-                """Route Map Name."""
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, route_map: str | None | UndefinedType = Undefined) -> None:
-                        """
-                        Static.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            enabled: enabled
-                            route_map: Route Map Name.
-
-                        """
-
-            _fields: ClassVar[dict] = {"bgp": {"type": Bgp}, "connected": {"type": Connected}, "ospf": {"type": Ospf}, "static": {"type": Static}}
-            bgp: Bgp
-            """Subclass of AvdModel."""
-            connected: Connected
-            """Subclass of AvdModel."""
-            ospf: Ospf
-            """Subclass of AvdModel."""
-            static: Static
-            """Subclass of AvdModel."""
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    bgp: Bgp | UndefinedType = Undefined,
-                    connected: Connected | UndefinedType = Undefined,
-                    ospf: Ospf | UndefinedType = Undefined,
-                    static: Static | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    Redistribute.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        bgp: Subclass of AvdModel.
-                        connected: Subclass of AvdModel.
-                        ospf: Subclass of AvdModel.
-                        static: Subclass of AvdModel.
-
-                    """
-
-        _fields: ClassVar[dict] = {
-            "enabled": {"type": bool},
-            "vrf": {"type": str},
-            "metric": {"type": int},
-            "networks": {"type": Networks},
-            "distance": {"type": int},
-            "access_group": {"type": str},
-            "timers": {"type": Timers},
-            "redistribute": {"type": Redistribute},
-        }
+        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str}, "metric": {"type": int}, "networks": {"type": Networks}}
         enabled: bool | None
-        vrf: str | None
+        vrf: str
         metric: int | None
         """Set default metric for the routes"""
         networks: Networks
         """Subclass of AvdList with `str` items."""
-        distance: int | None
-        """Administrative distance."""
-        access_group: str | None
-        timers: Timers
-        """Subclass of AvdModel."""
-        redistribute: Redistribute
-        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
@@ -58984,16 +58722,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 enabled: bool | None | UndefinedType = Undefined,
-                vrf: str | None | UndefinedType = Undefined,
+                vrf: str | UndefinedType = Undefined,
                 metric: int | None | UndefinedType = Undefined,
                 networks: Networks | UndefinedType = Undefined,
-                distance: int | None | UndefinedType = Undefined,
-                access_group: str | None | UndefinedType = Undefined,
-                timers: Timers | UndefinedType = Undefined,
-                redistribute: Redistribute | UndefinedType = Undefined,
             ) -> None:
                 """
-                RouterRip.
+                RouterRipItem.
 
 
                 Subclass of AvdModel.
@@ -59003,12 +58737,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     vrf: vrf
                     metric: Set default metric for the routes
                     networks: Subclass of AvdList with `str` items.
-                    distance: Administrative distance.
-                    access_group: access_group
-                    timers: Subclass of AvdModel.
-                    redistribute: Subclass of AvdModel.
 
                 """
+
+    class RouterRip(AvdIndexedList[str, RouterRipItem]):
+        """Subclass of AvdIndexedList with `RouterRipItem` items. Primary key is `vrf` (`str`)."""
+
+        _primary_key: ClassVar[str] = "vrf"
+
+    RouterRip._item_type = RouterRipItem
 
     class RouterSegmentSecurity(AvdModel):
         """Subclass of AvdModel."""
@@ -67865,7 +67602,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     Routing Information Protocol settings.
 
-    Subclass of AvdModel.
+    Subclass of AvdIndexedList with `RouterRipItem` items.
+    Primary key is `vrf` (`str`).
     """
     router_segment_security: RouterSegmentSecurity
     """Subclass of AvdModel."""
@@ -68468,7 +68206,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 router_rip:
                    Routing Information Protocol settings.
 
-                   Subclass of AvdModel.
+                   Subclass of AvdIndexedList with `RouterRipItem` items.
+                   Primary key is `vrf` (`str`).
                 router_segment_security: Subclass of AvdModel.
                 router_service_insertion:
                    Configure network services inserted to data forwarding.
