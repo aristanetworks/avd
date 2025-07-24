@@ -130,7 +130,7 @@ keys:
                       warning: true
                       removed: false
                       remove_in_version: 6.0.0
-                      new_key: flow_tracking_settings.trackers[].exporters[].collectors
+                      new_key: collectors
                   collectors:
                     type: list
                     primary_key: host
