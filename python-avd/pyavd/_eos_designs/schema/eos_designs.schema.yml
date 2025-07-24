@@ -1756,6 +1756,7 @@ keys:
             default: cvp123!
           act_internet_access:
             type: bool
+            default: false
             description: 'Specifies if the ACT Digital Twin device is deployed with
               direct access to the Internet.
 

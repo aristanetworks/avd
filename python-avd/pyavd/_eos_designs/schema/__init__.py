@@ -4048,7 +4048,7 @@ class EosDesigns(EosDesignsRootModel):
                 "act_os_version": {"type": str},
                 "act_username": {"type": str, "default": "cvpadmin"},
                 "act_password": {"type": str, "default": "cvp123!"},
-                "act_internet_access": {"type": bool},
+                "act_internet_access": {"type": bool, "default": False},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -4064,13 +4064,15 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `"cvp123!"`
             """
-            act_internet_access: bool | None
+            act_internet_access: bool
             """
             Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
             This option
             applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
             types.
             ACT does not provide direct Internet access to cloudeos or veos devices by default.
+
+            Default value: `False`
             """
 
             if TYPE_CHECKING:
@@ -4081,7 +4083,7 @@ class EosDesigns(EosDesignsRootModel):
                     act_os_version: str | None | UndefinedType = Undefined,
                     act_username: str | UndefinedType = Undefined,
                     act_password: str | UndefinedType = Undefined,
-                    act_internet_access: bool | None | UndefinedType = Undefined,
+                    act_internet_access: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
