@@ -21,7 +21,7 @@ load_balance:
       monitor: true
       source_learning_aging_timeout: 45
     load_balance_method_flow_round_robin: true
-    destination_grouping: BGP field-set
+    destination_grouping: bgp field-set
     port_groups:
       - group: host_group1
         balance_factor: 10

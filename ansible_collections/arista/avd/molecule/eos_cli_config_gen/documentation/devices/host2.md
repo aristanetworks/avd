@@ -50,7 +50,7 @@
   - [Custom TCAM Profiles](#custom-tcam-profiles)
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
 - [Load Balance](#load-balance)
-  - [Load Balance cluster](#load-balance-cluster)
+  - [Load Balance Cluster](#load-balance-cluster)
   - [Load Balance Configuration](#load-balance-configuration)
 - [LLDP](#lldp)
   - [LLDP Summary](#lldp-summary)
@@ -766,7 +766,7 @@ Thisisnotaidealinput
 
 ## Load Balance
 
-### Load Balance cluster
+### Load Balance Cluster
 
 | Setting | Value |
 | ------- | ----- |

@@ -101,7 +101,7 @@
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
 - [Load Balance](#load-balance)
   - [Load Balance Profiles](#load-balance-profiles)
-  - [Load Balance cluster](#load-balance-cluster)
+  - [Load Balance Cluster](#load-balance-cluster)
   - [Load Balance Configuration](#load-balance-configuration)
   - [Link Tracking](#link-tracking)
 - [MLAG](#mlag)
@@ -3417,19 +3417,19 @@ hardware tcam
 | Match Hash Payload Bytes | 10 |
 | UDP Payload | 10-20 |
 
-### Load Balance cluster
+### Load Balance Cluster
 
 | Setting | Value |
 | ------- | ----- |
 | Forwarding Type | routed ipv4 |
-| Destination Grouping | BGP field-set |
+| Destination Grouping | bgp field-set |
 | Load-balance Method Flow Round-robin | True |
 | Flow Monitor | True |
 | Flow Source Learning Aging Timeout | 45 seconds |
 
 #### Host Port Groups
 
-| Port Group | Interface | Flow Limit | Flow Warning | Balance Fcator | Exhaustion Action DSCP | Exhaustion Action Traffic-class |
+| Port Group | Interface | Flow Limit | Flow Warning | Balance Factor | Exhaustion Action DSCP | Exhaustion Action Traffic-class |
 | ---------- | --------- | ---------- | ------------ | -------------- | ---------------------- | ------------------------------- |
 | host_group1 | Ethernet 2-5 | 12 | 25 | 10 | 5 | 7 |
 | host_group2 | Ethernet 2,3 | - | - | 10 | 45 | - |
@@ -3451,7 +3451,7 @@ load-balance policies
 !
 load-balance cluster
    forwarding type routed ipv4
-   destination grouping BGP field-set
+   destination grouping bgp field-set
    load-balance method flow round-robin
    flow monitor
    !
