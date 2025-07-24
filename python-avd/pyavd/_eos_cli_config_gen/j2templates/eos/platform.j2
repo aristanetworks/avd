@@ -32,7 +32,7 @@ platform sand lag hardware-only
 {%         if platform.fap.buffering_egress.profile is arista.avd.defined %}
 platform fap buffering egress profile {{ platform.fap.buffering_egress.profile }}
 {%         endif %}
-{%         if platform.fap.voq.credit_rates_unified is arista.avd.defined %}
+{%         if platform.fap.voq.credit_rates_unified is arista.avd.defined(true) %}
 !
 platform fap voq credit rates unified
 {%         endif %}
