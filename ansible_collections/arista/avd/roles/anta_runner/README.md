@@ -339,8 +339,6 @@ As of this writing, ANTA supports close to 200 different [tests](https://anta.ar
 
 The table below shows which parts of the AVD structured configuration are used to generate the inputs for each ANTA test. Tests without a specific configuration source run checks that don't require variable inputs (e.g., checking for coredumps or generic system states).
 
-TODO: help on VerifyReachability
-
 | Test Class | Description | AVD Configuration Source for Inputs |
 | :--- | :--- | :--- |
 | [**VerifyAgentLogs**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyAgentLogs){:target="_blank"} | Verifies that there are no agent crash reports on the device. | *None* |
