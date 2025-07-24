@@ -20,7 +20,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pattern</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match.pattern") | String | Required |  |  | Bit pattern to match in the UDP payload.<br>The value should be given as an hexadecimal format `0x...`.<br>The valid range is from 0 to (2^N - 1), where N is the number of bits selected in `payload_bits`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_payload_bytes</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match.hash_payload_bytes") | String | Required |  |  | Specifies the UDP payload byte positions to include in the hash after pattern match.<br>Accepts a single byte (e.g., "5"), a comma-separated list (e.g., "0,3,7"),<br>a range (e.g., "0-15"), or a combination (e.g., "0-5,8,12-14").<br>All byte positions must be within the range 0 to 62. |
     | [<samp>&nbsp;&nbsp;cluster</samp>](## "load_balance.cluster") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination_grouping</samp>](## "load_balance.cluster.destination_grouping") | String |  |  | Valid Values:<br>- <code>BGP field-set</code><br>- <code>prefix length</code><br>- <code>vtep</code> | Perform destination grouping using given setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination_grouping</samp>](## "load_balance.cluster.destination_grouping") | String |  |  | Valid Values:<br>- <code>bgp field-set</code><br>- <code>prefix length</code><br>- <code>vtep</code> | Perform destination grouping using given setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "load_balance.cluster.prefix_length") | Integer |  |  | Min: 0<br>Max: 129 | Network address prefix length for destination grouping using prefix length.<br>This setting must be defined when `destination_grouping` is set to `prefix length`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;forwarding_type</samp>](## "load_balance.cluster.forwarding_type") | String |  |  | Valid Values:<br>- <code>bridged encapsulation vxlan ipv4</code><br>- <code>routed ipv4</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;load_balance_method_flow_round_robin</samp>](## "load_balance.cluster.load_balance_method_flow_round_robin") | Boolean |  |  |  | Enable round-robin load balancing for flow-based traffic. |
@@ -92,7 +92,7 @@
       cluster:
 
         # Perform destination grouping using given setting.
-        destination_grouping: <str; "BGP field-set" | "prefix length" | "vtep">
+        destination_grouping: <str; "bgp field-set" | "prefix length" | "vtep">
 
         # Network address prefix length for destination grouping using prefix length.
         # This setting must be defined when `destination_grouping` is set to `prefix length`.

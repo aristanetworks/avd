@@ -18332,7 +18332,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "flow": {"type": Flow},
                 "port_groups": {"type": PortGroups},
             }
-            destination_grouping: Literal["BGP field-set", "prefix length", "vtep"] | None
+            destination_grouping: Literal["bgp field-set", "prefix length", "vtep"] | None
             """Perform destination grouping using given setting."""
             prefix_length: int | None
             """
@@ -18358,7 +18358,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    destination_grouping: Literal["BGP field-set", "prefix length", "vtep"] | None | UndefinedType = Undefined,
+                    destination_grouping: Literal["bgp field-set", "prefix length", "vtep"] | None | UndefinedType = Undefined,
                     prefix_length: int | None | UndefinedType = Undefined,
                     forwarding_type: Literal["bridged encapsulation vxlan ipv4", "routed ipv4"] | None | UndefinedType = Undefined,
                     load_balance_method_flow_round_robin: bool | None | UndefinedType = Undefined,
