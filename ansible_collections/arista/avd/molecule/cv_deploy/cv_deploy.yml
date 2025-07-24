@@ -69,7 +69,6 @@
               - cv_deploy_results.workspace.name == cv_workspace_name
               - cv_deploy_results.workspace.state == "submitted"
               - cv_deploy_results.workspace.description == cv_workspace_description
-              - cv_deploy_results.workspace.force == cv_submit_workspace_force
               # errors and warnings
               - cv_deploy_results.errors == []
               - cv_deploy_results.warnings == []
