@@ -9874,9 +9874,10 @@ router bgp 65101
 
 ### Router RIP
 
-#### VRF: default
+#### VRF: VRF1
 
 Enabled: True
+Metric: 10
 
 ##### Advertised Networks
 
@@ -9886,10 +9887,9 @@ Enabled: True
 | 192.168.1.0/24 |
 | 192.168.2.0/24 |
 
-#### VRF: VRF1
+#### VRF: default
 
 Enabled: True
-Metric: 10
 
 ##### Advertised Networks
 

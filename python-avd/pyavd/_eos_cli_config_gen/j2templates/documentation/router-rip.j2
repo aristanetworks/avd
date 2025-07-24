@@ -7,7 +7,7 @@
 {% if router_rip is arista.avd.defined %}
 
 ### Router RIP
-{%     for rip in router_rip | arista.avd.natural_sort(sort_key='vrf') %}
+{%     for rip in router_rip | arista.avd.natural_sort(sort_key='vrf', ignore_case=False) %}
 
 #### VRF: {{ rip.vrf }}
 {%         if rip.enabled is arista.avd.defined %}
