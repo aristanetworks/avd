@@ -25,7 +25,7 @@ load_balance:
     port_groups:
       - group: host_group1
         balance_factor: 10
-        interface: Ethernet 2-5
+        interface: Ethernet 2-4
         flow:
           limit: 12
           warning: 25

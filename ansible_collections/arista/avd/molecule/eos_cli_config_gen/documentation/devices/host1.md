@@ -3431,7 +3431,7 @@ hardware tcam
 
 | Port Group | Interface | Flow Limit | Flow Warning | Balance Factor | Exhaustion Action DSCP | Exhaustion Action Traffic-class |
 | ---------- | --------- | ---------- | ------------ | -------------- | ---------------------- | ------------------------------- |
-| host_group1 | Ethernet 2-5 | 12 | 25 | 10 | 5 | 7 |
+| host_group1 | Ethernet 2-4 | 12 | 25 | 10 | 5 | 7 |
 | host_group2 | Ethernet 2,3 | - | - | 10 | 45 | - |
 | host_group3 | Ethernet 2.2,3.1 | - | - | - | - | 9 |
 
@@ -3459,7 +3459,7 @@ load-balance cluster
       aging timeout 45 seconds
    !
    port group host host_group1
-      interface Ethernet 2-5
+      interface Ethernet 2-4
       flow limit 12
       balance factor 10
       flow warning 25
