@@ -22,7 +22,7 @@ class ConnectedEndpointsMixin(Protocol):
     """
 
     @cached_property
-    def _filtered_connected_endpoints(
+    def filtered_connected_endpoints(
         self: SharedUtilsProtocol,
     ) -> EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints:
         """
@@ -64,7 +64,7 @@ class ConnectedEndpointsMixin(Protocol):
         return filtered_connected_endpoints
 
     @cached_property
-    def _filtered_network_ports(self: SharedUtilsProtocol) -> EosDesigns.NetworkPorts:
+    def filtered_network_ports(self: SharedUtilsProtocol) -> EosDesigns.NetworkPorts:
         """Return list of endpoints defined under "network_ports" which are connected to this switch."""
         filtered_network_ports = EosDesigns.NetworkPorts()
         for index, network_port in enumerate(self.inputs.network_ports):

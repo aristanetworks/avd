@@ -32,7 +32,7 @@ class MonitorSessionsMixin(Protocol):
         if not self._monitor_session_configs:
             return
 
-        for session_name, session_configs in groupby_obj(self._monitor_session_configs, "name"):
+        for session_name, session_configs in groupby_obj(self._monitor_session_configs(), "name"):
             # Convert iterator to list since we can only access it once.
             session_configs_list = list(session_configs)
             merged_settings = session_configs_list[0]._deepcopy()
@@ -77,13 +77,12 @@ class MonitorSessionsMixin(Protocol):
 
             self.structured_config.monitor_sessions.append(monitor_session)
 
-    @cached_property
     def _monitor_session_configs(
         self: AvdStructuredConfigBaseProtocol,
     ) -> list[EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessionsItem]:
         """Return list of monitor session configs extracted from every interface."""
         monitor_session_configs = []
-        for connected_endpoint in self.shared_utils._filtered_connected_endpoints:
+        for connected_endpoint in self.shared_utils.filtered_connected_endpoints:
             for adapter in connected_endpoint.adapters:
                 if not adapter.monitor_sessions:
                     continue
@@ -113,7 +112,7 @@ class MonitorSessionsMixin(Protocol):
                         per_interface_monitor_session._internal_data.context = adapter._internal_data.context
                         monitor_session_configs.append(per_interface_monitor_session)
 
-        for network_port in self.shared_utils._filtered_network_ports:
+        for network_port in self.shared_utils.filtered_network_ports:
             if not network_port.monitor_sessions:
                 continue
 
