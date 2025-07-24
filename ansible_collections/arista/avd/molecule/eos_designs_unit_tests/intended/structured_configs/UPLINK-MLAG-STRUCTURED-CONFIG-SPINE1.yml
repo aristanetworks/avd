@@ -100,6 +100,7 @@ router_bgp:
     remote_as: '65101'
     peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
     description: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Ethernet1
+    bfd: true
   - ip_address: 172.31.255.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'

@@ -80,6 +80,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-tacacs-so
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/local-users.md
 --8<--
 
+### Radius proxy
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/radius-proxy.md
+--8<--
+
 ### Radius server
 
 --8<--

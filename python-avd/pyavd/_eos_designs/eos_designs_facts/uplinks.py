@@ -125,9 +125,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         These facts are leveraged by templates for this device when rendering uplinks
         and by templates for peer devices when rendering downlinks
         """
-        if self.shared_utils.uplink_type == "p2p":
-            get_uplink = self._get_p2p_uplink
-        elif self.shared_utils.uplink_type == "port-channel":
+        if self.shared_utils.uplink_type == "port-channel":
             get_uplink = self._get_port_channel_uplink
         elif self.shared_utils.uplink_type == "p2p-vrfs":
             if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
@@ -146,8 +144,8 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 # Got {self._uplink_interfaces}. Consider 'uplink_type: lan-port-channel' if applicable.
             get_uplink = self._get_l2_uplink
         else:
-            msg = f"Invalid uplink_type '{self.shared_utils.uplink_type}'."
-            raise AristaAvdError(msg)
+            # Uplink type is 'p2p'.
+            get_uplink = self._get_p2p_uplink
 
         uplinks = EosDesignsFactsProtocol.Uplinks()
         uplink_switches = self.shared_utils.uplink_switches
@@ -159,12 +157,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
 
             uplink_switch = uplink_switches[uplink_index]
             uplink_switch_interface = uplink_switch_interfaces[uplink_index]
-            if uplink_switch is None or uplink_switch not in self.shared_utils.all_fabric_devices:
-                # Invalid uplink_switch. Skipping.
-                continue
 
-            if (uplink := get_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)) is not None:
-                uplinks.append(uplink)
+            uplink = get_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)
+            uplinks.append(uplink)
 
         return uplinks
 
@@ -418,7 +413,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             return EosDesignsFactsProtocol.UplinkSwitchInterfaces()
 
         if self.id is None:
-            msg = f"'id' is not set on '{self.shared_utils.hostname}'"
+            msg = f"'id' is not set on '{self.shared_utils.hostname}'."
             raise AristaAvdInvalidInputsError(msg)
 
         uplink_switch_interfaces = EosDesignsFactsProtocol.UplinkSwitchInterfaces()
@@ -439,7 +434,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             else:
                 msg = (
                     f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
-                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'"
+                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'."
                 )
                 raise AristaAvdError(msg)
 
