@@ -123,17 +123,21 @@ class ActionModule(ActionBase):
 
         if output.digital_twin:
             content = {str(key).replace("_", "-"): value for key, value in asdict(output.digital_twin).items() if value is not None}
+            base_yaml = yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130)
+
             # Adjust formatting of the dumped Digital Twin artifact
             match output.digital_twin:
                 case ACTDigitalTwin():
-                    serialized_content = "---\n" + sub(
-                        r"^(\s*-|\s{4})",
-                        lambda match: (" " * 4 + text) if (text := match.group(0)).startswith("  -") else (" " * 2 + text),
-                        yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130),
+                    # Adjust indentation
+                    base_yaml = sub(
+                        pattern=r"^(\s*-|\s{4})",
+                        repl=lambda match: f"{' ' * 4}{text}" if (text := match.group(0)).startswith("  -") else f"{' ' * 2}{text}",
+                        string=base_yaml,
                         flags=MULTILINE,
                     )
+                    serialized_content = f"---\n{base_yaml}"
                 case _:
-                    serialized_content = (yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130),)
+                    serialized_content = base_yaml
             changed = write_file(
                 content=serialized_content,
                 filename=validated_args["digital_twin_file"],
