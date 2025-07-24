@@ -33,7 +33,7 @@
 {%     endif %}
 {%     if load_balance.cluster is arista.avd.defined %}
 
-### Load Balance cluster
+### Load Balance Cluster
 
 | Setting | Value |
 | ------- | ----- |
@@ -58,7 +58,7 @@
 
 #### Host Port Groups
 
-| Port Group | Interface | Flow Limit | Flow Warning | Balance Fcator | Exhaustion Action DSCP | Exhaustion Action Traffic-class |
+| Port Group | Interface | Flow Limit | Flow Warning | Balance Factor | Exhaustion Action DSCP | Exhaustion Action Traffic-class |
 | ---------- | --------- | ---------- | ------------ | -------------- | ---------------------- | ------------------------------- |
 {%             for port_group in load_balance.cluster.port_groups | arista.avd.natural_sort('group')  %}
 {%                 set interface = port_group.interface | arista.avd.default("-") %}

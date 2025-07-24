@@ -89,7 +89,7 @@ keys:
           destination_grouping:
             type: str
             valid_values:
-              - BGP field-set
+              - bgp field-set
               - prefix length
               - vtep
             description: Perform destination grouping using given setting.
