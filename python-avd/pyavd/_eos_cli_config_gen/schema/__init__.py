@@ -62465,183 +62465,70 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class NextHop(AvdModel):
                             """Subclass of AvdModel."""
 
-                            class Ipv4(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                class Addresses(AvdList[str]):
-                                    """Subclass of AvdList with `str` items."""
-
-                                Addresses._item_type = str
-
-                                _fields: ClassVar[dict] = {"addresses": {"type": Addresses}, "vrf": {"type": str}}
-                                addresses: Addresses
+                            class Ipv4Addresses(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
-                                vrf: str | None
 
-                                if TYPE_CHECKING:
+                            Ipv4Addresses._item_type = str
 
-                                    def __init__(
-                                        self, *, addresses: Addresses | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined
-                                    ) -> None:
-                                        """
-                                        Ipv4.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            addresses: Subclass of AvdList with `str` items.
-                                            vrf: vrf
-
-                                        """
-
-                            class Ipv6(AvdModel):
-                                """Subclass of AvdModel."""
-
-                                class Addresses(AvdList[str]):
-                                    """Subclass of AvdList with `str` items."""
-
-                                Addresses._item_type = str
-
-                                _fields: ClassVar[dict] = {"addresses": {"type": Addresses}, "vrf": {"type": str}}
-                                addresses: Addresses
+                            class Ipv6Addresses(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
-                                vrf: str | None
 
-                                if TYPE_CHECKING:
-
-                                    def __init__(
-                                        self, *, addresses: Addresses | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined
-                                    ) -> None:
-                                        """
-                                        Ipv6.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            addresses: Subclass of AvdList with `str` items.
-                                            vrf: vrf
-
-                                        """
+                            Ipv6Addresses._item_type = str
 
                             class Groups(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
                             Groups._item_type = str
 
-                            class Recursive(AvdModel):
-                                """Subclass of AvdModel."""
+                            class RecursiveIpv4Addresses(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
 
-                                class Ipv4(AvdModel):
-                                    """Subclass of AvdModel."""
+                            RecursiveIpv4Addresses._item_type = str
 
-                                    class Addresses(AvdList[str]):
-                                        """Subclass of AvdList with `str` items."""
+                            class RecursiveIpv6Addresses(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
 
-                                    Addresses._item_type = str
-
-                                    _fields: ClassVar[dict] = {"addresses": {"type": Addresses}, "vrf": {"type": str}}
-                                    addresses: Addresses
-                                    """Subclass of AvdList with `str` items."""
-                                    vrf: str | None
-
-                                    if TYPE_CHECKING:
-
-                                        def __init__(
-                                            self, *, addresses: Addresses | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined
-                                        ) -> None:
-                                            """
-                                            Ipv4.
-
-
-                                            Subclass of AvdModel.
-
-                                            Args:
-                                                addresses: Subclass of AvdList with `str` items.
-                                                vrf: vrf
-
-                                            """
-
-                                class Ipv6(AvdModel):
-                                    """Subclass of AvdModel."""
-
-                                    class Addresses(AvdList[str]):
-                                        """Subclass of AvdList with `str` items."""
-
-                                    Addresses._item_type = str
-
-                                    _fields: ClassVar[dict] = {"addresses": {"type": Addresses}, "vrf": {"type": str}}
-                                    addresses: Addresses
-                                    """Subclass of AvdList with `str` items."""
-                                    vrf: str | None
-
-                                    if TYPE_CHECKING:
-
-                                        def __init__(
-                                            self, *, addresses: Addresses | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined
-                                        ) -> None:
-                                            """
-                                            Ipv6.
-
-
-                                            Subclass of AvdModel.
-
-                                            Args:
-                                                addresses: Subclass of AvdList with `str` items.
-                                                vrf: vrf
-
-                                            """
-
-                                _fields: ClassVar[dict] = {"ipv4": {"type": Ipv4}, "ipv6": {"type": Ipv6}}
-                                ipv4: Ipv4
-                                """Subclass of AvdModel."""
-                                ipv6: Ipv6
-                                """Subclass of AvdModel."""
-
-                                if TYPE_CHECKING:
-
-                                    def __init__(self, *, ipv4: Ipv4 | UndefinedType = Undefined, ipv6: Ipv6 | UndefinedType = Undefined) -> None:
-                                        """
-                                        Recursive.
-
-
-                                        Subclass of AvdModel.
-
-                                        Args:
-                                            ipv4: Subclass of AvdModel.
-                                            ipv6: Subclass of AvdModel.
-
-                                        """
+                            RecursiveIpv6Addresses._item_type = str
 
                             _fields: ClassVar[dict] = {
-                                "ipv4": {"type": Ipv4},
-                                "ipv6": {"type": Ipv6},
+                                "ipv4_addresses": {"type": Ipv4Addresses},
+                                "ipv6_addresses": {"type": Ipv6Addresses},
+                                "vrf": {"type": str},
                                 "groups": {"type": Groups},
-                                "recursive": {"type": Recursive},
+                                "recursive_ipv4_addresses": {"type": RecursiveIpv4Addresses},
+                                "recursive_ipv6_addresses": {"type": RecursiveIpv6Addresses},
                             }
-                            ipv4: Ipv4
-                            """Subclass of AvdModel."""
-                            ipv6: Ipv6
-                            """Subclass of AvdModel."""
+                            ipv4_addresses: Ipv4Addresses
+                            """Subclass of AvdList with `str` items."""
+                            ipv6_addresses: Ipv6Addresses
+                            """Subclass of AvdList with `str` items."""
+                            vrf: str | None
+                            """
+                            Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses` or
+                            `recursive.ipv6_addresses`.
+                            """
                             groups: Groups
                             """
                             Set groups to redirect flow.
 
                             Subclass of AvdList with `str` items.
                             """
-                            recursive: Recursive
-                            """Subclass of AvdModel."""
+                            recursive_ipv4_addresses: RecursiveIpv4Addresses
+                            """Subclass of AvdList with `str` items."""
+                            recursive_ipv6_addresses: RecursiveIpv6Addresses
+                            """Subclass of AvdList with `str` items."""
 
                             if TYPE_CHECKING:
 
                                 def __init__(
                                     self,
                                     *,
-                                    ipv4: Ipv4 | UndefinedType = Undefined,
-                                    ipv6: Ipv6 | UndefinedType = Undefined,
+                                    ipv4_addresses: Ipv4Addresses | UndefinedType = Undefined,
+                                    ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                                    vrf: str | None | UndefinedType = Undefined,
                                     groups: Groups | UndefinedType = Undefined,
-                                    recursive: Recursive | UndefinedType = Undefined,
+                                    recursive_ipv4_addresses: RecursiveIpv4Addresses | UndefinedType = Undefined,
+                                    recursive_ipv6_addresses: RecursiveIpv6Addresses | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     NextHop.
@@ -62650,13 +62537,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        ipv4: Subclass of AvdModel.
-                                        ipv6: Subclass of AvdModel.
+                                        ipv4_addresses: Subclass of AvdList with `str` items.
+                                        ipv6_addresses: Subclass of AvdList with `str` items.
+                                        vrf:
+                                           Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses` or
+                                           `recursive.ipv6_addresses`.
                                         groups:
                                            Set groups to redirect flow.
 
                                            Subclass of AvdList with `str` items.
-                                        recursive: Subclass of AvdModel.
+                                        recursive_ipv4_addresses: Subclass of AvdList with `str` items.
+                                        recursive_ipv6_addresses: Subclass of AvdList with `str` items.
 
                                     """
 

@@ -171,34 +171,34 @@ traffic-policies
             redirect interface {{ match.actions.redirect.interface }}
 {%                     endif %}
 {%                     if not (match.actions.redirect.interface is arista.avd.defined or match.actions.redirect.aggregation_groups is arista.avd.defined) %}
-{%                         if match.actions.redirect.next_hop.ipv4.addresses is arista.avd.defined %}
-{%                             set ipv4_addresses = match.actions.redirect.next_hop.ipv4.addresses | arista.avd.natural_sort | join(' ') %}
+{%                         if match.actions.redirect.next_hop.ipv4_addresses is arista.avd.defined %}
+{%                             set ipv4_addresses = match.actions.redirect.next_hop.ipv4_addresses | arista.avd.natural_sort | join(' ') %}
 {%                             set next_hop_ipv4_cli = "redirect next-hop " ~ ipv4_addresses %}
-{%                             if match.actions.redirect.next_hop.ipv4.vrf is arista.avd.defined %}
-{%                                 set next_hop_ipv4_cli = next_hop_ipv4_cli ~ " vrf " ~ match.actions.redirect.next_hop.ipv4.vrf %}
+{%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                 set next_hop_ipv4_cli = next_hop_ipv4_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
 {%                             endif %}
             {{ next_hop_ipv4_cli }}
-{%                         elif match.actions.redirect.next_hop.ipv6.addresses is arista.avd.defined %}
-{%                             set ipv6_addresses = match.actions.redirect.next_hop.ipv6.addresses | arista.avd.natural_sort | join(' ') %}
+{%                         elif match.actions.redirect.next_hop.ipv6_addresses is arista.avd.defined %}
+{%                             set ipv6_addresses = match.actions.redirect.next_hop.ipv6_addresses | arista.avd.natural_sort | join(' ') %}
 {%                             set next_hop_ipv6_cli = "redirect next-hop " ~ ipv6_addresses %}
-{%                             if match.actions.redirect.next_hop.ipv6.vrf is arista.avd.defined %}
-{%                                 set next_hop_ipv6_cli = next_hop_ipv6_cli ~ " vrf " ~ match.actions.redirect.next_hop.ipv6.vrf %}
+{%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                 set next_hop_ipv6_cli = next_hop_ipv6_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
 {%                             endif %}
             {{ next_hop_ipv6_cli }}
 {%                         elif match.actions.redirect.next_hop.groups is arista.avd.defined %}
             redirect next-hop group {{ match.actions.redirect.next_hop.groups | arista.avd.natural_sort | join(' ') }}
-{%                         elif match.actions.redirect.next_hop.recursive.ipv4.addresses is arista.avd.defined %}
-{%                             set ipv4_addresses = match.actions.redirect.next_hop.recursive.ipv4.addresses | arista.avd.natural_sort | join(' ') %}
+{%                         elif match.actions.redirect.next_hop.recursive_ipv4_addresses is arista.avd.defined %}
+{%                             set ipv4_addresses = match.actions.redirect.next_hop.recursive_ipv4_addresses | arista.avd.natural_sort | join(' ') %}
 {%                             set next_hop_recursive_ipv4_cli = "redirect next-hop recursive " ~ ipv4_addresses %}
-{%                             if match.actions.redirect.next_hop.recursive.ipv4.vrf is arista.avd.defined %}
-{%                                 set next_hop_recursive_ipv4_cli = next_hop_recursive_ipv4_cli ~ " vrf " ~ match.actions.redirect.next_hop.recursive.ipv4.vrf %}
+{%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                 set next_hop_recursive_ipv4_cli = next_hop_recursive_ipv4_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
 {%                             endif %}
             {{ next_hop_recursive_ipv4_cli }}
-{%                         elif match.actions.redirect.next_hop.recursive.ipv6.addresses is arista.avd.defined %}
-{%                             set ipv6_addresses = match.actions.redirect.next_hop.recursive.ipv6.addresses | arista.avd.natural_sort | join(' ') %}
+{%                         elif match.actions.redirect.next_hop.recursive_ipv6_addresses is arista.avd.defined %}
+{%                             set ipv6_addresses = match.actions.redirect.next_hop.recursive_ipv6_addresses | arista.avd.natural_sort | join(' ') %}
 {%                             set next_hop_recursive_ipv6_cli = "redirect next-hop recursive " ~ ipv6_addresses %}
-{%                             if match.actions.redirect.next_hop.recursive.ipv6.vrf is arista.avd.defined %}
-{%                                 set next_hop_recursive_ipv6_cli = next_hop_recursive_ipv6_cli ~ " vrf " ~ match.actions.redirect.next_hop.recursive.ipv6.vrf %}
+{%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                 set next_hop_recursive_ipv6_cli = next_hop_recursive_ipv6_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
 {%                             endif %}
             {{ next_hop_recursive_ipv6_cli }}
 {%                         endif %}

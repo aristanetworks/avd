@@ -66,25 +66,17 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.aggregation_groups.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.interface") | String |  |  |  | The allowed hardware Ethernet interface, LAG interface.<br>Ex:<br>  1. Ethernet 1<br>  2. Et 1,2<br>  3. Po 2-4. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop") | Dictionary |  |  |  | Redirect to next-hop.<br>This option is mutually exclusive with `aggregation_groups` and `interface`.<br>If all three are defined, aggregation_groups and interface take precedence over next-hop.<br>Only one of the below keys can be specified, in the order of precedence: ipv4, ipv6, groups, recursive.ipv4, recursive.ipv6. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv4") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv4.addresses") | List, items: String | Required |  | Min Length: 1 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv4.addresses.[]") | String |  |  |  | Next hop IPv4 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv4.vrf") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv6") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv6.addresses") | List, items: String | Required |  | Min Length: 1 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv6.addresses.[]") | String |  |  |  | Next hop IPv6 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv6.vrf") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv4_addresses") | List, items: String |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv4_addresses.[]") | String |  |  |  | Next hop IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv6_addresses") | List, items: String |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv6_addresses.[]") | String |  |  |  | Next hop IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.vrf") | String |  |  |  | Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses` or `recursive.ipv6_addresses`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.groups") | List, items: String |  |  |  | Set groups to redirect flow. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.groups.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recursive</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive.ipv4") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive.ipv4.addresses") | List, items: String | Required |  | Min Length: 1 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive.ipv4.addresses.[]") | String |  |  |  | Next hop IPv4 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive.ipv4.vrf") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive.ipv6") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive.ipv6.addresses") | List, items: String | Required |  | Min Length: 1 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive.ipv6.addresses.[]") | String |  |  |  | Next hop IPv6 address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive.ipv6.vrf") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recursive_ipv4_addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive_ipv4_addresses") | List, items: String |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive_ipv4_addresses.[]") | String |  |  |  | Next hop IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recursive_ipv6_addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive_ipv6_addresses") | List, items: String |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive_ipv6_addresses.[]") | String |  |  |  | Next hop IPv6 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_actions</samp>](## "traffic_policies.policies.[].default_actions") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "traffic_policies.policies.[].default_actions.ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "traffic_policies.policies.[].default_actions.ipv4.dscp") | Integer |  |  |  |  |
@@ -223,35 +215,29 @@
                   # If all three are defined, aggregation_groups and interface take precedence over next-hop.
                   # Only one of the below keys can be specified, in the order of precedence: ipv4, ipv6, groups, recursive.ipv4, recursive.ipv6.
                   next_hop:
-                    ipv4:
-                      addresses: # >=1 items; required
+                    ipv4_addresses: # >=1 items
 
-                          # Next hop IPv4 address.
-                        - <str>
-                      vrf: <str>
-                    ipv6:
-                      addresses: # >=1 items; required
+                        # Next hop IPv4 address.
+                      - <str>
+                    ipv6_addresses: # >=1 items
 
-                          # Next hop IPv6 address.
-                        - <str>
-                      vrf: <str>
+                        # Next hop IPv6 address.
+                      - <str>
+
+                    # Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses` or `recursive.ipv6_addresses`.
+                    vrf: <str>
 
                     # Set groups to redirect flow.
                     groups:
                       - <str>
-                    recursive:
-                      ipv4:
-                        addresses: # >=1 items; required
+                    recursive_ipv4_addresses: # >=1 items
 
-                            # Next hop IPv4 address.
-                          - <str>
-                        vrf: <str>
-                      ipv6:
-                        addresses: # >=1 items; required
+                        # Next hop IPv4 address.
+                      - <str>
+                    recursive_ipv6_addresses: # >=1 items
 
-                            # Next hop IPv6 address.
-                          - <str>
-                        vrf: <str>
+                        # Next hop IPv6 address.
+                      - <str>
           default_actions:
             ipv4:
               dscp: <int>

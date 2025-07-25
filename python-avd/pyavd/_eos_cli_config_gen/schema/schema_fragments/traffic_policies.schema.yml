@@ -204,44 +204,33 @@ keys:
                               If all three are defined, aggregation_groups and interface take precedence over next-hop.
                               Only one of the below keys can be specified, in the order of precedence: ipv4, ipv6, groups, recursive.ipv4, recursive.ipv6.
                             keys:
-                              ipv4:
-                                type: dict
-                                keys:
-                                  addresses:
-                                    type: list
-                                    min_length: 1
-                                    required: true
-                                    items:
-                                      type: str
-                                      description: Next hop IPv4 address.
-                                  vrf:
-                                    type: str
-                              ipv6:
-                                type: dict
-                                keys:
-                                  addresses:
-                                    type: list
-                                    min_length: 1
-                                    required: true
-                                    items:
-                                      type: str
-                                      description: Next hop IPv6 address.
-                                  vrf:
-                                    type: str
+                              ipv4_addresses:
+                                type: list
+                                min_length: 1
+                                items:
+                                  type: str
+                                  description: Next hop IPv4 address.
+                              ipv6_addresses:
+                                type: list
+                                min_length: 1
+                                items:
+                                  type: str
+                                  description: Next hop IPv6 address.
+                              vrf:
+                                type: str
+                                description: |-
+                                  Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses` or `recursive.ipv6_addresses`.
                               groups:
                                 type: list
                                 items:
                                   type: str
                                 description: Set groups to redirect flow.
-                              recursive:
-                                type: dict
-                                keys:
-                                  ipv4:
-                                    type: dict
-                                    $ref: "eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv4"
-                                  ipv6:
-                                    type: dict
-                                    $ref: "eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv6"
+                              recursive_ipv4_addresses:
+                                type: list
+                                $ref: "eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv4_addresses"
+                              recursive_ipv6_addresses:
+                                type: list
+                                $ref: "eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv6_addresses"
             default_actions:
               type: dict
               keys:
