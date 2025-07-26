@@ -233,12 +233,41 @@ traffic_policies:
             - protocol: tcp
           actions:
             drop: true
+            redirect:
+              next_hop:
+                # Test next_hop ipv6 without VRF with ttl
+                ipv6_addresses: [ 2001:db8::1, fd00::abcd:1234 ]
+                ttl: 3
         # Test redirect for type: ipv6
         - name: BLUE-C2-POLICY-04
           type: ipv6
           actions:
             redirect:
               interface: Ethernet 6
+        - name: BLUE-C2-POLICY-05
+          type: ipv6
+          actions:
+            redirect:
+              next_hop:
+                # Test next_hop ipv4 with VRF with ttl
+                ipv4_addresses: [ 2.2.2.43, 2.2.2.33 ]
+                ttl: 5
+                vrf: VRF_ttl_ipv4
+        - name: BLUE-C2-POLICY-06
+          type: ipv4
+          actions:
+            redirect:
+              next_hop:
+                # Testing groups with ttl
+                groups: [ Testing_TTL_GROUP ]
+                ttl: 44
+        - name: BLUE-C2-POLICY-07
+          type: ipv4
+          actions:
+            redirect:
+              next_hop:
+                # Testing negative ttl it should not reflect.
+                ttl: 44
     - name: BLUE-C3-POLICY
       default_actions:
         ipv4:

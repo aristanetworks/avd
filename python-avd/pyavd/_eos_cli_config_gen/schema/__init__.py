@@ -62497,6 +62497,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 "groups": {"type": Groups},
                                 "recursive_ipv4_addresses": {"type": RecursiveIpv4Addresses},
                                 "recursive_ipv6_addresses": {"type": RecursiveIpv6Addresses},
+                                "ttl": {"type": int},
                             }
                             ipv4_addresses: Ipv4Addresses
                             """Subclass of AvdList with `str` items."""
@@ -62517,6 +62518,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             """Subclass of AvdList with `str` items."""
                             recursive_ipv6_addresses: RecursiveIpv6Addresses
                             """Subclass of AvdList with `str` items."""
+                            ttl: int | None
+                            """
+                            Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses`,
+                            `recursive.ipv6_addresses` or `groups`.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -62529,6 +62535,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     groups: Groups | UndefinedType = Undefined,
                                     recursive_ipv4_addresses: RecursiveIpv4Addresses | UndefinedType = Undefined,
                                     recursive_ipv6_addresses: RecursiveIpv6Addresses | UndefinedType = Undefined,
+                                    ttl: int | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     NextHop.
@@ -62548,6 +62555,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                            Subclass of AvdList with `str` items.
                                         recursive_ipv4_addresses: Subclass of AvdList with `str` items.
                                         recursive_ipv6_addresses: Subclass of AvdList with `str` items.
+                                        ttl:
+                                           Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses`,
+                                           `recursive.ipv6_addresses` or `groups`.
 
                                     """
 

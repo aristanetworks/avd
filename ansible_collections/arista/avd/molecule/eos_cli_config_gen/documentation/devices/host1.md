@@ -12594,8 +12594,11 @@ mac security
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
 | BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | any | tcp<br/>icmp | 1,10-20<br/>- | -<br/>- | any<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop recursive ipv6 address: 2a00:1450:4009:821::200e vrf: VRF_ipv6_recursive_1 |
 | BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | SERVICE-DEMO<br/>- | any<br/>- | -<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop recursive ipv6 address: 2001:4860:4860::8888 2606:4700:4700::1111 |
-| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | any | tcp | any | - | any | - | action: DROP |
+| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | any | tcp | any | - | any | - | action: DROP<br/>redirect next-hop ipv6 address: 2001:db8::1 fd00::abcd:1234 ttl: 3 |
 | BLUE-C2-POLICY-04 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect interface: Ethernet 6 |
+| BLUE-C2-POLICY-05 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop ipv4 address: 2.2.2.33 2.2.2.43 vrf: VRF_ttl_ipv4 ttl: 5 |
+| BLUE-C2-POLICY-06 | ipv4 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop groups: Testing_TTL_GROUP ttl: 44 |
+| BLUE-C2-POLICY-07 | ipv4 | any | any | - | - | - | - | - | action: PASS |
 
 ##### BLUE-C3-POLICY
 
@@ -12749,11 +12752,26 @@ traffic-policies
          !
          actions
             drop
+            redirect next-hop 2001:db8::1 fd00::abcd:1234 ttl 3
       !
       match BLUE-C2-POLICY-04 ipv6
          !
          actions
             redirect interface Ethernet 6
+      !
+      match BLUE-C2-POLICY-05 ipv6
+         !
+         actions
+            redirect next-hop 2.2.2.33 2.2.2.43 vrf VRF_ttl_ipv4 ttl 5
+      !
+      match BLUE-C2-POLICY-06 ipv4
+         !
+         actions
+            redirect next-hop group Testing_TTL_GROUP ttl 44
+      !
+      match BLUE-C2-POLICY-07 ipv4
+         !
+         actions
       !
       match ipv4-all-default ipv4
          actions

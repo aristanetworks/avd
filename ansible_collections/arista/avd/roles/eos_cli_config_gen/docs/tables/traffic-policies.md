@@ -77,6 +77,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive_ipv4_addresses.[]") | String |  |  |  | Next hop IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recursive_ipv6_addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive_ipv6_addresses") | List, items: String |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive_ipv6_addresses.[]") | String |  |  |  | Next hop IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ttl") | Integer |  |  | Min: 1<br>Max: 255 | Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses`, `recursive.ipv6_addresses` or `groups`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_actions</samp>](## "traffic_policies.policies.[].default_actions") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "traffic_policies.policies.[].default_actions.ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "traffic_policies.policies.[].default_actions.ipv4.dscp") | Integer |  |  |  |  |
@@ -238,6 +239,9 @@
 
                         # Next hop IPv6 address.
                       - <str>
+
+                    # Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses`, `recursive.ipv6_addresses` or `groups`.
+                    ttl: <int; 1-255>
           default_actions:
             ipv4:
               dscp: <int>

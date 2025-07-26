@@ -231,6 +231,14 @@ keys:
                               recursive_ipv6_addresses:
                                 type: list
                                 $ref: "eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv6_addresses"
+                              ttl:
+                                type: int
+                                min: 1
+                                max: 255
+                                convert_types:
+                                  - str
+                                description: |-
+                                  Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses`, `recursive.ipv6_addresses` or `groups`.
             default_actions:
               type: dict
               keys:
