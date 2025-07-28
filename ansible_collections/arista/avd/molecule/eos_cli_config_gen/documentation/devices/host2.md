@@ -197,14 +197,15 @@ ntp authenticate
 
 #### PTP Summary
 
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
-| - | - | - | - | - | - | - | - |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running Enabled |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------------- |
+| - | - | - | - | - | - | - | - | True |
 
 #### PTP Device Configuration
 
 ```eos
 !
+ptp free-running
 no ptp monitor sequence-id
 ```
 
@@ -1471,6 +1472,7 @@ dot1x dynamic-authorization
 | Settings | Value |
 | -------- | ----- |
 | Buffering Egress Profile | balanced |
+| VOQ Credit Rates Unified | False |
 
 ### Platform Device Configuration
 
