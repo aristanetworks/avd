@@ -59,6 +59,21 @@ ntp serve ipv6 access-group test_ACL_v6 vrf RED in
 ntp serve ipv6 access-group test_ACL_v6 in
 ```
 
+### PTP
+
+#### PTP Summary
+
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running Enabled |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------------- |
+| - | - | - | - | - | - | - | - | False |
+
+#### PTP Device Configuration
+
+```eos
+!
+no ptp free-running
+```
+
 ### Management SSH
 
 #### VRFs
