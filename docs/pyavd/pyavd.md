@@ -124,6 +124,13 @@ pip install pyavd[ansible]
       show_object_full_path: true
       paths: ../../../../python-avd
 
+::: pyavd.get_device_test_catalog
+    options:
+      heading_level: 3
+      show_root_toc_entry: false
+      show_object_full_path: true
+      paths: ../../../../python-avd
+
 ::: pyavd.validation_result
     options:
       heading_level: 3
