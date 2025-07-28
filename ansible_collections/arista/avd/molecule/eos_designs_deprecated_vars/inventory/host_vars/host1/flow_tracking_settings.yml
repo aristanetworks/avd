@@ -1,0 +1,9 @@
+---
+# Test for deprecated key `flow_tracking_settings.trackers[].exporters[].collector`
+flow_tracking_settings:
+  trackers:
+    - name: FT_Test
+      exporters:
+        - name: CV-TELEMETRY
+          collector:
+            host: 127.0.0.1
