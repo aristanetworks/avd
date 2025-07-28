@@ -19,6 +19,9 @@
 {% elif tx_queue.bandwidth_guaranteed_percent is arista.avd.defined %}
       bandwidth guaranteed percent {{ tx_queue.bandwidth_guaranteed_percent }}
 {% endif %}
+{% if tx_queue.scheduler_profile_responsive is arista.avd.defined(true) %}
+      scheduler profile responsive
+{% endif %}
 {% if tx_queue.shape.rate is arista.avd.defined %}
       shape rate {{ tx_queue.shape.rate }}
 {% endif %}

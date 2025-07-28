@@ -86,8 +86,8 @@ flow_tracking:
       name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 3600000
     - record_export:
@@ -96,8 +96,8 @@ flow_tracking:
       name: FT_Test
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false

@@ -137,3 +137,5 @@ platform:
   fap:
     buffering_egress:
       profile: unicast
+    voq:
+      credit_rates_unified: true

@@ -12,6 +12,13 @@ ptp clock-identity {{ ptp.clock_identity }}
 {%     if ptp.domain is arista.avd.defined %}
 ptp domain {{ ptp.domain }}
 {%     endif %}
+{%     if ptp.free_running.enabled is arista.avd.defined(true) %}
+{%         set ptp_free_running = "ptp free-running" %}
+{%         if ptp.free_running.source_clock_hardware is arista.avd.defined(true) %}
+{%             set ptp_free_running = ptp_free_running ~ " source clock hardware" %}
+{%         endif %}
+{{ ptp_free_running }}
+{%     endif %}
 {%     if ptp.message_type.event.dscp is arista.avd.defined %}
 ptp message-type event dscp {{ ptp.message_type.event.dscp }} default
 {%     endif %}
@@ -39,6 +46,9 @@ ptp source ip {{ ptp.source.ip }}
 {%     endif %}
 {%     if ptp.ttl is arista.avd.defined %}
 ptp ttl {{ ptp.ttl }}
+{%     endif %}
+{%     if ptp.free_running.enabled is arista.avd.defined(false) %}
+no ptp free-running
 {%     endif %}
 {%     if ptp.forward_unicast is arista.avd.defined(true) %}
 ptp forward-unicast

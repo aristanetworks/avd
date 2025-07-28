@@ -3849,6 +3849,10 @@ keys:
                 - str
                 required: true
                 description: TX-Queue ID.
+              scheduler_profile_responsive:
+                type: bool
+                description: Set scheduler profile to optimize latency at the expense
+                  of burstiness.
               random_detect:
                 type: dict
                 keys:
@@ -5050,9 +5054,9 @@ keys:
                       collectors:
                         type: list
                         primary_key: host
+                        $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/collectors
                         items:
                           type: dict
-                          $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/collector
                           keys:
                             host:
                               type: str
@@ -5069,14 +5073,10 @@ keys:
                         - drop-report
                       local_interface:
                         type: str
-                        description: Local source interface.
+                        $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/local_interface
                       template_interval:
                         type: int
-                        convert_types:
-                        - str
-                        min: 5000
-                        max: 3600000
-                        description: Template interval in milliseconds.
+                        $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/template_interval
                       dscp:
                         type: int
                         min: 0
@@ -10962,6 +10962,12 @@ keys:
                 valid_values:
                 - unicast
                 - balanced
+          voq:
+            type: dict
+            keys:
+              credit_rates_unified:
+                type: bool
+                description: Set Unified credit rates for all port speeds.
   poe:
     type: dict
     keys:
@@ -13074,6 +13080,23 @@ keys:
                     max: 255
                     convert_types:
                     - str
+      free_running:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: 'Enables PTP configuration in free-running mode.
+
+              When set to true, the boundary clock can start serving PTP downstream
+              even before it locks to an upstream master.
+
+              When set to false, the clock will not start serving PTP downstream before
+              it has successfully locked to an upstream master.'
+          source_clock_hardware:
+            type: bool
+            description: When enabled, the hardware clock is used as the source for
+              PTP time during free-running mode.
   qos:
     type: dict
     keys:
@@ -13138,6 +13161,23 @@ keys:
             type: bool
             description: Use the parent available bandwidth for transmit queue percentage-based
               allocation.
+          queues:
+            type: list
+            primary_key: id
+            items:
+              type: dict
+              keys:
+                id:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 7
+                  description: Queue ID.
+                scheduler_profile_responsive:
+                  type: bool
+                  description: Set scheduler profile to optimize latency at the expense
+                    of burstiness.
   qos_profiles:
     type: list
     primary_key: name
@@ -13754,6 +13794,90 @@ keys:
         type: str
         convert_types:
         - int
+  radius_proxy:
+    type: dict
+    description: Configure RADIUS proxy parameters.
+    keys:
+      client_key:
+        type: str
+        description: 'Set client secret key, allowed max size is 128.
+
+          Only type 7 supported.'
+      client_session_idle_timeout:
+        type: int
+        description: Idle timeout in seconds.
+        min: 1
+        max: 86400
+        convert_types:
+        - str
+      dynamic_authorization:
+        type: bool
+        description: Enable/Disable dynamic authorization.
+      client_groups:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            server_groups:
+              type: list
+              items:
+                type: str
+                description: RADIUS server-group names.
+            vrfs:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  ipv4_clients:
+                    type: list
+                    primary_key: address
+                    items:
+                      type: dict
+                      keys:
+                        address:
+                          type: str
+                          format: ipv4
+                          description: IPv4 address "A.B.C.D" or prefix "A.B.C.D/E".
+                        key:
+                          type: str
+                          description: 'Key for this client. Overrides`radius_proxy.client_key`.
+
+                            Only type 7 supported.'
+                  ipv6_clients:
+                    type: list
+                    primary_key: address
+                    items:
+                      type: dict
+                      keys:
+                        address:
+                          type: str
+                          format: ipv6
+                          description: IPv6 address "A:B:C:D:E:F:G:H" prefix "A:B:C:D:E:F:G:H/I".
+                        key:
+                          type: str
+                          description: 'Key for this client. Overrides`radius_proxy.client_key`.
+
+                            Only type 7 supported.'
+                  host_clients:
+                    type: list
+                    primary_key: name
+                    items:
+                      type: dict
+                      keys:
+                        name:
+                          type: str
+                          description: Hostname.
+                        key:
+                          type: str
+                          description: 'Key for this client. Overrides`radius_proxy.client_key`.
+
+                            Only type 7 supported.'
   radius_server:
     type: dict
     keys:
@@ -23309,6 +23433,11 @@ keys:
                   items:
                     type: str
                     description: IPv4 Prefix.
+                except:
+                  type: list
+                  items:
+                    type: str
+                    description: IPv4 prefix to exclude. Added in 4.30.2F.
           ipv6:
             type: list
             primary_key: name
@@ -23323,6 +23452,11 @@ keys:
                   items:
                     type: str
                     description: IPv6 Prefix.
+                except:
+                  type: list
+                  items:
+                    type: str
+                    description: IPv6 prefix to exclude. Added in 4.30.2F.
           ports:
             type: list
             primary_key: name
@@ -24840,6 +24974,30 @@ $defs:
                         max: 65535
                         convert_types:
                         - str
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 6.0.0
+                      new_key: collectors
+                  collectors:
+                    type: list
+                    primary_key: host
+                    items:
+                      type: dict
+                      keys:
+                        host:
+                          type: str
+                          description: 'Flow collector name.
+
+                            The collector name can be an IPv4 address, IPv6 address
+                            and fully qualified domain name.'
+                        port:
+                          type: int
+                          description: Collector Port Number.
+                          min: 1
+                          max: 65535
+                          convert_types:
+                          - str
                   format:
                     type: dict
                     keys:

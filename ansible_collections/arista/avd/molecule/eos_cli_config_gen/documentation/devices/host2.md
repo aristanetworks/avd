@@ -197,14 +197,15 @@ ntp authenticate
 
 #### PTP Summary
 
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
-| - | - | - | - | - | - | - | - |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running Enabled |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------------- |
+| - | - | - | - | - | - | - | - | True |
 
 #### PTP Device Configuration
 
 ```eos
 !
+ptp free-running
 no ptp monitor sequence-id
 ```
 
@@ -1436,9 +1437,25 @@ router pim sparse-mode
 
 #### 802.1X Radius AV pair
 
-| Service type | Framed MTU |
-| ------------ | ---------- |
-| True | 1500 |
+| Type | Value | Auth Only |
+| ---- | ----- | --------- |
+| Service Type | - | - |
+| Framed MTU | 1500 | - |
+
+#### Dot1x Configuration
+
+```eos
+dot1x
+   aaa unresponsive phone action apply cached-results
+   aaa unresponsive action traffic allow
+   radius av-pair service-type
+   radius av-pair framed-mtu 1500
+!
+dot1x system-auth-control
+dot1x protocol lldp bypass
+dot1x protocol bpdu bypass
+dot1x dynamic-authorization
+```
 
 ## Platform
 
@@ -1455,6 +1472,7 @@ router pim sparse-mode
 | Settings | Value |
 | -------- | ----- |
 | Buffering Egress Profile | balanced |
+| VOQ Credit Rates Unified | False |
 
 ### Platform Device Configuration
 
@@ -1626,10 +1644,10 @@ mac security
 
 #### IPv6 Field Sets
 
-| Field Set Name | IPv6 Prefixes |
-| -------------- | ------------- |
-| IPv6-DEMO-1 | 11:22:33:44:55:66:77:88 |
-| IPv6-DEMO-2 | - |
+| Field Set Name | IPv6 Prefixes | Excluded Prefixes |
+| -------------- | ------------- | ----------------- |
+| IPv6-DEMO-1 | 11:22:33:44:55:66:77:88/128<br/>dead::/64 | 22:33:44:55:66:77:88:11/128<br/>cafe::/32<br/>dead::/64 |
+| IPv6-DEMO-2 | - | - |
 
 #### Traffic Policies Device Configuration
 
@@ -1637,7 +1655,8 @@ mac security
 !
 traffic-policies
    field-set ipv6 prefix IPv6-DEMO-1
-      11:22:33:44:55:66:77:88
+      11:22:33:44:55:66:77:88/128 dead::/64
+      except 22:33:44:55:66:77:88:11/128 cafe::/32 dead::/64
    !
    field-set ipv6 prefix IPv6-DEMO-2
 ```
