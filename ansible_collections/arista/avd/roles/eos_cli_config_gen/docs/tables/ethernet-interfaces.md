@@ -428,7 +428,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override_100gbase_srbd</samp>](## "ethernet_interfaces.[].transceiver.application_override_100gbase_srbd") | Boolean |  |  |  | Set legacy mode for 100GBASE-SRBD interoperability.<br>This key is mutually exclusive with `application_overrides` and takes precedence over it. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_overrides</samp>](## "ethernet_interfaces.[].transceiver.application_overrides") | List, items: Dictionary |  |  | Min Length: 1 | Set CMIS transceiver applications. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;application_number</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].application_number") | Integer | Required, Unique |  | Min: 0<br>Max: 15 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lanes</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].lanes") | Dictionary |  |  |  | Set host lanes for which overrides should be applied. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lanes</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].lanes") | Dictionary |  |  |  | Set host lanes for which overrides should be applied.<br>The value of `lanes.start` should be unique for each `application_overrides` item. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].lanes.start") | Integer | Required |  | Min: 1<br>Max: 8 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].lanes.end") | Integer |  |  | Min: 1<br>Max: 8 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_proxy_arp</samp>](## "ethernet_interfaces.[].ip_proxy_arp") | Boolean |  |  |  |  |
@@ -1535,6 +1535,7 @@
             - application_number: <int; 0-15; required; unique>
 
               # Set host lanes for which overrides should be applied.
+              # The value of `lanes.start` should be unique for each `application_overrides` item.
               lanes:
                 start: <int; 1-8; required>
                 end: <int; 1-8>

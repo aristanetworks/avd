@@ -3683,7 +3683,10 @@ keys:
                     - str
                   lanes:
                     type: dict
-                    description: Set host lanes for which overrides should be applied.
+                    description: 'Set host lanes for which overrides should be applied.
+
+                      The value of `lanes.start` should be unique for each `application_overrides`
+                      item.'
                     keys:
                       start:
                         type: int

@@ -487,6 +487,7 @@ ethernet_interfaces:
           lanes:
             start: 2
         - application_number: 6
+
   - name: Ethernet8
     description: to WAN-ISP1-01 Ethernet2
     switchport:
@@ -1603,6 +1604,7 @@ ethernet_interfaces:
       media:
         override: 100gbase-ar4
       application_override_100gbase_srbd: true
+
   - name: Ethernet68.1
     description: Test_encapsulation_vlan1
     encapsulation_vlan:
@@ -1774,6 +1776,7 @@ ethernet_interfaces:
       application_override_100gbase_srbd: true
       application_overrides:
         - application_number: 5
+
   - name: Ethernet74
     peer: DC1-LEAF1B
     peer_interface: Ethernet3

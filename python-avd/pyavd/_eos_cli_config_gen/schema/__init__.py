@@ -9087,6 +9087,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 lanes: Lanes
                 """
                 Set host lanes for which overrides should be applied.
+                The value of `lanes.start` should be unique
+                for each `application_overrides` item.
 
                 Subclass of AvdModel.
                 """
@@ -9104,6 +9106,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             application_number: application_number
                             lanes:
                                Set host lanes for which overrides should be applied.
+                               The value of `lanes.start` should be unique
+                               for each `application_overrides` item.
 
                                Subclass of AvdModel.
 
