@@ -9631,15 +9631,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"id": {"type": int}, "random_detect": {"type": RandomDetect}}
+            _fields: ClassVar[dict] = {"id": {"type": int}, "scheduler_profile_responsive": {"type": bool}, "random_detect": {"type": RandomDetect}}
             id: int
             """TX-Queue ID."""
+            scheduler_profile_responsive: bool | None
+            """Set scheduler profile to optimize latency at the expense of burstiness."""
             random_detect: RandomDetect
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, id: int | UndefinedType = Undefined, random_detect: RandomDetect | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    id: int | UndefinedType = Undefined,
+                    scheduler_profile_responsive: bool | None | UndefinedType = Undefined,
+                    random_detect: RandomDetect | UndefinedType = Undefined,
+                ) -> None:
                     """
                     TxQueuesItem.
 
@@ -9648,6 +9656,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         id: TX-Queue ID.
+                        scheduler_profile_responsive: Set scheduler profile to optimize latency at the expense of burstiness.
                         random_detect: Subclass of AvdModel.
 
                     """
@@ -27960,13 +27969,36 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"buffering_egress": {"type": BufferingEgress}}
+            class Voq(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"credit_rates_unified": {"type": bool}}
+                credit_rates_unified: bool | None
+                """Set Unified credit rates for all port speeds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, credit_rates_unified: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Voq.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            credit_rates_unified: Set Unified credit rates for all port speeds.
+
+                        """
+
+            _fields: ClassVar[dict] = {"buffering_egress": {"type": BufferingEgress}, "voq": {"type": Voq}}
             buffering_egress: BufferingEgress
+            """Subclass of AvdModel."""
+            voq: Voq
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, buffering_egress: BufferingEgress | UndefinedType = Undefined) -> None:
+                def __init__(self, *, buffering_egress: BufferingEgress | UndefinedType = Undefined, voq: Voq | UndefinedType = Undefined) -> None:
                     """
                     Fap.
 
@@ -27975,6 +28007,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         buffering_egress: Subclass of AvdModel.
+                        voq: Subclass of AvdModel.
 
                     """
 
@@ -33791,6 +33824,41 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class FreeRunning(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_clock_hardware": {"type": bool}}
+            enabled: bool
+            """
+            Enables PTP configuration in free-running mode.
+            When set to true, the boundary clock can start
+            serving PTP downstream even before it locks to an upstream master.
+            When set to false, the clock will
+            not start serving PTP downstream before it has successfully locked to an upstream master.
+            """
+            source_clock_hardware: bool | None
+            """When enabled, the hardware clock is used as the source for PTP time during free-running mode."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, source_clock_hardware: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    FreeRunning.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Enables PTP configuration in free-running mode.
+                           When set to true, the boundary clock can start
+                           serving PTP downstream even before it locks to an upstream master.
+                           When set to false, the clock will
+                           not start serving PTP downstream before it has successfully locked to an upstream master.
+                        source_clock_hardware: When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "mode": {"type": str},
             "profile": {"type": str},
@@ -33804,6 +33872,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "domain": {"type": int},
             "message_type": {"type": MessageType},
             "monitor": {"type": Monitor},
+            "free_running": {"type": FreeRunning},
         }
         mode: Literal["boundary", "disabled", "e2etransparent", "gptp", "ordinarymaster", "p2ptransparent"] | None
         profile: Literal["g8275.1", "g8275.2"] | None
@@ -33820,6 +33889,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         message_type: MessageType
         """Subclass of AvdModel."""
         monitor: Monitor
+        """Subclass of AvdModel."""
+        free_running: FreeRunning
         """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
@@ -33839,6 +33910,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 domain: int | None | UndefinedType = Undefined,
                 message_type: MessageType | UndefinedType = Undefined,
                 monitor: Monitor | UndefinedType = Undefined,
+                free_running: FreeRunning | UndefinedType = Undefined,
             ) -> None:
                 """
                 Ptp.
@@ -33859,6 +33931,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     domain: domain
                     message_type: Subclass of AvdModel.
                     monitor: Subclass of AvdModel.
+                    free_running: Subclass of AvdModel.
 
                 """
 
@@ -34005,13 +34078,46 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TxQueue(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"shape_rate_percent_adaptive": {"type": bool}}
+            class QueuesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"id": {"type": int}, "scheduler_profile_responsive": {"type": bool}}
+                id: int
+                """Queue ID."""
+                scheduler_profile_responsive: bool | None
+                """Set scheduler profile to optimize latency at the expense of burstiness."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, id: int | UndefinedType = Undefined, scheduler_profile_responsive: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        QueuesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            id: Queue ID.
+                            scheduler_profile_responsive: Set scheduler profile to optimize latency at the expense of burstiness.
+
+                        """
+
+            class Queues(AvdIndexedList[int, QueuesItem]):
+                """Subclass of AvdIndexedList with `QueuesItem` items. Primary key is `id` (`int`)."""
+
+                _primary_key: ClassVar[str] = "id"
+
+            Queues._item_type = QueuesItem
+
+            _fields: ClassVar[dict] = {"shape_rate_percent_adaptive": {"type": bool}, "queues": {"type": Queues}}
             shape_rate_percent_adaptive: bool | None
             """Use the parent available bandwidth for transmit queue percentage-based allocation."""
+            queues: Queues
+            """Subclass of AvdIndexedList with `QueuesItem` items. Primary key is `id` (`int`)."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, shape_rate_percent_adaptive: bool | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, shape_rate_percent_adaptive: bool | None | UndefinedType = Undefined, queues: Queues | UndefinedType = Undefined) -> None:
                     """
                     TxQueue.
 
@@ -34020,6 +34126,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         shape_rate_percent_adaptive: Use the parent available bandwidth for transmit queue percentage-based allocation.
+                        queues: Subclass of AvdIndexedList with `QueuesItem` items. Primary key is `id` (`int`).
 
                     """
 

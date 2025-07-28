@@ -668,7 +668,8 @@ class AvdStructuredConfigBaseProtocol(
                     EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
                 )
 
-            self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server.key)
+            server_key = self._get_tacacs_or_radius_server_password(server)
+            self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
 
             for group in server.groups:
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
@@ -703,8 +704,8 @@ class AvdStructuredConfigBaseProtocol(
                 self.structured_config.ip_tacacs_source_interfaces.append_unique(
                     EosCliConfigGen.IpTacacsSourceInterfacesItem(name=source_interface, vrf=server_vrf)
                 )
-
-            self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server.key)
+            server_key = self._get_tacacs_or_radius_server_password(server)
+            self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
 
             for group in server.groups:
                 tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
