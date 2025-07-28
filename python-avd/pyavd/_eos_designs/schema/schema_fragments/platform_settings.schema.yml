@@ -286,7 +286,7 @@ keys:
             wan:
               type: bool
               description: |-
-                Support for Arista SD-WAN solution.
+                Support for Arista WAN features.
                 An error will be raised if the feature is enabled and this is false.
               default: true
             ptp:
