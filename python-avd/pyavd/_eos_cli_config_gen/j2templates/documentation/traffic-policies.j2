@@ -128,7 +128,7 @@
 {%                         if match.actions.traffic_class is arista.avd.defined() %}
 {%                             do row.actions.append("traffic-class: " + match.actions.traffic_class | string) %}
 {%                         endif %}
-{%                         if match.actions.redirect.aggregation_groups is arista.avd.defined() %}
+{%                         if match.actions.redirect.aggregation_groups is arista.avd.defined %}
 {%                             do row.actions.append("redirect aggregation groups: " + match.actions.redirect.aggregation_groups | arista.avd.natural_sort | join(' ') | string) %}
 {%                         endif %}
 {%                         if match.actions.redirect.interface is arista.avd.defined() %}
