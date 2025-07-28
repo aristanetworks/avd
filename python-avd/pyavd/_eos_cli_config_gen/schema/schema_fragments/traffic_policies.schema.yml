@@ -202,7 +202,7 @@ keys:
                               Redirect to next-hop.
                               This option is mutually exclusive with `aggregation_groups` and `interface`.
                               If all three are defined, aggregation_groups and interface take precedence over next-hop.
-                              Only one of the below keys can be specified, in the order of precedence: ipv4, ipv6, groups, recursive.ipv4, recursive.ipv6.
+                              Only one of the below keys can be specified, in the order of precedence: ipv4_addresses, ipv6_addresses, groups, recursive_ipv4_addresses, recursive_ipv6_addresses.
                             keys:
                               ipv4_addresses:
                                 type: list
@@ -219,7 +219,7 @@ keys:
                               vrf:
                                 type: str
                                 description: |-
-                                  Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses` or `recursive.ipv6_addresses`.
+                                  Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses` or `recursive_ipv6_addresses`.
                               groups:
                                 type: list
                                 items:
@@ -238,7 +238,7 @@ keys:
                                 convert_types:
                                   - str
                                 description: |-
-                                  Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses`, `recursive.ipv6_addresses` or `groups`.
+                                  Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses`, `recursive_ipv6_addresses` or `groups`.
             default_actions:
               type: dict
               keys:

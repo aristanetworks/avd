@@ -62505,8 +62505,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             """Subclass of AvdList with `str` items."""
                             vrf: str | None
                             """
-                            Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses` or
-                            `recursive.ipv6_addresses`.
+                            Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses` or
+                            `recursive_ipv6_addresses`.
                             """
                             groups: Groups
                             """
@@ -62520,8 +62520,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             """Subclass of AvdList with `str` items."""
                             ttl: int | None
                             """
-                            Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses`,
-                            `recursive.ipv6_addresses` or `groups`.
+                            Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses`,
+                            `recursive_ipv6_addresses` or `groups`.
                             """
 
                             if TYPE_CHECKING:
@@ -62547,8 +62547,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                         ipv4_addresses: Subclass of AvdList with `str` items.
                                         ipv6_addresses: Subclass of AvdList with `str` items.
                                         vrf:
-                                           Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses` or
-                                           `recursive.ipv6_addresses`.
+                                           Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses` or
+                                           `recursive_ipv6_addresses`.
                                         groups:
                                            Set groups to redirect flow.
 
@@ -62556,8 +62556,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                         recursive_ipv4_addresses: Subclass of AvdList with `str` items.
                                         recursive_ipv6_addresses: Subclass of AvdList with `str` items.
                                         ttl:
-                                           Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive.ipv4_addresses`,
-                                           `recursive.ipv6_addresses` or `groups`.
+                                           Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses`,
+                                           `recursive_ipv6_addresses` or `groups`.
 
                                     """
 
@@ -62578,8 +62578,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         This option is mutually exclusive with `aggregation_groups` and `interface`.
                         If all three are defined, aggregation_groups and interface take precedence over next-hop.
                         Only one
-                        of the below keys can be specified, in the order of precedence: ipv4, ipv6, groups, recursive.ipv4,
-                        recursive.ipv6.
+                        of the below keys can be specified, in the order of precedence: ipv4_addresses, ipv6_addresses,
+                        groups, recursive_ipv4_addresses, recursive_ipv6_addresses.
 
                         Subclass of AvdModel.
                         """
@@ -62612,8 +62612,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                        This option is mutually exclusive with `aggregation_groups` and `interface`.
                                        If all three are defined, aggregation_groups and interface take precedence over next-hop.
                                        Only one
-                                       of the below keys can be specified, in the order of precedence: ipv4, ipv6, groups, recursive.ipv4,
-                                       recursive.ipv6.
+                                       of the below keys can be specified, in the order of precedence: ipv4_addresses, ipv6_addresses,
+                                       groups, recursive_ipv4_addresses, recursive_ipv6_addresses.
 
                                        Subclass of AvdModel.
 
