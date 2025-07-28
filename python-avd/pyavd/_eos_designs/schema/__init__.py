@@ -5562,6 +5562,44 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class CollectorsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"host": {"type": str}, "port": {"type": int}}
+                    host: str
+                    """
+                    Flow collector name.
+                    The collector name can be an IPv4 address, IPv6 address and fully qualified
+                    domain name.
+                    """
+                    port: int | None
+                    """Collector Port Number."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, host: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            CollectorsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                host:
+                                   Flow collector name.
+                                   The collector name can be an IPv4 address, IPv6 address and fully qualified
+                                   domain name.
+                                port: Collector Port Number.
+
+                            """
+
+                class Collectors(AvdIndexedList[str, CollectorsItem]):
+                    """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "host"
+
+                Collectors._item_type = CollectorsItem
+
                 class Format(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -5585,6 +5623,7 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "collector": {"type": Collector},
+                    "collectors": {"type": Collectors},
                     "format": {"type": Format},
                     "local_interface": {"type": str},
                     "template_interval": {"type": int},
@@ -5593,6 +5632,8 @@ class EosDesigns(EosDesignsRootModel):
                 """Exporter Name"""
                 collector: Collector
                 """Subclass of AvdModel."""
+                collectors: Collectors
+                """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
                 format: Format
                 """Subclass of AvdModel."""
                 local_interface: str | None
@@ -5607,6 +5648,7 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         name: str | UndefinedType = Undefined,
                         collector: Collector | UndefinedType = Undefined,
+                        collectors: Collectors | UndefinedType = Undefined,
                         format: Format | UndefinedType = Undefined,
                         local_interface: str | None | UndefinedType = Undefined,
                         template_interval: int | None | UndefinedType = Undefined,
@@ -5620,6 +5662,7 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             name: Exporter Name
                             collector: Subclass of AvdModel.
+                            collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`).
                             format: Subclass of AvdModel.
                             local_interface: Local Source Interface
                             template_interval: Template interval in milliseconds
@@ -5697,7 +5740,7 @@ class EosDesigns(EosDesignsRootModel):
                             "name": "FLOW-TRACKER",
                             "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000},
                             "exporters": [
-                                {"name": "CV-TELEMETRY", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 3600000}
+                                {"name": "CV-TELEMETRY", "collectors": [{"host": "127.0.0.1"}], "local_interface": "Loopback0", "template_interval": 3600000}
                             ],
                         }
                     ],
@@ -5721,7 +5764,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
 
-        Default value: `lambda cls: coerce_type([{"name": "FLOW-TRACKER", "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000}, "exporters": [{"name": "CV-TELEMETRY", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 3600000}]}], target_type=cls)`
+        Default value: `lambda cls: coerce_type([{"name": "FLOW-TRACKER", "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000}, "exporters": [{"name": "CV-TELEMETRY", "collectors": [{"host": "127.0.0.1"}], "local_interface": "Loopback0", "template_interval": 3600000}]}], target_type=cls)`
         """
 
         if TYPE_CHECKING:

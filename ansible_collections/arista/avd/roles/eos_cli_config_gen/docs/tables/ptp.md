@@ -43,6 +43,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay_resp</samp>](## "ptp.monitor.missing_message.sequence_ids.delay_resp") | Integer |  |  | Min: 2<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;follow_up</samp>](## "ptp.monitor.missing_message.sequence_ids.follow_up") | Integer |  |  | Min: 2<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sync</samp>](## "ptp.monitor.missing_message.sequence_ids.sync") | Integer |  |  | Min: 2<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;free_running</samp>](## "ptp.free_running") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
 
 === "YAML"
 
@@ -87,4 +90,13 @@
             delay_resp: <int; 2-255>
             follow_up: <int; 2-255>
             sync: <int; 2-255>
+      free_running:
+
+        # Enables PTP configuration in free-running mode.
+        # When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.
+        # When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master.
+        enabled: <bool; required>
+
+        # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+        source_clock_hardware: <bool>
     ```

@@ -26,8 +26,8 @@ flow_tracking_settings:
         on_interval: 300321
       exporters:
         - name: ayush_exporter
-          collector:
-            host: 127.0.2.1
+          collectors:
+            - host: 127.0.2.1
           local_interface: Loopback0
           template_interval: 40020
     - name: FLOW-TRACKER-1
@@ -36,8 +36,8 @@ flow_tracking_settings:
         on_interval: 300331
       exporters:
         - name: ayush_exporter
-          collector:
-            host: 127.0.0.1
+          collectors:
+            - host: 127.0.0.1
           local_interface: Loopback0
           template_interval: 40000
 
