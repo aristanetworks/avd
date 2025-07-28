@@ -62,9 +62,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "traffic_policies.policies.[].matches.[].actions.drop") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "traffic_policies.policies.[].matches.[].actions.log") | Boolean |  |  |  | Only supported when action is set to drop. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redirect</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aggregation_groups</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.aggregation_groups") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aggregation_groups</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.aggregation_groups") | List, items: String |  |  |  | Redirect to aggregation groups in Tap Aggregation mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.aggregation_groups.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.interface") | String |  |  |  | The allowed hardware Ethernet interface, LAG interface.<br>Ex:<br>  1. Ethernet 1<br>  2. Et 1,2<br>  3. Po 2-4. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.interface") | String |  |  |  | The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.<br>Ex:<br>  1. Ethernet 1<br>  2. Et 1,2<br>  3. Po 2-4. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop") | Dictionary |  |  |  | Redirect to next-hop.<br>This option is mutually exclusive with `aggregation_groups` and `interface`.<br>If all three are defined, aggregation_groups and interface take precedence over next-hop.<br>Only one of the below keys can be specified, in the order of precedence: ipv4_addresses, ipv6_addresses, groups, recursive_ipv4_addresses, recursive_ipv6_addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv4_addresses") | List, items: String |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv4_addresses.[]") | String |  |  |  | Next hop IPv4 address. |
@@ -201,10 +201,12 @@
                 # Only supported when action is set to drop.
                 log: <bool>
                 redirect:
+
+                  # Redirect to aggregation groups in Tap Aggregation mode.
                   aggregation_groups:
                     - <str>
 
-                  # The allowed hardware Ethernet interface, LAG interface.
+                  # The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.
                   # Ex:
                   #   1. Ethernet 1
                   #   2. Et 1,2

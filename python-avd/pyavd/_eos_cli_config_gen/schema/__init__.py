@@ -62563,13 +62563,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {"aggregation_groups": {"type": AggregationGroups}, "interface": {"type": str}, "next_hop": {"type": NextHop}}
                         aggregation_groups: AggregationGroups
-                        """Subclass of AvdList with `str` items."""
+                        """
+                        Redirect to aggregation groups in Tap Aggregation mode.
+
+                        Subclass of AvdList with `str` items.
+                        """
                         interface: str | None
                         """
-                        The allowed hardware Ethernet interface, LAG interface.
+                        The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.
                         Ex:
                           1. Ethernet 1
-                          2. Et 1,2
+                        2. Et 1,2
                           3. Po 2-4.
                         """
                         next_hop: NextHop
@@ -62600,12 +62604,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    aggregation_groups: Subclass of AvdList with `str` items.
+                                    aggregation_groups:
+                                       Redirect to aggregation groups in Tap Aggregation mode.
+
+                                       Subclass of AvdList with `str` items.
                                     interface:
-                                       The allowed hardware Ethernet interface, LAG interface.
+                                       The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.
                                        Ex:
                                          1. Ethernet 1
-                                         2. Et 1,2
+                                       2. Et 1,2
                                          3. Po 2-4.
                                     next_hop:
                                        Redirect to next-hop.

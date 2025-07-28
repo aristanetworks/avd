@@ -192,7 +192,7 @@ keys:
                           interface:
                             type: str
                             description: |-
-                              The allowed hardware Ethernet interface, LAG interface.
+                              The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.
                               Ex:
                                 1. Ethernet 1
                                 2. Et 1,2

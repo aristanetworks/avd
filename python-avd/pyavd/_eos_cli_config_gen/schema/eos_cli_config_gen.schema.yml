@@ -23550,13 +23550,15 @@ keys:
                         keys:
                           aggregation_groups:
                             type: list
+                            description: Redirect to aggregation groups in Tap Aggregation
+                              mode.
                             items:
                               type: str
                           interface:
                             type: str
                             description: "The allowed hardware Ethernet interface,
-                              LAG interface.\nEx:\n  1. Ethernet 1\n  2. Et 1,2\n
-                              \ 3. Po 2-4."
+                              LAG interface, InternalRecirc, Switch.\nEx:\n  1. Ethernet
+                              1\n  2. Et 1,2\n  3. Po 2-4."
                           next_hop:
                             type: dict
                             description: 'Redirect to next-hop.
