@@ -180,6 +180,12 @@ custom_platform_settings:
         vni_encap: false
         vtep_decap: false
         vtep_encap: false
+  # Custom platform supporting all possible hardware features
+  - platforms:
+      - customplatform_2
+    feature_support:
+      poe: true
+      evpn_gateway_all_active_multihoming: true
 
 type: l3leaf
 
@@ -188,6 +194,8 @@ l3leaf:
     bgp_as: 65001
     loopback_ipv4_pool: 10.10.10.0/24
     vtep_loopback_ipv4_pool: 10.10.20.0/24
+    uplink_ipv4_pool: 10.10.50.0/24
+    uplink_interfaces: [Ethernet1]
     # Test PTP
     ptp:
       enabled: true
@@ -197,28 +205,44 @@ l3leaf:
     - name: HARDWARE_FEATURES_VEOS_LAB
       id: 1
       platform: vEOS-lab
+      uplink_switches: [HARDWARE_FEATURES_CUSTOM_PLATFORM_2]
+      uplink_switch_interfaces: [Ethernet1]
     - name: HARDWARE_FEATURES_CEOS_LAB
       id: 2
       platform: cEOSLab
+      uplink_switches: [HARDWARE_FEATURES_CUSTOM_PLATFORM_2]
+      uplink_switch_interfaces: [Ethernet2]
     - name: HARDWARE_FEATURES_CLOUDEOS
       id: 3
       platform: cloudEOS
-      # Test PTP
-      ptp:
-        enabled: true
-      uplink_ptp:
-        enable: true
+      uplink_switches: [HARDWARE_FEATURES_CUSTOM_PLATFORM_2]
+      uplink_switch_interfaces: [Ethernet3]
     - name: HARDWARE_FEATURES_720XP
       id: 4
       # Supports PoE
       platform: 720XP
+      uplink_switches: [HARDWARE_FEATURES_CUSTOM_PLATFORM_2]
+      uplink_switch_interfaces: [Ethernet4]
     - name: HARDWARE_FEATURES_7280R
       id: 5
       # Supports queue-monitor length notifying
       platform: 7280R
+      uplink_switches: [HARDWARE_FEATURES_CUSTOM_PLATFORM_2]
+      uplink_switch_interfaces: [Ethernet5]
     - name: HARDWARE_FEATURES_CUSTOM_PLATFORM
       id: 6
       platform: customplatform
+      uplink_switches: [HARDWARE_FEATURES_CUSTOM_PLATFORM_2]
+      uplink_switch_interfaces: [Ethernet6]
+    - name: HARDWARE_FEATURES_CLOUDEOS_2
+      id: 7
+      platform: cloudEOS
+      uplink_type: port-channel
+      uplink_switches: [HARDWARE_FEATURES_CUSTOM_PLATFORM_2]
+      uplink_switch_interfaces: [Ethernet7]
+    - name: HARDWARE_FEATURES_CUSTOM_PLATFORM_2
+      id: 8
+      platform: customplatform_2
 
 # Test `queue-monitor`
 queue_monitor_length:

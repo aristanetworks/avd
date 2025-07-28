@@ -3,6 +3,26 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_HARDWARE_FEATURES_CUSTOM_PLATFORM_2_Ethernet6
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.11/31
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  peer: HARDWARE_FEATURES_CUSTOM_PLATFORM_2
+  peer_interface: Ethernet6
+  peer_type: l3leaf
+  switchport:
+    enabled: false
 hardware_counters:
   features: null
 hostname: HARDWARE_FEATURES_CUSTOM_PLATFORM
@@ -91,6 +111,12 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 10.10.50.10
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM_2
+    description: HARDWARE_FEATURES_CUSTOM_PLATFORM_2_Ethernet6
   redistribute:
     connected:
       enabled: true

@@ -5,10 +5,10 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: P2P_HARDWARE_FEATURES_CUSTOM_PLATFORM_2_Ethernet5
+  description: P2P_HARDWARE_FEATURES_VEOS_LAB_Ethernet1
   shutdown: false
   mtu: 9214
-  ip_address: 10.10.50.9/31
+  ip_address: 10.10.50.0/31
   ptp:
     enable: true
     announce:
@@ -18,22 +18,64 @@ ethernet_interfaces:
     sync_message:
       interval: -3
     transport: ipv4
-  peer: HARDWARE_FEATURES_CUSTOM_PLATFORM_2
-  peer_interface: Ethernet5
+  peer: HARDWARE_FEATURES_VEOS_LAB
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_HARDWARE_FEATURES_CEOS_LAB_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.2/31
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  peer: HARDWARE_FEATURES_CEOS_LAB
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet3
+  description: P2P_HARDWARE_FEATURES_CLOUDEOS_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.4/31
+  peer: HARDWARE_FEATURES_CLOUDEOS
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet4
+  description: P2P_HARDWARE_FEATURES_720XP_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.6/31
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  peer: HARDWARE_FEATURES_720XP
+  peer_interface: Ethernet1
   peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet5
+  description: P2P_HARDWARE_FEATURES_7280R_Ethernet1
   shutdown: false
-  vrf: VRF10
-  ip_address: 10.10.40.5/24
-  peer_type: l3_interface
-  switchport:
-    enabled: false
-- name: Ethernet7
-  description: SERVER_TEST_POE_ETH5_NO_POE
-  shutdown: false
-  l2_mru: 1002
+  mtu: 9214
+  ip_address: 10.10.50.8/31
   ptp:
     enable: true
     announce:
@@ -42,32 +84,40 @@ ethernet_interfaces:
     delay_req: -3
     sync_message:
       interval: -3
-    role: master
     transport: ipv4
-  peer: TEST_POE
-  peer_interface: ETH5_NO_POE
-  peer_type: server
+  peer: HARDWARE_FEATURES_7280R
+  peer_interface: Ethernet1
+  peer_type: l3leaf
   switchport:
-    enabled: true
-- name: Ethernet8
-  description: SERVER_TEST_MTU_MRU
+    enabled: false
+- name: Ethernet6
+  description: P2P_HARDWARE_FEATURES_CUSTOM_PLATFORM_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.10/31
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: L2_HARDWARE_FEATURES_CLOUDEOS_2_Ethernet1
   shutdown: false
   channel_group:
-    id: 8
+    id: 7
     mode: active
-  peer: TEST_MTU_MRU
-  peer_type: server
-- name: Ethernet6
-  description: SERVER_TEST_INTERFACE_STORM_CONTROL_ETH15_WITH_STORM_CONTROL
-  shutdown: false
-  storm_control:
-    all:
-      level: '10'
-  peer: TEST_INTERFACE_STORM_CONTROL
-  peer_interface: ETH15_WITH_STORM_CONTROL
-  peer_type: server
-  switchport:
-    enabled: true
+  peer: HARDWARE_FEATURES_CLOUDEOS_2
+  peer_interface: Ethernet1
+  peer_type: l3leaf
 hardware_counters:
   features:
   - name: acl
@@ -93,11 +143,18 @@ hardware_counters:
   - name: nexthop
   - name: pbr
     direction: in
+  - name: pdp
   - name: policing interface
     direction: in
   - name: qos
     direction: in
   - name: qos dual-rate-policer
+    direction: in
+  - name: route
+    address_type: ipv4
+    prefix: 1.1.1.1/32
+  - name: routed-port
+  - name: segment-security
     direction: in
   - name: subinterface
     direction: in
@@ -111,9 +168,11 @@ hardware_counters:
     direction: in
   - name: vlan-interface
     direction: in
+  - name: vni decap
+  - name: vni encap
   - name: vtep decap
   - name: vtep encap
-hostname: HARDWARE_FEATURES_7280R
+hostname: HARDWARE_FEATURES_CUSTOM_PLATFORM_2
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -122,29 +181,27 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 10.10.10.5/32
+  ip_address: 10.10.10.8/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 10.10.20.5/32
+  ip_address: 10.10.20.8/32
 management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
 metadata:
-  platform: 7280R
+  platform: customplatform_2
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-platform:
-  sand:
-    lag:
-      hardware_only: true
 port_channel_interfaces:
-- name: Port-Channel8
-  description: SERVER_TEST_MTU_MRU_PO_MTU_MRU_2
+- name: Port-Channel7
+  description: L2_HARDWARE_FEATURES_CLOUDEOS_2_Port-Channel1
   shutdown: false
-  l2_mru: 2002
   switchport:
     enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -154,9 +211,9 @@ prefix_lists:
     action: permit 10.10.20.0/24 eq 32
 ptp:
   mode: boundary
-  clock_identity: 00:1C:73:1e:00:05
+  clock_identity: 00:1C:73:1e:00:08
   priority1: 30
-  priority2: 5
+  priority2: 8
   domain: 127
   monitor:
     enabled: true
@@ -189,7 +246,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65001'
-  router_id: 10.10.10.5
+  router_id: 10.10.10.8
   maximum_paths:
     paths: 4
     ecmp: 4
@@ -211,11 +268,36 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   neighbors:
-  - ip_address: 10.10.50.8
+  - ip_address: 10.10.50.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
-    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM_2
-    description: HARDWARE_FEATURES_CUSTOM_PLATFORM_2_Ethernet5
+    peer: HARDWARE_FEATURES_VEOS_LAB
+    description: HARDWARE_FEATURES_VEOS_LAB_Ethernet1
+  - ip_address: 10.10.50.3
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    peer: HARDWARE_FEATURES_CEOS_LAB
+    description: HARDWARE_FEATURES_CEOS_LAB_Ethernet1
+  - ip_address: 10.10.50.5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    peer: HARDWARE_FEATURES_CLOUDEOS
+    description: HARDWARE_FEATURES_CLOUDEOS_Ethernet1
+  - ip_address: 10.10.50.7
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    peer: HARDWARE_FEATURES_720XP
+    description: HARDWARE_FEATURES_720XP_Ethernet1
+  - ip_address: 10.10.50.9
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    peer: HARDWARE_FEATURES_7280R
+    description: HARDWARE_FEATURES_7280R_Ethernet1
+  - ip_address: 10.10.50.11
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+    description: HARDWARE_FEATURES_CUSTOM_PLATFORM_Ethernet1
   redistribute:
     connected:
       enabled: true
@@ -230,34 +312,7 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  vrfs:
-  - name: VRF10
-    rd: 10.10.10.5:10
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '10:10'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '10:10'
-    router_id: 10.10.10.5
-    updates:
-      wait_install: true
-    neighbors:
-    - ip_address: 10.10.40.100
-      remote_as: '65002'
-    redistribute:
-      connected:
-        enabled: true
-    address_family_ipv4:
-      neighbors:
-      - ip_address: 10.10.40.100
-        activate: true
 service_routing_protocols_model: multi-agent
-tcam_profile:
-  system: vxlan-routing
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
@@ -267,15 +322,9 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: VRF10
-  ip_routing: true
-  tenant: TENANT1
 vxlan_interface:
   vxlan1:
-    description: HARDWARE_FEATURES_7280R_VTEP
+    description: HARDWARE_FEATURES_CUSTOM_PLATFORM_2_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
-      vrfs:
-      - name: VRF10
-        vni: 10
