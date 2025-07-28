@@ -186,6 +186,7 @@ keys:
                         keys:
                           aggregation_groups:
                             type: list
+                            description: Redirect to aggregation groups in Tap Aggregation mode.
                             items:
                               type: str
                           interface:
