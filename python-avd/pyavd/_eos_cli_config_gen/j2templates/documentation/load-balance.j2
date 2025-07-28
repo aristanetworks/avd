@@ -40,10 +40,12 @@
 {%         if load_balance.cluster.forwarding_type is arista.avd.defined %}
 | Forwarding Type | {{ load_balance.cluster.forwarding_type }} |
 {%         endif %}
-{%         if load_balance.cluster.destination_grouping is not arista.avd.defined("prefix length") %}
+{%         if load_balance.cluster.destination_grouping is arista.avd.defined %}
+{%             if load_balance.cluster.destination_grouping != "prefix length" %}
 | Destination Grouping | {{ load_balance.cluster.destination_grouping }} |
-{%         elif load_balance.cluster.destination_grouping is arista.avd.defined("prefix length") and load_balance.cluster.prefix_length is arista.avd.defined %}
+{%             elif load_balance.cluster.prefix_length is arista.avd.defined %}
 | Destination Grouping | {{ load_balance.cluster.destination_grouping }} {{ load_balance.cluster.prefix_length }} |
+{%             endif %}
 {%         endif %}
 {%         if load_balance.cluster.load_balance_method_flow_round_robin is arista.avd.defined %}
 | Load-balance Method Flow Round-robin | {{ load_balance.cluster.load_balance_method_flow_round_robin }} |
