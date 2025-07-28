@@ -1456,6 +1456,7 @@ router pim sparse-mode
 | Settings | Value |
 | -------- | ----- |
 | Buffering Egress Profile | balanced |
+| VOQ Credit Rates Unified | False |
 
 ### Platform Device Configuration
 
