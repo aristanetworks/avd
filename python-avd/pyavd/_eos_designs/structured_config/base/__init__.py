@@ -669,8 +669,8 @@ class AvdStructuredConfigBaseProtocol(
             )
             # TODO: Temporary workaround to avoid duplicate configs; replace once schema supports unique (host, VRF) combinations.
             server_key: tuple[str, str] = (server.host, server_vrf)
-            if server_key in server_combinations:
-                original_server = server_combinations[server_key]
+            original_server = server_combinations.get(server_key)
+            if original_server:
                 msg = "RADIUS servers"
                 raise AristaAvdDuplicateDataError(msg, str(original_server._as_dict()), str(server._as_dict()))
             server_combinations[server_key] = server
@@ -714,8 +714,8 @@ class AvdStructuredConfigBaseProtocol(
             )
             # TODO: Temporary workaround to avoid duplicate configs; replace once schema supports unique (host, VRF) combinations.
             server_key: tuple[str, str] = (server.host, server_vrf)
-            if server_key in server_combinations:
-                original_server = server_combinations[server_key]
+            original_server = server_combinations.get(server_key)
+            if original_server:
                 msg = "TACACS servers"
                 raise AristaAvdDuplicateDataError(msg, str(original_server._as_dict()), str(server._as_dict()))
             server_combinations[server_key] = server
