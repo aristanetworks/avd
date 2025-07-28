@@ -4459,15 +4459,15 @@ keys:
                 '
             wan:
               type: bool
-              description: 'Support for Arista SD-WAN solution.
+              description: 'Support for Arista WAN features.
 
-                This feature raises an exception when used on unsupported platforms.'
+                An error will be raised if the feature is enabled and this is false.'
               default: true
             ptp:
               type: bool
               description: 'Support for Precision Time Protocol (PTP).
 
-                Feature will be ignored on unsupported platforms.'
+                The feature will be ignored on platforms where this is false.'
               default: true
         management_interface:
           type: str

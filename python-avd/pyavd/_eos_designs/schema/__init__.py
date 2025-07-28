@@ -12392,16 +12392,17 @@ class EosDesigns(EosDesignsRootModel):
             """
             wan: bool
             """
-            Support for Arista SD-WAN solution.
-            This feature raises an exception when used on unsupported
-            platforms.
+            Support for Arista WAN features.
+            An error will be raised if the feature is enabled and this is
+            false.
 
             Default value: `True`
             """
             ptp: bool
             """
             Support for Precision Time Protocol (PTP).
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this is
+            false.
 
             Default value: `True`
             """
@@ -12511,12 +12512,13 @@ class EosDesigns(EosDesignsRootModel):
                            See the TOI at
                            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
                         wan:
-                           Support for Arista SD-WAN solution.
-                           This feature raises an exception when used on unsupported
-                           platforms.
+                           Support for Arista WAN features.
+                           An error will be raised if the feature is enabled and this is
+                           false.
                         ptp:
                            Support for Precision Time Protocol (PTP).
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this is
+                           false.
 
                     """
 
@@ -13111,16 +13113,17 @@ class EosDesigns(EosDesignsRootModel):
             """
             wan: bool
             """
-            Support for Arista SD-WAN solution.
-            This feature raises an exception when used on unsupported
-            platforms.
+            Support for Arista WAN features.
+            An error will be raised if the feature is enabled and this is
+            false.
 
             Default value: `True`
             """
             ptp: bool
             """
             Support for Precision Time Protocol (PTP).
-            Feature will be ignored on unsupported platforms.
+            The feature will be ignored on platforms where this is
+            false.
 
             Default value: `True`
             """
@@ -13230,12 +13233,13 @@ class EosDesigns(EosDesignsRootModel):
                            See the TOI at
                            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
                         wan:
-                           Support for Arista SD-WAN solution.
-                           This feature raises an exception when used on unsupported
-                           platforms.
+                           Support for Arista WAN features.
+                           An error will be raised if the feature is enabled and this is
+                           false.
                         ptp:
                            Support for Precision Time Protocol (PTP).
-                           Feature will be ignored on unsupported platforms.
+                           The feature will be ignored on platforms where this is
+                           false.
 
                     """
 
