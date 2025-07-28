@@ -18280,10 +18280,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 interface: str | None
                 """
                 Ethernet interface/subinterface name. It could be a `,` separated list or range.
-                eg. Ethernet 2,
-                Ethernet 2-5,
-                    Ethernet 2.2,3.1,
-                    Ethernet 3.1-2
+                eg. Ethernet2,
+                Ethernet2-5,
+                    Ethernet2.2,3.1,
+                    Ethernet3.1-2
                 """
                 flow: Flow
                 """Subclass of AvdModel."""
@@ -18309,10 +18309,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             balance_factor: balance_factor
                             interface:
                                Ethernet interface/subinterface name. It could be a `,` separated list or range.
-                               eg. Ethernet 2,
-                               Ethernet 2-5,
-                                   Ethernet 2.2,3.1,
-                                   Ethernet 3.1-2
+                               eg. Ethernet2,
+                               Ethernet2-5,
+                                   Ethernet2.2,3.1,
+                                   Ethernet3.1-2
                             flow: Subclass of AvdModel.
 
                         """

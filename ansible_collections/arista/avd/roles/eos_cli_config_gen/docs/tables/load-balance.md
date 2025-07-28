@@ -30,7 +30,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_groups</samp>](## "load_balance.cluster.port_groups") | List, items: Dictionary |  |  |  | Host ports settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "load_balance.cluster.port_groups.[].group") | String | Required, Unique |  |  | Port group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;balance_factor</samp>](## "load_balance.cluster.port_groups.[].balance_factor") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "load_balance.cluster.port_groups.[].interface") | String |  |  |  | Ethernet interface/subinterface name. It could be a `,` separated list or range.<br>eg. Ethernet 2,<br>    Ethernet 2-5,<br>    Ethernet 2.2,3.1,<br>    Ethernet 3.1-2 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "load_balance.cluster.port_groups.[].interface") | String |  |  |  | Ethernet interface/subinterface name. It could be a `,` separated list or range.<br>eg. Ethernet2,<br>    Ethernet2-5,<br>    Ethernet2.2,3.1,<br>    Ethernet3.1-2 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow</samp>](## "load_balance.cluster.port_groups.[].flow") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "load_balance.cluster.port_groups.[].flow.limit") | Integer |  |  | Min: 0<br>Max: 4294967295 | Maximum number of flows per port. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warning</samp>](## "load_balance.cluster.port_groups.[].flow.warning") | Integer |  |  | Min: 0<br>Max: 4294967295 | Warning threshold of flows per port group. |
@@ -117,10 +117,10 @@
             balance_factor: <int; 0-4294967295>
 
             # Ethernet interface/subinterface name. It could be a `,` separated list or range.
-            # eg. Ethernet 2,
-            #     Ethernet 2-5,
-            #     Ethernet 2.2,3.1,
-            #     Ethernet 3.1-2
+            # eg. Ethernet2,
+            #     Ethernet2-5,
+            #     Ethernet2.2,3.1,
+            #     Ethernet3.1-2
             interface: <str>
             flow:
 
