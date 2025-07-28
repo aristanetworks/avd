@@ -170,7 +170,7 @@ traffic-policies
 {%                     if match.actions.redirect.interface is arista.avd.defined %}
             redirect interface {{ match.actions.redirect.interface }}
 {%                     endif %}
-{%                     if not (match.actions.redirect.interface is arista.avd.defined or match.actions.redirect.aggregation_groups is arista.avd.defined) and match.actions.redirect is arista.avd.defined %}
+{%                     if not (match.actions.redirect.interface is arista.avd.defined or match.actions.redirect.aggregation_groups is arista.avd.defined) and match.actions.redirect.next_hop is arista.avd.defined %}
 {%                         set redirect_cli = "redirect next-hop " %}
 {%                         set next_hop_flag = false %}
 {%                         if match.actions.redirect.next_hop.ipv4_addresses is arista.avd.defined %}
