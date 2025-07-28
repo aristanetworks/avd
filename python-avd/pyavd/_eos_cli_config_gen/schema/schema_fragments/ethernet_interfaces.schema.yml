@@ -1529,6 +1529,9 @@ keys:
                   - str
                 required: true
                 description: TX-Queue ID.
+              scheduler_profile_responsive:
+                type: bool
+                description: Set scheduler profile to optimize latency at the expense of burstiness.
               random_detect:
                 type: dict
                 keys:

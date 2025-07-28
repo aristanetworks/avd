@@ -385,3 +385,9 @@ keys:
                 valid_values:
                   - unicast
                   - balanced
+          voq:
+            type: dict
+            keys:
+              credit_rates_unified:
+                type: bool
+                description: Set Unified credit rates for all port speeds.
