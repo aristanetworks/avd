@@ -27,12 +27,6 @@ tenants:
         private_vlan:
           type: community
           primary_vlan: 10
-      - id: 101
-        name: test-address-locking-1
-        address_locking:
-          address_family:
-            ipv4: true
-          ipv4_enforcement_disabled: true
   - name: TENANT2
     mac_vrf_vni_base: 10001
     vrfs:
@@ -43,9 +37,3 @@ tenants:
             name: primary2
             enabled: true
             ip_address_virtual: 10.1.40.1/24
-          - id: 102
-            name: test-address-locking-2
-            enabled: true
-            address_locking:
-              address_family:
-                ipv6: true

@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: network-services-l2vlan-private-vlan
+hostname: address-locking
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -71,36 +71,20 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
   vlans:
-  - id: 10
+  - id: 101
     tenant: TENANT1
-    rd: 192.168.255.109:10010
+    rd: 192.168.255.109:10101
     route_targets:
       both:
-      - 10010:10010
+      - 10101:10101
     redistribute_routes:
     - learned
-  - id: 100
-    tenant: TENANT1
-    rd: 192.168.255.109:10100
-    route_targets:
-      both:
-      - 10100:10100
-    redistribute_routes:
-    - learned
-  - id: 90
-    tenant: TENANT1
-    rd: 192.168.255.109:10090
-    route_targets:
-      both:
-      - 10090:10090
-    redistribute_routes:
-    - learned
-  - id: 2
+  - id: 102
     tenant: TENANT2
-    rd: 192.168.255.109:10003
+    rd: 192.168.255.109:10103
     route_targets:
       both:
-      - 10003:10003
+      - 10103:10103
     redistribute_routes:
     - learned
   address_family_evpn:
@@ -114,17 +98,17 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: false
   vrfs:
-  - name: TEST_VRF
-    rd: 192.168.255.109:789654
+  - name: TEST_ADDRESS_LOCKING
+    rd: 192.168.255.109:789655
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - 789654:789654
+        - 789655:789655
       export:
       - address_family: evpn
         route_targets:
-        - 789654:789654
+        - 789655:789655
     router_id: 192.168.255.109
     redistribute:
       connected:
@@ -132,11 +116,10 @@ router_bgp:
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
-- name: Vlan2
-  description: primary2
+- name: Vlan102
+  description: test-address-locking-2
   shutdown: false
-  vrf: TEST_VRF
-  ip_address_virtual: 10.1.40.1/24
+  vrf: TEST_ADDRESS_LOCKING
   tenant: TENANT2
 vlan_internal_order:
   allocation: ascending
@@ -144,45 +127,29 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 10
-  name: primary1
+- id: 101
+  name: test-address-locking-1
   tenant: TENANT1
-- id: 90
-  name: secondary_isolated
-  private_vlan:
-    type: isolated
-    primary_vlan: 2
-  tenant: TENANT1
-- id: 100
-  name: secondary_community
-  private_vlan:
-    type: community
-    primary_vlan: 10
-  tenant: TENANT1
-- id: 2
-  name: primary2
+- id: 102
+  name: test-address-locking-2
   tenant: TENANT2
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: TEST_VRF
+- name: TEST_ADDRESS_LOCKING
   ip_routing: true
   tenant: TENANT2
 vxlan_interface:
   vxlan1:
-    description: network-services-l2vlan-private-vlan_VTEP
+    description: address-locking_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
       vlans:
-      - id: 10
-        vni: 10010
-      - id: 90
-        vni: 10090
-      - id: 100
-        vni: 10100
-      - id: 2
-        vni: 10003
+      - id: 101
+        vni: 10101
+      - id: 102
+        vni: 10103
       vrfs:
-      - name: TEST_VRF
-        vni: 789654
+      - name: TEST_ADDRESS_LOCKING
+        vni: 789655

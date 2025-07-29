@@ -149,6 +149,9 @@ keys:
             default: false
           sha512_password:
             type: str
+  address_locking_settings:
+    type: dict
+    $ref: eos_cli_config_gen#/keys/address_locking
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition

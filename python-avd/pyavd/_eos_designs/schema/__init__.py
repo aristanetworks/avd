@@ -65621,6 +65621,7 @@ class EosDesigns(EosDesignsRootModel):
 
     _fields: ClassVar[dict] = {
         "aaa_settings": {"type": AaaSettings},
+        "address_locking_settings": {"type": EosCliConfigGen.AddressLocking},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_6_behaviors": {"type": Avd6Behaviors},
         "avd_data_validation_mode": {"type": str, "default": "error"},
@@ -66055,6 +66056,7 @@ class EosDesigns(EosDesignsRootModel):
     _allow_other_keys: ClassVar[bool] = True
     aaa_settings: AaaSettings
     """Subclass of AvdModel."""
+    address_locking_settings: EosCliConfigGen.AddressLocking
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
     avd_6_behaviors: Avd6Behaviors
@@ -68044,6 +68046,7 @@ class EosDesigns(EosDesignsRootModel):
             self,
             *,
             aaa_settings: AaaSettings | UndefinedType = Undefined,
+            address_locking_settings: EosCliConfigGen.AddressLocking | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_6_behaviors: Avd6Behaviors | UndefinedType = Undefined,
             avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
@@ -68265,6 +68268,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Args:
                 aaa_settings: Subclass of AvdModel.
+                address_locking_settings: address_locking_settings
                 application_classification: Application traffic recognition configuration.
                 avd_6_behaviors:
                    Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
