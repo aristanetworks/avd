@@ -23,3 +23,12 @@ qos:
         chip_based: true
   tx_queue:
     shape_rate_percent_adaptive: true
+    queues:
+      - id: 3
+        scheduler_profile_responsive: true
+      - id: 4
+        # this would not render
+      - id: 2
+        scheduler_profile_responsive: false
+      - id: 1
+        scheduler_profile_responsive: true

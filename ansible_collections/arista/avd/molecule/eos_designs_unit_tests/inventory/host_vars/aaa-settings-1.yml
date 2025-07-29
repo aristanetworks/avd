@@ -12,6 +12,8 @@ aaa_settings:
       - host: 10.10.10.11
         vrf: default
         key: 071B245F5A
+        # key take precedence over cleartext_key
+        cleartext_key: arista
         groups:
           - TACACS1
 
@@ -37,7 +39,23 @@ aaa_settings:
       # Duplicate host with different vrf
       - host: 10.10.10.2
         vrf: MGMT1
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # Test with host as domain name and cleartext_key to AVD type-7 encrypt key
+      - host: nodomain.co
+        vrf: use_mgmt_interface_vrf
         key: 071B245F5A
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
+      # Test with host as IPv6 address and cleartext_key to AVD type-7 encrypt key
+      - host: "1:1:1:1:1:1:1:1"
+        vrf: MGMT
+        key: 071B245F5A
+        cleartext_key: arista
         groups:
           - TACACS1
 
@@ -56,9 +74,12 @@ aaa_settings:
       - host: 11.10.10.11
         vrf: default
         key: 071B245F5A
+        # key take precedence over cleartext_key
+        cleartext_key: arista
         groups:
           - RADIUS1
 
+      # Test with host as domain name and cleartext_key to AVD type-7 encrypt key
       - host: 11.10.10.1
         vrf: use_mgmt_interface_vrf
         key: 071B245F5A
@@ -74,7 +95,24 @@ aaa_settings:
 
       # No VRF, so it should honor default_mgmt_method which is oob in this case
       - host: 11.10.10.3
+        vrf: MGMT
+        cleartext_key: arista
+        groups:
+          - RADIUS1
+
+      # Test with host as domain name and cleartext_key to AVD type-7 encrypt key
+      - host: nodomain.co
+        vrf: use_mgmt_interface_vrf
         key: 071B245F5A
+        cleartext_key: arista
+        groups:
+          - RADIUS1
+
+      # Test with host as IPv6 address and cleartext_key to AVD type-7 encrypt key
+      - host: "1:1:1:1:1:1:1:1"
+        vrf: MGMT
+        key: 071B245F5A
+        cleartext_key: arista
         groups:
           - RADIUS1
 
