@@ -23478,6 +23478,13 @@ keys:
             name:
               type: str
               description: Traffic Policy Name.
+            counters:
+              type: list
+              items:
+                type: str
+                convert_types:
+                - int
+              description: Counter name.
             matches:
               type: list
               primary_key: name
@@ -23583,7 +23590,13 @@ keys:
                         description: Traffic class ID.
                       count:
                         type: str
-                        description: Counter name.
+                        convert_types:
+                        - int
+                        description: 'Counter name. This should also be added to the
+                          `policies[].counters` list.
+
+                          It will no longer be added automatically to the counters
+                          in AVD 6.0.'
                       drop:
                         type: bool
                       log:
@@ -23606,7 +23619,10 @@ keys:
                       description: Traffic class ID.
                     count:
                       type: str
-                      description: Counter name.
+                      convert_types:
+                      - int
+                      description: Counter name. This should also be added to the
+                        `policies[].counters` list.
                     drop:
                       type: bool
                     log:
@@ -23626,7 +23642,10 @@ keys:
                       description: Traffic class ID.
                     count:
                       type: str
-                      description: Counter name.
+                      convert_types:
+                      - int
+                      description: Counter name. This should also be added to the
+                        `policies[].counters` list.
                     drop:
                       type: bool
                     log:
