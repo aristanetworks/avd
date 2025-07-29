@@ -102,6 +102,60 @@ ethernet_interfaces:
   peer_type: spine
   switchport:
     enabled: false
+- name: Ethernet13
+  description: P2P_DC1-POD1-LEAF1B_Ethernet1
+  shutdown: false
+  ip_address: 172.17.110.12/31
+  mac_security:
+    profile: MACSEC_PROFILE
+  ptp:
+    enable: true
+  service_profile: QOS-PROFILE
+  peer: DC1-POD1-LEAF1B
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet13.1025
+  description: P2P_DC1-POD1-LEAF1B_Ethernet1.1025_VRF_Common_VRF
+  shutdown: false
+  vrf: Common_VRF
+  encapsulation_dot1q:
+    vlan: 1025
+  ip_address: 172.17.110.12/31
+  peer: DC1-POD1-LEAF1B
+  peer_interface: Ethernet1.1025
+  peer_type: l3leaf
+- name: Ethernet13.1102
+  description: P2P_DC1-POD1-LEAF1B_Ethernet1.1102_VRF_vrf_with_loopbacks_dc1_pod1_only
+  shutdown: false
+  vrf: vrf_with_loopbacks_dc1_pod1_only
+  encapsulation_dot1q:
+    vlan: 1102
+  ip_address: 172.17.110.12/31
+  peer: DC1-POD1-LEAF1B
+  peer_interface: Ethernet1.1102
+  peer_type: l3leaf
+- name: Ethernet13.1100
+  description: P2P_DC1-POD1-LEAF1B_Ethernet1.1100_VRF_vrf_with_loopbacks_from_overlapping_pool
+  shutdown: false
+  vrf: vrf_with_loopbacks_from_overlapping_pool
+  encapsulation_dot1q:
+    vlan: 1100
+  ip_address: 172.17.110.12/31
+  peer: DC1-POD1-LEAF1B
+  peer_interface: Ethernet1.1100
+  peer_type: l3leaf
+- name: Ethernet13.1101
+  description: P2P_DC1-POD1-LEAF1B_Ethernet1.1101_VRF_vrf_with_loopbacks_from_pod_pools
+  shutdown: false
+  vrf: vrf_with_loopbacks_from_pod_pools
+  encapsulation_dot1q:
+    vlan: 1101
+  ip_address: 172.17.110.12/31
+  peer: DC1-POD1-LEAF1B
+  peer_interface: Ethernet1.1101
+  peer_type: l3leaf
 - name: Ethernet7
   description: P2P_DC2-POD1-LEAF1A_Ethernet6
   shutdown: false
@@ -419,6 +473,11 @@ router_bgp:
     remote_as: '65110.100'
     peer: DC1-POD1-SPINE2
     description: DC1-POD1-SPINE2_Ethernet7
+  - ip_address: 172.17.110.13
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65111.100'
+    peer: DC1-POD1-LEAF1B
+    description: DC1-POD1-LEAF1B_Ethernet1
   - ip_address: 172.16.110.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65111.100'
@@ -567,6 +626,11 @@ router_bgp:
         route_targets:
         - 1025:1025
     router_id: 172.16.110.4
+    neighbors:
+    - ip_address: 172.17.110.13
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65111.100'
+      description: DC1-POD1-LEAF1B_Ethernet1.1025_vrf_Common_VRF
     redistribute:
       connected:
         enabled: true
@@ -589,6 +653,11 @@ router_bgp:
         route_targets:
         - 1102:1102
     router_id: 172.16.110.4
+    neighbors:
+    - ip_address: 172.17.110.13
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65111.100'
+      description: DC1-POD1-LEAF1B_Ethernet1.1102_vrf_vrf_with_loopbacks_dc1_pod1_only
     redistribute:
       connected:
         enabled: true
@@ -604,6 +673,11 @@ router_bgp:
         route_targets:
         - 1100:1100
     router_id: 172.16.110.4
+    neighbors:
+    - ip_address: 172.17.110.13
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65111.100'
+      description: DC1-POD1-LEAF1B_Ethernet1.1100_vrf_vrf_with_loopbacks_from_overlapping_pool
     redistribute:
       connected:
         enabled: true
@@ -619,6 +693,11 @@ router_bgp:
         route_targets:
         - 1101:1101
     router_id: 172.16.110.4
+    neighbors:
+    - ip_address: 172.17.110.13
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65111.100'
+      description: DC1-POD1-LEAF1B_Ethernet1.1101_vrf_vrf_with_loopbacks_from_pod_pools
     redistribute:
       connected:
         enabled: true
