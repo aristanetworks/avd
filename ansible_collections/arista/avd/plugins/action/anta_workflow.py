@@ -31,7 +31,8 @@ PLUGIN_NAME = "arista.avd.anta_workflow"
 try:
     from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, anta_runner
     from pyavd._utils import default, get, strip_empties_from_dict
-    from pyavd.api._anta import AvdCatalogGenerationSettings, InputFactorySettings, get_minimal_structured_configs
+    from pyavd.api._anta import InputFactorySettings, get_minimal_structured_configs
+    from pyavd.api._anta.generate_anta_settings import generate_anta_settings
     from pyavd.get_device_test_catalog import get_device_test_catalog
 
     HAS_PYAVD = True
@@ -390,10 +391,8 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
         inventory.add_device(anta_device)
         # We generate the device's AVD catalog only if structured configs are loaded
         if STRUCTURED_CONFIGS is not None and MINIMAL_STRUCTURED_CONFIGS is not None:
-            settings = AvdCatalogGenerationSettings(
-                input_factory_settings=input_factory_settings,
-                output_dir=output_dir,
-                **get_device_catalog_filters(device, avd_catalogs_filters),
+            settings = generate_anta_settings(
+                input_factory_settings=input_factory_settings, output_dir=output_dir, device=device, avd_catalogs_filters=avd_catalogs_filters
             )
             catalog = get_device_test_catalog(
                 hostname=device,
@@ -406,46 +405,6 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
     catalog = AntaCatalog.merge_catalogs(catalogs)
 
     return result_manager, inventory, catalog
-
-
-def get_device_catalog_filters(device: str, avd_catalogs_filters: list[dict[str, list[str]]]) -> dict[str, list[str]]:
-    """
-    Get the test filters for a device from the provided AVD catalogs filters.
-
-    A filter is applied to the device unless `device_list` is provided in the filter and the device is *not* part of it.
-
-    Filters are not cumulative for the device. If the device matches multiple filters, the last filter (appearing later in the list) wins.
-
-    Args:
-        device: The device name to get the filters for.
-        avd_catalogs_filters: The AVD catalogs filters from the plugin argument `avd_catalogs.filters`.
-
-    Returns:
-        dict: A dictionary with the list of tests to run and/or skip: `{"run_tests: [<test1>, ...], "skip_tests" [<test2>, ...]}`.
-    """
-    final_filters = {"run_tests": [], "skip_tests": []}
-
-    for filter_config in avd_catalogs_filters:
-        # Skip this filter for the device if it's not part of device_list if provided
-        device_list = filter_config.get("device_list")
-        if device_list is not None and device not in device_list:
-            continue
-
-        run_tests = filter_config.get("run_tests")
-        skip_tests = filter_config.get("skip_tests")
-
-        # Override previous filters if new ones are specified
-        if run_tests is not None:
-            if final_filters["run_tests"]:
-                LOGGER.debug("<%s> run_tests overridden from %s to %s", device, final_filters["run_tests"], run_tests)
-            final_filters["run_tests"] = list(set(run_tests))
-
-        if skip_tests is not None:
-            if final_filters["skip_tests"]:
-                LOGGER.debug("<%s> skip_tests overridden from %s to %s", device, final_filters["skip_tests"], skip_tests)
-            final_filters["skip_tests"] = list(set(skip_tests))
-
-    return final_filters
 
 
 def build_anta_device(device: str) -> AsyncEOSDevice:

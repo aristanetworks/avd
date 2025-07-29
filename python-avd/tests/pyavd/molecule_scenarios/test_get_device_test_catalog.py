@@ -3,16 +3,23 @@
 # that can be found in the LICENSE file.
 import json
 from copy import deepcopy
-from typing import Any, Literal
+from typing import Literal
 
 import pytest
 
 from pyavd import get_device_test_catalog
 from pyavd._anta.lib import AntaCatalog
 from pyavd.api._anta import AvdCatalogGenerationSettings, InputFactorySettings, get_minimal_structured_configs
+from pyavd.api._anta.generate_anta_settings import generate_anta_settings
 from tests.models import MoleculeHost, MoleculeScenario
 
 RunName = Literal["default_run", "allow_bgp_vrfs_run", "filtered_run"]
+
+AVD_CATALOG_FILTER: list[dict[str, list[str]]] = [
+    {"skip_tests": ["VerifyNTP"]},
+    {"device_list": ["dc1-svc-leaf1a", "dc1-svc-leaf1b"], "run_tests": ["VerifyReachability"]},
+    {"device_list": ["dc2-spine1", "dc2-spine2"], "run_tests": ["VerifyLLDPNeighbors"], "skip_tests": ["VerifyLLDPNeighbors"]},
+]
 
 
 def _get_avd_catalog_generation_settings(molecule_host: MoleculeHost, run_name: RunName) -> AvdCatalogGenerationSettings | None:
@@ -21,30 +28,16 @@ def _get_avd_catalog_generation_settings(molecule_host: MoleculeHost, run_name: 
         return AvdCatalogGenerationSettings(input_factory_settings=InputFactorySettings(allow_bgp_vrfs=True))
 
     if run_name == "filtered_run":
-        # Filter rules defined here, mirroring the playbook.
-        avd_catalogs_filters: list[dict[str, Any]] = [
-            {"skip_tests": ["VerifyNTP"]},
-            {"device_list_group": "DC1_SVC_LEAVES", "run_tests": ["VerifyReachability"]},
-            {"device_list_group": "DC2_SPINES", "run_tests": ["VerifyLLDPNeighbors"], "skip_tests": ["VerifyLLDPNeighbors"]},
-        ]
+        input_settings = InputFactorySettings()
+        output_directory = None
 
-        host_groups = molecule_host.hostvars.get("group_names", [])
-        final_filters: dict[str, Any] = {}
+        return generate_anta_settings(
+            input_factory_settings=input_settings,
+            output_dir=output_directory,
+            device=molecule_host.name,
+            avd_catalogs_filters=AVD_CATALOG_FILTER,
+        )
 
-        for filter_config in avd_catalogs_filters:
-            device_list_group = filter_config.get("device_list_group")
-            if device_list_group and device_list_group not in host_groups:
-                continue
-
-            # "Last filter wins" logic
-            if "run_tests" in filter_config:
-                final_filters["run_tests"] = filter_config["run_tests"]
-            if "skip_tests" in filter_config:
-                final_filters["skip_tests"] = filter_config["skip_tests"]
-
-        return AvdCatalogGenerationSettings(**final_filters)
-
-    # For the "default" run or any other case, return no settings.
     return None
 
 
