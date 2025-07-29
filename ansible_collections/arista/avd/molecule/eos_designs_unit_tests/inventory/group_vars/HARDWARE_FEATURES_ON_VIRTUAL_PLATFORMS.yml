@@ -181,12 +181,6 @@ custom_platform_settings:
         vni_encap: false
         vtep_decap: false
         vtep_encap: false
-  # Custom platform supporting all possible hardware features
-  - platforms:
-      - customplatform_2
-    feature_support:
-      poe: true
-      evpn_gateway_all_active_multihoming: true
 
 type: l3leaf
 
