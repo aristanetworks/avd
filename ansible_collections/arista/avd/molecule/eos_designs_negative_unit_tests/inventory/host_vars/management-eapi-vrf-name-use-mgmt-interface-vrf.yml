@@ -1,0 +1,22 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.10.0/24
+    vtep_loopback_ipv4_pool: 10.10.10.0/24
+    bgp_as: 65042
+  nodes:
+    - name: management-eapi-vrf-name-use-mgmt-interface-vrf
+      loopback_ipv4_address: 10.42.42.42
+      id: 12
+
+management_eapi:
+  vrfs:
+    # Assigning default value (`use_mgmt_interface_vrf`) as user-defined to test negative scenario because AVD is currently ignoring the error
+    # for backward-compatibility. This will change in AVD 6.0.
+    - name: use_mgmt_interface_vrf
+      enabled: true
+
+expected_error_message: >-
+  'self.inputs.management_eapi.vrfs[name=use_mgmt_interface_vrf]' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'.

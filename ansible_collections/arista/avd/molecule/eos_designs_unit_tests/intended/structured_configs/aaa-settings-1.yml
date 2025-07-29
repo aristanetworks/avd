@@ -148,6 +148,10 @@ aaa_server_groups:
     vrf: MGMT
   - server: 11.10.10.3
     vrf: MGMT
+  - server: nodomain.co
+    vrf: MGMT
+  - server: '1:1:1:1:1:1:1:1'
+    vrf: MGMT
 - name: RADIUS2
   type: radius
   servers:
@@ -166,6 +170,10 @@ aaa_server_groups:
     vrf: MGMT
   - server: 10.10.10.2
     vrf: MGMT1
+  - server: nodomain.co
+    vrf: MGMT
+  - server: '1:1:1:1:1:1:1:1'
+    vrf: MGMT
 - name: TACACS2
   type: tacacs+
   servers:
@@ -216,6 +224,12 @@ radius_server:
     key: 071B245F5A
   - host: 11.10.10.3
     vrf: MGMT
+    key: 0112140D481F07
+  - host: nodomain.co
+    vrf: MGMT
+    key: 071B245F5A
+  - host: '1:1:1:1:1:1:1:1'
+    vrf: MGMT
     key: 071B245F5A
 service_routing_protocols_model: multi-agent
 tacacs_servers:
@@ -234,6 +248,12 @@ tacacs_servers:
     key: 071B245F5A
   - host: 10.10.10.2
     vrf: MGMT1
+    key: 15131905173E2A
+  - host: nodomain.co
+    vrf: MGMT
+    key: 071B245F5A
+  - host: '1:1:1:1:1:1:1:1'
+    vrf: MGMT
     key: 071B245F5A
   policy_unknown_mandatory_attribute_ignore: true
 transceiver_qsfp_default_mode_4x10: true

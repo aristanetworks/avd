@@ -15,6 +15,10 @@ nodes:
     node_type: veos
     ip_addr: 192.168.1.7/24
     version: 4.33.1.1F
+- DC1-POD1-LEAF1B:
+    node_type: veos
+    ip_addr: 192.168.1.26/24
+    version: 4.33.1.1F
 - DC1-POD1-LEAF2B:
     node_type: veos
     ip_addr: 192.168.1.9/16
@@ -136,6 +140,12 @@ links:
 - connection:
   - DC1-POD1-LEAF1A:Ethernet4
   - DC1-RS1:Ethernet3
+- connection:
+  - DC1-POD1-LEAF1B:Ethernet1
+  - DC1.POD1.LEAF2A:Ethernet13
+- connection:
+  - DC1-POD1-LEAF1B:Ethernet2
+  - DC1-POD1-LEAF2B:Ethernet13
 - connection:
   - DC1-POD1-LEAF2B:Ethernet1
   - DC1-POD1-SPINE1:Ethernet5

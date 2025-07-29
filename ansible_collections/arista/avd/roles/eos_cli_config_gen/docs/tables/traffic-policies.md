@@ -10,15 +10,20 @@
     | [<samp>traffic_policies</samp>](## "traffic_policies") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;options</samp>](## "traffic_policies.options") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counter_per_interface</samp>](## "traffic_policies.options.counter_per_interface") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counter_interface_poll_interval</samp>](## "traffic_policies.options.counter_interface_poll_interval") | Integer |  |  | Min: 2<br>Max: 60 | Interval between consecutive polls in seconds. |
     | [<samp>&nbsp;&nbsp;field_sets</samp>](## "traffic_policies.field_sets") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "traffic_policies.field_sets.ipv4") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "traffic_policies.field_sets.ipv4.[].name") | String | Required, Unique |  |  | IPv4 Prefix Field Set Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefixes</samp>](## "traffic_policies.field_sets.ipv4.[].prefixes") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.field_sets.ipv4.[].prefixes.[]") | String |  |  |  | IPv4 Prefix. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;except</samp>](## "traffic_policies.field_sets.ipv4.[].except") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.field_sets.ipv4.[].except.[]") | String |  |  |  | IPv4 prefix to exclude. Added in 4.30.2F. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "traffic_policies.field_sets.ipv6") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "traffic_policies.field_sets.ipv6.[].name") | String | Required, Unique |  |  | IPv6 Prefix Field Set Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefixes</samp>](## "traffic_policies.field_sets.ipv6.[].prefixes") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.field_sets.ipv6.[].prefixes.[]") | String |  |  |  | IPv6 Prefix. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;except</samp>](## "traffic_policies.field_sets.ipv6.[].except") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.field_sets.ipv6.[].except.[]") | String |  |  |  | IPv6 prefix to exclude. Added in 4.30.2F. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ports</samp>](## "traffic_policies.field_sets.ports") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "traffic_policies.field_sets.ports.[].name") | String | Required, Unique |  |  | L4 Port Field Set Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_range</samp>](## "traffic_policies.field_sets.ports.[].port_range") | String |  |  |  | Example: '10,20,80,440-450' |
@@ -77,6 +82,9 @@
     traffic_policies:
       options:
         counter_per_interface: <bool>
+
+        # Interval between consecutive polls in seconds.
+        counter_interface_poll_interval: <int; 2-60>
       field_sets:
         ipv4:
 
@@ -86,6 +94,10 @@
 
                 # IPv4 Prefix.
               - <str>
+            except:
+
+                # IPv4 prefix to exclude. Added in 4.30.2F.
+              - <str>
         ipv6:
 
             # IPv6 Prefix Field Set Name.
@@ -93,6 +105,10 @@
             prefixes:
 
                 # IPv6 Prefix.
+              - <str>
+            except:
+
+                # IPv6 prefix to exclude. Added in 4.30.2F.
               - <str>
         ports:
 

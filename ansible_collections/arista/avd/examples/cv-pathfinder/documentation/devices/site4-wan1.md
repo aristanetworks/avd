@@ -308,7 +308,7 @@ daemon TerminAttr
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-| FLOW-TRACKER | CV-TELEMETRY | - | - | Loopback0 |
+| FLOW-TRACKER | CV-TELEMETRY | 127.0.0.1 | - | Loopback0 |
 
 #### Flow Tracking Device Configuration
 

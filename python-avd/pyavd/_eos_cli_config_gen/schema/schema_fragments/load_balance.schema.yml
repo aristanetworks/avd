@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -83,3 +83,102 @@ keys:
                                 All byte positions must be within the range 0 to 62.
                               convert_types:
                                 - int
+      cluster:
+        type: dict
+        keys:
+          destination_grouping:
+            type: str
+            valid_values:
+              - bgp field-set
+              - prefix length
+              - vtep
+            description: Perform destination grouping using given setting.
+          prefix_length:
+            type: int
+            convert_types:
+              - str
+            min: 0
+            max: 129
+            description: |-
+              Network address prefix length for destination grouping using prefix length.
+              This setting must be defined when `destination_grouping` is set to `prefix length`.
+          forwarding_type:
+            type: str
+            valid_values:
+              - "bridged encapsulation vxlan ipv4"
+              - "routed ipv4"
+          load_balance_method_flow_round_robin:
+            type: bool
+            description: Enable round-robin load balancing for flow-based traffic.
+          flow:
+            type: dict
+            keys:
+              monitor:
+                type: bool
+                description: Monitor the flows without affecting forwarding.
+              source_learning_aging_timeout:
+                description: Flow aging timeout in seconds for flow discovery by learning.
+                type: int
+                convert_types:
+                  - str
+                min: 30
+                max: 2147483647
+          port_groups:
+            description: Host ports settings.
+            type: list
+            primary_key: group
+            items:
+              type: dict
+              keys:
+                group:
+                  type: str
+                  description: Port group name.
+                balance_factor:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 4294967295
+                interface:
+                  type: str
+                  description: |-
+                    Ethernet interface/subinterface name. It could be a `,` separated list or range.
+                    eg. Ethernet2,
+                        Ethernet2-5,
+                        Ethernet2.2,3.1,
+                        Ethernet3.1-2
+                flow:
+                  type: dict
+                  keys:
+                    limit:
+                      type: int
+                      convert_types:
+                        - str
+                      description: Maximum number of flows per port.
+                      min: 0
+                      max: 4294967295
+                    warning:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 0
+                      max: 4294967295
+                      description: Warning threshold of flows per port group.
+                    exhaustion_action:
+                      description: Forwarding action when flows reach limits.
+                      type: dict
+                      keys:
+                        dscp:
+                          type: int
+                          convert_types:
+                            - str
+                          min: 0
+                          max: 63
+                          description: Packet DSCP value.
+                        traffic_class:
+                          type: int
+                          convert_types:
+                            - str
+                          min: 0
+                          max: 11
+                          description: Packet traffic-class value.

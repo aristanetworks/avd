@@ -34,7 +34,13 @@ class EosDesigns(EosDesignsRootModel):
 
                 Groups._item_type = str
 
-                _fields: ClassVar[dict] = {"host": {"type": str}, "groups": {"type": Groups}, "vrf": {"type": str}, "key": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "host": {"type": str},
+                    "groups": {"type": Groups},
+                    "vrf": {"type": str},
+                    "key": {"type": str},
+                    "cleartext_key": {"type": str},
+                }
                 host: str
                 """Host IP address or name."""
                 groups: Groups
@@ -56,8 +62,23 @@ class EosDesigns(EosDesignsRootModel):
                 `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
                 """
-                key: str
-                """Encrypted type-7 key."""
+                key: str | None
+                """
+                Encrypted Type 7 key.
+                Takes precedence over `cleartext_key` if both are provided.
+                Either `key` or
+                `cleartext_key` must be set to render the configuration;
+                otherwise, an error will be raised.
+                """
+                cleartext_key: str | None
+                """
+                Plaintext password that will be encrypted to Type 7 by AVD.
+                To protect the password at rest it is
+                strongly recommended to make use of a vault or similar.
+                Either `key` or `cleartext_key` must be set
+                to render the configuration;
+                otherwise, an error will be raised.
+                """
 
                 if TYPE_CHECKING:
 
@@ -67,7 +88,8 @@ class EosDesigns(EosDesignsRootModel):
                         host: str | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
-                        key: str | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
+                        cleartext_key: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ServersItem.
@@ -93,7 +115,19 @@ class EosDesigns(EosDesignsRootModel):
                                the VRF and source-interface for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
-                            key: Encrypted type-7 key.
+                            key:
+                               Encrypted Type 7 key.
+                               Takes precedence over `cleartext_key` if both are provided.
+                               Either `key` or
+                               `cleartext_key` must be set to render the configuration;
+                               otherwise, an error will be raised.
+                            cleartext_key:
+                               Plaintext password that will be encrypted to Type 7 by AVD.
+                               To protect the password at rest it is
+                               strongly recommended to make use of a vault or similar.
+                               Either `key` or `cleartext_key` must be set
+                               to render the configuration;
+                               otherwise, an error will be raised.
 
                         """
 
@@ -204,7 +238,13 @@ class EosDesigns(EosDesignsRootModel):
 
                 Groups._item_type = str
 
-                _fields: ClassVar[dict] = {"host": {"type": str}, "groups": {"type": Groups}, "vrf": {"type": str}, "key": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "host": {"type": str},
+                    "groups": {"type": Groups},
+                    "vrf": {"type": str},
+                    "key": {"type": str},
+                    "cleartext_key": {"type": str},
+                }
                 host: str
                 """Host IP address or name."""
                 groups: Groups
@@ -226,8 +266,18 @@ class EosDesigns(EosDesignsRootModel):
                 `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
                 """
-                key: str
-                """Encrypted key."""
+                key: str | None
+                """
+                Encrypted type-7 key.
+                Takes precedence over `cleartext_key`.
+                """
+                cleartext_key: str | None
+                """
+                Cleartext password.
+                Encrypted to Type 7 by AVD.
+                To protect the password at rest it is strongly
+                recommended to make use of a vault or similar.
+                """
 
                 if TYPE_CHECKING:
 
@@ -237,7 +287,8 @@ class EosDesigns(EosDesignsRootModel):
                         host: str | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
-                        key: str | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
+                        cleartext_key: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ServersItem.
@@ -263,7 +314,14 @@ class EosDesigns(EosDesignsRootModel):
                                the VRF and source-interface for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
-                            key: Encrypted key.
+                            key:
+                               Encrypted type-7 key.
+                               Takes precedence over `cleartext_key`.
+                            cleartext_key:
+                               Cleartext password.
+                               Encrypted to Type 7 by AVD.
+                               To protect the password at rest it is strongly
+                               recommended to make use of a vault or similar.
 
                         """
 
@@ -5562,6 +5620,44 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class CollectorsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"host": {"type": str}, "port": {"type": int}}
+                    host: str
+                    """
+                    Flow collector name.
+                    The collector name can be an IPv4 address, IPv6 address and fully qualified
+                    domain name.
+                    """
+                    port: int | None
+                    """Collector Port Number."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, host: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            CollectorsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                host:
+                                   Flow collector name.
+                                   The collector name can be an IPv4 address, IPv6 address and fully qualified
+                                   domain name.
+                                port: Collector Port Number.
+
+                            """
+
+                class Collectors(AvdIndexedList[str, CollectorsItem]):
+                    """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "host"
+
+                Collectors._item_type = CollectorsItem
+
                 class Format(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -5585,6 +5681,7 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "collector": {"type": Collector},
+                    "collectors": {"type": Collectors},
                     "format": {"type": Format},
                     "local_interface": {"type": str},
                     "template_interval": {"type": int},
@@ -5593,6 +5690,8 @@ class EosDesigns(EosDesignsRootModel):
                 """Exporter Name"""
                 collector: Collector
                 """Subclass of AvdModel."""
+                collectors: Collectors
+                """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
                 format: Format
                 """Subclass of AvdModel."""
                 local_interface: str | None
@@ -5607,6 +5706,7 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         name: str | UndefinedType = Undefined,
                         collector: Collector | UndefinedType = Undefined,
+                        collectors: Collectors | UndefinedType = Undefined,
                         format: Format | UndefinedType = Undefined,
                         local_interface: str | None | UndefinedType = Undefined,
                         template_interval: int | None | UndefinedType = Undefined,
@@ -5620,6 +5720,7 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             name: Exporter Name
                             collector: Subclass of AvdModel.
+                            collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`).
                             format: Subclass of AvdModel.
                             local_interface: Local Source Interface
                             template_interval: Template interval in milliseconds
@@ -5697,7 +5798,7 @@ class EosDesigns(EosDesignsRootModel):
                             "name": "FLOW-TRACKER",
                             "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000},
                             "exporters": [
-                                {"name": "CV-TELEMETRY", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 3600000}
+                                {"name": "CV-TELEMETRY", "collectors": [{"host": "127.0.0.1"}], "local_interface": "Loopback0", "template_interval": 3600000}
                             ],
                         }
                     ],
@@ -5721,7 +5822,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
 
-        Default value: `lambda cls: coerce_type([{"name": "FLOW-TRACKER", "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000}, "exporters": [{"name": "CV-TELEMETRY", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 3600000}]}], target_type=cls)`
+        Default value: `lambda cls: coerce_type([{"name": "FLOW-TRACKER", "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000}, "exporters": [{"name": "CV-TELEMETRY", "collectors": [{"host": "127.0.0.1"}], "local_interface": "Loopback0", "template_interval": 3600000}]}], target_type=cls)`
         """
 
         if TYPE_CHECKING:
@@ -8612,11 +8713,85 @@ class EosDesigns(EosDesignsRootModel):
     class ManagementEapi(AvdModel):
         """Subclass of AvdModel."""
 
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool}, "ipv4_acl": {"type": str}, "ipv6_acl": {"type": str}}
+            name: str
+            """
+            VRF name.
+            The value will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure the eAPI under the VRF set with `mgmt_interface_vrf`.
+              An error will be raised if
+            `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf` will
+            configure the eAPI under the VRF set with `inband_mgmt_vrf`.
+              An error will be raised if inband
+            management is not configured for the device.
+            - `use_default_mgmt_method_vrf` will configure the eAPI
+            under VRF for one of the two options above depending on the value of `default_mgmt_method`.
+            - Any
+            other string will be used directly as the VRF name.
+            """
+            enabled: bool
+            """Enable/disable Management eAPI for this VRF."""
+            ipv4_acl: str | None
+            """IPv4 access-list name."""
+            ipv6_acl: str | None
+            """IPv6 access-list name."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    enabled: bool | UndefinedType = Undefined,
+                    ipv4_acl: str | None | UndefinedType = Undefined,
+                    ipv6_acl: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name:
+                           VRF name.
+                           The value will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure the eAPI under the VRF set with `mgmt_interface_vrf`.
+                             An error will be raised if
+                           `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf` will
+                           configure the eAPI under the VRF set with `inband_mgmt_vrf`.
+                             An error will be raised if inband
+                           management is not configured for the device.
+                           - `use_default_mgmt_method_vrf` will configure the eAPI
+                           under VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                           - Any
+                           other string will be used directly as the VRF name.
+                        enabled: Enable/disable Management eAPI for this VRF.
+                        ipv4_acl: IPv4 access-list name.
+                        ipv6_acl: IPv6 access-list name.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
         _fields: ClassVar[dict] = {
             "enabled": {"type": bool, "default": True},
             "enable_http": {"type": bool},
             "enable_https": {"type": bool, "default": True},
             "default_services": {"type": bool},
+            "vrfs": {"type": Vrfs, "default": lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)},
         }
         enabled: bool
         """
@@ -8628,6 +8803,20 @@ class EosDesigns(EosDesignsRootModel):
         enable_https: bool
         """Default value: `True`"""
         default_services: bool | None
+        vrfs: Vrfs
+        """
+        Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not**
+        configured and the default value of `use_mgmt_interface_vrf` is used.
+        To enforce the presence of
+        `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using
+        `name: use_mgmt_interface_vrf`.
+        This behavior will be removed in AVD 6.0.
+
+        Subclass of
+        AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+
+        Default value: `lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)`
+        """
 
         if TYPE_CHECKING:
 
@@ -8638,6 +8827,7 @@ class EosDesigns(EosDesignsRootModel):
                 enable_http: bool | None | UndefinedType = Undefined,
                 enable_https: bool | UndefinedType = Undefined,
                 default_services: bool | None | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
             ) -> None:
                 """
                 ManagementEapi.
@@ -8650,6 +8840,16 @@ class EosDesigns(EosDesignsRootModel):
                     enable_http: enable_http
                     enable_https: enable_https
                     default_services: default_services
+                    vrfs:
+                       Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not**
+                       configured and the default value of `use_mgmt_interface_vrf` is used.
+                       To enforce the presence of
+                       `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using
+                       `name: use_mgmt_interface_vrf`.
+                       This behavior will be removed in AVD 6.0.
+
+                       Subclass of
+                       AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
 
@@ -66418,16 +66618,16 @@ class EosDesigns(EosDesignsRootModel):
       -
     `cv_settings`
       - `logging_settings`
+      - `management_eapi`
       - `ntp_settings`
       - `sflow_settings`
-      - `snmp_settings`
-      -
-    `ssh_settings`
+    - `snmp_settings`
+      - `ssh_settings`
 
-    `oob` means the protocols will be configured with the VRF set by
-    `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
-    `inband` means the protocols will
-    be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
+    `oob` means the protocols will be configured with the VRF set
+    by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
+    `inband` means the protocols
+    will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
     interface.
     `none` means the VRF and or interface must be manually set for each protocol.
     This can be
@@ -66900,11 +67100,9 @@ class EosDesigns(EosDesignsRootModel):
     management_eapi: ManagementEapi
     """
     Default is HTTPS management eAPI enabled.
-    The VRF is set to < mgmt_interface_vrf >.
 
 
-    Subclass of
-    AvdModel.
+    Subclass of AvdModel.
     """
     mgmt_destination_networks: MgmtDestinationNetworks
     """
@@ -68508,16 +68706,16 @@ class EosDesigns(EosDesignsRootModel):
                      -
                    `cv_settings`
                      - `logging_settings`
+                     - `management_eapi`
                      - `ntp_settings`
                      - `sflow_settings`
-                     - `snmp_settings`
-                     -
-                   `ssh_settings`
+                   - `snmp_settings`
+                     - `ssh_settings`
 
-                   `oob` means the protocols will be configured with the VRF set by
-                   `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
-                   `inband` means the protocols will
-                   be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
+                   `oob` means the protocols will be configured with the VRF set
+                   by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
+                   `inband` means the protocols
+                   will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
                    interface.
                    `none` means the VRF and or interface must be manually set for each protocol.
                    This can be
@@ -68850,11 +69048,9 @@ class EosDesigns(EosDesignsRootModel):
                 mac_address_table: mac_address_table
                 management_eapi:
                    Default is HTTPS management eAPI enabled.
-                   The VRF is set to < mgmt_interface_vrf >.
 
 
-                   Subclass of
-                   AvdModel.
+                   Subclass of AvdModel.
                 mgmt_destination_networks:
                    List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
                    Replaces the default route.

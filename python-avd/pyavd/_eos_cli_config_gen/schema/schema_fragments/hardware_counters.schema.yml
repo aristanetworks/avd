@@ -103,6 +103,9 @@ keys:
                 Most features support only 'in' and 'out'. Some like traffic-policy support 'cpu'.
                 Some features DO NOT have any direction.
                 This validation IS NOT made by the schemas.
+            enabled:
+              type: bool
+              default: true
             address_type:
               type: str
               valid_values:

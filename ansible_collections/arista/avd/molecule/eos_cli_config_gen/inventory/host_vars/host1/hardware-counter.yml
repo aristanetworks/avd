@@ -26,3 +26,6 @@ hardware_counters:
       prefix: 2001:db8:cafe::/64
     - name: segment-security
       direction: in
+    - name: acl
+      enabled: false
+      direction: in
