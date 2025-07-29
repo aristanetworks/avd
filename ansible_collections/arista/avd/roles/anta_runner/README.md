@@ -24,8 +24,7 @@ Results are reported in various formats, including JSON, CSV, and Markdown.
 
 Figure 1 below provides a visualization of the role's inputs, outputs executed by the role.
 
-![Figure 1: Ansible Role anta_runner](../../../../../docs/_media/anta_runner_light.svg#only-light)
-![Figure 1: Ansible Role anta_runner](../../../../../docs/_media/anta_runner_dark.svg#only-dark)
+![Figure 1: Ansible Role anta_runner](../../../../../docs/_media/anta_runner.svg)
 
 **Inputs:**
 
