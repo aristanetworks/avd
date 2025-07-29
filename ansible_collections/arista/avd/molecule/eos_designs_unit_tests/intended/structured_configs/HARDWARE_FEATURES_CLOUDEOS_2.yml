@@ -5,13 +5,13 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: L2_HARDWARE_FEATURES_CUSTOM_PLATFORM_2_Ethernet7
+  description: L2_HARDWARE_FEATURES_7280R_Ethernet2
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  peer: HARDWARE_FEATURES_CUSTOM_PLATFORM_2
-  peer_interface: Ethernet7
+  peer: HARDWARE_FEATURES_7280R
+  peer_interface: Ethernet2
   peer_type: l3leaf
 hardware_counters: null
 hostname: HARDWARE_FEATURES_CLOUDEOS_2
@@ -33,7 +33,7 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:
 - name: Port-Channel1
-  description: L2_HARDWARE_FEATURES_CUSTOM_PLATFORM_2_Port-Channel7
+  description: L2_group_3_Port-Channel2
   shutdown: false
   switchport:
     enabled: true

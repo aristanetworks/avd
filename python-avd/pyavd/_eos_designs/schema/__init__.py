@@ -12254,6 +12254,7 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_counter_features": {"type": HardwareCounterFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
+                "sflow": {"type": bool, "default": True},
                 "wan": {"type": bool, "default": True},
                 "ptp": {"type": bool, "default": True},
             }
@@ -12390,6 +12391,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            sflow: bool
+            """
+            Support for sFlow.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             wan: bool
             """
             Support for Arista WAN features.
@@ -12428,6 +12436,7 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
+                    sflow: bool | UndefinedType = Undefined,
                     wan: bool | UndefinedType = Undefined,
                     ptp: bool | UndefinedType = Undefined,
                 ) -> None:
@@ -12511,6 +12520,9 @@ class EosDesigns(EosDesignsRootModel):
                            set this via "private_vlan" in the specific platform settings.
                            See the TOI at
                            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
+                        sflow:
+                           Support for sFlow.
+                           The feature will be ignored on platforms where this is false.
                         wan:
                            Support for Arista WAN features.
                            An error will be raised if the feature is enabled and this is
@@ -12975,6 +12987,7 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_counter_features": {"type": HardwareCounterFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
+                "sflow": {"type": bool, "default": True},
                 "wan": {"type": bool, "default": True},
                 "ptp": {"type": bool, "default": True},
             }
@@ -13111,6 +13124,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            sflow: bool
+            """
+            Support for sFlow.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             wan: bool
             """
             Support for Arista WAN features.
@@ -13149,6 +13169,7 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
+                    sflow: bool | UndefinedType = Undefined,
                     wan: bool | UndefinedType = Undefined,
                     ptp: bool | UndefinedType = Undefined,
                 ) -> None:
@@ -13232,6 +13253,9 @@ class EosDesigns(EosDesignsRootModel):
                            set this via "private_vlan" in the specific platform settings.
                            See the TOI at
                            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
+                        sflow:
+                           Support for sFlow.
+                           The feature will be ignored on platforms where this is false.
                         wan:
                            Support for Arista WAN features.
                            An error will be raised if the feature is enabled and this is
