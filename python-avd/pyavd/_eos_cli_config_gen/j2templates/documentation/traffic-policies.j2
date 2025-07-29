@@ -49,6 +49,10 @@
 {%         for policy in traffic_policies.policies | arista.avd.natural_sort('name') %}
 
 ##### {{ policy.name }}
+{%             if policy.counters is arista.avd.defined %}
+
+Counters: {{ policy.counters | join(", ") }}
+{%             endif %}
 {%             if policy.matches is arista.avd.defined %}
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |

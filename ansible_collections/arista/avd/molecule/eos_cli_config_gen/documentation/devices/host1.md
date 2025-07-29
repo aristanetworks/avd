@@ -12641,6 +12641,8 @@ mac security
 
 ##### BLUE-C1-POLICY
 
+Counters: DEMO-TRAFFIC, DROP-PACKETS
+
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
 | BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>any | -<br/>SERVICE-DEMO | any<br/>any | -<br/>- | action: PASS<br/>traffic-class: 5 |
@@ -12654,6 +12656,8 @@ mac security
 
 ##### BLUE-C2-POLICY
 
+Counters: DEMO-TRAFFIC
+
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
 | BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | any | tcp<br/>icmp | 1,10-20<br/>- | -<br/>- | any<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5 |
@@ -12662,7 +12666,11 @@ mac security
 
 ##### BLUE-C3-POLICY
 
+Counters: test
+
 ##### BLUE-C4-POLICY
+
+Counters: test
 
 ##### BLUE-C5-POLICY
 
