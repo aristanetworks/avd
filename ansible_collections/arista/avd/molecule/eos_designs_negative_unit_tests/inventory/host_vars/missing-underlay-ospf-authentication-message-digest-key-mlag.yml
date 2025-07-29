@@ -20,13 +20,13 @@ l3leaf:
   node_groups:
     - group: MLAG
       nodes:
-      # Fake mlag node to trigger the error message
-      - name: missing-underlay-ospf-authentication-message-digest-key-underlay
-        id: 101
-        bgp_as: 101
-      - name: missing-underlay-ospf-authentication-message-digest-key-mlag
-        id: 102
-        bgp_as: 102
+        # Fake mlag node to trigger the error message
+        - name: missing-underlay-ospf-authentication-message-digest-key-underlay
+          id: 101
+          bgp_as: 101
+        - name: missing-underlay-ospf-authentication-message-digest-key-mlag
+          id: 102
+          bgp_as: 102
 
 expected_error_message: >-
   '`underlay_ospf_authentication.message_digest_keys[key=1].key

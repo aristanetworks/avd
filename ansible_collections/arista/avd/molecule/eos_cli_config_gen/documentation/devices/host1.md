@@ -101,6 +101,7 @@
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
 - [Load Balance](#load-balance)
   - [Load Balance Profiles](#load-balance-profiles)
+  - [Load Balance Cluster](#load-balance-cluster)
   - [Load Balance Configuration](#load-balance-configuration)
   - [Link Tracking](#link-tracking)
 - [MLAG](#mlag)
@@ -662,9 +663,9 @@ PTP Profile: g8275.1
 
 #### PTP Summary
 
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
-| 11:11:11:11:11:11 | 1.1.2.3 | 101 | 102 | 12 | 17 | boundary | True |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running Enabled |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------------- |
+| 11:11:11:11:11:11 | 1.1.2.3 | 101 | 102 | 12 | 17 | boundary | True | True (Hardware) |
 
 #### PTP Device Configuration
 
@@ -672,6 +673,7 @@ PTP Profile: g8275.1
 !
 ptp clock-identity 11:11:11:11:11:11
 ptp domain 17
+ptp free-running source clock hardware
 ptp message-type event dscp 46 default
 ptp message-type general dscp 36 default
 ptp mode boundary one-step
@@ -3416,6 +3418,24 @@ hardware tcam
 | Match Hash Payload Bytes | 10 |
 | UDP Payload | 10-20 |
 
+### Load Balance Cluster
+
+| Setting | Value |
+| ------- | ----- |
+| Forwarding Type | routed ipv4 |
+| Destination Grouping | bgp field-set |
+| Load-balance Method Flow Round-robin | True |
+| Flow Monitor | True |
+| Flow Source Learning Aging Timeout | 45 seconds |
+
+#### Host Port Groups
+
+| Port Group | Interface | Flow Limit | Flow Warning | Balance Factor | Exhaustion Action DSCP | Exhaustion Action Traffic-class |
+| ---------- | --------- | ---------- | ------------ | -------------- | ---------------------- | ------------------------------- |
+| host_group1 | Ethernet 2-4 | 12 | 25 | 10 | 5 | 7 |
+| host_group2 | Ethernet 2,3 | - | - | 10 | 45 | - |
+| host_group3 | Ethernet 2.2,3.1 | - | - | - | - | 9 |
+
 ### Load Balance Configuration
 
 ```eos
@@ -3429,6 +3449,31 @@ load-balance policies
       fields udp dst-port 100
          match payload bits 10 pattern 0x7d1 hash payload bytes 10
          payload bytes 10-20
+!
+load-balance cluster
+   forwarding type routed ipv4
+   destination grouping bgp field-set
+   load-balance method flow round-robin
+   flow monitor
+   !
+   flow source learning
+      aging timeout 45 seconds
+   !
+   port group host host_group1
+      interface Ethernet 2-4
+      flow limit 12
+      balance factor 10
+      flow warning 25
+      flow exhaustion action dscp 5 traffic-class 7
+   !
+   port group host host_group2
+      interface Ethernet 2,3
+      balance factor 10
+      flow exhaustion action dscp 45
+   !
+   port group host host_group3
+      interface Ethernet 2.2,3.1
+      flow exhaustion action traffic-class 9
 ```
 
 ### Link Tracking
@@ -4656,6 +4701,7 @@ interface Ethernet6
    qos cos 2
    !
    tx-queue 2
+      scheduler profile responsive
       random-detect ecn count
    logging event storm-control discards
    spanning-tree bpduguard enable
@@ -10804,9 +10850,19 @@ ip as-path access-list mylist2 deny _64517$ igp
 
 #### 802.1X Radius AV pair
 
-| Service type | Framed MTU |
-| ------------ | ---------- |
-| True | 1500 |
+| Type | Value | Auth Only |
+| ---- | ----- | --------- |
+| Service Type | - | - |
+| Framed MTU | 1500 | - |
+| LLDP System-name | - | Yes |
+| LLDP System-description | - | Yes |
+| DHCP Hostname | - | Yes |
+| DHCP Parameter Request List | - | Yes |
+| DHCP Vendor Class ID | - | Yes |
+| Filter ID Delimiter Period | - | - |
+| Filter ID IPv4 IPv6 Required | - | - |
+| Filter ID Multiple | - | - |
+| Username Format | delimiter: colon</br>MAC string case: lowercase | - |
 
 #### 802.1X Captive-portal authentication
 
@@ -10864,6 +10920,55 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Ethernet70 | - | - | - | - | - | - | - | - |
 | Ethernet71 | - | - | - | - | - | - | - | - |
 | Ethernet72 | - | - | - | - | - | - | - | - |
+
+#### Dot1x Configuration
+
+```eos
+dot1x
+   supplicant profile Profile1
+      identity user_id1
+      eap-method tls
+      passphrase 0 <removed>
+      ssl profile PF1
+   !
+   supplicant profile Profile2
+      identity user_id2
+      passphrase 7 <removed>
+   !
+   supplicant profile Profile3
+      ssl profile PF2
+   aaa unresponsive phone action apply cached-results timeout 10 hours else traffic allow
+   aaa unresponsive action traffic allow vlan 10
+   aaa unresponsive eap response success
+   aaa accounting update interval 6 seconds
+   mac based authentication delay 300 seconds
+   mac based authentication hold period 300 seconds
+   radius av-pair service-type
+   radius av-pair filter-id multiple
+   radius av-pair filter-id delimiter period
+   radius av-pair filter-id ipv4 ipv6 required
+   radius av-pair framed-mtu 1500
+   mac-based-auth radius av-pair user-name delimiter colon lowercase
+   aaa unresponsive recovery action reauthenticate
+   supplicant disconnect cached-results timeout 79 seconds
+   captive-portal url http://portal-nacm08/captiveredirect/ ssl profile Profile1
+   captive-portal access-list ipv4 ACL
+   captive-portal start limit infinite
+   vlan assignment group Assignment_1 members 400-407
+   vlan assignment group Assignment_2 members 55
+   vlan assignment group Assignment_3 members 1,3,15-20
+   statistics packets dropped
+   radius av-pair lldp system-name auth-only
+   radius av-pair lldp system-description auth-only
+   radius av-pair dhcp hostname auth-only
+   radius av-pair dhcp parameter-request-list auth-only
+   radius av-pair dhcp vendor-class-id auth-only
+   supplicant logging
+!
+dot1x system-auth-control
+dot1x protocol lldp bypass
+dot1x dynamic-authorization
+```
 
 ## Power Over Ethernet (PoE)
 
@@ -11447,6 +11552,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Settings | Value |
 | -------- | ----- |
 | Buffering Egress Profile | unicast |
+| VOQ Credit Rates Unified | True |
 
 ### Platform Device Configuration
 
@@ -11458,6 +11564,8 @@ platform sand forwarding mode arad
 platform sand lag mode 512x32
 platform sand lag hardware-only
 platform fap buffering egress profile unicast
+!
+platform fap voq credit rates unified
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7
 platform sand qos map traffic-class 2 to network-qos 15
@@ -12635,6 +12743,7 @@ traffic-policies
    !
    field-set ipv4 prefix DEMO-03
    counter interface per-interface ingress
+   counter interface poll interval 10 seconds
    !
    traffic-policy BLUE-C1-POLICY
       counter DEMO-TRAFFIC DROP-PACKETS
@@ -12793,6 +12902,15 @@ QOS random-detect ECN is set to allow **non-ect** **chip-based**
 
 QOS adaptive transmit queue percentage-based allocation: **enabled**
 
+##### QOS Transmit Queue Parameters
+
+| Queue ID | Scheduler Profile Responsive |
+| -------- | ---------------------------- |
+| 1 | True |
+| 2 | False |
+| 3 | True |
+| 4 | - |
+
 ##### QOS Mappings
 
 | COS to Traffic Class mappings |
@@ -12822,6 +12940,8 @@ QOS adaptive transmit queue percentage-based allocation: **enabled**
 !
 qos rewrite dscp
 qos tx-queue shape rate percent adaptive
+qos tx-queue 1 scheduler profile responsive
+qos tx-queue 3 scheduler profile responsive
 qos map cos 1 2 3 4 to traffic-class 2
 qos map cos 3 to traffic-class 3
 qos map dscp 8 9 10 11 12 13 14 15 16 17 19 21 23 24 25 27 29 31 32 33 35 37 39 40 41 42 43 44 45 47 49 50 51 52 53 54 55 57 58 59 60 61 62 63 to traffic-class 1

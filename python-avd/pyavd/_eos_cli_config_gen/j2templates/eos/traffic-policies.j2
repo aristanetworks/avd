@@ -47,10 +47,13 @@ traffic-policies
 {# Global options #}
 {%     if traffic_policies.options.counter_per_interface is arista.avd.defined(true) %}
    counter interface per-interface ingress
-   !
+{%     endif %}
+{%     if traffic_policies.options.counter_interface_poll_interval is arista.avd.defined %}
+   counter interface poll interval {{ traffic_policies.options.counter_interface_poll_interval }} seconds
 {%     endif %}
 {# TRAFFIC POLICIES #}
 {%     for policy in traffic_policies.policies | arista.avd.natural_sort('name') %}
+   !
    traffic-policy {{ policy.name }}
 {%         if policy.matches is arista.avd.defined %}
 {# COUNTER CREATION SECTION #}
@@ -228,8 +231,5 @@ traffic-policies
 {%             endif %}
 {%         endif %}
 {# END of DEFAULT MATCH Section #}
-{%         if not loop.last %}
-   !
-{%         endif %}
 {%     endfor %}
 {% endif %}
