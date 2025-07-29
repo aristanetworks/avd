@@ -142,7 +142,7 @@ ansible_httpapi_use_ssl: <bool; default=true>
 
 ### Role Behavior Configuration
 
-These settings allow for the modification of the default behavior as needed. The values below are the default values:
+These settings allow modification of the default behavior as needed. The values below are the default values:
 
 ```yaml
 # Enable AVD catalogs generation. Can be disabled if only user-defined catalogs are used.
