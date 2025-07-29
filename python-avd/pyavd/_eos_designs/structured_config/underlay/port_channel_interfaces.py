@@ -91,7 +91,7 @@ class PortChannelInterfacesMixin(Protocol):
                 port_channel_interface.lacp_id = short_esi.replace(":", ".")
 
             # PTP
-            if link.ptp.enable:
+            if link.ptp.enable and self.shared_utils.platform_settings.feature_support.ptp:
                 # Apply PTP profile config if using the new ptp config style
                 if self.shared_utils.ptp_enabled:
                     # Create a copy and removes the .profile attribute since the target model has a .profile key with a different schema.

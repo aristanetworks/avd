@@ -13,6 +13,15 @@ ethernet_interfaces:
   peer: HARDWARE_FEATURES_7280R
   peer_interface: Ethernet2
   peer_type: l3leaf
+- name: Ethernet2
+  description: L2_HARDWARE_FEATURES_CUSTOM_PLATFORM_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 2
+    mode: active
+  peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+  peer_interface: Ethernet1
+  peer_type: l3leaf
 hardware_counters: null
 hostname: HARDWARE_FEATURES_CLOUDEOS_2
 ip_igmp_snooping:
@@ -34,6 +43,14 @@ metadata:
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_group_3_Port-Channel2
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+- name: Port-Channel2
+  description: L2_group_3_Port-Channel1
   shutdown: false
   switchport:
     enabled: true

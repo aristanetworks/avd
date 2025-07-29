@@ -236,11 +236,12 @@ l3leaf:
         - name: HARDWARE_FEATURES_CUSTOM_PLATFORM
           id: 6
           platform: customplatform
+          uplink_type: port-channel
           uplink_switches:
-            - HARDWARE_FEATURES_720XP
+            - HARDWARE_FEATURES_CLOUDEOS_2
     - group: group_4
       nodes:
-        # Testing PTP on CloudEOS over PO uplink
+        # Testing PTP on CloudEOS over PO uplink and downlink
         - name: HARDWARE_FEATURES_CLOUDEOS_2
           id: 7
           platform: cloudEOS

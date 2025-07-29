@@ -74,7 +74,7 @@ class UtilsMixin(Protocol):
                     native_vlan=uplink.native_vlan,
                     trunk_groups=uplink.peer_trunk_groups._cast_as(EosDesignsFacts.UplinksItem.TrunkGroups),
                     bfd=uplink.bfd,
-                    ptp=uplink.ptp,
+                    ptp=uplink.ptp if self.shared_utils.platform_settings.feature_support.ptp else Undefined,
                     mac_security=uplink.mac_security,
                     short_esi=uplink.peer_short_esi,
                     mlag=uplink.peer_mlag,

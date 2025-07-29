@@ -34,27 +34,6 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
-- name: Ethernet2
-  description: P2P_HARDWARE_FEATURES_CUSTOM_PLATFORM_Ethernet1
-  shutdown: false
-  mtu: 9214
-  ip_address: 10.10.50.10/31
-  ptp:
-    enable: true
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-  peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
-  peer_interface: Ethernet1
-  peer_type: l3leaf
-  sflow:
-    enable: true
-  switchport:
-    enabled: false
 - name: Ethernet9
   description: P2P_HARDWARE_FEATURES_CLOUDEOS_Ethernet9
   shutdown: false
@@ -293,11 +272,6 @@ router_bgp:
     remote_as: '65001'
     peer: HARDWARE_FEATURES_CEOS_LAB
     description: HARDWARE_FEATURES_CEOS_LAB_Ethernet2
-  - ip_address: 10.10.50.11
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65001'
-    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
-    description: HARDWARE_FEATURES_CUSTOM_PLATFORM_Ethernet1
   - ip_address: 10.10.60.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
