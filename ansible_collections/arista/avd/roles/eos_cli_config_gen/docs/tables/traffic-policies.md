@@ -10,6 +10,7 @@
     | [<samp>traffic_policies</samp>](## "traffic_policies") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;options</samp>](## "traffic_policies.options") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counter_per_interface</samp>](## "traffic_policies.options.counter_per_interface") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counter_interface_poll_interval</samp>](## "traffic_policies.options.counter_interface_poll_interval") | Integer |  |  | Min: 2<br>Max: 60 | Interval between consecutive polls in seconds. |
     | [<samp>&nbsp;&nbsp;field_sets</samp>](## "traffic_policies.field_sets") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "traffic_policies.field_sets.ipv4") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "traffic_policies.field_sets.ipv4.[].name") | String | Required, Unique |  |  | IPv4 Prefix Field Set Name. |
@@ -81,6 +82,9 @@
     traffic_policies:
       options:
         counter_per_interface: <bool>
+
+        # Interval between consecutive polls in seconds.
+        counter_interface_poll_interval: <int; 2-60>
       field_sets:
         ipv4:
 

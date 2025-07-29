@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: snmp-settings-avd-6-behavior
+hostname: host3
 ip_igmp_snooping:
   globally_enabled: true
 is_deployed: true
@@ -20,7 +20,7 @@ management_interfaces:
   type: oob
   gateway: 10.10.10.1
 metadata:
-  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 service_routing_protocols_model: multi-agent
 snmp_server:
   ipv4_acls:

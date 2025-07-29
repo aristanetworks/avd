@@ -2,6 +2,7 @@
 traffic_policies:
   options:
     counter_per_interface: true
+    counter_interface_poll_interval: 10
   field_sets:
     ports:
       - name: SERVICE-DEMO
