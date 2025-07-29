@@ -14,7 +14,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "aaa_settings.tacacs.servers.[].groups") | List, items: String | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "aaa_settings.tacacs.servers.[].groups.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "aaa_settings.tacacs.servers.[].vrf") | String |  |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the TACACS host under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the TACACS host under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "aaa_settings.tacacs.servers.[].key") | String | Required |  |  | Encrypted type-7 key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "aaa_settings.tacacs.servers.[].key") | String |  |  |  | Encrypted Type 7 key.<br>Takes precedence over `cleartext_key` if both are provided.<br>Either `key` or `cleartext_key` must be set to render the configuration;<br>otherwise, an error will be raised. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleartext_key</samp>](## "aaa_settings.tacacs.servers.[].cleartext_key") | String |  |  |  | Plaintext password that will be encrypted to Type 7 by AVD.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar.<br>Either `key` or `cleartext_key` must be set to render the configuration;<br>otherwise, an error will be raised. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "aaa_settings.tacacs.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "aaa_settings.tacacs.vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "aaa_settings.tacacs.vrfs.[].source_interface") | String |  |  |  | Source interface to use for TACACS hosts in this VRF.<br>If not set, the source interface may be set automatically when the TACACS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence. |
@@ -26,7 +27,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "aaa_settings.radius.servers.[].groups") | List, items: String | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "aaa_settings.radius.servers.[].groups.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "aaa_settings.radius.servers.[].vrf") | String |  |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the Radius host under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the Radius host under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "aaa_settings.radius.servers.[].key") | String | Required |  |  | Encrypted key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "aaa_settings.radius.servers.[].key") | String |  |  |  | Encrypted type-7 key.<br>Takes precedence over `cleartext_key`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cleartext_key</samp>](## "aaa_settings.radius.servers.[].cleartext_key") | String |  |  |  | Cleartext password.<br>Encrypted to Type 7 by AVD.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "aaa_settings.radius.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "aaa_settings.radius.vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "aaa_settings.radius.vrfs.[].source_interface") | String |  |  |  | Source interface to use for RADIUS hosts in this VRF.<br>If not set, the source interface may be set automatically when the RADIUS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence. |
@@ -137,8 +139,17 @@
             # - Any other string will be used directly as the VRF name.
             vrf: <str>
 
-            # Encrypted type-7 key.
-            key: <str; required>
+            # Encrypted Type 7 key.
+            # Takes precedence over `cleartext_key` if both are provided.
+            # Either `key` or `cleartext_key` must be set to render the configuration;
+            # otherwise, an error will be raised.
+            key: <str>
+
+            # Plaintext password that will be encrypted to Type 7 by AVD.
+            # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+            # Either `key` or `cleartext_key` must be set to render the configuration;
+            # otherwise, an error will be raised.
+            cleartext_key: <str>
         vrfs:
 
             # VRF Name.
@@ -168,8 +179,14 @@
             # - Any other string will be used directly as the VRF name.
             vrf: <str>
 
-            # Encrypted key.
-            key: <str; required>
+            # Encrypted type-7 key.
+            # Takes precedence over `cleartext_key`.
+            key: <str>
+
+            # Cleartext password.
+            # Encrypted to Type 7 by AVD.
+            # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+            cleartext_key: <str>
         vrfs:
 
             # VRF Name.
