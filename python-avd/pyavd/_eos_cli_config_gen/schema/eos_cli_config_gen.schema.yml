@@ -3670,7 +3670,6 @@ keys:
             application_overrides:
               type: list
               description: Set CMIS transceiver applications.
-              primary_key: application_number
               min_length: 1
               items:
                 type: dict
@@ -3679,14 +3678,14 @@ keys:
                     min: 0
                     max: 15
                     type: int
+                    required: true
                     convert_types:
                     - str
                   lanes:
                     type: dict
                     description: 'Set host lanes for which overrides should be applied.
 
-                      The value of `lanes.start` should be unique for each `application_overrides`
-                      item.'
+                      The ranges of `lanes` should not overlap.'
                     keys:
                       start:
                         type: int

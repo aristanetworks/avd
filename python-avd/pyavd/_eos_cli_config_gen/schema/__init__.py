@@ -9087,9 +9087,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 lanes: Lanes
                 """
                 Set host lanes for which overrides should be applied.
-                The value of `lanes.start` should be unique
-                for each `application_overrides` item.
-
+                The ranges of `lanes` should not overlap.
                 Subclass of AvdModel.
                 """
 
@@ -9106,20 +9104,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             application_number: application_number
                             lanes:
                                Set host lanes for which overrides should be applied.
-                               The value of `lanes.start` should be unique
-                               for each `application_overrides` item.
-
+                               The ranges of `lanes` should not overlap.
                                Subclass of AvdModel.
 
                         """
 
-            class ApplicationOverrides(AvdIndexedList[int, ApplicationOverridesItem]):
-                """
-                Subclass of AvdIndexedList with `ApplicationOverridesItem` items. Primary key is
-                `application_number` (`int`).
-                """
-
-                _primary_key: ClassVar[str] = "application_number"
+            class ApplicationOverrides(AvdList[ApplicationOverridesItem]):
+                """Subclass of AvdList with `ApplicationOverridesItem` items."""
 
             ApplicationOverrides._item_type = ApplicationOverridesItem
 
@@ -9146,8 +9137,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             Set CMIS transceiver applications.
 
-            Subclass of AvdIndexedList with `ApplicationOverridesItem`
-            items. Primary key is `application_number` (`int`).
+            Subclass of AvdList with `ApplicationOverridesItem` items.
             """
 
             if TYPE_CHECKING:
@@ -9178,8 +9168,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         application_overrides:
                            Set CMIS transceiver applications.
 
-                           Subclass of AvdIndexedList with `ApplicationOverridesItem`
-                           items. Primary key is `application_number` (`int`).
+                           Subclass of AvdList with `ApplicationOverridesItem` items.
 
                     """
 

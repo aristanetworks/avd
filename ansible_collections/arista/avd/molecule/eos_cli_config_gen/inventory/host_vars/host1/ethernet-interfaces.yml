@@ -480,6 +480,7 @@ ethernet_interfaces:
         override: 100gbase-ar4
       application_overrides:
         - application_number: 10
+        - application_number: 10
           lanes:
             start: 1
             end: 1
