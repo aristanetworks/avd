@@ -14,8 +14,8 @@
 
 Enabled: {{ rip.enabled }}
 {%         endif %}
-{%         if rip.metric is arista.avd.defined %}
-Metric: {{ rip.metric }}
+{%         if rip.default_metric is arista.avd.defined %}
+Metric: {{ rip.default_metric }}
 {%         endif %}
 {%         if rip.networks is arista.avd.defined %}
 
