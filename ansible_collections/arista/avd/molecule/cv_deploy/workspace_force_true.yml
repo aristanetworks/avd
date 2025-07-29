@@ -78,6 +78,9 @@
               - cv_deploy_results.change_control.description == cv_change_control_description
               - cv_deploy_results.change_control.requested_state == "pending approval"
               - cv_deploy_results.change_control.state == "pending approval"
+          vars:
+            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
 
       always:
 

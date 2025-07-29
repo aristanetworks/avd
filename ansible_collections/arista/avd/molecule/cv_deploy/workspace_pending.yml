@@ -68,6 +68,9 @@
               - cv_deploy_results.workspace.description == cv_workspace_description
               - cv_deploy_results.workspace.state == "built"
               - cv_deploy_results.workspace.requested_state == "built"
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
 
       always:
 
