@@ -72,7 +72,7 @@ The `Run ANTA on EOS devices` task will fail if any of the following conditions 
 
 The `anta_runner` role works with two types of test catalogs:
 
-1. **AVD-generated catalogs:** These are automatically created based on your devices' structured configurations. They contain tests tailored to both device-specific configurations and the network design.
+1. **AVD-generated catalogs:** These are automatically created based on structured configurations. They contain tests tailored to both device-specific configurations and the network design.
 2. **User-defined catalogs:** These are custom ANTA test catalogs you can create and provide to the role. They allow you to add any tests that are available in the ANTA framework.
 
 Different filtering mechanisms are used depending on the catalog type, explained in the [Advanced Filtering Options](#advanced-filtering-options) sections.
