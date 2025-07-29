@@ -98,8 +98,18 @@ class VlansMixin(Protocol):
             name=vlan.name,
             tenant=tenant.name,
         )
-        if vlan.address_locking and self.structured_config.address_locking.dhcp_servers_ipv4 and self.structured_config.address_locking.local_interface:
-            vlans_vlan.address_locking = vlan.address_locking
+        if vlan.address_locking.address_family.ipv4:
+            if self.inputs.address_locking_settings.dhcp_servers_ipv4 and self.inputs.address_locking_settings.local_interface:
+                vlans_vlan.address_locking.address_family.ipv4 = vlan.address_locking.address_family.ipv4
+            else:
+                msg = "To configure address locking address_locking_settings.dhcp_servers_ipv4 and address_locking_settings.local_interface are required."
+                raise AristaAvdInvalidInputsError(msg)
+        if vlan.address_locking.address_family.ipv6:
+            if self.inputs.address_locking_settings.dhcp_servers_ipv4 and self.inputs.address_locking_settings.local_interface:
+                vlans_vlan.address_locking.address_family.ipv6 = vlan.address_locking.address_family.ipv6
+            else:
+                msg = "To configure address locking address_locking_settings.dhcp_servers_ipv4 and address_locking_settings.local_interface are required."
+                raise AristaAvdInvalidInputsError(msg)
         if self.inputs.enable_trunk_groups:
             trunk_groups = vlan.trunk_groups
             if self.shared_utils.only_local_vlan_trunk_groups:

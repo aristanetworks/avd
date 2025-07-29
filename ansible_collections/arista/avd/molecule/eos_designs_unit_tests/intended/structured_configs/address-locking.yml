@@ -1,5 +1,9 @@
 aaa_root:
   disabled: true
+address_locking:
+  dhcp_servers_ipv4:
+  - 1.1.1.1
+  local_interface: Ethernet1
 config_end: true
 enable_password:
   disabled: true
@@ -129,9 +133,15 @@ vlan_internal_order:
 vlans:
 - id: 101
   name: test-address-locking-1
+  address_locking:
+    address_family:
+      ipv4: true
   tenant: TENANT1
 - id: 102
   name: test-address-locking-2
+  address_locking:
+    address_family:
+      ipv6: true
   tenant: TENANT2
 vrfs:
 - name: MGMT

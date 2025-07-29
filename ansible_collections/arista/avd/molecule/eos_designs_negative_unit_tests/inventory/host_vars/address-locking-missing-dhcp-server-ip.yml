@@ -7,13 +7,11 @@ l3leaf:
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     virtual_router_mac_address: 00:dc:00:00:00:0a
   nodes:
-    - name: address-locking
+    - name: address-locking-missing-dhcp-server-ip
       id: 101
       bgp_as: 101
 
 address_locking_settings:
-  dhcp_servers_ipv4:
-    - 1.1.1.1
   local_interface: Ethernet1
 
 tenants:
@@ -37,3 +35,6 @@ tenants:
             address_locking:
               address_family:
                 ipv6: true
+
+expected_error_message: >-
+  To configure address locking address_locking_settings.dhcp_servers_ipv4 and address_locking_settings.local_interface are required.
