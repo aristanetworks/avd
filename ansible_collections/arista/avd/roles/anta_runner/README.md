@@ -20,22 +20,6 @@ It can also be used to execute user-defined ANTA test catalogs in conjunction wi
 
 Results are reported in various formats, including JSON, CSV, and Markdown.
 
-## Role Inputs and Outputs
-
-Figure 1 below provides a visualization of the role's inputs, outputs executed by the role.
-
-![Figure 1: Ansible Role anta_runner](../../../../../docs/_media/anta_runner.svg)
-
-**Inputs:**
-
-- EOS structured configurations from `eos_designs` will be parsed to render test catalogs.
-- User-defined custom tests may also be defined. For test definitions, please see the test catalog on [anta.arista.com](https://anta.arista.com/stable/api/tests/).
-
-**Outputs:**
-
-- Test reports in either CSV, Markdown, or JSON formats.
-- Optional: Saves a copy of the AVD-generated tests per device.
-
 ## Requirements
 
 Requirements are located in the AVD [installation](../../../../../docs/installation/collection-installation.md#python-requirements-installation) documentation.
@@ -67,6 +51,22 @@ The `Run ANTA on EOS devices` task will fail if any of the following conditions 
 !!! tip
     To continue running the playbook when `anta_runner` fails, use Ansible `ignore_errors`. For more details, refer to the [Ansible documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_error_handling.html).
 
+## Role Inputs and Outputs
+
+Figure 1 below provides a visualization of the role's inputs, outputs executed by the role.
+
+![Figure 1: Ansible Role anta_runner](../../../../../docs/_media/anta_runner.svg)
+
+**Inputs:**
+
+- EOS structured configurations from `eos_designs` will be parsed to render test catalogs.
+- User-defined custom tests may also be defined. For test definitions, please see the test catalog on [anta.arista.com](https://anta.arista.com/stable/api/tests/).
+
+**Outputs:**
+
+- Test reports in either CSV, Markdown, or JSON formats.
+- Optional: Saves a copy of the AVD-generated tests per device.
+
 ## Understanding ANTA Catalogs
 
 The `anta_runner` role works with two types of test catalogs:
@@ -76,7 +76,7 @@ The `anta_runner` role works with two types of test catalogs:
 
 Different filtering mechanisms are used depending on the catalog type, explained in the [Advanced Filtering Options](#advanced-filtering-options) sections.
 
-### EOS Device Configuration
+## anta_runner
 
 By default, this role will generate the AVD-generated catalog and execute the ANTA tests against all hosts targeted by the Ansible "play".
 
@@ -138,31 +138,6 @@ ansible_become_password: <str>
 ansible_httpapi_port: <int; default=80 or 443 depending on ansible_httpapi_use_ssl>
 ansible_httpapi_use_ssl: <bool; default=true>
 ```
-
-### Role Behavior Configuration
-
-These settings allow modification of the default behavior as needed. The values below are the default values:
-
-```yaml
-# Enable AVD catalogs generation. Can be disabled if only user-defined catalogs are used.
-avd_catalogs_enabled: true
-
-# Generate tests for BGP peers in VRFs.
-avd_catalogs_allow_bgp_vrfs: false
-
-# Global timeout for the ANTA runner. Depending on the scale this can be adjusted.
-anta_runner_timeout: 30
-
-# ANTA runner batch size. This controls the number of devices that will be processed in parallel.
-# 5-10 is a good starting point.
-anta_runner_batch_size: 5
-
-# Run ANTA in dry-run mode. This will generate the tests but not execute them.
-anta_runner_dry_run: false
-```
-
-!!! tip
-    The role automatically respects the `ansible_forks` setting to determine the maximum number of worker processes in conjunction with `anta_runner_batch_size`. Consider adjusting these settings for a large deployment with many devices to optimize performance while managing resource usage.
 
 ### Advanced Filtering Options
 
@@ -303,6 +278,31 @@ anta_report_json_path: "{{ anta_reports_dir }}/anta_report.json"
 anta_report_md_path: "{{ anta_reports_dir }}/anta_report.md"
 anta_report_csv_path: "{{ anta_reports_dir }}/anta_report.csv"
 ```
+
+### Additional Role Settings
+
+These settings allow modification of the default behavior as needed. The values below are the default values:
+
+```yaml
+# Enable AVD catalogs generation. Can be disabled if only user-defined catalogs are used.
+avd_catalogs_enabled: true
+
+# Generate tests for BGP peers in VRFs.
+avd_catalogs_allow_bgp_vrfs: false
+
+# Global timeout for the ANTA runner. Depending on the scale this can be adjusted.
+anta_runner_timeout: 30
+
+# ANTA runner batch size. This controls the number of devices that will be processed in parallel.
+# 5-10 is a good starting point.
+anta_runner_batch_size: 5
+
+# Run ANTA in dry-run mode. This will generate the tests but not execute them.
+anta_runner_dry_run: false
+```
+
+!!! tip
+    The role automatically respects the `ansible_forks` setting to determine the maximum number of worker processes in conjunction with `anta_runner_batch_size`. Consider adjusting these settings for a large deployment with many devices to optimize performance while managing resource usage.
 
 ## AVD-generated Catalog Test Index
 
