@@ -246,7 +246,7 @@
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.debug:
-            msg: '{{ cv_deploy_results }}'
+            var: cv_deploy_results
 
         - name: "(ALWAYS) {{ test_id | upper }} Cleanup orphan workspace"
           tags: ["{{ test_id }}"]

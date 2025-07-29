@@ -55,4 +55,4 @@
       tags: ["always"]
       run_once: true
       ansible.builtin.debug:
-        msg: '{{ cv_deploy_results }}'
+        var: cv_deploy_results
