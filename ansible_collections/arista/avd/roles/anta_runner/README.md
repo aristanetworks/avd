@@ -51,6 +51,15 @@ The `Run ANTA on EOS devices` task will fail if any of the following conditions 
 !!! tip
     To continue running the playbook when `anta_runner` fails, use Ansible `ignore_errors`. For more details, refer to the [Ansible documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_error_handling.html).
 
+## Understanding ANTA Catalogs
+
+The `anta_runner` role works with two types of test catalogs:
+
+1. **AVD-generated catalogs:** These are automatically created based on structured configurations. They contain tests tailored to both device-specific configurations and the network design.
+2. **User-defined catalogs:** These are custom ANTA test catalogs you can create and provide to the role. They allow you to add any tests that are available in the ANTA framework.
+
+Different filtering mechanisms are used depending on the catalog type, explained in the [Advanced Filtering Options](#advanced-filtering-options) sections.
+
 ## Role Inputs and Outputs
 
 Figure 1 below provides a visualization of the role's inputs, outputs executed by the role.
@@ -67,16 +76,7 @@ Figure 1 below provides a visualization of the role's inputs, outputs executed b
 - Test reports in either CSV, Markdown, or JSON formats.
 - Optional: Saves a copy of the AVD-generated tests per device.
 
-## Understanding ANTA Catalogs
-
-The `anta_runner` role works with two types of test catalogs:
-
-1. **AVD-generated catalogs:** These are automatically created based on structured configurations. They contain tests tailored to both device-specific configurations and the network design.
-2. **User-defined catalogs:** These are custom ANTA test catalogs you can create and provide to the role. They allow you to add any tests that are available in the ANTA framework.
-
-Different filtering mechanisms are used depending on the catalog type, explained in the [Advanced Filtering Options](#advanced-filtering-options) sections.
-
-## anta_runner
+## Role Configuration and Options
 
 By default, this role will generate the AVD-generated catalog and execute the ANTA tests against all hosts targeted by the Ansible "play".
 
