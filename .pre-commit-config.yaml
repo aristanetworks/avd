@@ -238,6 +238,23 @@ repos:
         pass_filenames: false
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.7.2']
 
+      - id: check-schema-tables-in-docs
+        name: Check for schema tables in documentation.
+        entry: development/find_missing_tables.py
+        language: python
+        args:
+          - --root-path
+          - "ansible_collections/arista/avd"
+          - --table-files
+          - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*.md"
+          - "ansible_collections/arista/avd/roles/eos_deisgns/docs/tables/*.md"
+          - --global-docs
+          - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md"
+          - "ansible_collections/arista/avd/roles/eos_deisgns/docs/*.md"
+          - --ignore-files
+          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
+        pass_filenames: false
+
       - id: templates
         name: Precompile Jinja2 templates
         entry: sh -c 'python-avd/scripts/compile_templates.py'

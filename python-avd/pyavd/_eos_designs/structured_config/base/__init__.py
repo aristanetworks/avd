@@ -668,19 +668,19 @@ class AvdStructuredConfigBaseProtocol(
                 context=f"aaa_settings.radius.servers[host={server.host}].vrf",
             )
             # TODO: Temporary workaround to avoid duplicate configs; replace once schema supports unique (host, VRF) combinations.
-            server_key: tuple[str, str] = (server.host, server_vrf)
-            original_server = server_combinations.get(server_key)
-            if original_server:
+            server_entry: tuple[str, str] = (server.host, server_vrf)
+            if original_server := server_combinations.get(server_entry):
                 msg = "RADIUS servers"
                 raise AristaAvdDuplicateDataError(msg, str(original_server._as_dict()), str(server._as_dict()))
-            server_combinations[server_key] = server
+            server_combinations[server_entry] = server
 
             if source_interface:
                 self.structured_config.ip_radius_source_interfaces.append_unique(
                     EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
                 )
 
-            self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server.key)
+            server_key = self._get_tacacs_or_radius_server_password(server)
+            self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
 
             for group in server.groups:
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
@@ -713,19 +713,18 @@ class AvdStructuredConfigBaseProtocol(
                 context=f"aaa_settings.tacacs.servers[host={server.host}].vrf",
             )
             # TODO: Temporary workaround to avoid duplicate configs; replace once schema supports unique (host, VRF) combinations.
-            server_key: tuple[str, str] = (server.host, server_vrf)
-            original_server = server_combinations.get(server_key)
-            if original_server:
+            server_entry: tuple[str, str] = (server.host, server_vrf)
+            if original_server := server_combinations.get(server_entry):
                 msg = "TACACS servers"
                 raise AristaAvdDuplicateDataError(msg, str(original_server._as_dict()), str(server._as_dict()))
-            server_combinations[server_key] = server
+            server_combinations[server_entry] = server
 
             if source_interface:
                 self.structured_config.ip_tacacs_source_interfaces.append_unique(
                     EosCliConfigGen.IpTacacsSourceInterfacesItem(name=source_interface, vrf=server_vrf)
                 )
-
-            self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server.key)
+            server_key = self._get_tacacs_or_radius_server_password(server)
+            self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
 
             for group in server.groups:
                 tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
