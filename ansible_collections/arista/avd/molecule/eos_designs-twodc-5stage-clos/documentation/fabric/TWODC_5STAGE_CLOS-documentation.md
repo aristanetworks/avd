@@ -25,6 +25,7 @@
 | DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2A | - | vEOS-LAB | Provisioned | - |
 | DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2B | 192.168.1.12/24 | - | Provisioned | - |
 | DC1_POD1 | l3leaf | DC1-POD1-LEAF1A | - | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | l3leaf | DC1-POD1-LEAF1B | 192.168.1.26/24 | vEOS-LAB | Provisioned | - |
 | DC1_POD1 | l3leaf | DC1-POD1-LEAF2B | 192.168.1.9/16 | vEOS-LAB | Provisioned | - |
 | DC1_POD1 | spine | DC1-POD1-SPINE1 | - | vEOS-LAB | Provisioned | - |
 | DC1_POD1 | spine | DC1-POD1-SPINE2 | 192.168.1.6/24 | vEOS-LAB | Provisioned | DEADBEEFC0FFEE |
@@ -73,6 +74,16 @@
 | l3leaf | DC1-POD1-LEAF1A | Ethernet1 | spine | DC1-POD1-SPINE1 | Ethernet3 |
 | l3leaf | DC1-POD1-LEAF1A | Ethernet2 | spine | DC1-POD1-SPINE2 | Ethernet3 |
 | l3leaf | DC1-POD1-LEAF1A | Ethernet4 | overlay-controller | DC1-RS1 | Ethernet3 |
+| l3leaf | DC1-POD1-LEAF1B | Ethernet1 | l3leaf | DC1.POD1.LEAF2A | Ethernet13 |
+| l3leaf | DC1-POD1-LEAF1B | Ethernet1.1025 | l3leaf | DC1.POD1.LEAF2A | Ethernet13.1025 |
+| l3leaf | DC1-POD1-LEAF1B | Ethernet1.1100 | l3leaf | DC1.POD1.LEAF2A | Ethernet13.1100 |
+| l3leaf | DC1-POD1-LEAF1B | Ethernet1.1101 | l3leaf | DC1.POD1.LEAF2A | Ethernet13.1101 |
+| l3leaf | DC1-POD1-LEAF1B | Ethernet1.1102 | l3leaf | DC1.POD1.LEAF2A | Ethernet13.1102 |
+| l3leaf | DC1-POD1-LEAF1B | Ethernet2 | l3leaf | DC1-POD1-LEAF2B | Ethernet13 |
+| l3leaf | DC1-POD1-LEAF1B | Ethernet2.1025 | l3leaf | DC1-POD1-LEAF2B | Ethernet13.1025 |
+| l3leaf | DC1-POD1-LEAF1B | Ethernet2.1100 | l3leaf | DC1-POD1-LEAF2B | Ethernet13.1100 |
+| l3leaf | DC1-POD1-LEAF1B | Ethernet2.1101 | l3leaf | DC1-POD1-LEAF2B | Ethernet13.1101 |
+| l3leaf | DC1-POD1-LEAF1B | Ethernet2.1102 | l3leaf | DC1-POD1-LEAF2B | Ethernet13.1102 |
 | l3leaf | DC1-POD1-LEAF2B | Ethernet1 | spine | DC1-POD1-SPINE1 | Ethernet5 |
 | l3leaf | DC1-POD1-LEAF2B | Ethernet2 | spine | DC1-POD1-SPINE2 | Ethernet5 |
 | l3leaf | DC1-POD1-LEAF2B | Ethernet5 | mlag_peer | DC1.POD1.LEAF2A | Ethernet5 |
@@ -130,7 +141,7 @@
 | 172.16.21.0/24 | 256 | 8 | 3.13 % |
 | 172.17.10.0/24 | 256 | 12 | 4.69 % |
 | 172.17.20.0/24 | 256 | 8 | 3.13 % |
-| 172.17.110.0/24 | 256 | 20 | 7.82 % |
+| 172.17.110.0/24 | 256 | 40 | 15.63 % |
 | 172.17.120.0/24 | 256 | 4 | 1.57 % |
 | 172.17.210.0/24 | 256 | 8 | 3.13 % |
 
@@ -141,6 +152,16 @@
 | DC1-POD1-LEAF1A | Ethernet1 | 172.17.110.1/31 | DC1-POD1-SPINE1 | Ethernet3 | 172.17.110.0/31 |
 | DC1-POD1-LEAF1A | Ethernet2 | 172.17.110.3/31 | DC1-POD1-SPINE2 | Ethernet3 | 172.17.110.2/31 |
 | DC1-POD1-LEAF1A | Ethernet4 | 172.17.10.4/31 | DC1-RS1 | Ethernet3 | 172.17.10.5/31 |
+| DC1-POD1-LEAF1B | Ethernet1 | 172.17.110.13/31 | DC1.POD1.LEAF2A | Ethernet13 | 172.17.110.12/31 |
+| DC1-POD1-LEAF1B | Ethernet1.1025 | 172.17.110.13/31 | DC1.POD1.LEAF2A | Ethernet13.1025 | 172.17.110.12/31 |
+| DC1-POD1-LEAF1B | Ethernet1.1100 | 172.17.110.13/31 | DC1.POD1.LEAF2A | Ethernet13.1100 | 172.17.110.12/31 |
+| DC1-POD1-LEAF1B | Ethernet1.1101 | 172.17.110.13/31 | DC1.POD1.LEAF2A | Ethernet13.1101 | 172.17.110.12/31 |
+| DC1-POD1-LEAF1B | Ethernet1.1102 | 172.17.110.13/31 | DC1.POD1.LEAF2A | Ethernet13.1102 | 172.17.110.12/31 |
+| DC1-POD1-LEAF1B | Ethernet2 | 172.17.110.15/31 | DC1-POD1-LEAF2B | Ethernet13 | 172.17.110.14/31 |
+| DC1-POD1-LEAF1B | Ethernet2.1025 | 172.17.110.15/31 | DC1-POD1-LEAF2B | Ethernet13.1025 | 172.17.110.14/31 |
+| DC1-POD1-LEAF1B | Ethernet2.1100 | 172.17.110.15/31 | DC1-POD1-LEAF2B | Ethernet13.1100 | 172.17.110.14/31 |
+| DC1-POD1-LEAF1B | Ethernet2.1101 | 172.17.110.15/31 | DC1-POD1-LEAF2B | Ethernet13.1101 | 172.17.110.14/31 |
+| DC1-POD1-LEAF1B | Ethernet2.1102 | 172.17.110.15/31 | DC1-POD1-LEAF2B | Ethernet13.1102 | 172.17.110.14/31 |
 | DC1-POD1-LEAF2B | Ethernet1 | 172.17.110.17/31 | DC1-POD1-SPINE1 | Ethernet5 | 172.17.110.16/31 |
 | DC1-POD1-LEAF2B | Ethernet2 | 172.17.110.19/31 | DC1-POD1-SPINE2 | Ethernet5 | 172.17.110.18/31 |
 | DC1-POD1-LEAF2B | Ethernet7 | 11.1.0.38/31 | DC2-POD1-LEAF1A | Ethernet7 | 11.1.0.39/31 |
@@ -190,7 +211,7 @@
 | 172.16.10.0/24 | 256 | 2 | 0.79 % |
 | 172.16.20.0/24 | 256 | 2 | 0.79 % |
 | 172.16.100.0/24 | 256 | 2 | 0.79 % |
-| 172.16.110.0/24 | 256 | 5 | 1.96 % |
+| 172.16.110.0/24 | 256 | 6 | 2.35 % |
 | 172.16.120.0/24 | 256 | 3 | 1.18 % |
 | 172.16.200.0/24 | 256 | 2 | 0.79 % |
 | 172.16.210.0/24 | 256 | 4 | 1.57 % |
@@ -200,6 +221,7 @@
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
 | DC1_POD1 | DC1-POD1-LEAF1A | 172.16.110.3/32 |
+| DC1_POD1 | DC1-POD1-LEAF1B | 172.16.110.6/32 |
 | DC1_POD1 | DC1-POD1-LEAF2B | 172.16.110.5/32 |
 | DC1_POD1 | DC1-POD1-SPINE1 | 172.16.110.1/32 |
 | DC1_POD1 | DC1-POD1-SPINE2 | 172.16.110.2/32 |

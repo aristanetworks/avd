@@ -6,3 +6,5 @@ ptp:
     missing_message:
       sequence_ids:
         enabled: false
+  free_running:
+    enabled: true
