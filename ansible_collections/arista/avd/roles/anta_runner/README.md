@@ -29,8 +29,8 @@ Figure 1 below provides a visualization of the role's inputs, outputs executed b
 
 **Inputs:**
 
-- EOS structured configuration from `eos_designs` will be parsed to render test catalog creation.
-- User defined custom test may also be defined. For test definitions, please see the test catalog on [anta.arista.com](https://anta.arista.com/stable/api/tests/).
+- EOS structured configurations from `eos_designs` will be parsed to render test catalogs.
+- User-defined custom tests may also be defined. For test definitions, please see the test catalog on [anta.arista.com](https://anta.arista.com/stable/api/tests/).
 
 **Outputs:**
 
