@@ -1,10 +1,5 @@
 ---
-### group_vars/DC1.yml
-
-custom_structured_configuration_aaa_authentication:
-  policies:
-    local:
-      allow_nopassword: true
+### group_vars/FABRIC/fabric.yml
 
 # local users
 local_users:
@@ -22,7 +17,6 @@ local_users:
 
 # OOB Management network default gateway
 mgmt_gateway: 172.16.100.1
-mgmt_interface: Management0
 
 # dns servers.
 dns_settings:
@@ -41,3 +35,8 @@ ntp_settings:
 custom_structured_configuration_aaa_authorization:
   exec:
     default: local
+
+custom_structured_configuration_aaa_authentication:
+  policies:
+    local:
+      allow_nopassword: true

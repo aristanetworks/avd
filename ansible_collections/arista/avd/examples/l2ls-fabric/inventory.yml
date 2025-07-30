@@ -1,7 +1,7 @@
 # inventory.yml
-DC1:
+FABRIC:
   children:
-    DC1_FABRIC:
+    DC1:
       children:
         DC1_SPINES:
           hosts:

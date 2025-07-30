@@ -1,0 +1,12 @@
+---
+### group_vars/DC1/dc1.yml
+
+# Set the Fabric Name - must match an Ansible Inventory Group
+fabric_name: DC1
+
+#### Override for vEOS/cEOS Lab Caveats ####
+p2p_uplinks_mtu: 1500
+
+# Documentation
+eos_designs_documentation:
+  connected_endpoints: true

@@ -1,4 +1,0 @@
----
-### group_vars/DC1_SPINES.yml
-
-type: l2spine     # Must be either l2spine|l3spine

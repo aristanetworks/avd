@@ -1,4 +1,0 @@
----
-### group_vars/DC1_LEAFS.yml
-
-type: l2leaf     # Must be l2leaf
