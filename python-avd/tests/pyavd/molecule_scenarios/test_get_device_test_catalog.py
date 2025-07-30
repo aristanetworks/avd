@@ -14,14 +14,9 @@ from pyavd.api._anta import AvdCatalogGenerationSettings, InputFactorySettings, 
 from tests.models import MoleculeHost, MoleculeScenario
 
 SETTINGS_WITH_BGP_VRFS = AvdCatalogGenerationSettings(input_factory_settings=InputFactorySettings(allow_bgp_vrfs=True))
-FILTERED_INPUT_SETTINGS = InputFactorySettings()
-SETTINGS_FILTERED_DEFAULT = AvdCatalogGenerationSettings(input_factory_settings=FILTERED_INPUT_SETTINGS, output_dir=None, skip_tests=["VerifyNTP"])
-SETTINGS_FILTERED_SVC_LEAF = AvdCatalogGenerationSettings(
-    input_factory_settings=FILTERED_INPUT_SETTINGS, output_dir=None, skip_tests=["VerifyNTP"], run_tests=["VerifyReachability"]
-)
-SETTINGS_FILTERED_SPINE = AvdCatalogGenerationSettings(
-    input_factory_settings=FILTERED_INPUT_SETTINGS, output_dir=None, run_tests=["VerifyLLDPNeighbors"], skip_tests=["VerifyLLDPNeighbors"]
-)
+SETTINGS_FILTERED_DEFAULT = AvdCatalogGenerationSettings(skip_tests=["VerifyNTP"])
+SETTINGS_FILTERED_SVC_LEAF = AvdCatalogGenerationSettings(skip_tests=["VerifyNTP"], run_tests=["VerifyReachability"])
+SETTINGS_FILTERED_SPINE = AvdCatalogGenerationSettings(run_tests=["VerifyLLDPNeighbors"], skip_tests=["VerifyLLDPNeighbors"])
 TEST_CASES: dict[str, Any] = {
     "default_run": {},
     "allow_bgp_vrfs_run": {},
