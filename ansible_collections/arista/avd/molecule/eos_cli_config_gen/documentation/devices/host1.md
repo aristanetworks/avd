@@ -7539,11 +7539,12 @@ router adaptive-virtual-topology
 
 #### VRF Route leaking
 
-| VRF | Source VRF | Route Map Policy |
-|-----|------------|------------------|
-| BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING |
-| BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING |
-| BLUE3 | BLUE-C1 | RM-BLUE-LEAKING |
+| VRF | Source VRF | Route Map Policy | RCF Policy |
+|-----|------------|------------------| ---------- |
+| BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING | - |
+| BLUE-C2 | BLUE-C3 | RMBLUE-LEAKING | - |
+| BLUE3 | BLUE-C1 | RM-BLUE-LEAKING | - |
+| BLUE3 | BLUE-C2 | - | RCF_BLUE_C2 |
 
 #### VRF Routes Dynamic Prefix-lists
 
@@ -7564,12 +7565,13 @@ router general
    !
    vrf BLUE3
       leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
+      leak routes source-vrf BLUE-C2 subscribe rcf RCF_BLUE_C2()
       exit
    !
    vrf BLUE-C2
       software forwarding hardware offload mtu 98
       leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
-      leak routes source-vrf BLUE-C3 subscribe-policy RM-BLUE-LEAKING
+      leak routes source-vrf BLUE-C3 subscribe-policy RMBLUE-LEAKING
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_1
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_2
       exit

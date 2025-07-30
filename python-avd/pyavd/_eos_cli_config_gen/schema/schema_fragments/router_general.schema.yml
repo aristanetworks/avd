@@ -52,6 +52,11 @@ keys:
                   subscribe_policy:
                     type: str
                     description: Route-Map Policy.
+                  subscribe_rcf:
+                    type: str
+                    description: |-
+                      RCF Policy.
+                      Mutually exclusive with `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
             routes:
               type: dict
               keys:
