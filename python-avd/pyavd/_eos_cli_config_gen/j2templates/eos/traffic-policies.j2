@@ -53,8 +53,7 @@ traffic-policies
 {%     for policy in traffic_policies.policies | arista.avd.natural_sort('name') %}
    traffic-policy {{ policy.name }}
 {# COUNTER CREATION SECTION #}
-{%         set transient_values = namespace() %}
-{%         set transient_values.counters = [] %}
+{%         set transient_values = namespace(counters=[]) %}
 {%         if policy.counters is arista.avd.defined %}
 {%             do transient_values.counters.extend(policy.counters) %}
 {%         endif %}
