@@ -18,6 +18,7 @@ from .deploy_tags_to_cv import deploy_tags_to_cv
 from .finalize_change_control_on_cv import finalize_change_control_on_cv
 from .finalize_workspace_on_cv import finalize_workspace_on_cv
 from .models import (
+    AvdDevice,
     CloudVision,
     CVChangeControl,
     CVDeviceTag,
@@ -30,7 +31,7 @@ from .models import (
     DeployToCvResult,
 )
 from .verify_devices_on_cv import verify_devices_on_cv
-from .verify_inputs import verify_device_inputs
+from .verify_inputs import build_internal_device_inputs, verify_device_inputs
 
 if TYPE_CHECKING:
     from .models import AvdManifest
@@ -42,6 +43,7 @@ async def deploy_to_cv(
     cloudvision: CloudVision,
     workspace: CVWorkspace | None = None,
     change_control: CVChangeControl | None = None,
+    avd_devices: list[AvdDevice] | None = None,
     configs: list[CVEosConfig] | None = None,
     static_config_manifest: AvdManifest | None = None,
     device_tags: list[CVDeviceTag] | None = None,
@@ -72,6 +74,8 @@ async def deploy_to_cv(
         change_control: CloudVision Change Control to create for the deployment. \
             It is not supported to reuse an existing Change Control, so the `id` field should not be set in the given CVChangeControl object. \
             The `id` and `state` properties will be inplace updated in the given CVChangeControl object.
+        avd_devices: AvdDevice objects representing device info, config, device/interface tags and CVPathfinderMetaData. \
+            This signifies read-only input from AVD intended to be deployed to CV.
         configs: Configs to be deployed using the "Static Configlet Studio".
         device_tags: Device Tags to be deployed and assigned.
         interface_tags: Interface Tags to be deployed and assigned.
@@ -163,13 +167,20 @@ async def deploy_to_cv(
                 }.values()
             )
             # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
-            verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
+            verify_device_inputs(devices, avd_devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
+
+            # Build list[InternalDevice] from list[AvdDevice]
+            # We will be then passing list[InternalDevice] around to rest of the wrappers
+            # to help identify changes to be done on CV side and in-place update relevant members of InternalDevice object.
+            internal_devices = build_internal_device_inputs(avd_devices)
+            LOGGER.debug("deploy_to_cv(): built %s internal_devices from inputs", len(internal_devices))
 
             try:
                 # Verify devices exist and update CVDevice objects with _exists_on_cv.
                 # Depending on skip_missing_devices we will raise or skip missing devices.
                 await verify_devices_on_cv(
                     devices=devices,
+                    internal_devices=internal_devices,
                     workspace_id=result.workspace.id,
                     skip_missing_devices=skip_missing_devices,
                     warnings=result.warnings,
@@ -179,22 +190,30 @@ async def deploy_to_cv(
                 # Deploy device tags
                 await deploy_tags_to_cv(
                     tags=device_tags,
+                    internal_devices=internal_devices,
                     workspace=result.workspace,
                     strict=strict_tags,
                     skipped_tags=result.skipped_device_tags,
                     deployed_tags=result.deployed_device_tags,
                     removed_tags=result.removed_device_tags,
+                    skipped_tags_internal_devices=result.skipped_device_tags2,
+                    deployed_tags_internal_devices=result.deployed_device_tags2,
+                    removed_tags_internal_devices=result.removed_device_tags2,
                     cv_client=cv_client,
                 )
 
                 # Deploy interface tags
                 await deploy_tags_to_cv(
                     tags=interface_tags,
+                    internal_devices=internal_devices,
                     workspace=result.workspace,
                     strict=strict_tags,
                     skipped_tags=result.skipped_interface_tags,
                     deployed_tags=result.deployed_interface_tags,
                     removed_tags=result.removed_interface_tags,
+                    skipped_tags_internal_devices=result.skipped_interface_tags2,
+                    deployed_tags_internal_devices=result.deployed_interface_tags2,
+                    removed_tags_internal_devices=result.removed_interface_tags2,
                     cv_client=cv_client,
                 )
 
@@ -203,6 +222,7 @@ async def deploy_to_cv(
                 #       by building a hierarchy from the CVEosConfig objects.
                 await deploy_configs_to_cv(
                     configs=configs,
+                    internal_devices=internal_devices,
                     result=result,
                     cv_client=cv_client,
                 )
@@ -226,6 +246,7 @@ async def deploy_to_cv(
                 # Deploy CV Pathfinder metadata
                 await deploy_cv_pathfinder_metadata_to_cv(
                     cv_pathfinder_metadata=cv_pathfinder_metadata,
+                    internal_devices=internal_devices,
                     result=result,
                     cv_client=cv_client,
                 )

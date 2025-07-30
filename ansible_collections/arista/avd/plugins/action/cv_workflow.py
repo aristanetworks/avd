@@ -23,6 +23,11 @@ try:
     from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
     from pyavd._cv.workflows.models import (
         AvdManifest,
+        AvdDevice,
+        AvdDeviceTag,
+        AvdEosConfig,
+        AvdInterfaceTag,
+        AvdPathfinderMetadata,
         CloudVision,
         CVChangeControl,
         CVDevice,
@@ -151,7 +156,8 @@ class ActionModule(ActionBase):
                 proxy_password=validated_args.get("proxy_password"),
             )
             # Build lists of CVEosConfig, CVDeviceTag, CVInterfaceTag and CVPathfinderMetadata objects.
-            eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects = await self.build_objects(
+            # Also build list of AvdDevice objects to be passed as input to deploy_to_cv()
+            eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects, avd_devices = await self.build_objects(
                 device_list=get(validated_args, "device_list", default=[]),
                 structured_config_dir=get(validated_args, "structured_config_dir"),
                 structured_config_suffix=get(validated_args, "structured_config_suffix"),
@@ -171,6 +177,7 @@ class ActionModule(ActionBase):
                         "token": "<removed>",
                         **({"proxy_password": "<removed>"} if cloudvision.proxy_password is not None else {}),  # NOSONAR
                     },
+                    devices=[asdict(avd_device) for avd_device in avd_devices],
                     configs=[asdict(config) for config in eos_config_objects],
                     device_tags=[asdict(device_tag) for device_tag in device_tag_objects],
                     interface_tags=[asdict(interface_tag) for interface_tag in interface_tag_objects],
@@ -181,6 +188,7 @@ class ActionModule(ActionBase):
             # Check if there is anything to deploy.
             work_to_do = any(
                 [
+                    avd_devices,
                     eos_config_objects,
                     device_tag_objects,
                     interface_tag_objects,
@@ -191,9 +199,12 @@ class ActionModule(ActionBase):
 
             if work_to_do:
                 # Perform deployment of all objects, getting a DeployToCVResult object back.
+                # TODO: Revise signature of deploy_to_cv() to work on avd_devices and exclude
+                # other input args such as configs/device_tags/interface_tags/cv_pathfinder_metadata
                 result_object = await deploy_to_cv(
                     change_control=CVChangeControl(**get(validated_args, "change_control", default={})),
                     cloudvision=cloudvision,
+                    avd_devices=avd_devices,
                     configs=eos_config_objects,
                     static_config_manifest=static_config_manifest,
                     device_tags=device_tag_objects,
@@ -258,7 +269,7 @@ class ActionModule(ActionBase):
         structured_config_suffix: str,
         configuration_dir: str,
         configlet_name_template: str,
-    ) -> tuple[list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]]:
+    ) -> tuple[list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata], list[AvdDevice]]:
         """
         Build objects.
 
@@ -269,7 +280,8 @@ class ActionModule(ActionBase):
             configuration_dir: Path to EOS config files.
             configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
         Return:
-            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>).
+            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>,
+            <AvdDevice>).
 
         Workflow:
             Per device:
@@ -277,12 +289,19 @@ class ActionModule(ActionBase):
               - If is_deployed is false, skip the device.
               - Read serial_number & system_mac from structured config.
               - Create CVDevice object and add to list of device_objects.
+              - Create list of AvdDevice objects
         """
         coroutines = [
             self.build_object_for_device(hostname, structured_config_dir, structured_config_suffix, configuration_dir, configlet_name_template)
             for hostname in device_list
         ]
         tuples = await gather(*coroutines)
+
+        avd_device_coroutines = [
+            self.build_object_for_avd_device(hostname, structured_config_dir, structured_config_suffix, configuration_dir, configlet_name_template)
+            for hostname in device_list
+        ]
+        avd_devices = await gather(*avd_device_coroutines)
 
         eos_config_objects = []
         device_tag_objects = []
@@ -293,7 +312,8 @@ class ActionModule(ActionBase):
             device_tag_objects.extend(device_device_tag_objects)
             interface_tag_objects.extend(device_interface_tag_objects)
             cv_pathfinder_metadata_objects.extend(device_cv_pathfinder_metadata_objects)
-        return eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects
+
+        return eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects, avd_devices
 
     async def build_object_for_device(
         self,
@@ -404,6 +424,126 @@ class ActionModule(ActionBase):
 
         del structured_config
         return eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects
+
+    async def build_object_for_avd_device(
+        self,
+        hostname: str,
+        structured_config_dir: str | None,
+        structured_config_suffix: str,
+        configuration_dir: str,
+        configlet_name_template: str,
+    ) -> AvdDevice:
+        """
+        Build AvdDevice object for one device.
+
+        Parameters:
+            device_list: List of device hostnames.
+            structured_config_dir: Path to structured config files.
+            structured_config_suffix: Suffix for structured config files.
+            configuration_dir: Path to EOS config files.
+            configlet_name_template: Python string template used for naming configlets. Ex. "AVD-${hostname}"
+        Return:
+            AvdDevice object representing device info such as host name, serial number, system MAC address and other info, along with device and interface tags,
+            CVPathfinderMetaData and EOS config info.
+
+        Workflow:
+            Per device:
+              - Read and load structured config
+              - If is_deployed is false, skip the device.
+              - Read serial_number & system_mac from structured config.
+              - Create AvdDevice object and add to list of device_objects.
+
+        TODO: Refactor into smaller functions.
+        """
+        LOGGER.info("build_object_for_avd_device: %s", hostname)
+        if structured_config_dir and (file_path := Path(structured_config_dir, f"{hostname}.{structured_config_suffix}")).exists():
+            with file_path.open(  # noqa: ASYNC230
+                mode="r", encoding="UTF-8"
+            ) as structured_config_stream:
+                if structured_config_suffix in ["yml", "yaml"]:
+                    interesting_keys = ("is_deployed", "serial_number", "metadata")
+                    in_interesting_context = False
+                    structured_config_lines = []
+                    for line in structured_config_stream:
+                        if line.startswith(interesting_keys) or (in_interesting_context and line.startswith(" ")):
+                            structured_config_lines.append(line)
+                            in_interesting_context = True
+                        else:
+                            in_interesting_context = False
+
+                    structured_config = load("".join(structured_config_lines), Loader=YamlLoader)  # noqa: S506 TODO: Consider safeload
+                else:
+                    # Load as JSON
+                    structured_config = json.load(structured_config_stream)
+        else:
+            # No structured config file.
+            structured_config = {}
+
+        if not get(structured_config, "is_deployed", default=True):
+            del structured_config
+            return ([], [], [], [])
+
+        # Build device object to be used in other objects.
+        serial_number = get(structured_config, "serial_number")
+        system_mac_address = get(structured_config, "metadata.system_mac_address")
+
+        # Build device config objects
+        configlet_name = Template(configlet_name_template).substitute(hostname=hostname)
+        config_file_path = str(Path(configuration_dir, f"{hostname}.cfg"))
+        avd_eos_config_object = AvdEosConfig(file=config_file_path, configlet_name=configlet_name)
+
+        # Build device tag objects for this device.
+        # ! metadata:
+        # !   cv_tags:
+        # !     device_tags:
+        # !     - name: topology_hint_datacenter
+        # !       value: DC1
+        device_tags = get(structured_config, "metadata.cv_tags.device_tags", default=[])
+        # build tuple of device tag objects
+        avd_device_tag_objects = tuple(
+            AvdDeviceTag(label=device_tag["name"], value=device_tag["value"]) for device_tag in device_tags if "name" in device_tag and "value" in device_tag
+        )
+
+        # Build interface tag objects for this device.
+        # ! metadata:
+        # !  cv_tags:
+        # !    interface_tags:
+        # !    - interface: Ethernet3
+        # !      tags:
+        # !      - name: peer_device_interface
+        # !        value: Ethernet3
+        all_interface_tags = get(structured_config, "metadata.cv_tags.interface_tags", default=[])
+        # Build tuple of interface tag objects
+        avd_interface_tag_objects = tuple(
+            AvdInterfaceTag(
+                label=interface_tag["name"],
+                value=interface_tag["value"],
+                interface=one_interface_tags["interface"],
+            )
+            for one_interface_tags in all_interface_tags
+            if "interface" in one_interface_tags and "tags" in one_interface_tags
+            for interface_tag in one_interface_tags["tags"]
+            if "name" in interface_tag and "value" in interface_tag
+        )
+
+        # Build WAN metadata object for this device.
+        avd_cv_pathfinder_metadata_object = AvdPathfinderMetadata(metadata={})
+        if (cv_pathfinder_metadata := get(structured_config, "metadata.cv_pathfinder")) is not None:
+            avd_cv_pathfinder_metadata_object = AvdPathfinderMetadata(metadata=cv_pathfinder_metadata)
+
+        # build AvdDevice object packing device/config/tags/metadata info
+        avd_device_object = AvdDevice(
+            config=avd_eos_config_object,
+            device_tags=avd_device_tag_objects,
+            interface_tags=avd_interface_tag_objects,
+            pathfinder_metadata=avd_cv_pathfinder_metadata_object,
+            hostname=hostname,
+            serial_number=serial_number,
+            system_mac_address=system_mac_address,
+        )
+
+        del structured_config
+        return avd_device_object
 
 
 def setup_module_logging(result: dict) -> None:
