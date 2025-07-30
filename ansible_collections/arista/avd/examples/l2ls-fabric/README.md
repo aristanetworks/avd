@@ -317,17 +317,26 @@ The updated changes are noted in the tabs below.
     # Node Key must be l3spine to match type
     l3spine:
       defaults:
-        platform: cEOS-LAB
+        platform: vEOS-lab
         spanning_tree_mode: mstp
         spanning_tree_priority: 4096
         # Loopback is used to generate a router-id
-        loopback_ipv4_pool: 1.1.1.0/24
+        loopback_ipv4_pool: 192.168.1.0/24
         mlag_peer_ipv4_pool: 192.168.0.0/24
         # Needed for L3 peering across the MLAG Trunk
         mlag_peer_l3_ipv4_pool: 10.1.1.0/24
         # Used for SVI Virtual MAC address
         virtual_router_mac_address: 00:1c:73:00:dc:01
         mlag_interfaces: [Ethernet47, Ethernet48]
+      node_groups:
+        - group: SPINES
+          nodes:
+            - name: SPINE1
+              id: 1
+              mgmt_ip: 172.16.100.101/24
+            - name: SPINE2
+              id: 2
+              mgmt_ip: 172.16.100.102/24
     ```
 
 === "services.yml"
