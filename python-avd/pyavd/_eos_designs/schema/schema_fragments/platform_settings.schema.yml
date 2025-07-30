@@ -283,6 +283,12 @@ keys:
                 Support for PVLAN feature.
                 On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3 set this via "private_vlan" in the specific platform settings.
                 See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
+            sflow:
+              type: bool
+              description: |-
+                Support for sFlow.
+                The feature will be ignored on platforms where this is false.
+              default: true
         management_interface:
           type: str
           default: Management1

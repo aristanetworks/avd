@@ -38,70 +38,101 @@
         name: avd-ci-core1
         groups: INACTIVE
 
-    - name: "{{ test_id | upper }} Provision with cv_submit_workspace_force = true"
+    - name: "{{ test_id | upper }} Code block to provision CVP with AVD configuration"
       tags: ["{{ test_id }}"]
       run_once: true
       delegate_to: localhost
-      ansible.builtin.import_role:
-        name: arista.avd.cv_deploy
-      vars:
-        cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
-        cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
-        cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
-        cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
-        cv_register_detailed_results: true
-        cv_devices: [ avd-ci-leaf1, avd-ci-core1 ]
-        cv_submit_workspace_force: true
+      block:
 
-    - name: "{{ test_id | upper }} Display CVP result"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.debug:
-        msg: '{{ cv_deploy_results }}'
+        - name: "(BLOCK) {{ test_id | upper }} Banner"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            msg:
+              - "### ENGAGE CV_DEPLOY ROLE TO PUSH CONFIGURATION FOR {{ test_id[:69] | upper }} ###"
 
-    - name: "{{ test_id | upper }} Check CVP returns"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.assert:
-        that:
-          # errors and warnings
-          - cv_deploy_results.errors == []
+        - name: "(BLOCK) {{ test_id | upper }} Provision with cv_submit_workspace_force = true"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          delegate_to: localhost
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+            cv_register_detailed_results: true
+            cv_devices: [ avd-ci-leaf1, avd-ci-core1 ]
+            cv_submit_workspace_force: true
 
-    - name: "{{ test_id | upper }} Cleanup orphan CC"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.legacy.uri:
-        url: https://{{ cv_server }}/api/resources/changecontrol/v1/ChangeControlConfig?key.id={{ cv_deploy_results.change_control.id }}
-        validate_certs: true
-        return_content: true
-        headers:
-          Accept: "application/json"
-          Content-Type: "application/json"
-          Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
-        method: DELETE
-        body_format: json
-        force_basic_auth: true
-        timeout: 10
-      register: cvp_abandon_cc_result
-      until: cvp_abandon_cc_result.status == 200
-      retries: 3
-      delay: 3
-      ignore_errors: true
-      when: cv_deploy_results.change_control.state | lower in ['pending approval', 'approved']
+        - name: "(BLOCK) {{ test_id | upper }} Check CVP returns"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              # errors and warnings
+              - cv_deploy_results.errors == []
+              # Change control
+              - cv_deploy_results.change_control.name == cv_change_control_name
+              - cv_deploy_results.change_control.description == cv_change_control_description
+              - cv_deploy_results.change_control.requested_state == "pending approval"
+              - cv_deploy_results.change_control.state == "pending approval"
+          vars:
+            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
 
-    - name: "{{ test_id | upper }} Cleanup"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      delegate_to: localhost
-      ansible.builtin.import_role:
-        name: arista.avd.cv_deploy
-      vars:
-        cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
-        cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
-        cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
-        cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
-        cv_register_detailed_results: true
-        eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
-        structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
-        cv_submit_workspace_force: true
-        cv_run_change_control: true
+      always:
+
+        - name: "(ALWAYS) {{ test_id | upper }} Display CVP detailed result"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            var: cv_deploy_results
+
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup orphan CC"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/changecontrol/v1/ChangeControlConfig?key.id={{ cv_deploy_results.change_control.id }}
+            validate_certs: true
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: DELETE
+            body_format: json
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_abandon_cc_result
+          until: cvp_abandon_cc_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          when: cv_deploy_results.change_control.state | lower in ['pending approval', 'approved']
+
+        - name: "(ALWAYS) {{ test_id | upper }} Banner"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            msg:
+              - "### ENGAGE CV_DEPLOY ROLE TO CLEANUP AFTER {{ test_id[:69] | upper }} ###"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          delegate_to: localhost
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
+            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
+            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
+            cv_register_detailed_results: true
+            cv_devices: "{{ ansible_play_hosts_all }}"
+            eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+            structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
+            cv_submit_workspace_force: true
+            cv_run_change_control: true
