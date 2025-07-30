@@ -43,6 +43,8 @@ class UtilsMixin(Protocol):
             if self.shared_utils.platform_settings.feature_support.sflow:
                 uplink.sflow_enabled = self.inputs.fabric_sflow.uplinks
             uplink.flow_tracking = self.inputs.fabric_flow_tracking.uplinks
+            if not self.shared_utils.platform_settings.feature_support.ptp:
+                uplink.ptp.enable = False
 
         downlinks_flow_tracking = (
             # Cast as uplink model since that is used in the facts' uplink which we reuse below model

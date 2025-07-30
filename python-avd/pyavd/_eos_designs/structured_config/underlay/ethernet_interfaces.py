@@ -71,7 +71,7 @@ class EthernetInterfacesMixin(Protocol):
                     ethernet_interface.sflow.enable = link.sflow_enabled
 
                 # PTP
-                if link.ptp.enable and self.shared_utils.platform_settings.feature_support.ptp:
+                if link.ptp.enable:
                     # Apply PTP profile config if using the new ptp config style
                     if self.shared_utils.ptp_enabled:
                         # Create a copy and removes the .profile attribute since the target model has a .profile key with a different schema.
