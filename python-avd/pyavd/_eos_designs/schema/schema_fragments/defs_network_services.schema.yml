@@ -753,7 +753,7 @@ $defs:
                       required: true
                     address_locking:
                       type: dict
-                      $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking"
+                      $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family"
                     profile:
                       type: str
                       description: |
@@ -1576,7 +1576,7 @@ $defs:
                 description: VLAN ID.
               address_locking:
                 type: dict
-                $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking"
+                $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family"
               vni_override:
                 type: int
                 convert_types:
