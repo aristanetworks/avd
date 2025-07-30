@@ -42,13 +42,13 @@ def verify_device_inputs(devices: list[CVDevice], avd_devices: list[AvdDevice] |
     Warn user (with log message and updated `cv_deploy_results.warnings`) if:
       - two or more targeted devices have the same `system_mac_address`, unique `serial_number` and `strict_system_mac_address` is `False`
     """
-    if avd_devices and (duplicated_devices := identify_duplicated_avd_devices(avd_devices)).detected():
+    if (duplicated_devices := identify_duplicated_devices(devices)).detected():
         duplicated_devices_handler(
             duplicated_devices,
             warnings,
             strict_system_mac_address=strict_system_mac_address,
         )
-    if (duplicated_devices := identify_duplicated_devices(devices)).detected():
+    if avd_devices and (duplicated_devices := identify_duplicated_avd_devices(avd_devices)).detected():
         duplicated_devices_handler(
             duplicated_devices,
             warnings,
