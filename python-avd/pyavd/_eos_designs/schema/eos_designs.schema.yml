@@ -4457,6 +4457,12 @@ keys:
                 See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
 
                 '
+            sflow:
+              type: bool
+              description: 'Support for sFlow.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
         management_interface:
           type: str
           default: Management1

@@ -4,11 +4,58 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet3
+  description: MLAG_HARDWARE_FEATURES_CLOUDEOS_Ethernet3
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  peer: HARDWARE_FEATURES_CLOUDEOS
+  peer_interface: Ethernet3
+  peer_type: mlag_peer
+- name: Ethernet1
+  description: P2P_HARDWARE_FEATURES_CEOS_LAB_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.7/31
+  peer: HARDWARE_FEATURES_CEOS_LAB
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_HARDWARE_FEATURES_CUSTOM_PLATFORM_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.10/31
+  peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet9
+  description: P2P_HARDWARE_FEATURES_CLOUDEOS_Ethernet9
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.60.1/31
+  peer: HARDWARE_FEATURES_CLOUDEOS
+  peer_interface: Ethernet9
+  peer_type: l3leaf
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
 - name: Ethernet5
   shutdown: false
   vrf: VRF10
   ip_address: 10.10.40.4/24
   peer_type: l3_interface
+  sflow:
+    enable: true
   switchport:
     enabled: false
 - name: Ethernet7
@@ -21,6 +68,8 @@ ethernet_interfaces:
   peer: TEST_POE
   peer_interface: ETH4_WITH_POE
   peer_type: server
+  sflow:
+    enable: true
   switchport:
     enabled: true
 - name: Ethernet8
@@ -40,6 +89,8 @@ ethernet_interfaces:
   peer: TEST_INTERFACE_STORM_CONTROL
   peer_interface: ETH14_WITH_STORM_CONTROL
   peer_type: server
+  sflow:
+    enable: true
   switchport:
     enabled: true
 hardware:
@@ -78,7 +129,7 @@ loopback_interfaces:
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 10.10.20.4/32
+  ip_address: 10.10.20.3/32
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -86,11 +137,31 @@ management_api_http:
 metadata:
   platform: 720XP
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+mlag_configuration:
+  domain_id: group_2
+  local_interface: Vlan4094
+  peer_address: 10.10.30.4
+  peer_link: Port-Channel3
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
 port_channel_interfaces:
+- name: Port-Channel3
+  description: MLAG_HARDWARE_FEATURES_CLOUDEOS_Port-Channel3
+  shutdown: false
+  sflow:
+    enable: true
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
 - name: Port-Channel8
   description: SERVER_TEST_MTU_MRU_PO_MTU_MRU_1
   shutdown: false
   l2_mtu: 2001
+  sflow:
+    enable: true
   switchport:
     enabled: true
 prefix_lists:
@@ -100,17 +171,36 @@ prefix_lists:
     action: permit 10.10.10.0/24 eq 32
   - sequence: 20
     action: permit 10.10.20.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.40.4/31
 queue_monitor_length:
   enabled: true
 queue_monitor_streaming:
   enable: true
 route_maps:
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    set:
+    - origin incomplete
 - name: RM-CONN-2-BGP
   sequence_numbers:
   - sequence: 10
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 router_bfd:
   multihop:
     interval: 300
@@ -128,6 +218,14 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
+    remote_as: '65001'
+    description: HARDWARE_FEATURES_CLOUDEOS
+    next_hop_self: true
+    send_community: all
+    maximum_routes: 12000
+    route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
     send_community: all
@@ -139,6 +237,27 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 10.10.40.4
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: HARDWARE_FEATURES_CLOUDEOS
+    description: HARDWARE_FEATURES_CLOUDEOS_Vlan4093
+  - ip_address: 10.10.50.6
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    peer: HARDWARE_FEATURES_CEOS_LAB
+    description: HARDWARE_FEATURES_CEOS_LAB_Ethernet2
+  - ip_address: 10.10.50.11
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    peer: HARDWARE_FEATURES_CUSTOM_PLATFORM
+    description: HARDWARE_FEATURES_CUSTOM_PLATFORM_Ethernet1
+  - ip_address: 10.10.60.0
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    local_as: '65100'
+    peer: HARDWARE_FEATURES_CLOUDEOS
+    description: HARDWARE_FEATURES_CLOUDEOS
   redistribute:
     connected:
       enabled: true
@@ -149,6 +268,8 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
     - name: EVPN-OVERLAY-PEERS
@@ -169,22 +290,71 @@ router_bgp:
     updates:
       wait_install: true
     neighbors:
+    - ip_address: 10.10.40.4
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: HARDWARE_FEATURES_CLOUDEOS_Vlan3009
     - ip_address: 10.10.40.100
       remote_as: '65002'
     redistribute:
       connected:
         enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
     address_family_ipv4:
       neighbors:
       - ip_address: 10.10.40.100
         activate: true
 service_routing_protocols_model: multi-agent
+sflow:
+  sample: 1000000
+  polling_interval: 5
+  destinations:
+  - destination: 10.10.10.10
+  source_interface: Vlan10
+  run: true
+spanning_tree:
+  no_spanning_tree_vlan: 4093-4094
 transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4093
+  description: MLAG_L3
+  shutdown: false
+  ip_address: 10.10.40.5/31
+  mtu: 9214
+- name: Vlan4094
+  description: MLAG
+  shutdown: false
+  ip_address: 10.10.30.5/31
+  mtu: 9214
+  no_autostate: true
+- name: Vlan3009
+  description: MLAG_L3_VRF_VRF10
+  shutdown: false
+  vrf: VRF10
+  ip_address: 10.10.40.5/31
+  mtu: 9214
+  tenant: TENANT1
+  type: underlay_peering
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
+vlans:
+- id: 4093
+  name: MLAG_L3
+  trunk_groups:
+  - MLAG
+  tenant: system
+- id: 4094
+  name: MLAG
+  trunk_groups:
+  - MLAG
+  tenant: system
+- id: 3009
+  name: MLAG_L3_VRF_VRF10
+  trunk_groups:
+  - MLAG
+  tenant: TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -197,6 +367,7 @@ vxlan_interface:
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
+      virtual_router_encapsulation_mac_address: mlag-system-id
       vrfs:
       - name: VRF10
         vni: 10
