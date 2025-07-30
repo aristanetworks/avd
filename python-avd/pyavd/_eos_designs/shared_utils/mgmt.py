@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from logging import getLogger
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdInvalidInputsError
@@ -11,6 +12,8 @@ from pyavd._utils import default, get
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
+
+LOGGER = getLogger(__name__)
 
 
 class MgmtMixin(Protocol):
@@ -30,8 +33,9 @@ class MgmtMixin(Protocol):
         Global var mgmt_interface ->
           Platform Settings management_interface ->
             Fabric Topology data model mgmt_interface.
+        If in Digital Twin mode, the returned value is modified to meet the requirements of the target environment.
         """
-        return default(
+        mgmt_interface = default(
             self.node_config.mgmt_interface,
             # Notice that we actually have a default value for the next two, but the precedence order would break if we use it.
             # TODO: Evaluate if we should remove the default values from either or both.
@@ -40,6 +44,24 @@ class MgmtMixin(Protocol):
             get(self.cv_topology_config, "mgmt_interface"),
             "Management1",
         )
+
+        # Adjust selected OOB management interface if required by the target Digital Twin environment
+        if self.digital_twin:
+            match self.inputs.digital_twin.environment:
+                case "act":
+                    # Check if original mgmt_interface is already matching correct pattern
+                    mgmt_interface_matching = mgmt_interface.title().startswith("Management") and mgmt_interface.title()[len("Management") :].strip() == "1"
+                    # If not matching, adjust for the veos and cloudeos node types
+                    if not mgmt_interface_matching and self.platform_settings.digital_twin.act_node_type in ["veos", "cloudeos"]:
+                        LOGGER.info(
+                            "OOB management interface for node '%s' changed from '%s' to '%s' for its ACT Digital Twin copy.",
+                            self.hostname,
+                            mgmt_interface,
+                            "Management1",
+                        )
+                        return "Management1"
+
+        return mgmt_interface
 
     @cached_property
     def mgmt_gateway(self: SharedUtilsProtocol) -> str | None:
