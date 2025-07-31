@@ -49,6 +49,9 @@
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Custom TCAM Profiles](#custom-tcam-profiles)
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
+- [Load Balance](#load-balance)
+  - [Load Balance Cluster](#load-balance-cluster)
+  - [Load Balance Configuration](#load-balance-configuration)
 - [LLDP](#lldp)
   - [LLDP Summary](#lldp-summary)
   - [LLDP Device Configuration](#lldp-device-configuration)
@@ -760,6 +763,26 @@ hardware tcam
    profile MY_TCAM_PROFILE
 Thisisnotaidealinput
    !
+```
+
+## Load Balance
+
+### Load Balance Cluster
+
+| Setting | Value |
+| ------- | ----- |
+| Forwarding Type | bridged encapsulation vxlan ipv4 |
+| Destination Grouping | prefix length 10 |
+| Load-balance Method Flow Round-robin | False |
+| Flow Monitor | False |
+
+### Load Balance Configuration
+
+```eos
+!
+load-balance cluster
+   forwarding type bridged encapsulation vxlan ipv4
+   destination grouping prefix length 10
 ```
 
 ## LLDP

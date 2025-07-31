@@ -31,138 +31,162 @@
       ansible.builtin.set_fact:
         r: "{{ lookup('env', 'MOLECULE_EXECUTION_ID') or lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
 
-    - name: "{{ test_id | upper }} Provision CVP with AVD configuration"
+    - name: "{{ test_id | upper }} Code block to provision CVP with AVD configuration"
       tags: ["{{ test_id }}"]
       run_once: true
       delegate_to: localhost
-      ansible.builtin.import_role:
-        name: arista.avd.cv_deploy
-      vars:
-        cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
-        cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
-        cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
-        cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
-        cv_register_detailed_results: true
-        cv_submit_workspace_force: true
-        cv_run_change_control: true
 
-    - name: "{{ test_id | upper }} Display CVP result"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.debug:
-        msg: '{{ cv_deploy_results }}'
+      block:
 
-    - name: "{{ test_id | upper }} Check CVP returns"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.assert:
-        that:
-          # workspace
-          - cv_deploy_results.workspace.name == cv_workspace_name
-          - cv_deploy_results.workspace.state == "submitted"
-          - cv_deploy_results.workspace.description == cv_workspace_description
-          - cv_deploy_results.workspace.state
-          # errors and warnings
-          - cv_deploy_results.errors == []
-          - cv_deploy_results.warnings == []
-          # tags
-          - cv_deploy_results.deployed_device_tags != []
-          - cv_deploy_results.deployed_interface_tags != []
-          # Change control
-          - cv_deploy_results.change_control.name == cv_change_control_name
-          - cv_deploy_results.change_control.requested_state == "completed"
-          - cv_deploy_results.change_control.description == cv_change_control_description
-      vars:
-        cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
-        cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
-        cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
-        cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+        - name: "(BLOCK) {{ test_id | upper }} Banner"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            msg:
+              - "### ENGAGE CV_DEPLOY ROLE TO PUSH CONFIGURATION FOR {{ test_id[:69] | upper }} ###"
 
-    - name: "{{ test_id | upper }} Check tags from output"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.assert:
-        that:
-          - item.0.label == item.1.label
-          - item.0.value == item.1.value
-      loop: "{{ cv_deploy_results.deployed_device_tags | zip(cv_deploy_results.device_tags) | list }}"
+        - name: "(BLOCK) {{ test_id | upper }} Provision CVP with AVD configuration"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          delegate_to: localhost
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+            cv_register_detailed_results: true
+            cv_submit_workspace_force: true
+            cv_run_change_control: true
 
-    - name: "{{ test_id | upper }} Extract all device tags from structured configs"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.set_fact:
-        expected_device_tags: "{{ intended_tags.metadata.cv_tags.device_tags }}"
-        output_device_tags: "{{ cv_deploy_results.deployed_device_tags }}"
+        - name: "(BLOCK) {{ test_id | upper }} Check CVP returns"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              # workspace
+              - cv_deploy_results.workspace.name == cv_workspace_name
+              - cv_deploy_results.workspace.state == "submitted"
+              - cv_deploy_results.workspace.description == cv_workspace_description
+              # errors and warnings
+              - cv_deploy_results.errors == []
+              - cv_deploy_results.warnings == []
+              # tags
+              - cv_deploy_results.deployed_device_tags != []
+              - cv_deploy_results.deployed_interface_tags != []
+              # Change control
+              - cv_deploy_results.change_control.name == cv_change_control_name
+              - cv_deploy_results.change_control.description == cv_change_control_description
+              - cv_deploy_results.change_control.requested_state == "completed"
+              - cv_deploy_results.change_control.state == "completed"
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
+            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
+            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
 
-    - name: "{{ test_id | upper }} Check output device tags == intended device tags"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.assert:
-        that:
-          - item.0.name == item.1.label
-          - item.0.value == item.1.value
-      loop: "{{ expected_device_tags | zip(output_device_tags) | list }}"
+        - name: "(BLOCK) {{ test_id | upper }} Check tags from output"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - item.0.label == item.1.label
+              - item.0.value == item.1.value
+          loop: "{{ cv_deploy_results.deployed_device_tags | zip(cv_deploy_results.device_tags) | list }}"
 
-    - name: "{{ test_id | upper }} Extract all interface tags from role output"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.set_fact:
-        output_interface_tags: "{{ cv_deploy_results.deployed_interface_tags }}"
+        - name: "(BLOCK) {{ test_id | upper }} Extract all device tags from structured configs"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.set_fact:
+            expected_device_tags: "{{ intended_tags.metadata.cv_tags.device_tags }}"
+            output_device_tags: "{{ cv_deploy_results.deployed_device_tags }}"
 
-    - name: "{{ test_id | upper }} Extract all interface tags from structured configs"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.set_fact:
-        expected_interface_tags: "{{ expected_interface_tags | default([]) + [item.tags | list | first | combine({'interface': item.interface})] }}"
-      loop: "{{ intended_tags.metadata.cv_tags.interface_tags }}"
-      loop_control:
-        label: "{{ item.interface }}"
+        - name: "(BLOCK) {{ test_id | upper }} Check output device tags == intended device tags"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - item.0.name == item.1.label
+              - item.0.value == item.1.value
+          loop: "{{ expected_device_tags | zip(output_device_tags) | list }}"
 
-    - name: "{{ test_id | upper }} Check output interface tags == intended interface tags"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.assert:
-        that:
-          - item.0.name == item.1.label
-          - item.0.value == item.1.value
-      loop: "{{ expected_interface_tags | zip(output_interface_tags) | list }}"
+        - name: "(BLOCK) {{ test_id | upper }} Extract all interface tags from role output"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.set_fact:
+            output_interface_tags: "{{ cv_deploy_results.deployed_interface_tags }}"
 
-    - name: "{{ test_id | upper }} Convert unstructed data into yaml"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.set_fact:
-        deivces_structure: '{{ cv_deploy_results.deployed_configs | from_yaml }}'
-        output_devices: []
+        - name: "(BLOCK) {{ test_id | upper }} Extract all interface tags from structured configs"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.set_fact:
+            expected_interface_tags: "{{ expected_interface_tags | default([]) + [item.tags | list | first | combine({'interface': item.interface})] }}"
+          loop: "{{ intended_tags.metadata.cv_tags.interface_tags }}"
+          loop_control:
+            label: "{{ item.interface }}"
 
-    - name: "{{ test_id | upper }} Extract devices from output"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.set_fact:
-        output_devices: "{{ output_devices + [item.device.hostname] }}"
-      loop: "{{ deivces_structure }}"
-      loop_control:
-        label: "{{ item.configlet_name }}"
+        - name: "(BLOCK) {{ test_id | upper }} Check output interface tags == intended interface tags"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - item.0.name == item.1.label
+              - item.0.value == item.1.value
+          loop: "{{ expected_interface_tags | zip(output_interface_tags) | list }}"
 
-    - name: "{{ test_id | upper }} Check output devices == intended devices"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.builtin.assert:
-        that:
-          - output_devices == cv_devices
+        - name: "(BLOCK) {{ test_id | upper }} Convert unstructed data into yaml"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.set_fact:
+            deivces_structure: '{{ cv_deploy_results.deployed_configs | from_yaml }}'
+            output_devices: []
 
-    - name: "{{ test_id | upper }} Cleanup"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      delegate_to: localhost
-      ansible.builtin.import_role:
-        name: arista.avd.cv_deploy
-      vars:
-        cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
-        cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
-        cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
-        cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
-        cv_register_detailed_results: true
-        eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
-        structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
-        cv_submit_workspace_force: true
-        cv_run_change_control: true
+        - name: "(BLOCK) {{ test_id | upper }} Extract devices from output"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.set_fact:
+            output_devices: "{{ output_devices + [item.device.hostname] }}"
+          loop: "{{ deivces_structure }}"
+          loop_control:
+            label: "{{ item.configlet_name }}"
+
+        - name: "(BLOCK) {{ test_id | upper }} Check output devices == intended devices"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - output_devices == cv_devices
+
+      always:
+
+        - name: "(ALWAYS) {{ test_id | upper }} Display CVP detailed result"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            var: cv_deploy_results
+
+        - name: "(ALWAYS) {{ test_id | upper }} Banner"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            msg:
+              - "### ENGAGE CV_DEPLOY ROLE TO CLEANUP AFTER {{ test_id[:69] | upper }} ###"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          delegate_to: localhost
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
+            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
+            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
+            cv_register_detailed_results: true
+            cv_devices: "{{ ansible_play_hosts_all }}"
+            eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+            structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
+            cv_submit_workspace_force: true
+            cv_run_change_control: true
