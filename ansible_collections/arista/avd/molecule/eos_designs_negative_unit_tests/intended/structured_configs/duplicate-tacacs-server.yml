@@ -1,0 +1,49 @@
+aaa_root:
+  disabled: true
+aaa_server_groups:
+- name: TACACS1
+  type: tacacs+
+  servers:
+  - server: 10.10.10.11
+    vrf: MGMT1
+  - server: 10.10.10.11
+    vrf: MGMT1
+config_end: true
+enable_password:
+  disabled: true
+hostname: duplicate-tacacs-server
+ip_igmp_snooping:
+  globally_enabled: true
+is_deployed: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  type: oob
+metadata:
+  fabric_name: EOS_DESIGNS_FAILURES
+service_routing_protocols_model: multi-agent
+tacacs_servers:
+  hosts:
+  - host: 10.10.10.11
+    vrf: MGMT1
+    key: 071B245F5A
+  - host: 10.10.10.11
+    vrf: MGMT1
+    key: 071B245F5A
+  policy_unknown_mandatory_attribute_ignore: false
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

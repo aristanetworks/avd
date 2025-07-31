@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import (
@@ -11,7 +11,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGeneratorProtocol,
     structured_config_contributor,
 )
-from pyavd._errors import AristaAvdDuplicateDataError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import Undefined, default, get_v2
 from pyavd.j2filters import natural_sort
 
@@ -22,9 +22,6 @@ from .platform_mixin import PlatformMixin
 from .router_general import RouterGeneralMixin
 from .snmp_server import SnmpServerMixin
 from .utils import UtilsMixin
-
-if TYPE_CHECKING:
-    from pyavd._eos_designs.schema import EosDesigns
 
 
 class AvdStructuredConfigBaseProtocol(
@@ -659,7 +656,6 @@ class AvdStructuredConfigBaseProtocol(
         if not self.inputs.aaa_settings.radius:
             return
 
-        server_combinations: dict[tuple[str, str], EosDesigns.AaaSettings.Radius.ServersItem] = {}
         for server in self.inputs.aaa_settings.radius.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -667,13 +663,6 @@ class AvdStructuredConfigBaseProtocol(
                 set_source_interfaces=True,
                 context=f"aaa_settings.radius.servers[host={server.host}].vrf",
             )
-            # TODO: Temporary workaround to avoid duplicate configs; replace once schema supports unique (host, VRF) combinations.
-            server_entry: tuple[str, str] = (server.host, server_vrf)
-            if original_server := server_combinations.get(server_entry):
-                msg = "RADIUS servers"
-                raise AristaAvdDuplicateDataError(msg, str(original_server._as_dict()), str(server._as_dict()))
-            server_combinations[server_entry] = server
-
             if source_interface:
                 self.structured_config.ip_radius_source_interfaces.append_unique(
                     EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
@@ -703,8 +692,7 @@ class AvdStructuredConfigBaseProtocol(
         """Parse AAA tacacs server configurations and update structured config with server and source interface details."""
         if not self.inputs.aaa_settings.tacacs:
             return
-
-        server_combinations: dict[tuple[str, str], EosDesigns.AaaSettings.Tacacs.ServersItem] = {}
+        all_tacacs_servers = EosCliConfigGen.TacacsServers.Hosts()
         for server in self.inputs.aaa_settings.tacacs.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -712,24 +700,21 @@ class AvdStructuredConfigBaseProtocol(
                 set_source_interfaces=True,
                 context=f"aaa_settings.tacacs.servers[host={server.host}].vrf",
             )
-            # TODO: Temporary workaround to avoid duplicate configs; replace once schema supports unique (host, VRF) combinations.
-            server_entry: tuple[str, str] = (server.host, server_vrf)
-            if original_server := server_combinations.get(server_entry):
-                msg = "TACACS servers"
-                raise AristaAvdDuplicateDataError(msg, str(original_server._as_dict()), str(server._as_dict()))
-            server_combinations[server_entry] = server
 
             if source_interface:
                 self.structured_config.ip_tacacs_source_interfaces.append_unique(
                     EosCliConfigGen.IpTacacsSourceInterfacesItem(name=source_interface, vrf=server_vrf)
                 )
-            server_key = self._get_tacacs_or_radius_server_password(server)
-            self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
+            tacacs_server = EosCliConfigGen.TacacsServers.HostsItem(host=server.host, vrf=server_vrf)
+            if not all_tacacs_servers.__contains__(tacacs_server):
+                all_tacacs_servers.append(tacacs_server)
+                server_key = self._get_tacacs_or_radius_server_password(server)
+                self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
 
-            for group in server.groups:
-                tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
-                tacacs_group.type = "tacacs+"
-                tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
+                for group in server.groups:
+                    tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
+                    tacacs_group.type = "tacacs+"
+                    tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
 
         self.structured_config.tacacs_servers.policy_unknown_mandatory_attribute_ignore = (
             self.inputs.aaa_settings.tacacs.policy.ignore_unknown_mandatory_attribute
