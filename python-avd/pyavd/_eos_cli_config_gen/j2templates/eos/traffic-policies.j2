@@ -192,13 +192,13 @@ traffic-policies
 {%                             set redirect_cli = redirect_cli ~ "group " ~ match.actions.redirect.next_hop.groups | arista.avd.natural_sort | join(' ') %}
 {%                             set next_hop_flag = true %}
 {%                         elif match.actions.redirect.next_hop.recursive_ipv4_addresses is arista.avd.defined %}
-{%                             set ipv4_addresses = redirect_cli ~ match.actions.redirect.next_hop.recursive_ipv4_addresses | arista.avd.natural_sort | join(' ') %}
+{%                             set redirect_cli = redirect_cli ~ "recursive " ~ match.actions.redirect.next_hop.recursive_ipv4_addresses | arista.avd.natural_sort | join(' ') %}
 {%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
 {%                                 set redirect_cli = redirect_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
 {%                             endif %}
 {%                             set next_hop_flag = true %}
 {%                         elif match.actions.redirect.next_hop.recursive_ipv6_addresses is arista.avd.defined %}
-{%                             set redirect_cli = redirect_cli ~ match.actions.redirect.next_hop.recursive_ipv6_addresses | arista.avd.natural_sort | join(' ') %}
+{%                             set redirect_cli = redirect_cli ~ "recursive " ~ match.actions.redirect.next_hop.recursive_ipv6_addresses | arista.avd.natural_sort | join(' ') %}
 {%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
 {%                                 set redirect_cli = redirect_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
 {%                             endif %}
