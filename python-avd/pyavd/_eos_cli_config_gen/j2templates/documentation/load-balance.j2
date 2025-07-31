@@ -4,35 +4,80 @@
  that can be found in the LICENSE file.
 #}
 {# doc - load balance #}
-{% if load_balance.policies is arista.avd.defined %}
+{% if load_balance is arista.avd.defined %}
 
 ## Load Balance
+{%     if load_balance.policies is arista.avd.defined %}
 
 ### Load Balance Profiles
-{%     for profile in load_balance.policies.sand_profiles | arista.avd.natural_sort('name')  %}
+{%         for profile in load_balance.policies.sand_profiles | arista.avd.natural_sort('name')  %}
 
 #### {{ profile.name }}
-{%         if profile.fields.udp is arista.avd.defined %}
+{%             if profile.fields.udp is arista.avd.defined %}
 
 ##### UDP Fields Settings
 
 | Setting | Value |
 | ------- | ----- |
 | Destination Port | {{ profile.fields.udp.dst_port }} |
-{%             if profile.fields.udp.match is arista.avd.defined %}
+{%                 if profile.fields.udp.match is arista.avd.defined %}
 | Match Payload Bits | {{ profile.fields.udp.match.payload_bits }} |
 | Match Pattern | {{ profile.fields.udp.match.pattern }} |
 | Match Hash Payload Bytes | {{ profile.fields.udp.match.hash_payload_bytes }} |
-{%             endif %}
-{%             if profile.fields.udp.payload_bytes is arista.avd.defined %}
+{%                 endif %}
+{%                 if profile.fields.udp.payload_bytes is arista.avd.defined %}
 | UDP Payload | {{ profile.fields.udp.payload_bytes }} |
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if load_balance.cluster is arista.avd.defined %}
+
+### Load Balance Cluster
+
+| Setting | Value |
+| ------- | ----- |
+{%         if load_balance.cluster.forwarding_type is arista.avd.defined %}
+| Forwarding Type | {{ load_balance.cluster.forwarding_type }} |
+{%         endif %}
+{%         if load_balance.cluster.destination_grouping is arista.avd.defined %}
+{%             if load_balance.cluster.destination_grouping != "prefix length" %}
+| Destination Grouping | {{ load_balance.cluster.destination_grouping }} |
+{%             elif load_balance.cluster.prefix_length is arista.avd.defined %}
+| Destination Grouping | {{ load_balance.cluster.destination_grouping }} {{ load_balance.cluster.prefix_length }} |
 {%             endif %}
 {%         endif %}
-{%     endfor %}
+{%         if load_balance.cluster.load_balance_method_flow_round_robin is arista.avd.defined %}
+| Load-balance Method Flow Round-robin | {{ load_balance.cluster.load_balance_method_flow_round_robin }} |
+{%         endif %}
+{%         if load_balance.cluster.flow.monitor is arista.avd.defined %}
+| Flow Monitor | {{ load_balance.cluster.flow.monitor }} |
+{%         endif %}
+{%         if load_balance.cluster.flow.source_learning_aging_timeout is arista.avd.defined %}
+| Flow Source Learning Aging Timeout | {{ load_balance.cluster.flow.source_learning_aging_timeout }} seconds |
+{%         endif %}
+{%         if load_balance.cluster.port_groups is arista.avd.defined %}
+
+#### Host Port Groups
+
+| Port Group | Interface | Flow Limit | Flow Warning | Balance Factor | Exhaustion Action DSCP | Exhaustion Action Traffic-class |
+| ---------- | --------- | ---------- | ------------ | -------------- | ---------------------- | ------------------------------- |
+{%             for port_group in load_balance.cluster.port_groups | arista.avd.natural_sort('group')  %}
+{%                 set interface = port_group.interface | arista.avd.default("-") %}
+{%                 set flow_limit = port_group.flow.limit | arista.avd.default("-") %}
+{%                 set flow_warning = port_group.flow.warning | arista.avd.default("-") %}
+{%                 set balance_factor = port_group.balance_factor | arista.avd.default("-") %}
+{%                 set exhaustion_action_dscp = port_group.flow.exhaustion_action.dscp | arista.avd.default("-") %}
+{%                 set exhaustion_action_traffic_class = port_group.flow.exhaustion_action.traffic_class | arista.avd.default("-") %}
+| {{ port_group.group }} | {{ interface }} | {{ flow_limit }} | {{ flow_warning }} | {{ balance_factor }} | {{ exhaustion_action_dscp }} | {{ exhaustion_action_traffic_class }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
 
 ### Load Balance Configuration
 
 ```eos
 {%     include 'eos/load-balance.j2' %}
+{%     include 'eos/load-balance-cluster.j2' %}
 ```
 {% endif %}

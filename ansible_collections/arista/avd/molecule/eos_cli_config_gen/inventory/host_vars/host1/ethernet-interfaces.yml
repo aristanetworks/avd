@@ -427,6 +427,7 @@ ethernet_interfaces:
         random_detect:
           ecn:
             count: true
+        scheduler_profile_responsive: true
     sync_e:
       enable: true
       priority: disabled
