@@ -312,7 +312,14 @@
 {%                 do applications.append("100gbase-srbd") %}
 {%             elif transceiver_setting.transceiver.application_overrides is arista.avd.defined %}
 {%                 for application_override in transceiver_setting.transceiver.application_overrides %}
-{%                     do applications.append(application_override.application_number) %}
+{%                     set application_override_var = application_override.application_number %}
+{%                     if application_override.lanes.start is arista.avd.defined %}
+{%                         set application_override_var = application_override_var ~ " lanes start " ~ application_override.lanes.start %}
+{%                         if application_override.lanes.end is arista.avd.defined %}
+{%                             set application_override_var = application_override_var ~ " end " ~ application_override.lanes.end %}
+{%                         endif %}
+{%                     endif %}
+{%                     do applications.append(application_override_var) %}
 {%                 endfor %}
 {%             else %}
 {%                 do applications.append("-") %}
