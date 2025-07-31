@@ -3670,7 +3670,6 @@ keys:
             application_overrides:
               type: list
               description: Set CMIS transceiver applications.
-              min_length: 1
               items:
                 type: dict
                 keys:

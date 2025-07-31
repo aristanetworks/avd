@@ -426,7 +426,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "ethernet_interfaces.[].transceiver.media") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.media.override") | String |  |  |  | Transceiver type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override_100gbase_srbd</samp>](## "ethernet_interfaces.[].transceiver.application_override_100gbase_srbd") | Boolean |  |  |  | Set legacy mode for 100GBASE-SRBD interoperability.<br>This key is mutually exclusive with `application_overrides` and takes precedence over it. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_overrides</samp>](## "ethernet_interfaces.[].transceiver.application_overrides") | List, items: Dictionary |  |  | Min Length: 1 | Set CMIS transceiver applications. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_overrides</samp>](## "ethernet_interfaces.[].transceiver.application_overrides") | List, items: Dictionary |  |  |  | Set CMIS transceiver applications. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;application_number</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].application_number") | Integer | Required |  | Min: 0<br>Max: 15 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lanes</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].lanes") | Dictionary |  |  |  | Set host lanes for which overrides should be applied.<br>The ranges of `lanes` should not overlap. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].lanes.start") | Integer | Required |  | Min: 1<br>Max: 8 |  |
@@ -1531,7 +1531,7 @@
           application_override_100gbase_srbd: <bool>
 
           # Set CMIS transceiver applications.
-          application_overrides: # >=1 items
+          application_overrides:
             - application_number: <int; 0-15; required>
 
               # Set host lanes for which overrides should be applied.
