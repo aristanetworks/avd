@@ -62901,9 +62901,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """
                         The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.
                         Ex:
-                          1. Ethernet 1
-                        2. Et 1,2
-                          3. Po 2-4.
+                          1. Ethernet1
+                        2. Et1,2
+                          3. Po2-4.
                         """
                         next_hop: NextHop
                         """
@@ -62940,9 +62940,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     interface:
                                        The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.
                                        Ex:
-                                         1. Ethernet 1
-                                       2. Et 1,2
-                                         3. Po 2-4.
+                                         1. Ethernet1
+                                       2. Et1,2
+                                         3. Po2-4.
                                     next_hop:
                                        Redirect to next-hop.
                                        This option is mutually exclusive with `aggregation_groups` and `interface`.

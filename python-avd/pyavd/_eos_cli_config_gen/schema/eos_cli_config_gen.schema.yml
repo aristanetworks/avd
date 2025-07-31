@@ -23706,8 +23706,8 @@ keys:
                           interface:
                             type: str
                             description: "The allowed hardware Ethernet interface,
-                              LAG interface, InternalRecirc, Switch.\nEx:\n  1. Ethernet
-                              1\n  2. Et 1,2\n  3. Po 2-4."
+                              LAG interface, InternalRecirc, Switch.\nEx:\n  1. Ethernet1\n
+                              \ 2. Et1,2\n  3. Po2-4."
                           next_hop:
                             type: dict
                             description: 'Redirect to next-hop.
@@ -23736,6 +23736,8 @@ keys:
                                   description: Next hop IPv6 address.
                               vrf:
                                 type: str
+                                convert_types:
+                                - int
                                 description: Resolve next-hop in a VRF for `ipv4_addresses`,
                                   `ipv6_addresses`, `recursive_ipv4_addresses` or
                                   `recursive_ipv6_addresses`.
