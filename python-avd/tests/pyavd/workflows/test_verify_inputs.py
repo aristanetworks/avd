@@ -577,7 +577,8 @@ def test_verify_device_inputs(
     warnings = []
     with caplog.at_level(logging.DEBUG), expected_exception as exc_info:
         # Engage FUT
-        verify_device_inputs(devices, warnings, strict_system_mac_address=strict_system_mac_address)
+        # TODO: Check and update this with revised input args
+        verify_device_inputs(devices, None, warnings, strict_system_mac_address=strict_system_mac_address)
     # Assert number of returned warnings
     assert len(warnings) == warnings_qty
     # Assert that updated warnings match expected warning patterns
