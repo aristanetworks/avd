@@ -139,16 +139,16 @@
 {%                             if match.actions.redirect.next_hop.ipv4_addresses is arista.avd.defined %}
 {%                                 set ipv4_addresses = match.actions.redirect.next_hop.ipv4_addresses | arista.avd.natural_sort | join(' ') %}
 {%                                 if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
-{%                                     set row_str_next_hop = "redirect next-hop ipv4 address: " + ipv4_addresses + " vrf: " + match.actions.redirect.next_hop.vrf | string %}
+{%                                     set row_str_next_hop = "redirect next-hop IPv4 address: " + ipv4_addresses + " vrf: " + match.actions.redirect.next_hop.vrf | string %}
 {%                                 else %}
-{%                                     set row_str_next_hop = "redirect next-hop ipv4 address: " + ipv4_addresses | string %}
+{%                                     set row_str_next_hop = "redirect next-hop IPv4 address: " + ipv4_addresses | string %}
 {%                                 endif %}
 {%                             elif match.actions.redirect.next_hop.ipv6_addresses is arista.avd.defined %}
 {%                                 set ipv6_addresses = match.actions.redirect.next_hop.ipv6_addresses | arista.avd.natural_sort | join(' ') %}
 {%                                 if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
-{%                                     set row_str_next_hop = "redirect next-hop ipv6 address: " + ipv6_addresses + " vrf: " + match.actions.redirect.next_hop.vrf | string %}
+{%                                     set row_str_next_hop = "redirect next-hop IPv6 address: " + ipv6_addresses + " vrf: " + match.actions.redirect.next_hop.vrf | string %}
 {%                                 else %}
-{%                                     set row_str_next_hop = "redirect next-hop ipv6 address: " + ipv6_addresses | string %}
+{%                                     set row_str_next_hop = "redirect next-hop IPv6 address: " + ipv6_addresses | string %}
 {%                                 endif %}
 {%                             elif match.actions.redirect.next_hop.groups is arista.avd.defined %}
 {%                                 set row_str_next_hop = "redirect next-hop groups: " + match.actions.redirect.next_hop.groups | arista.avd.natural_sort | join(' ') | string %}
