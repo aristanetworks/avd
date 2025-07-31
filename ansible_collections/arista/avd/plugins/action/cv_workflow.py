@@ -303,6 +303,9 @@ class ActionModule(ActionBase):
         ]
         avd_devices = await gather(*avd_device_coroutines)
 
+        # filter out any avd_device set to None due to 'is_deployed' set to false within device structured config
+        avd_devices_filtered = [avd_device for avd_device in avd_devices if is_valid_object(avd_device)]
+
         eos_config_objects = []
         device_tag_objects = []
         interface_tag_objects = []
@@ -313,7 +316,7 @@ class ActionModule(ActionBase):
             interface_tag_objects.extend(device_interface_tag_objects)
             cv_pathfinder_metadata_objects.extend(device_cv_pathfinder_metadata_objects)
 
-        return eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects, avd_devices
+        return eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects, avd_devices_filtered
 
     async def build_object_for_device(
         self,
@@ -481,7 +484,7 @@ class ActionModule(ActionBase):
 
         if not get(structured_config, "is_deployed", default=True):
             del structured_config
-            return ([], [], [], [])
+            return None
 
         # Build device object to be used in other objects.
         serial_number = get(structured_config, "serial_number")
@@ -544,6 +547,11 @@ class ActionModule(ActionBase):
 
         del structured_config
         return avd_device_object
+
+
+def is_valid_object(avd_device: AvdDevice | None) -> bool:
+    """Checks if the AvdDevice instance is valid (not None in this case)."""
+    return avd_device is not None
 
 
 def setup_module_logging(result: dict) -> None:
