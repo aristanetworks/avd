@@ -55,7 +55,8 @@ keys:
                   subscribe_rcf:
                     type: str
                     description: |-
-                      RCF Policy.
+                      RCF Policy name with parenthesis.
+                      Example: MyFunction(myarg).
                       Mutually exclusive with `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
             routes:
               type: dict

@@ -7544,7 +7544,7 @@ router adaptive-virtual-topology
 | BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING | - |
 | BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING | - |
 | BLUE3 | BLUE-C1 | RM-BLUE-LEAKING | - |
-| BLUE3 | BLUE-C2 | - | RCF_BLUE_C2 |
+| BLUE3 | BLUE-C2 | - | RCF_BLUE_C2() |
 
 #### VRF Routes Dynamic Prefix-lists
 

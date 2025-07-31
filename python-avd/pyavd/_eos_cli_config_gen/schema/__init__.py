@@ -54282,9 +54282,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Route-Map Policy."""
                 subscribe_rcf: str | None
                 """
-                RCF Policy.
-                Mutually exclusive with `subscribe_policy`, if both are defined `subscribe_policy` takes
-                precedence.
+                RCF Policy name with parenthesis.
+                Example: MyFunction(myarg).
+                Mutually exclusive with
+                `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
                 """
 
                 if TYPE_CHECKING:
@@ -54306,9 +54307,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             source_vrf: source_vrf
                             subscribe_policy: Route-Map Policy.
                             subscribe_rcf:
-                               RCF Policy.
-                               Mutually exclusive with `subscribe_policy`, if both are defined `subscribe_policy` takes
-                               precedence.
+                               RCF Policy name with parenthesis.
+                               Example: MyFunction(myarg).
+                               Mutually exclusive with
+                               `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
 
                         """
 
