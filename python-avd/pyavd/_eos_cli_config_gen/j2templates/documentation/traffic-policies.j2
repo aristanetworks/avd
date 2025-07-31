@@ -155,16 +155,16 @@
 {%                             elif match.actions.redirect.next_hop.recursive_ipv4_addresses is arista.avd.defined %}
 {%                                 set ipv4_addresses = match.actions.redirect.next_hop.recursive_ipv4_addresses | arista.avd.natural_sort | join(' ') %}
 {%                                 if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
-{%                                     set row_str_next_hop = "redirect next-hop recursive ipv4 address: " ~ ipv4_addresses ~ " vrf: " ~ match.actions.redirect.next_hop.vrf %}
+{%                                     set row_str_next_hop = "redirect next-hop recursive IPv4 address: " ~ ipv4_addresses ~ " vrf: " ~ match.actions.redirect.next_hop.vrf %}
 {%                                 else %}
-{%                                     set row_str_next_hop = "redirect next-hop recursive ipv4 address: " ~ ipv4_addresses %}
+{%                                     set row_str_next_hop = "redirect next-hop recursive IPv4 address: " ~ ipv4_addresses %}
 {%                                 endif %}
 {%                             elif match.actions.redirect.next_hop.recursive_ipv6_addresses is arista.avd.defined %}
 {%                                 set ipv6_addresses = match.actions.redirect.next_hop.recursive_ipv6_addresses | arista.avd.natural_sort | join(' ') %}
 {%                                 if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
-{%                                     set row_str_next_hop = "redirect next-hop recursive ipv6 address: " ~ ipv6_addresses ~ " vrf: " ~ match.actions.redirect.next_hop.vrf %}
+{%                                     set row_str_next_hop = "redirect next-hop recursive IPv6 address: " ~ ipv6_addresses ~ " vrf: " ~ match.actions.redirect.next_hop.vrf %}
 {%                                 else %}
-{%                                     set row_str_next_hop = "redirect next-hop recursive ipv6 address: " ~ ipv6_addresses %}
+{%                                     set row_str_next_hop = "redirect next-hop recursive IPv6 address: " ~ ipv6_addresses %}
 {%                                 endif %}
 {%                             endif %}
 {%                             if row_str_next_hop and match.actions.redirect.next_hop.ttl is arista.avd.defined %}
