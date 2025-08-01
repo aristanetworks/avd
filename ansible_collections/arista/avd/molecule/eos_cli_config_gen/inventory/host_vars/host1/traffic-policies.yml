@@ -47,6 +47,10 @@ traffic_policies:
           ttl: "10, 20-30"
           actions:
             traffic_class: 5
+            redirect:
+              next_hop:
+                # Test next_hop ipv6 without VRF
+                ipv6_addresses: [ 2001:db8::1, fd00::abcd:1234 ]
         - name: BLUE-C1-POLICY-02
           type: ipv4
           source:
@@ -62,6 +66,10 @@ traffic_policies:
           actions:
             count: DEMO-TRAFFIC
             dscp: 60
+            redirect:
+              next_hop:
+                # Test next_hop ipv4 without VRF
+                ipv4_addresses: [ 2.2.2.2, 2.2.2.1 ]
         - name: BLUE-C1-POLICY-03
           type: ipv4
           source:
@@ -78,6 +86,9 @@ traffic_policies:
             count: DROP-PACKETS
             drop: true
             log: true
+            redirect:
+              aggregation_groups: [group3, group1, group2]
+              interface: Ethernet 1-4
         - name: BLUE-C1-POLICY-04
           type: ipv4
           source:
@@ -95,6 +106,11 @@ traffic_policies:
             - protocol: icmp
           actions:
             traffic_class: 5
+            redirect:
+              next_hop:
+                # Test next_hop ipv4 with VRF
+                ipv4_addresses: [ 3.3.3.3, 1.1.1.1 ]
+                vrf: VRF_IPv4
         - name: BLUE-C1-POLICY-05
           type: ipv4
           source:
@@ -108,6 +124,13 @@ traffic_policies:
           fragment:
           actions:
             traffic_class: 5
+            redirect:
+              next_hop:
+                # Test next_hop ipv6 with VRF
+                ipv6_addresses: [ 2001:0db8:0000:0000:0000:0000:0000:0001, fe80:0000:0000:0000:f2de:f1ff:fe3f:307e ]
+                vrf: VRF_IPv6
+                # groups should not work
+                groups: [ web_servers, db_servers ]
         - name: BLUE-C1-POLICY-06
           type: ipv4
           protocols:
@@ -125,12 +148,22 @@ traffic_policies:
             - protocol: icmp
           actions:
             log: false
+            redirect:
+              next_hop:
+                # Testing groups
+                groups: [ load_balancers, monitoring_tools ]
         - name: BLUE-C1-POLICY-07
           type: ipv4
           destination:
             prefixes:
               - 10.0.0.0/8
               - 192.168.0.0/16
+          actions:
+            redirect:
+              next_hop:
+                # Test next_hop recursive ipv4 with VRF
+                recursive_ipv4_addresses: [ 3.3.3.1, 1.1.1.3 ]
+                vrf: VRF_IPv4_recursive
         - name: BLUE-C1-POLICY-08
           type: ipv4
           destination:
@@ -147,6 +180,11 @@ traffic_policies:
             - protocol: tcp
               dst_field: SERVICE-DEMO-DST
               src_field: SERVICE-DEMO-SRC
+          actions:
+            redirect:
+              next_hop:
+                # Test next_hop recursive ipv4 without VRF
+                recursive_ipv4_addresses: [ 14.2.3.1, 13.2.1.3 ]
     - name: BLUE-C2-POLICY
       default_actions:
         ipv4:
@@ -165,6 +203,11 @@ traffic_policies:
             - protocol: icmp
           actions:
             traffic_class: 5
+            redirect:
+              next_hop:
+                # Test next_hop recursive ipv6 with VRF
+                recursive_ipv6_addresses: [ 2a00:1450:4009:821::200e ]
+                vrf: VRF_IPv6_recursive
         - name: BLUE-C2-POLICY-02
           type: ipv4
           source:
@@ -178,6 +221,10 @@ traffic_policies:
           actions:
             count: DEMO-TRAFFIC
             dscp: 60
+            redirect:
+              next_hop:
+                # Test next_hop recursive ipv6 without VRF
+                recursive_ipv6_addresses: [ 2606:4700:4700::1111, 2001:4860:4860::8888 ]
         - name: BLUE-C2-POLICY-03
           type: ipv4
           source:
@@ -187,6 +234,41 @@ traffic_policies:
             - protocol: tcp
           actions:
             drop: true
+            redirect:
+              next_hop:
+                # Test next_hop ipv6 without VRF with ttl
+                ipv6_addresses: [ 2001:db8::1, fd00::abcd:1234 ]
+                ttl: 3
+        # Test redirect for type: ipv6
+        - name: BLUE-C2-POLICY-04
+          type: ipv6
+          actions:
+            redirect:
+              interface: Ethernet 6
+        - name: BLUE-C2-POLICY-05
+          type: ipv6
+          actions:
+            redirect:
+              next_hop:
+                # Test next_hop ipv4 with VRF with ttl
+                ipv4_addresses: [ 2.2.2.43, 2.2.2.33 ]
+                ttl: 5
+                vrf: VRF_TTL_IPv4
+        - name: BLUE-C2-POLICY-06
+          type: ipv4
+          actions:
+            redirect:
+              next_hop:
+                # Testing groups with ttl
+                groups: [ Testing_TTL_GROUP ]
+                ttl: 44
+        - name: BLUE-C2-POLICY-07
+          type: ipv4
+          actions:
+            redirect:
+              next_hop:
+                # Testing negative ttl it should not reflect.
+                ttl: 44
     - name: BLUE-C3-POLICY
       default_actions:
         ipv4:
