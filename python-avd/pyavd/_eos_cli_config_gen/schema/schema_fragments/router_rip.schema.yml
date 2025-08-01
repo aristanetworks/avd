@@ -17,6 +17,8 @@ keys:
           type: bool
         vrf:
           type: str
+          convert_types:
+            - int
         metric_default:
           type: int
           description: Set default metric for the routes
