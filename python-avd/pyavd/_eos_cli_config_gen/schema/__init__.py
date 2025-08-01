@@ -18186,17 +18186,230 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"policies": {"type": Policies}}
+        class Cluster(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Flow(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"monitor": {"type": bool}, "source_learning_aging_timeout": {"type": int}}
+                monitor: bool | None
+                """Monitor the flows without affecting forwarding."""
+                source_learning_aging_timeout: int | None
+                """Flow aging timeout in seconds for flow discovery by learning."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, monitor: bool | None | UndefinedType = Undefined, source_learning_aging_timeout: int | None | UndefinedType = Undefined
+                    ) -> None:
+                        """
+                        Flow.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            monitor: Monitor the flows without affecting forwarding.
+                            source_learning_aging_timeout: Flow aging timeout in seconds for flow discovery by learning.
+
+                        """
+
+            class PortGroupsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Flow(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class ExhaustionAction(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"dscp": {"type": int}, "traffic_class": {"type": int}}
+                        dscp: int | None
+                        """Packet DSCP value."""
+                        traffic_class: int | None
+                        """Packet traffic-class value."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, dscp: int | None | UndefinedType = Undefined, traffic_class: int | None | UndefinedType = Undefined) -> None:
+                                """
+                                ExhaustionAction.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    dscp: Packet DSCP value.
+                                    traffic_class: Packet traffic-class value.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"limit": {"type": int}, "warning": {"type": int}, "exhaustion_action": {"type": ExhaustionAction}}
+                    limit: int | None
+                    """Maximum number of flows per port."""
+                    warning: int | None
+                    """Warning threshold of flows per port group."""
+                    exhaustion_action: ExhaustionAction
+                    """
+                    Forwarding action when flows reach limits.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            limit: int | None | UndefinedType = Undefined,
+                            warning: int | None | UndefinedType = Undefined,
+                            exhaustion_action: ExhaustionAction | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Flow.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                limit: Maximum number of flows per port.
+                                warning: Warning threshold of flows per port group.
+                                exhaustion_action:
+                                   Forwarding action when flows reach limits.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"group": {"type": str}, "balance_factor": {"type": int}, "interface": {"type": str}, "flow": {"type": Flow}}
+                group: str
+                """Port group name."""
+                balance_factor: int | None
+                interface: str | None
+                """
+                Ethernet interface/subinterface name. It could be a `,` separated list or range.
+                eg. Ethernet2,
+                Ethernet2-5,
+                    Ethernet2.2,3.1,
+                    Ethernet3.1-2
+                """
+                flow: Flow
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        group: str | UndefinedType = Undefined,
+                        balance_factor: int | None | UndefinedType = Undefined,
+                        interface: str | None | UndefinedType = Undefined,
+                        flow: Flow | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PortGroupsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            group: Port group name.
+                            balance_factor: balance_factor
+                            interface:
+                               Ethernet interface/subinterface name. It could be a `,` separated list or range.
+                               eg. Ethernet2,
+                               Ethernet2-5,
+                                   Ethernet2.2,3.1,
+                                   Ethernet3.1-2
+                            flow: Subclass of AvdModel.
+
+                        """
+
+            class PortGroups(AvdIndexedList[str, PortGroupsItem]):
+                """Subclass of AvdIndexedList with `PortGroupsItem` items. Primary key is `group` (`str`)."""
+
+                _primary_key: ClassVar[str] = "group"
+
+            PortGroups._item_type = PortGroupsItem
+
+            _fields: ClassVar[dict] = {
+                "destination_grouping": {"type": str},
+                "prefix_length": {"type": int},
+                "forwarding_type": {"type": str},
+                "load_balance_method_flow_round_robin": {"type": bool},
+                "flow": {"type": Flow},
+                "port_groups": {"type": PortGroups},
+            }
+            destination_grouping: Literal["bgp field-set", "prefix length", "vtep"] | None
+            """Perform destination grouping using given setting."""
+            prefix_length: int | None
+            """
+            Network address prefix length for destination grouping using prefix length.
+            This setting must be
+            defined when `destination_grouping` is set to `prefix length`.
+            """
+            forwarding_type: Literal["bridged encapsulation vxlan ipv4", "routed ipv4"] | None
+            load_balance_method_flow_round_robin: bool | None
+            """Enable round-robin load balancing for flow-based traffic."""
+            flow: Flow
+            """Subclass of AvdModel."""
+            port_groups: PortGroups
+            """
+            Host ports settings.
+
+            Subclass of AvdIndexedList with `PortGroupsItem` items. Primary key is `group`
+            (`str`).
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    destination_grouping: Literal["bgp field-set", "prefix length", "vtep"] | None | UndefinedType = Undefined,
+                    prefix_length: int | None | UndefinedType = Undefined,
+                    forwarding_type: Literal["bridged encapsulation vxlan ipv4", "routed ipv4"] | None | UndefinedType = Undefined,
+                    load_balance_method_flow_round_robin: bool | None | UndefinedType = Undefined,
+                    flow: Flow | UndefinedType = Undefined,
+                    port_groups: PortGroups | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Cluster.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        destination_grouping: Perform destination grouping using given setting.
+                        prefix_length:
+                           Network address prefix length for destination grouping using prefix length.
+                           This setting must be
+                           defined when `destination_grouping` is set to `prefix length`.
+                        forwarding_type: forwarding_type
+                        load_balance_method_flow_round_robin: Enable round-robin load balancing for flow-based traffic.
+                        flow: Subclass of AvdModel.
+                        port_groups:
+                           Host ports settings.
+
+                           Subclass of AvdIndexedList with `PortGroupsItem` items. Primary key is `group`
+                           (`str`).
+
+                    """
+
+        _fields: ClassVar[dict] = {"policies": {"type": Policies}, "cluster": {"type": Cluster}}
         policies: Policies
         """
         Collection of load balancing policy definitions.
 
         Subclass of AvdModel.
         """
+        cluster: Cluster
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, policies: Policies | UndefinedType = Undefined) -> None:
+            def __init__(self, *, policies: Policies | UndefinedType = Undefined, cluster: Cluster | UndefinedType = Undefined) -> None:
                 """
                 LoadBalance.
 
@@ -18208,6 +18421,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Collection of load balancing policy definitions.
 
                        Subclass of AvdModel.
+                    cluster: Subclass of AvdModel.
 
                 """
 
@@ -62190,12 +62404,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Options(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"counter_per_interface": {"type": bool}}
+            _fields: ClassVar[dict] = {"counter_per_interface": {"type": bool}, "counter_interface_poll_interval": {"type": int}}
             counter_per_interface: bool | None
+            counter_interface_poll_interval: int | None
+            """Interval between consecutive polls in seconds."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, counter_per_interface: bool | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    counter_per_interface: bool | None | UndefinedType = Undefined,
+                    counter_interface_poll_interval: int | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     Options.
 
@@ -62204,6 +62425,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         counter_per_interface: counter_per_interface
+                        counter_interface_poll_interval: Interval between consecutive polls in seconds.
 
                     """
 

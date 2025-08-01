@@ -101,6 +101,7 @@
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
 - [Load Balance](#load-balance)
   - [Load Balance Profiles](#load-balance-profiles)
+  - [Load Balance Cluster](#load-balance-cluster)
   - [Load Balance Configuration](#load-balance-configuration)
   - [Link Tracking](#link-tracking)
 - [MLAG](#mlag)
@@ -3417,6 +3418,24 @@ hardware tcam
 | Match Hash Payload Bytes | 10 |
 | UDP Payload | 10-20 |
 
+### Load Balance Cluster
+
+| Setting | Value |
+| ------- | ----- |
+| Forwarding Type | routed ipv4 |
+| Destination Grouping | bgp field-set |
+| Load-balance Method Flow Round-robin | True |
+| Flow Monitor | True |
+| Flow Source Learning Aging Timeout | 45 seconds |
+
+#### Host Port Groups
+
+| Port Group | Interface | Flow Limit | Flow Warning | Balance Factor | Exhaustion Action DSCP | Exhaustion Action Traffic-class |
+| ---------- | --------- | ---------- | ------------ | -------------- | ---------------------- | ------------------------------- |
+| host_group1 | Ethernet 2-4 | 12 | 25 | 10 | 5 | 7 |
+| host_group2 | Ethernet 2,3 | - | - | 10 | 45 | - |
+| host_group3 | Ethernet 2.2,3.1 | - | - | - | - | 9 |
+
 ### Load Balance Configuration
 
 ```eos
@@ -3430,6 +3449,31 @@ load-balance policies
       fields udp dst-port 100
          match payload bits 10 pattern 0x7d1 hash payload bytes 10
          payload bytes 10-20
+!
+load-balance cluster
+   forwarding type routed ipv4
+   destination grouping bgp field-set
+   load-balance method flow round-robin
+   flow monitor
+   !
+   flow source learning
+      aging timeout 45 seconds
+   !
+   port group host host_group1
+      interface Ethernet 2-4
+      flow limit 12
+      balance factor 10
+      flow warning 25
+      flow exhaustion action dscp 5 traffic-class 7
+   !
+   port group host host_group2
+      interface Ethernet 2,3
+      balance factor 10
+      flow exhaustion action dscp 45
+   !
+   port group host host_group3
+      interface Ethernet 2.2,3.1
+      flow exhaustion action traffic-class 9
 ```
 
 ### Link Tracking
@@ -12699,6 +12743,7 @@ traffic-policies
    !
    field-set ipv4 prefix DEMO-03
    counter interface per-interface ingress
+   counter interface poll interval 10 seconds
    !
    traffic-policy BLUE-C1-POLICY
       counter DEMO-TRAFFIC DROP-PACKETS

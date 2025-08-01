@@ -168,7 +168,8 @@ class PortChannelInterfacesMixin(Protocol):
             validate_lldp=None if (adapter.validate_lldp if adapter.validate_lldp is not None else True) else False,
             eos_cli=adapter.port_channel.raw_eos_cli,
         )
-        port_channel_interface.sflow.enable = default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
+        if self.shared_utils.platform_settings.feature_support.sflow:
+            port_channel_interface.sflow.enable = default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
 
         if adapter.port_channel.subinterfaces:
             port_channel_interface.switchport.enabled = False

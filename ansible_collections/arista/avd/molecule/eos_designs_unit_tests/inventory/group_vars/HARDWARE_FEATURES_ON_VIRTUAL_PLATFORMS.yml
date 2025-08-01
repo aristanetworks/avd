@@ -143,6 +143,7 @@ custom_platform_settings:
       queue_monitor_length_notify: false
       hardware_speed_group: false
       per_interface_l2_mru: false
+      sflow: false
     p2p_uplinks_mtu: 9194
   - platforms:
       - customplatform
@@ -187,27 +188,50 @@ l3leaf:
     bgp_as: 65001
     loopback_ipv4_pool: 10.10.10.0/24
     vtep_loopback_ipv4_pool: 10.10.20.0/24
-  nodes:
-    - name: HARDWARE_FEATURES_VEOS_LAB
-      id: 1
-      platform: vEOS-lab
-    - name: HARDWARE_FEATURES_CEOS_LAB
-      id: 2
-      platform: cEOSLab
-    - name: HARDWARE_FEATURES_CLOUDEOS
-      id: 3
-      platform: cloudEOS
-    - name: HARDWARE_FEATURES_720XP
-      id: 4
-      # Supports PoE
-      platform: 720XP
-    - name: HARDWARE_FEATURES_7280R
-      id: 5
-      # Supports queue-monitor length notifying
-      platform: 7280R
-    - name: HARDWARE_FEATURES_CUSTOM_PLATFORM
-      id: 6
-      platform: customplatform
+    mlag_interfaces:
+      - Ethernet3
+    uplink_interfaces:
+      - Ethernet1
+    uplink_switch_interfaces:
+      - Ethernet2
+    mlag_peer_ipv4_pool: 10.10.30.0/24
+    mlag_peer_l3_ipv4_pool: 10.10.40.0/24
+    uplink_ipv4_pool: 10.10.50.0/24
+  node_groups:
+    - group: group_1
+      nodes:
+        - name: HARDWARE_FEATURES_VEOS_LAB
+          id: 1
+          platform: vEOS-lab
+        - name: HARDWARE_FEATURES_CEOS_LAB
+          id: 2
+          platform: cEOSLab
+    - group: group_2
+      nodes:
+        - name: HARDWARE_FEATURES_CLOUDEOS
+          id: 3
+          platform: cloudEOS
+          uplink_switches:
+            - HARDWARE_FEATURES_VEOS_LAB
+        - name: HARDWARE_FEATURES_720XP
+          id: 4
+          # Supports PoE
+          platform: 720XP
+          uplink_switches:
+            - HARDWARE_FEATURES_CEOS_LAB
+    - group: group_3
+      nodes:
+        - name: HARDWARE_FEATURES_7280R
+          id: 5
+          # Supports queue-monitor length notifying
+          platform: 7280R
+          uplink_switches:
+            - HARDWARE_FEATURES_CLOUDEOS
+        - name: HARDWARE_FEATURES_CUSTOM_PLATFORM
+          id: 6
+          platform: customplatform
+          uplink_switches:
+            - HARDWARE_FEATURES_720XP
 
 # Test `queue-monitor`
 queue_monitor_length:
@@ -216,7 +240,7 @@ queue_monitor_length:
 queue_monitor_streaming:
   enable: true
 
-# Test `PoE`, `L2 MTU/MRU` and `Storm Control` on Ethernet and Port-channel interfaces
+# Test `PoE`, `L2 MTU/MRU`, `Storm Control` and `sFlow` on Ethernet and Port-channel interfaces
 servers:
   - name: TEST_POE
     adapters:
@@ -243,6 +267,7 @@ servers:
             action: maintain
         l2_mtu: 1001
         l2_mru: 1002
+        sflow: true
   - name: TEST_MTU_MRU
     adapters:
       - switch_ports:
@@ -254,6 +279,7 @@ servers:
         port_channel:
           mode: active
           endpoint_port_channel: PO_NO_MTU_NO_MRU
+        sflow: true
       - switch_ports:
           - Ethernet8
         switches:
@@ -263,6 +289,7 @@ servers:
         port_channel:
           mode: active
           endpoint_port_channel: PO_NO_MTU_NO_MRU
+        sflow: true
       - switch_ports:
           - Ethernet8
         switches:
@@ -272,6 +299,7 @@ servers:
         port_channel:
           mode: active
           endpoint_port_channel: PO_MTU_NO_MRU
+        sflow: true
       - switch_ports:
           - Ethernet8
         switches:
@@ -281,6 +309,7 @@ servers:
         port_channel:
           mode: active
           endpoint_port_channel: PO_MTU_MRU_1
+        sflow: true
       - switch_ports:
           - Ethernet8
         switches:
@@ -290,6 +319,7 @@ servers:
         port_channel:
           mode: active
           endpoint_port_channel: PO_MTU_MRU_2
+        sflow: true
   - name: TEST_INTERFACE_STORM_CONTROL
     adapters:
       - switch_ports:
@@ -449,3 +479,66 @@ hardware_counters:
     - name: vni encap
     - name: vtep decap
     - name: vtep encap
+
+# Test sFlow feature
+l3_edge:
+  p2p_links_ip_pools:
+    - name: default_l3_edge_pool
+      ipv4_pool: 10.10.60.0/24
+  p2p_links:
+    - nodes:
+        - HARDWARE_FEATURES_VEOS_LAB
+        - HARDWARE_FEATURES_CEOS_LAB
+      id: 1
+      interfaces:
+        - Ethernet9
+        - Ethernet9
+      ip_pool: default_l3_edge_pool
+      as:
+        - 65100
+        - 65100
+      sflow: true
+    - nodes:
+        - HARDWARE_FEATURES_CLOUDEOS
+        - HARDWARE_FEATURES_720XP
+      id: 1
+      interfaces:
+        - Ethernet9
+        - Ethernet9
+      ip_pool: default_l3_edge_pool
+      as:
+        - 65100
+        - 65100
+      sflow: true
+    - nodes:
+        - HARDWARE_FEATURES_7280R
+        - HARDWARE_FEATURES_CUSTOM_PLATFORM
+      id: 1
+      interfaces:
+        - Ethernet9
+        - Ethernet9
+      ip_pool: default_l3_edge_pool
+      as:
+        - 65100
+        - 65100
+      sflow: true
+
+# Test sFlow feature
+fabric_sflow:
+  uplinks: true
+  downlinks: true
+  endpoints: true
+  l3_edge: true
+  core_interfaces: true
+  mlag_interfaces: true
+  l3_interfaces: true
+sflow_settings:
+  polling_interval: 5
+  sample:
+    rate: 1000000
+  destinations:
+    - destination: 10.10.10.10
+      vrf: default
+  vrfs:
+    - name: default
+      source_interface: Vlan10
