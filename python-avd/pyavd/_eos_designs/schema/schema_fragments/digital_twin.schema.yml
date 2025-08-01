@@ -35,12 +35,12 @@ keys:
             type: str
             description: |-
               Username for ACT Digital Twin fabric devices.
-            default: admin
+            default: cvpadmin
           act_password:
             type: str
             description: |-
               Cleartext password for ACT Digital Twin fabric devices.
-            default: admin
+            default: cvp123!
       # TODO: Add this in a separate PR.
       # endpoints:
       #   type: dict

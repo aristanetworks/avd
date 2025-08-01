@@ -104,11 +104,11 @@ nodes:
     ip_addr: 192.168.1.17/24
     version: 4.33.1.1F
 tools-server:
-  username: admin
-  password: admin
+  username: cvpadmin
+  password: cvp123!
 veos:
-  username: admin
-  password: admin
+  username: cvpadmin
+  password: cvp123!
 links:
 - connection:
   - DC1-POD1-L2LEAF1A:Ethernet1

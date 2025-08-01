@@ -12687,22 +12687,26 @@ mac security
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
-| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>any | -<br/>SERVICE-DEMO | any<br/>any | -<br/>- | action: PASS<br/>traffic-class: 5 |
-| BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | -<br/>- | any<br/>- | SERVICE-DEMO<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
-| BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | any | icmp | - | - | - | - | action: DROP<br/>counter: DROP-PACKETS<br/>logging |
-| BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22<br/>- | -<br/>- | 80<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5 |
-| BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | bgp | - | - | - | - | action: PASS<br/>traffic-class: 5 |
-| BLUE-C1-POLICY-06 | ipv4 | any | any | neighbors<br/>udp<br/>tcp<br/>icmp | -<br/>22<br/>22<br/>- | -<br/>-<br/>-<br/>- | -<br/>1,10-20<br/>any<br/>- | -<br/>-<br/>-<br/>- | action: PASS |
-| BLUE-C1-POLICY-07 | ipv4 | any | 10.0.0.0/8<br/>192.168.0.0/16 | - | - | - | - | - | default action: PASS |
-| BLUE-C1-POLICY-08 | ipv4 | any | DEMO-01 | udp<br/>tcp | any<br/>any | -<br/>SERVICE-DEMO-SRC | 1,10-20<br/>any | -<br/>SERVICE-DEMO-DST | default action: PASS |
+| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>any | -<br/>SERVICE-DEMO | any<br/>any | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 |
+| BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | -<br/>- | any<br/>- | SERVICE-DEMO<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop IPv4 address: 2.2.2.1 2.2.2.2 |
+| BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | any | icmp | - | - | - | - | action: DROP<br/>counter: DROP-PACKETS<br/>logging<br/>redirect aggregation groups: group1 group2 group3<br/>redirect interface: Ethernet 1-4 |
+| BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22<br/>- | -<br/>- | 80<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv4 address: 1.1.1.1 3.3.3.3 vrf: VRF_IPv4 |
+| BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | bgp | - | - | - | - | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:0db8:0000:0000:0000:0000:0000:0001 fe80:0000:0000:0000:f2de:f1ff:fe3f:307e vrf: VRF_IPv6 |
+| BLUE-C1-POLICY-06 | ipv4 | any | any | neighbors<br/>udp<br/>tcp<br/>icmp | -<br/>22<br/>22<br/>- | -<br/>-<br/>-<br/>- | -<br/>1,10-20<br/>any<br/>- | -<br/>-<br/>-<br/>- | action: PASS<br/>redirect next-hop groups: load_balancers monitoring_tools |
+| BLUE-C1-POLICY-07 | ipv4 | any | 10.0.0.0/8<br/>192.168.0.0/16 | - | - | - | - | - | action: PASS<br/>redirect next-hop recursive IPv4 address: 1.1.1.3 3.3.3.1 vrf: VRF_IPv4_recursive |
+| BLUE-C1-POLICY-08 | ipv4 | any | DEMO-01 | udp<br/>tcp | any<br/>any | -<br/>SERVICE-DEMO-SRC | 1,10-20<br/>any | -<br/>SERVICE-DEMO-DST | action: PASS<br/>redirect next-hop recursive IPv4 address: 13.2.1.3 14.2.3.1 |
 
 ##### BLUE-C2-POLICY
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
-| BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | any | tcp<br/>icmp | 1,10-20<br/>- | -<br/>- | any<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5 |
-| BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | SERVICE-DEMO<br/>- | any<br/>- | -<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
-| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | any | tcp | any | - | any | - | action: DROP |
+| BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | any | tcp<br/>icmp | 1,10-20<br/>- | -<br/>- | any<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop recursive IPv6 address: 2a00:1450:4009:821::200e vrf: VRF_IPv6_recursive |
+| BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | SERVICE-DEMO<br/>- | any<br/>- | -<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop recursive IPv6 address: 2001:4860:4860::8888 2606:4700:4700::1111 |
+| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | any | tcp | any | - | any | - | action: DROP<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 ttl: 3 |
+| BLUE-C2-POLICY-04 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect interface: Ethernet 6 |
+| BLUE-C2-POLICY-05 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop IPv4 address: 2.2.2.33 2.2.2.43 vrf: VRF_TTL_IPv4 ttl: 5 |
+| BLUE-C2-POLICY-06 | ipv4 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop groups: Testing_TTL_GROUP ttl: 44 |
+| BLUE-C2-POLICY-07 | ipv4 | any | any | - | - | - | - | - | action: PASS |
 
 ##### BLUE-C3-POLICY
 
@@ -12756,6 +12760,7 @@ traffic-policies
          ttl 10, 20-30
          !
          actions
+            redirect next-hop 2001:db8::1 fd00::abcd:1234
             set traffic class 5
       !
       match BLUE-C1-POLICY-02 ipv4
@@ -12766,6 +12771,7 @@ traffic-policies
          !
          actions
             count DEMO-TRAFFIC
+            redirect next-hop 2.2.2.1 2.2.2.2
             set dscp 60
       !
       match BLUE-C1-POLICY-03 ipv4
@@ -12777,6 +12783,8 @@ traffic-policies
             count DROP-PACKETS
             drop
             log
+            redirect aggregation group group1 group2 group3
+            redirect interface Ethernet 1-4
       !
       match BLUE-C1-POLICY-04 ipv4
          source prefix field-set DEMO-02
@@ -12786,6 +12794,7 @@ traffic-policies
          protocol icmp
          !
          actions
+            redirect next-hop 1.1.1.1 3.3.3.3 vrf VRF_IPv4
             set traffic class 5
       !
       match BLUE-C1-POLICY-05 ipv4
@@ -12795,18 +12804,28 @@ traffic-policies
          fragment
          !
          actions
+            redirect next-hop 2001:0db8:0000:0000:0000:0000:0000:0001 fe80:0000:0000:0000:f2de:f1ff:fe3f:307e vrf VRF_IPv6
             set traffic class 5
       !
       match BLUE-C1-POLICY-06 ipv4
          protocol neighbors bgp
+         !
+         actions
+            redirect next-hop group load_balancers monitoring_tools
       !
       match BLUE-C1-POLICY-07 ipv4
          destination prefix 10.0.0.0/8 192.168.0.0/16
+         !
+         actions
+            redirect next-hop recursive 1.1.1.3 3.3.3.1 vrf VRF_IPv4_recursive
       !
       match BLUE-C1-POLICY-08 ipv4
          destination prefix 10.0.0.0/8 192.168.0.0/16
          protocol udp destination port 1,10-20
          protocol tcp source port field-set SERVICE-DEMO-SRC destination port field-set SERVICE-DEMO-DST
+         !
+         actions
+            redirect next-hop recursive 13.2.1.3 14.2.3.1
       !
       match ipv4-all-default ipv4
          actions
@@ -12823,6 +12842,7 @@ traffic-policies
          protocol icmp
          !
          actions
+            redirect next-hop recursive 2a00:1450:4009:821::200e vrf VRF_IPv6_recursive
             set traffic class 5
       !
       match BLUE-C2-POLICY-02 ipv4
@@ -12832,6 +12852,7 @@ traffic-policies
          !
          actions
             count DEMO-TRAFFIC
+            redirect next-hop recursive 2001:4860:4860::8888 2606:4700:4700::1111
             set dscp 60
       !
       match BLUE-C2-POLICY-03 ipv4
@@ -12840,6 +12861,26 @@ traffic-policies
          !
          actions
             drop
+            redirect next-hop 2001:db8::1 fd00::abcd:1234 ttl 3
+      !
+      match BLUE-C2-POLICY-04 ipv6
+         !
+         actions
+            redirect interface Ethernet 6
+      !
+      match BLUE-C2-POLICY-05 ipv6
+         !
+         actions
+            redirect next-hop 2.2.2.33 2.2.2.43 vrf VRF_TTL_IPv4 ttl 5
+      !
+      match BLUE-C2-POLICY-06 ipv4
+         !
+         actions
+            redirect next-hop group Testing_TTL_GROUP ttl 44
+      !
+      match BLUE-C2-POLICY-07 ipv4
+         !
+         actions
       !
       match ipv4-all-default ipv4
          actions

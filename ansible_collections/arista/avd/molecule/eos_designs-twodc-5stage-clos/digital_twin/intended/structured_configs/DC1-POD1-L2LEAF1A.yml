@@ -45,8 +45,8 @@ metadata:
     node_type: tools-server
     ip_addr: 192.168.1.10/24
     version: ubuntu-2204-lts
-    username: admin
-    password: admin
+    username: cvpadmin
+    password: cvp123!
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC1-POD1-LEAF1A_Port-Channel3
