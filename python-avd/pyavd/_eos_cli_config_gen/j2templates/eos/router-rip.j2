@@ -11,10 +11,9 @@ router rip
 {%     else %}
 router rip vrf {{ rip.vrf }}
 {%     endif %}
-{%     if rip.default_metric is arista.avd.defined %}
-   metric default {{ rip.default_metric }}
+{%     if rip.metric_default is arista.avd.defined %}
+   metric default {{ rip.metric_default }}
 {%     endif %}
-{# Note: Natural sort on networks does not work perfectly #}
 {%     for network in rip.networks | arista.avd.natural_sort %}
    network {{ network }}
 {%     endfor %}

@@ -58708,10 +58708,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Networks._item_type = str
 
-        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str}, "default_metric": {"type": int}, "networks": {"type": Networks}}
+        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str}, "metric_default": {"type": int}, "networks": {"type": Networks}}
         enabled: bool | None
         vrf: str
-        default_metric: int | None
+        metric_default: int | None
         """Set default metric for the routes"""
         networks: Networks
         """Subclass of AvdList with `str` items."""
@@ -58723,7 +58723,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 enabled: bool | None | UndefinedType = Undefined,
                 vrf: str | UndefinedType = Undefined,
-                default_metric: int | None | UndefinedType = Undefined,
+                metric_default: int | None | UndefinedType = Undefined,
                 networks: Networks | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -58735,7 +58735,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     enabled: enabled
                     vrf: vrf
-                    default_metric: Set default metric for the routes
+                    metric_default: Set default metric for the routes
                     networks: Subclass of AvdList with `str` items.
 
                 """

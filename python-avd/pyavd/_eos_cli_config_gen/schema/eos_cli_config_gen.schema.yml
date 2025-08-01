@@ -21964,7 +21964,7 @@ keys:
           type: bool
         vrf:
           type: str
-        default_metric:
+        metric_default:
           type: int
           description: Set default metric for the routes
           min: 0
