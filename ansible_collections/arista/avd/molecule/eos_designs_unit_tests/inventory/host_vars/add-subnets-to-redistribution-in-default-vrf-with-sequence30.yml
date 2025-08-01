@@ -9,11 +9,13 @@ wan_router: # dynamic_key: node_type
     uplink_type: lan
     uplink_switches: [tenant-default-vrf-static-routes]
     uplink_interfaces: [Ethernet2]
+    uplink_mtu: 9216
     filter:
       tags: [wan_router]
   nodes:
     - name: add-subnets-to-redistribution-in-default-vrf-with-sequence30
       id: 1
+      platform: custom_platform
       uplink_switch_interfaces: [Ethernet1]
       uplink_native_vlan: 10
       cv_pathfinder_region: region1
@@ -23,6 +25,11 @@ wan_router: # dynamic_key: node_type
           wan_carrier: Comcast
           wan_circuit_id: 999
           ip_address: 10.9.9.9/31
+
+custom_platform_settings:
+  - platforms: [ custom_platform ]
+    feature_support:
+      per_interface_mtu: false
 
 tenants: # dynamic_key: network_services
   - name: TEST

@@ -7167,6 +7167,104 @@ keys:
                                 All byte positions must be within the range 0 to 62.'
                               convert_types:
                               - int
+      cluster:
+        type: dict
+        keys:
+          destination_grouping:
+            type: str
+            valid_values:
+            - bgp field-set
+            - prefix length
+            - vtep
+            description: Perform destination grouping using given setting.
+          prefix_length:
+            type: int
+            convert_types:
+            - str
+            min: 0
+            max: 129
+            description: 'Network address prefix length for destination grouping using
+              prefix length.
+
+              This setting must be defined when `destination_grouping` is set to `prefix
+              length`.'
+          forwarding_type:
+            type: str
+            valid_values:
+            - bridged encapsulation vxlan ipv4
+            - routed ipv4
+          load_balance_method_flow_round_robin:
+            type: bool
+            description: Enable round-robin load balancing for flow-based traffic.
+          flow:
+            type: dict
+            keys:
+              monitor:
+                type: bool
+                description: Monitor the flows without affecting forwarding.
+              source_learning_aging_timeout:
+                description: Flow aging timeout in seconds for flow discovery by learning.
+                type: int
+                convert_types:
+                - str
+                min: 30
+                max: 2147483647
+          port_groups:
+            description: Host ports settings.
+            type: list
+            primary_key: group
+            items:
+              type: dict
+              keys:
+                group:
+                  type: str
+                  description: Port group name.
+                balance_factor:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 4294967295
+                interface:
+                  type: str
+                  description: "Ethernet interface/subinterface name. It could be
+                    a `,` separated list or range.\neg. Ethernet2,\n    Ethernet2-5,\n
+                    \   Ethernet2.2,3.1,\n    Ethernet3.1-2"
+                flow:
+                  type: dict
+                  keys:
+                    limit:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Maximum number of flows per port.
+                      min: 0
+                      max: 4294967295
+                    warning:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 4294967295
+                      description: Warning threshold of flows per port group.
+                    exhaustion_action:
+                      description: Forwarding action when flows reach limits.
+                      type: dict
+                      keys:
+                        dscp:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 0
+                          max: 63
+                          description: Packet DSCP value.
+                        traffic_class:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 0
+                          max: 11
+                          description: Packet traffic-class value.
   load_interval:
     type: dict
     keys:
@@ -23416,6 +23514,13 @@ keys:
         keys:
           counter_per_interface:
             type: bool
+          counter_interface_poll_interval:
+            type: int
+            convert_types:
+            - str
+            min: 2
+            max: 60
+            description: Interval between consecutive polls in seconds.
       field_sets:
         type: dict
         keys:
@@ -23589,6 +23694,73 @@ keys:
                       log:
                         type: bool
                         description: Only supported when action is set to drop.
+                      redirect:
+                        type: dict
+                        keys:
+                          aggregation_groups:
+                            type: list
+                            description: Redirect to aggregation groups in Tap Aggregation
+                              mode.
+                            items:
+                              type: str
+                          interface:
+                            type: str
+                            description: "The allowed hardware Ethernet interface,
+                              LAG interface, InternalRecirc, Switch.\nEx:\n  1. Ethernet1\n
+                              \ 2. Et1,2\n  3. Po2-4"
+                          next_hop:
+                            type: dict
+                            description: 'Redirect to next-hop.
+
+                              This option is mutually exclusive with `aggregation_groups`
+                              and `interface`.
+
+                              If all three are defined, aggregation_groups and interface
+                              take precedence over next-hop.
+
+                              Only one of the below keys can be specified, in the
+                              order of precedence: ipv4_addresses, ipv6_addresses,
+                              groups, recursive_ipv4_addresses, recursive_ipv6_addresses.'
+                            keys:
+                              ipv4_addresses:
+                                type: list
+                                min_length: 1
+                                items:
+                                  type: str
+                                  description: Next hop IPv4 address.
+                              ipv6_addresses:
+                                type: list
+                                min_length: 1
+                                items:
+                                  type: str
+                                  description: Next hop IPv6 address.
+                              vrf:
+                                type: str
+                                convert_types:
+                                - int
+                                description: Resolve next-hop in a VRF for `ipv4_addresses`,
+                                  `ipv6_addresses`, `recursive_ipv4_addresses` or
+                                  `recursive_ipv6_addresses`.
+                              groups:
+                                type: list
+                                items:
+                                  type: str
+                                description: Set groups to redirect flow.
+                              recursive_ipv4_addresses:
+                                type: list
+                                $ref: eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv4_addresses
+                              recursive_ipv6_addresses:
+                                type: list
+                                $ref: eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv6_addresses
+                              ttl:
+                                type: int
+                                min: 1
+                                max: 255
+                                convert_types:
+                                - str
+                                description: Set header TTL value for `ipv4_addresses`,
+                                  `ipv6_addresses`, `recursive_ipv4_addresses`, `recursive_ipv6_addresses`
+                                  or `groups`.
             default_actions:
               type: dict
               keys:
