@@ -42,7 +42,10 @@ class EosDesigns(EosDesignsRootModel):
                     "cleartext_key": {"type": str},
                 }
                 host: str
-                """Host IP address or name."""
+                """
+                Host IP address or name.
+                Combination of `host` and `vrf` should be unique.
+                """
                 groups: Groups
                 """Subclass of AvdList with `str` items."""
                 vrf: str | None
@@ -98,7 +101,9 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            host: Host IP address or name.
+                            host:
+                               Host IP address or name.
+                               Combination of `host` and `vrf` should be unique.
                             groups: Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
@@ -246,7 +251,10 @@ class EosDesigns(EosDesignsRootModel):
                     "cleartext_key": {"type": str},
                 }
                 host: str
-                """Host IP address or name."""
+                """
+                Host IP address or name.
+                Combination of `host` and `vrf` should be unique.
+                """
                 groups: Groups
                 """Subclass of AvdList with `str` items."""
                 vrf: str | None
@@ -297,7 +305,9 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            host: Host IP address or name.
+                            host:
+                               Host IP address or name.
+                               Combination of `host` and `vrf` should be unique.
                             groups: Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.

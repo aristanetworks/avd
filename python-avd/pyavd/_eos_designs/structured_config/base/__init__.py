@@ -692,7 +692,7 @@ class AvdStructuredConfigBaseProtocol(
         """Parse AAA tacacs server configurations and update structured config with server and source interface details."""
         if not self.inputs.aaa_settings.tacacs:
             return
-
+        all_tacacs_servers = EosCliConfigGen.TacacsServers.Hosts()
         for server in self.inputs.aaa_settings.tacacs.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -700,17 +700,21 @@ class AvdStructuredConfigBaseProtocol(
                 set_source_interfaces=True,
                 context=f"aaa_settings.tacacs.servers[host={server.host}].vrf",
             )
+
             if source_interface:
                 self.structured_config.ip_tacacs_source_interfaces.append_unique(
                     EosCliConfigGen.IpTacacsSourceInterfacesItem(name=source_interface, vrf=server_vrf)
                 )
-            server_key = self._get_tacacs_or_radius_server_password(server)
-            self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
+            tacacs_server = EosCliConfigGen.TacacsServers.HostsItem(host=server.host, vrf=server_vrf)
+            if not all_tacacs_servers.__contains__(tacacs_server):
+                all_tacacs_servers.append(tacacs_server)
+                server_key = self._get_tacacs_or_radius_server_password(server)
+                self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
 
-            for group in server.groups:
-                tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
-                tacacs_group.type = "tacacs+"
-                tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
+                for group in server.groups:
+                    tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
+                    tacacs_group.type = "tacacs+"
+                    tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
 
         self.structured_config.tacacs_servers.policy_unknown_mandatory_attribute_ignore = (
             self.inputs.aaa_settings.tacacs.policy.ignore_unknown_mandatory_attribute

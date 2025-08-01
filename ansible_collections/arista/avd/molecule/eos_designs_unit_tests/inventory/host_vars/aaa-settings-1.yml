@@ -30,6 +30,13 @@ aaa_settings:
         groups:
           - TACACS1
 
+      # Test with duplicate host/VRF data to ensure only the first entry is processed.
+      - host: 10.10.10.2
+        vrf: MGMT
+        cleartext_key: arista
+        groups:
+          - TACACS1
+
       # No VRF, so it should honor default_mgmt_method which is oob in this case
       - host: 10.10.10.3
         key: 071B245F5A
