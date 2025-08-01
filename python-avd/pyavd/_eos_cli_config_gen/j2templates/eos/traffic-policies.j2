@@ -152,7 +152,7 @@ traffic-policies
          ttl {{ match.ttl }}
 {%                 endif %}
 {#       -- ACTIONS SECTION -- #}
-{%                 if match.actions.count is arista.avd.defined or match.actions.traffic_class is arista.avd.defined or match.actions.dscp is arista.avd.defined or match.actions.drop is arista.avd.defined(true)  %}
+{%                 if match.actions.count is arista.avd.defined or match.actions.traffic_class is arista.avd.defined or match.actions.dscp is arista.avd.defined or match.actions.drop is arista.avd.defined(true) or match.actions.redirect is arista.avd.defined %}
          !
          actions
 {#                     -- COUNT packets -- #}
@@ -165,6 +165,50 @@ traffic-policies
 {#                         -- LOGGING only if DROP is set-- #}
 {%                         if match.actions.log is arista.avd.defined(true) %}
             log
+{%                         endif %}
+{%                     endif %}
+{%                     if match.actions.redirect.aggregation_groups is arista.avd.defined %}
+            redirect aggregation group {{ match.actions.redirect.aggregation_groups | arista.avd.natural_sort | join(' ') }}
+{%                     endif %}
+{%                     if match.actions.redirect.interface is arista.avd.defined %}
+            redirect interface {{ match.actions.redirect.interface }}
+{%                     endif %}
+{%                     if not (match.actions.redirect.interface is arista.avd.defined or match.actions.redirect.aggregation_groups is arista.avd.defined) and match.actions.redirect.next_hop is arista.avd.defined %}
+{%                         set redirect_cli = "redirect next-hop " %}
+{%                         set next_hop_flag = false %}
+{%                         if match.actions.redirect.next_hop.ipv4_addresses is arista.avd.defined %}
+{%                             set redirect_cli = redirect_cli ~ match.actions.redirect.next_hop.ipv4_addresses | arista.avd.natural_sort | join(' ') %}
+{%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                 set redirect_cli = redirect_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
+{%                             endif %}
+{%                             set next_hop_flag = true %}
+{%                         elif match.actions.redirect.next_hop.ipv6_addresses is arista.avd.defined %}
+{%                             set redirect_cli = redirect_cli ~ match.actions.redirect.next_hop.ipv6_addresses | arista.avd.natural_sort | join(' ') %}
+{%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                 set redirect_cli = redirect_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
+{%                             endif %}
+{%                             set next_hop_flag = true %}
+{%                         elif match.actions.redirect.next_hop.groups is arista.avd.defined %}
+{%                             set redirect_cli = redirect_cli ~ "group " ~ match.actions.redirect.next_hop.groups | arista.avd.natural_sort | join(' ') %}
+{%                             set next_hop_flag = true %}
+{%                         elif match.actions.redirect.next_hop.recursive_ipv4_addresses is arista.avd.defined %}
+{%                             set redirect_cli = redirect_cli ~ "recursive " ~ match.actions.redirect.next_hop.recursive_ipv4_addresses | arista.avd.natural_sort | join(' ') %}
+{%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                 set redirect_cli = redirect_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
+{%                             endif %}
+{%                             set next_hop_flag = true %}
+{%                         elif match.actions.redirect.next_hop.recursive_ipv6_addresses is arista.avd.defined %}
+{%                             set redirect_cli = redirect_cli ~ "recursive " ~ match.actions.redirect.next_hop.recursive_ipv6_addresses | arista.avd.natural_sort | join(' ') %}
+{%                             if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                 set redirect_cli = redirect_cli ~ " vrf " ~ match.actions.redirect.next_hop.vrf %}
+{%                             endif %}
+{%                             set next_hop_flag = true %}
+{%                         endif %}
+{%                         if match.actions.redirect.next_hop.ttl is arista.avd.defined and next_hop_flag %}
+{%                             set redirect_cli = redirect_cli ~ " ttl " ~ match.actions.redirect.next_hop.ttl %}
+{%                         endif %}
+{%                         if next_hop_flag == true %}
+            {{ redirect_cli }}
 {%                         endif %}
 {%                     endif %}
 {#                     -- DSCP -- #}
