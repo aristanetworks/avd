@@ -70,3 +70,10 @@ class AntaTestInputFactory(ABC):
                 return intf.ip_address
         self.logger_adapter.debug(LogMessage.PEER_INTERFACE_NOT_FOUND, interface=interface, peer=peer, peer_interface=peer_interface)
         return None
+
+    def get_peer_interface_state(self, peer: str, peer_interface: str) -> bool | None:
+        """Get the peer interfae state."""
+        for intf in self.minimal_structured_configs[peer].ethernet_interfaces:
+            if intf.name == peer_interface:
+                return intf.shutdown
+        return None

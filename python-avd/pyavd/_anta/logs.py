@@ -83,6 +83,7 @@ class LogMessage(Enum):
 
     # Interface state messages
     INTERFACE_SHUTDOWN = "{interface} skipped - Interface is shutdown"
+    PEER_INTERFACE_SHUTDOWN = "{interface} skipped - Peer interface is shutdown"
     INTERFACE_USING_DHCP = "{interface} skipped - DHCP interface"
     INTERFACE_IS_SUBINTERFACE = "{interface} skipped - Subinterface"
     INTERFACE_VALIDATION_DISABLED = "{interface} skipped - validate_state or validate_lldp disabled"
