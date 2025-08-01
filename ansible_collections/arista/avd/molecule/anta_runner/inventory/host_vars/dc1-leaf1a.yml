@@ -24,15 +24,6 @@ custom_structured_configuration_router_path_selection:
 custom_structured_configuration_router_adaptive_virtual_topology:
   topology_role: edge
 
-# Custom ip name servers structured_config for DNS test
-custom_structured_configuration_ip_name_servers:
-  - ip_address: 8.8.8.8
-    vrf: MGMT
-    priority: 0
-  - ip_address: 1.1.1.1
-    vrf: MGMT
-    priority: 1
-
 # Custom inputs for the hardware tests
 accepted_xcvr_manufacturers:
   - "Arastra, Inc."
