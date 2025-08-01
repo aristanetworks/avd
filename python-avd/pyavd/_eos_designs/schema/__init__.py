@@ -42,7 +42,10 @@ class EosDesigns(EosDesignsRootModel):
                     "cleartext_key": {"type": str},
                 }
                 host: str
-                """Host IP address or name."""
+                """
+                Host IP address or name.
+                Combination of `host` and `vrf` should be unique.
+                """
                 groups: Groups
                 """Subclass of AvdList with `str` items."""
                 vrf: str | None
@@ -98,7 +101,9 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            host: Host IP address or name.
+                            host:
+                               Host IP address or name.
+                               Combination of `host` and `vrf` should be unique.
                             groups: Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
@@ -246,7 +251,10 @@ class EosDesigns(EosDesignsRootModel):
                     "cleartext_key": {"type": str},
                 }
                 host: str
-                """Host IP address or name."""
+                """
+                Host IP address or name.
+                Combination of `host` and `vrf` should be unique.
+                """
                 groups: Groups
                 """Subclass of AvdList with `str` items."""
                 vrf: str | None
@@ -297,7 +305,9 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            host: Host IP address or name.
+                            host:
+                               Host IP address or name.
+                               Combination of `host` and `vrf` should be unique.
                             groups: Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
@@ -4036,8 +4046,8 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "act_os_version": {"type": str},
-                "act_username": {"type": str, "default": "admin"},
-                "act_password": {"type": str, "default": "admin"},
+                "act_username": {"type": str, "default": "cvpadmin"},
+                "act_password": {"type": str, "default": "cvp123!"},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -4045,13 +4055,13 @@ class EosDesigns(EosDesignsRootModel):
             """
             Username for ACT Digital Twin fabric devices.
 
-            Default value: `"admin"`
+            Default value: `"cvpadmin"`
             """
             act_password: str
             """
             Cleartext password for ACT Digital Twin fabric devices.
 
-            Default value: `"admin"`
+            Default value: `"cvp123!"`
             """
 
             if TYPE_CHECKING:

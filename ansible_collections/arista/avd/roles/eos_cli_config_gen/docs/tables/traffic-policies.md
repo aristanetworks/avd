@@ -62,6 +62,23 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "traffic_policies.policies.[].matches.[].actions.count") | String |  |  |  | Counter name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "traffic_policies.policies.[].matches.[].actions.drop") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "traffic_policies.policies.[].matches.[].actions.log") | Boolean |  |  |  | Only supported when action is set to drop. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redirect</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aggregation_groups</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.aggregation_groups") | List, items: String |  |  |  | Redirect to aggregation groups in Tap Aggregation mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.aggregation_groups.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.interface") | String |  |  |  | The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.<br>Ex:<br>  1. Ethernet1<br>  2. Et1,2<br>  3. Po2-4 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop") | Dictionary |  |  |  | Redirect to next-hop.<br>This option is mutually exclusive with `aggregation_groups` and `interface`.<br>If all three are defined, aggregation_groups and interface take precedence over next-hop.<br>Only one of the below keys can be specified, in the order of precedence: ipv4_addresses, ipv6_addresses, groups, recursive_ipv4_addresses, recursive_ipv6_addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv4_addresses") | List, items: String |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv4_addresses.[]") | String |  |  |  | Next hop IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv6_addresses") | List, items: String |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv6_addresses.[]") | String |  |  |  | Next hop IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.vrf") | String |  |  |  | Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses` or `recursive_ipv6_addresses`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.groups") | List, items: String |  |  |  | Set groups to redirect flow. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.groups.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recursive_ipv4_addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive_ipv4_addresses") | List, items: String |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive_ipv4_addresses.[]") | String |  |  |  | Next hop IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recursive_ipv6_addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive_ipv6_addresses") | List, items: String |  |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.recursive_ipv6_addresses.[]") | String |  |  |  | Next hop IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ttl") | Integer |  |  | Min: 1<br>Max: 255 | Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses`, `recursive_ipv6_addresses` or `groups`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_actions</samp>](## "traffic_policies.policies.[].default_actions") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "traffic_policies.policies.[].default_actions.ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "traffic_policies.policies.[].default_actions.ipv4.dscp") | Integer |  |  |  |  |
@@ -187,6 +204,50 @@
 
                 # Only supported when action is set to drop.
                 log: <bool>
+                redirect:
+
+                  # Redirect to aggregation groups in Tap Aggregation mode.
+                  aggregation_groups:
+                    - <str>
+
+                  # The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.
+                  # Ex:
+                  #   1. Ethernet1
+                  #   2. Et1,2
+                  #   3. Po2-4
+                  interface: <str>
+
+                  # Redirect to next-hop.
+                  # This option is mutually exclusive with `aggregation_groups` and `interface`.
+                  # If all three are defined, aggregation_groups and interface take precedence over next-hop.
+                  # Only one of the below keys can be specified, in the order of precedence: ipv4_addresses, ipv6_addresses, groups, recursive_ipv4_addresses, recursive_ipv6_addresses.
+                  next_hop:
+                    ipv4_addresses: # >=1 items
+
+                        # Next hop IPv4 address.
+                      - <str>
+                    ipv6_addresses: # >=1 items
+
+                        # Next hop IPv6 address.
+                      - <str>
+
+                    # Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses` or `recursive_ipv6_addresses`.
+                    vrf: <str>
+
+                    # Set groups to redirect flow.
+                    groups:
+                      - <str>
+                    recursive_ipv4_addresses: # >=1 items
+
+                        # Next hop IPv4 address.
+                      - <str>
+                    recursive_ipv6_addresses: # >=1 items
+
+                        # Next hop IPv6 address.
+                      - <str>
+
+                    # Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses`, `recursive_ipv6_addresses` or `groups`.
+                    ttl: <int; 1-255>
           default_actions:
             ipv4:
               dscp: <int>
