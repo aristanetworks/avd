@@ -139,8 +139,8 @@ metadata:
     node_type: veos
     ip_addr: 192.168.1.6/24
     version: 4.33.1F
-    username: admin
-    password: admin
+    username: cvpadmin
+    password: cvp123!
 router_bgp:
   as: '65110.100'
   router_id: 172.16.110.2

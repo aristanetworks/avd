@@ -117,16 +117,62 @@
 {%                             do row.actions.append("action: PASS") %}
 {%                         endif %}
 {%                         if match.actions.count is arista.avd.defined() %}
-{%                             do row.actions.append("counter: " + match.actions.count) %}
+{%                             do row.actions.append("counter: " ~ match.actions.count) %}
 {%                         endif %}
 {%                         if match.actions.log is arista.avd.defined(true) %}
 {%                             do row.actions.append("logging") %}
 {%                         endif %}
 {%                         if match.actions.dscp is arista.avd.defined() %}
-{%                             do row.actions.append("dscp marking: " + match.actions.dscp | string) %}
+{%                             do row.actions.append("dscp marking: " ~ match.actions.dscp) %}
 {%                         endif %}
 {%                         if match.actions.traffic_class is arista.avd.defined() %}
-{%                             do row.actions.append("traffic-class: " + match.actions.traffic_class | string) %}
+{%                             do row.actions.append("traffic-class: " ~ match.actions.traffic_class) %}
+{%                         endif %}
+{%                         if match.actions.redirect.aggregation_groups is arista.avd.defined %}
+{%                             do row.actions.append("redirect aggregation groups: " ~ match.actions.redirect.aggregation_groups | arista.avd.natural_sort | join(' ')) %}
+{%                         endif %}
+{%                         if match.actions.redirect.interface is arista.avd.defined %}
+{%                             do row.actions.append("redirect interface: " ~ match.actions.redirect.interface) %}
+{%                         endif %}
+{%                         if not (match.actions.redirect.interface is arista.avd.defined or match.actions.redirect.aggregation_groups is arista.avd.defined) and match.actions.redirect.next_hop is arista.avd.defined %}
+{%                             set row_str_next_hop = "" %}
+{%                             if match.actions.redirect.next_hop.ipv4_addresses is arista.avd.defined %}
+{%                                 set ipv4_addresses = match.actions.redirect.next_hop.ipv4_addresses | arista.avd.natural_sort | join(' ') %}
+{%                                 if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                     set row_str_next_hop = "redirect next-hop IPv4 address: " ~ ipv4_addresses ~ " vrf: " ~ match.actions.redirect.next_hop.vrf %}
+{%                                 else %}
+{%                                     set row_str_next_hop = "redirect next-hop IPv4 address: " ~ ipv4_addresses %}
+{%                                 endif %}
+{%                             elif match.actions.redirect.next_hop.ipv6_addresses is arista.avd.defined %}
+{%                                 set ipv6_addresses = match.actions.redirect.next_hop.ipv6_addresses | arista.avd.natural_sort | join(' ') %}
+{%                                 if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                     set row_str_next_hop = "redirect next-hop IPv6 address: " ~ ipv6_addresses ~ " vrf: " ~ match.actions.redirect.next_hop.vrf %}
+{%                                 else %}
+{%                                     set row_str_next_hop = "redirect next-hop IPv6 address: " ~ ipv6_addresses %}
+{%                                 endif %}
+{%                             elif match.actions.redirect.next_hop.groups is arista.avd.defined %}
+{%                                 set row_str_next_hop = "redirect next-hop groups: " ~ match.actions.redirect.next_hop.groups | arista.avd.natural_sort | join(' ') %}
+{%                             elif match.actions.redirect.next_hop.recursive_ipv4_addresses is arista.avd.defined %}
+{%                                 set ipv4_addresses = match.actions.redirect.next_hop.recursive_ipv4_addresses | arista.avd.natural_sort | join(' ') %}
+{%                                 if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                     set row_str_next_hop = "redirect next-hop recursive IPv4 address: " ~ ipv4_addresses ~ " vrf: " ~ match.actions.redirect.next_hop.vrf %}
+{%                                 else %}
+{%                                     set row_str_next_hop = "redirect next-hop recursive IPv4 address: " ~ ipv4_addresses %}
+{%                                 endif %}
+{%                             elif match.actions.redirect.next_hop.recursive_ipv6_addresses is arista.avd.defined %}
+{%                                 set ipv6_addresses = match.actions.redirect.next_hop.recursive_ipv6_addresses | arista.avd.natural_sort | join(' ') %}
+{%                                 if match.actions.redirect.next_hop.vrf is arista.avd.defined %}
+{%                                     set row_str_next_hop = "redirect next-hop recursive IPv6 address: " ~ ipv6_addresses ~ " vrf: " ~ match.actions.redirect.next_hop.vrf %}
+{%                                 else %}
+{%                                     set row_str_next_hop = "redirect next-hop recursive IPv6 address: " ~ ipv6_addresses %}
+{%                                 endif %}
+{%                             endif %}
+{%                             if row_str_next_hop and match.actions.redirect.next_hop.ttl is arista.avd.defined %}
+{%                                 set row_str_next_hop = row_str_next_hop ~ " ttl: " ~ match.actions.redirect.next_hop.ttl %}
+{%                             endif %}
+{%                             if row_str_next_hop %}
+{%                                 do row.actions.append(row_str_next_hop) %}
+{%                             endif %}
 {%                         endif %}
 {%                     else %}
 {%                         do row.actions.append("default action: PASS") %}

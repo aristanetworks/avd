@@ -230,3 +230,4 @@ vxlan_interface:
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
+custom_key2: foo
