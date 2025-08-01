@@ -1562,8 +1562,8 @@ $defs:
                       type: str
                   mlag:
                     description: |-
-                      Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the specific node.
-                      Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                      Configure PIM sparse-mode in the underlay on all MLAG L3 peer interface for the specific node.
+                      Set as `false` to remove all MLAG L3 peer interface and core interfaces.
                     type: bool
               static:
                 type: dict
@@ -1584,8 +1584,8 @@ $defs:
                       type: str
                   mlag:
                     description: |-
-                      Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the specific node.
-                      Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                      Configure static PIM in the underlay on all MLAG L3 peer interface for the specific node.
+                      Set as `false` to remove all MLAG L3 peer interface and core interfaces.
                     type: bool
           campus:
             documentation_options:

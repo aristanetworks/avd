@@ -204,10 +204,12 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                 isinstance(topology_link["node"], str)
                 and topology_link["node"]
                 and isinstance(topology_link["node_interface"], str)
+                and "." not in topology_link["node_interface"]
                 and topology_link["node_interface"]
                 and isinstance(topology_link["peer"], str)
                 and topology_link["peer"]
                 and isinstance(topology_link["peer_interface"], str)
+                and "." not in topology_link["peer_interface"]
                 and topology_link["peer_interface"]
             )
         ),
