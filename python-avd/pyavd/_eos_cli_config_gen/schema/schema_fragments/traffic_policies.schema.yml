@@ -203,7 +203,7 @@ keys:
                               Ex:
                                 1. Ethernet1
                                 2. Et1,2
-                                3. Po2-4.
+                                3. Po2-4
                           next_hop:
                             type: dict
                             description: |-
