@@ -4,9 +4,10 @@
 from __future__ import annotations
 
 import re
+from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._eos_designs.schema import EosCliConfigGen
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import groupby_obj
@@ -31,7 +32,7 @@ class MonitorSessionsMixin(Protocol):
         if not self._monitor_session_configs:
             return
 
-        for session_name, session_configs in groupby_obj(self._monitor_session_configs(), "name"):
+        for session_name, session_configs in groupby_obj(self._monitor_session_configs, "name"):
             # Convert iterator to list since we can only access it once.
             session_configs_list = list(session_configs)
             merged_settings = session_configs_list[0]._deepcopy()
@@ -76,6 +77,7 @@ class MonitorSessionsMixin(Protocol):
 
             self.structured_config.monitor_sessions.append(monitor_session)
 
+    @cached_property
     def _monitor_session_configs(
         self: AvdStructuredConfigBaseProtocol,
     ) -> list[EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessionsItem]:
