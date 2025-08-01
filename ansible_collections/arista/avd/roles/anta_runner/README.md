@@ -364,7 +364,7 @@ ansible-playbook playbooks/anta-runner.yml -vvv
 ```
 
 !!! tip
-    Running `ansible-playbook` with `-vvv` is particularly helpful to troubleshoot why some specific AVD-generated tests are missing from a device final catalog. PyAVD will output detailed information about skipped tests and the reasons for their exclusion.
+    Running `ansible-playbook` with `-vvv` is particularly helpful to troubleshoot why some specific AVD-generated tests are missing from a device's final catalog. PyAVD will output detailed information about skipped tests and the reasons for their exclusion.
 
 ### Understanding Log Output
 
