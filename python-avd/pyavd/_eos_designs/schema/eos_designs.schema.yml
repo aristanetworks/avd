@@ -1749,11 +1749,11 @@ keys:
           act_username:
             type: str
             description: Username for ACT Digital Twin fabric devices.
-            default: admin
+            default: cvpadmin
           act_password:
             type: str
             description: Cleartext password for ACT Digital Twin fabric devices.
-            default: admin
+            default: cvp123!
   dns_settings:
     documentation_options:
       table: management-settings

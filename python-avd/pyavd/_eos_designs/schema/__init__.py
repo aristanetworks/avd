@@ -4046,8 +4046,8 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "act_os_version": {"type": str},
-                "act_username": {"type": str, "default": "admin"},
-                "act_password": {"type": str, "default": "admin"},
+                "act_username": {"type": str, "default": "cvpadmin"},
+                "act_password": {"type": str, "default": "cvp123!"},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -4055,13 +4055,13 @@ class EosDesigns(EosDesignsRootModel):
             """
             Username for ACT Digital Twin fabric devices.
 
-            Default value: `"admin"`
+            Default value: `"cvpadmin"`
             """
             act_password: str
             """
             Cleartext password for ACT Digital Twin fabric devices.
 
-            Default value: `"admin"`
+            Default value: `"cvp123!"`
             """
 
             if TYPE_CHECKING:
