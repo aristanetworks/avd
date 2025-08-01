@@ -23707,7 +23707,7 @@ keys:
                             type: str
                             description: "The allowed hardware Ethernet interface,
                               LAG interface, InternalRecirc, Switch.\nEx:\n  1. Ethernet1\n
-                              \ 2. Et1,2\n  3. Po2-4."
+                              \ 2. Et1,2\n  3. Po2-4"
                           next_hop:
                             type: dict
                             description: 'Redirect to next-hop.

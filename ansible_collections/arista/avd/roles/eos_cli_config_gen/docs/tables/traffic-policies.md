@@ -65,7 +65,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redirect</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aggregation_groups</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.aggregation_groups") | List, items: String |  |  |  | Redirect to aggregation groups in Tap Aggregation mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.aggregation_groups.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.interface") | String |  |  |  | The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.<br>Ex:<br>  1. Ethernet1<br>  2. Et1,2<br>  3. Po2-4. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.interface") | String |  |  |  | The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.<br>Ex:<br>  1. Ethernet1<br>  2. Et1,2<br>  3. Po2-4 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop") | Dictionary |  |  |  | Redirect to next-hop.<br>This option is mutually exclusive with `aggregation_groups` and `interface`.<br>If all three are defined, aggregation_groups and interface take precedence over next-hop.<br>Only one of the below keys can be specified, in the order of precedence: ipv4_addresses, ipv6_addresses, groups, recursive_ipv4_addresses, recursive_ipv6_addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_addresses</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv4_addresses") | List, items: String |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect.next_hop.ipv4_addresses.[]") | String |  |  |  | Next hop IPv4 address. |
@@ -214,7 +214,7 @@
                   # Ex:
                   #   1. Ethernet1
                   #   2. Et1,2
-                  #   3. Po2-4.
+                  #   3. Po2-4
                   interface: <str>
 
                   # Redirect to next-hop.

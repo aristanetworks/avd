@@ -62903,7 +62903,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Ex:
                           1. Ethernet1
                         2. Et1,2
-                          3. Po2-4.
+                          3. Po2-4
                         """
                         next_hop: NextHop
                         """
@@ -62942,7 +62942,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                        Ex:
                                          1. Ethernet1
                                        2. Et1,2
-                                         3. Po2-4.
+                                         3. Po2-4
                                     next_hop:
                                        Redirect to next-hop.
                                        This option is mutually exclusive with `aggregation_groups` and `interface`.
