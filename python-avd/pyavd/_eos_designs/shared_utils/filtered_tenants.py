@@ -368,7 +368,9 @@ class FilteredTenantsMixin(Protocol):
                 )
             if l3_port_channel.ipv6_static_routes:
                 vrf.ipv6_static_routes.extend(
-                    l3_port_channel.ipv6_static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes)
+                    l3_port_channel.ipv6_static_routes._cast_as(
+                        EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes
+                    )
                 )
             filtered_l3_port_channels.append(l3_port_channel)
 
