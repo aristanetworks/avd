@@ -59033,7 +59033,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         enabled: bool | None
         vrf: str
         metric_default: int | None
-        """Set default metric for the routes"""
+        """Set default metric for the routes."""
         networks: Networks
         """Subclass of AvdList with `str` items."""
 
@@ -59056,7 +59056,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     enabled: enabled
                     vrf: vrf
-                    metric_default: Set default metric for the routes
+                    metric_default: Set default metric for the routes.
                     networks: Subclass of AvdList with `str` items.
 
                 """
