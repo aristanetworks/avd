@@ -21,7 +21,7 @@ keys:
             - int
         metric_default:
           type: int
-          description: Set default metric for the routes
+          description: Set default metric for the routes.
           min: 0
           max: 16
           convert_types:
