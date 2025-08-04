@@ -40,7 +40,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet29
   shutdown: false
   speed: forced 100gfull
-  mtu: 1500
   ip_address: 172.31.255.161/31
   peer: DC1-SPINE1
   peer_interface: Ethernet29
@@ -51,7 +50,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet29
   shutdown: false
   speed: forced 100gfull
-  mtu: 1500
   ip_address: 172.31.255.163/31
   peer: DC1-SPINE2
   peer_interface: Ethernet29
@@ -62,7 +60,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet29
   shutdown: false
   speed: forced 100gfull
-  mtu: 1500
   ip_address: 172.31.255.165/31
   peer: DC1-SPINE3
   peer_interface: Ethernet29
@@ -73,7 +70,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet29
   shutdown: false
   speed: forced 100gfull
-  mtu: 1500
   ip_address: 172.31.255.167/31
   peer: DC1-SPINE4
   peer_interface: Ethernet29
@@ -673,12 +669,10 @@ vlan_interfaces:
   description: MLAG_PEER_L3_PEERING
   shutdown: false
   ip_address: 10.255.251.25/31
-  mtu: 1500
 - name: Vlan4092
   description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.25/31
-  mtu: 1500
   no_autostate: true
 - name: Vlan130
   description: Tenant_A_APP_Zone_1
@@ -702,7 +696,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_A
   type: underlay_peering
 - name: Vlan140
@@ -727,7 +720,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_DB_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_A
   type: underlay_peering
 - name: Vlan110
@@ -760,7 +752,6 @@ vlan_interfaces:
   - ip_helper: 2.2.2.2
     source_interface: lo101
     vrf: MGMT
-  mtu: 1560
   tenant: Tenant_A
   tags:
   - opzone
@@ -769,7 +760,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_OP_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_A
   type: underlay_peering
 - name: Vlan150
@@ -790,7 +780,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_WAN_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_A
   type: underlay_peering
 - name: Vlan120
@@ -814,7 +803,6 @@ vlan_interfaces:
   shutdown: true
   vrf: Tenant_A_WEB_Zone
   ip_address_virtual: 10.1.10.254/24
-  mtu: 1560
   tenant: Tenant_A
   tags:
   - web
@@ -823,7 +811,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_WEB_Zone
   ip_address: 172.31.11.25/31
-  mtu: 1500
   tenant: Tenant_A
   type: underlay_peering
 - name: Vlan210
@@ -847,7 +834,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_B
   type: underlay_peering
 - name: Vlan250
@@ -863,7 +849,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_B_WAN_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_B
   type: underlay_peering
 - name: Vlan310
@@ -887,7 +872,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_C_OP_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_C
   type: underlay_peering
 - name: Vlan350
@@ -903,7 +887,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_C_WAN_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_C
   type: underlay_peering
 vlan_internal_order:
