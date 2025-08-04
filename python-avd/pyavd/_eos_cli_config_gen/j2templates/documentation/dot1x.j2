@@ -40,11 +40,56 @@
 
 #### 802.1X Radius AV pair
 
-| Service type | Framed MTU |
-| ------------ | ---------- |
-{%             set radius_av_pair_service = dot1x.radius_av_pair.service_type | arista.avd.default('-') %}
-{%             set framed_mtu = dot1x.radius_av_pair.framed_mtu | arista.avd.default('-') %}
-| {{ radius_av_pair_service }} | {{ framed_mtu }} |
+| Type | Value | Auth Only |
+| ---- | ----- | --------- |
+{%             if dot1x.radius_av_pair.service_type is arista.avd.defined(true) %}
+| Service Type | - | - |
+{%             endif %}
+{%             if dot1x.radius_av_pair.framed_mtu is arista.avd.defined %}
+| Framed MTU | {{ dot1x.radius_av_pair.framed_mtu }} | - |
+{%             endif %}
+{%             if dot1x.radius_av_pair.lldp.system_name.enabled is arista.avd.defined(true) %}
+{%                 if dot1x.radius_av_pair.lldp.system_name.auth_only is arista.avd.defined(true) %}
+{%                     set auth_only = "Yes" %}
+{%                 endif %}
+| LLDP System-name | - | {{ auth_only | arista.avd.default('No') }} |
+{%             endif %}
+{%             if dot1x.radius_av_pair.lldp.system_description.enabled is arista.avd.defined(true) %}
+{%                 if dot1x.radius_av_pair.lldp.system_description.auth_only is arista.avd.defined(true) %}
+{%                     set auth_only = "Yes" %}
+{%                 endif %}
+| LLDP System-description | - | {{ auth_only | arista.avd.default('No') }} |
+{%             endif %}
+{%             if dot1x.radius_av_pair.dhcp.hostname.enabled is arista.avd.defined(true) %}
+{%                 if dot1x.radius_av_pair.lldp.hostname.auth_only is arista.avd.defined(true) %}
+{%                     set auth_only = "Yes" %}
+{%                 endif %}
+| DHCP Hostname | - | {{ auth_only | arista.avd.default('No') }} |
+{%             endif %}
+{%             if dot1x.radius_av_pair.dhcp.parameter_request_list.enabled is arista.avd.defined(true) %}
+{%                 if dot1x.radius_av_pair.dhcp.parameter_request_list.auth_only is arista.avd.defined(true) %}
+{%                     set auth_only = "Yes" %}
+{%                 endif %}
+| DHCP Parameter Request List | - | {{ auth_only | arista.avd.default('No') }} |
+{%             endif %}
+{%             if dot1x.radius_av_pair.dhcp.vendor_class_id.enabled is arista.avd.defined(true) %}
+{%                 if dot1x.radius_av_pair.dhcp.vendor_class_id.auth_only is arista.avd.defined(true) %}
+{%                     set auth_only = "Yes" %}
+{%                 endif %}
+| DHCP Vendor Class ID | - | {{ auth_only | arista.avd.default('No') }} |
+{%             endif %}
+{%             if dot1x.radius_av_pair.filter_id.delimiter_period is arista.avd.defined(true) %}
+| Filter ID Delimiter Period | - | - |
+{%             endif %}
+{%             if dot1x.radius_av_pair.filter_id.ipv4_ipv6_required is arista.avd.defined(true) %}
+| Filter ID IPv4 IPv6 Required | - | - |
+{%             endif %}
+{%             if dot1x.radius_av_pair.filter_id.multiple is arista.avd.defined(true) %}
+| Filter ID Multiple | - | - |
+{%             endif %}
+{%             if dot1x.radius_av_pair_username_format is arista.avd.defined %}
+| Username Format | delimiter: {{ dot1x.radius_av_pair_username_format.delimiter }}</br>MAC string case: {{ dot1x.radius_av_pair_username_format.mac_string_case }} | - |
+{%             endif %}
 {%         endif %}
 {%         if dot1x.captive_portal.enabled is arista.avd.defined(true) %}
 
@@ -120,5 +165,14 @@
 {%             set auth_failure_fallback_mba = ethernet_interface.dot1x.eapol.authentication_failure_fallback_mba.enabled | arista.avd.default('-') %}
 | {{ ethernet_interface.name }} | {{ pae_mode }} | {{ state }} | {{ phone_state }} | {{ reauthentication }} | {{ auth_failure_action }} | {{ host_mode }} | {{ mac_based_authentication_enabled }} | {{ auth_failure_fallback_mba }} |
 {%         endfor %}
+{%     endif %}
+{%     if dot1x is arista.avd.defined %}
+
+#### Dot1x Configuration
+
+```eos
+{%         include 'eos/dot1x.j2' %}
+{%         include 'eos/dot1x_part2.j2' %}
+```
 {%     endif %}
 {% endif %}

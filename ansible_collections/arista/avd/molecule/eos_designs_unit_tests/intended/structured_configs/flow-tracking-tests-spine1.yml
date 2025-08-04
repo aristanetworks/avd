@@ -146,8 +146,8 @@ flow_tracking:
       name: FLOW-TRACKER
       exporters:
       - name: ayush_exporter
-        collector:
-          host: 127.0.0.2
+        collectors:
+        - host: 127.0.0.2
         local_interface: Loopback0
         template_interval: 40002
     - table_size: 4331
@@ -158,8 +158,8 @@ flow_tracking:
       name: FLOW-TRACKER-1
       exporters:
       - name: ayush_exporter
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 40000
     shutdown: false

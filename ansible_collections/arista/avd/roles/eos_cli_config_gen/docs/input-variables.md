@@ -74,6 +74,24 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-radius-so
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-tacacs-source-interfaces.md
 --8<--
 
+### IP FTP client source-interfaces
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ftp-client-source-interfaces.md
+--8<--
+
+### IP Telnet client source-interfaces
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-telnet-client-source-interfaces.md
+--8<--
+
+### IP TFTP client source-interfaces
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-tftp-client-source-interfaces.md
+--8<--
+
 ### Local users
 
 --8<--
@@ -375,10 +393,22 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-d
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/switchport-port-security.md
 --8<--
 
+### Sync-e
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/sync-e.md
+--8<--
+
 ### Transceiver QSFP default mode 4x10
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/transceiver-qsfp-default-mode-4x10.md
+--8<--
+
+### Transceiver DOM threshold
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/transceiver.md
 --8<--
 
 ### Tunnel interfaces
@@ -851,6 +881,14 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-routing.m
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-virtual-router-mac-address.md
 --8<--
 
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-virtual-router-mac-address-advertisement-interval.md
+--8<--
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-virtual-router-mac-address-mlag-peer.md
+--8<--
+
 ### IPv6 DHCP relay
 
 --8<--
@@ -873,6 +911,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ipv6-static-
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ipv6-unicast-routing.md
+--8<--
+
+### IPv6 Neighbors
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ipv6-neighbor.md
 --8<--
 
 ### MPLS

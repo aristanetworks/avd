@@ -172,7 +172,7 @@ class VlanInterfacesMixin(Protocol):
                 InterfaceDescriptionData(shared_utils=self.shared_utils, interface=f"Vlan{vlan_id}", vrf=vrf.name, vlan=vlan_id)
             ),
             vrf=vrf.name,
-            mtu=self.shared_utils.p2p_uplinks_mtu,
+            mtu=self.shared_utils.get_interface_mtu(f"Vlan{vlan_id}", self.shared_utils.p2p_uplinks_mtu),
         )
         vlan_interface_config._update(**self._get_vlan_ip_config_for_mlag_peering(vrf))
         return vlan_interface_config

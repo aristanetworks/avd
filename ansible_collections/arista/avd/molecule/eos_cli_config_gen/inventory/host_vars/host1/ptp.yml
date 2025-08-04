@@ -36,3 +36,6 @@ ptp:
         delay_resp: 202
         follow_up: 203
         sync: 204
+  free_running:
+    enabled: true
+    source_clock_hardware: true
