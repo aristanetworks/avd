@@ -114,7 +114,7 @@ tenant_a:
                   - prefix: 10.10.10.0/24
                     next_hop: 10.10.10.1
                 ipv6_static_routes:
-                  - prefix: 1:1:1:1:1:1:1:1/126
+                  - prefix: 1:1:1:1:1:1:1:0/126
                     next_hop: "2:2:2:2:2:2:2:2"
             ip_virtual_router_addresses:
               - 10.1.32.254
@@ -243,7 +243,7 @@ tenant_a:
                 next_hop: 1.2.3.4
                 name: SVI_static_route
             ipv6_static_routes:
-              - prefix: 2001:db8::1/126
+              - prefix: 2001:db8::0/126
                 next_hop: 2001:db8::10
                 name: IPv6_svi_static_route
           - id: 151
