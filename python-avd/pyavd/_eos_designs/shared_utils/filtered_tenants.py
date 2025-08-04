@@ -302,7 +302,7 @@ class FilteredTenantsMixin(Protocol):
 
         Filtering based on accepted vlans since eos_designs_facts already
         filtered that on tags and trunk_groups.
-        Extracts static_routes/ipv6_static_routes set under SVIs.
+        Extracts static_routes and ipv6_static_routes set under SVIs, and appends them to vrf.static_routes and vrf.ipv6_static_routes.
         """
         if not (self.network_services_l2 or self.network_services_l2_as_subint):
             return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
