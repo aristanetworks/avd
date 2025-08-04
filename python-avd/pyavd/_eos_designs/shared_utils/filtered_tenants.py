@@ -332,7 +332,7 @@ class FilteredTenantsMixin(Protocol):
         """
         Returns filtered l3_interfaces for the VRFs.
 
-        Extracts static_routes set under l3_interfaces and appends to vrf.static_routes.
+        Extracts static_routes and ipv6_static_routes defined under l3_interfaces, and appends them to vrf.static_routes and vrf.ipv6_static_routes.
         """
         filtered_l3_interfaces = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3Interfaces()
         for l3_interface in vrf.l3_interfaces:
@@ -356,7 +356,7 @@ class FilteredTenantsMixin(Protocol):
         """
         Returns filtered l3_port_channels for the VRFs.
 
-        Extracts static_routes set under l3_port_channels and appends to vrf.static_routes.
+        Extracts static_routes and ipv6_static_routes defined under l3_port_channels, and appends them to vrf.static_routes and vrf.ipv6_static_routes.
         """
         filtered_l3_port_channels = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannels()
         for l3_port_channel in vrf.l3_port_channels:
