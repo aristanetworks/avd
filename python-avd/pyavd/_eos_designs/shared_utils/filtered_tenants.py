@@ -342,6 +342,10 @@ class FilteredTenantsMixin(Protocol):
                 vrf.static_routes.extend(
                     l3_interface.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
                 )
+            if l3_interface.ipv6_static_routes:
+                vrf.ipv6_static_routes.extend(
+                    l3_interface.ipv6_static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes)
+                )
             filtered_l3_interfaces.append(l3_interface)
 
         return filtered_l3_interfaces
@@ -361,6 +365,10 @@ class FilteredTenantsMixin(Protocol):
             if l3_port_channel.static_routes:
                 vrf.static_routes.extend(
                     l3_port_channel.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            if l3_port_channel.ipv6_static_routes:
+                vrf.ipv6_static_routes.extend(
+                    l3_port_channel.ipv6_static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes)
                 )
             filtered_l3_port_channels.append(l3_port_channel)
 

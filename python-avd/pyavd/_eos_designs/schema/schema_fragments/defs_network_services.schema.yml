@@ -828,6 +828,10 @@ $defs:
                       type: list
                       $ref: "eos_designs#/$defs/static_routes"
                       description: Static routes to be configured on every device when this interface is configured.
+                    ipv6_static_routes:
+                      type: list
+                      $ref: "eos_designs#/$defs/static_routes"
+                      description: IPv6 static routes to be configured on every device when this interface is configured.
                     nodes:
                       type: list
                       items:
@@ -1077,6 +1081,10 @@ $defs:
                       type: list
                       description: Static routes to be configured on the device when this Port-channel is configured.
                       $ref: "eos_designs#/$defs/static_routes"
+                    ipv6_static_routes:
+                      type: list
+                      $ref: "eos_designs#/$defs/static_routes"
+                      description: IPv6 static routes to be configured on every device when this interface is configured.
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
