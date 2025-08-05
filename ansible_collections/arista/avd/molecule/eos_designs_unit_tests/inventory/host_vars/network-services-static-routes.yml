@@ -75,6 +75,9 @@ tenants:
             static_routes:
               - prefix: 10.10.10.0/24
                 next_hop: 10.10.10.10
+            ipv6_static_routes:
+              - prefix: 2001:db8::0/64
+                next_hop: 2001:db8::10
         l3_port_channels:
           - name: Port-Channel2
             mode: active
@@ -89,6 +92,9 @@ tenants:
             static_routes:
               - prefix: 10.10.10.0/24
                 next_hop: 10.10.10.10
+            ipv6_static_routes:
+              - prefix: 2002:db8::0/64
+                next_hop: 2002:db8::10
       - name: VRF_STATIC_ROUTE_ON_L3_INTERFACE
         vrf_id: 3
         l3_interfaces:
