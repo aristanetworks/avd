@@ -94,7 +94,7 @@ management_interfaces:
   type: oob
   gateway: 172.16.100.1
 metadata:
-  platform: cEOS-lab
+  platform: cEOSLab
   fabric_name: DC1
 mlag_configuration:
   domain_id: RACK2

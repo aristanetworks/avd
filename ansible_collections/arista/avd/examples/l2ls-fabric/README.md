@@ -317,7 +317,7 @@ The updated changes are noted in the tabs below.
     # Node Key must be l3spine to match type
     l3spine:
       defaults:
-        platform: cEOS-lab
+        platform: cEOSLab
         spanning_tree_mode: mstp
         spanning_tree_priority: 4096
         # Loopback is used to generate a router-id

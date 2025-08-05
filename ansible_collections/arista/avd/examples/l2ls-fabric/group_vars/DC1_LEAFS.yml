@@ -6,7 +6,7 @@ type: l2leaf     # Must be l2leaf
 # Leaf Switches
 l2leaf:
   defaults:
-    platform: cEOS-lab
+    platform: cEOSLab
     mlag_peer_ipv4_pool: 192.168.0.0/24
     uplink_switches: [SPINE1, SPINE2]
     uplink_interfaces: [Ethernet1, Ethernet2]
