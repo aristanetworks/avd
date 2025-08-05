@@ -20,7 +20,7 @@ l3_edge:
         enabled: true
       qos_profile: TEST-QOS-PROFILE
       macsec_profile: TEST-MACSEC-PROFILE
-      structured_config:
+      ethernet_structured_config:
         service_policy:
           qos:
             input: TEST_POLICY

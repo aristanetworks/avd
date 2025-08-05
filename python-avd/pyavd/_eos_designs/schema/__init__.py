@@ -1958,6 +1958,8 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
             _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
             _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
@@ -2118,6 +2120,10 @@ class EosDesigns(EosDesignsRootModel):
             Note! The content of this dictionary is _not_ validated by
             the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for ethernet interfaces."""
+            port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for port-channel links."""
 
             if TYPE_CHECKING:
 
@@ -2158,6 +2164,8 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksProfilesItem.
@@ -2266,6 +2274,8 @@ class EosDesigns(EosDesignsRootModel):
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
                            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config for ethernet interfaces.
+                        port_channel_structured_config: Custom structured config for port-channel links.
 
                     """
 
@@ -2593,6 +2603,8 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
             _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
             _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
@@ -2753,6 +2765,10 @@ class EosDesigns(EosDesignsRootModel):
             Note! The content of this dictionary is _not_ validated by
             the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for ethernet interfaces."""
+            port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for port-channel links."""
 
             if TYPE_CHECKING:
 
@@ -2793,6 +2809,8 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksItem.
@@ -2901,6 +2919,8 @@ class EosDesigns(EosDesignsRootModel):
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
                            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config for ethernet interfaces.
+                        port_channel_structured_config: Custom structured config for port-channel links.
 
                     """
 
@@ -6893,6 +6913,8 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
             _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
             _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
@@ -7053,6 +7075,10 @@ class EosDesigns(EosDesignsRootModel):
             Note! The content of this dictionary is _not_ validated by
             the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for ethernet interfaces."""
+            port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for port-channel links."""
 
             if TYPE_CHECKING:
 
@@ -7093,6 +7119,8 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksProfilesItem.
@@ -7201,6 +7229,8 @@ class EosDesigns(EosDesignsRootModel):
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
                            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config for ethernet interfaces.
+                        port_channel_structured_config: Custom structured config for port-channel links.
 
                     """
 
@@ -7528,6 +7558,8 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
             _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
             _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
@@ -7688,6 +7720,10 @@ class EosDesigns(EosDesignsRootModel):
             Note! The content of this dictionary is _not_ validated by
             the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for ethernet interfaces."""
+            port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for port-channel links."""
 
             if TYPE_CHECKING:
 
@@ -7728,6 +7764,8 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksItem.
@@ -7836,6 +7874,8 @@ class EosDesigns(EosDesignsRootModel):
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
                            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config for ethernet interfaces.
+                        port_channel_structured_config: Custom structured config for port-channel links.
 
                     """
 
@@ -26321,6 +26361,8 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -26633,6 +26675,16 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                    uplink_type == "p2p".
+                    """
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                    uplink_type == "port-channel".
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -27306,6 +27358,8 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -27562,6 +27616,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config:
+                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                   uplink_type == "p2p".
+                                uplink_port_channel_structured_config:
+                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                   uplink_type == "port-channel".
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -30616,6 +30676,8 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
                             "uplink_structured_config": {"type": dict},
+                            "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                             "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -30938,6 +31000,16 @@ class EosDesigns(EosDesignsRootModel):
                         "structured_config" defined on node-level.
                         Note! The content of this dictionary is _not_ validated
                         by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        """
+                        uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """
+                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                        uplink_type == "p2p".
+                        """
+                        uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                        uplink_type == "port-channel".
                         """
                         mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
@@ -31613,6 +31685,8 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_structured_config: dict | UndefinedType = Undefined,
+                                uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -31876,6 +31950,12 @@ class EosDesigns(EosDesignsRootModel):
                                        "structured_config" defined on node-level.
                                        Note! The content of this dictionary is _not_ validated
                                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                    uplink_ethernet_structured_config:
+                                       Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                       uplink_type == "p2p".
+                                    uplink_port_channel_structured_config:
+                                       Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                       uplink_type == "port-channel".
                                     mlag_port_channel_structured_config:
                                        Custom structured config applied to MLAG peer link port-channel id.
                                        Added under
@@ -34838,6 +34918,8 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -35163,6 +35245,16 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                    uplink_type == "p2p".
+                    """
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                    uplink_type == "port-channel".
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -35838,6 +35930,8 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -36103,6 +36197,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config:
+                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                   uplink_type == "p2p".
+                                uplink_port_channel_structured_config:
+                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                   uplink_type == "port-channel".
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -39140,6 +39240,8 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -39462,6 +39564,16 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                    uplink_type == "p2p".
+                    """
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                    uplink_type == "port-channel".
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -40137,6 +40249,8 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -40400,6 +40514,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config:
+                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                   uplink_type == "p2p".
+                                uplink_port_channel_structured_config:
+                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                   uplink_type == "port-channel".
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -51088,6 +51208,8 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -51400,6 +51522,16 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                    uplink_type == "p2p".
+                    """
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                    uplink_type == "port-channel".
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -52073,6 +52205,8 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -52329,6 +52463,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config:
+                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                   uplink_type == "p2p".
+                                uplink_port_channel_structured_config:
+                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                   uplink_type == "port-channel".
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -55383,6 +55523,8 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
                             "uplink_structured_config": {"type": dict},
+                            "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                             "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -55705,6 +55847,16 @@ class EosDesigns(EosDesignsRootModel):
                         "structured_config" defined on node-level.
                         Note! The content of this dictionary is _not_ validated
                         by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        """
+                        uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """
+                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                        uplink_type == "p2p".
+                        """
+                        uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                        uplink_type == "port-channel".
                         """
                         mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
@@ -56380,6 +56532,8 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_structured_config: dict | UndefinedType = Undefined,
+                                uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -56643,6 +56797,12 @@ class EosDesigns(EosDesignsRootModel):
                                        "structured_config" defined on node-level.
                                        Note! The content of this dictionary is _not_ validated
                                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                    uplink_ethernet_structured_config:
+                                       Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                       uplink_type == "p2p".
+                                    uplink_port_channel_structured_config:
+                                       Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                       uplink_type == "port-channel".
                                     mlag_port_channel_structured_config:
                                        Custom structured config applied to MLAG peer link port-channel id.
                                        Added under
@@ -59605,6 +59765,8 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -59930,6 +60092,16 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                    uplink_type == "p2p".
+                    """
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                    uplink_type == "port-channel".
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -60605,6 +60777,8 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -60870,6 +61044,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config:
+                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                   uplink_type == "p2p".
+                                uplink_port_channel_structured_config:
+                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                   uplink_type == "port-channel".
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -63907,6 +64087,8 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -64229,6 +64411,16 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                    uplink_type == "p2p".
+                    """
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                    uplink_type == "port-channel".
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -64904,6 +65096,8 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -65167,6 +65361,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config:
+                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                   uplink_type == "p2p".
+                                uplink_port_channel_structured_config:
+                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                                   uplink_type == "port-channel".
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under

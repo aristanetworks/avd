@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, ClassVar, Literal, Protocol
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._schema.models.avd_indexed_list import AvdIndexedList
 from pyavd._schema.models.avd_list import AvdList
@@ -310,6 +311,7 @@ class EosDesignsFactsProtocol(Protocol):
                 "peer_ip_address": {"type": str},
                 "peer_ipv6_address": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             }
             interface: str
             peer_interface: str
@@ -336,6 +338,11 @@ class EosDesignsFactsProtocol(Protocol):
             Note! The content of this dictionary is _not_ validated
             by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """
+            Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+            uplink_type == "p2p".
+            """
 
             if TYPE_CHECKING:
 
@@ -354,6 +361,7 @@ class EosDesignsFactsProtocol(Protocol):
                     peer_ip_address: str | None | UndefinedType = Undefined,
                     peer_ipv6_address: str | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SubinterfacesItem.
@@ -385,6 +393,9 @@ class EosDesignsFactsProtocol(Protocol):
                            "structured_config" defined on node-level.
                            Note! The content of this dictionary is _not_ validated
                            by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config:
+                           Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                           uplink_type == "p2p".
 
                     """
 
@@ -434,6 +445,8 @@ class EosDesignsFactsProtocol(Protocol):
             "inband_ztp_lacp_fallback_delay": {"type": int},
             "dhcp_server": {"type": bool},
             "structured_config": {"type": dict},
+            "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "subinterfaces": {"type": Subinterfaces},
         }
         interface: str
@@ -497,6 +510,16 @@ class EosDesignsFactsProtocol(Protocol):
         Note! The content of this dictionary is _not_ validated
         by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
         """
+        ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """
+        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+        uplink_type == "p2p".
+        """
+        port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """
+        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+        uplink_type == "port-channel".
+        """
         subinterfaces: Subinterfaces
         """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`)."""
 
@@ -543,6 +566,8 @@ class EosDesignsFactsProtocol(Protocol):
                 inband_ztp_lacp_fallback_delay: int | None | UndefinedType = Undefined,
                 dhcp_server: bool | None | UndefinedType = Undefined,
                 structured_config: dict | UndefinedType = Undefined,
+                ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 subinterfaces: Subinterfaces | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -604,6 +629,12 @@ class EosDesignsFactsProtocol(Protocol):
                        "structured_config" defined on node-level.
                        Note! The content of this dictionary is _not_ validated
                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    ethernet_structured_config:
+                       Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                       uplink_type == "p2p".
+                    port_channel_structured_config:
+                       Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                       uplink_type == "port-channel".
                     subinterfaces: Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`).
 
                 """

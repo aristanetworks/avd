@@ -56,8 +56,8 @@ l3leaf:
     uplink_type: p2p-vrfs
     uplink_macsec:
       profile: TEST
-    # Adding uplink_structured_config to improve coverage.
-    uplink_structured_config:
+    # Adding uplink_ethernet_structured_config to improve coverage.
+    uplink_ethernet_structured_config:
       pim:
         ipv4:
           sparse_mode: true

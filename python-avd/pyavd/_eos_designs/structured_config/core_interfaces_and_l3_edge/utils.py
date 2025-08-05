@@ -249,7 +249,7 @@ class UtilsMixin(Protocol):
             eos_cli=p2p_link.raw_eos_cli,
         )
         interface.switchport.enabled = False
-
+        # TODO: AVD 6.0 - Remove this block after removing p2p_links[].structured_config from schema.
         if p2p_link.structured_config:
             if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
                 # Port-channel
@@ -325,6 +325,17 @@ class UtilsMixin(Protocol):
             if p2p_link.include_in_underlay_protocol is True and self.shared_utils.underlay_ldp and default(p2p_link.mpls_ldp, True):  # noqa: FBT003
                 interface.mpls.ldp.interface = True
                 interface.mpls.ldp.igp_sync = True
+
+        if p2p_link.ethernet_structured_config:
+            self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface.name)._deepmerge(
+                p2p_link.ethernet_structured_config,
+                list_merge=self.custom_structured_configs.list_merge_strategy,
+            )
+        elif p2p_link.port_channel_structured_config:
+            self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
+                p2p_link.port_channel_structured_config,
+                list_merge=self.custom_structured_configs.list_merge_strategy,
+            )
 
     def _get_channel_id(
         self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,

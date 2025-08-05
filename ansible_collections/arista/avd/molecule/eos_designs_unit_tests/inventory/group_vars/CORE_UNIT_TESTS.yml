@@ -89,7 +89,7 @@ core_interfaces:
       ptp:
         enabled: true
       # Testing merge of structured config on profile and link.
-      structured_config:
+      ethernet_structured_config:
         l2_mtu: 2222
 
   p2p_links:
@@ -154,7 +154,7 @@ core_interfaces:
       interfaces: [ Ethernet10, Ethernet10 ]
       profile: ospf_bb_profile
       # Testing merge of structured config on profile and link.
-      structured_config:
+      ethernet_structured_config:
         l2_mru: 2222
 
     # core Port-Channel
@@ -183,6 +183,8 @@ core_interfaces:
           - node: core-2-ospf-ldp
             interfaces: [ Ethernet14, Ethernet15 ]
       profile: isis_bb_profile
+      port_channel_structured_config:
+        isis_metric: 70
 
     # core Port-Channel with custom description on p2p reusing the same on port-channel
     - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]

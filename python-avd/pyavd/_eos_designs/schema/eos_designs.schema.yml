@@ -10096,6 +10096,28 @@ $defs:
               since it can be either ethernet_interfaces or port_channel_interfaces.
 
               '
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config
+          uplink_ethernet_structured_config:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: Custom structured config applied to `uplink_interfaces` and
+              `uplink_switch_interfaces` for uplink_type == "p2p".
+          uplink_port_channel_structured_config:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: Custom structured config applied to `uplink_interfaces` and
+              `uplink_switch_interfaces` for uplink_type == "port-channel".
           mlag_port_channel_structured_config:
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
             documentation_options:
@@ -12368,6 +12390,24 @@ $defs:
 
             Note! The content of this dictionary is _not_ validated by the schema,
             since it can be either ethernet_interfaces or port_channel_interfaces.'
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: ethernet_structured_config or port_channel_structured_config
+        ethernet_structured_config:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+          description: Custom structured config for ethernet interfaces.
+          relaxed_validation: true
+          documentation_options:
+            hide_keys: true
+        port_channel_structured_config:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+          description: Custom structured config for port-channel links.
+          relaxed_validation: true
+          documentation_options:
+            hide_keys: true
   rx_queue_settings:
     type: dict
     description: 'Receive queue parameters for platform SFE interface profile.

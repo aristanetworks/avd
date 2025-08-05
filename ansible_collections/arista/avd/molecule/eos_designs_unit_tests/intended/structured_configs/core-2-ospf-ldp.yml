@@ -274,6 +274,7 @@ port_channel_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  isis_metric: 70
   ip_address: 100.64.48.17/31
   ipv6_enable: true
   ospf_network_point_to_point: true

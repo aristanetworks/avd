@@ -396,7 +396,7 @@ port_channel_interfaces:
       interface: true
       igp_sync: true
   isis_enable: CORE
-  isis_metric: 60
+  isis_metric: 70
   isis_network_point_to_point: true
   isis_circuit_type: level-2
   isis_hello_padding: false

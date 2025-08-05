@@ -213,8 +213,10 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 EosDesignsFactsProtocol.UplinksItem.LinkTrackingGroupsItem(name=lt_group.name, direction="upstream")
                 for lt_group in self.shared_utils.link_tracking_groups
             )
-        if self.shared_utils.node_config.uplink_structured_config is not None:
+        if self.shared_utils.node_config.uplink_structured_config:
             uplink.structured_config = self.shared_utils.node_config.uplink_structured_config
+        elif self.shared_utils.node_config.uplink_ethernet_structured_config:
+            uplink.ethernet_structured_config = self.shared_utils.node_config.uplink_ethernet_structured_config
 
         return uplink
 
@@ -309,8 +311,12 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             # This child device does not support VLANs, so we tell the peer to enable portfast
             uplink.peer_spanning_tree_portfast = "edge"
 
-        if self.shared_utils.node_config.uplink_structured_config is not None:
-            uplink.structured_config = self.shared_utils.node_config.uplink_structured_config
+        if structured_config := self.shared_utils.node_config.uplink_structured_config:
+            uplink.structured_config = structured_config
+        elif structured_config := self.shared_utils.node_config.uplink_ethernet_structured_config:
+            uplink.ethernet_structured_config = structured_config
+        elif structured_config := self.shared_utils.node_config.uplink_port_channel_structured_config:
+            uplink.port_channel_structured_config = structured_config
 
         return uplink
 
@@ -350,8 +356,10 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     subinterface.ip_address = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_ip(uplink_index, vrf.name)
                     subinterface.peer_ip_address = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_peer_ip(uplink_index, vrf.name)
 
-                if self.shared_utils.node_config.uplink_structured_config is not None:
+                if self.shared_utils.node_config.uplink_structured_config:
                     subinterface.structured_config = self.shared_utils.node_config.uplink_structured_config
+                elif self.shared_utils.node_config.uplink_ethernet_structured_config:
+                    subinterface.ethernet_structured_config = self.shared_utils.node_config.uplink_ethernet_structured_config
 
                 uplink.subinterfaces.append(subinterface)
 
