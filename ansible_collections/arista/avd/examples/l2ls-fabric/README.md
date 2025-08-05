@@ -174,7 +174,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_NETWORK_SERVICES"
-    You add VLANs to the fabric by updating the **group_vars/DC1_NETWORK_SERVICES/services.yml**. Each VLAN will be given a name and a list of tags. The tags filter the VLAN to specific leaf Pairs. These variables are applied to the spine and leaf nodes since they are a part of this group.
+    You add VLANs to the fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**. Each VLAN will be given a name and a list of tags. The tags filter the VLAN to specific leaf Pairs. These variables are applied to the spine and leaf nodes since they are a part of this group.
 
     ``` yaml
     --8<--
@@ -306,7 +306,7 @@ The updated changes are noted in the tabs below.
     - Add **mlag_peer_l3_ipv4_pool**
     - Add **virtual_router_mac_address**
 
-    Update spines.yml with the following recommended settings. Use your own IP pools.
+    Update DC1_SPINES.yml with the following recommended settings. Use your own IP pools.
 
     ``` yaml
     ---
