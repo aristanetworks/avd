@@ -54276,14 +54276,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class LeakRoutesItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"source_vrf": {"type": str}, "subscribe_policy": {"type": str}}
+                _fields: ClassVar[dict] = {"source_vrf": {"type": str}, "subscribe_policy": {"type": str}, "subscribe_rcf": {"type": str}}
                 source_vrf: str | None
                 subscribe_policy: str | None
                 """Route-Map Policy."""
+                subscribe_rcf: str | None
+                """
+                RCF Policy name with parenthesis.
+                Example: MyFunction(myarg).
+                Mutually exclusive with
+                `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, source_vrf: str | None | UndefinedType = Undefined, subscribe_policy: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        source_vrf: str | None | UndefinedType = Undefined,
+                        subscribe_policy: str | None | UndefinedType = Undefined,
+                        subscribe_rcf: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         LeakRoutesItem.
 
@@ -54293,6 +54306,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             source_vrf: source_vrf
                             subscribe_policy: Route-Map Policy.
+                            subscribe_rcf:
+                               RCF Policy name with parenthesis.
+                               Example: MyFunction(myarg).
+                               Mutually exclusive with
+                               `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
 
                         """
 

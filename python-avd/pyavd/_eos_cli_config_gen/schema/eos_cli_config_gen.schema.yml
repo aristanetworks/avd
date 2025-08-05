@@ -20394,6 +20394,14 @@ keys:
                   subscribe_policy:
                     type: str
                     description: Route-Map Policy.
+                  subscribe_rcf:
+                    type: str
+                    description: 'RCF Policy name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      Mutually exclusive with `subscribe_policy`, if both are defined
+                      `subscribe_policy` takes precedence.'
             routes:
               type: dict
               keys:
