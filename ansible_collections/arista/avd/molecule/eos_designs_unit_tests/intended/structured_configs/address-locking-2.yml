@@ -7,7 +7,7 @@ address_locking:
 config_end: true
 enable_password:
   disabled: true
-hostname: address-locking
+hostname: address-locking-2
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -90,14 +90,6 @@ router_bgp:
       - 10101:10101
     redistribute_routes:
     - learned
-  - id: 102
-    tenant: TENANT2
-    rd: 192.168.255.109:10103
-    route_targets:
-      both:
-      - 10103:10103
-    redistribute_routes:
-    - learned
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -108,30 +100,8 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  vrfs:
-  - name: TEST_ADDRESS_LOCKING
-    rd: 192.168.255.109:789655
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 789655:789655
-      export:
-      - address_family: evpn
-        route_targets:
-        - 789655:789655
-    router_id: 192.168.255.109
-    redistribute:
-      connected:
-        enabled: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
-vlan_interfaces:
-- name: Vlan102
-  description: test-address-locking-2
-  shutdown: false
-  vrf: TEST_ADDRESS_LOCKING
-  tenant: TENANT2
 vlan_internal_order:
   allocation: ascending
   range:
@@ -139,34 +109,20 @@ vlan_internal_order:
     ending: 1199
 vlans:
 - id: 101
-  name: test-address-locking-1
+  name: test-address-locking-2
   address_locking:
     address_family:
       ipv4: true
   tenant: TENANT1
-- id: 102
-  name: test-address-locking-2
-  address_locking:
-    address_family:
-      ipv6: true
-  tenant: TENANT2
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: TEST_ADDRESS_LOCKING
-  ip_routing: true
-  tenant: TENANT2
 vxlan_interface:
   vxlan1:
-    description: address-locking_VTEP
+    description: address-locking-2_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
       vlans:
       - id: 101
         vni: 10101
-      - id: 102
-        vni: 10103
-      vrfs:
-      - name: TEST_ADDRESS_LOCKING
-        vni: 789655

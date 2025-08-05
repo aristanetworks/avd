@@ -184,7 +184,21 @@ keys:
             type: str
   address_locking_settings:
     type: dict
-    $ref: eos_cli_config_gen#/keys/address_locking
+    keys:
+      dhcp_servers_ipv4:
+        type: list
+        items:
+          type: str
+          description: DHCP server IPv4 address.
+      local_interface:
+        type: str
+        description: "The value will be interpreted according to these rules:\n  -
+          `use_mgmt_interface` will configure the mgmt_interface as the local interface.\n
+          \ - `use_inband_mgmt_interface` will configure the inband_mgmt_interface
+          as the local interface.\n  - `use_default_mgmt_method_interface` will configure
+          mgmt_interface or inband_mgmt_interface as the local interface depending
+          on the value of `default_mgmt_method`.\n  - Any other string will be used
+          directly as the local interface."
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
