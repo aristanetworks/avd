@@ -44986,14 +44986,14 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
                         static_routes: StaticRoutes
                         """
-                        Static routes to be configured on every device when this interface is configured.
+                        Static routes to be configured on every device where this interface is configured.
 
                         Subclass of
                         AvdList with `StaticRoutesItem` items.
                         """
                         ipv6_static_routes: Ipv6StaticRoutes
                         """
-                        IPv6 static routes to be configured on every device when this interface is configured.
+                        IPv6 static routes to be configured on every device where this interface is configured.
 
                         Subclass of
                         AvdList with `Ipv6StaticRoutesItem` items.
@@ -45094,12 +45094,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdList with `int` items.
                                     ip_addresses: Subclass of AvdList with `str` items.
                                     static_routes:
-                                       Static routes to be configured on every device when this interface is configured.
+                                       Static routes to be configured on every device where this interface is configured.
 
                                        Subclass of
                                        AvdList with `StaticRoutesItem` items.
                                     ipv6_static_routes:
-                                       IPv6 static routes to be configured on every device when this interface is configured.
+                                       IPv6 static routes to be configured on every device where this interface is configured.
 
                                        Subclass of
                                        AvdList with `Ipv6StaticRoutesItem` items.
@@ -45609,17 +45609,13 @@ class EosDesigns(EosDesignsRootModel):
                         """Name of the IPv4 Access-list to be assigned in the egress direction."""
                         static_routes: StaticRoutes
                         """
-                        Static routes to be configured on the device when this Port-channel is configured.
-
-                        Subclass of
-                        AvdList with `StaticRoutesItem` items.
+                        Static routes to be configured on the device where this Port-channel interface is configured.
+                        Subclass of AvdList with `StaticRoutesItem` items.
                         """
                         ipv6_static_routes: Ipv6StaticRoutes
                         """
-                        IPv6 static routes to be configured on every device when this interface is configured.
-
-                        Subclass of
-                        AvdList with `Ipv6StaticRoutesItem` items.
+                        IPv6 static routes to be configured on the device where this Port-channel interface is configured.
+                        Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                         """
                         ospf: Ospf
                         """
@@ -45703,15 +45699,11 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
                                     ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
                                     static_routes:
-                                       Static routes to be configured on the device when this Port-channel is configured.
-
-                                       Subclass of
-                                       AvdList with `StaticRoutesItem` items.
+                                       Static routes to be configured on the device where this Port-channel interface is configured.
+                                       Subclass of AvdList with `StaticRoutesItem` items.
                                     ipv6_static_routes:
-                                       IPv6 static routes to be configured on every device when this interface is configured.
-
-                                       Subclass of
-                                       AvdList with `Ipv6StaticRoutesItem` items.
+                                       IPv6 static routes to be configured on the device where this Port-channel interface is configured.
+                                       Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                                     ospf:
                                        OSPF interface configuration.
 
