@@ -179,7 +179,6 @@ async def deploy_to_cv(
                 # Verify devices exist and update CVDevice objects with _exists_on_cv.
                 # Depending on skip_missing_devices we will raise or skip missing devices.
                 await verify_devices_on_cv(
-                    devices=devices,
                     internal_devices=internal_devices,
                     workspace_id=result.workspace.id,
                     skip_missing_devices=skip_missing_devices,

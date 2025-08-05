@@ -307,6 +307,9 @@ class InternalDevice:
     """Device serial number retrieved from CV"""
     system_mac_address: str | None = None
     """Device system mac address retrieved from CV"""
+    _streaming: bool | None = None
+    """
+    Device's streaming status retrieved from CV."""
 
     def get_cv_device(self) -> CVDevice:
         return CVDevice(hostname=self.avd_device.hostname, serial_number=self.serial_number, system_mac_address=self.system_mac_address)
