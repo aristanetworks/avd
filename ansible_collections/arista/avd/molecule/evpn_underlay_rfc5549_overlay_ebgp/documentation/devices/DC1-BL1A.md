@@ -552,10 +552,10 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 #### VRF Route leaking
 
-| VRF | Source VRF | Route Map Policy |
-|-----|------------|------------------|
-| Tenant_B_OP_Zone | Tenant_A_OP_Zone | RM-CONN-2-BGP |
-| Tenant_B_OP_Zone | Tenant_C_OP_Zone | RM-CONN-2-BGP |
+| VRF | Source VRF | Route Map Policy | RCF Policy |
+|-----|------------|------------------| ---------- |
+| Tenant_B_OP_Zone | Tenant_A_OP_Zone | RM-CONN-2-BGP | - |
+| Tenant_B_OP_Zone | Tenant_C_OP_Zone | RM-CONN-2-BGP | - |
 
 #### Router General Device Configuration
 
