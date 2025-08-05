@@ -152,8 +152,8 @@ async def deploy_configlet_containers_to_cv(internal_devices: list[InternalDevic
         existing_device_containers = []
         existing_device_containers_by_id = {}
 
-    update_device_containers_devices = []
-    update_device_container_ids_devices = set()
+    update_device_containers = []
+    update_device_container_ids = set()
     for device in internal_devices:
         # For now we reuse configlet_id as container_id.
         container_id = configlet_id = f"{CONFIGLET_ID_PREFIX}{device.serial_number}"
@@ -162,23 +162,23 @@ async def deploy_configlet_containers_to_cv(internal_devices: list[InternalDevic
         query = f"device:{device.serial_number}"
         configlet_ids = [configlet_id]
         if existing_device_containers_by_id.get(container_id) != (display_name, description, query, configlet_ids):
-            update_device_container_ids_devices.add(container_id)
-            update_device_containers_devices.append((container_id, display_name, description, configlet_ids, query, None, None))
+            update_device_container_ids.add(container_id)
+            update_device_containers.append((container_id, display_name, description, configlet_ids, query, None, None))
 
     LOGGER.info(
         "deploy_configlet_containers_to_cv: update_device_containers: %s, update_device_container_ids: %s",
-        len(update_device_containers_devices),
-        len(update_device_container_ids_devices),
+        len(update_device_containers),
+        len(update_device_container_ids),
     )
-    if update_device_containers_devices:
-        LOGGER.info("deploy_configlet_containers_to_cv: Deploying %s configlet assignments.", len(update_device_containers_devices))
-        await cv_client.set_configlet_containers(workspace_id=workspace_id, containers=update_device_containers_devices)
+    if update_device_containers:
+        LOGGER.info("deploy_configlet_containers_to_cv: Deploying %s configlet assignments.", len(update_device_containers))
+        await cv_client.set_configlet_containers(workspace_id=workspace_id, containers=update_device_containers)
 
     # Update any missing update_device_container_ids on the root level container.
-    if not update_device_container_ids_devices.issubset(existing_device_containers_by_id):
+    if not update_device_container_ids.issubset(existing_device_containers_by_id):
         LOGGER.info("deploy_configlet_containers_to_cv: Updating root container children.")
         await cv_client.set_configlet_container(
             workspace_id=workspace_id,
             container_id=CONFIGLET_CONTAINER_ID,
-            child_assignment_ids=list(update_device_container_ids_devices.union(existing_device_containers_by_id)),
+            child_assignment_ids=list(update_device_container_ids.union(existing_device_containers_by_id)),
         )

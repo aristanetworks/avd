@@ -221,7 +221,6 @@ async def deploy_to_cv(
                 # TODO: Check if we want to consolidate and use the new deploy_static_config_studio_manifest_to_cv
                 #       by building a hierarchy from the CVEosConfig objects.
                 await deploy_configs_to_cv(
-                    configs=configs,
                     internal_devices=internal_devices,
                     result=result,
                     cv_client=cv_client,
