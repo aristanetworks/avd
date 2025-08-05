@@ -1,0 +1,22 @@
+# Test to ensure `ip attached-host route export 19` is not set for inband management when the underlay protocol is not BGP.
+default_mgmt_method: inband
+mgmt_interface_vrf: default
+underlay_routing_protocol: ospf
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.255.0/24
+    vtep_loopback_ipv4_pool: 10.0.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    bgp_as: 65000-65100
+  nodes:
+    - name: configure-inband-management-with-ospf-underlay
+      id: 1
+      uplink_switches: [inband-mgmt-spine1-ztp]
+      uplink_switch_interfaces: [Ethernet11]
+      uplink_ipv4_pool: 172.17.255.0/24
+      mgmt_ip: 192.168.100.111/24
+      inband_mgmt_vrf: INBANDMGMT
+      inband_mgmt_interface: Vlan102

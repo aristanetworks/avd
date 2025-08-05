@@ -61,6 +61,16 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet11
+  description: P2P_configure-inband-management-with-ospf-underlay_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.17.255.0/31
+  peer: configure-inband-management-with-ospf-underlay
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: inband-mgmt-spine1-ztp
 ip_name_servers:
 - ip_address: 1.1.1.1
@@ -159,6 +169,16 @@ router_bgp:
     remote_as: '65001'
     peer: inband-mgmt-parent-vrf
     description: inband-mgmt-parent-vrf_Ethernet1
+  - ip_address: 172.17.255.1
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: configure-inband-management-with-ospf-underlay
+    description: configure-inband-management-with-ospf-underlay_Ethernet1
+  - ip_address: 10.10.255.1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65000'
+    peer: configure-inband-management-with-ospf-underlay
+    description: configure-inband-management-with-ospf-underlay_Loopback0
   - ip_address: 10.0.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65000'
