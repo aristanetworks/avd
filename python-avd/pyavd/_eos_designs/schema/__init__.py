@@ -42,7 +42,10 @@ class EosDesigns(EosDesignsRootModel):
                     "cleartext_key": {"type": str},
                 }
                 host: str
-                """Host IP address or name."""
+                """
+                Host IP address or name.
+                Combination of `host` and `vrf` should be unique.
+                """
                 groups: Groups
                 """Subclass of AvdList with `str` items."""
                 vrf: str | None
@@ -98,7 +101,9 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            host: Host IP address or name.
+                            host:
+                               Host IP address or name.
+                               Combination of `host` and `vrf` should be unique.
                             groups: Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
@@ -246,7 +251,10 @@ class EosDesigns(EosDesignsRootModel):
                     "cleartext_key": {"type": str},
                 }
                 host: str
-                """Host IP address or name."""
+                """
+                Host IP address or name.
+                Combination of `host` and `vrf` should be unique.
+                """
                 groups: Groups
                 """Subclass of AvdList with `str` items."""
                 vrf: str | None
@@ -297,7 +305,9 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            host: Host IP address or name.
+                            host:
+                               Host IP address or name.
+                               Combination of `host` and `vrf` should be unique.
                             groups: Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
@@ -4036,8 +4046,9 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "act_os_version": {"type": str},
-                "act_username": {"type": str, "default": "admin"},
-                "act_password": {"type": str, "default": "admin"},
+                "act_username": {"type": str, "default": "cvpadmin"},
+                "act_password": {"type": str, "default": "cvp123!"},
+                "act_internet_access": {"type": bool, "default": False},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -4045,13 +4056,23 @@ class EosDesigns(EosDesignsRootModel):
             """
             Username for ACT Digital Twin fabric devices.
 
-            Default value: `"admin"`
+            Default value: `"cvpadmin"`
             """
             act_password: str
             """
             Cleartext password for ACT Digital Twin fabric devices.
 
-            Default value: `"admin"`
+            Default value: `"cvp123!"`
+            """
+            act_internet_access: bool
+            """
+            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+            This option
+            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+            types.
+            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+
+            Default value: `False`
             """
 
             if TYPE_CHECKING:
@@ -4062,6 +4083,7 @@ class EosDesigns(EosDesignsRootModel):
                     act_os_version: str | None | UndefinedType = Undefined,
                     act_username: str | UndefinedType = Undefined,
                     act_password: str | UndefinedType = Undefined,
+                    act_internet_access: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -4073,6 +4095,12 @@ class EosDesigns(EosDesignsRootModel):
                         act_os_version: OS version for ACT Digital Twin fabric devices.
                         act_username: Username for ACT Digital Twin fabric devices.
                         act_password: Cleartext password for ACT Digital Twin fabric devices.
+                        act_internet_access:
+                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                           This option
+                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                           types.
+                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
 
                     """
 
@@ -26248,7 +26276,7 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -26256,11 +26284,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -26273,6 +26315,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -30541,7 +30591,7 @@ class EosDesigns(EosDesignsRootModel):
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                             act_os_version: str | None
                             """
                             Desired ACT Digital Twin OS version.
@@ -30549,11 +30599,25 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             mgmt_ip: str | None
                             """Desired management interface IPv4 address."""
+                            act_internet_access: bool | None
+                            """
+                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                            This option
+                            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                            types.
+                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                            Overrides
+                            global `digital_twin.fabric.act_internet_access` flag.
+                            """
 
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                    self,
+                                    *,
+                                    act_os_version: str | None | UndefinedType = Undefined,
+                                    mgmt_ip: str | None | UndefinedType = Undefined,
+                                    act_internet_access: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     DigitalTwin.
@@ -30566,6 +30630,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Desired ACT Digital Twin OS version.
                                            Overrides global `digital_twin.fabric.act_os_version` flag.
                                         mgmt_ip: Desired management interface IPv4 address.
+                                        act_internet_access:
+                                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                           This option
+                                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                           types.
+                                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                           Overrides
+                                           global `digital_twin.fabric.act_internet_access` flag.
 
                                     """
 
@@ -34763,7 +34835,7 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -34771,11 +34843,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -34788,6 +34874,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -39065,7 +39159,7 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -39073,11 +39167,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -39090,6 +39198,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -51015,7 +51131,7 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -51023,11 +51139,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -51040,6 +51170,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -55308,7 +55446,7 @@ class EosDesigns(EosDesignsRootModel):
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                             act_os_version: str | None
                             """
                             Desired ACT Digital Twin OS version.
@@ -55316,11 +55454,25 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             mgmt_ip: str | None
                             """Desired management interface IPv4 address."""
+                            act_internet_access: bool | None
+                            """
+                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                            This option
+                            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                            types.
+                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                            Overrides
+                            global `digital_twin.fabric.act_internet_access` flag.
+                            """
 
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                    self,
+                                    *,
+                                    act_os_version: str | None | UndefinedType = Undefined,
+                                    mgmt_ip: str | None | UndefinedType = Undefined,
+                                    act_internet_access: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     DigitalTwin.
@@ -55333,6 +55485,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Desired ACT Digital Twin OS version.
                                            Overrides global `digital_twin.fabric.act_os_version` flag.
                                         mgmt_ip: Desired management interface IPv4 address.
+                                        act_internet_access:
+                                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                           This option
+                                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                           types.
+                                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                           Overrides
+                                           global `digital_twin.fabric.act_internet_access` flag.
 
                                     """
 
@@ -59530,7 +59690,7 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -59538,11 +59698,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -59555,6 +59729,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -63832,7 +64014,7 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -63840,11 +64022,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -63857,6 +64053,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 

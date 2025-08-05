@@ -40,7 +40,6 @@ ethernet_interfaces:
 - name: Ethernet2
   description: L2_tenant-default-vrf-static-routes_Ethernet1
   shutdown: false
-  mtu: 9214
   peer: tenant-default-vrf-static-routes
   peer_interface: Ethernet1
   peer_type: l3leaf
@@ -117,6 +116,7 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
+  platform: custom_platform
   fabric_name: EOS_DESIGNS_UNIT_TESTS
   cv_tags:
     device_tags:

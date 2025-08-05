@@ -141,8 +141,8 @@ metadata:
     node_type: veos
     ip_addr: 192.168.1.5/24
     version: 4.33.1F
-    username: admin
-    password: admin
+    username: cvpadmin
+    password: cvp123!
 route_maps:
 - name: RM-EVPN-FILTER-AS65200
   sequence_numbers:
