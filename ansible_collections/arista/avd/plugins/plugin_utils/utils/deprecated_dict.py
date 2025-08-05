@@ -20,6 +20,17 @@ class DeprecatedDict(dict):
         self._message = _message
         super().__init__(*args, **kwargs)
 
+    def get(self, key: Any, default: Any = None) -> Any:
+        if not self._done:
+            self._ansible_display.deprecated(
+                msg=self._message,
+                version="6.0.0",
+                collection_name="arista.avd",
+                removed=False,
+            )
+            self._done = True
+        return super().get(key, default)
+
     def __getitem__(self, key: Any) -> Any:
         if not self._done:
             self._ansible_display.deprecated(
