@@ -28,6 +28,9 @@ tenants:
             static_routes:
               - prefix: 10.10.10.0/24
                 next_hop: 10.10.10.10
+            ipv6_static_routes:
+              - prefix: 1:1:1:1:1:1:1:0/126
+                next_hop: "2:2:2:2:2:2:2:2"
         l3_interfaces:
           - interfaces: [Ethernet1]
             ip_addresses: [10.10.10.10/24]
@@ -65,6 +68,10 @@ tenants:
             static_routes:
               - prefix: 10.10.10.0/24
                 next_hop: 10.10.10.10
+            ipv6_static_routes:
+              - prefix: 2001:db8::0/126
+                next_hop: 2001:db8::10
+                name: IPv6_svi_static_route
         l3_interfaces:
           - interfaces: [Ethernet4]
             ip_addresses: [10.10.10.10/24]
