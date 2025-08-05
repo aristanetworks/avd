@@ -835,7 +835,7 @@ $defs:
                         description: Node.
                     arp_gratuitous_accept:
                       type: bool
-                      description: Accept gratuitous ARP on SVI.
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                     descriptions:
@@ -982,7 +982,7 @@ $defs:
                       description: Node.
                     arp_gratuitous_accept:
                       type: bool
-                      description: Accept gratuitous ARP on SVI.
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                       description: |-

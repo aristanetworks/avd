@@ -17148,7 +17148,7 @@ class EosDesigns(EosDesignsRootModel):
             description: str | None
             """SVI description. By default set to VLAN name."""
             arp_gratuitous_accept: bool | None
-            """Accept gratuitous ARP on SVI."""
+            """Accept gratuitous ARP."""
             ip_address: str | None
             """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
             ipv6_address: str | None
@@ -17379,7 +17379,7 @@ class EosDesigns(EosDesignsRootModel):
                         name: VLAN name.
                         enabled: Enable or disable interface.
                         description: SVI description. By default set to VLAN name.
-                        arp_gratuitous_accept: Accept gratuitous ARP on SVI.
+                        arp_gratuitous_accept: Accept gratuitous ARP.
                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                         ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                         ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
@@ -18016,7 +18016,7 @@ class EosDesigns(EosDesignsRootModel):
         description: str | None
         """SVI description. By default set to VLAN name."""
         arp_gratuitous_accept: bool | None
-        """Accept gratuitous ARP on SVI."""
+        """Accept gratuitous ARP."""
         ip_address: str | None
         """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
         ipv6_address: str | None
@@ -18261,7 +18261,7 @@ class EosDesigns(EosDesignsRootModel):
                     name: VLAN name.
                     enabled: Enable or disable interface.
                     description: SVI description. By default set to VLAN name.
-                    arp_gratuitous_accept: Accept gratuitous ARP on SVI.
+                    arp_gratuitous_accept: Accept gratuitous ARP.
                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                     ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                     ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
@@ -43329,7 +43329,7 @@ class EosDesigns(EosDesignsRootModel):
                             description: str | None
                             """SVI description. By default set to VLAN name."""
                             arp_gratuitous_accept: bool | None
-                            """Accept gratuitous ARP on SVI."""
+                            """Accept gratuitous ARP."""
                             ip_address: str | None
                             """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
                             ipv6_address: str | None
@@ -43567,7 +43567,7 @@ class EosDesigns(EosDesignsRootModel):
                                         name: VLAN name.
                                         enabled: Enable or disable interface.
                                         description: SVI description. By default set to VLAN name.
-                                        arp_gratuitous_accept: Accept gratuitous ARP on SVI.
+                                        arp_gratuitous_accept: Accept gratuitous ARP.
                                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                                         ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                                         ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
@@ -44229,7 +44229,7 @@ class EosDesigns(EosDesignsRootModel):
                         description: str | None
                         """SVI description. By default set to VLAN name."""
                         arp_gratuitous_accept: bool | None
-                        """Accept gratuitous ARP on SVI."""
+                        """Accept gratuitous ARP."""
                         ip_address: str | None
                         """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
                         ipv6_address: str | None
@@ -44488,7 +44488,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                                     enabled: Enable or disable interface.
                                     description: SVI description. By default set to VLAN name.
-                                    arp_gratuitous_accept: Accept gratuitous ARP on SVI.
+                                    arp_gratuitous_accept: Accept gratuitous ARP.
                                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                                     ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                                     ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
@@ -44953,7 +44953,7 @@ class EosDesigns(EosDesignsRootModel):
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
                         arp_gratuitous_accept: bool | None
-                        """Accept gratuitous ARP on SVI."""
+                        """Accept gratuitous ARP."""
                         description: str | None
                         descriptions: Descriptions
                         """
@@ -45053,7 +45053,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdList with `StaticRoutesItem` items.
                                     nodes: Subclass of AvdList with `str` items.
-                                    arp_gratuitous_accept: Accept gratuitous ARP on SVI.
+                                    arp_gratuitous_accept: Accept gratuitous ARP.
                                     description: description
                                     descriptions:
                                        "descriptions" has precedence over "description".
@@ -45453,7 +45453,7 @@ class EosDesigns(EosDesignsRootModel):
                         node: str
                         """Node."""
                         arp_gratuitous_accept: bool | None
-                        """Accept gratuitous ARP on SVI."""
+                        """Accept gratuitous ARP."""
                         description: str | None
                         """
                         Interface description.
@@ -45563,7 +45563,7 @@ class EosDesigns(EosDesignsRootModel):
                                        For a
                                        Port-Channel subinterface, the parent Port-Channel interface must be defined as well.
                                     node: Node.
-                                    arp_gratuitous_accept: Accept gratuitous ARP on SVI.
+                                    arp_gratuitous_accept: Accept gratuitous ARP.
                                     description:
                                        Interface description.
                                        If not set, a default description will be configured with '[<peer>[

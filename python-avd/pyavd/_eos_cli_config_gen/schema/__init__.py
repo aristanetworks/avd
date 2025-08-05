@@ -11730,7 +11730,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         phone: Phone
         """Subclass of AvdModel."""
         arp_gratuitous_accept: bool | None
-        """Accept gratuitous ARP on SVI."""
+        """Accept gratuitous ARP."""
         l2_protocol: L2Protocol
         """Subclass of AvdModel."""
         mac_timestamp: Literal["before-fcs", "replace-fcs", "header"] | None
@@ -12126,7 +12126,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     native_vlan_tag: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
                     mode: mode
                     phone: Subclass of AvdModel.
-                    arp_gratuitous_accept: Accept gratuitous ARP on SVI.
+                    arp_gratuitous_accept: Accept gratuitous ARP.
                     l2_protocol: Subclass of AvdModel.
                     mac_timestamp:
                        header: Insert timestamp in ethernet header. Supported on platforms like 7500E/R and 7280E/R.
@@ -32978,7 +32978,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         access port this would be a single vlan "123".
         """
         arp_gratuitous_accept: bool | None
-        """Accept gratuitous ARP on SVI."""
+        """Accept gratuitous ARP."""
         snmp_trap_link_change: bool | None
         type: Literal["routed", "switched", "l3dot1q", "l2dot1q"] | None
         """
@@ -33284,7 +33284,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        For a trunk port this would be a range like "1-200,300".
                        For an
                        access port this would be a single vlan "123".
-                    arp_gratuitous_accept: Accept gratuitous ARP on SVI.
+                    arp_gratuitous_accept: Accept gratuitous ARP.
                     snmp_trap_link_change: snmp_trap_link_change
                     type:
                        l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.

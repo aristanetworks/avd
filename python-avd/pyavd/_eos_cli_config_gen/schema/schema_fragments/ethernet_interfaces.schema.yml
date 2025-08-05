@@ -110,7 +110,7 @@ keys:
                 - str
         arp_gratuitous_accept:
           type: bool
-          description: Accept gratuitous ARP on SVI.
+          description: Accept gratuitous ARP.
         l2_protocol:
           type: dict
           keys:
