@@ -31,6 +31,8 @@ tenants:
             enabled: true
             name: VLAN100
             ip_address_virtual: 10.0.100.1/24
+            # test for arp_gratuitous_accept
+            arp_gratuitous_accept: true
       - name: VRF2
         vrf_id: 2
         rd_override: 999
