@@ -108,7 +108,7 @@ l3leaf:
 l2leaf:
   defaults:
     inband_ztp: true
-    uplink_switches: [inband-mgmt-parent, inband-mgmt-parent-vrf, configure-inband-management-with-ospf-underlay]
+    uplink_switches: [inband-mgmt-parent, inband-mgmt-parent-vrf]
     filter:
       # Ensuring that the inband management vlan is correctly configured even when only_vlans_in_use is set
       only_vlans_in_use: true
