@@ -831,7 +831,6 @@ $defs:
                     ipv6_static_routes:
                       type: list
                       # Reusing the schema from `static_routes` since IPv4 and IPv6 static routes share the same keys.
-                      # TODO: Once the deprecated keys for eos_cli_config_gen are removed in AVD 6.0, the schema can be referenced directly from there.
                       $ref: "eos_designs#/$defs/static_routes"
                       description: IPv6 static routes to be configured on every device when this interface is configured.
                     nodes:
@@ -1086,7 +1085,6 @@ $defs:
                     ipv6_static_routes:
                       type: list
                       # Reusing the schema from `static_routes` since IPv4 and IPv6 static routes share the same keys.
-                      # TODO: Once the deprecated keys for eos_cli_config_gen are removed in AVD 6.0, the schema can be referenced directly from there.
                       $ref: "eos_designs#/$defs/static_routes"
                       description: IPv6 static routes to be configured on every device when this interface is configured.
                     ospf:
