@@ -308,6 +308,13 @@ class InternalDevice:
     system_mac_address: str | None = None
     """Device system mac address retrieved from CV"""
 
+    def get_cv_device(self) -> CVDevice:
+        return CVDevice(hostname=self.avd_device.hostname, serial_number=self.serial_number, system_mac_address=self.system_mac_address)
+
+    def get_cv_eos_config(self) -> CVEosConfig:
+        # avd_device.config is always set
+        return CVEosConfig(file=self.avd_device.config.file, device=self.get_cv_device(), configlet_name=self.avd_device.config.configlet_name)
+
 
 T_AvdTag = TypeVar("T_AvdTag", AvdDeviceTag, AvdInterfaceTag)
 T_AvdMiscComponent = TypeVar("T_AvdMiscComponent", AvdEosConfig, AvdPathfinderMetadata, CVStudioInputs)

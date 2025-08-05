@@ -304,7 +304,7 @@ class ActionModule(ActionBase):
         avd_devices = await gather(*avd_device_coroutines)
 
         # filter out any avd_device set to None due to 'is_deployed' set to false within device structured config
-        avd_devices_filtered = [avd_device for avd_device in avd_devices if is_valid_object(avd_device)]
+        avd_devices_filtered = [avd_device for avd_device in avd_devices if avd_device]
 
         eos_config_objects = []
         device_tag_objects = []
@@ -440,7 +440,7 @@ class ActionModule(ActionBase):
         Build AvdDevice object for one device.
 
         Parameters:
-            device_list: List of device hostnames.
+            hostname: hostname of device
             structured_config_dir: Path to structured config files.
             structured_config_suffix: Suffix for structured config files.
             configuration_dir: Path to EOS config files.
@@ -450,11 +450,10 @@ class ActionModule(ActionBase):
             CVPathfinderMetaData and EOS config info.
 
         Workflow:
-            Per device:
-              - Read and load structured config
-              - If is_deployed is false, skip the device.
-              - Read serial_number & system_mac from structured config.
-              - Create AvdDevice object and add to list of device_objects.
+            - Read and load structured config
+            - If is_deployed is false, skip the device.
+            - Read serial_number & system_mac from structured config.
+            - Create AvdDevice object.
 
         TODO: Refactor into smaller functions.
         """
@@ -547,11 +546,6 @@ class ActionModule(ActionBase):
 
         del structured_config
         return avd_device_object
-
-
-def is_valid_object(avd_device: AvdDevice | None) -> bool:
-    """Checks if the AvdDevice instance is valid (not None in this case)."""
-    return avd_device is not None
 
 
 def setup_module_logging(result: dict) -> None:
