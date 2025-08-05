@@ -23,6 +23,7 @@ spine:
       - "distance bgp 20 200 200"
     digital_twin:
       act_os_version: "4.33.1F"
+      act_internet_access: false
   nodes:
     # Spine also working as EVPN RS
     - name: DC1-POD1-SPINE1
@@ -40,6 +41,8 @@ spine:
       mgmt_ip: 192.168.1.6/24
       uplink_switch_interfaces: ["Ethernet2", "Ethernet2"]
       serial_number: "DEADBEEFC0FFEE"
+      digital_twin:
+        act_internet_access: true
 
 # In DC1 we define all variables on specific node / node_group
 l3leaf:
@@ -162,6 +165,8 @@ l2leaf:
     inband_mgmt_vlan: 4085
     mlag_peer_l3_ipv4_pool: 172.19.110.0/24
     mlag_peer_ipv4_pool: 172.20.110.0/24
+    digital_twin:
+      act_internet_access: true
   node_groups:
     - group: RACK2_SINGLE
       platform: vEOS-LAB
@@ -197,6 +202,7 @@ l2leaf:
           uplink_switch_interfaces: ["Ethernet3", "Ethernet3"]
         - name: DC1-POD1-L2LEAF2B
           # id: 3 Using pool manager for ID
+          platform: TOOLS-SERVER
           mgmt_ip: 192.168.1.12/24
           uplink_switch_interfaces: ["Ethernet4", "Ethernet4"]
           raw_eos_cli: |
