@@ -1,0 +1,9 @@
+---
+### group_vars/DC1.yml
+
+# OOB Management network default gateway
+mgmt_gateway: 172.16.100.1
+mgmt_interface: Management0
+
+#### Override for vEOS/cEOS Lab Caveats ####
+p2p_uplinks_mtu: 1500

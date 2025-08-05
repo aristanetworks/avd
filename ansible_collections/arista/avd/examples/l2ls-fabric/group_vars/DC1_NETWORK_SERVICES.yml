@@ -1,5 +1,5 @@
 ---
-### group_vars/DC1_NETWORK_SERVICES/services.yml
+### group_vars/DC1_NETWORK_SERVICES.yml
 
 tenants:
   - name: MY_FABRIC

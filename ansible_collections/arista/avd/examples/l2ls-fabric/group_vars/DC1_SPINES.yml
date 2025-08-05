@@ -1,12 +1,12 @@
 ---
-### group_vars/DC1_SPINES/spines.yml
+### group_vars/DC1_SPINES.yml
 
 type: l2spine     # Must be either l2spine|l3spine
 
 # Spine Switches (L2 only)
 l2spine:
   defaults:
-    platform: vEOS-lab
+    platform: cEOS-lab
     spanning_tree_mode: mstp
     spanning_tree_priority: 4096
     mlag_peer_ipv4_pool: 192.168.0.0/24

@@ -1,12 +1,12 @@
 ---
-### group_vars/DC1_LEAFS/leafs.yml
+### group_vars/DC1_LEAFS.yml
 
 type: l2leaf     # Must be l2leaf
 
 # Leaf Switches
 l2leaf:
   defaults:
-    platform: vEOS-lab
+    platform: cEOS-lab
     mlag_peer_ipv4_pool: 192.168.0.0/24
     uplink_switches: [SPINE1, SPINE2]
     uplink_interfaces: [Ethernet1, Ethernet2]

@@ -23,7 +23,7 @@ FABRIC:
       children:
         DC1_LEAFS:
         DC1_SPINES:
-    DC1_NETWORK_PORTS:
+    DC1_ENDPOINTS:
       children:
         DC1_LEAFS:
         DC1_SPINES:
