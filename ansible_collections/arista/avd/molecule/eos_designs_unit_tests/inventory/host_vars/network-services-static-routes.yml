@@ -33,6 +33,8 @@ tenants:
             ip_addresses: [10.10.10.10/24]
             nodes: [network-services-static-routes]
             mtu: 9000
+            # test for arp_gratuitous_accept
+            arp_gratuitous_accept: true
             enabled: true
             description: "test"
             static_routes:

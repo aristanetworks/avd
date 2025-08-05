@@ -44812,6 +44812,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ip_addresses": {"type": IpAddresses},
                             "static_routes": {"type": StaticRoutes},
                             "nodes": {"type": Nodes},
+                            "arp_gratuitous_accept": {"type": bool},
                             "description": {"type": str},
                             "descriptions": {"type": Descriptions},
                             "enabled": {"type": bool, "default": True},
@@ -44845,6 +44846,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
+                        arp_gratuitous_accept: bool | None
+                        """Accept gratuitous ARP on SVI."""
                         description: str | None
                         descriptions: Descriptions
                         """
@@ -44910,6 +44913,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ip_addresses: IpAddresses | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
+                                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 descriptions: Descriptions | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
@@ -44943,6 +44947,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdList with `StaticRoutesItem` items.
                                     nodes: Subclass of AvdList with `str` items.
+                                    arp_gratuitous_accept: Accept gratuitous ARP on SVI.
                                     description: description
                                     descriptions:
                                        "descriptions" has precedence over "description".
@@ -45315,6 +45320,7 @@ class EosDesigns(EosDesignsRootModel):
                         _fields: ClassVar[dict] = {
                             "name": {"type": str},
                             "node": {"type": str},
+                            "arp_gratuitous_accept": {"type": bool},
                             "description": {"type": str},
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
@@ -45340,6 +45346,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         node: str
                         """Node."""
+                        arp_gratuitous_accept: bool | None
+                        """Accept gratuitous ARP on SVI."""
                         description: str | None
                         """
                         Interface description.
@@ -45419,6 +45427,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 name: str | UndefinedType = Undefined,
                                 node: str | UndefinedType = Undefined,
+                                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
@@ -45448,6 +45457,7 @@ class EosDesigns(EosDesignsRootModel):
                                        For a
                                        Port-Channel subinterface, the parent Port-Channel interface must be defined as well.
                                     node: Node.
+                                    arp_gratuitous_accept: Accept gratuitous ARP on SVI.
                                     description:
                                        Interface description.
                                        If not set, a default description will be configured with '[<peer>[
