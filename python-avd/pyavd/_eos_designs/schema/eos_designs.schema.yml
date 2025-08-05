@@ -1754,6 +1754,17 @@ keys:
             type: str
             description: Cleartext password for ACT Digital Twin fabric devices.
             default: cvp123!
+          act_internet_access:
+            type: bool
+            default: false
+            description: 'Specifies if the ACT Digital Twin device is deployed with
+              direct access to the Internet.
+
+              This option applies only to the ''cloudeos'' and ''veos'' node types
+              and will be ignored for all other ACT node types.
+
+              ACT does not provide direct Internet access to cloudeos or veos devices
+              by default.'
   dns_settings:
     documentation_options:
       table: management-settings
@@ -11586,6 +11597,18 @@ $defs:
                 type: str
                 description: Desired management interface IPv4 address.
                 format: cidr
+              act_internet_access:
+                type: bool
+                description: 'Specifies if the ACT Digital Twin device is deployed
+                  with direct access to the Internet.
+
+                  This option applies only to the ''cloudeos'' and ''veos'' node types
+                  and will be ignored for all other ACT node types.
+
+                  ACT does not provide direct Internet access to cloudeos or veos
+                  devices by default.
+
+                  Overrides global `digital_twin.fabric.act_internet_access` flag.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

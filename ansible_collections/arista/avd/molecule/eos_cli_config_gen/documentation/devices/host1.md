@@ -7539,11 +7539,12 @@ router adaptive-virtual-topology
 
 #### VRF Route leaking
 
-| VRF | Source VRF | Route Map Policy |
-|-----|------------|------------------|
-| BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING |
-| BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING |
-| BLUE3 | BLUE-C1 | RM-BLUE-LEAKING |
+| VRF | Source VRF | Route Map Policy | RCF Policy |
+|-----|------------|------------------| ---------- |
+| BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING | - |
+| BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING | RCF_BLUE_C3() |
+| BLUE3 | BLUE-C1 | RM-BLUE-LEAKING | - |
+| BLUE3 | BLUE-C2 | - | RCF_BLUE_C2() |
 
 #### VRF Routes Dynamic Prefix-lists
 
@@ -7564,6 +7565,7 @@ router general
    !
    vrf BLUE3
       leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
+      leak routes source-vrf BLUE-C2 subscribe rcf RCF_BLUE_C2()
       exit
    !
    vrf BLUE-C2
@@ -12685,6 +12687,8 @@ mac security
 
 ##### BLUE-C1-POLICY
 
+Counters: DEMO-TRAFFIC, DROP-PACKETS
+
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
 | BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>any | -<br/>SERVICE-DEMO | any<br/>any | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 |
@@ -12698,6 +12702,8 @@ mac security
 
 ##### BLUE-C2-POLICY
 
+Counters: DEMO-TRAFFIC
+
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
 | BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | any | tcp<br/>icmp | 1,10-20<br/>- | -<br/>- | any<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop recursive IPv6 address: 2a00:1450:4009:821::200e vrf: VRF_IPv6_recursive |
@@ -12710,7 +12716,11 @@ mac security
 
 ##### BLUE-C3-POLICY
 
+Counters: test
+
 ##### BLUE-C4-POLICY
+
+Counters: test
 
 ##### BLUE-C5-POLICY
 
@@ -12890,6 +12900,8 @@ traffic-policies
       match ipv6-all-default ipv6
    !
    traffic-policy BLUE-C3-POLICY
+      counter test
+      !
       match ipv4-all-default ipv4
          actions
             count test
@@ -12899,6 +12911,8 @@ traffic-policies
       match ipv6-all-default ipv6
    !
    traffic-policy BLUE-C4-POLICY
+      counter test
+      !
       match ipv4-all-default ipv4
       !
       match ipv6-all-default ipv6
