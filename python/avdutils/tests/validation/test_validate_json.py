@@ -27,7 +27,7 @@ def init_store() -> None:
 
 @pytest.mark.usefixtures("init_store")
 def test_validate_json() -> None:
-    validation_result = validate_json('{"ethernet_interfaces": [{"name": "Ethernet1", "speed": "100g"}, {"name": "Ethernet1"}, {}]}', "eos_cli_config_gen")
+    validation_result = validate_json('{"ethernet_interfaces": [{"name": "Ethernet1", "speed": 100}, {"name": "Ethernet1"}, {}]}', "eos_cli_config_gen")
 
     violations = iter(validation_result.violations)
     feedback = next(violations)
