@@ -477,7 +477,7 @@ class EosDesigns(EosDesignsRootModel):
     class Avd6Behaviors(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}}
+        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}, "inband_ztp_attached_hosts": {"type": bool, "default": False}}
         snmp_settings_vrfs: bool
         """
         Opt-in to the new behavior for snmp_settings:
@@ -492,10 +492,20 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        inband_ztp_attached_hosts: bool
+        """
+        Opt-in to the new behavior for inband management route export:
+        - `ip attached-host route export`
+        will only be rendered for inband management interfaces if the underlay protocol is BGP.
+        - This means
+        for non-BGP underlay deployments, the route export will be omitted for inband interfaces.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined) -> None:
+            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined, inband_ztp_attached_hosts: bool | UndefinedType = Undefined) -> None:
                 """
                 Avd6Behaviors.
 
@@ -513,6 +523,12 @@ class EosDesigns(EosDesignsRootModel):
                          If
                        `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
                        "default".
+                    inband_ztp_attached_hosts:
+                       Opt-in to the new behavior for inband management route export:
+                       - `ip attached-host route export`
+                       will only be rendered for inband management interfaces if the underlay protocol is BGP.
+                       - This means
+                       for non-BGP underlay deployments, the route export will be omitted for inband interfaces.
 
                 """
 
