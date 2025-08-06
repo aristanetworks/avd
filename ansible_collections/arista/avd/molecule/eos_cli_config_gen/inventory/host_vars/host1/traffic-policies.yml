@@ -27,6 +27,9 @@ traffic_policies:
       default_actions:
         ipv4:
           drop: true
+      counters:
+        - DEMO-TRAFFIC
+        - DROP-PACKETS
       matches:
         - name: BLUE-C1-POLICY-01
           type: ipv4
@@ -190,6 +193,8 @@ traffic_policies:
         ipv4:
           drop: true
           log: true
+      counters:
+        - DEMO-TRAFFIC
       matches:
         - name: BLUE-C2-POLICY-01
           type: ipv4
@@ -275,12 +280,16 @@ traffic_policies:
           count: test
           traffic_class: 10
           dscp: 11
+      counters:
+        - test
     - name: BLUE-C4-POLICY
       default_actions:
         ipv6:
           count: test
           traffic_class: 10
           dscp: 11
+      counters:
+        - test
     - name: BLUE-C6-POLICY
       default_actions:
         ipv6:

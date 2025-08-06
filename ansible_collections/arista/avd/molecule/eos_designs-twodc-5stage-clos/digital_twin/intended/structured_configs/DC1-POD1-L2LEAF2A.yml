@@ -68,6 +68,7 @@ metadata:
     version: 4.33.1.1F
     username: cvpadmin
     password: cvp123!
+    internet_access: true
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094

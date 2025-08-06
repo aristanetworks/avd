@@ -1754,6 +1754,17 @@ keys:
             type: str
             description: Cleartext password for ACT Digital Twin fabric devices.
             default: cvp123!
+          act_internet_access:
+            type: bool
+            default: false
+            description: 'Specifies if the ACT Digital Twin device is deployed with
+              direct access to the Internet.
+
+              This option applies only to the ''cloudeos'' and ''veos'' node types
+              and will be ignored for all other ACT node types.
+
+              ACT does not provide direct Internet access to cloudeos or veos devices
+              by default.'
   dns_settings:
     documentation_options:
       table: management-settings
@@ -8471,7 +8482,12 @@ $defs:
                       type: list
                       $ref: eos_designs#/$defs/static_routes
                       description: Static routes to be configured on every device
-                        when this interface is configured.
+                        where this interface is configured.
+                    ipv6_static_routes:
+                      type: list
+                      $ref: eos_designs#/$defs/static_routes
+                      description: IPv6 static routes to be configured on every device
+                        where this interface is configured.
                     nodes:
                       type: list
                       items:
@@ -8750,9 +8766,14 @@ $defs:
                       - int
                     static_routes:
                       type: list
-                      description: Static routes to be configured on the device when
-                        this Port-channel is configured.
+                      description: Static routes to be configured on the device where
+                        this Port-channel interface is configured.
                       $ref: eos_designs#/$defs/static_routes
+                    ipv6_static_routes:
+                      type: list
+                      $ref: eos_designs#/$defs/static_routes
+                      description: IPv6 static routes to be configured on the device
+                        where this Port-channel interface is configured.
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
@@ -11586,6 +11607,18 @@ $defs:
                 type: str
                 description: Desired management interface IPv4 address.
                 format: cidr
+              act_internet_access:
+                type: bool
+                description: 'Specifies if the ACT Digital Twin device is deployed
+                  with direct access to the Internet.
+
+                  This option applies only to the ''cloudeos'' and ''veos'' node types
+                  and will be ignored for all other ACT node types.
+
+                  ACT does not provide direct Internet access to cloudeos or veos
+                  devices by default.
+
+                  Overrides global `digital_twin.fabric.act_internet_access` flag.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -12587,6 +12620,11 @@ $defs:
         $ref: eos_designs#/$defs/static_routes
         description: Static routes to be configured on every device where the SVI
           is configured.
+      ipv6_static_routes:
+        type: list
+        $ref: eos_designs#/$defs/static_routes
+        description: IPv6 static routes to be configured on every device where the
+          SVI is configured.
       vni_override:
         type: int
         convert_types:
