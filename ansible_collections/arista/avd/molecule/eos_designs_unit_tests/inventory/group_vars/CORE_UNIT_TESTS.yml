@@ -185,6 +185,8 @@ core_interfaces:
       profile: isis_bb_profile
       port_channel_structured_config:
         isis_metric: 70
+      ethernet_structured_config:
+        speed: forced 100full
 
     # core Port-Channel with custom description on p2p reusing the same on port-channel
     - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]

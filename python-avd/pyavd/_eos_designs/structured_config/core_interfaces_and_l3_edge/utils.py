@@ -326,14 +326,24 @@ class UtilsMixin(Protocol):
                 interface.mpls.ldp.interface = True
                 interface.mpls.ldp.igp_sync = True
 
-        if p2p_link.ethernet_structured_config:
+        if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
+            if p2p_link.ethernet_structured_config:
+                for child_interface in p2p_link.port_channel.nodes_child_interfaces:
+                    if child_interface.node == self.shared_utils.hostname:
+                        for eth_interface in child_interface.interfaces:
+                            self.custom_structured_configs.nested.ethernet_interfaces.obtain(eth_interface)._deepmerge(
+                                p2p_link.ethernet_structured_config,
+                                list_merge=self.custom_structured_configs.list_merge_strategy,
+                            )
+            if p2p_link.port_channel_structured_config:
+                self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
+                    p2p_link.port_channel_structured_config,
+                    list_merge=self.custom_structured_configs.list_merge_strategy,
+                )
+        else:
+            # Ethernet
             self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface.name)._deepmerge(
                 p2p_link.ethernet_structured_config,
-                list_merge=self.custom_structured_configs.list_merge_strategy,
-            )
-        elif p2p_link.port_channel_structured_config:
-            self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
-                p2p_link.port_channel_structured_config,
                 list_merge=self.custom_structured_configs.list_merge_strategy,
             )
 

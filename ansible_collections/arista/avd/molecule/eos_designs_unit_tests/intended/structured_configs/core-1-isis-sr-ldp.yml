@@ -209,7 +209,7 @@ ethernet_interfaces:
 - name: Ethernet14
   description: CUSTOM_DESCRIPTION_ON_P2P_LINK_A
   shutdown: false
-  speed: forced 1000full
+  speed: forced 100full
   channel_group:
     id: 9
     mode: active
@@ -219,7 +219,7 @@ ethernet_interfaces:
 - name: Ethernet15
   description: CUSTOM_DESCRIPTION_ON_P2P_LINK_A
   shutdown: false
-  speed: forced 1000full
+  speed: forced 100full
   channel_group:
     id: 9
     mode: active
