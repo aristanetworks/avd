@@ -9823,14 +9823,31 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv4(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"address": {"type": str}, "version": {"type": int}}
+                class SecondaryAddresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SecondaryAddresses._item_type = str
+
+                _fields: ClassVar[dict] = {"address": {"type": str}, "secondary_addresses": {"type": SecondaryAddresses}, "version": {"type": int}}
                 address: str
                 """Virtual IPv4 address."""
+                secondary_addresses: SecondaryAddresses
+                """
+                Additional VRRP address.
+
+                Subclass of AvdList with `str` items.
+                """
                 version: Literal[2, 3] | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, address: str | UndefinedType = Undefined, version: Literal[2, 3] | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        address: str | UndefinedType = Undefined,
+                        secondary_addresses: SecondaryAddresses | UndefinedType = Undefined,
+                        version: Literal[2, 3] | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Ipv4.
 
@@ -9839,6 +9856,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             address: Virtual IPv4 address.
+                            secondary_addresses:
+                               Additional VRRP address.
+
+                               Subclass of AvdList with `str` items.
                             version: version
 
                         """
@@ -65442,14 +65463,31 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv4(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"address": {"type": str}, "version": {"type": int}}
+                class SecondaryAddresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SecondaryAddresses._item_type = str
+
+                _fields: ClassVar[dict] = {"address": {"type": str}, "secondary_addresses": {"type": SecondaryAddresses}, "version": {"type": int}}
                 address: str
                 """Virtual IPv4 address."""
+                secondary_addresses: SecondaryAddresses
+                """
+                Additional VRRP address.
+
+                Subclass of AvdList with `str` items.
+                """
                 version: Literal[2, 3] | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, address: str | UndefinedType = Undefined, version: Literal[2, 3] | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        address: str | UndefinedType = Undefined,
+                        secondary_addresses: SecondaryAddresses | UndefinedType = Undefined,
+                        version: Literal[2, 3] | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Ipv4.
 
@@ -65458,6 +65496,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             address: Virtual IPv4 address.
+                            secondary_addresses:
+                               Additional VRRP address.
+
+                               Subclass of AvdList with `str` items.
                             version: version
 
                         """

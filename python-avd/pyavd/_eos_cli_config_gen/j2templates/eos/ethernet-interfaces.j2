@@ -1229,6 +1229,9 @@ interface {{ ethernet_interface.name }}
 {%             if vrid.ipv4.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv4 {{ vrid.ipv4.address }}
 {%             endif %}
+{%             for secondary_ip in vrid.ipv4.secondary_addresses | arista.avd.natural_sort %}
+   vrrp {{ vrid.id }} ipv4 {{ secondary_ip }} secondary
+{%             endfor %}
 {%             if vrid.ipv4.version is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv4 version {{ vrid.ipv4.version }}
 {%             endif %}

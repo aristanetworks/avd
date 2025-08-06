@@ -591,6 +591,9 @@ vlan_interfaces:
             reload: 800
         ipv4:
           address: 192.0.2.1
+          secondary_addresses:
+            - 192.0.3.3
+            - 192.0.4.4
         peer_authentication:
           mode: ietf-md5
           key: auth_key
