@@ -22,7 +22,7 @@ from pyavd._cv.workflows.models import (
     Tags,
     TagsResult,
 )
-from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory2
+from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 
@@ -96,7 +96,7 @@ class UtilsZscalerMixin(Protocol):
             internal_device = InternalDevice(
                 avd_device=avd_device, result=device_result, device_tags=Tags[AvdDeviceTag](), interface_tags=Tags[AvdInterfaceTag]()
             )
-            cv_inventory_devices: list[InternalDevice] = await verify_devices_in_cloudvision_inventory2(
+            cv_inventory_devices: list[InternalDevice] = await verify_devices_in_cloudvision_inventory(
                 internal_devices=[internal_device],
                 skip_missing_devices=True,
                 warnings=[],
