@@ -204,7 +204,7 @@ keys:
           there.\n- `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.\n
           \ If `default_mgmt_method` is 'none', the VRF must be specified. For VRF
           default set the string \"default\"."
-      inband_ztp_attached_hosts:
+      inband_mgmt_attached_hosts:
         type: bool
         default: false
         description: 'Opt-in to the new behavior for inband management route export:

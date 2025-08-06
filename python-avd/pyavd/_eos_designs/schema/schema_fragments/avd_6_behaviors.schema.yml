@@ -25,7 +25,7 @@ keys:
             Note this means SNMP will be disabled for VRF "default" unless it is defined there.
           - `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.
             If `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string "default".
-      inband_ztp_attached_hosts:
+      inband_mgmt_attached_hosts:
         type: bool
         default: false
         description: |-
