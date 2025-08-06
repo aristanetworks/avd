@@ -114,6 +114,9 @@ port_channel_interfaces:
 - name: Port-Channel51
   description: L2_UPLINK_P2P_VRFS_TESTS_L2LEAF1_Port-Channel1
   shutdown: false
+  pim:
+    ipv4:
+      sparse_mode: true
   switchport:
     enabled: true
     mode: trunk

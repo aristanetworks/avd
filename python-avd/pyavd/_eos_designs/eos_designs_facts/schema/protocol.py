@@ -447,6 +447,8 @@ class EosDesignsFactsProtocol(Protocol):
             "structured_config": {"type": dict},
             "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            "peer_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "peer_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "subinterfaces": {"type": Subinterfaces},
         }
         interface: str
@@ -520,6 +522,16 @@ class EosDesignsFactsProtocol(Protocol):
         Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
         uplink_type == "port-channel".
         """
+        peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """
+        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+        uplink_type == "p2p".
+        """
+        peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """
+        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+        uplink_type == "port-channel".
+        """
         subinterfaces: Subinterfaces
         """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`)."""
 
@@ -568,6 +580,8 @@ class EosDesignsFactsProtocol(Protocol):
                 structured_config: dict | UndefinedType = Undefined,
                 ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 subinterfaces: Subinterfaces | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -633,6 +647,12 @@ class EosDesignsFactsProtocol(Protocol):
                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                        uplink_type == "p2p".
                     port_channel_structured_config:
+                       Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                       uplink_type == "port-channel".
+                    peer_ethernet_structured_config:
+                       Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
+                       uplink_type == "p2p".
+                    peer_port_channel_structured_config:
                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                        uplink_type == "port-channel".
                     subinterfaces: Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`).

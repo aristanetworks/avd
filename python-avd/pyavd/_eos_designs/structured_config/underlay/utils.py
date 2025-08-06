@@ -87,6 +87,12 @@ class UtilsMixin(Protocol):
                     ethernet_structured_config=uplink.ethernet_structured_config,
                     port_channel_structured_config=uplink.port_channel_structured_config,
                 )
+
+                if uplink.peer_ethernet_structured_config:
+                    downlink.ethernet_structured_config._deepmerge(uplink.peer_ethernet_structured_config)
+                if uplink.peer_port_channel_structured_config:
+                    downlink.port_channel_structured_config._deepmerge(uplink.peer_port_channel_structured_config)
+
                 if peer_facts.inband_ztp:
                     # l2 inband ztp
                     downlink.inband_ztp_vlan = peer_facts.inband_ztp_vlan

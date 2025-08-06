@@ -105,7 +105,8 @@ port_channel_interfaces:
   mlag: 5
   storm_control:
     broadcast:
-      level: '25'
+      level: '30'
+      unit: percent
     unknown_unicast:
       level: '25'
   switchport:

@@ -225,6 +225,7 @@ class EthernetInterfacesMixin(Protocol):
                 self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
                     link.ethernet_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                 )
+
         # Support l3_interface as sub interfaces
         subif_parent_interface_names = set()
         for l3_interface in self.shared_utils.l3_interfaces:

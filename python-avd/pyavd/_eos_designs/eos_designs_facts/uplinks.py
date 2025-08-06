@@ -218,6 +218,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         elif self.shared_utils.node_config.uplink_ethernet_structured_config:
             uplink.ethernet_structured_config = self.shared_utils.node_config.uplink_ethernet_structured_config
 
+        if self.shared_utils.node_config.uplink_switch_ethernet_structured_config:
+            uplink.peer_ethernet_structured_config = self.shared_utils.node_config.uplink_switch_ethernet_structured_config
+
         return uplink
 
     def _get_port_channel_uplink(
@@ -318,6 +321,11 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         elif structured_config := self.shared_utils.node_config.uplink_port_channel_structured_config:
             uplink.port_channel_structured_config = structured_config
 
+        if self.shared_utils.node_config.uplink_switch_ethernet_structured_config:
+            uplink.peer_ethernet_structured_config = self.shared_utils.node_config.uplink_switch_ethernet_structured_config
+        elif self.shared_utils.node_config.uplink_switch_port_channel_structured_config:
+            uplink.peer_port_channel_structured_config = self.shared_utils.node_config.uplink_switch_port_channel_structured_config
+
         return uplink
 
     def _get_p2p_vrfs_uplink(
@@ -360,6 +368,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     subinterface.structured_config = self.shared_utils.node_config.uplink_structured_config
                 elif self.shared_utils.node_config.uplink_ethernet_structured_config:
                     subinterface.ethernet_structured_config = self.shared_utils.node_config.uplink_ethernet_structured_config
+
+                if self.shared_utils.node_config.uplink_switch_ethernet_structured_config:
+                    uplink.peer_ethernet_structured_config = self.shared_utils.node_config.uplink_switch_ethernet_structured_config
 
                 uplink.subinterfaces.append(subinterface)
 

@@ -26363,6 +26363,8 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -26685,6 +26687,13 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                     uplink_type == "port-channel".
+                    """
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                    port-channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -27360,6 +27369,8 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -27622,6 +27633,10 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_port_channel_structured_config:
                                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                                    uplink_type == "port-channel".
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                                   port-channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -30678,6 +30693,8 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_structured_config": {"type": dict},
                             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                            "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                             "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -31010,6 +31027,13 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                         uplink_type == "port-channel".
+                        """
+                        uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
+                        uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                        port-channel uplinks.
                         """
                         mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
@@ -31687,6 +31711,8 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_structured_config: dict | UndefinedType = Undefined,
                                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -31956,6 +31982,10 @@ class EosDesigns(EosDesignsRootModel):
                                     uplink_port_channel_structured_config:
                                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                                        uplink_type == "port-channel".
+                                    uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
+                                    uplink_switch_port_channel_structured_config:
+                                       Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                                       port-channel uplinks.
                                     mlag_port_channel_structured_config:
                                        Custom structured config applied to MLAG peer link port-channel id.
                                        Added under
@@ -34920,6 +34950,8 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -35255,6 +35287,13 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                     uplink_type == "port-channel".
+                    """
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                    port-channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -35932,6 +35971,8 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -36203,6 +36244,10 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_port_channel_structured_config:
                                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                                    uplink_type == "port-channel".
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                                   port-channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -39242,6 +39287,8 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -39574,6 +39621,13 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                     uplink_type == "port-channel".
+                    """
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                    port-channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -40251,6 +40305,8 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -40520,6 +40576,10 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_port_channel_structured_config:
                                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                                    uplink_type == "port-channel".
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                                   port-channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -51210,6 +51270,8 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -51532,6 +51594,13 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                     uplink_type == "port-channel".
+                    """
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                    port-channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -52207,6 +52276,8 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -52469,6 +52540,10 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_port_channel_structured_config:
                                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                                    uplink_type == "port-channel".
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                                   port-channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -55525,6 +55600,8 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_structured_config": {"type": dict},
                             "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                            "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                             "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -55857,6 +55934,13 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                         uplink_type == "port-channel".
+                        """
+                        uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
+                        uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                        port-channel uplinks.
                         """
                         mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
@@ -56534,6 +56618,8 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_structured_config: dict | UndefinedType = Undefined,
                                 uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -56803,6 +56889,10 @@ class EosDesigns(EosDesignsRootModel):
                                     uplink_port_channel_structured_config:
                                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                                        uplink_type == "port-channel".
+                                    uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
+                                    uplink_switch_port_channel_structured_config:
+                                       Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                                       port-channel uplinks.
                                     mlag_port_channel_structured_config:
                                        Custom structured config applied to MLAG peer link port-channel id.
                                        Added under
@@ -59767,6 +59857,8 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -60102,6 +60194,13 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                     uplink_type == "port-channel".
+                    """
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                    port-channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -60779,6 +60878,8 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -61050,6 +61151,10 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_port_channel_structured_config:
                                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                                    uplink_type == "port-channel".
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                                   port-channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -64089,6 +64194,8 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_structured_config": {"type": dict},
                         "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                         "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -64421,6 +64528,13 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                     uplink_type == "port-channel".
+                    """
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                    port-channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -65098,6 +65212,8 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_structured_config: dict | UndefinedType = Undefined,
                             uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                             uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -65367,6 +65483,10 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_port_channel_structured_config:
                                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                                    uplink_type == "port-channel".
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
+                                   port-channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under

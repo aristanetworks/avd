@@ -82,7 +82,11 @@ l2leaf:
     platform: vEOS-LAB
     uplink_switches: [ UPLINK_P2P_VRFS_TESTS_LEAF1, UPLINK_P2P_VRFS_TESTS_LEAF1]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
-
+    # Structured config applied to the downlink port-channel of uplink switch.
+    uplink_switch_port_channel_structured_config:
+        pim:
+          ipv4:
+            sparse_mode: true
   nodes:
     - name: UPLINK_P2P_VRFS_TESTS_L2LEAF1
       id: 4

@@ -40,6 +40,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.defaults.uplink_structured_config") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_ethernet_structured_config</samp>](## "<node_type_keys.key>.defaults.uplink_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "p2p". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_structured_config</samp>](## "<node_type_keys.key>.defaults.uplink_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_ethernet_structured_config</samp>](## "<node_type_keys.key>.defaults.uplink_switch_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_structured_config</samp>](## "<node_type_keys.key>.defaults.uplink_switch_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for port-channel uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<node_type_keys.key>.defaults.short_esi") | String |  |  |  | short_esi only valid for l2leaf devices using port-channel uplink.<br>Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.<br>< 0000:0000:0000 | auto >.<br> |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
@@ -81,6 +83,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_structured_config") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ethernet_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "p2p". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_ethernet_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].uplink_switch_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for port-channel uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].short_esi") | String |  |  |  | short_esi only valid for l2leaf devices using port-channel uplink.<br>Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.<br>< 0000:0000:0000 | auto >.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking") | Dictionary |  |  |  | This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.<br>Useful in EVPN multhoming designs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].link_tracking.enabled") | Boolean |  | `False` |  |  |
@@ -113,6 +117,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].uplink_structured_config") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ethernet_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].uplink_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "p2p". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].uplink_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_ethernet_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_structured_config</samp>](## "<node_type_keys.key>.node_groups.[].uplink_switch_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for port-channel uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<node_type_keys.key>.node_groups.[].short_esi") | String |  |  |  | short_esi only valid for l2leaf devices using port-channel uplink.<br>Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.<br>< 0000:0000:0000 | auto >.<br> |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
@@ -152,6 +158,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_structured_config</samp>](## "<node_type_keys.key>.nodes.[].uplink_structured_config") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_ethernet_structured_config</samp>](## "<node_type_keys.key>.nodes.[].uplink_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "p2p". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_port_channel_structured_config</samp>](## "<node_type_keys.key>.nodes.[].uplink_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_ethernet_structured_config</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_switch_port_channel_structured_config</samp>](## "<node_type_keys.key>.nodes.[].uplink_switch_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for port-channel uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<node_type_keys.key>.nodes.[].short_esi") | String |  |  |  | short_esi only valid for l2leaf devices using port-channel uplink.<br>Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.<br>< 0000:0000:0000 | auto >.<br> |
 
 === "YAML"
@@ -285,6 +293,12 @@
 
         # Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel".
         uplink_port_channel_structured_config: <dict>
+
+        # Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
+        uplink_switch_ethernet_structured_config: <dict>
+
+        # Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for port-channel uplinks.
+        uplink_switch_port_channel_structured_config: <dict>
 
         # short_esi only valid for l2leaf devices using port-channel uplink.
         # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
@@ -443,6 +457,12 @@
               # Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel".
               uplink_port_channel_structured_config: <dict>
 
+              # Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
+              uplink_switch_ethernet_structured_config: <dict>
+
+              # Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for port-channel uplinks.
+              uplink_switch_port_channel_structured_config: <dict>
+
               # short_esi only valid for l2leaf devices using port-channel uplink.
               # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
               # < 0000:0000:0000 | auto >.
@@ -571,6 +591,12 @@
 
           # Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel".
           uplink_port_channel_structured_config: <dict>
+
+          # Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
+          uplink_switch_ethernet_structured_config: <dict>
+
+          # Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for port-channel uplinks.
+          uplink_switch_port_channel_structured_config: <dict>
 
           # short_esi only valid for l2leaf devices using port-channel uplink.
           # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
@@ -721,6 +747,12 @@
 
           # Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel".
           uplink_port_channel_structured_config: <dict>
+
+          # Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
+          uplink_switch_ethernet_structured_config: <dict>
+
+          # Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for port-channel uplinks.
+          uplink_switch_port_channel_structured_config: <dict>
 
           # short_esi only valid for l2leaf devices using port-channel uplink.
           # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.

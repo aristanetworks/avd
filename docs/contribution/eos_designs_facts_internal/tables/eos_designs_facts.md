@@ -118,6 +118,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "uplinks.[].structured_config") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ethernet_structured_config</samp>](## "uplinks.[].ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "p2p". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_channel_structured_config</samp>](## "uplinks.[].port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_ethernet_structured_config</samp>](## "uplinks.[].peer_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "p2p". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_port_channel_structured_config</samp>](## "uplinks.[].peer_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "uplinks.[].subinterfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;interface</samp>](## "uplinks.[].subinterfaces.[].interface") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "uplinks.[].subinterfaces.[].peer_interface") | String | Required |  |  |  |
@@ -347,6 +349,12 @@
 
         # Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel".
         port_channel_structured_config: <dict>
+
+        # Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "p2p".
+        peer_ethernet_structured_config: <dict>
+
+        # Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel".
+        peer_port_channel_structured_config: <dict>
         subinterfaces:
           - interface: <str; required; unique>
             peer_interface: <str; required>

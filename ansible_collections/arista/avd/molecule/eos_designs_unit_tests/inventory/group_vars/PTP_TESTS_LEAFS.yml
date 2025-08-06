@@ -6,7 +6,7 @@ l3leaf:
     platform: vEOS-lab
     loopback_ipv4_pool: 10.254.1.0/27
     uplink_interfaces: ['Ethernet1', 'Ethernet2']
-    uplink_switches: ['ptp-tests-spine1', 'ptp-tests-spine1']
+    uplink_switches: ['ptp-tests-spine1', 'ptp-tests-spine2']
     uplink_ipv4_pool: 10.254.2.0/24
     vtep_loopback_ipv4_pool: 10.254.11.0/27
     mlag_interfaces: ['Ethernet9', 'Ethernet10']
@@ -19,7 +19,11 @@ l3leaf:
       enabled: true
       mlag: true
     igmp_snooping_enabled: false
-
+    # Structured config applied to downlink ethernet interface of uplink switch.
+    uplink_switch_ethernet_structured_config:
+      ptp:
+        announce:
+          interval: 1
   node_groups:
     - group: ptp-test-leaf
       nodes:
