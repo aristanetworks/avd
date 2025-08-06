@@ -42,11 +42,12 @@ metadata:
   fabric_name: TWODC_5STAGE_CLOS
   digital_twin:
     environment: act
-    node_type: tools-server
+    node_type: cloudeos
     ip_addr: 192.168.1.10/24
-    version: ubuntu-2204-lts
+    version: 4.33.2F
     username: cvpadmin
     password: cvp123!
+    internet_access: true
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC1-POD1-LEAF1A_Port-Channel3

@@ -3,8 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-eos_cli: "interface Loopback1003\n  description Loopback created from raw_eos_cli under l2leaf node DC1-POD1-L2LEAF2B\n\ninterface Loopback1111\n
-  \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+eos_cli: "interface Loopback1003\n  description Loopback created from raw_eos_cli under l2leaf node DC1-POD1-L2LEAF2B\n"
 ethernet_interfaces:
 - name: Ethernet3
   description: MLAG_DC1-POD1-L2LEAF2A_Ethernet3
@@ -65,15 +64,15 @@ management_interfaces:
   type: oob
   gateway: 192.168.1.254
 metadata:
-  platform: vEOS-LAB
+  platform: TOOLS-SERVER
   pod_name: DC1_POD1
   dc_name: DC1
   fabric_name: TWODC_5STAGE_CLOS
   digital_twin:
     environment: act
-    node_type: veos
+    node_type: tools-server
     ip_addr: 192.168.1.12/24
-    version: 4.33.1.1F
+    version: ubuntu-2204-lts
     username: cvpadmin
     password: cvp123!
 mlag_configuration:
@@ -125,11 +124,13 @@ vlan_interfaces:
   description: MLAG
   shutdown: false
   ip_address: 172.20.110.3/31
+  mtu: 1500
   no_autostate: true
 - name: Vlan4085
   description: L2LEAF_INBAND_MGMT
   shutdown: false
   ip_address: 172.21.110.6/24
+  mtu: 1500
   type: inband_mgmt
 vlan_internal_order:
   allocation: ascending

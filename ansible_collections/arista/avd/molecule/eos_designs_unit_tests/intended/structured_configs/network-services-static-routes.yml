@@ -93,6 +93,12 @@ ipv6_static_routes:
   prefix: 2001:db8::0/126
   next_hop: 2001:db8::10
   name: IPv6_svi_static_route
+- vrf: TESTING
+  prefix: 2001:db8::0/64
+  next_hop: 2001:db8::10
+- vrf: TESTING
+  prefix: 2002:db8::0/64
+  next_hop: 2002:db8::10
 is_deployed: true
 loopback_interfaces:
 - name: Loopback0
