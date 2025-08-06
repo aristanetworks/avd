@@ -4363,13 +4363,13 @@ interface Dps1
 
 ##### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- | ------------------------ |
-| Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - | ietf-md5 |
-| Ethernet65 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 | text |
-| Ethernet66 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - | ietf-md5 |
-| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 | text |
-| Ethernet66 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 Secondary Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IP | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | -------------------------- | ----------------- | --------------- | ------------------------ |
+| Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Ethernet65 | 2 | - | - | Enabled | - | - | - | - | 2 | 2001:db8::1 | text |
+| Ethernet66 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | - | 2 | - | ietf-md5 |
+| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | - | 2 | 2001:db8::1 | text |
+| Ethernet66 | 3 | - | - | Disabled | - | - | 100.64.0.1 | - | 3 | - | - |
 
 ##### ISIS
 
@@ -6674,13 +6674,13 @@ interface Tunnel4
 
 ##### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- | ------------------------ |
-| Vlan333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - | ietf-md5 |
-| Vlan333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8:333::1 | text |
-| Vlan333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
-| Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - | ietf-md5 |
-| Vlan667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8:667::1 | text |
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 Secondary Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IP | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | -------------------------- | ----------------- | --------------- | ------------------------ |
+| Vlan333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Vlan333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | - | 2 | 2001:db8:333::1 | text |
+| Vlan333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | - | 3 | - | - |
+| Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Vlan667 | 2 | - | - | Enabled | - | - | - | - | 2 | 2001:db8:667::1 | text |
 
 ##### ISIS
 
@@ -6959,6 +6959,8 @@ interface Vlan333
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
    vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
    vrrp 1 tracked-object ID1TrackedObjectDecrement decrement 5
    vrrp 1 tracked-object ID1TrackedObjectShutdown shutdown
    vrrp 2 peer authentication text <removed>
