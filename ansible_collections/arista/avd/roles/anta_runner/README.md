@@ -122,10 +122,16 @@ The role connects to EOS devices via eAPI using HTTP/HTTPS, so the devices must 
 # The IP/name of the target host to use instead of inventory_hostname.
 ansible_host: <str>
 
-# The user Ansible logs in as.
+# The username to log in with. `anta_user` has priority over `ansible_user`.
+anta_user: <str>
 ansible_user: <str>
 
-# One of the following must be set for the authentication.
+# If `anta_user` is set, one of the following password variables must be provided.
+anta_password: <str>
+anta_httpapi_pass: <str>
+anta_httpapi_password: <str>
+
+# If `anta_user` is NOT set, one of the following is used for `ansible_user`.
 ansible_password: <str>
 ansible_httpapi_pass: <str>
 ansible_httpapi_password: <str>
