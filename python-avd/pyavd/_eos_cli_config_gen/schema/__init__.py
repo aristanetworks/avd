@@ -9833,7 +9833,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Virtual IPv4 address."""
                 secondary_addresses: SecondaryAddresses
                 """
-                Additional VRRP address.
+                Additional VRRP addresses.
 
                 Subclass of AvdList with `str` items.
                 """
@@ -9857,7 +9857,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             address: Virtual IPv4 address.
                             secondary_addresses:
-                               Additional VRRP address.
+                               Additional VRRP addresses.
 
                                Subclass of AvdList with `str` items.
                             version: version
@@ -65473,7 +65473,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Virtual IPv4 address."""
                 secondary_addresses: SecondaryAddresses
                 """
-                Additional VRRP address.
+                Additional VRRP addresses.
 
                 Subclass of AvdList with `str` items.
                 """
@@ -65497,7 +65497,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             address: Virtual IPv4 address.
                             secondary_addresses:
-                               Additional VRRP address.
+                               Additional VRRP addresses.
 
                                Subclass of AvdList with `str` items.
                             version: version

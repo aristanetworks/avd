@@ -554,7 +554,7 @@ keys:
                     type: list
                     items:
                       type: str
-                    description: Additional VRRP address.
+                    description: Additional VRRP addresses.
                   version:
                     type: int
                     convert_types:
