@@ -5,7 +5,8 @@
 
 import json
 import logging
-import os
+from pathlib import Path
+from typing import Any
 
 import pytest
 import treelib
@@ -52,7 +53,7 @@ PARENT_CONTAINER = {
     "non_default_parent": {"parent": "CVP", "expected_output": {"CVP": {"parent_container": "Tenant"}}},
 }
 
-INVENTORY_FILE = f"{os.path.dirname(os.path.realpath(__file__))}/../../inventory/inventory.yml"
+INVENTORY_FILE = Path(__file__).parent.joinpath("../../inventory/inventory.yml").resolve()
 
 ROOT_CONTAINER = "Tenant"
 NON_DEFAULT_PARENT_CONTAINER = "DC2"
@@ -76,13 +77,13 @@ TREELIB_INVALID_LEAF = "DC1"
 
 
 @pytest.fixture(scope="session")
-def inventory():
+def inventory() -> Any:
     yaml.SafeLoader.add_constructor("!vault", lambda _, __: "!VAULT")
-    with open(INVENTORY_FILE, encoding="utf8") as stream:
+    with INVENTORY_FILE.open(encoding="utf8") as stream:
         try:
             inventory_content = yaml.safe_load(stream)
         except yaml.YAMLError as e:
-            logging.exception(e)
+            logging.exception(e)  # noqa: LOG015, TRY401
             return None
         return inventory_content
 
@@ -109,14 +110,14 @@ class TestInventoryToContainer:
         output = is_iterable()
         assert output is False
 
-    @pytest.mark.parametrize("DATA", IS_ITERABLE_VALID)
-    def test_is_iterable_valid_iterable(self, DATA) -> None:
-        output = is_iterable(DATA)
+    @pytest.mark.parametrize("data", IS_ITERABLE_VALID)
+    def test_is_iterable_valid_iterable(self, data: Any) -> None:
+        output = is_iterable(data)
         assert output
 
-    @pytest.mark.parametrize("DATA", IS_ITERABLE_INVALID)
-    def test_is_iterable_invalid_iterable(self, DATA) -> None:
-        output = is_iterable(DATA)
+    @pytest.mark.parametrize("data", IS_ITERABLE_INVALID)
+    def test_is_iterable_invalid_iterable(self, data: Any) -> None:
+        output = is_iterable(data)
         assert output is False
 
     def test_is_leaf_valid_leaf(self) -> None:
@@ -131,23 +132,23 @@ class TestInventoryToContainer:
         output = is_leaf(TREELIB, None)
         assert output is False
 
-    def test_get_device_option_value_valid(self, inventory) -> None:
+    def test_get_device_option_value_valid(self, inventory: dict) -> None:
         data = inventory["all"]["children"]["CVP"]["hosts"]
         output = get_device_option_value(device_data_dict=data, option_name="cv_server")
         assert output
         assert isinstance(output, dict)
 
-    def test_get_device_option_value_invalid(self, inventory) -> None:
+    def test_get_device_option_value_invalid(self, inventory: dict) -> None:
         data = inventory["all"]["children"]["CVP"]["hosts"]
         output = get_device_option_value(device_data_dict=data, option_name="is_deployed")
         assert output is None
 
-    def test_get_device_option_value_none(self, inventory) -> None:
+    def test_get_device_option_value_none(self, inventory: dict) -> None:
         data = inventory["all"]["children"]["CVP"]["hosts"]
         output = get_device_option_value(device_data_dict=data, option_name=None)
         assert output is None
 
-    def test_get_device_option_value_empty_data(self, inventory) -> None:
+    def test_get_device_option_value_empty_data(self) -> None:
         output = get_device_option_value(device_data_dict=None, option_name="cv_server")
         assert output is None
 
@@ -155,56 +156,56 @@ class TestInventoryToContainer:
         output = get_devices(None)
         assert output is None
 
-    def test_get_devices_default_search_container(self, inventory) -> None:
+    def test_get_devices_default_search_container(self, inventory: dict) -> None:
         output = get_devices(inventory)
         assert output is None
 
-    def test_get_devices_non_default_search_container(self, inventory) -> None:
+    def test_get_devices_non_default_search_container(self, inventory: dict) -> None:
         output = get_devices(inventory, search_container=SEARCH_CONTAINER, devices=[])
         assert output == GET_DEVICES
 
-    def test_get_devices_preexisting_devices(self, inventory) -> None:
+    def test_get_devices_preexisting_devices(self, inventory: dict) -> None:
         devices = ["TEST_DEVICE"]
         output = get_devices(inventory, search_container=SEARCH_CONTAINER, devices=devices)
         assert output == ["TEST_DEVICE", *GET_DEVICES]
 
-    def test_get_devices_preexisting_devices_with_device_filter(self, inventory) -> None:
+    def test_get_devices_preexisting_devices_with_device_filter(self, inventory: dict) -> None:
         output = get_devices(inventory, search_container=SEARCH_CONTAINER, devices=[], device_filter=[GET_DEVICE_FILTER])
         assert [GET_DEVICE_FILTER in item for item in output]
 
-    @pytest.mark.parametrize("DATA", [None])
-    def test_serialize_empty_inventory(self, DATA) -> None:
-        output = serialize(DATA)
+    @pytest.mark.parametrize("data", [None])
+    def test_serialize_empty_inventory(self, data: dict | None) -> None:
+        output = serialize(data)
         assert output is None
 
-    def test_serialize_valid_inventory(self, inventory) -> None:
+    def test_serialize_valid_inventory(self, inventory: dict) -> None:
         output = serialize(inventory)
         assert isinstance(output, treelib.tree.Tree)
         tree_dict = json.loads(output.to_json())
         assert next(iter(tree_dict.keys())) == ROOT_CONTAINER
 
-    @pytest.mark.parametrize("DATA", PARENT_CONTAINER.values(), ids=PARENT_CONTAINER.keys())
-    def test_serialize_parent_container(self, DATA, inventory) -> None:
-        output = serialize(inventory, parent_container=DATA["parent"])
+    @pytest.mark.parametrize(argnames="data", argvalues=PARENT_CONTAINER.values(), ids=PARENT_CONTAINER.keys())
+    def test_serialize_parent_container(self, data: dict, inventory: dict) -> None:
+        output = serialize(inventory, parent_container=data["parent"])
         assert isinstance(output, treelib.tree.Tree)
         tree_dict = json.loads(output.to_json())
         assert next(iter(tree_dict.keys())) == ROOT_CONTAINER
 
-    def test_serialize_none_parent_container_with_tree_topology(self, inventory) -> None:
+    def test_serialize_none_parent_container_with_tree_topology(self, inventory: dict) -> None:
         tree = treelib.tree.Tree()
         output = serialize(inventory, tree_topology=tree)
         assert isinstance(output, treelib.tree.Tree)
         tree_dict = json.loads(output.to_json())
         assert next(iter(tree_dict.keys())) == "all"
 
-    def test_serialize_non_default_parent_container_with_tree_topology(self, inventory) -> None:
+    def test_serialize_non_default_parent_container_with_tree_topology(self, inventory: dict) -> None:
         tree = treelib.tree.Tree()
         tree.create_node(NON_DEFAULT_PARENT_CONTAINER, NON_DEFAULT_PARENT_CONTAINER)
         output = serialize(inventory, parent_container=NON_DEFAULT_PARENT_CONTAINER, tree_topology=tree)
         tree_dict = json.loads(output.to_json())
         assert next(iter(tree_dict.keys())) == NON_DEFAULT_PARENT_CONTAINER
 
-    @pytest.mark.parametrize("DATA", PARENT_CONTAINER.values(), ids=PARENT_CONTAINER.keys())
-    def test_get_containers(self, DATA, inventory) -> None:
-        output = get_containers(inventory, parent_container=DATA["parent"], device_filter=["all"])
-        assert output == DATA["expected_output"]
+    @pytest.mark.parametrize("data", PARENT_CONTAINER.values(), ids=PARENT_CONTAINER.keys())
+    def test_get_containers(self, data: dict, inventory: dict) -> None:
+        output = get_containers(inventory, parent_container=data["parent"], device_filter=["all"])
+        assert output == data["expected_output"]

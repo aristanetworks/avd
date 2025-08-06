@@ -2,11 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-
-# import pytest
-
-
-# TODO
+# TODO: implement something here
 class TestCatalog:
     def test(self) -> None:
         pass
