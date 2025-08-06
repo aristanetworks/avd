@@ -1,0 +1,9 @@
+---
+### VLAN Interfaces ###
+
+vlan_interfaces:
+  - name: Vlan10
+    vrrp_ids:
+      - id: 2
+        ipv6:
+          address: 2001:db8::2

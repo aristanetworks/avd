@@ -18,6 +18,10 @@ ethernet_interfaces:
     tcp_mss_ceiling:
       ipv4_segment_size: 200
       ipv6_segment_size: 201
+    vrrp_ids:
+      - id: 3
+        ipv6:
+          address: 2001:db8::1
 
   - name: Ethernet2
     description: Test_trunk_groups_and_native_vlan
