@@ -147,7 +147,9 @@ class MonitorSessionsMixin(Protocol):
                         for monitor_session in l3_interface.monitor_sessions:
                             per_interface_monitor_session = monitor_session._deepcopy()
                             per_interface_monitor_session._internal_data.interface = l3_interface.interfaces[node_index]
-                            per_interface_monitor_session._internal_data.context = f"{vrf.name}.l3_interfaces[{l3_interface_index}]"
+                            per_interface_monitor_session._internal_data.context = (
+                                f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[{l3_interface_index}]"
+                            )
                             monitor_session_configs.append(per_interface_monitor_session)
 
         return monitor_session_configs
