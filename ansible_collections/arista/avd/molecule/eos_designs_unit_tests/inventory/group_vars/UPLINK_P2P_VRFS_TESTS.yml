@@ -87,6 +87,11 @@ l2leaf:
       pim:
         ipv4:
           sparse_mode: true
+    # Structured config applied to the downlink ethernet interfaces of uplink switch.
+    uplink_switch_ethernet_structured_config:
+      pim:
+        ipv4:
+          sparse_mode: true
   nodes:
     - name: UPLINK_P2P_VRFS_TESTS_L2LEAF1
       id: 4
