@@ -489,12 +489,12 @@ class EosDesigns(EosDesignsRootModel):
         """
         The value will be interpreted according to these rules:
           - `use_mgmt_interface` will configure the
-        mgmt_interface as the local interface.
+        `mgmt_interface` as the local interface.
           - `use_inband_mgmt_interface` will configure the
-        inband_mgmt_interface as the local interface.
-          - `use_default_mgmt_method_interface` will configure
-        mgmt_interface or inband_mgmt_interface as the local interface depending on the value of
-        `default_mgmt_method`.
+        `inband_mgmt_interface` as the local interface.
+          - `use_default_mgmt_method_interface` will
+        configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
+        of `default_mgmt_method`.
           - Any other string will be used directly as the local interface.
         """
 
@@ -514,12 +514,12 @@ class EosDesigns(EosDesignsRootModel):
                     local_interface:
                        The value will be interpreted according to these rules:
                          - `use_mgmt_interface` will configure the
-                       mgmt_interface as the local interface.
+                       `mgmt_interface` as the local interface.
                          - `use_inband_mgmt_interface` will configure the
-                       inband_mgmt_interface as the local interface.
-                         - `use_default_mgmt_method_interface` will configure
-                       mgmt_interface or inband_mgmt_interface as the local interface depending on the value of
-                       `default_mgmt_method`.
+                       `inband_mgmt_interface` as the local interface.
+                         - `use_default_mgmt_method_interface` will
+                       configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
+                       of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
 
                 """
