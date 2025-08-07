@@ -7,7 +7,6 @@ ethernet_interfaces:
 - name: Ethernet10
   description: inet-cloud_Ethernet10
   shutdown: false
-  arp_gratuitous_accept: true
   channel_group:
     id: 11
     mode: active
@@ -16,7 +15,6 @@ ethernet_interfaces:
   peer_type: l3_port_channel_member
 - name: Ethernet11
   shutdown: false
-  arp_gratuitous_accept: true
   channel_group:
     id: 11
     mode: active

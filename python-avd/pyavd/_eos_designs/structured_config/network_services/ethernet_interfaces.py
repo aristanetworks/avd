@@ -83,7 +83,6 @@ class EthernetInterfacesMixin(Protocol):
                 ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
                     name=member_intf.name,
                     description=interface_description or None,
-                    arp_gratuitous_accept=l3_port_channel.arp_gratuitous_accept,
                     peer_type="l3_port_channel_member",
                     peer=peer or None,
                     peer_interface=member_intf.peer_interface or None,
