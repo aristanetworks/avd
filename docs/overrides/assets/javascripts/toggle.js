@@ -12,29 +12,29 @@ document$.subscribe(function() {
   const LANG_B = "YAML";
   const STORAGE_KEY = 'preferred-code-language';
 
-  // Helper function to find the first major element currently in the viewport
-  const findFirstVisibleElement = () => {
-    // This selector targets common content blocks like paragraphs and code blocks.
-    const elements = document.querySelectorAll('.md-content__inner p, .md-content__inner pre, .md-content__inner table');
-    for (let i = 0; i < elements.length; i++) {
-        const rect = elements[i].getBoundingClientRect();
-        // Return the first element that is at least partially visible from the top.
-        if (rect.top >= 0 && rect.top < window.innerHeight) {
-            return elements[i];
-        }
-    }
-    return null;
-  };
-
   const switchToTab = (tabName, preserveScroll) => {
     let anchorElement = null;
-    let anchorOffsetTop = 0;
+    let scrollOffset = 0;
 
-    // Step 1: If preserving scroll, find our anchor element and its offset.
+    // Step 1: If preserving scroll, find a stable anchor (the nearest heading
+    // above the viewport) and calculate the user's offset from it.
     if (preserveScroll) {
-        anchorElement = findFirstVisibleElement();
+        const headings = document.querySelectorAll('.md-content__inner h1, .md-content__inner h2, .md-content__inner h3, .md-content__inner h4');
+        const currentScrollY = window.scrollY;
+
+        // Find the last heading that is located above the current top of the viewport.
+        for (let i = 0; i < headings.length; i++) {
+            if (headings[i].offsetTop < currentScrollY) {
+                anchorElement = headings[i];
+            } else {
+                // We've gone past the current view, so the previous heading was our anchor.
+                break;
+            }
+        }
+
+        // If we found a stable anchor, calculate how far down from it the user has scrolled.
         if (anchorElement) {
-            anchorOffsetTop = anchorElement.getBoundingClientRect().top;
+            scrollOffset = currentScrollY - anchorElement.offsetTop;
         }
     }
 
@@ -55,16 +55,18 @@ document$.subscribe(function() {
 
     // Step 3: If we have an anchor, restore the scroll position relative to it.
     if (preserveScroll && anchorElement) {
-      // The timeout ensures this runs after the browser has processed the reflow.
+      // The timeout gives the browser a moment to reflow the content.
       setTimeout(() => {
-        const newRect = anchorElement.getBoundingClientRect();
-        const scrollByAmount = newRect.top - anchorOffsetTop;
-        window.scrollBy({
-          top: scrollByAmount,
+        // Calculate the new required scroll position based on the anchor's
+        // (potentially new) position and the original offset.
+        const newScrollY = anchorElement.offsetTop + scrollOffset;
+
+        window.scroll({
+          top: newScrollY,
           left: 0,
           behavior: "instant"
         });
-      }, 0);
+      }, 10); // Using a slightly longer delay for more stability.
     }
   };
 

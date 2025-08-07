@@ -13,18 +13,18 @@
   padding-right: 0.8rem;
 }
 
-/* Flex container for the switch itself (PY [ ] JS) */
+/* Flex container for the switch itself (Table [ ] YAML) */
 .md-nav__lang-switch {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.7rem;
   font-weight: 700;
-  /* Use header's foreground color for PY/JS labels */
+  /* Use header's foreground color for Table/YAML labels */
   color: white;
 }
 
-/* Label text (PY, JS) */
+/* Label text (Table, YAML) */
 .md-nav__lang-switch .lang-label {
   padding: 0 0.5rem;
 }
