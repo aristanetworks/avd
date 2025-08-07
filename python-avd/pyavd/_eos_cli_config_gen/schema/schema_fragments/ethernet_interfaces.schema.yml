@@ -1674,7 +1674,7 @@ keys:
                     type: list
                     items:
                       type: str
-                    description: Additional VRRP addresses.
+                    description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
                     convert_types:
