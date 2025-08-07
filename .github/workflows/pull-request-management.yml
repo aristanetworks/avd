@@ -688,15 +688,9 @@ jobs:
         run: |
           pip install tox tox-gh-actions --upgrade
       - name: Run pytest via tox for ${{ matrix.python }}
-        if: matrix.python != '3.11'
         working-directory: python-avd
         run: |
-          tox
-      - name: Run pytest via tox for ${{ matrix.python }}
-        if: matrix.python == '3.11'
-        working-directory: python-avd
-        run: |
-          tox -e coverage -- ${{ matrix.suite.pytest_args }}
+          tox -- ${{ matrix.suite.pytest_args }}
       - name: Find and Move coverage file
         if: matrix.python == '3.11'
         run: |
