@@ -16839,6 +16839,67 @@ class EosDesigns(EosDesignsRootModel):
 
             StaticRoutes._item_type = StaticRoutesItem
 
+            class Ipv6StaticRoutesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "prefix": {"type": str},
+                    "next_hop": {"type": str},
+                    "track_bfd": {"type": bool},
+                    "distance": {"type": int},
+                    "tag": {"type": int},
+                    "name": {"type": str},
+                    "metric": {"type": int},
+                    "interface": {"type": str},
+                }
+                prefix: str | None
+                next_hop: str | None
+                track_bfd: bool | None
+                """Track next-hop using BFD."""
+                distance: int | None
+                tag: int | None
+                name: str | None
+                """description."""
+                metric: int | None
+                interface: str | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | None | UndefinedType = Undefined,
+                        next_hop: str | None | UndefinedType = Undefined,
+                        track_bfd: bool | None | UndefinedType = Undefined,
+                        distance: int | None | UndefinedType = Undefined,
+                        tag: int | None | UndefinedType = Undefined,
+                        name: str | None | UndefinedType = Undefined,
+                        metric: int | None | UndefinedType = Undefined,
+                        interface: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ipv6StaticRoutesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: prefix
+                            next_hop: next_hop
+                            track_bfd: Track next-hop using BFD.
+                            distance: distance
+                            tag: tag
+                            name: description.
+                            metric: metric
+                            interface: interface
+
+                        """
+
+            class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+            Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
+
             class TrunkGroups(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -17170,6 +17231,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv4_acl_out": {"type": str},
                 "ip_helpers": {"type": IpHelpers},
                 "static_routes": {"type": StaticRoutes},
+                "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                 "vni_override": {"type": int},
                 "rt_override": {"type": str},
                 "rd_override": {"type": str},
@@ -17273,6 +17335,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdList
             with `StaticRoutesItem` items.
+            """
+            ipv6_static_routes: Ipv6StaticRoutes
+            """
+            IPv6 static routes to be configured on every device where the SVI is configured.
+
+            Subclass of
+            AvdList with `Ipv6StaticRoutesItem` items.
             """
             vni_override: int | None
             """
@@ -17396,6 +17465,7 @@ class EosDesigns(EosDesignsRootModel):
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
+                    ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                     vni_override: int | None | UndefinedType = Undefined,
                     rt_override: str | None | UndefinedType = Undefined,
                     rd_override: str | None | UndefinedType = Undefined,
@@ -17482,6 +17552,11 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdList
                            with `StaticRoutesItem` items.
+                        ipv6_static_routes:
+                           IPv6 static routes to be configured on every device where the SVI is configured.
+
+                           Subclass of
+                           AvdList with `Ipv6StaticRoutesItem` items.
                         vni_override:
                            By default the VNI will be derived from "mac_vrf_vni_base".
                            The vni_override allows us to override
@@ -17683,6 +17758,67 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `StaticRoutesItem` items."""
 
         StaticRoutes._item_type = StaticRoutesItem
+
+        class Ipv6StaticRoutesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "prefix": {"type": str},
+                "next_hop": {"type": str},
+                "track_bfd": {"type": bool},
+                "distance": {"type": int},
+                "tag": {"type": int},
+                "name": {"type": str},
+                "metric": {"type": int},
+                "interface": {"type": str},
+            }
+            prefix: str | None
+            next_hop: str | None
+            track_bfd: bool | None
+            """Track next-hop using BFD."""
+            distance: int | None
+            tag: int | None
+            name: str | None
+            """description."""
+            metric: int | None
+            interface: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    prefix: str | None | UndefinedType = Undefined,
+                    next_hop: str | None | UndefinedType = Undefined,
+                    track_bfd: bool | None | UndefinedType = Undefined,
+                    distance: int | None | UndefinedType = Undefined,
+                    tag: int | None | UndefinedType = Undefined,
+                    name: str | None | UndefinedType = Undefined,
+                    metric: int | None | UndefinedType = Undefined,
+                    interface: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6StaticRoutesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        prefix: prefix
+                        next_hop: next_hop
+                        track_bfd: Track next-hop using BFD.
+                        distance: distance
+                        tag: tag
+                        name: description.
+                        metric: metric
+                        interface: interface
+
+                    """
+
+        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
         class TrunkGroups(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -18017,6 +18153,7 @@ class EosDesigns(EosDesignsRootModel):
             "ipv4_acl_out": {"type": str},
             "ip_helpers": {"type": IpHelpers},
             "static_routes": {"type": StaticRoutes},
+            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
             "vni_override": {"type": int},
             "rt_override": {"type": str},
             "rd_override": {"type": str},
@@ -18136,6 +18273,13 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList
         with `StaticRoutesItem` items.
+        """
+        ipv6_static_routes: Ipv6StaticRoutes
+        """
+        IPv6 static routes to be configured on every device where the SVI is configured.
+
+        Subclass of
+        AvdList with `Ipv6StaticRoutesItem` items.
         """
         vni_override: int | None
         """
@@ -18261,6 +18405,7 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                 vni_override: int | None | UndefinedType = Undefined,
                 rt_override: str | None | UndefinedType = Undefined,
                 rd_override: str | None | UndefinedType = Undefined,
@@ -18359,6 +18504,11 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList
                        with `StaticRoutesItem` items.
+                    ipv6_static_routes:
+                       IPv6 static routes to be configured on every device where the SVI is configured.
+
+                       Subclass of
+                       AvdList with `Ipv6StaticRoutesItem` items.
                     vni_override:
                        By default the VNI will be derived from "mac_vrf_vni_base".
                        The vni_override allows us to override
@@ -42988,6 +43138,67 @@ class EosDesigns(EosDesignsRootModel):
 
                             StaticRoutes._item_type = StaticRoutesItem
 
+                            class Ipv6StaticRoutesItem(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "prefix": {"type": str},
+                                    "next_hop": {"type": str},
+                                    "track_bfd": {"type": bool},
+                                    "distance": {"type": int},
+                                    "tag": {"type": int},
+                                    "name": {"type": str},
+                                    "metric": {"type": int},
+                                    "interface": {"type": str},
+                                }
+                                prefix: str | None
+                                next_hop: str | None
+                                track_bfd: bool | None
+                                """Track next-hop using BFD."""
+                                distance: int | None
+                                tag: int | None
+                                name: str | None
+                                """description."""
+                                metric: int | None
+                                interface: str | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        prefix: str | None | UndefinedType = Undefined,
+                                        next_hop: str | None | UndefinedType = Undefined,
+                                        track_bfd: bool | None | UndefinedType = Undefined,
+                                        distance: int | None | UndefinedType = Undefined,
+                                        tag: int | None | UndefinedType = Undefined,
+                                        name: str | None | UndefinedType = Undefined,
+                                        metric: int | None | UndefinedType = Undefined,
+                                        interface: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Ipv6StaticRoutesItem.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            prefix: prefix
+                                            next_hop: next_hop
+                                            track_bfd: Track next-hop using BFD.
+                                            distance: distance
+                                            tag: tag
+                                            name: description.
+                                            metric: metric
+                                            interface: interface
+
+                                        """
+
+                            class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                                """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                            Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
+
                             class TrunkGroups(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
@@ -43331,6 +43542,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv4_acl_out": {"type": str},
                                 "ip_helpers": {"type": IpHelpers},
                                 "static_routes": {"type": StaticRoutes},
+                                "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                                 "vni_override": {"type": int},
                                 "rt_override": {"type": str},
                                 "rd_override": {"type": str},
@@ -43444,6 +43656,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList
                             with `StaticRoutesItem` items.
+                            """
+                            ipv6_static_routes: Ipv6StaticRoutes
+                            """
+                            IPv6 static routes to be configured on every device where the SVI is configured.
+
+                            Subclass of
+                            AvdList with `Ipv6StaticRoutesItem` items.
                             """
                             vni_override: int | None
                             """
@@ -43568,6 +43787,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
                                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
+                                    ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                     vni_override: int | None | UndefinedType = Undefined,
                                     rt_override: str | None | UndefinedType = Undefined,
                                     rd_override: str | None | UndefinedType = Undefined,
@@ -43660,6 +43880,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass of AvdList
                                            with `StaticRoutesItem` items.
+                                        ipv6_static_routes:
+                                           IPv6 static routes to be configured on every device where the SVI is configured.
+
+                                           Subclass of
+                                           AvdList with `Ipv6StaticRoutesItem` items.
                                         vni_override:
                                            By default the VNI will be derived from "mac_vrf_vni_base".
                                            The vni_override allows us to override
@@ -43861,6 +44086,67 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `StaticRoutesItem` items."""
 
                         StaticRoutes._item_type = StaticRoutesItem
+
+                        class Ipv6StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
                         class TrunkGroups(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -44203,6 +44489,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv4_acl_out": {"type": str},
                             "ip_helpers": {"type": IpHelpers},
                             "static_routes": {"type": StaticRoutes},
+                            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "vni_override": {"type": int},
                             "rt_override": {"type": str},
                             "rd_override": {"type": str},
@@ -44342,6 +44629,13 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdList
                         with `StaticRoutesItem` items.
                         """
+                        ipv6_static_routes: Ipv6StaticRoutes
+                        """
+                        IPv6 static routes to be configured on every device where the SVI is configured.
+
+                        Subclass of
+                        AvdList with `Ipv6StaticRoutesItem` items.
+                        """
                         vni_override: int | None
                         """
                         By default the VNI will be derived from "mac_vrf_vni_base".
@@ -44469,6 +44763,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 vni_override: int | None | UndefinedType = Undefined,
                                 rt_override: str | None | UndefinedType = Undefined,
                                 rd_override: str | None | UndefinedType = Undefined,
@@ -44580,6 +44875,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList
                                        with `StaticRoutesItem` items.
+                                    ipv6_static_routes:
+                                       IPv6 static routes to be configured on every device where the SVI is configured.
+
+                                       Subclass of
+                                       AvdList with `Ipv6StaticRoutesItem` items.
                                     vni_override:
                                        By default the VNI will be derived from "mac_vrf_vni_base".
                                        The vni_override allows us to override

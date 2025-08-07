@@ -86,6 +86,13 @@ ip_igmp_snooping:
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 ipv6_static_routes:
+- vrf: default
+  prefix: 1:1:1:1:1:1:1:0/126
+  next_hop: '2:2:2:2:2:2:2:2'
+- vrf: TESTING
+  prefix: 2001:db8::0/126
+  next_hop: 2001:db8::10
+  name: IPv6_svi_static_route
 - vrf: TESTING
   prefix: 2001:db8::0/64
   next_hop: 2001:db8::10

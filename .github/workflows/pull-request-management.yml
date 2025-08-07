@@ -136,16 +136,16 @@ jobs:
           name: pyavd
           path: ./python-avd/dist/*.whl
 
-  # --------------------------------------- #
-  # Python linting not covered in pre-commit
-  # --------------------------------------- #
-  # TODO: Pending action to be allowed.
-  # python_linting:
-  #   name: Python Linting not covered in pre-commit
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: PyRight static type checker
-  #       uses: jakebailey/pyright-action@v2
+  # -------------------------------------------- #
+  # Python type checking not covered in pre-commit
+  # -------------------------------------------- #
+  python_type_checking:
+    name: Python Linting not covered in pre-commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: PyRight static type checker
+        # Specific SHA as allowed by github org admins
+        uses: jakebailey/pyright-action@b5d50e5cde6547546a5c4ac92e416a8c2c1a1dfe
 
   # ----------------------------------- #
   # Test Requirements
