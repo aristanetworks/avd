@@ -399,6 +399,8 @@ l2leaf:
           mgmt_ip: 192.168.200.122/24
           uplink_switches: [ DC1-LEAF2A ]
           uplink_switch_interfaces: [ Ethernet30 ]
+          uplink_switch_port_channel_structured_config:
+            description: description through uplink_switch_port_channel_structured_config
         - name: DC1.L2LEAF6B
           id: 17
           mgmt_ip: 192.168.200.123/24

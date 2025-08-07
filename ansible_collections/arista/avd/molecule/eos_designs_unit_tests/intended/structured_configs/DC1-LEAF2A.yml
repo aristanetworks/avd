@@ -474,7 +474,7 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: 110-112,120-121,130-131,160-161
 - name: Port-Channel30
-  description: DC1_L2LEAF6_Po1
+  description: description through uplink_switch_port_channel_structured_config
   shutdown: false
   evpn_ethernet_segment:
     identifier: 0000:0000:a8be:743c:0a1a

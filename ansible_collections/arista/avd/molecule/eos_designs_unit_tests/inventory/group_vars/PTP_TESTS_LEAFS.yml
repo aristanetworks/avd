@@ -19,11 +19,7 @@ l3leaf:
       enabled: true
       mlag: true
     igmp_snooping_enabled: false
-    # Structured config applied to downlink ethernet interface of uplink switch.
-    uplink_switch_ethernet_structured_config:
-      ptp:
-        announce:
-          interval: 1
+
   node_groups:
     - group: ptp-test-leaf
       nodes:
