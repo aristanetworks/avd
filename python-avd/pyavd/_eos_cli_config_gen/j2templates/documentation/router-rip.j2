@@ -11,16 +11,8 @@
 | VRF | Enabled | Default Metric | Networks |
 | --- | ------- | -------------- | -------- |
 {%     for rip in router_rip | arista.avd.natural_sort(sort_key='vrf', ignore_case=False) %}
-{%         set networks = [] %}
-{%         if rip.networks is arista.avd.defined %}
-{%             for network in rip.networks %}
-{%                 do networks.append(network) %}
-{%             endfor %}
-{%         endif %}
-{%         if networks == [] %}
-{%             do networks.append("-") %}
-{%         endif %}
-| {{ rip.vrf }} | {{ rip.enabled | arista.avd.default("-") }} | {{ rip.metric_default | arista.avd.default("-") }} | {{ networks | join(", ") }} |
+{%         set networks = rip.networks | arista.avd.default(["-"]) | join(", ") %}
+| {{ rip.vrf }} | {{ rip.enabled | arista.avd.default("-") }} | {{ rip.metric_default | arista.avd.default("-") }} | {{ networks }} |
 {%     endfor %}
 
 #### Router RIP Device Configuration
