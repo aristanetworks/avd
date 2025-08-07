@@ -318,6 +318,20 @@ class InternalDevice:
         # avd_device.config is always set
         return CVEosConfig(file=self.avd_device.config.file, device=self.get_cv_device(), configlet_name=self.avd_device.config.configlet_name)
 
+    def get_one_cv_tag(self, tag_object: AvdDeviceTag | AvdInterfaceTag) -> CVDeviceTag | CVInterfaceTag:
+        # caller to ensure tag_object is valid
+        if isinstance(tag_object, AvdDeviceTag):
+            return self.get_one_cv_device_tag(tag_object)
+        return self.get_one_cv_interface_tag(tag_object)
+
+    def get_one_cv_device_tag(self, avd_device_tag: AvdDeviceTag) -> CVDeviceTag:
+        # caller to ensure avd_device_tag is valid
+        return CVDeviceTag(label=avd_device_tag.label, value=avd_device_tag.value, device=self.get_cv_device())
+
+    def get_one_cv_interface_tag(self, avd_interface_tag: AvdInterfaceTag) -> CVInterfaceTag:
+        # caller to ensure avd_interface_tag is valid
+        return CVInterfaceTag(label=avd_interface_tag.label, value=avd_interface_tag.value, device=self.get_cv_device(), interface=avd_interface_tag.interface)
+
 
 T_AvdTag = TypeVar("T_AvdTag", AvdDeviceTag, AvdInterfaceTag)
 T_AvdMiscComponent = TypeVar("T_AvdMiscComponent", AvdEosConfig, AvdPathfinderMetadata, CVStudioInputs)

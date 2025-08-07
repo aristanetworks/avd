@@ -188,31 +188,25 @@ async def deploy_to_cv(
 
                 # Deploy device tags
                 await deploy_tags_to_cv(
-                    tags=device_tags,
+                    tag_type="device",
                     internal_devices=internal_devices,
                     workspace=result.workspace,
                     strict=strict_tags,
                     skipped_tags=result.skipped_device_tags,
                     deployed_tags=result.deployed_device_tags,
                     removed_tags=result.removed_device_tags,
-                    skipped_tags_internal_devices=result.skipped_device_tags2,
-                    deployed_tags_internal_devices=result.deployed_device_tags2,
-                    removed_tags_internal_devices=result.removed_device_tags2,
                     cv_client=cv_client,
                 )
 
                 # Deploy interface tags
                 await deploy_tags_to_cv(
-                    tags=interface_tags,
+                    tag_type="interface",
                     internal_devices=internal_devices,
                     workspace=result.workspace,
                     strict=strict_tags,
                     skipped_tags=result.skipped_interface_tags,
                     deployed_tags=result.deployed_interface_tags,
                     removed_tags=result.removed_interface_tags,
-                    skipped_tags_internal_devices=result.skipped_interface_tags2,
-                    deployed_tags_internal_devices=result.deployed_interface_tags2,
-                    removed_tags_internal_devices=result.removed_interface_tags2,
                     cv_client=cv_client,
                 )
 

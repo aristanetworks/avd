@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from pyavd._cv.client.models import CVTag, CVTagAssignment
 from pyavd._cv.client.exceptions import CVClientException
@@ -18,23 +18,19 @@ LOGGER = getLogger(__name__)
 
 
 async def deploy_tags_to_cv(
-    tags: list[CVDeviceTag | CVInterfaceTag],
+    tag_type: Literal["device", "interface"],
     internal_devices: list[InternalDevice],
     workspace: CVWorkspace,
     strict: bool,
     skipped_tags: list[CVDeviceTag | CVInterfaceTag],
     deployed_tags: list[CVDeviceTag | CVInterfaceTag],
     removed_tags: list[CVDeviceTag | CVInterfaceTag],
-    skipped_tags_internal_devices: dict[str, list[AvdDeviceTag | AvdInterfaceTag]],
-    deployed_tags_internal_devices: dict[str, list[AvdDeviceTag | AvdInterfaceTag]],
-    removed_tags_internal_devices: dict[str, list[AvdDeviceTag | AvdInterfaceTag]],
     cv_client: CVClient,
 ) -> None:
     """
     Deploy Tags updating result with skipped, deployed and removed tags.
 
-    Tags can be either Device Tags or Interface Tags but *not* a combination.
-
+    Tag type is either "device" or "interface".
     If "strict" == True:
       - Any other tag associations will be removed from the devices.
       - TODO: Remove deassociated tags if they are no longer associated with any device.
@@ -48,49 +44,23 @@ async def deploy_tags_to_cv(
 
     In-place updates skipped_tags, deployed_tags and removed_tags so they can be given directly from the results object.
     """
-    LOGGER.info("deploy_tags_to_cv: input tags %s (using internal_devices) devices %s", len(tags), len(internal_devices))
+    LOGGER.info("deploy_tags_to_cv: %s devices to check for %s tag type", len(internal_devices), tag_type)
 
     # No need to continue if we have nothing to do.
-    if not tags or (not internal_devices):
+    if not internal_devices:
         return
 
-    # 'tag_type' to process could be one of the input arguments to hintvhandling of either
-    # device vs interface tags in this routine. For now derive this hint from tag input arg.
-    tag_type = "interface" if isinstance(tags[0], CVInterfaceTag) else "device"
+    # 'deployed_tags' would include tags in AVD input that are already existing in CV
+    # plus new tags present in AVD input that are yet to be added to CV.
+    # 'skipped_tags' would include tags in AVD input but corresponding
+    # device is not present in CV inventory
 
-    # using dictionary for tags in overall result as below.
-    # These would be members of overall device result class that would be in-place updated here.
-    # Tags would include device or interface tags.
-
-    # 'deployed_tags_internal_devices' would include tags in AVD input that are already existing in CV
-    # plus new tags present in AVD input but yet to be added to CV.
-
-    # For 'skipped_tags_internal_devices' : dict key would be represented by device host name from AVD input
-    # since we would be unable to fetch serial number for such device that is not present in CV inventory
-
-    # build subset of internal devices (object references) that exist in CV inventory
-    # and contain specified tag_type (device or interface)
+    # build subset of internal device objects that exist in CV inventory containing tag_type being queried
     todo_devices_with_tags: list[InternalDevice] = []
     # InternalDevice object in CV Inventory accessible via referencing device serial number (used for updating tags)
     todo_devices_by_serial_number: dict[str, InternalDevice] = {}
 
-    # using dictionary for tags in overall result as below.
-    # These would be members of overall device result class that would be in-place updated here.
-    # Tags would include device or interface tags.
-
-    # 'deployed_tags_internal_devices' would include tags in AVD input that are already existing in CV
-    # plus new tags present in AVD input but yet to be added to CV.
-
-    # For 'skipped_tags_internal_devices' : dict key would be represented by device host name from AVD input
-    # since we would be unable to fetch serial number for such device that is not present in CV inventory
-
-    # build subset of internal devices (object references) that exist in CV inventory
-    # and contain specified tag_type (device or interface)
-    todo_devices_with_tags: list[InternalDevice] = []
-    # InternalDevice object in CV Inventory accessible via referencing device serial number (used for updating tags)
-    todo_devices_by_serial_number: dict[str, InternalDevice] = {}
-
-    # Build todo tags with CVDevice/CVInterfaceTag objects that exist on CloudVision. Add the rest to skipped.
+    # Build TODO: with CVDevice/CVInterfaceTag objects that exist on CloudVision. Add the rest to skipped.
     skipped_tags.extend(tag for tag in tags if tag.device is not None and not tag.device._exists_on_cv)
     todo_tags = [tag for tag in tags if tag.device is None or tag.device._exists_on_cv]
 
@@ -99,28 +69,23 @@ async def deploy_tags_to_cv(
         tags_matching_tag_type = device.avd_device.device_tags if tag_type == "device" else device.avd_device.interface_tags
         if not device.in_cv_inventory:
             if len(tags_matching_tag_type) > 0:
-                if device.avd_device.hostname in skipped_tags_internal_devices:
-                    skipped_tags_internal_devices[device.avd_device.hostname].extend(list(tags_matching_tag_type))
-                else:
-                    skipped_tags_internal_devices[device.avd_device.hostname] = list(tags_matching_tag_type)
+                skipped_tags.extend(device.get_one_cv_tag(tag) for tag in tags_matching_tag_type)
                 device.result.device_tags.skipped.extend(list(tags_matching_tag_type))
-        else:
-            if not device.serial_number:
-                # we expect device.serial_number to be already populated (fetched from CV Inventory) when we get here
-                # TODO: log some warning, this is not expected!!
-                # Should we bail out here? Else we would need to repeat such validation check in rest of the wrappers
-                LOGGER.info("deploy_tags_to_cv: (using internal devices) device %s in CV inventory, but has no serial number!", device.avd_device.hostname)
-                deploy_tags_err_msg = "deploy_tags_to_cv(): Detected device in CV Inventory, but unable to fetch serial number!"
-                raise CVClientException(deploy_tags_err_msg)
-
-            todo_devices_by_serial_number[device.serial_number] = device
-            # device is in inventory, add to list only if contains tag_type being looked up
-            if len(tags_matching_tag_type) > 0:
-                # given checks above, todo_devices_with_tags` will always contain devices with serial number
-                todo_devices_with_tags.append(device)
+            continue
+        if not device.serial_number:
+            # We expect device.serial_number to be already populated (i.e. fetched from CV Inventory) when we get here
+            # Bail out here else we would need to repeat such checks for rest of the wrappers.
+            LOGGER.info("deploy_tags_to_cv: device %s in CV inventory, but no serial number found to be assigned in CV!", device.avd_device.hostname)
+            deploy_tags_err_msg = "deploy_tags_to_cv(): Detected device in CV Inventory, but unable to fetch serial number!"
+            raise CVClientException(deploy_tags_err_msg)
+        todo_devices_by_serial_number[device.serial_number] = device
+        # device is in inventory, add to list only if contains tag_type being queried
+        if len(tags_matching_tag_type) > 0:
+            # given checks above, todo_devices_with_tags will always contain devices with valid serial number set
+            todo_devices_with_tags.append(device)
 
     # No need to continue if we have nothing to do.
-    if not todo_tags or (not todo_devices_with_tags):
+    if not todo_devices_with_tags:
         return
 
     # Get existing device or tags. Use this to only add the missing. We will *not* remove any tags. Assignments are removed later.
@@ -137,11 +102,9 @@ async def deploy_tags_to_cv(
     tags_to_add_from_internal_devices = []
     for device in todo_devices_with_tags:
         tags_matching_tag_type = device.avd_device.device_tags if tag_type == "device" else device.avd_device.interface_tags
-        for tag in tags_matching_tag_type:
-            if (tag.label, tag.value) not in existing_tags_tuples:
-                tags_to_add_from_internal_devices.extend([(tag.label, tag.value)])
+        tags_to_add.extend((tag.label, tag.value) for tag in tags_matching_tag_type if (tag.label, tag.value) not in existing_tags_tuples)
 
-    LOGGER.info("deploy_tags_to_cv: (based on internal devices) Creating %s tags_to_add", len(tags_to_add_from_internal_devices))
+    LOGGER.info("deploy_tags_to_cv: Creating %s tags to add", len(tags_to_add))
 
     if tags_to_add:
         LOGGER.info("deploy_tags_to_cv: Creating %s tags", len(tags_to_add))
@@ -180,11 +143,8 @@ async def deploy_tags_to_cv(
                 tags_placeholder_to_add.append(tag)
             else:
                 # tag is found to be already present within existing tag assignments in CV
-                # update corr. tags placeholder for overall result
-                if device.serial_number in deployed_tags_internal_devices:
-                    deployed_tags_internal_devices[device.serial_number].extend([tag])
-                else:
-                    deployed_tags_internal_devices[device.serial_number] = [tag]
+                # update corr. tags placeholder for overall result, count this towards deployed_tags
+                deployed_tags.extend([device.get_one_cv_tag(tag)])
                 result_placeholder_verified.extend([tag])
 
     # TODO: remove this, added for validation
@@ -199,28 +159,21 @@ async def deploy_tags_to_cv(
 
     # call set_tag_assignments() based on tags gathered from internal_devices
     if todo_tag_assignments:
-        LOGGER.info("deploy_tags_to_cv: (using internal devices) Creating tag assignments: len %s", len(todo_tag_assignments))
+        LOGGER.info("deploy_tags_to_cv: Creating %s tag assignments", len(todo_tag_assignments))
         await cv_client.set_tag_assignments(
             workspace_id=workspace.id,
             tag_assignments=todo_tag_assignments,
             element_type=tag_type,
         )
-        # post-set_tag_assignments() successful completion,
-        # proceed to update per-device and overall result with tags that were added via set_tag
-        # TODO: check if this is correct approach
+        # Upon successful completion of set_tag_assignments(),
+        # proceed to update per-device and overall result with tags that were added via set_tag.
+        # Count tags identified to be added towards deployed_tags.
         for device in todo_devices_with_tags:
             tags_to_add_for_device = device.device_tags.to_add if tag_type == "device" else device.interface_tags.to_add
             result_placeholder_tags_added = device.result.device_tags.added if tag_type == "device" else device.result.interface_tags.added
             if tags_to_add_for_device:
                 result_placeholder_tags_added.extend(tags_to_add_for_device)
-                if device.serial_number in deployed_tags_internal_devices:
-                    deployed_tags_internal_devices[device.serial_number].extend(tags_to_add_for_device)
-                else:
-                    deployed_tags_internal_devices[device.serial_number] = tags_to_add_for_device
-
-    # Move all TODO: to deployed.
-    deployed_tags.extend(todo_assignments)
-    # deployed_tags_internal_devices already updated with tags identified to be added
+                deployed_tags.extend(device.get_one_cv_tag(tag) for tag in tags_to_add_for_device)
 
     # Now we start removing assignments depending on strict_tags or not.
 
@@ -230,31 +183,14 @@ async def deploy_tags_to_cv(
         (tag.label, tag.value, tag.device.serial_number, getattr(tag, "interface", None)) for tag in deployed_tags if tag.device is not None
     }
 
-    # build deployed_tags_tuples_internal_devices - set of tuples for deployed tags
-    deployed_tags_tuples_internal_devices = {
-        (tag.label, tag.value, device_serial_number, getattr(tag, "interface", None))
-        for device_serial_number, list_of_tags in deployed_tags_internal_devices.items()
-        for tag in list_of_tags
-        # tag could be either device or interface tag filtered earlier based on tag_type
-    }
-
-    # TODO: remove this for debug only
-    if deployed_tags_tuples != deployed_tags_tuples_internal_devices:
-        deploy_tags_err_msg = "deploy_tags_to_cv(): Mismatch detected in deployed_tags_tuples! raising exception during deploy_tags_to_cv() step"
-        deploy_tags_err_msg += (
-            f" deployed_tags_tuples len: {len(deployed_tags_tuples)} vs deployed_tags_tuples_internal_devices len: {len(deployed_tags_tuples_internal_devices)}"
-        )
-        raise CVClientException(deploy_tags_err_msg)
-
     # Build a mapping of device serial number to CVDevice.
     devices_by_serial_number = {
         tag.device.serial_number: tag.device for tag in deployed_tags if tag.device is not None and tag.device.serial_number is not None
     }
-    # use deployed_tags_internal_devices dict - key is device serial number
 
     # If strict, we remove any assignments not specified in the inputs.
     # If not strict, we remove any assignments with the same labels but not specified in the inputs.
-    assignments_to_unassign_internal_devices = []
+    assignments_to_unassign = []
     if strict:
         LOGGER.debug("deploy_tags_to_cv: STRICT tags validation ENABLED for removing unassigned tags")
         assignments_to_unassign = {
@@ -262,11 +198,8 @@ async def deploy_tags_to_cv(
         }
         # logic for populating assignments_to_unassign_internal_devices
         for label, value, device_serial_number, interface in existing_assignments:
-            if (
-                device_serial_number in deployed_tags_internal_devices
-                and (label, value, device_serial_number, interface) not in deployed_tags_tuples_internal_devices
-            ):
-                assignments_to_unassign_internal_devices.append((label, value, device_serial_number, interface))
+            if device_serial_number in devices_by_serial_number and (label, value, device_serial_number, interface) not in deployed_tags_tuples:
+                assignments_to_unassign.append((label, value, device_serial_number, interface))
                 if device_serial_number in todo_devices_by_serial_number:
                     if tag_type == "device":
                         todo_devices_by_serial_number[device_serial_number].device_tags.to_remove.extend([AvdDeviceTag(label=label, value=value)])
@@ -288,11 +221,11 @@ async def deploy_tags_to_cv(
         # logic for populating assignments_to_unassign_internal_devices
         for label, value, device_serial_number, interface in existing_assignments:
             if (
-                device_serial_number in deployed_tags_internal_devices
-                and label in deployed_tags_labels_internal_devices
-                and (label, value, device_serial_number, interface) not in deployed_tags_tuples_internal_devices
+                device_serial_number in devices_by_serial_number
+                and label in deployed_tags_labels
+                and (label, value, device_serial_number, interface) not in deployed_tags_tuples
             ):
-                assignments_to_unassign_internal_devices.append((label, value, device_serial_number, interface))
+                assignments_to_unassign.append((label, value, device_serial_number, interface))
                 if device_serial_number in todo_devices_by_serial_number:
                     if tag_type == "device":
                         todo_devices_by_serial_number[device_serial_number].device_tags.to_remove.extend([AvdDeviceTag(label=label, value=value)])
@@ -301,17 +234,7 @@ async def deploy_tags_to_cv(
                             [AvdInterfaceTag(label=label, value=value, interface=interface)]
                         )
 
-    LOGGER.info(
-        "deploy_tags_to_cv: assignments_to_unassign len: %s, (using internal devices) assignments_to_unassign len: %s",
-        len(assignments_to_unassign),
-        len(assignments_to_unassign_internal_devices),
-    )
-
-    # TODO: remove this, added for debug
-    if assignments_to_unassign != assignments_to_unassign_internal_devices:
-        # TODO: remove this , only for comparing revised logic with existing one
-        deploy_tags_err_msg = "deploy_tags_to_cv(): Mismatch detected in assignments_to_unassign, raising exception during deploy_tags_to_cv() step"
-        raise CVClientException(deploy_tags_err_msg)
+    LOGGER.info("deploy_tags_to_cv: assignments_to_unassign len: %s", len(assignments_to_unassign))
 
     if assignments_to_unassign:
         LOGGER.info("deploy_tags_to_cv: Deleting %s tag assignments", len(assignments_to_unassign))
@@ -338,11 +261,8 @@ async def deploy_tags_to_cv(
         # update removed tags using internal_devices approach
         for label, value, serial_number, interface in assignments_to_unassign_internal_devices:
             interface_tag = AvdInterfaceTag(label=label, value=value, interface=interface)
-            if serial_number in removed_tags_internal_devices:
-                removed_tags_internal_devices[serial_number].extend([interface_tag])
-            else:
-                removed_tags_internal_devices[serial_number] = [interface_tag]
             if serial_number in todo_devices_by_serial_number:
+                removed_tags.extend([todo_devices_by_serial_number[serial_number].get_one_cv_tag(interface_tag)])
                 todo_devices_by_serial_number[serial_number].result.interface_tags.removed.extend([interface_tag])
         else:
             removed_tags.extend(
@@ -352,9 +272,6 @@ async def deploy_tags_to_cv(
         # update removed tags using internal_devices approach
         for label, value, serial_number, _ in assignments_to_unassign_internal_devices:
             device_tag = AvdDeviceTag(label=label, value=value)
-            if serial_number in removed_tags_internal_devices:
-                removed_tags_internal_devices[serial_number].extend([device_tag])
-            else:
-                removed_tags_internal_devices[serial_number] = [device_tag]
             if serial_number in todo_devices_by_serial_number:
+                removed_tags.extend([todo_devices_by_serial_number[serial_number].get_one_cv_tag(device_tag)])
                 todo_devices_by_serial_number[serial_number].result.device_tags.removed.extend([device_tag])
