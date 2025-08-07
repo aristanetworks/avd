@@ -1,0 +1,81 @@
+/*
+ * This CSS is for placing the toggle switch inside the
+ * main header bar of Material for MkDocs.
+ */
+
+/* Container for the switch in the header */
+.md-header__lang-switch-container {
+  display: flex;
+  align-items: center;
+  /* Push the switch to the right, before the search/repo icons */
+  margin-left: auto;
+  /* Add some space between it and the search icon */
+  padding-right: 0.8rem;
+}
+
+/* Flex container for the switch itself (PY [ ] JS) */
+.md-nav__lang-switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  /* Use header's foreground color for PY/JS labels */
+  color: white;
+}
+
+/* Label text (PY, JS) */
+.md-nav__lang-switch .lang-label {
+  padding: 0 0.5rem;
+}
+
+/* The switch - a container for the input and slider */
+.md-nav__lang-switch .switch {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 22px;
+}
+
+/* Hide the default HTML checkbox */
+.md-nav__lang-switch .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider / track of the switch */
+.md-nav__lang-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #aad037; /* Gray 'off' state */
+  transition: .4s;
+  border-radius: 22px;
+}
+
+/* The nub that moves */
+.md-nav__lang-switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #969696; /* Matches page background */
+  transition: .4s;
+  border-radius: 50%;
+}
+
+/* Style for the ON state */
+.md-nav__lang-switch input:checked + .slider {
+  background-color: #e0862e; /* On state color */
+}
+
+/* Move the nub to the right for the ON state */
+.md-nav__lang-switch input:checked + .slider:before {
+  transform: translateX(16px);
+}
