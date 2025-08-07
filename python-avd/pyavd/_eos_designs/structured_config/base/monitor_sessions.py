@@ -148,7 +148,7 @@ class MonitorSessionsMixin(Protocol):
                         for monitor_session in l3_interface.monitor_sessions:
                             per_interface_monitor_session = monitor_session._deepcopy()._cast_as(
                                 EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessionsItem
-                                )
+                            )
                             per_interface_monitor_session._internal_data.interface = l3_interface.interfaces[node_index]
                             per_interface_monitor_session._internal_data.context = (
                                 f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[{l3_interface_index}]"
