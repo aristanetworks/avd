@@ -661,7 +661,7 @@ jobs:
   # Test of pyavd
   # ----------------------------------- #
   test-pyavd:
-    name: Test pyavd ${{ matrix }}, Suite (${{ matrix.suite.name }})
+    name: Test pyavd (Python ${{ matrix.python }}, Suite ${{ matrix.suite.name }})
     runs-on: ubuntu-latest
     needs: [file-changes]
     if: |
