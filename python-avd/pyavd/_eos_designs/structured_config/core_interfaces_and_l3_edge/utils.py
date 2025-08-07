@@ -328,13 +328,11 @@ class UtilsMixin(Protocol):
 
         if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
             if p2p_link.ethernet_structured_config:
-                for child_interface in p2p_link.port_channel.nodes_child_interfaces:
-                    if child_interface.node == self.shared_utils.hostname:
-                        for eth_interface in child_interface.interfaces:
-                            self.custom_structured_configs.nested.ethernet_interfaces.obtain(eth_interface)._deepmerge(
-                                p2p_link.ethernet_structured_config,
-                                list_merge=self.custom_structured_configs.list_merge_strategy,
-                            )
+                for member in p2p_link_data["port_channel_members"]:
+                    self.custom_structured_configs.nested.ethernet_interfaces.obtain(member["interface"])._deepmerge(
+                        p2p_link.ethernet_structured_config,
+                        list_merge=self.custom_structured_configs.list_merge_strategy,
+                    )
             if p2p_link.port_channel_structured_config:
                 self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
                     p2p_link.port_channel_structured_config,
