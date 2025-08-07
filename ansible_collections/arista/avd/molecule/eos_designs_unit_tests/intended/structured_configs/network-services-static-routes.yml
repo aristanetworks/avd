@@ -8,7 +8,6 @@ ethernet_interfaces:
   description: test
   shutdown: false
   mtu: 9000
-  arp_gratuitous_accept: true
   ip_address: 10.10.10.10/24
   peer_type: l3_interface
   switchport:
