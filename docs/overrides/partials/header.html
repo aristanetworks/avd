@@ -82,7 +82,7 @@
 
     <!-- OUR CUSTOM TOGGLE SWITCH -->
     {# This 'if' block checks if the string is present in the page's main title #}
-    {% if "input variables" in page.title | lower  or "input variables" in page.meta | lower %}
+    {% if "input variables" in page.title | lower %}
     <div class="md-header__lang-switch-container">
       <div class="md-nav__lang-switch" title="Switch between Table and YAML examples">
         <span class="lang-label">Table</span>
