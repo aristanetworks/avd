@@ -6,7 +6,7 @@
 #     - mode, vlans, native_vlan, native_vlan_tag, trunk_groups, phone, vlan_translations, trunk_private_vlan_secondary, pvlan_mapping
 #     - vlan_id, encapsulation_dot1q_vlan, encapsulation_vlan.client.dot1q, encapsulation_vlan.client.unmatched
 #     - encapsulation_vlan.network.dot1q, encapsulation_vlan.network.client
-#     - type
+#     - type, vrrp_ids[].ipv6.address
 ethernet_interfaces:
   - name: Ethernet1
     description: Test_mode_and_vlans
