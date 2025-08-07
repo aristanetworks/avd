@@ -137,7 +137,13 @@ ansible_httpapi_pass: <str>
 ansible_httpapi_password: <str>
 
 # Some tests require elevated privileges to run (enable mode).
+# Priority: `anta_enable_mode` → `ansible_become` → false
+anta_enable_mode: <bool>
 ansible_become: <bool; default=false>
+
+# If `anta_enable_mode` is true, `anta_enable_password` is used.
+# Otherwise, falls back to `ansible_become_password`.
+anta_enable_password: <str>
 ansible_become_password: <str>
 
 # eAPI port and SSL verification.

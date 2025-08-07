@@ -55,7 +55,9 @@ ANSIBLE_CONNECTION_VARS = [
     "ansible_httpapi_password",
     "anta_httpapi_password",
     "ansible_become",
+    "anta_enable_mode",
     "ansible_become_password",
+    "anta_enable_password",
     "ansible_httpapi_port",
     "ansible_httpapi_use_ssl",
 ]
@@ -470,8 +472,8 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
             get(device_vars, "ansible_httpapi_pass"),
             get(device_vars, "ansible_httpapi_password"),
         ),
-        "enable": get(device_vars, "ansible_become", default=False),
-        "enable_password": get(device_vars, "ansible_become_password"),
+        "enable": default(get(device_vars, "anta_enable_mode"), get(device_vars, "ansible_become", default=False)),
+        "enable_password": get(device_vars, "anta_enable_password") if get(device_vars, "anta_enable_mode") else get(device_vars, "ansible_become_password"),
         "port": get(
             device_vars,
             "ansible_httpapi_port",
