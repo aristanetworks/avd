@@ -7344,7 +7344,7 @@ $defs:
               description: P2P profile name. Profile defined under p2p_profiles.
   monitor_sessions:
     type: list
-    description: Used to define switchports as source or destination for monitoring
+    description: Used to define interfaces as source or destination for monitoring
       sessions.
     items:
       type: dict

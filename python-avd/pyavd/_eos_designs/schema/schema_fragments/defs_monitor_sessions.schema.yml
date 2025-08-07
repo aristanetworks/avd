@@ -8,7 +8,7 @@ type: dict
 $defs:
   monitor_sessions:
     type: list
-    description: Used to define switchports as source or destination for monitoring sessions.
+    description: Used to define interfaces as source or destination for monitoring sessions.
     items:
       type: dict
       keys:

@@ -15,8 +15,6 @@ from pyavd._utils import groupby_obj
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.schema import EosDesigns
-
     from . import AvdStructuredConfigBaseProtocol
 
 
