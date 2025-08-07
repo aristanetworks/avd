@@ -9920,34 +9920,11 @@ router bgp 65101
 
 ### Router RIP
 
-#### VRF: VRF1
-
-Enabled: True
-Metric: 10
-
-##### Advertised Networks
-
-| Networks |
-| -------- |
-| 10.0.0.0/8 |
-| 192.168.1.0/24 |
-| 192.168.2.0/24 |
-
-#### VRF: default
-
-Enabled: True
-
-##### Advertised Networks
-
-| Networks |
-| -------- |
-| 10.0.0.0/8 |
-| 192.168.1.0/24 |
-| 192.168.2.0/24 |
-
-#### VRF: vrf2
-
-Enabled: False
+| VRF | Enabled | Default Metric | Networks |
+| --- | ------- | -------------- | -------- |
+| VRF1 | True | 10 | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
+| default | True | - | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
+| vrf2 | False | - | - |
 
 #### Router RIP Device Configuration
 

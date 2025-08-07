@@ -7,26 +7,20 @@
 {% if router_rip is arista.avd.defined %}
 
 ### Router RIP
+
+| VRF | Enabled | Default Metric | Networks |
+| --- | ------- | -------------- | -------- |
 {%     for rip in router_rip | arista.avd.natural_sort(sort_key='vrf', ignore_case=False) %}
-
-#### VRF: {{ rip.vrf }}
-{%         if rip.enabled is arista.avd.defined %}
-
-Enabled: {{ rip.enabled }}
-{%         endif %}
-{%         if rip.metric_default is arista.avd.defined %}
-Metric: {{ rip.metric_default }}
-{%         endif %}
+{%         set networks = [] %}
 {%         if rip.networks is arista.avd.defined %}
-
-##### Advertised Networks
-
-| Networks |
-| -------- |
-{%             for network in rip.networks | arista.avd.natural_sort %}
-| {{ network }} |
+{%             for network in rip.networks %}
+{%                 do networks.append(network) %}
 {%             endfor %}
 {%         endif %}
+{%         if networks == [] %}
+{%             do networks.append("-") %}
+{%         endif %}
+| {{ rip.vrf }} | {{ rip.enabled | arista.avd.default("-") }} | {{ rip.metric_default | arista.avd.default("-") }} | {{ networks | join(", ") }} |
 {%     endfor %}
 
 #### Router RIP Device Configuration
