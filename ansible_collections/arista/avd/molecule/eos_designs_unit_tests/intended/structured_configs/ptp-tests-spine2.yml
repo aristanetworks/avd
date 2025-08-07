@@ -12,7 +12,7 @@ ethernet_interfaces:
   ptp:
     enable: true
     announce:
-      interval: 1
+      interval: 0
       timeout: 3
     delay_req: -3
     sync_message:
@@ -31,7 +31,7 @@ ethernet_interfaces:
   ptp:
     enable: true
     announce:
-      interval: 1
+      interval: 0
       timeout: 3
     delay_req: -3
     sync_message:
