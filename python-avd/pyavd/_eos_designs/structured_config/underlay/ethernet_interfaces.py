@@ -221,13 +221,9 @@ class EthernetInterfacesMixin(Protocol):
 
                     self.structured_config.ethernet_interfaces.append(ethernet_subinterface)
 
-            if link.ethernet_structured_config:
-                self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
-                    link.ethernet_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-                )
             if link.uplink_peer_ethernet_structured_config:
                 self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
-                    link.uplink_peer_ethernet_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                    link.downlink_peer_ethernet_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                 )
             if link.downlink_peer_ethernet_structured_config:
                 self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
