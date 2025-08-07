@@ -302,7 +302,7 @@ class FilteredTenantsMixin(Protocol):
 
         Filtering based on accepted vlans since eos_designs_facts already
         filtered that on tags and trunk_groups.
-        Extracts static_routes set under SVIs.
+        Extracts static_routes and ipv6_static_routes set under SVIs and appends them to vrf.static_routes and vrf.ipv6_static_routes.
         """
         if not (self.network_services_l2 or self.network_services_l2_as_subint):
             return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
@@ -323,6 +323,10 @@ class FilteredTenantsMixin(Protocol):
                 vrf.static_routes.extend(
                     merged_svi.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
                 )
+            if merged_svi.ipv6_static_routes:
+                vrf.ipv6_static_routes.extend(
+                    merged_svi.ipv6_static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes)
+                )
 
         return filtered_svis._natural_sorted(sort_key="id")
 
@@ -332,7 +336,7 @@ class FilteredTenantsMixin(Protocol):
         """
         Returns filtered l3_interfaces for the VRFs.
 
-        Extracts static_routes set under l3_interfaces and appends to vrf.static_routes.
+        Extracts static_routes and ipv6_static_routes defined under l3_interfaces and appends them to vrf.static_routes and vrf.ipv6_static_routes.
         """
         filtered_l3_interfaces = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3Interfaces()
         for l3_interface in vrf.l3_interfaces:
@@ -341,6 +345,10 @@ class FilteredTenantsMixin(Protocol):
             if l3_interface.static_routes:
                 vrf.static_routes.extend(
                     l3_interface.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            if l3_interface.ipv6_static_routes:
+                vrf.ipv6_static_routes.extend(
+                    l3_interface.ipv6_static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes)
                 )
             filtered_l3_interfaces.append(l3_interface)
 
@@ -352,7 +360,7 @@ class FilteredTenantsMixin(Protocol):
         """
         Returns filtered l3_port_channels for the VRFs.
 
-        Extracts static_routes set under l3_port_channels and appends to vrf.static_routes.
+        Extracts static_routes and ipv6_static_routes defined under l3_port_channels and appends them to vrf.static_routes and vrf.ipv6_static_routes.
         """
         filtered_l3_port_channels = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannels()
         for l3_port_channel in vrf.l3_port_channels:
@@ -361,6 +369,12 @@ class FilteredTenantsMixin(Protocol):
             if l3_port_channel.static_routes:
                 vrf.static_routes.extend(
                     l3_port_channel.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            if l3_port_channel.ipv6_static_routes:
+                vrf.ipv6_static_routes.extend(
+                    l3_port_channel.ipv6_static_routes._cast_as(
+                        EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes
+                    )
                 )
             filtered_l3_port_channels.append(l3_port_channel)
 
