@@ -218,7 +218,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         elif self.shared_utils.node_config.uplink_ethernet_structured_config:
             uplink.ethernet_structured_config = self.shared_utils.node_config.uplink_ethernet_structured_config
         if self.shared_utils.node_config.uplink_switch_ethernet_structured_config:
-            uplink.peer_ethernet_structured_config = self.shared_utils.node_config.uplink_switch_ethernet_structured_config
+            uplink.uplink_peer_ethernet_structured_config = self.shared_utils.node_config.uplink_switch_ethernet_structured_config
 
         return uplink
 
@@ -321,9 +321,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         if self.shared_utils.node_config.uplink_port_channel_structured_config:
             uplink.port_channel_structured_config = self.shared_utils.node_config.uplink_port_channel_structured_config
         if self.shared_utils.node_config.uplink_switch_ethernet_structured_config:
-            uplink.peer_ethernet_structured_config = self.shared_utils.node_config.uplink_switch_ethernet_structured_config
+            uplink.uplink_peer_ethernet_structured_config = self.shared_utils.node_config.uplink_switch_ethernet_structured_config
         if self.shared_utils.node_config.uplink_switch_port_channel_structured_config:
-            uplink.peer_port_channel_structured_config = self.shared_utils.node_config.uplink_switch_port_channel_structured_config
+            uplink.uplink_peer_port_channel_structured_config = self.shared_utils.node_config.uplink_switch_port_channel_structured_config
 
         return uplink
 
@@ -369,7 +369,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     subinterface.ethernet_structured_config = self.shared_utils.node_config.uplink_ethernet_structured_config
 
                 if self.shared_utils.node_config.uplink_switch_ethernet_structured_config:
-                    uplink.peer_ethernet_structured_config = self.shared_utils.node_config.uplink_switch_ethernet_structured_config
+                    uplink.uplink_peer_ethernet_structured_config = self.shared_utils.node_config.uplink_switch_ethernet_structured_config
 
                 uplink.subinterfaces.append(subinterface)
 
