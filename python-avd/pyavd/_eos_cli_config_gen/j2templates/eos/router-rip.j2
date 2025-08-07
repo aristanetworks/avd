@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - router rip #}
-{% for rip in router_rip | arista.avd.default([]) | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
+{% for rip in router_rip | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
 !
 {%     if rip.vrf == "default" %}
 router rip
