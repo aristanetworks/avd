@@ -625,7 +625,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_pyavd, build_collection]
     env:
-      ANSIBLE_COLLECTIONS_PATH: /home/runner/work/avd/avd
+      ANSIBLE_COLLECTIONS_PATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3
@@ -660,17 +660,16 @@ jobs:
   # ----------------------------------- #
   # Test of pyavd
   # ----------------------------------- #
-  pyavd:
+  test-pyavd:
     name: Test pyavd
     runs-on: ubuntu-latest
     needs: [file-changes]
     if: |
       needs.file-changes.outputs.eos_design == 'true' ||
-      needs.file-changes.outputs.config_gen == 'true' ||
-      needs.file-changes.outputs.pyavd == 'true'
+      needs.file-changes.outputs.config_gen == 'true'
     strategy:
       matrix:
-        python: ["3.10", "3.11", "3.12", "3.13"]
+        python: ["3.10", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3
@@ -684,30 +683,98 @@ jobs:
         working-directory: python-avd
         run: |
           tox
-      - name: Upload coverage from pytest
-        # Coverage only runs as part of 3.11.
-        if: |
-          matrix.python == '3.11'
+
+  test-pyavd-coverage:
+    name: Test pyavd python 3.11 coverage, Suite (${{ matrix.suite.name }})
+    runs-on: ubuntu-latest
+    needs: [file-changes]
+    if: |
+      needs.file-changes.outputs.eos_design == 'true' ||
+      needs.file-changes.outputs.config_gen == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11"]
+        suite:
+          - name: "Main-Tests"
+            pytest_args: "--ignore=tests/pyavd/molecule_scenarios/test_get_device_config.py --ignore=tests/pyavd/molecule_scenarios/test_negative_eos_designs.py --ignore=tests/schema_tools/metaschema/test_meta_schema_model.py"
+          - name: "Excluded-Tests(test_get_device_config and test_meta_schema_model)"
+            pytest_args: "tests/pyavd/molecule_scenarios/test_get_device_config.py tests/schema_tools/metaschema/test_meta_schema_model.py"
+          - name: "Excluded-Tests(test_negative_eos_designs)"
+            pytest_args: "tests/pyavd/molecule_scenarios/test_negative_eos_designs.py"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install tox
+        run: |
+          pip install tox tox-gh-actions --upgrade
+      - name: Run pytest via tox for ${{ matrix.python }}
+        working-directory: python-avd
+        run: |
+          tox -e coverage -- ${{ matrix.suite.pytest_args }}
+      - name: Find and Move coverage file
+        run: |
+          coverage_file=$(find ./python-avd -maxdepth 1 -name ".coverage.*")
+          if [ -z "$coverage_file" ]; then
+            echo "::error::Coverage file not found in python-avd/!"
+            exit 1
+          fi
+          new_name="coverage-${{ matrix.suite.name }}.dat"
+          mv "$coverage_file" "$new_name"
+      - name: Upload coverage data
         uses: actions/upload-artifact@v4
         with:
-          name: pytest-coverage
-          path: python-avd/coverage.xml
-
+          name: coverage-data-${{ matrix.suite.name }}
+          path: coverage-${{ matrix.suite.name }}.dat
       - name: Upload eos_designs compiled templates from pytest
-        if: |
-          matrix.python == '3.11'
+        if: matrix.suite.name == 'Main-Tests'
         uses: actions/upload-artifact@v4
         with:
           name: pytest-eos-designs-compiled-templates
           path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
-
       - name: Upload eos_cli_config_gen compiled templates from pytest
-        if: |
-          matrix.python == '3.11'
+        if: matrix.suite.name == 'Main-Tests'
         uses: actions/upload-artifact@v4
         with:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
+
+  test-pyavd-coverage-report:
+    name: Test pyavd python 3.11 coverage report
+    runs-on: ubuntu-latest
+    needs: [test-pyavd-coverage]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Coverage
+        run: pip install "coverage[toml]"
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+      - name: Combine and Report Coverage
+        working-directory: python-avd
+        run: |
+          set -ex
+          find ../artifacts/coverage-data-*/ -type f -name "*.dat" -exec mv {} . \;
+          mkdir -p ./pyavd/_eos_designs/j2templates/compiled_templates/
+          mkdir -p ./pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
+          mv ../artifacts/pytest-eos-designs-compiled-templates/* ./pyavd/_eos_designs/j2templates/compiled_templates/
+          mv ../artifacts/pytest-eos-cli-config-gen-compiled-templates/* ./pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
+          coverage combine --rcfile=pyproject.toml coverage-*.dat
+          coverage report --rcfile=pyproject.toml
+          coverage xml --rcfile=pyproject.toml
+      - name: Upload final coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-coverage
+          path: python-avd/coverage.xml
 
   # ----------------------------------- #
   # Cargo build, test and linting

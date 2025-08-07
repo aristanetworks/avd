@@ -116,6 +116,7 @@ extend_skip_glob = [
 
 [tool.coverage.run]
 branch = true
+parallel = true
 
 [tool.coverage.report]
 show_missing = true
