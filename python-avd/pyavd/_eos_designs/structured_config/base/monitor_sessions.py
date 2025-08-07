@@ -8,6 +8,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import groupby_obj
@@ -145,11 +146,14 @@ class MonitorSessionsMixin(Protocol):
                         if node_name != self.shared_utils.hostname:
                             continue
                         for monitor_session in l3_interface.monitor_sessions:
-                            per_interface_monitor_session = monitor_session._deepcopy()
+                            per_interface_monitor_session = monitor_session._deepcopy()._cast_as(
+                                EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessionsItem
+                                )
                             per_interface_monitor_session._internal_data.interface = l3_interface.interfaces[node_index]
                             per_interface_monitor_session._internal_data.context = (
                                 f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[{l3_interface_index}]"
                             )
+
                             monitor_session_configs.append(per_interface_monitor_session)
 
         return monitor_session_configs

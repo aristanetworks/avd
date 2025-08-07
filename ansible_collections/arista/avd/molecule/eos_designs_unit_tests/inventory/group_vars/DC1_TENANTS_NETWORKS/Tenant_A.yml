@@ -343,6 +343,15 @@ tenant_a:
             ospf:
               enabled: true
               point_to_point: true
+            monitor_sessions:
+              - name: MonitoringSessionServer18
+                role: source
+                source_settings:
+                  direction: rx
+                  access_group:
+                    type: ip
+                    name: myIpAL
+                    priority: 10
         loopbacks:
           - loopback: 123
             ip_address: 10.1.53.0/32
