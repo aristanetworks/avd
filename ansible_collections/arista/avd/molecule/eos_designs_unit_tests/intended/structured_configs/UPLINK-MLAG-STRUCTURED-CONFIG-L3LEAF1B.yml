@@ -100,13 +100,12 @@ port_channel_interfaces:
       groups:
       - MLAG
 - name: Port-Channel5
-  description: L2_UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1_Port-Channel1
+  description: description from uplink_switch_port_channel_structured_config
   shutdown: false
   mlag: 5
   storm_control:
     broadcast:
-      level: '30'
-      unit: percent
+      level: '25'
     unknown_unicast:
       level: '25'
   switchport:

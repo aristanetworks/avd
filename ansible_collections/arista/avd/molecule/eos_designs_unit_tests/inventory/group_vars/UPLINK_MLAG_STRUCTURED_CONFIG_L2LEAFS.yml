@@ -13,10 +13,7 @@ l2leaf:
           level: 25
     # Structured config applied to downlink port-channel of uplink switch.
     uplink_switch_port_channel_structured_config:
-      storm_control:
-        broadcast:
-          level: 30
-          unit: percent
+      description: description from uplink_switch_port_channel_structured_config
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     mlag_peer_ipv4_pool: 10.255.252.0/24
     mlag_port_channel_structured_config:  # Setting structured config here but it is overridden by 'null' on group level and applied again on node level.

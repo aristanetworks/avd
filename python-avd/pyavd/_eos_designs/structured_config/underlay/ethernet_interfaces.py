@@ -144,7 +144,10 @@ class EthernetInterfacesMixin(Protocol):
                     self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
                         EosCliConfigGen.EthernetInterfacesItem._from_dict(structured_config), list_merge=self.custom_structured_configs.list_merge_strategy
                     )
-
+                if link.ethernet_structured_config:
+                    self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
+                        link.ethernet_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                    )
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
             # L2 interface
@@ -221,13 +224,9 @@ class EthernetInterfacesMixin(Protocol):
 
                     self.structured_config.ethernet_interfaces.append(ethernet_subinterface)
 
-            if link.uplink_peer_ethernet_structured_config:
+            if link.downlink_ethernet_structured_config:
                 self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
-                    link.downlink_peer_ethernet_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-                )
-            if link.downlink_peer_ethernet_structured_config:
-                self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
-                    link.downlink_peer_ethernet_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                    link.downlink_ethernet_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                 )
 
         # Support l3_interface as sub interfaces

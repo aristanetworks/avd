@@ -9,6 +9,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.42.42.9/31
+  pim:
+    ipv4:
+      sparse_mode: true
   mac_security:
     profile: TEST
   peer: UPLINK_P2P_VRFS_TESTS_SPINE1
@@ -41,6 +44,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.42.42.11/31
+  pim:
+    ipv4:
+      sparse_mode: true
   mac_security:
     profile: TEST
   peer: UPLINK_P2P_VRFS_TESTS_SPINE2

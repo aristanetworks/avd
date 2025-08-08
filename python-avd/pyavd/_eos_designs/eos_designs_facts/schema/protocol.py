@@ -449,8 +449,8 @@ class EosDesignsFactsProtocol(Protocol):
             "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "uplink_peer_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             "uplink_peer_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-            "downlink_peer_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
-            "downlink_peer_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            "downlink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "downlink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "subinterfaces": {"type": Subinterfaces},
         }
         interface: str
@@ -534,12 +534,12 @@ class EosDesignsFactsProtocol(Protocol):
         Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
         uplink_type == "port-channel".
         """
-        downlink_peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        downlink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
         """
         Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
         uplink_type == "p2p".
         """
-        downlink_peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        downlink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
         """
         Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
         uplink_type == "port-channel".
@@ -594,8 +594,8 @@ class EosDesignsFactsProtocol(Protocol):
                 port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 uplink_peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 uplink_peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                downlink_peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
-                downlink_peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                downlink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                downlink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 subinterfaces: Subinterfaces | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -669,10 +669,10 @@ class EosDesignsFactsProtocol(Protocol):
                     uplink_peer_port_channel_structured_config:
                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                        uplink_type == "port-channel".
-                    downlink_peer_ethernet_structured_config:
+                    downlink_ethernet_structured_config:
                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                        uplink_type == "p2p".
-                    downlink_peer_port_channel_structured_config:
+                    downlink_port_channel_structured_config:
                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
                        uplink_type == "port-channel".
                     subinterfaces: Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`).
