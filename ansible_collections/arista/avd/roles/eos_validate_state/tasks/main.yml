@@ -6,8 +6,9 @@
   delegate_to: localhost
   ansible.builtin.debug:
     msg:
-      - "!!! Deprecation Warning - Please note this role has been replaced with the arista.avd.anta_runner role."
-      - "!!! Deprecation Warning - Please update your playbook accordingly."
+      - "!!! Deprecation Warning - The role 'arista.avd.eos_validate_state' has been deprecated."
+      - "!!! Deprecation Warning - Update your playbook to leverage the new 'arista.avd.anta_runner' role instead."
+      - "!!! Deprecation Warning - See 'https://avd.arista.com' for details on 'arista.avd.anta_runner'."
       - "!!! Deprecation Warning - This role will be removed in AVD version 6.0.0."
   run_once: true
 
