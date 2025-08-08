@@ -13,10 +13,7 @@ title: arista.avd.anta_workflow
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.anta_workflow` when using this plugin.
 
-!!! warning "This module is in **preview** mode"
-    This module is not guaranteed to have a backwards compatible interface.
-
-Uses ANTA from Ansible
+Leverage the [Arista Network Test Automation (ANTA)](https://anta.arista.com) framework from Ansible.
 
 ## Synopsis
 
