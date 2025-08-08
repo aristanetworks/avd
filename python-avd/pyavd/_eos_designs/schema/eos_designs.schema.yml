@@ -4485,6 +4485,18 @@ keys:
 
                 The feature will be ignored on platforms where this is false.'
               default: true
+            wan:
+              type: bool
+              description: 'Support for Arista WAN features.
+
+                An error will be raised if the feature is enabled and this is false.'
+              default: true
+            ptp:
+              type: bool
+              description: 'Support for Precision Time Protocol (PTP).
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
         management_interface:
           type: str
           default: Management1
