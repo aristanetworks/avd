@@ -477,7 +477,7 @@ class EosDesigns(EosDesignsRootModel):
     class Avd6Behaviors(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}}
+        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}, "inband_mgmt_attached_hosts": {"type": bool, "default": False}}
         snmp_settings_vrfs: bool
         """
         Opt-in to the new behavior for snmp_settings:
@@ -492,10 +492,18 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        inband_mgmt_attached_hosts: bool
+        """
+        Opt-in to the new behavior for inband management route export:
+        - `ip attached-host route export`
+        will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined) -> None:
+            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined, inband_mgmt_attached_hosts: bool | UndefinedType = Undefined) -> None:
                 """
                 Avd6Behaviors.
 
@@ -513,6 +521,10 @@ class EosDesigns(EosDesignsRootModel):
                          If
                        `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
                        "default".
+                    inband_mgmt_attached_hosts:
+                       Opt-in to the new behavior for inband management route export:
+                       - `ip attached-host route export`
+                       will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
 
                 """
 
@@ -12283,6 +12295,8 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "sflow": {"type": bool, "default": True},
+                "wan": {"type": bool, "default": True},
+                "ptp": {"type": bool, "default": True},
             }
             queue_monitor: bool
             """
@@ -12424,6 +12438,22 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            wan: bool
+            """
+            Support for Arista WAN features.
+            An error will be raised if the feature is enabled and this is
+            false.
+
+            Default value: `True`
+            """
+            ptp: bool
+            """
+            Support for Precision Time Protocol (PTP).
+            The feature will be ignored on platforms where this is
+            false.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -12447,6 +12477,8 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     sflow: bool | UndefinedType = Undefined,
+                    wan: bool | UndefinedType = Undefined,
+                    ptp: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -12531,6 +12563,14 @@ class EosDesigns(EosDesignsRootModel):
                         sflow:
                            Support for sFlow.
                            The feature will be ignored on platforms where this is false.
+                        wan:
+                           Support for Arista WAN features.
+                           An error will be raised if the feature is enabled and this is
+                           false.
+                        ptp:
+                           Support for Precision Time Protocol (PTP).
+                           The feature will be ignored on platforms where this is
+                           false.
 
                     """
 
@@ -12988,6 +13028,8 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "sflow": {"type": bool, "default": True},
+                "wan": {"type": bool, "default": True},
+                "ptp": {"type": bool, "default": True},
             }
             queue_monitor: bool
             """
@@ -13129,6 +13171,22 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            wan: bool
+            """
+            Support for Arista WAN features.
+            An error will be raised if the feature is enabled and this is
+            false.
+
+            Default value: `True`
+            """
+            ptp: bool
+            """
+            Support for Precision Time Protocol (PTP).
+            The feature will be ignored on platforms where this is
+            false.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -13152,6 +13210,8 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     sflow: bool | UndefinedType = Undefined,
+                    wan: bool | UndefinedType = Undefined,
+                    ptp: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -13236,6 +13296,14 @@ class EosDesigns(EosDesignsRootModel):
                         sflow:
                            Support for sFlow.
                            The feature will be ignored on platforms where this is false.
+                        wan:
+                           Support for Arista WAN features.
+                           An error will be raised if the feature is enabled and this is
+                           false.
+                        ptp:
+                           Support for Precision Time Protocol (PTP).
+                           The feature will be ignored on platforms where this is
+                           false.
 
                     """
 

@@ -18,6 +18,15 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.10.50.6/31
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
   peer: HARDWARE_FEATURES_720XP
   peer_interface: Ethernet1
   peer_type: l3leaf
@@ -49,6 +58,16 @@ ethernet_interfaces:
 - name: Ethernet7
   description: SERVER_TEST_POE_ETH2_NO_POE
   shutdown: false
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
   peer: TEST_POE
   peer_interface: ETH2_NO_POE
   peer_type: server
@@ -146,6 +165,24 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 10.10.40.0/31
+ptp:
+  mode: boundary
+  clock_identity: 00:1C:73:1e:00:02
+  priority1: 30
+  priority2: 2
+  domain: 127
+  monitor:
+    enabled: true
+    threshold:
+      offset_from_master: 250
+      mean_path_delay: 1500
+    missing_message:
+      sequence_ids:
+        enabled: true
+        announce: 3
+        delay_resp: 3
+        follow_up: 3
+        sync: 3
 queue_monitor_length: null
 queue_monitor_streaming: null
 route_maps:
