@@ -4363,7 +4363,7 @@ interface Dps1
 
 ##### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 Secondary Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IP | Peer Authentication Mode |
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 Secondary Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
 | --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | -------------------------- | ----------------- | --------------- | ------------------------ |
 | Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
 | Ethernet65 | 2 | - | - | Enabled | - | - | - | - | 2 | 2001:db8::1, 2002:db8::2 | text |
@@ -6675,7 +6675,7 @@ interface Tunnel4
 
 ##### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 Secondary Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IP | Peer Authentication Mode |
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 Secondary Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
 | --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | -------------------------- | ----------------- | --------------- | ------------------------ |
 | Vlan333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
 | Vlan333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | - | 2 | 2001:db8:333::1, 2002:db8:333::2 | text |
