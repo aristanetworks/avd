@@ -120,8 +120,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_channel_structured_config</samp>](## "uplinks.[].port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_peer_ethernet_structured_config</samp>](## "uplinks.[].uplink_peer_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "p2p". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_peer_port_channel_structured_config</samp>](## "uplinks.[].uplink_peer_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;downlink_peer_ethernet_structured_config</samp>](## "uplinks.[].downlink_peer_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "p2p". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;downlink_peer_port_channel_structured_config</samp>](## "uplinks.[].downlink_peer_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;downlink_ethernet_structured_config</samp>](## "uplinks.[].downlink_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "p2p". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;downlink_port_channel_structured_config</samp>](## "uplinks.[].downlink_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "uplinks.[].subinterfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;interface</samp>](## "uplinks.[].subinterfaces.[].interface") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "uplinks.[].subinterfaces.[].peer_interface") | String | Required |  |  |  |
@@ -359,10 +359,10 @@
         uplink_peer_port_channel_structured_config: <dict>
 
         # Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "p2p".
-        downlink_peer_ethernet_structured_config: <dict>
+        downlink_ethernet_structured_config: <dict>
 
         # Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for uplink_type == "port-channel".
-        downlink_peer_port_channel_structured_config: <dict>
+        downlink_port_channel_structured_config: <dict>
         subinterfaces:
           - interface: <str; required; unique>
             peer_interface: <str; required>
