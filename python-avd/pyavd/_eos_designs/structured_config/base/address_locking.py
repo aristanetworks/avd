@@ -30,7 +30,7 @@ class AddressLockingMixin(Protocol):
             local_interface=local_interface,
         )
 
-    def get_local_interface(self: AvdStructuredConfigBaseProtocol, input_interface: str | None) -> str | None:
+    def _get_local_interface(self: AvdStructuredConfigBaseProtocol, input_interface: str | None) -> str | None:
         """Returns local interface for the given interface."""
         match input_interface:
             case None | "" | "use_default_mgmt_method_interface":
