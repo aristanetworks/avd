@@ -1,5 +1,5 @@
 ---
-### VLAN Interfaces ###
+# Test deprecated 'address' key for vrrp_ids under VLAN interfaces
 
 vlan_interfaces:
   - name: Vlan10
