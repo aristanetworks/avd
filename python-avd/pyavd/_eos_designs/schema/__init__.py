@@ -496,9 +496,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Opt-in to the new behavior for inband management route export:
         - `ip attached-host route export`
-        will only be rendered for inband management interfaces if the underlay protocol is BGP.
-        - This means
-        for non-BGP underlay deployments, the route export will be omitted for inband interfaces.
+        will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
 
         Default value: `False`
         """
@@ -526,9 +524,7 @@ class EosDesigns(EosDesignsRootModel):
                     inband_mgmt_attached_hosts:
                        Opt-in to the new behavior for inband management route export:
                        - `ip attached-host route export`
-                       will only be rendered for inband management interfaces if the underlay protocol is BGP.
-                       - This means
-                       for non-BGP underlay deployments, the route export will be omitted for inband interfaces.
+                       will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
 
                 """
 
