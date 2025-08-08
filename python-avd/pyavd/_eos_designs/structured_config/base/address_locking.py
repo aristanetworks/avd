@@ -24,7 +24,7 @@ class AddressLockingMixin(Protocol):
         if not (address_locking_settings := self.inputs.address_locking_settings):
             return
 
-        local_interface = self.get_local_interface(address_locking_settings.local_interface)
+        local_interface = self._get_local_interface(address_locking_settings.local_interface)
         self.structured_config.address_locking._update(
             dhcp_servers_ipv4=address_locking_settings.dhcp_servers_ipv4._cast_as(EosCliConfigGen.AddressLocking.DhcpServersIpv4),
             local_interface=local_interface,
