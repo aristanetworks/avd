@@ -188,16 +188,18 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
         if subnet is not None:
             network = ip_network(subnet, strict=False)
             ip = str(network[3]) if self.shared_utils.mlag_role == "secondary" else str(network[2])
-            svi.ip_attached_host_route_export._update(enabled=True, distance=19)
             svi.ip_address = f"{ip}/{network.prefixlen}"
             svi.ip_virtual_router_addresses.append(str(network[1]))
+            if not self.inputs.avd_6_behaviors.inband_mgmt_attached_hosts or self.shared_utils.underlay_routing_protocol == "ebgp":
+                svi.ip_attached_host_route_export._update(enabled=True, distance=19)
 
         if ipv6_subnet is not None:
             v6_network = ip_network(ipv6_subnet, strict=False)
             ipv6 = str(v6_network[3]) if self.shared_utils.mlag_role == "secondary" else str(v6_network[2])
             svi.ipv6_address = f"{ipv6}/{v6_network.prefixlen}"
             svi.ipv6_enable = True
-            svi.ipv6_attached_host_route_export._update(enabled=True, distance=19)
             svi.ipv6_virtual_router_addresses.append(str(v6_network[1]))
+            if not self.inputs.avd_6_behaviors.inband_mgmt_attached_hosts or self.shared_utils.underlay_routing_protocol == "ebgp":
+                svi.ipv6_attached_host_route_export._update(enabled=True, distance=19)
 
         return svi

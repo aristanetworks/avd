@@ -36,7 +36,7 @@ keys:
                   type: str
                   description: |-
                     Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters.
-                  pattern: "^[a-zA-Z1-9-_]+$"
+                  pattern: "^[a-zA-Z0-9-_]+$"
                 region:
                   type: str
                   description: |-
@@ -96,7 +96,7 @@ keys:
               type: str
               description: |-
                 Short name for the cluster. Required here, but only used when configuring multiple clusters.
-              pattern: "^[a-zA-Z1-9-_]+$"
+              pattern: "^[a-zA-Z0-9-_]+$"
             servers:
               type: list
               required: true
