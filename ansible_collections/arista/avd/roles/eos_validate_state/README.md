@@ -10,6 +10,12 @@ title: Ansible Collection Role eos_validate_state
 
 # eos_validate_state
 
+!!! warning
+    Deprecation Warning!
+    Please note this role has been replaced with the `arista.avd.anta_runner` role.
+    Please update your playbook accordingly.
+    This role will be removed in AVD version 6.0.0.
+
 ## Overview
 
 **eos_validate_state** is a role leveraged to validate Arista EOS devices' operational states.

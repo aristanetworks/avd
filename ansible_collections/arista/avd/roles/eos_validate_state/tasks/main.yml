@@ -2,6 +2,15 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
+- name: Deprecation warning!
+  delegate_to: localhost
+  ansible.builtin.debug:
+    msg:
+      - "!!! Deprecation Warning - Please note this role has been replaced with the arista.avd.anta_runner role."
+      - "!!! Deprecation Warning - Please update your playbook accordingly."
+      - "!!! Deprecation Warning - This role will be removed in AVD version 6.0.0."
+  run_once: true
+
 - name: Verify Requirements
   delegate_to: localhost
   when: avd_requirements is not defined and avd_verify_requirements | default(true)
