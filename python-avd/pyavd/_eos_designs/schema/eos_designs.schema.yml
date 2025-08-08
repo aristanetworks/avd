@@ -204,6 +204,13 @@ keys:
           there.\n- `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.\n
           \ If `default_mgmt_method` is 'none', the VRF must be specified. For VRF
           default set the string \"default\"."
+      inband_mgmt_attached_hosts:
+        type: bool
+        default: false
+        description: 'Opt-in to the new behavior for inband management route export:
+
+          - `ip attached-host route export` will only be rendered for inband management
+          VLAN interfaces if the underlay protocol is BGP.'
   avd_data_conversion_mode:
     documentation_options:
       table: role-input-validation
