@@ -310,19 +310,20 @@
 {%             set applications = [] %}
 {%             if transceiver_setting.transceiver.application_override_100gbase_srbd is arista.avd.defined(true) %}
 {%                 do applications.append("100gbase-srbd") %}
-{%             elif transceiver_setting.transceiver.application_overrides is arista.avd.defined %}
-{%                 for application_override in transceiver_setting.transceiver.application_overrides %}
-{%                     set application_override_var = application_override.application_number %}
-{%                     if application_override.lanes.start is arista.avd.defined %}
-{%                         set application_override_var = application_override_var ~ " lanes start " ~ application_override.lanes.start %}
-{%                         if application_override.lanes.end is arista.avd.defined %}
-{%                             set application_override_var = application_override_var ~ " end " ~ application_override.lanes.end %}
-{%                         endif %}
-{%                     endif %}
-{%                     do applications.append(application_override_var) %}
-{%                 endfor %}
 {%             else %}
-{%                 do applications.append("-") %}
+{%                 if transceiver_setting.transceiver.application_override is arista.avd.defined %}
+{%                     do applications.append(transceiver_setting.transceiver.application_override) %}
+{%                 endif %}
+{%                 for application_override in transceiver_setting.transceiver.application_override_lanes | arista.avd.default([]) %}
+{%                     set application_override_var = application_override.override ~ " lanes start " ~ application_override.first_lane %}
+{%                     if application_override.last_lane is arista.avd.defined %}
+{%                         set application_override_var = application_override_var ~ " end " ~ application_override.last_lane %}
+{%                     endif %}
+{%                    do applications.append(application_override_var) %}
+{%                 endfor %}
+{%                 if applications == [] %}
+{%                     do applications.append("-") %}
+{%                 endif %}
 {%             endif %}
 {%             set m_override = transceiver_setting.transceiver.media.override | arista.avd.default('-') %}
 | {{ interface }} | {{ frequency }} | {{ m_override }} | {{ applications | join(", ") }} |

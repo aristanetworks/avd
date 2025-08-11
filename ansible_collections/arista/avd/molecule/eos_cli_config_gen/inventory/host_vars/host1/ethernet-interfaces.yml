@@ -479,16 +479,13 @@ ethernet_interfaces:
     transceiver:
       media:
         override: 100gbase-ar4
-      application_overrides:
-        - application_number: 10
-        - application_number: 10
-          lanes:
-            start: 1
-            end: 1
-        - application_number: 5
-          lanes:
-            start: 2
-        - application_number: 6
+      application_override: 2
+      application_override_lanes:
+        - override: 10
+          first_lane: 1
+          last_lane: 1
+        - override: 5
+          first_lane: 2
 
   - name: Ethernet8
     description: to WAN-ISP1-01 Ethernet2
@@ -1776,8 +1773,7 @@ ethernet_interfaces:
       media:
         override: 100gbase-ar4
       application_override_100gbase_srbd: true
-      application_overrides:
-        - application_number: 5
+      application_override: 5
 
   - name: Ethernet74
     peer: DC1-LEAF1B

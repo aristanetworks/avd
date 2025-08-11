@@ -3667,38 +3667,47 @@ keys:
 
                 This key is mutually exclusive with `application_overrides` and takes
                 precedence over it.'
-            application_overrides:
+            application_override:
+              type: int
+              description: Set CMIS transceiver application.
+              min: 0
+              max: 15
+              convert_types:
+              - str
+            application_override_lanes:
               type: list
-              description: Set CMIS transceiver applications.
+              description: Set CMIS transceiver applications with lanes.
               items:
                 type: dict
                 keys:
-                  application_number:
+                  override:
                     min: 0
                     max: 15
                     type: int
                     required: true
                     convert_types:
                     - str
-                  lanes:
-                    type: dict
-                    description: 'Set host lanes for which overrides should be applied.
+                  first_lane:
+                    type: int
+                    description: 'Set the start value of host lanes for which overrides
+                      should be applied.
 
                       The ranges of `lanes` should not overlap.'
-                    keys:
-                      start:
-                        type: int
-                        required: true
-                        min: 1
-                        max: 8
-                        convert_types:
-                        - str
-                      end:
-                        type: int
-                        min: 1
-                        max: 8
-                        convert_types:
-                        - str
+                    required: true
+                    min: 1
+                    max: 8
+                    convert_types:
+                    - str
+                  last_lane:
+                    type: int
+                    description: 'Set the last value of host lanes for which overrides
+                      should be applied.
+
+                      The ranges of `lanes` should not overlap.'
+                    min: 1
+                    max: 8
+                    convert_types:
+                    - str
         ip_proxy_arp:
           type: bool
         traffic_policy:

@@ -426,11 +426,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "ethernet_interfaces.[].transceiver.media") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.media.override") | String |  |  |  | Transceiver type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override_100gbase_srbd</samp>](## "ethernet_interfaces.[].transceiver.application_override_100gbase_srbd") | Boolean |  |  |  | Set legacy mode for 100GBASE-SRBD interoperability.<br>This key is mutually exclusive with `application_overrides` and takes precedence over it. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_overrides</samp>](## "ethernet_interfaces.[].transceiver.application_overrides") | List, items: Dictionary |  |  |  | Set CMIS transceiver applications. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;application_number</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].application_number") | Integer | Required |  | Min: 0<br>Max: 15 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lanes</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].lanes") | Dictionary |  |  |  | Set host lanes for which overrides should be applied.<br>The ranges of `lanes` should not overlap. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].lanes.start") | Integer | Required |  | Min: 1<br>Max: 8 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end</samp>](## "ethernet_interfaces.[].transceiver.application_overrides.[].lanes.end") | Integer |  |  | Min: 1<br>Max: 8 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override</samp>](## "ethernet_interfaces.[].transceiver.application_override") | Integer |  |  | Min: 0<br>Max: 15 | Set CMIS transceiver application. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override_lanes</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes") | List, items: Dictionary |  |  |  | Set CMIS transceiver applications with lanes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes.[].override") | Integer | Required |  | Min: 0<br>Max: 15 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_lane</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes.[].first_lane") | Integer | Required |  | Min: 1<br>Max: 8 | Set the start value of host lanes for which overrides should be applied.<br>The ranges of `lanes` should not overlap. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_lane</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes.[].last_lane") | Integer |  |  | Min: 1<br>Max: 8 | Set the last value of host lanes for which overrides should be applied.<br>The ranges of `lanes` should not overlap. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_proxy_arp</samp>](## "ethernet_interfaces.[].ip_proxy_arp") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "ethernet_interfaces.[].traffic_policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "ethernet_interfaces.[].traffic_policy.input") | String |  |  |  | Ingress traffic policy. |
@@ -1531,15 +1531,20 @@
           # This key is mutually exclusive with `application_overrides` and takes precedence over it.
           application_override_100gbase_srbd: <bool>
 
-          # Set CMIS transceiver applications.
-          application_overrides:
-            - application_number: <int; 0-15; required>
+          # Set CMIS transceiver application.
+          application_override: <int; 0-15>
 
-              # Set host lanes for which overrides should be applied.
+          # Set CMIS transceiver applications with lanes.
+          application_override_lanes:
+            - override: <int; 0-15; required>
+
+              # Set the start value of host lanes for which overrides should be applied.
               # The ranges of `lanes` should not overlap.
-              lanes:
-                start: <int; 1-8; required>
-                end: <int; 1-8>
+              first_lane: <int; 1-8; required>
+
+              # Set the last value of host lanes for which overrides should be applied.
+              # The ranges of `lanes` should not overlap.
+              last_lane: <int; 1-8>
         ip_proxy_arp: <bool>
         traffic_policy:
 

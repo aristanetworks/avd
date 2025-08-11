@@ -9057,69 +9057,64 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class ApplicationOverridesItem(AvdModel):
+            class ApplicationOverrideLanesItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Lanes(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"start": {"type": int}, "end": {"type": int}}
-                    start: int
-                    end: int | None
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, start: int | UndefinedType = Undefined, end: int | None | UndefinedType = Undefined) -> None:
-                            """
-                            Lanes.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                start: start
-                                end: end
-
-                            """
-
-                _fields: ClassVar[dict] = {"application_number": {"type": int}, "lanes": {"type": Lanes}}
-                application_number: int
-                lanes: Lanes
+                _fields: ClassVar[dict] = {"override": {"type": int}, "first_lane": {"type": int}, "last_lane": {"type": int}}
+                override: int
+                first_lane: int
                 """
-                Set host lanes for which overrides should be applied.
-                The ranges of `lanes` should not overlap.
-                Subclass of AvdModel.
+                Set the start value of host lanes for which overrides should be applied.
+                The ranges of `lanes`
+                should not overlap.
+                """
+                last_lane: int | None
+                """
+                Set the last value of host lanes for which overrides should be applied.
+                The ranges of `lanes` should
+                not overlap.
                 """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, application_number: int | UndefinedType = Undefined, lanes: Lanes | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        override: int | UndefinedType = Undefined,
+                        first_lane: int | UndefinedType = Undefined,
+                        last_lane: int | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
-                        ApplicationOverridesItem.
+                        ApplicationOverrideLanesItem.
 
 
                         Subclass of AvdModel.
 
                         Args:
-                            application_number: application_number
-                            lanes:
-                               Set host lanes for which overrides should be applied.
-                               The ranges of `lanes` should not overlap.
-                               Subclass of AvdModel.
+                            override: override
+                            first_lane:
+                               Set the start value of host lanes for which overrides should be applied.
+                               The ranges of `lanes`
+                               should not overlap.
+                            last_lane:
+                               Set the last value of host lanes for which overrides should be applied.
+                               The ranges of `lanes` should
+                               not overlap.
 
                         """
 
-            class ApplicationOverrides(AvdList[ApplicationOverridesItem]):
-                """Subclass of AvdList with `ApplicationOverridesItem` items."""
+            class ApplicationOverrideLanes(AvdList[ApplicationOverrideLanesItem]):
+                """Subclass of AvdList with `ApplicationOverrideLanesItem` items."""
 
-            ApplicationOverrides._item_type = ApplicationOverridesItem
+            ApplicationOverrideLanes._item_type = ApplicationOverrideLanesItem
 
             _fields: ClassVar[dict] = {
                 "frequency": {"type": str},
                 "frequency_unit": {"type": str},
                 "media": {"type": Media},
                 "application_override_100gbase_srbd": {"type": bool},
-                "application_overrides": {"type": ApplicationOverrides},
+                "application_override": {"type": int},
+                "application_override_lanes": {"type": ApplicationOverrideLanes},
             }
             frequency: str | None
             """Transceiver Laser Frequency in GHz (min 190000, max 200000)."""
@@ -9133,11 +9128,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             This key is mutually exclusive with
             `application_overrides` and takes precedence over it.
             """
-            application_overrides: ApplicationOverrides
+            application_override: int | None
+            """Set CMIS transceiver application."""
+            application_override_lanes: ApplicationOverrideLanes
             """
-            Set CMIS transceiver applications.
+            Set CMIS transceiver applications with lanes.
 
-            Subclass of AvdList with `ApplicationOverridesItem` items.
+            Subclass of AvdList with
+            `ApplicationOverrideLanesItem` items.
             """
 
             if TYPE_CHECKING:
@@ -9149,7 +9147,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     frequency_unit: Literal["ghz"] | None | UndefinedType = Undefined,
                     media: Media | UndefinedType = Undefined,
                     application_override_100gbase_srbd: bool | None | UndefinedType = Undefined,
-                    application_overrides: ApplicationOverrides | UndefinedType = Undefined,
+                    application_override: int | None | UndefinedType = Undefined,
+                    application_override_lanes: ApplicationOverrideLanes | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Transceiver.
@@ -9165,10 +9164,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Set legacy mode for 100GBASE-SRBD interoperability.
                            This key is mutually exclusive with
                            `application_overrides` and takes precedence over it.
-                        application_overrides:
-                           Set CMIS transceiver applications.
+                        application_override: Set CMIS transceiver application.
+                        application_override_lanes:
+                           Set CMIS transceiver applications with lanes.
 
-                           Subclass of AvdList with `ApplicationOverridesItem` items.
+                           Subclass of AvdList with
+                           `ApplicationOverrideLanesItem` items.
 
                     """
 
