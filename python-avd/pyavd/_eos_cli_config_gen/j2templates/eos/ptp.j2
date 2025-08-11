@@ -50,6 +50,9 @@ ptp ttl {{ ptp.ttl }}
 {%     if ptp.free_running.enabled is arista.avd.defined(false) %}
 no ptp free-running
 {%     endif %}
+{%     if ptp.hold_ptp_time is arista.avd.defined %}
+ptp hold-ptp-time {{ ptp.hold_ptp_time }}
+{%     endif %}
 {%     if ptp.forward_unicast is arista.avd.defined(true) %}
 ptp forward-unicast
 {%     endif %}
