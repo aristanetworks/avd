@@ -68,7 +68,7 @@ keys:
           The length of time that PTP will remain in hold-down on the internal oscillator if the connection to the GM is lost.
           If a new GM is not elected before the expiry of the hold-down time, the clock will revert to free-running.
         convert_types:
-        - str
+            - str
       message_type:
         type: dict
         keys:
