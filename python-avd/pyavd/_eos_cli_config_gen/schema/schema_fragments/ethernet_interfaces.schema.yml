@@ -1381,7 +1381,6 @@ keys:
                     description: |-
                       Set the start value of host lanes for which overrides should be applied.
                       The ranges of `lanes` should not overlap.
-                    type: int
                     required: true
                     min: 1
                     max: 8
