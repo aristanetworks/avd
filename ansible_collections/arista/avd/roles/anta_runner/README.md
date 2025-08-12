@@ -126,12 +126,10 @@ ansible_host: <str>
 anta_user: <str>
 ansible_user: <str>
 
-# If `anta_user` is set, one of the following password variables must be provided.
+# One of the following must be set for the authentication.
 anta_password: <str>
 anta_httpapi_pass: <str>
 anta_httpapi_password: <str>
-
-# If `anta_user` is NOT set, one of the following is used for `ansible_user`.
 ansible_password: <str>
 ansible_httpapi_pass: <str>
 ansible_httpapi_password: <str>
@@ -141,8 +139,7 @@ ansible_httpapi_password: <str>
 anta_enable_mode: <bool>
 ansible_become: <bool; default=false>
 
-# If `anta_enable_mode` is true, `anta_enable_password` is used.
-# Otherwise, falls back to `ansible_become_password`.
+# The password for privileged (enable) mode. `anta_enable_password` takes precedence over `ansible_become_password`.
 anta_enable_password: <str>
 ansible_become_password: <str>
 

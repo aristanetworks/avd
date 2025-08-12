@@ -1,3 +1,9 @@
+# Test the new anta_ variables for connection settings
+anta_user: anta
+anta_password: anta
+anta_enable_mode: true
+anta_enable_password: anta
+
 # Custom router bgp structured_config to test external BGP peer
 custom_structured_configuration_router_bgp:
   neighbors:

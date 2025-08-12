@@ -6,10 +6,9 @@ eos_cli_config_gen_documentation:
 
 ansible_connection: ansible.netcommon.httpapi
 ansible_network_os: arista.eos.eos
-anta_user: ansible
-anta_password: ansible
-anta_enable_mode: true
-anta_enable_password: ansible
+ansible_user: ansible
+ansible_password: ansible
+ansible_become: true
 ansible_become_method: enable
 ansible_httpapi_use_ssl: true
 ansible_httpapi_validate_certs: false

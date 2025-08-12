@@ -460,20 +460,25 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
     required_settings = ["host", "username", "password"]
 
     device_vars = ANSIBLE_VARS[device]
+    username = default(get(device_vars, "anta_user"), get(device_vars, "ansible_user"))
+    password = default(
+        get(device_vars, "anta_password"),
+        get(device_vars, "anta_httpapi_pass"),
+        get(device_vars, "anta_httpapi_password"),
+        get(device_vars, "ansible_password"),
+        get(device_vars, "ansible_httpapi_pass"),
+        get(device_vars, "ansible_httpapi_password"),
+    )
+    enable_mode = default(get(device_vars, "anta_enable_mode"), get(device_vars, "ansible_become", default=False))
+    enable_password = default(get(device_vars, "anta_enable_password"), get(device_vars, "ansible_become_password"))
 
     device_settings = {
         "name": device,
         "host": get(device_vars, "ansible_host", default=get(device_vars, "inventory_hostname")),
-        "username": default(get(device_vars, "anta_user"), get(device_vars, "ansible_user")),
-        "password": default(get(device_vars, "anta_password"), get(device_vars, "anta_httpapi_pass"), get(device_vars, "anta_httpapi_password"))
-        if get(device_vars, "anta_user")
-        else default(
-            get(device_vars, "ansible_password"),
-            get(device_vars, "ansible_httpapi_pass"),
-            get(device_vars, "ansible_httpapi_password"),
-        ),
-        "enable": default(get(device_vars, "anta_enable_mode"), get(device_vars, "ansible_become", default=False)),
-        "enable_password": get(device_vars, "anta_enable_password") if get(device_vars, "anta_enable_mode") else get(device_vars, "ansible_become_password"),
+        "username": username,
+        "password": password,
+        "enable": enable_mode,
+        "enable_password": enable_password,
         "port": get(
             device_vars,
             "ansible_httpapi_port",
