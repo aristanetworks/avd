@@ -163,7 +163,7 @@ ethernet_interfaces:
 - name: Ethernet14
   description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B
   shutdown: false
-  speed: forced 100full
+  speed: forced 1000full
   channel_group:
     id: 9
     mode: active
@@ -173,7 +173,7 @@ ethernet_interfaces:
 - name: Ethernet15
   description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B
   shutdown: false
-  speed: forced 100full
+  speed: forced 1000full
   channel_group:
     id: 9
     mode: active
@@ -219,6 +219,26 @@ ethernet_interfaces:
     mode: active
   peer: core-1-isis-sr-ldp
   peer_interface: Ethernet19
+  peer_type: core_router
+- name: Ethernet20
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet20
+  shutdown: false
+  speed: forced 100full
+  channel_group:
+    id: 20
+    mode: active
+  peer: core-1-isis-sr-ldp
+  peer_interface: Ethernet20
+  peer_type: core_router
+- name: Ethernet21
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet21
+  shutdown: false
+  speed: forced 100full
+  channel_group:
+    id: 20
+    mode: active
+  peer: core-1-isis-sr-ldp
+  peer_interface: Ethernet21
   peer_type: core_router
 hostname: core-2-ospf-ldp
 ip_routing: true
@@ -274,7 +294,6 @@ port_channel_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  isis_metric: 70
   ip_address: 100.64.48.17/31
   ipv6_enable: true
   ospf_network_point_to_point: true
@@ -329,6 +348,22 @@ port_channel_interfaces:
   peer_type: core_router
   switchport:
     enabled: false
+- name: Port-Channel20
+  description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12346
+  shutdown: true
+  mtu: 1600
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  peer: core-1-isis-sr-ldp
+  peer_interface: Port-Channel12346
+  peer_type: core_router
+  switchport:
+    enabled: false
 ptp:
   mode: boundary
   clock_identity: 00:1C:73:7f:00:02
@@ -368,6 +403,7 @@ router_ospf:
     - Port-Channel9
     - Port-Channel109
     - Port-Channel18
+    - Port-Channel20
     max_lsa: 12000
 service_routing_protocols_model: multi-agent
 spanning_tree:
