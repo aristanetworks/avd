@@ -257,6 +257,10 @@ class AvdDevice:
     serial_number: str | None = None
     system_mac_address: str | None = None
 
+    def get_cv_device(self) -> CVDevice:
+        # CVDevice object representing hostname, serial number and system mac address from AVD input
+        return CVDevice(hostname=self.hostname, serial_number=self.serial_number, system_mac_address=self.system_mac_address)
+
 
 @dataclass
 class CVEosConfig:
@@ -380,15 +384,7 @@ class DuplicatedSystemMacAddress:
     unset_or_mixed_serial_number: dict[str, list[CVDevice]] = field(default_factory=dict)
     """Dictionary holding CVDevices with duplicated system_mac_address and at least one device with unset serial_number."""
     set_serial_number: dict[str, list[CVDevice]] = field(default_factory=dict)
-    """Dictionary holding CVDevices or AvdDevices with duplicated system_mac_address and set serial_number."""
-
-
-@dataclass
-class AvdDuplicatedSystemMacAddress:
-    unset_or_mixed_serial_number: dict[str, list[AvdDevice]] = field(default_factory=dict)
-    """Dictionary holding AvdDevice objects with duplicated system_mac_address and at least one device with unset serial_number."""
-    set_serial_number: dict[str, list[AvdDevice]] = field(default_factory=dict)
-    """Dictionary holding AvdDevice objects with duplicated system_mac_address and set serial_number."""
+    """Dictionary holding CVDevices with duplicated system_mac_address and set serial_number."""
 
 
 @dataclass

@@ -21,10 +21,6 @@ from .models import (
     AvdDevice,
     CloudVision,
     CVChangeControl,
-    CVDeviceTag,
-    CVEosConfig,
-    CVInterfaceTag,
-    CVPathfinderMetadata,
     CVStudioInputs,
     CVTimeOuts,
     CVWorkspace,
@@ -44,12 +40,8 @@ async def deploy_to_cv(
     workspace: CVWorkspace | None = None,
     change_control: CVChangeControl | None = None,
     avd_devices: list[AvdDevice] | None = None,
-    configs: list[CVEosConfig] | None = None,
     static_config_manifest: AvdManifest | None = None,
-    device_tags: list[CVDeviceTag] | None = None,
-    interface_tags: list[CVInterfaceTag] | None = None,
     studio_inputs: list[CVStudioInputs] | None = None,
-    cv_pathfinder_metadata: list[CVPathfinderMetadata] | None = None,
     skip_missing_devices: bool = False,
     strict_system_mac_address: bool = False,
     strict_tags: bool = True,
@@ -58,11 +50,11 @@ async def deploy_to_cv(
     """
     Deploy various objects to CloudVision.
 
-    For any device referred under `configs`, `device_tags` and `interface_tags` the device:
+    For any device referred under `avd_devices`:
     - The device must be present in the CloudVision Inventory and onboarded to the "Inventory & Topology Studio".
         - TODO: See if we can onboard ZTP devices and/or preprovision.
     - The hostname will we updated in the I&T Studio.
-    - The `serial_number` and `system_mac_address` properties will be inplace updated in the given CVDevice objects.
+    - The `serial_number` and `system_mac_address` properties will be inplace updated in the interim InternalDevice objects.
 
     TODO: Respect timeouts and add more.
 
@@ -76,12 +68,8 @@ async def deploy_to_cv(
             The `id` and `state` properties will be inplace updated in the given CVChangeControl object.
         avd_devices: AvdDevice objects representing device info, config, device/interface tags and CVPathfinderMetaData. \
             This signifies read-only input from AVD intended to be deployed to CV.
-        configs: Configs to be deployed using the "Static Configlet Studio".
-        device_tags: Device Tags to be deployed and assigned.
-        interface_tags: Interface Tags to be deployed and assigned.
         studio_inputs: Studio Inputs to be deployed. \
             It is not supported to update overlapping input paths for the same studio in the same deployment.
-        cv_pathfinder_metadata: Special metadata for CV Pathfinder solution. Metadata will be combined and deployed to the hidden metadata studio.
         skip_missing_devices: If `True` anything that can be deployed will get deployed. \
             Otherwise the Workspace will be abandoned on any issue.
         strict_system_mac_address: If `True` - raise error if devices with duplicated `system_mac_address` but unique `serial_number` are present.
@@ -130,16 +118,8 @@ async def deploy_to_cv(
     """
     LOGGER.info("deploy_to_cv:")
     result = DeployToCvResult(workspace=workspace or CVWorkspace(), change_control=change_control)
-    if device_tags is None:
-        device_tags = []
-    if interface_tags is None:
-        interface_tags = []
-    if configs is None:
-        configs = []
     if studio_inputs is None:
         studio_inputs = []
-    if cv_pathfinder_metadata is None:
-        cv_pathfinder_metadata = []
     try:
         async with CVClient(
             servers=cloudvision.servers,
@@ -155,25 +135,14 @@ async def deploy_to_cv(
             # Create workspace
             await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 
-            # Form deduplicated list of targeted CVDevices
-            devices = list(
-                {
-                    id(device): device
-                    for device in (
-                        [tag.device for tag in device_tags if tag.device is not None]
-                        + [tag.device for tag in interface_tags if tag.device is not None]
-                        + [config.device for config in configs if config.device is not None]
-                    )
-                }.values()
-            )
             # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
-            verify_device_inputs(devices, avd_devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
+            verify_device_inputs(avd_devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
 
-            # Build list[InternalDevice] from list[AvdDevice]
-            # We will be then passing list[InternalDevice] around to rest of the wrappers
-            # to help identify changes to be done on CV side and in-place update relevant members of InternalDevice object.
+            # Form list of InternalDevice instance from given list of input AvdDevice instance.
+            # We will be then passing list of InternalDevice instance to rest of the wrappers
+            # to help identify changes to be done on CV side and in-place update relevant members of InternalDevice instance.
             internal_devices = build_internal_device_inputs(avd_devices)
-            LOGGER.debug("deploy_to_cv(): built %s internal_devices from inputs", len(internal_devices))
+            LOGGER.debug("deploy_to_cv(): built %s internal devices from inputs", len(internal_devices))
 
             try:
                 # Verify devices exist and update CVDevice objects with _exists_on_cv.
