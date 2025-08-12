@@ -1587,6 +1587,13 @@ $defs:
                 # TODO: Add this in a separate PR.
                 # Overrides the dynamically generated (from the pool `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
                 format: cidr
+              act_internet_access:
+                type: bool
+                description: |-
+                  Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                  This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+                  ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                  Overrides global `digital_twin.fabric.act_internet_access` flag.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

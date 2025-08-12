@@ -477,7 +477,7 @@ class EosDesigns(EosDesignsRootModel):
     class Avd6Behaviors(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}}
+        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}, "inband_mgmt_attached_hosts": {"type": bool, "default": False}}
         snmp_settings_vrfs: bool
         """
         Opt-in to the new behavior for snmp_settings:
@@ -492,10 +492,18 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        inband_mgmt_attached_hosts: bool
+        """
+        Opt-in to the new behavior for inband management route export:
+        - `ip attached-host route export`
+        will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined) -> None:
+            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined, inband_mgmt_attached_hosts: bool | UndefinedType = Undefined) -> None:
                 """
                 Avd6Behaviors.
 
@@ -513,6 +521,10 @@ class EosDesigns(EosDesignsRootModel):
                          If
                        `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
                        "default".
+                    inband_mgmt_attached_hosts:
+                       Opt-in to the new behavior for inband management route export:
+                       - `ip attached-host route export`
+                       will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
 
                 """
 
@@ -4048,6 +4060,7 @@ class EosDesigns(EosDesignsRootModel):
                 "act_os_version": {"type": str},
                 "act_username": {"type": str, "default": "cvpadmin"},
                 "act_password": {"type": str, "default": "cvp123!"},
+                "act_internet_access": {"type": bool, "default": False},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -4063,6 +4076,16 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `"cvp123!"`
             """
+            act_internet_access: bool
+            """
+            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+            This option
+            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+            types.
+            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+
+            Default value: `False`
+            """
 
             if TYPE_CHECKING:
 
@@ -4072,6 +4095,7 @@ class EosDesigns(EosDesignsRootModel):
                     act_os_version: str | None | UndefinedType = Undefined,
                     act_username: str | UndefinedType = Undefined,
                     act_password: str | UndefinedType = Undefined,
+                    act_internet_access: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -4083,6 +4107,12 @@ class EosDesigns(EosDesignsRootModel):
                         act_os_version: OS version for ACT Digital Twin fabric devices.
                         act_username: Username for ACT Digital Twin fabric devices.
                         act_password: Cleartext password for ACT Digital Twin fabric devices.
+                        act_internet_access:
+                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                           This option
+                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                           types.
+                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
 
                     """
 
@@ -12265,6 +12295,8 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "sflow": {"type": bool, "default": True},
+                "wan": {"type": bool, "default": True},
+                "ptp": {"type": bool, "default": True},
             }
             queue_monitor: bool
             """
@@ -12406,6 +12438,22 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            wan: bool
+            """
+            Support for Arista WAN features.
+            An error will be raised if the feature is enabled and this is
+            false.
+
+            Default value: `True`
+            """
+            ptp: bool
+            """
+            Support for Precision Time Protocol (PTP).
+            The feature will be ignored on platforms where this is
+            false.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -12429,6 +12477,8 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     sflow: bool | UndefinedType = Undefined,
+                    wan: bool | UndefinedType = Undefined,
+                    ptp: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -12513,6 +12563,14 @@ class EosDesigns(EosDesignsRootModel):
                         sflow:
                            Support for sFlow.
                            The feature will be ignored on platforms where this is false.
+                        wan:
+                           Support for Arista WAN features.
+                           An error will be raised if the feature is enabled and this is
+                           false.
+                        ptp:
+                           Support for Precision Time Protocol (PTP).
+                           The feature will be ignored on platforms where this is
+                           false.
 
                     """
 
@@ -12970,6 +13028,8 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "sflow": {"type": bool, "default": True},
+                "wan": {"type": bool, "default": True},
+                "ptp": {"type": bool, "default": True},
             }
             queue_monitor: bool
             """
@@ -13111,6 +13171,22 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            wan: bool
+            """
+            Support for Arista WAN features.
+            An error will be raised if the feature is enabled and this is
+            false.
+
+            Default value: `True`
+            """
+            ptp: bool
+            """
+            Support for Precision Time Protocol (PTP).
+            The feature will be ignored on platforms where this is
+            false.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -13134,6 +13210,8 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     sflow: bool | UndefinedType = Undefined,
+                    wan: bool | UndefinedType = Undefined,
+                    ptp: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -13218,6 +13296,14 @@ class EosDesigns(EosDesignsRootModel):
                         sflow:
                            Support for sFlow.
                            The feature will be ignored on platforms where this is false.
+                        wan:
+                           Support for Arista WAN features.
+                           An error will be raised if the feature is enabled and this is
+                           false.
+                        ptp:
+                           Support for Precision Time Protocol (PTP).
+                           The feature will be ignored on platforms where this is
+                           false.
 
                     """
 
@@ -16771,6 +16857,67 @@ class EosDesigns(EosDesignsRootModel):
 
             StaticRoutes._item_type = StaticRoutesItem
 
+            class Ipv6StaticRoutesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "prefix": {"type": str},
+                    "next_hop": {"type": str},
+                    "track_bfd": {"type": bool},
+                    "distance": {"type": int},
+                    "tag": {"type": int},
+                    "name": {"type": str},
+                    "metric": {"type": int},
+                    "interface": {"type": str},
+                }
+                prefix: str | None
+                next_hop: str | None
+                track_bfd: bool | None
+                """Track next-hop using BFD."""
+                distance: int | None
+                tag: int | None
+                name: str | None
+                """description."""
+                metric: int | None
+                interface: str | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | None | UndefinedType = Undefined,
+                        next_hop: str | None | UndefinedType = Undefined,
+                        track_bfd: bool | None | UndefinedType = Undefined,
+                        distance: int | None | UndefinedType = Undefined,
+                        tag: int | None | UndefinedType = Undefined,
+                        name: str | None | UndefinedType = Undefined,
+                        metric: int | None | UndefinedType = Undefined,
+                        interface: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ipv6StaticRoutesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: prefix
+                            next_hop: next_hop
+                            track_bfd: Track next-hop using BFD.
+                            distance: distance
+                            tag: tag
+                            name: description.
+                            metric: metric
+                            interface: interface
+
+                        """
+
+            class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+            Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
+
             class TrunkGroups(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -17102,6 +17249,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv4_acl_out": {"type": str},
                 "ip_helpers": {"type": IpHelpers},
                 "static_routes": {"type": StaticRoutes},
+                "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                 "vni_override": {"type": int},
                 "rt_override": {"type": str},
                 "rd_override": {"type": str},
@@ -17205,6 +17353,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdList
             with `StaticRoutesItem` items.
+            """
+            ipv6_static_routes: Ipv6StaticRoutes
+            """
+            IPv6 static routes to be configured on every device where the SVI is configured.
+
+            Subclass of
+            AvdList with `Ipv6StaticRoutesItem` items.
             """
             vni_override: int | None
             """
@@ -17328,6 +17483,7 @@ class EosDesigns(EosDesignsRootModel):
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
+                    ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                     vni_override: int | None | UndefinedType = Undefined,
                     rt_override: str | None | UndefinedType = Undefined,
                     rd_override: str | None | UndefinedType = Undefined,
@@ -17414,6 +17570,11 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdList
                            with `StaticRoutesItem` items.
+                        ipv6_static_routes:
+                           IPv6 static routes to be configured on every device where the SVI is configured.
+
+                           Subclass of
+                           AvdList with `Ipv6StaticRoutesItem` items.
                         vni_override:
                            By default the VNI will be derived from "mac_vrf_vni_base".
                            The vni_override allows us to override
@@ -17615,6 +17776,67 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `StaticRoutesItem` items."""
 
         StaticRoutes._item_type = StaticRoutesItem
+
+        class Ipv6StaticRoutesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "prefix": {"type": str},
+                "next_hop": {"type": str},
+                "track_bfd": {"type": bool},
+                "distance": {"type": int},
+                "tag": {"type": int},
+                "name": {"type": str},
+                "metric": {"type": int},
+                "interface": {"type": str},
+            }
+            prefix: str | None
+            next_hop: str | None
+            track_bfd: bool | None
+            """Track next-hop using BFD."""
+            distance: int | None
+            tag: int | None
+            name: str | None
+            """description."""
+            metric: int | None
+            interface: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    prefix: str | None | UndefinedType = Undefined,
+                    next_hop: str | None | UndefinedType = Undefined,
+                    track_bfd: bool | None | UndefinedType = Undefined,
+                    distance: int | None | UndefinedType = Undefined,
+                    tag: int | None | UndefinedType = Undefined,
+                    name: str | None | UndefinedType = Undefined,
+                    metric: int | None | UndefinedType = Undefined,
+                    interface: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6StaticRoutesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        prefix: prefix
+                        next_hop: next_hop
+                        track_bfd: Track next-hop using BFD.
+                        distance: distance
+                        tag: tag
+                        name: description.
+                        metric: metric
+                        interface: interface
+
+                    """
+
+        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
         class TrunkGroups(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -17949,6 +18171,7 @@ class EosDesigns(EosDesignsRootModel):
             "ipv4_acl_out": {"type": str},
             "ip_helpers": {"type": IpHelpers},
             "static_routes": {"type": StaticRoutes},
+            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
             "vni_override": {"type": int},
             "rt_override": {"type": str},
             "rd_override": {"type": str},
@@ -18068,6 +18291,13 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList
         with `StaticRoutesItem` items.
+        """
+        ipv6_static_routes: Ipv6StaticRoutes
+        """
+        IPv6 static routes to be configured on every device where the SVI is configured.
+
+        Subclass of
+        AvdList with `Ipv6StaticRoutesItem` items.
         """
         vni_override: int | None
         """
@@ -18193,6 +18423,7 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                 vni_override: int | None | UndefinedType = Undefined,
                 rt_override: str | None | UndefinedType = Undefined,
                 rd_override: str | None | UndefinedType = Undefined,
@@ -18291,6 +18522,11 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList
                        with `StaticRoutesItem` items.
+                    ipv6_static_routes:
+                       IPv6 static routes to be configured on every device where the SVI is configured.
+
+                       Subclass of
+                       AvdList with `Ipv6StaticRoutesItem` items.
                     vni_override:
                        By default the VNI will be derived from "mac_vrf_vni_base".
                        The vni_override allows us to override
@@ -26258,7 +26494,7 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -26266,11 +26502,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -26283,6 +26533,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -30551,7 +30809,7 @@ class EosDesigns(EosDesignsRootModel):
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                             act_os_version: str | None
                             """
                             Desired ACT Digital Twin OS version.
@@ -30559,11 +30817,25 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             mgmt_ip: str | None
                             """Desired management interface IPv4 address."""
+                            act_internet_access: bool | None
+                            """
+                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                            This option
+                            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                            types.
+                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                            Overrides
+                            global `digital_twin.fabric.act_internet_access` flag.
+                            """
 
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                    self,
+                                    *,
+                                    act_os_version: str | None | UndefinedType = Undefined,
+                                    mgmt_ip: str | None | UndefinedType = Undefined,
+                                    act_internet_access: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     DigitalTwin.
@@ -30576,6 +30848,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Desired ACT Digital Twin OS version.
                                            Overrides global `digital_twin.fabric.act_os_version` flag.
                                         mgmt_ip: Desired management interface IPv4 address.
+                                        act_internet_access:
+                                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                           This option
+                                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                           types.
+                                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                           Overrides
+                                           global `digital_twin.fabric.act_internet_access` flag.
 
                                     """
 
@@ -34773,7 +35053,7 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -34781,11 +35061,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -34798,6 +35092,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -39075,7 +39377,7 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -39083,11 +39385,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -39100,6 +39416,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -42832,6 +43156,67 @@ class EosDesigns(EosDesignsRootModel):
 
                             StaticRoutes._item_type = StaticRoutesItem
 
+                            class Ipv6StaticRoutesItem(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "prefix": {"type": str},
+                                    "next_hop": {"type": str},
+                                    "track_bfd": {"type": bool},
+                                    "distance": {"type": int},
+                                    "tag": {"type": int},
+                                    "name": {"type": str},
+                                    "metric": {"type": int},
+                                    "interface": {"type": str},
+                                }
+                                prefix: str | None
+                                next_hop: str | None
+                                track_bfd: bool | None
+                                """Track next-hop using BFD."""
+                                distance: int | None
+                                tag: int | None
+                                name: str | None
+                                """description."""
+                                metric: int | None
+                                interface: str | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        prefix: str | None | UndefinedType = Undefined,
+                                        next_hop: str | None | UndefinedType = Undefined,
+                                        track_bfd: bool | None | UndefinedType = Undefined,
+                                        distance: int | None | UndefinedType = Undefined,
+                                        tag: int | None | UndefinedType = Undefined,
+                                        name: str | None | UndefinedType = Undefined,
+                                        metric: int | None | UndefinedType = Undefined,
+                                        interface: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Ipv6StaticRoutesItem.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            prefix: prefix
+                                            next_hop: next_hop
+                                            track_bfd: Track next-hop using BFD.
+                                            distance: distance
+                                            tag: tag
+                                            name: description.
+                                            metric: metric
+                                            interface: interface
+
+                                        """
+
+                            class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                                """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                            Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
+
                             class TrunkGroups(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
@@ -43175,6 +43560,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv4_acl_out": {"type": str},
                                 "ip_helpers": {"type": IpHelpers},
                                 "static_routes": {"type": StaticRoutes},
+                                "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                                 "vni_override": {"type": int},
                                 "rt_override": {"type": str},
                                 "rd_override": {"type": str},
@@ -43288,6 +43674,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList
                             with `StaticRoutesItem` items.
+                            """
+                            ipv6_static_routes: Ipv6StaticRoutes
+                            """
+                            IPv6 static routes to be configured on every device where the SVI is configured.
+
+                            Subclass of
+                            AvdList with `Ipv6StaticRoutesItem` items.
                             """
                             vni_override: int | None
                             """
@@ -43412,6 +43805,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
                                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
+                                    ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                     vni_override: int | None | UndefinedType = Undefined,
                                     rt_override: str | None | UndefinedType = Undefined,
                                     rd_override: str | None | UndefinedType = Undefined,
@@ -43504,6 +43898,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass of AvdList
                                            with `StaticRoutesItem` items.
+                                        ipv6_static_routes:
+                                           IPv6 static routes to be configured on every device where the SVI is configured.
+
+                                           Subclass of
+                                           AvdList with `Ipv6StaticRoutesItem` items.
                                         vni_override:
                                            By default the VNI will be derived from "mac_vrf_vni_base".
                                            The vni_override allows us to override
@@ -43705,6 +44104,67 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `StaticRoutesItem` items."""
 
                         StaticRoutes._item_type = StaticRoutesItem
+
+                        class Ipv6StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
                         class TrunkGroups(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -44046,6 +44506,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv4_acl_out": {"type": str},
                             "ip_helpers": {"type": IpHelpers},
                             "static_routes": {"type": StaticRoutes},
+                            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "vni_override": {"type": int},
                             "rt_override": {"type": str},
                             "rd_override": {"type": str},
@@ -44184,6 +44645,13 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdList
                         with `StaticRoutesItem` items.
                         """
+                        ipv6_static_routes: Ipv6StaticRoutes
+                        """
+                        IPv6 static routes to be configured on every device where the SVI is configured.
+
+                        Subclass of
+                        AvdList with `Ipv6StaticRoutesItem` items.
+                        """
                         vni_override: int | None
                         """
                         By default the VNI will be derived from "mac_vrf_vni_base".
@@ -44310,6 +44778,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 vni_override: int | None | UndefinedType = Undefined,
                                 rt_override: str | None | UndefinedType = Undefined,
                                 rd_override: str | None | UndefinedType = Undefined,
@@ -44420,6 +44889,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList
                                        with `StaticRoutesItem` items.
+                                    ipv6_static_routes:
+                                       IPv6 static routes to be configured on every device where the SVI is configured.
+
+                                       Subclass of
+                                       AvdList with `Ipv6StaticRoutesItem` items.
                                     vni_override:
                                        By default the VNI will be derived from "mac_vrf_vni_base".
                                        The vni_override allows us to override
@@ -44577,6 +45051,67 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `StaticRoutesItem` items."""
 
                         StaticRoutes._item_type = StaticRoutesItem
+
+                        class Ipv6StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
                         class Nodes(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -44791,6 +45326,7 @@ class EosDesigns(EosDesignsRootModel):
                             "encapsulation_dot1q_vlan": {"type": EncapsulationDot1qVlan},
                             "ip_addresses": {"type": IpAddresses},
                             "static_routes": {"type": StaticRoutes},
+                            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "nodes": {"type": Nodes},
                             "description": {"type": str},
                             "descriptions": {"type": Descriptions},
@@ -44818,10 +45354,17 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
                         static_routes: StaticRoutes
                         """
-                        Static routes to be configured on every device when this interface is configured.
+                        Static routes to be configured on every device where this interface is configured.
 
                         Subclass of
                         AvdList with `StaticRoutesItem` items.
+                        """
+                        ipv6_static_routes: Ipv6StaticRoutes
+                        """
+                        IPv6 static routes to be configured on every device where this interface is configured.
+
+                        Subclass of
+                        AvdList with `Ipv6StaticRoutesItem` items.
                         """
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
@@ -44889,6 +45432,7 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: EncapsulationDot1qVlan | UndefinedType = Undefined,
                                 ip_addresses: IpAddresses | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 descriptions: Descriptions | UndefinedType = Undefined,
@@ -44918,10 +45462,15 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdList with `int` items.
                                     ip_addresses: Subclass of AvdList with `str` items.
                                     static_routes:
-                                       Static routes to be configured on every device when this interface is configured.
+                                       Static routes to be configured on every device where this interface is configured.
 
                                        Subclass of
                                        AvdList with `StaticRoutesItem` items.
+                                    ipv6_static_routes:
+                                       IPv6 static routes to be configured on every device where this interface is configured.
+
+                                       Subclass of
+                                       AvdList with `Ipv6StaticRoutesItem` items.
                                     nodes: Subclass of AvdList with `str` items.
                                     description: description
                                     descriptions:
@@ -45119,6 +45668,67 @@ class EosDesigns(EosDesignsRootModel):
 
                         StaticRoutes._item_type = StaticRoutesItem
 
+                        class Ipv6StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
+
                         class Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -45307,6 +45917,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
+                            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "ospf": {"type": Ospf},
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
@@ -45366,10 +45977,13 @@ class EosDesigns(EosDesignsRootModel):
                         """Name of the IPv4 Access-list to be assigned in the egress direction."""
                         static_routes: StaticRoutes
                         """
-                        Static routes to be configured on the device when this Port-channel is configured.
-
-                        Subclass of
-                        AvdList with `StaticRoutesItem` items.
+                        Static routes to be configured on the device where this Port-channel interface is configured.
+                        Subclass of AvdList with `StaticRoutesItem` items.
+                        """
+                        ipv6_static_routes: Ipv6StaticRoutes
+                        """
+                        IPv6 static routes to be configured on the device where this Port-channel interface is configured.
+                        Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                         """
                         ospf: Ospf
                         """
@@ -45411,6 +46025,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
@@ -45452,10 +46067,11 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
                                     ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
                                     static_routes:
-                                       Static routes to be configured on the device when this Port-channel is configured.
-
-                                       Subclass of
-                                       AvdList with `StaticRoutesItem` items.
+                                       Static routes to be configured on the device where this Port-channel interface is configured.
+                                       Subclass of AvdList with `StaticRoutesItem` items.
+                                    ipv6_static_routes:
+                                       IPv6 static routes to be configured on the device where this Port-channel interface is configured.
+                                       Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                                     ospf:
                                        OSPF interface configuration.
 
@@ -51025,7 +51641,7 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -51033,11 +51649,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -51050,6 +51680,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -55318,7 +55956,7 @@ class EosDesigns(EosDesignsRootModel):
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                             act_os_version: str | None
                             """
                             Desired ACT Digital Twin OS version.
@@ -55326,11 +55964,25 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             mgmt_ip: str | None
                             """Desired management interface IPv4 address."""
+                            act_internet_access: bool | None
+                            """
+                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                            This option
+                            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                            types.
+                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                            Overrides
+                            global `digital_twin.fabric.act_internet_access` flag.
+                            """
 
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                    self,
+                                    *,
+                                    act_os_version: str | None | UndefinedType = Undefined,
+                                    mgmt_ip: str | None | UndefinedType = Undefined,
+                                    act_internet_access: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     DigitalTwin.
@@ -55343,6 +55995,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Desired ACT Digital Twin OS version.
                                            Overrides global `digital_twin.fabric.act_os_version` flag.
                                         mgmt_ip: Desired management interface IPv4 address.
+                                        act_internet_access:
+                                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                           This option
+                                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                           types.
+                                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                           Overrides
+                                           global `digital_twin.fabric.act_internet_access` flag.
 
                                     """
 
@@ -59540,7 +60200,7 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -59548,11 +60208,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -59565,6 +60239,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -63842,7 +64524,7 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -63850,11 +64532,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -63867,6 +64563,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
