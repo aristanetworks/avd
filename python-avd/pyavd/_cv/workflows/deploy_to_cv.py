@@ -237,7 +237,6 @@ async def deploy_to_cv(
 
                 # Deploy CV Pathfinder metadata
                 await deploy_cv_pathfinder_metadata_to_cv(
-                    cv_pathfinder_metadata=cv_pathfinder_metadata,
                     internal_devices=internal_devices,
                     result=result,
                     cv_client=cv_client,

@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from pyavd._cv.api.arista.studio.v1 import InputSchema
     from pyavd._cv.client import CVClient
 
-    from .models import CVDevice, CVPathfinderMetadata, DeployToCvResult, InternalDevice
+    from .models import DeployToCvResult, InternalDevice
 
 LOGGER = getLogger(__name__)
 
@@ -136,86 +136,17 @@ def update_general_metadata(metadata: dict, studio_inputs: dict, studio_schema: 
     return warnings
 
 
-def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
+def upsert_pathfinder(internal_device: InternalDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
     """
     In-place insert / update metadata for one pathfinder device in studio_inputs.
 
     Returns any warnings raised.
     """
-    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_pathfinder %s", device.hostname)
+    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_pathfinder %s", internal_device.avd_device.hostname)
 
     warnings = []
 
-    pathfinder_metadata = {
-        "inputs": {
-            "value": {
-                "sslProfileName": metadata.get("ssl_profile", ""),
-                "vtepIp": metadata.get("vtep_ip", ""),
-                "wanInterfaces": [
-                    {
-                        "inputs": {
-                            "details": {
-                                "carrier": interface.get("carrier", ""),
-                                "circuitId": interface.get("circuit_id", ""),
-                                "pathgroup": interface.get("pathgroup", ""),
-                                "publicIp": interface.get("public_ip", ""),
-                            },
-                        },
-                        "tags": {"query": f"interface:{interface.get('name', '')}@{device.serial_number}"},
-                    }
-                    for interface in metadata.get("interfaces", [])
-                ],
-            },
-        },
-        "tags": {"query": f"device:{device.serial_number}"},
-    }
-
-    pathfinder_location = {key: metadata.get(key) for key in ("region", "site", "address")}
-    if any(pathfinder_location):
-        if is_pathfinder_location_supported(studio_schema):
-            pathfinder_metadata["inputs"]["value"].update(pathfinder_location)
-        else:
-            warning = "deploy_cv_pathfinder_metadata_to_cv: Ignoring Pathfinder location information since it is not supported by the metadata studio."
-            LOGGER.info(warning)
-            warnings.append(warning)
-
-    found_index = None
-    studio_inputs_pathfinders = studio_inputs.setdefault("pathfinders", [])
-    if not isinstance(studio_inputs_pathfinders, list):
-        # Resetting the pathfinders field to a list in case of invalid data.
-        studio_inputs_pathfinders = studio_inputs["pathfinders"] = []
-
-    for index, router in enumerate(studio_inputs_pathfinders):
-        if not isinstance(router, dict):
-            continue
-
-        if get(router, "tags.query") == f"device:{device.serial_number}":
-            found_index = index
-            break
-
-    if found_index is None:
-        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: New pathfinder device, adding %s", device.hostname)
-        studio_inputs_pathfinders.append(pathfinder_metadata)
-    else:
-        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing pathfinder device, updating %s", device.hostname)
-        studio_inputs_pathfinders[found_index] = pathfinder_metadata
-
-    return warnings
-
-
-def upsert_pathfinder2(internal_device: InternalDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
-    """
-    In-place insert / update metadata for one pathfinder device in studio_inputs.
-
-    Returns any warnings raised.
-    """
-    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_pathfinder2 %s", internal_device.avd_device.hostname)
-
-    warnings = []
-
-    # TODO: Check if we need to work on copy of metadata
-    # We are not attempting to modify metadata within AVD input.
-    metadata = deepcopy(internal_device.avd_device.pathfinder_metadata.metadata)
+    metadata = internal_device.avd_device.pathfinder_metadata.metadata
 
     pathfinder_metadata = {
         "inputs": {
@@ -274,83 +205,16 @@ def upsert_pathfinder2(internal_device: InternalDevice, studio_inputs: dict, stu
     return warnings
 
 
-def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
+def upsert_edge(internal_device: InternalDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
     """
     In-place insert / update metadata for one edge device in studio_inputs.
 
     Returns any warnings raised.
     """
-    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_edge %s", device.hostname)
+    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_edge %s", internal_device.avd_device.hostname)
 
     warnings = []
-    edge_metadata = {
-        "inputs": {
-            "router": {
-                "sslProfileName": metadata.get("ssl_profile", ""),
-                "pathfinders": [{"vtepIp": pathfinder["vtep_ip"]} for pathfinder in metadata.get("pathfinders", [])],
-                "region": metadata.get("region", ""),
-                "role": metadata.get("role", ""),
-                "site": metadata.get("site", ""),
-                "vtepIp": metadata.get("vtep_ip", ""),
-                "wanInterfaces": [
-                    {
-                        "inputs": {
-                            "details": {
-                                "carrier": interface.get("carrier", ""),
-                                "circuitId": interface.get("circuit_id", ""),
-                                "pathgroup": interface.get("pathgroup", ""),
-                            },
-                        },
-                        "tags": {"query": f"interface:{interface.get('name', '')}@{device.serial_number}"},
-                    }
-                    for interface in metadata.get("interfaces", [])
-                ],
-                "zone": metadata.get("zone", ""),
-            },
-        },
-        "tags": {"query": f"device:{device.serial_number}"},
-    }
-    internet_exit_metadata, ie_warnings = generate_internet_exit_metadata(metadata, device, studio_schema)
-    warnings.extend(ie_warnings)
-    if internet_exit_metadata:
-        edge_metadata["inputs"]["router"]["services"] = internet_exit_metadata
-
-    found_index = None
-    studio_inputs_routers = studio_inputs.setdefault("routers", [])
-    if not isinstance(studio_inputs_routers, list):
-        # Resetting the routers field to a list in case of invalid data.
-        studio_inputs_routers = studio_inputs["routers"] = []
-
-    for index, router in enumerate(studio_inputs_routers):
-        if not isinstance(router, dict):
-            continue
-
-        if get(router, "tags.query") == f"device:{device.serial_number}":
-            found_index = index
-            break
-
-    if found_index is None:
-        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: New edge/transit device, adding %s", device.hostname)
-        studio_inputs_routers.append(edge_metadata)
-    else:
-        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing edge/transit device, updating %s", device.hostname)
-        studio_inputs_routers[found_index] = edge_metadata
-
-    return warnings
-
-
-def upsert_edge2(internal_device: InternalDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
-    """
-    In-place insert / update metadata for one edge device in studio_inputs.
-
-    Returns any warnings raised.
-    """
-    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_edge2 %s", internal_device.avd_device.hostname)
-
-    warnings = []
-    # TODO: Check if we need to work on copy of metadata
-    # We are not attempting to modify metadata within AVD input.
-    metadata = deepcopy(internal_device.avd_device.pathfinder_metadata.metadata)
+    metadata = internal_device.avd_device.pathfinder_metadata.metadata
     edge_metadata = {
         "inputs": {
             "router": {
@@ -378,7 +242,7 @@ def upsert_edge2(internal_device: InternalDevice, studio_inputs: dict, studio_sc
         },
         "tags": {"query": f"device:{internal_device.serial_number}"},
     }
-    internet_exit_metadata, ie_warnings = generate_internet_exit_metadata2(internal_device, studio_schema)
+    internet_exit_metadata, ie_warnings = generate_internet_exit_metadata(internal_device, studio_schema)
     warnings.extend(ie_warnings)
     if internet_exit_metadata:
         edge_metadata["inputs"]["router"]["services"] = internet_exit_metadata
@@ -407,11 +271,9 @@ def upsert_edge2(internal_device: InternalDevice, studio_inputs: dict, studio_sc
     return warnings
 
 
-async def deploy_cv_pathfinder_metadata_to_cv(
-    cv_pathfinder_metadata: list[CVPathfinderMetadata], internal_devices: list[InternalDevice], result: DeployToCvResult, cv_client: CVClient
-) -> None:
+async def deploy_cv_pathfinder_metadata_to_cv(internal_devices: list[InternalDevice], result: DeployToCvResult, cv_client: CVClient) -> None:
     """
-    Deploy given CV Pathfinder metadata.
+    Deploy given CV Pathfinder metadata within each device.
 
     The given metadata is parsed and updated onto the existing metadata studio inputs.
 
@@ -481,11 +343,8 @@ async def deploy_cv_pathfinder_metadata_to_cv(
         vni: 100
     ```
     """
-    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Got cv_pathfinder_metadata for %s devices", len(cv_pathfinder_metadata))
-    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Got %s internal_devices", len(internal_devices))
+    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Got %s devices for deploying Pathfinder metadata", len(internal_devices))
 
-    if not cv_pathfinder_metadata:
-        return
     if not internal_devices:
         return
 
@@ -503,58 +362,23 @@ async def deploy_cv_pathfinder_metadata_to_cv(
         # Resetting studio inputs to an empty dict in case we received a wrong type (like None)
         studio_inputs = {}
 
-    # Walk through given metadata, skip missing devices or invalid roles.
+    # Walk through devices checking for metadata, skip missing devices or invalid roles.
     # Sort between edges (including transit) and pathfinders
-    edges: list[CVPathfinderMetadata] = []
-    pathfinders: list[CVPathfinderMetadata] = []
-    for device_metadata in cv_pathfinder_metadata:
-        if not device_metadata.device._exists_on_cv:
-            LOGGER.info(
-                "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since the device is not found on CV.",
-                device_metadata.device.serial_number,
-            )
-            result.skipped_cv_pathfinder_metadata.append(device_metadata)
-            continue
-
-        device_role = get(device_metadata.metadata, "role")
-
-        if device_role in ["edge", "transit region"]:
-            LOGGER.info(
-                "deploy_cv_pathfinder_metadata_to_cv: Adding metadata for device '%s' as role '%s'.",
-                device_metadata.device.serial_number,
-                device_role,
-            )
-            edges.append(device_metadata)
-        elif device_role == "pathfinder":
-            LOGGER.info(
-                "deploy_cv_pathfinder_metadata_to_cv: Adding metadata for device '%s' as role '%s'.",
-                device_metadata.device.serial_number,
-                device_role,
-            )
-            pathfinders.append(device_metadata)
-        else:
-            LOGGER.info(
-                "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since role '%s' is not supported.",
-                device_metadata.device.serial_number,
-                device_role,
-            )
-            result.skipped_cv_pathfinder_metadata.append(device_metadata)
-            continue
-
-    # revised logic for working with internal_devices list
-    edges_in_internal_devicesinternal_devices: list[InternalDevice] = []
+    edges_in_internal_devices: list[InternalDevice] = []
     pathfinders_in_internal_devices: list[InternalDevice] = []
     for device in internal_devices:
+        # cv_workflow plugin ensures device.avd_device.pathfinder_metadata is always set.
+        # 'metadata' member itself could be empty dict when there is no metadata applicable.
+        # TODO: Should we just continue if 'device.avd_device.pathfinder_metadata.metadata' is empty?
+        # i.e. not account this towards skipped.
+
         if not device.in_cv_inventory:
             LOGGER.info(
                 "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since the device is not found on CV.",
                 device.avd_device.hostname,
             )
-            # when device is not in CV Inventory, serial number may not be available to be fetched from CV
-            # hence use host_name from AVD input as key on dictionary for noting skipped metadata in result
-            if device.avd_device.pathfinder_metadata.metadata:
-                result.skipped_cv_pathfinder_metadata2.update({device.avd_device.hostname: device.avd_device.pathfinder_metadata})
-                device.result.pathfinder_metadata.skipped.extend([device.avd_device.pathfinder_metadata])
+            result.skipped_cv_pathfinder_metadata.append(device.get_cv_pathfinder_metadata())
+            device.result.pathfinder_metadata.skipped.append(device.avd_device.pathfinder_metadata)
             continue
 
         device_role = get(device.avd_device.pathfinder_metadata.metadata, "role")
@@ -565,7 +389,7 @@ async def deploy_cv_pathfinder_metadata_to_cv(
                 device.serial_number,
                 device_role,
             )
-            edges_in_internal_devicesinternal_devices.append(device)
+            edges_in_internal_devices.append(device)
 
         elif device_role == "pathfinder":
             LOGGER.info(
@@ -580,39 +404,25 @@ async def deploy_cv_pathfinder_metadata_to_cv(
                 device.serial_number,
                 device_role,
             )
-            # to be consistent use dictionary key as host_name for skipped though we could use serial_number here
-            if device.avd_device.pathfinder_metadata.metadata:
-                result.skipped_cv_pathfinder_metadata2.update({device.avd_device.hostname: device.avd_device.pathfinder_metadata})
-                device.result.pathfinder_metadata.skipped.extend([device.avd_device.pathfinder_metadata])
+            result.skipped_cv_pathfinder_metadata.append(device.get_cv_pathfinder_metadata())
+            device.result.pathfinder_metadata.skipped.append(device.avd_device.pathfinder_metadata)
             continue
 
-    if pathfinders:
-        # All pathfinders must have the same be general metadata, so we just set it in the studio based on the first one.
-        result.warnings.extend(update_general_metadata(metadata=pathfinders[0].metadata, studio_inputs=studio_inputs, studio_schema=studio_schema))
-    # logic when working with internal_devices
     if pathfinders_in_internal_devices:
         # All pathfinders must have the same be general metadata, so we just set it in the studio based on the first one.
-        metadata_copy = deepcopy(pathfinders_in_internal_devices[0].avd_device.pathfinder_metadata.metadata)
-        # Note: allow update_general_metadata() to work on copy of metadata since that routine does in-place update
-        # Avoid modifying metadata inputs from AVD
-        result.warnings.extend(update_general_metadata(metadata=metadata_copy, studio_inputs=studio_inputs, studio_schema=studio_schema))
+        pf_metadata_copy = deepcopy(pathfinders_in_internal_devices[0].avd_device.pathfinder_metadata.metadata)
+        # Note: allow update_general_metadata() to work on copy of metadata since it does in-place update.
+        # Avoid modifying metadata inputs received from AVD.
+        result.warnings.extend(update_general_metadata(metadata=pf_metadata_copy, studio_inputs=studio_inputs, studio_schema=studio_schema))
 
-    for pathfinder in pathfinders:
-        result.warnings.extend(
-            upsert_pathfinder(metadata=pathfinder.metadata, device=pathfinder.device, studio_inputs=studio_inputs, studio_schema=studio_schema),
-        )
-    # logic when working with internal_devices
     for pathfinder in pathfinders_in_internal_devices:
         result.warnings.extend(
-            upsert_pathfinder2(internal_device=pathfinder, studio_inputs=studio_inputs, studio_schema=studio_schema),
+            upsert_pathfinder(internal_device=pathfinder, studio_inputs=studio_inputs, studio_schema=studio_schema),
         )
 
-    for edge in edges:
-        result.warnings.extend(upsert_edge(metadata=edge.metadata, device=edge.device, studio_inputs=studio_inputs, studio_schema=studio_schema))
-    # logic when working with internal_devices
-    for edge in edges_in_internal_devicesinternal_devices:
+    for edge in edges_in_internal_devices:
         result.warnings.extend(
-            upsert_edge2(internal_device=edge, studio_inputs=studio_inputs, studio_schema=studio_schema),
+            upsert_edge(internal_device=edge, studio_inputs=studio_inputs, studio_schema=studio_schema),
         )
 
     if studio_inputs != existing_studio_inputs:
@@ -623,101 +433,13 @@ async def deploy_cv_pathfinder_metadata_to_cv(
         )
         await cv_client.set_studio_inputs(studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, inputs=studio_inputs)
 
-    result.deployed_cv_pathfinder_metadata.extend(pathfinders + edges)
-    for device in pathfinders_in_internal_devices + edges_in_internal_devicesinternal_devices:
-        # Note: this will not include any tweaks done to metadata, just original input from AVD
-        if device.avd_device.pathfinder_metadata.metadata:
-            result.deployed_cv_pathfinder_metadata2.update({device.serial_number: device.avd_device.pathfinder_metadata})
-            device.result.pathfinder_metadata.added.extend([device.avd_device.pathfinder_metadata])
+    for device in pathfinders_in_internal_devices + edges_in_internal_devices:
+        # Note: result will not include any updates to metadata, just original input metadata from AVD.
+        result.deployed_cv_pathfinder_metadata.append(device.get_cv_pathfinder_metadata())
+        device.result.pathfinder_metadata.added.append(device.avd_device.pathfinder_metadata)
 
 
-def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_schema: InputSchema) -> tuple[dict, list[str]]:
-    """
-    Generate internet-exit related metadata for one device.
-
-    To be inserted into edge router metadata under "services".
-
-    Returns metadata dict and list of any warnings raised.
-    """
-    if (internet_exit_policies := get(metadata, "internet_exit_policies")) is None:
-        LOGGER.debug("deploy_cv_pathfinder_metadata_to_cv: Did not find 'internet_exit_policies' for device: %s", device.hostname)
-        return {}, []
-
-    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Found %s 'internet_exit_policies' for device: %s", len(internet_exit_policies), device.hostname)
-
-    services_dict = {}
-    warnings = []
-
-    for internet_exit_policy in internet_exit_policies:
-        # We currently only support "zscaler" and ignore "direct".
-        if internet_exit_policy.get("type") not in ["zscaler", "direct"]:
-            warning = (
-                f"deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '{internet_exit_policies.get('name')}' "
-                f"with type '{internet_exit_policy.get('type')}' for device: {device.hostname}."
-            )
-            LOGGER.info(warning)
-            warnings.append(warning)
-            continue
-
-        if internet_exit_policy["type"] == "direct":
-            # No metadata needed for direct internet-exit.
-            continue
-
-        if not is_internet_exit_zscaler_supported(studio_schema):
-            warning = "deploy_cv_pathfinder_metadata_to_cv: Ignoring Zscaler internet-exit information since it is not supported by metadata studio."
-            LOGGER.info(warning)
-            warnings.append(warning)
-            continue
-
-        policy_name = internet_exit_policy["name"]
-        services_dict.setdefault("zscaler", {"locations": [], "tunnels": []})
-
-        zscaler_location = {
-            "name": f"{device.hostname}_{policy_name}",
-            "description": f"Location corresponding to {device.hostname} for internet-exit policy {policy_name}.",
-            "city": internet_exit_policy["city"],
-            "country": internet_exit_policy["country"],
-            "uploadBandwidth": internet_exit_policy.get("upload_bandwidth"),
-            "downloadBandwidth": internet_exit_policy.get("download_bandwidth"),
-            "firewallEnabled": internet_exit_policy["firewall"],
-            "ipsControl": internet_exit_policy["ips_control"],
-            "aupEnabled": internet_exit_policy["acceptable_use_policy"],
-            "vpnCredentials": [],
-        }
-
-        for vpn_credential in internet_exit_policy["vpn_credentials"]:
-            zscaler_vpn_credential = {
-                "fqdn": vpn_credential["fqdn"],
-                "comments": f"Credential for {device.hostname} internet-exit policy {policy_name}",
-                "vpnType": vpn_credential["vpn_type"],
-            }
-            if is_zscaler_tunnel_key_encryption_supported(studio_schema):
-                zscaler_vpn_credential.update({"presharedKey": vpn_credential["pre_shared_key"], "secretServiceRef": "encrypted"})
-            else:
-                zscaler_vpn_credential["presharedKey"] = simple_7_decrypt(vpn_credential["pre_shared_key"])
-
-            zscaler_location["vpnCredentials"].append(zscaler_vpn_credential)
-
-        services_dict["zscaler"]["locations"].append(zscaler_location)
-
-        for tunnel in internet_exit_policy["tunnels"]:
-            zscaler_tunnel = {"name": tunnel["name"], "preference": tunnel["preference"]}
-            if is_zscaler_tunnel_endpoint_supported(studio_schema):
-                zscaler_tunnel["endpoint"] = {
-                    "ipAddress": tunnel["endpoint"]["ip_address"],
-                    "dcName": tunnel["endpoint"]["datacenter"],
-                    "city": tunnel["endpoint"]["city"],
-                    "country": tunnel["endpoint"]["country"],
-                    "region": tunnel["endpoint"]["region"],
-                    "latitude": float(tunnel["endpoint"]["latitude"]),
-                    "longitude": float(tunnel["endpoint"]["longitude"]),
-                }
-            services_dict["zscaler"]["tunnels"].append(zscaler_tunnel)
-
-    return services_dict, warnings
-
-
-def generate_internet_exit_metadata2(internal_device: InternalDevice, studio_schema: InputSchema) -> tuple[dict, list[str]]:
+def generate_internet_exit_metadata(internal_device: InternalDevice, studio_schema: InputSchema) -> tuple[dict, list[str]]:
     """
     Generate internet-exit related metadata for one device.
 

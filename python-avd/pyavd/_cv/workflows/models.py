@@ -205,28 +205,20 @@ class DeployToCvResult:
     deployed_static_config_containers: list[AvdContainer] = field(default_factory=list)
     deployed_static_config_configlets: list[AvdConfiglet] = field(default_factory=list)
     deployed_device_tags: list[CVDeviceTag] = field(default_factory=list)
-    deployed_device_tags2: dict[str, list[AvdDeviceTag]] = field(default_factory=dict)
     deployed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
-    deployed_interface_tags2: dict[str, list[AvdInterfaceTag]] = field(default_factory=dict)
     deployed_studio_inputs: list[CVStudioInputs] = field(default_factory=list)
     deployed_cv_pathfinder_metadata: list[CVPathfinderMetadata] = field(default_factory=list)
-    deployed_cv_pathfinder_metadata2: dict[str, AvdPathfinderMetadata] = field(default_factory=dict)
     skipped_configs: list[CVEosConfig] = field(default_factory=list)
     skipped_configs2: dict[str, AvdEosConfig] = field(default_factory=dict)
     skipped_static_config_containers: list[AvdContainer] = field(default_factory=list)
     skipped_device_tags: list[CVDeviceTag] = field(default_factory=list)
-    skipped_device_tags2: dict[str, list[AvdDeviceTag]] = field(default_factory=dict)
     skipped_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
-    skipped_interface_tags2: dict[str, list[AvdInterfaceTag]] = field(default_factory=dict)
     skipped_cv_pathfinder_metadata: list[CVPathfinderMetadata] = field(default_factory=list)
-    skipped_cv_pathfinder_metadata2: dict[str, AvdPathfinderMetadata] = field(default_factory=dict)
     removed_configs: list[str] = field(default_factory=list)
     removed_static_config_root_containers: list[str] = field(default_factory=list)
     removed_static_config_configlets: list[str] = field(default_factory=list)
     removed_device_tags: list[CVDeviceTag] = field(default_factory=list)
-    removed_device_tags2: dict[str, list[AvdDeviceTag]] = field(default_factory=dict)
     removed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
-    removed_interface_tags2: dict[str, list[AvdInterfaceTag]] = field(default_factory=dict)
 
 
 @dataclass
@@ -312,6 +304,7 @@ class InternalDevice:
     Device's streaming status retrieved from CV."""
 
     def get_cv_device(self) -> CVDevice:
+        # CVDevice object populated with hostname from AVD input and serial number, system mac address derived from CV Inventory
         return CVDevice(hostname=self.avd_device.hostname, serial_number=self.serial_number, system_mac_address=self.system_mac_address)
 
     def get_cv_eos_config(self) -> CVEosConfig:
@@ -331,6 +324,9 @@ class InternalDevice:
     def get_one_cv_interface_tag(self, avd_interface_tag: AvdInterfaceTag) -> CVInterfaceTag:
         # caller to ensure avd_interface_tag is valid
         return CVInterfaceTag(label=avd_interface_tag.label, value=avd_interface_tag.value, device=self.get_cv_device(), interface=avd_interface_tag.interface)
+
+    def get_cv_pathfinder_metadata(self) -> CVPathfinderMetadata:
+        return CVPathfinderMetadata(metadata=self.avd_device.pathfinder_metadata.metadata, device=self.get_cv_device())
 
 
 T_AvdTag = TypeVar("T_AvdTag", AvdDeviceTag, AvdInterfaceTag)
