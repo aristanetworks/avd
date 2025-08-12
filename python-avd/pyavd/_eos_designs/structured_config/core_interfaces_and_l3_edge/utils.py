@@ -199,7 +199,7 @@ class UtilsMixin(Protocol):
         ptp_config = output_type()
 
         # Early return if PTP is not enabled
-        if not p2p_link.ptp.enabled:
+        if not (p2p_link.ptp.enabled and self.shared_utils.platform_settings.feature_support.ptp):
             return ptp_config
 
         if self.shared_utils.ptp_enabled:
