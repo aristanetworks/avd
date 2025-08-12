@@ -67503,6 +67503,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_name_server_groups": {"type": IpNameServerGroups},
         "ip_name_servers": {"type": IpNameServers},
         "ip_nat": {"type": IpNat},
+        "ip_ospf_router_id_output_format_hostnames": {"type": bool},
         "ip_radius_source_interfaces": {"type": IpRadiusSourceInterfaces},
         "ip_routing": {"type": bool},
         "ip_routing_ipv6_interfaces": {"type": bool},
@@ -67886,6 +67887,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdList with `IpNameServersItem` items."""
     ip_nat: IpNat
     """Subclass of AvdModel."""
+    ip_ospf_router_id_output_format_hostnames: bool | None
+    """Display DNS-resolved router names for OSPF router IDs."""
     ip_radius_source_interfaces: IpRadiusSourceInterfaces
     """Subclass of AvdList with `IpRadiusSourceInterfacesItem` items."""
     ip_routing: bool | None
@@ -68282,6 +68285,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_name_server_groups: IpNameServerGroups | UndefinedType = Undefined,
             ip_name_servers: IpNameServers | UndefinedType = Undefined,
             ip_nat: IpNat | UndefinedType = Undefined,
+            ip_ospf_router_id_output_format_hostnames: bool | None | UndefinedType = Undefined,
             ip_radius_source_interfaces: IpRadiusSourceInterfaces | UndefinedType = Undefined,
             ip_routing: bool | None | UndefinedType = Undefined,
             ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
@@ -68586,6 +68590,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_name_server_groups: Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`).
                 ip_name_servers: Subclass of AvdList with `IpNameServersItem` items.
                 ip_nat: Subclass of AvdModel.
+                ip_ospf_router_id_output_format_hostnames: Display DNS-resolved router names for OSPF router IDs.
                 ip_radius_source_interfaces: Subclass of AvdList with `IpRadiusSourceInterfacesItem` items.
                 ip_routing: ip_routing
                 ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
