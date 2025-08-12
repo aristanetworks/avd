@@ -1355,7 +1355,7 @@ keys:
               type: bool
               description: |-
                 Set legacy mode for 100GBASE-SRBD interoperability.
-                This key is mutually exclusive with `application_overrides` and takes precedence over it.
+                This key is mutually exclusive with `application_overrides` and `application_override_lanes`; takes precedence over them.
             application_override:
               type: int
               description: Set CMIS transceiver application.

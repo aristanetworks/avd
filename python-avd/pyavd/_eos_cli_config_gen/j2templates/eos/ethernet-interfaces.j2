@@ -1261,7 +1261,7 @@ interface {{ ethernet_interface.name }}
 {%             set application_override_cli = "transceiver application override " ~ application_override.override ~ " lanes start " ~ application_override.first_lane %}
 {%             if application_override.last_lane is arista.avd.defined %}
 {%                 set application_override_cli = application_override_cli ~ " end " ~ application_override.last_lane %}
-{%              endif %}
+{%             endif %}
    {{ application_override_cli }}
 {%         endfor %}
 {%     endif %}
