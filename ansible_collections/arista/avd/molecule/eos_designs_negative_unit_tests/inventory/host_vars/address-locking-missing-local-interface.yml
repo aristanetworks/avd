@@ -6,19 +6,17 @@ l3leaf:
     loopback_ipv4_offset: 8
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     virtual_router_mac_address: 00:dc:00:00:00:0a
+    mgmt_ip: 1.1.10.10
   nodes:
-    - name: address-locking-missing-address-locking-settings
+    - name: address-locking-missing-local-interface
       id: 101
       bgp_as: 101
 
+address_locking_settings:
+  dhcp_servers_ipv4:
+    - 1.1.1.2
+
 tenants:
-  - name: TENANT1
-    mac_vrf_vni_base: 10000
-    l2vlans:
-      - id: 101
-        name: test-address-locking-1
-        address_locking:
-          ipv4: true
   - name: TENANT2
     mac_vrf_vni_base: 10001
     vrfs:
@@ -32,4 +30,5 @@ tenants:
               ipv6: true
 
 expected_error_message: >-
-  To configure address locking address_locking_settings.dhcp_servers_ipv4 and address_locking_settings.local_interface are required.
+  To configure address locking ipv6 for tenant: TENANT2 and vlan id: 102 `address_locking_settings.dhcp_servers_ipv4` and
+  `address_locking_settings.local_interface` are required.
