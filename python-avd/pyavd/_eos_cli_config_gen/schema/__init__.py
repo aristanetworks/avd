@@ -33909,6 +33909,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         the GM is lost.
         If a new GM is not elected before the expiry of the hold-down time, the clock will
         revert to free-running.
+        Some platforms support larger maximum values, however 172000 seconds was the
+        max for 7150 series, and was widely used.
         """
         message_type: MessageType
         """Subclass of AvdModel."""
@@ -33959,6 +33961,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        the GM is lost.
                        If a new GM is not elected before the expiry of the hold-down time, the clock will
                        revert to free-running.
+                       Some platforms support larger maximum values, however 172000 seconds was the
+                       max for 7150 series, and was widely used.
                     message_type: Subclass of AvdModel.
                     monitor: Subclass of AvdModel.
                     free_running: Subclass of AvdModel.
