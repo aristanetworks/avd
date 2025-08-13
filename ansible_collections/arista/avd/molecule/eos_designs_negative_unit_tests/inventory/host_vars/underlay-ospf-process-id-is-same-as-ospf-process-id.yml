@@ -26,4 +26,4 @@ tenants:
             vni_override: 50111
 
 expected_error_message: >-
-  OSPF process_id 101 in the VRF ospf-vrf is same as underlay process_id 101.
+  OSPF process_id '101' in VRF 'ospf-vrf' is same as underlay process_id '101'
