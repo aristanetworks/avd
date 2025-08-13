@@ -13,10 +13,29 @@ from contextlib import nullcontext as does_not_raise
 import pytest
 
 from pyavd._cv.client.exceptions import CVDuplicatedDevices
-from pyavd._cv.workflows.models import CVDevice
+from pyavd._cv.workflows.models import AvdDevice, AvdEosConfig, AvdPathfinderMetadata, CVDevice
 from pyavd._cv.workflows.verify_inputs import identify_duplicated_devices, verify_device_inputs
 
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
+
+
+def generate_mock_avd_device(
+    hostname: str,
+    serial_number: str | None = None,
+    system_mac_address: str | None = None,
+) -> AvdDevice:
+    # Generate AvdDevice instance set with hostname, serial_number and system_mac_address.
+    # Rest of the attributes are set as empty.
+    return AvdDevice(
+        hostname=hostname,
+        serial_number=serial_number,
+        system_mac_address=system_mac_address,
+        config=AvdEosConfig(file=""),
+        device_tags=tuple(),  # noqa: C408
+        interface_tags=tuple(),  # noqa: C408
+        pathfinder_metadata=AvdPathfinderMetadata(metadata={}),
+    )
+
 
 TWO_DUPED_SERIAL_PATTERNS = [
     "\\('Duplicated devices found in inventory.*\\{"
@@ -29,174 +48,174 @@ TWO_DUPED_SERIAL_PATTERNS = [
 ]
 
 NO_DUPS_DEVICES = [
-    CVDevice(hostname="switch1", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f1"),
-    CVDevice(hostname="switch2", serial_number="serial2", system_mac_address="aa:bb:cc:dd:ee:f2"),
-    CVDevice(hostname="switch3", serial_number="serial3", system_mac_address="aa:bb:cc:dd:ee:f3"),
-    CVDevice(hostname="switch4", serial_number="serial4", system_mac_address="aa:bb:cc:dd:ee:f4"),
-    CVDevice(hostname="switch5", serial_number="serial5", system_mac_address="aa:bb:cc:dd:ee:f5"),
-    CVDevice(hostname="switch6", serial_number="serial6", system_mac_address="aa:bb:cc:dd:ee:f6"),
-    CVDevice(hostname="switch7", serial_number="serial7"),
-    CVDevice(hostname="switch8", serial_number="serial8"),
-    CVDevice(hostname="switch9", system_mac_address="aa:bb:cc:dd:ee:f9"),
-    CVDevice(hostname="switch10", system_mac_address="aa:bb:cc:dd:ee:f0"),
-    CVDevice(hostname="switch11"),
-    CVDevice(hostname="switch12"),
+    generate_mock_avd_device(hostname="switch1", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f1"),
+    generate_mock_avd_device(hostname="switch2", serial_number="serial2", system_mac_address="aa:bb:cc:dd:ee:f2"),
+    generate_mock_avd_device(hostname="switch3", serial_number="serial3", system_mac_address="aa:bb:cc:dd:ee:f3"),
+    generate_mock_avd_device(hostname="switch4", serial_number="serial4", system_mac_address="aa:bb:cc:dd:ee:f4"),
+    generate_mock_avd_device(hostname="switch5", serial_number="serial5", system_mac_address="aa:bb:cc:dd:ee:f5"),
+    generate_mock_avd_device(hostname="switch6", serial_number="serial6", system_mac_address="aa:bb:cc:dd:ee:f6"),
+    generate_mock_avd_device(hostname="switch7", serial_number="serial7"),
+    generate_mock_avd_device(hostname="switch8", serial_number="serial8"),
+    generate_mock_avd_device(hostname="switch9", system_mac_address="aa:bb:cc:dd:ee:f9"),
+    generate_mock_avd_device(hostname="switch10", system_mac_address="aa:bb:cc:dd:ee:f0"),
+    generate_mock_avd_device(hostname="switch11"),
+    generate_mock_avd_device(hostname="switch12"),
 ]
 
 TWO_DUPED_SERIAL_DEVICES = [
-    CVDevice(hostname="switch1", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f1"),
-    CVDevice(hostname="switch2", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f2"),
-    CVDevice(hostname="switch3", serial_number="serial3"),
-    CVDevice(hostname="switch4", serial_number="serial3"),
-    CVDevice(hostname="switch5", serial_number="serial5", system_mac_address="aa:bb:cc:dd:ee:f5"),
-    CVDevice(hostname="switch6", serial_number="serial6", system_mac_address="aa:bb:cc:dd:ee:f6"),
-    CVDevice(hostname="switch7", serial_number="serial7"),
-    CVDevice(hostname="switch8", serial_number="serial8"),
-    CVDevice(hostname="switch9", system_mac_address="aa:bb:cc:dd:ee:f9"),
-    CVDevice(hostname="switch10", system_mac_address="aa:bb:cc:dd:ee:f0"),
-    CVDevice(hostname="switch11"),
-    CVDevice(hostname="switch12"),
+    generate_mock_avd_device(hostname="switch1", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f1"),
+    generate_mock_avd_device(hostname="switch2", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f2"),
+    generate_mock_avd_device(hostname="switch3", serial_number="serial3"),
+    generate_mock_avd_device(hostname="switch4", serial_number="serial3"),
+    generate_mock_avd_device(hostname="switch5", serial_number="serial5", system_mac_address="aa:bb:cc:dd:ee:f5"),
+    generate_mock_avd_device(hostname="switch6", serial_number="serial6", system_mac_address="aa:bb:cc:dd:ee:f6"),
+    generate_mock_avd_device(hostname="switch7", serial_number="serial7"),
+    generate_mock_avd_device(hostname="switch8", serial_number="serial8"),
+    generate_mock_avd_device(hostname="switch9", system_mac_address="aa:bb:cc:dd:ee:f9"),
+    generate_mock_avd_device(hostname="switch10", system_mac_address="aa:bb:cc:dd:ee:f0"),
+    generate_mock_avd_device(hostname="switch11"),
+    generate_mock_avd_device(hostname="switch12"),
 ]
 
 TWO_DUPED_SYS_MAC_DEVICES = [
-    CVDevice(hostname="switch1", system_mac_address="aa:bb:cc:dd:ee:f1"),
-    CVDevice(hostname="switch2", system_mac_address="aa:bb:cc:dd:ee:f1"),
-    CVDevice(hostname="switch3", serial_number="serial3", system_mac_address="aa:bb:cc:dd:ee:f3"),
-    CVDevice(hostname="switch4", serial_number="serial4", system_mac_address="aa:bb:cc:dd:ee:f3"),
-    CVDevice(hostname="switch5", serial_number="serial5", system_mac_address="aa:bb:cc:dd:ee:f5"),
-    CVDevice(hostname="switch6", serial_number="serial6", system_mac_address="aa:bb:cc:dd:ee:f6"),
-    CVDevice(hostname="switch7", serial_number="serial7"),
-    CVDevice(hostname="switch8", serial_number="serial8"),
-    CVDevice(hostname="switch9", system_mac_address="aa:bb:cc:dd:ee:f9"),
-    CVDevice(hostname="switch10", system_mac_address="aa:bb:cc:dd:ee:f0"),
-    CVDevice(hostname="switch11"),
-    CVDevice(hostname="switch12"),
+    generate_mock_avd_device(hostname="switch1", system_mac_address="aa:bb:cc:dd:ee:f1"),
+    generate_mock_avd_device(hostname="switch2", system_mac_address="aa:bb:cc:dd:ee:f1"),
+    generate_mock_avd_device(hostname="switch3", serial_number="serial3", system_mac_address="aa:bb:cc:dd:ee:f3"),
+    generate_mock_avd_device(hostname="switch4", serial_number="serial4", system_mac_address="aa:bb:cc:dd:ee:f3"),
+    generate_mock_avd_device(hostname="switch5", serial_number="serial5", system_mac_address="aa:bb:cc:dd:ee:f5"),
+    generate_mock_avd_device(hostname="switch6", serial_number="serial6", system_mac_address="aa:bb:cc:dd:ee:f6"),
+    generate_mock_avd_device(hostname="switch7", serial_number="serial7"),
+    generate_mock_avd_device(hostname="switch8", serial_number="serial8"),
+    generate_mock_avd_device(hostname="switch9", system_mac_address="aa:bb:cc:dd:ee:f9"),
+    generate_mock_avd_device(hostname="switch10", system_mac_address="aa:bb:cc:dd:ee:f0"),
+    generate_mock_avd_device(hostname="switch11"),
+    generate_mock_avd_device(hostname="switch12"),
 ]
 
 TWO_DUPED_SYS_MAC_UNIQ_SER_DEVICES = [
-    CVDevice(hostname="switch1", system_mac_address="aa:bb:cc:dd:ee:f1"),
-    CVDevice(hostname="switch2", system_mac_address="aa:bb:cc:dd:ee:f2"),
-    CVDevice(hostname="switch3", serial_number="serial3", system_mac_address="aa:bb:cc:dd:ee:f3"),
-    CVDevice(hostname="switch4", serial_number="serial4", system_mac_address="aa:bb:cc:dd:ee:f3"),
-    CVDevice(hostname="switch5", serial_number="serial5", system_mac_address="aa:bb:cc:dd:ee:f5"),
-    CVDevice(hostname="switch6", serial_number="serial6", system_mac_address="aa:bb:cc:dd:ee:f5"),
-    CVDevice(hostname="switch7", serial_number="serial7"),
-    CVDevice(hostname="switch8", serial_number="serial8"),
-    CVDevice(hostname="switch9", system_mac_address="aa:bb:cc:dd:ee:f9"),
-    CVDevice(hostname="switch10", system_mac_address="aa:bb:cc:dd:ee:f0"),
-    CVDevice(hostname="switch11"),
-    CVDevice(hostname="switch12"),
+    generate_mock_avd_device(hostname="switch1", system_mac_address="aa:bb:cc:dd:ee:f1"),
+    generate_mock_avd_device(hostname="switch2", system_mac_address="aa:bb:cc:dd:ee:f2"),
+    generate_mock_avd_device(hostname="switch3", serial_number="serial3", system_mac_address="aa:bb:cc:dd:ee:f3"),
+    generate_mock_avd_device(hostname="switch4", serial_number="serial4", system_mac_address="aa:bb:cc:dd:ee:f3"),
+    generate_mock_avd_device(hostname="switch5", serial_number="serial5", system_mac_address="aa:bb:cc:dd:ee:f5"),
+    generate_mock_avd_device(hostname="switch6", serial_number="serial6", system_mac_address="aa:bb:cc:dd:ee:f5"),
+    generate_mock_avd_device(hostname="switch7", serial_number="serial7"),
+    generate_mock_avd_device(hostname="switch8", serial_number="serial8"),
+    generate_mock_avd_device(hostname="switch9", system_mac_address="aa:bb:cc:dd:ee:f9"),
+    generate_mock_avd_device(hostname="switch10", system_mac_address="aa:bb:cc:dd:ee:f0"),
+    generate_mock_avd_device(hostname="switch11"),
+    generate_mock_avd_device(hostname="switch12"),
 ]
 
 ONE_DUPED_SERIAL_ONE_DUPED_SYS_MAC_DEVICES = [
-    CVDevice(hostname="switch1", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f1"),
-    CVDevice(hostname="switch2", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f2"),
-    CVDevice(hostname="switch3", serial_number="serial3", system_mac_address="aa:bb:cc:dd:ee:f3"),
-    CVDevice(hostname="switch4", serial_number="serial4", system_mac_address="aa:bb:cc:dd:ee:f3"),
-    CVDevice(hostname="switch5", serial_number="serial5", system_mac_address="aa:bb:cc:dd:ee:f5"),
-    CVDevice(hostname="switch6", serial_number="serial6", system_mac_address="aa:bb:cc:dd:ee:f6"),
-    CVDevice(hostname="switch7", serial_number="serial7"),
-    CVDevice(hostname="switch8", serial_number="serial8"),
-    CVDevice(hostname="switch9", system_mac_address="aa:bb:cc:dd:ee:f9"),
-    CVDevice(hostname="switch10", system_mac_address="aa:bb:cc:dd:ee:f0"),
-    CVDevice(hostname="switch11"),
-    CVDevice(hostname="switch12"),
+    generate_mock_avd_device(hostname="switch1", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f1"),
+    generate_mock_avd_device(hostname="switch2", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f2"),
+    generate_mock_avd_device(hostname="switch3", serial_number="serial3", system_mac_address="aa:bb:cc:dd:ee:f3"),
+    generate_mock_avd_device(hostname="switch4", serial_number="serial4", system_mac_address="aa:bb:cc:dd:ee:f3"),
+    generate_mock_avd_device(hostname="switch5", serial_number="serial5", system_mac_address="aa:bb:cc:dd:ee:f5"),
+    generate_mock_avd_device(hostname="switch6", serial_number="serial6", system_mac_address="aa:bb:cc:dd:ee:f6"),
+    generate_mock_avd_device(hostname="switch7", serial_number="serial7"),
+    generate_mock_avd_device(hostname="switch8", serial_number="serial8"),
+    generate_mock_avd_device(hostname="switch9", system_mac_address="aa:bb:cc:dd:ee:f9"),
+    generate_mock_avd_device(hostname="switch10", system_mac_address="aa:bb:cc:dd:ee:f0"),
+    generate_mock_avd_device(hostname="switch11"),
+    generate_mock_avd_device(hostname="switch12"),
 ]
 
 ONE_DUPED_SERIAL_ONE_DUPED_SYS_MAC_SAME_DEVICES_DEVICES = [
-    CVDevice(hostname="switch1", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f1"),
-    CVDevice(hostname="switch2", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f1"),
-    CVDevice(hostname="switch3", serial_number="serial3", system_mac_address="aa:bb:cc:dd:ee:f3"),
-    CVDevice(hostname="switch4", serial_number="serial4", system_mac_address="aa:bb:cc:dd:ee:f4"),
-    CVDevice(hostname="switch5", serial_number="serial5", system_mac_address="aa:bb:cc:dd:ee:f5"),
-    CVDevice(hostname="switch6", serial_number="serial6", system_mac_address="aa:bb:cc:dd:ee:f6"),
-    CVDevice(hostname="switch7", serial_number="serial7"),
-    CVDevice(hostname="switch8", serial_number="serial8"),
-    CVDevice(hostname="switch9", system_mac_address="aa:bb:cc:dd:ee:f9"),
-    CVDevice(hostname="switch10", system_mac_address="aa:bb:cc:dd:ee:f0"),
-    CVDevice(hostname="switch11"),
-    CVDevice(hostname="switch12"),
+    generate_mock_avd_device(hostname="switch1", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f1"),
+    generate_mock_avd_device(hostname="switch2", serial_number="serial1", system_mac_address="aa:bb:cc:dd:ee:f1"),
+    generate_mock_avd_device(hostname="switch3", serial_number="serial3", system_mac_address="aa:bb:cc:dd:ee:f3"),
+    generate_mock_avd_device(hostname="switch4", serial_number="serial4", system_mac_address="aa:bb:cc:dd:ee:f4"),
+    generate_mock_avd_device(hostname="switch5", serial_number="serial5", system_mac_address="aa:bb:cc:dd:ee:f5"),
+    generate_mock_avd_device(hostname="switch6", serial_number="serial6", system_mac_address="aa:bb:cc:dd:ee:f6"),
+    generate_mock_avd_device(hostname="switch7", serial_number="serial7"),
+    generate_mock_avd_device(hostname="switch8", serial_number="serial8"),
+    generate_mock_avd_device(hostname="switch9", system_mac_address="aa:bb:cc:dd:ee:f9"),
+    generate_mock_avd_device(hostname="switch10", system_mac_address="aa:bb:cc:dd:ee:f0"),
+    generate_mock_avd_device(hostname="switch11"),
+    generate_mock_avd_device(hostname="switch12"),
 ]
 
 IDENTIFY_DUPLICATED_DEVICES_FULL_INVENTORY = [
     # Unique devices with fully-set attributes
-    CVDevice(hostname="switch01", serial_number="serial01", system_mac_address="aa:bb:cc:dd:ee:01"),
-    CVDevice(hostname="switch02", serial_number="serial02", system_mac_address="aa:bb:cc:dd:ee:02"),
-    CVDevice(hostname="switch03", serial_number="serial03", system_mac_address="aa:bb:cc:dd:ee:03"),
-    CVDevice(hostname="switch04", serial_number="serial04", system_mac_address="aa:bb:cc:dd:ee:04"),
-    CVDevice(hostname="switch05", serial_number="serial05", system_mac_address="aa:bb:cc:dd:ee:05"),
+    generate_mock_avd_device(hostname="switch01", serial_number="serial01", system_mac_address="aa:bb:cc:dd:ee:01"),
+    generate_mock_avd_device(hostname="switch02", serial_number="serial02", system_mac_address="aa:bb:cc:dd:ee:02"),
+    generate_mock_avd_device(hostname="switch03", serial_number="serial03", system_mac_address="aa:bb:cc:dd:ee:03"),
+    generate_mock_avd_device(hostname="switch04", serial_number="serial04", system_mac_address="aa:bb:cc:dd:ee:04"),
+    generate_mock_avd_device(hostname="switch05", serial_number="serial05", system_mac_address="aa:bb:cc:dd:ee:05"),
     # Duplicated serial_number unique system_mac_address
     ## Use case A
-    CVDevice(hostname="switch06", serial_number="serial06", system_mac_address="aa:bb:cc:dd:ee:06"),
-    CVDevice(hostname="switch07", serial_number="serial06", system_mac_address="aa:bb:cc:dd:ee:07"),
+    generate_mock_avd_device(hostname="switch06", serial_number="serial06", system_mac_address="aa:bb:cc:dd:ee:06"),
+    generate_mock_avd_device(hostname="switch07", serial_number="serial06", system_mac_address="aa:bb:cc:dd:ee:07"),
     ## Use case B
-    CVDevice(hostname="switch08", serial_number="serial08", system_mac_address="aa:bb:cc:dd:ee:08"),
-    CVDevice(hostname="switch09", serial_number="serial08", system_mac_address="aa:bb:cc:dd:ee:09"),
-    CVDevice(hostname="switch10", serial_number="serial08", system_mac_address="aa:bb:cc:dd:ee:10"),
+    generate_mock_avd_device(hostname="switch08", serial_number="serial08", system_mac_address="aa:bb:cc:dd:ee:08"),
+    generate_mock_avd_device(hostname="switch09", serial_number="serial08", system_mac_address="aa:bb:cc:dd:ee:09"),
+    generate_mock_avd_device(hostname="switch10", serial_number="serial08", system_mac_address="aa:bb:cc:dd:ee:10"),
     # Duplicated serial_number with unset system_mac_address
     ## Use case A
-    CVDevice(hostname="switch11", serial_number="serial11"),
-    CVDevice(hostname="switch12", serial_number="serial11"),
+    generate_mock_avd_device(hostname="switch11", serial_number="serial11"),
+    generate_mock_avd_device(hostname="switch12", serial_number="serial11"),
     ## Use case B
-    CVDevice(hostname="switch13", serial_number="serial13"),
-    CVDevice(hostname="switch14", serial_number="serial13"),
-    CVDevice(hostname="switch15", serial_number="serial13"),
+    generate_mock_avd_device(hostname="switch13", serial_number="serial13"),
+    generate_mock_avd_device(hostname="switch14", serial_number="serial13"),
+    generate_mock_avd_device(hostname="switch15", serial_number="serial13"),
     # Duplicated serial_number with mix of set and unset system_mac_address
     ## Use case A
-    CVDevice(hostname="switch16", serial_number="serial16", system_mac_address="aa:bb:cc:dd:ee:16"),
-    CVDevice(hostname="switch17", serial_number="serial16"),
+    generate_mock_avd_device(hostname="switch16", serial_number="serial16", system_mac_address="aa:bb:cc:dd:ee:16"),
+    generate_mock_avd_device(hostname="switch17", serial_number="serial16"),
     ## Use case B
-    CVDevice(hostname="switch18", serial_number="serial18", system_mac_address="aa:bb:cc:dd:ee:18"),
-    CVDevice(hostname="switch19", serial_number="serial18", system_mac_address="aa:bb:cc:dd:ee:19"),
-    CVDevice(hostname="switch20", serial_number="serial18"),
+    generate_mock_avd_device(hostname="switch18", serial_number="serial18", system_mac_address="aa:bb:cc:dd:ee:18"),
+    generate_mock_avd_device(hostname="switch19", serial_number="serial18", system_mac_address="aa:bb:cc:dd:ee:19"),
+    generate_mock_avd_device(hostname="switch20", serial_number="serial18"),
     ## Use case C
-    CVDevice(hostname="switch21", serial_number="serial21", system_mac_address="aa:bb:cc:dd:ee:21"),
-    CVDevice(hostname="switch22", serial_number="serial21"),
-    CVDevice(hostname="switch23", serial_number="serial21"),
+    generate_mock_avd_device(hostname="switch21", serial_number="serial21", system_mac_address="aa:bb:cc:dd:ee:21"),
+    generate_mock_avd_device(hostname="switch22", serial_number="serial21"),
+    generate_mock_avd_device(hostname="switch23", serial_number="serial21"),
     ## Use case D
-    CVDevice(hostname="switch24", serial_number="serial24", system_mac_address="aa:bb:cc:dd:ee:24"),
-    CVDevice(hostname="switch25", serial_number="serial24", system_mac_address="aa:bb:cc:dd:ee:24"),
-    CVDevice(hostname="switch26", serial_number="serial24", system_mac_address="aa:bb:cc:dd:ee:26"),
-    CVDevice(hostname="switch27", serial_number="serial24", system_mac_address="aa:bb:cc:dd:ee:26"),
-    CVDevice(hostname="switch28", serial_number="serial24", system_mac_address="aa:bb:cc:dd:ee:28"),
-    CVDevice(hostname="switch29", serial_number="serial24", system_mac_address="aa:bb:cc:dd:ee:29"),
-    CVDevice(hostname="switch30", serial_number="serial24"),
-    CVDevice(hostname="switch31", serial_number="serial24"),
+    generate_mock_avd_device(hostname="switch24", serial_number="serial24", system_mac_address="aa:bb:cc:dd:ee:24"),
+    generate_mock_avd_device(hostname="switch25", serial_number="serial24", system_mac_address="aa:bb:cc:dd:ee:24"),
+    generate_mock_avd_device(hostname="switch26", serial_number="serial24", system_mac_address="aa:bb:cc:dd:ee:26"),
+    generate_mock_avd_device(hostname="switch27", serial_number="serial24", system_mac_address="aa:bb:cc:dd:ee:26"),
+    generate_mock_avd_device(hostname="switch28", serial_number="serial24", system_mac_address="aa:bb:cc:dd:ee:28"),
+    generate_mock_avd_device(hostname="switch29", serial_number="serial24", system_mac_address="aa:bb:cc:dd:ee:29"),
+    generate_mock_avd_device(hostname="switch30", serial_number="serial24"),
+    generate_mock_avd_device(hostname="switch31", serial_number="serial24"),
     # Duplicated system_mac_address with set serial_number
     ## Use case A
-    CVDevice(hostname="switch32", serial_number="serial32", system_mac_address="aa:bb:cc:dd:ee:32"),
-    CVDevice(hostname="switch33", serial_number="serial33", system_mac_address="aa:bb:cc:dd:ee:32"),
+    generate_mock_avd_device(hostname="switch32", serial_number="serial32", system_mac_address="aa:bb:cc:dd:ee:32"),
+    generate_mock_avd_device(hostname="switch33", serial_number="serial33", system_mac_address="aa:bb:cc:dd:ee:32"),
     ## Use case B
-    CVDevice(hostname="switch34", serial_number="serial34", system_mac_address="aa:bb:cc:dd:ee:34"),
-    CVDevice(hostname="switch35", serial_number="serial35", system_mac_address="aa:bb:cc:dd:ee:34"),
-    CVDevice(hostname="switch36", serial_number="serial36", system_mac_address="aa:bb:cc:dd:ee:34"),
+    generate_mock_avd_device(hostname="switch34", serial_number="serial34", system_mac_address="aa:bb:cc:dd:ee:34"),
+    generate_mock_avd_device(hostname="switch35", serial_number="serial35", system_mac_address="aa:bb:cc:dd:ee:34"),
+    generate_mock_avd_device(hostname="switch36", serial_number="serial36", system_mac_address="aa:bb:cc:dd:ee:34"),
     # Duplicated system_mac_address with unset serial_number
     ## Use case A
-    CVDevice(hostname="switch37", system_mac_address="aa:bb:cc:dd:ee:37"),
-    CVDevice(hostname="switch38", system_mac_address="aa:bb:cc:dd:ee:37"),
+    generate_mock_avd_device(hostname="switch37", system_mac_address="aa:bb:cc:dd:ee:37"),
+    generate_mock_avd_device(hostname="switch38", system_mac_address="aa:bb:cc:dd:ee:37"),
     ## Use case B
-    CVDevice(hostname="switch39", system_mac_address="aa:bb:cc:dd:ee:39"),
-    CVDevice(hostname="switch40", system_mac_address="aa:bb:cc:dd:ee:39"),
-    CVDevice(hostname="switch41", system_mac_address="aa:bb:cc:dd:ee:39"),
+    generate_mock_avd_device(hostname="switch39", system_mac_address="aa:bb:cc:dd:ee:39"),
+    generate_mock_avd_device(hostname="switch40", system_mac_address="aa:bb:cc:dd:ee:39"),
+    generate_mock_avd_device(hostname="switch41", system_mac_address="aa:bb:cc:dd:ee:39"),
     # Duplicated system_mac_address with mix or serial_number cases
     ## Use case A
-    CVDevice(hostname="switch42", serial_number="serial42", system_mac_address="aa:bb:cc:dd:ee:42"),
-    CVDevice(hostname="switch43", serial_number="serial43", system_mac_address="aa:bb:cc:dd:ee:42"),
-    CVDevice(hostname="switch44", system_mac_address="aa:bb:cc:dd:ee:42"),
-    CVDevice(hostname="switch45", system_mac_address="aa:bb:cc:dd:ee:42"),
-    CVDevice(hostname="switch46", system_mac_address="aa:bb:cc:dd:ee:42"),
+    generate_mock_avd_device(hostname="switch42", serial_number="serial42", system_mac_address="aa:bb:cc:dd:ee:42"),
+    generate_mock_avd_device(hostname="switch43", serial_number="serial43", system_mac_address="aa:bb:cc:dd:ee:42"),
+    generate_mock_avd_device(hostname="switch44", system_mac_address="aa:bb:cc:dd:ee:42"),
+    generate_mock_avd_device(hostname="switch45", system_mac_address="aa:bb:cc:dd:ee:42"),
+    generate_mock_avd_device(hostname="switch46", system_mac_address="aa:bb:cc:dd:ee:42"),
     ## Use case B
-    CVDevice(hostname="switch47", serial_number="serial47", system_mac_address="aa:bb:cc:dd:ee:47"),
-    CVDevice(hostname="switch48", system_mac_address="aa:bb:cc:dd:ee:47"),
+    generate_mock_avd_device(hostname="switch47", serial_number="serial47", system_mac_address="aa:bb:cc:dd:ee:47"),
+    generate_mock_avd_device(hostname="switch48", system_mac_address="aa:bb:cc:dd:ee:47"),
     ## Use case C
-    CVDevice(hostname="switch49", serial_number="serial49", system_mac_address="aa:bb:cc:dd:ee:49"),
-    CVDevice(hostname="switch50", system_mac_address="aa:bb:cc:dd:ee:49"),
-    CVDevice(hostname="switch51", system_mac_address="aa:bb:cc:dd:ee:49"),
+    generate_mock_avd_device(hostname="switch49", serial_number="serial49", system_mac_address="aa:bb:cc:dd:ee:49"),
+    generate_mock_avd_device(hostname="switch50", system_mac_address="aa:bb:cc:dd:ee:49"),
+    generate_mock_avd_device(hostname="switch51", system_mac_address="aa:bb:cc:dd:ee:49"),
     ## Use case D
-    CVDevice(hostname="switch52", serial_number="serial52", system_mac_address="aa:bb:cc:dd:ee:52"),
-    CVDevice(hostname="switch53", serial_number="serial53", system_mac_address="aa:bb:cc:dd:ee:52"),
-    CVDevice(hostname="switch54", system_mac_address="aa:bb:cc:dd:ee:52"),
-    CVDevice(hostname="switch55", system_mac_address="aa:bb:cc:dd:ee:52"),
+    generate_mock_avd_device(hostname="switch52", serial_number="serial52", system_mac_address="aa:bb:cc:dd:ee:52"),
+    generate_mock_avd_device(hostname="switch53", serial_number="serial53", system_mac_address="aa:bb:cc:dd:ee:52"),
+    generate_mock_avd_device(hostname="switch54", system_mac_address="aa:bb:cc:dd:ee:52"),
+    generate_mock_avd_device(hostname="switch55", system_mac_address="aa:bb:cc:dd:ee:52"),
 ]
 
 IDENTIFY_DUPLICATED_DEVICES_FULL_INVENTORY_EXPECTED_RETURN = {
@@ -300,8 +319,8 @@ IDENTIFY_DUPLICATED_DEVICES_FULL_INVENTORY_EXPECTED_RETURN = {
 
 
 @pytest.fixture(scope="module")
-def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
-    return [CVDevice(str(item), str(item), str(item)) for item in range(num_devices)]
+def generate_x_mock_avd_devices(num_devices: int = 1000000) -> list[AvdDevice]:
+    return [generate_mock_avd_device(hostname=str(item), serial_number=str(item), system_mac_address=str(item)) for item in range(num_devices)]
 
 
 @pytest.mark.parametrize(
@@ -563,7 +582,7 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
 )
 def test_verify_device_inputs(
     caplog: pytest.LogCaptureFixture,
-    devices: list[CVDevice],
+    devices: list[AvdDevice],
     warnings_qty: int,
     expected_warning_patterns: list[str],
     logs_qty: int,
@@ -575,10 +594,11 @@ def test_verify_device_inputs(
 ) -> None:
     # Create an empty list for warnings
     warnings = []
-    with caplog.at_level(logging.DEBUG), expected_exception as exc_info:
+    # ignore logs at info/debug level, only capture logs at warning level
+    with caplog.at_level(logging.WARNING), expected_exception as exc_info:
         # Engage FUT
         # TODO: Check and update this with revised input args
-        verify_device_inputs(devices, None, warnings, strict_system_mac_address=strict_system_mac_address)
+        verify_device_inputs(devices, warnings, strict_system_mac_address=strict_system_mac_address)
     # Assert number of returned warnings
     assert len(warnings) == warnings_qty
     # Assert that updated warnings match expected warning patterns
@@ -610,12 +630,12 @@ def test_verify_device_inputs(
         )
     ],
 )
-@pytest.mark.usefixtures("generate_x_mock_cvdevices")
+@pytest.mark.usefixtures("generate_x_mock_avd_devices")
 def test_identify_duplicated_devices(
-    devices: list[CVDevice],
+    devices: list[AvdDevice],
     expected_return: dict[str, list[CVDevice]],
     target_function: Callable,
-    generate_x_mock_cvdevices: list[CVDevice],
+    generate_x_mock_avd_devices: list[AvdDevice],
 ) -> None:
     # Call tested function to fetch devices with overlapping serial_number or system_mac_address
     duplicated_devices = target_function(
@@ -643,11 +663,11 @@ def test_identify_duplicated_devices(
             device.hostname for device in expected_return["duplicated_system_mac_address_set_serial_number"][system_mac_address]
         }
 
-    # Measure performance of each tested function based on the inventory of 1M mock CVDevices
+    # Measure performance of each tested function based on the inventory of 1M mock AvdDevices
     profiler = cProfile.Profile()
     profiler.enable()
     _ = target_function(
-        generate_x_mock_cvdevices,
+        generate_x_mock_avd_devices,
     )
     profiler.disable()
     profiler.print_stats()
