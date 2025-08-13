@@ -10,8 +10,9 @@
 {%     if cfm.domains is arista.avd.defined %}
 {%         set domains = cfm.domains | arista.avd.natural_sort('name') %}
 {%         set cfm_domain_associations = domains | selectattr('associations', 'defined') | list %}
-{%         set cfm_domain_end_points = cfm_domain_associations | map(attribute='associations') | selectattr('end_points', 'defined') | list %}
-{%         set cfm_domain_remote_end_points = cfm_domain_associations | map(attribute='associations') | selectattr('remote_end_points', 'defined') | list %}
+{%         set associations = cfm_domain_associations | map(attribute='associations') | sum(start=[]) %}
+{%         set cfm_domain_end_points = associations | selectattr('end_points', 'defined') | list %}
+{%         set cfm_domain_remote_end_points = associations | selectattr('remote_end_points', 'defined') | list %}
 
 #### CFM Domains Summary
 
