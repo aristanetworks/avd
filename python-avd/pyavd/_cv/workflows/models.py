@@ -132,8 +132,7 @@ class AvdInterfaceTag:
 
     label: str
     value: str
-    interface: str | None = None
-    """Must be set for interface tag to be valid"""
+    interface: str
 
 
 @dataclass
