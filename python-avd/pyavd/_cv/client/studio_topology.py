@@ -354,6 +354,6 @@ class StudioTopologyMixin(Protocol):
             if hasattr(response, "value") and response.value.status == DECOMMISSION_STATUS_MAP[state]:
                 LOGGER.info("wait_for_decommission_success: Got response for request '%s': %s", device_ids, response.value.status)
                 return response.value
-        # Use case where stream completed without getting ChangeControl update in the desired state
+        # Use case where stream completed without getting Decommissioning status update in the desired state
         msg = f"Device decommissioning has not reached desired state '{state}'."
         raise CVDecommissioningFailed(msg)
