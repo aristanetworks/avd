@@ -186,10 +186,11 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         if self.shared_utils.uplink_switch_interface_speed is not None:
             uplink.peer_speed = self.shared_utils.uplink_switch_interface_speed
 
-        if uplink_ptp := self.shared_utils.node_config.uplink_ptp:
-            uplink.ptp.enable = uplink_ptp.enable
-        elif self.shared_utils.ptp_enabled and (not (ptp_uplinks := self.shared_utils.node_config.ptp.uplinks) or (uplink_interface in ptp_uplinks)):
-            uplink.ptp.enable = True
+        if self.shared_utils.platform_settings.feature_support.ptp:
+            if uplink_ptp := self.shared_utils.node_config.uplink_ptp:
+                uplink.ptp.enable = uplink_ptp.enable
+            elif self.shared_utils.ptp_enabled and (not (ptp_uplinks := self.shared_utils.node_config.ptp.uplinks) or (uplink_interface in ptp_uplinks)):
+                uplink.ptp.enable = True
 
         if self.shared_utils.node_config.uplink_macsec.profile:
             uplink.mac_security.profile = self.shared_utils.node_config.uplink_macsec.profile
@@ -271,10 +272,11 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         if self.shared_utils.uplink_switch_interface_speed is not None:
             uplink.peer_speed = self.shared_utils.uplink_switch_interface_speed
 
-        if self.shared_utils.node_config.uplink_ptp:
-            uplink.ptp.enable = self.shared_utils.node_config.uplink_ptp.enable
-        elif self.shared_utils.ptp_enabled:
-            uplink.ptp.enable = True
+        if self.shared_utils.platform_settings.feature_support.ptp:
+            if self.shared_utils.node_config.uplink_ptp:
+                uplink.ptp.enable = self.shared_utils.node_config.uplink_ptp.enable
+            elif self.shared_utils.ptp_enabled:
+                uplink.ptp.enable = True
 
         # Remove vlans if upstream switch does not have them #}
         if self.inputs.enable_trunk_groups:

@@ -3,10 +3,12 @@ nodes:
     node_type: cloudeos
     ip_addr: 192.168.1.10/24
     version: 4.33.2F
+    internet_access: true
 - DC1-POD1-L2LEAF2A:
     node_type: veos
     ip_addr: 192.168.1.11/24
     version: 4.33.1.1F
+    internet_access: true
     ports:
     - Ethernet1
     - Ethernet2
@@ -15,14 +17,9 @@ nodes:
     - Ethernet5
     - Ethernet6
 - DC1-POD1-L2LEAF2B:
-    node_type: veos
+    node_type: tools-server
     ip_addr: 192.168.1.12/24
-    version: 4.33.1.1F
-    ports:
-    - Ethernet1
-    - Ethernet2
-    - Ethernet3
-    - Ethernet4
+    version: ubuntu-2204-lts
 - DC1-POD1-LEAF1A:
     node_type: veos
     ip_addr: 192.168.1.7/24
@@ -76,6 +73,7 @@ nodes:
     node_type: veos
     ip_addr: 192.168.1.6/24
     version: 4.33.1F
+    internet_access: true
     ports:
     - Ethernet1
     - Ethernet2
@@ -254,11 +252,14 @@ nodes:
     - Ethernet2
     - Ethernet4
 cloudeos:
-  username: admin
-  password: admin
+  username: cvpadmin
+  password: cvp123!
+tools-server:
+  username: cvpadmin
+  password: cvp123!
 veos:
-  username: admin
-  password: admin
+  username: cvpadmin
+  password: cvp123!
 links:
 - connection:
   - DC1-POD1-L2LEAF1A:Ethernet1
