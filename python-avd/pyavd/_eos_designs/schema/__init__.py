@@ -26632,6 +26632,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -27260,6 +27261,8 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is applicable to L2 switches (switches
                     using port-channel trunks as uplinks).
                     """
+                    inband_mgmt_subnet_offset: int
+                    """Default value: `0`"""
                     inband_mgmt_ip: str | None
                     """
                     IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -27618,6 +27621,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -28068,6 +28072,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable to L2 switches (switches
                                    using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -30949,6 +30954,7 @@ class EosDesigns(EosDesignsRootModel):
                             "inband_mgmt_interface": {"type": str},
                             "inband_mgmt_vlan": {"type": int, "default": 4092},
                             "inband_mgmt_subnet": {"type": str},
+                            "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                             "inband_mgmt_ip": {"type": str},
                             "inband_mgmt_gateway": {"type": str},
                             "inband_mgmt_ipv6_address": {"type": str},
@@ -31587,6 +31593,8 @@ class EosDesigns(EosDesignsRootModel):
                         This setting is applicable to L2 switches (switches
                         using port-channel trunks as uplinks).
                         """
+                        inband_mgmt_subnet_offset: int
+                        """Default value: `0`"""
                         inband_mgmt_ip: str | None
                         """
                         IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -31947,6 +31955,7 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                                 inband_mgmt_vlan: int | UndefinedType = Undefined,
                                 inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                                inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                                 inband_mgmt_ip: str | None | UndefinedType = Undefined,
                                 inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                                 inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -32404,6 +32413,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        This setting is applicable to L2 switches (switches
                                        using port-channel trunks as uplinks).
+                                    inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
                                     inband_mgmt_ip:
                                        IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -35193,6 +35203,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -35834,6 +35845,8 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is applicable to L2 switches (switches
                     using port-channel trunks as uplinks).
                     """
+                    inband_mgmt_subnet_offset: int
+                    """Default value: `0`"""
                     inband_mgmt_ip: str | None
                     """
                     IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -36194,6 +36207,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -36653,6 +36667,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable to L2 switches (switches
                                    using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -39517,6 +39532,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -40155,6 +40171,8 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is applicable to L2 switches (switches
                     using port-channel trunks as uplinks).
                     """
+                    inband_mgmt_subnet_offset: int
+                    """Default value: `0`"""
                     inband_mgmt_ip: str | None
                     """
                     IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -40515,6 +40533,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -40972,6 +40991,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable to L2 switches (switches
                                    using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -51779,6 +51799,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -52407,6 +52428,8 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is applicable to L2 switches (switches
                     using port-channel trunks as uplinks).
                     """
+                    inband_mgmt_subnet_offset: int
+                    """Default value: `0`"""
                     inband_mgmt_ip: str | None
                     """
                     IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -52765,6 +52788,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -53215,6 +53239,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable to L2 switches (switches
                                    using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -56096,6 +56121,7 @@ class EosDesigns(EosDesignsRootModel):
                             "inband_mgmt_interface": {"type": str},
                             "inband_mgmt_vlan": {"type": int, "default": 4092},
                             "inband_mgmt_subnet": {"type": str},
+                            "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                             "inband_mgmt_ip": {"type": str},
                             "inband_mgmt_gateway": {"type": str},
                             "inband_mgmt_ipv6_address": {"type": str},
@@ -56734,6 +56760,8 @@ class EosDesigns(EosDesignsRootModel):
                         This setting is applicable to L2 switches (switches
                         using port-channel trunks as uplinks).
                         """
+                        inband_mgmt_subnet_offset: int
+                        """Default value: `0`"""
                         inband_mgmt_ip: str | None
                         """
                         IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -57094,6 +57122,7 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                                 inband_mgmt_vlan: int | UndefinedType = Undefined,
                                 inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                                inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                                 inband_mgmt_ip: str | None | UndefinedType = Undefined,
                                 inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                                 inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -57551,6 +57580,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        This setting is applicable to L2 switches (switches
                                        using port-channel trunks as uplinks).
+                                    inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
                                     inband_mgmt_ip:
                                        IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -60340,6 +60370,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -60981,6 +61012,8 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is applicable to L2 switches (switches
                     using port-channel trunks as uplinks).
                     """
+                    inband_mgmt_subnet_offset: int
+                    """Default value: `0`"""
                     inband_mgmt_ip: str | None
                     """
                     IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -61341,6 +61374,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -61800,6 +61834,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable to L2 switches (switches
                                    using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -64664,6 +64699,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -65302,6 +65338,8 @@ class EosDesigns(EosDesignsRootModel):
                     This setting is applicable to L2 switches (switches
                     using port-channel trunks as uplinks).
                     """
+                    inband_mgmt_subnet_offset: int
+                    """Default value: `0`"""
                     inband_mgmt_ip: str | None
                     """
                     IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -65662,6 +65700,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -66119,6 +66158,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable to L2 switches (switches
                                    using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
