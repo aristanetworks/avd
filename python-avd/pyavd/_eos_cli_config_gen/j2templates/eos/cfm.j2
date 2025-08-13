@@ -7,10 +7,10 @@
 {% if cfm is arista.avd.defined %}
 !
 cfm
-{%     if cfm.measurement_loss.inband is arista.avd.defined %}
+{%     if cfm.measurement_loss.inband is arista.avd.defined(true) %}
    measurement loss inband
 {%     endif %}
-{%     if cfm.measurement_loss.synthetic is arista.avd.defined %}
+{%     if cfm.measurement_loss.synthetic is arista.avd.defined(true) %}
    measurement loss synthetic
 {%     endif %}
 {%     if cfm.continuity_check_loc_state_action_disable_interface_routing is arista.avd.defined(true) %}
