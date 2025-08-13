@@ -2672,9 +2672,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"id": {"type": int}, "remote_end_point": {"type": str}}
                     id: int
-                    """MEP ID."""
+                    """Set local maintenance end point ID."""
                     remote_end_point: str | None
-                    """Remote MEP ID."""
+                    """
+                    Remote maintenance end point ID(s) or range(s) of remote maintenance end point ID(s).
+                    The range is
+                    from 1 to 8191.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -2686,8 +2690,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                id: MEP ID.
-                                remote_end_point: Remote MEP ID.
+                                id: Set local maintenance end point ID.
+                                remote_end_point:
+                                   Remote maintenance end point ID(s) or range(s) of remote maintenance end point ID(s).
+                                   The range is
+                                   from 1 to 8191.
 
                             """
 
@@ -2703,7 +2710,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"id": {"type": int}, "mac_address": {"type": str}}
                     id: int
-                    """RMEP ID."""
+                    """Configure remote maintenance end point ID."""
                     mac_address: str | None
                     """MAC address of the RMEP."""
 
@@ -2717,7 +2724,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                id: RMEP ID.
+                                id: Configure remote maintenance end point ID.
                                 mac_address: MAC address of the RMEP.
 
                             """
@@ -2740,7 +2747,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 id: int
                 """Maintenance association ID."""
                 direction: Literal["up", "down"] | None
-                """Direction of the maintenance end point."""
+                """Set local maintenance end point direction."""
                 end_points: EndPoints
                 """
                 Configure the maintenance end point(MEP).
@@ -2749,7 +2756,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Primary key is `id` (`int`).
                 """
                 profile: str | None
-                """Profile name for the MEP."""
+                """Apply connectivity fault management profile."""
                 remote_end_points: RemoteEndPoints
                 """
                 Configure the remote maintenance end point(RMEP).
@@ -2758,7 +2765,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 `RemoteEndPointsItem` items. Primary key is `id` (`int`).
                 """
                 vlan: int | None
-                """VLAN ID for the MEP."""
+                """Set VLAN in the maintenance association."""
 
                 if TYPE_CHECKING:
 
@@ -2780,19 +2787,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             id: Maintenance association ID.
-                            direction: Direction of the maintenance end point.
+                            direction: Set local maintenance end point direction.
                             end_points:
                                Configure the maintenance end point(MEP).
 
                                Subclass of AvdIndexedList with `EndPointsItem` items.
                                Primary key is `id` (`int`).
-                            profile: Profile name for the MEP.
+                            profile: Apply connectivity fault management profile.
                             remote_end_points:
                                Configure the remote maintenance end point(RMEP).
 
                                Subclass of AvdIndexedList with
                                `RemoteEndPointsItem` items. Primary key is `id` (`int`).
-                            vlan: VLAN ID for the MEP.
+                            vlan: Set VLAN in the maintenance association.
 
                         """
 
@@ -3055,14 +3062,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class Synthetic(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {
-                            "enabled": {"type": bool},
-                            "single_ended": {"type": bool},
-                            "qos_cos": {"type": str},
-                            "tx_interval": {"type": int},
-                        }
-                        enabled: bool | None
-                        """Enable synthetic loss measurement for Ethernet OAM."""
+                        _fields: ClassVar[dict] = {"single_ended": {"type": bool}, "qos_cos": {"type": str}, "tx_interval": {"type": int}}
                         single_ended: bool | None
                         """Enable single-ended synthetic loss measurement."""
                         qos_cos: str | None
@@ -3078,7 +3078,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             def __init__(
                                 self,
                                 *,
-                                enabled: bool | None | UndefinedType = Undefined,
                                 single_ended: bool | None | UndefinedType = Undefined,
                                 qos_cos: str | None | UndefinedType = Undefined,
                                 tx_interval: int | None | UndefinedType = Undefined,
@@ -3090,7 +3089,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled: Enable synthetic loss measurement for Ethernet OAM.
                                     single_ended: Enable single-ended synthetic loss measurement.
                                     qos_cos: Set the class of service (CoS) value or a range of values for synthetic loss measurement.
                                     tx_interval:
@@ -3100,14 +3098,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 """
 
                     _fields: ClassVar[dict] = {
-                        "enabled": {"type": bool},
                         "single_ended": {"type": bool},
                         "qos_cos": {"type": int},
                         "tx_interval": {"type": int},
                         "synthetic": {"type": Synthetic},
                     }
-                    enabled: bool | None
-                    """Enable Ethernet OAM loss measurement."""
                     single_ended: bool | None
                     """Enable single-ended loss measurement."""
                     qos_cos: int | None
@@ -3125,7 +3120,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | None | UndefinedType = Undefined,
                             single_ended: bool | None | UndefinedType = Undefined,
                             qos_cos: int | None | UndefinedType = Undefined,
                             tx_interval: int | None | UndefinedType = Undefined,
@@ -3138,7 +3132,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled: Enable Ethernet OAM loss measurement.
                                 single_ended: Enable single-ended loss measurement.
                                 qos_cos: Set the class of service (CoS) value for CFM frames.
                                 tx_interval:

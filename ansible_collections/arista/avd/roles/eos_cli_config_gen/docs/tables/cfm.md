@@ -11,18 +11,18 @@
     | [<samp>&nbsp;&nbsp;continuity_check_loc_state_action_disable_interface_routing</samp>](## "cfm.continuity_check_loc_state_action_disable_interface_routing") | Boolean |  |  |  | Disable routing on interfaces where a loss of connectivity (LOC) defect is detected.<br>This prevents traffic from being routed to a faulty link. |
     | [<samp>&nbsp;&nbsp;domains</samp>](## "cfm.domains") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cfm.domains.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "cfm.domains.[].level") | Integer | Required |  | Min: 1<br>Max: 7 | Maintenance domain level (0-7). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "cfm.domains.[].level") | Integer | Required |  | Min: 0<br>Max: 7 | Maintenance domain level (0-7). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;associations</samp>](## "cfm.domains.[].associations") | List, items: Dictionary |  |  |  | List of maintenance associations. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 65535 | Maintenance association ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "cfm.domains.[].associations.[].direction") | String |  |  | Valid Values:<br>- <code>up</code><br>- <code>down</code> | Direction of the maintenance end point. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "cfm.domains.[].associations.[].direction") | String |  |  | Valid Values:<br>- <code>up</code><br>- <code>down</code> | Set local maintenance end point direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_points</samp>](## "cfm.domains.[].associations.[].end_points") | List, items: Dictionary |  |  |  | Configure the maintenance end point(MEP). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].end_points.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 8191 | MEP ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_end_point</samp>](## "cfm.domains.[].associations.[].end_points.[].remote_end_point") | String |  |  |  | Remote MEP ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "cfm.domains.[].associations.[].profile") | String |  |  |  | Profile name for the MEP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].end_points.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 8191 | Set local maintenance end point ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_end_point</samp>](## "cfm.domains.[].associations.[].end_points.[].remote_end_point") | String |  |  |  | Remote maintenance end point ID(s) or range(s) of remote maintenance end point ID(s).<br>The range is from 1 to 8191. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "cfm.domains.[].associations.[].profile") | String |  |  |  | Apply connectivity fault management profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_end_points</samp>](## "cfm.domains.[].associations.[].remote_end_points") | List, items: Dictionary |  |  |  | Configure the remote maintenance end point(RMEP). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].remote_end_points.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 8191 | RMEP ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].remote_end_points.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 8191 | Configure remote maintenance end point ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "cfm.domains.[].associations.[].remote_end_points.[].mac_address") | String |  |  |  | MAC address of the RMEP. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "cfm.domains.[].associations.[].vlan") | Integer |  |  |  | VLAN ID for the MEP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "cfm.domains.[].associations.[].vlan") | Integer |  |  |  | Set VLAN in the maintenance association. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intermediate_point</samp>](## "cfm.domains.[].intermediate_point") | Boolean |  |  |  | Configure the device as a maintenance intermediate point. |
     | [<samp>&nbsp;&nbsp;measurement_loss</samp>](## "cfm.measurement_loss") | Dictionary |  |  |  | Configure Ethernet OAM loss measurement functions. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband</samp>](## "cfm.measurement_loss.inband") | Boolean |  |  |  | Enable hardware-assisted support for OAM loss measurement. |
@@ -48,12 +48,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_cos</samp>](## "cfm.profiles.[].measurement.delay.qos_cos") | Integer |  |  | Min: 0<br>Max: 7 | Set the class of service (CoS) value for CFM frames. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_interval</samp>](## "cfm.profiles.[].measurement.delay.tx_interval") | Integer |  |  |  | Interval in milliseconds between successive measurement frames.<br>The range is from 3.33 to 600000.00. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss</samp>](## "cfm.profiles.[].measurement.loss") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "cfm.profiles.[].measurement.loss.enabled") | Boolean |  |  |  | Enable Ethernet OAM loss measurement. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;single_ended</samp>](## "cfm.profiles.[].measurement.loss.single_ended") | Boolean |  |  |  | Enable single-ended loss measurement. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_cos</samp>](## "cfm.profiles.[].measurement.loss.qos_cos") | Integer |  |  | Min: 0<br>Max: 7 | Set the class of service (CoS) value for CFM frames. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_interval</samp>](## "cfm.profiles.[].measurement.loss.tx_interval") | Integer |  |  |  | Interval in milliseconds between successive measurement frames.<br>The range is from 3.33 to 600000.00. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;synthetic</samp>](## "cfm.profiles.[].measurement.loss.synthetic") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "cfm.profiles.[].measurement.loss.synthetic.enabled") | Boolean |  |  |  | Enable synthetic loss measurement for Ethernet OAM. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;single_ended</samp>](## "cfm.profiles.[].measurement.loss.synthetic.single_ended") | Boolean |  |  |  | Enable single-ended synthetic loss measurement. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_cos</samp>](## "cfm.profiles.[].measurement.loss.synthetic.qos_cos") | String |  |  |  | Set the class of service (CoS) value or a range of values for synthetic loss measurement. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_interval</samp>](## "cfm.profiles.[].measurement.loss.synthetic.tx_interval") | Integer |  |  |  | Interval in milliseconds between successive measurement frames.<br>The range is from 3.33 to 600000.00. |
@@ -72,7 +70,7 @@
         - name: <str; required; unique>
 
           # Maintenance domain level (0-7).
-          level: <int; 1-7; required>
+          level: <int; 0-7; required>
 
           # List of maintenance associations.
           associations:
@@ -80,31 +78,32 @@
               # Maintenance association ID.
             - id: <int; 1-65535; required; unique>
 
-              # Direction of the maintenance end point.
+              # Set local maintenance end point direction.
               direction: <str; "up" | "down">
 
               # Configure the maintenance end point(MEP).
               end_points:
 
-                  # MEP ID.
+                  # Set local maintenance end point ID.
                 - id: <int; 1-8191; required; unique>
 
-                  # Remote MEP ID.
+                  # Remote maintenance end point ID(s) or range(s) of remote maintenance end point ID(s).
+                  # The range is from 1 to 8191.
                   remote_end_point: <str>
 
-              # Profile name for the MEP.
+              # Apply connectivity fault management profile.
               profile: <str>
 
               # Configure the remote maintenance end point(RMEP).
               remote_end_points:
 
-                  # RMEP ID.
+                  # Configure remote maintenance end point ID.
                 - id: <int; 1-8191; required; unique>
 
                   # MAC address of the RMEP.
                   mac_address: <str>
 
-              # VLAN ID for the MEP.
+              # Set VLAN in the maintenance association.
               vlan: <int>
 
           # Configure the device as a maintenance intermediate point.
@@ -169,9 +168,6 @@
               tx_interval: <int>
             loss:
 
-              # Enable Ethernet OAM loss measurement.
-              enabled: <bool>
-
               # Enable single-ended loss measurement.
               single_ended: <bool>
 
@@ -182,9 +178,6 @@
               # The range is from 3.33 to 600000.00.
               tx_interval: <int>
               synthetic:
-
-                # Enable synthetic loss measurement for Ethernet OAM.
-                enabled: <bool>
 
                 # Enable single-ended synthetic loss measurement.
                 single_ended: <bool>

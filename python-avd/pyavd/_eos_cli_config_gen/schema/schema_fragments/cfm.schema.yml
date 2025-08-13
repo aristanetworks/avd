@@ -28,7 +28,7 @@ keys:
             level:
               type: int
               convert_types:
-                - str           
+                - str
               required: true
               min: 0
               max: 7
