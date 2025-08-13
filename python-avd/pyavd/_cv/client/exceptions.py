@@ -59,3 +59,7 @@ class CVGRPCStatusUnavailable(CVClientException):
 
 class CVManifestError(CVClientException):
     """Error while creating a CVManifest instance from a user AvdManifest."""
+
+
+class CVDecommissioningFailed(CVClientException):
+    """Device Decommissions failed during execution."""

@@ -11,6 +11,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
     Request,
     RequestParams,
     Response,
+    ResponseCode,  # Added import for checking failure codes
     ResponseStatus,
     Workspace,
     WorkspaceConfig,
@@ -231,15 +232,16 @@ class WorkspaceMixin(Protocol):
         Monitor a Workspace using arista.workspace.v1.WorkspaceService.Subscribe API for a response to the given request_id.
 
         Blocks until a response in a terminal state (ResponseStatus.SUCCESS or ResponseStatus.FAIL) is returned or timed out.
-        Responses in an intermediate state (ResponseStatus.UNSPECIFIED) are logged only.
+        If a build fails with DECOMMISSION_DEVICES_INCOMPLETE, it will wait for the workspace to signal it needs another
+        build, trigger it, and then monitor the new build request.
 
         Parameters:
             workspace_id: Unique identifier for the Workspace.
-            request_id: Unique identifier for the Request.
-            timeout: Timeout in seconds for the Workspace to build.
+            request_id: Unique identifier for the initial Request.
+            timeout: Timeout in seconds for the entire operation, including retries.
 
         Returns:
-            Tuple of (<Response object for the request_id>, <Full Workspace object>)
+            Tuple of (<Response object for the final request_id>, <Full Workspace object>)
         """
         request = WorkspaceStreamRequest(
             partial_eq_filter=[
@@ -250,19 +252,55 @@ class WorkspaceMixin(Protocol):
         )
         client = WorkspaceServiceStub(self._channel)
         responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
-        async for response in responses:
-            if request_id in response.value.responses.values:
-                LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])
-                if response.value.responses.values[request_id].status != ResponseStatus.UNSPECIFIED:
-                    return response.value.responses.values[request_id], response.value
+
+        current_request_id = request_id
+        waiting_for_rebuild = False
+
+        async for resp in responses:
+            workspace = resp.value
+            workspace_responses = workspace.responses.values
+
+            # If we are waiting to rebuild, check if the workspace is ready
+            if waiting_for_rebuild and workspace.needs_build:
+                LOGGER.info("Workspace '%s' is ready for rebuild. Triggering a new build.", workspace_id)
+
+                new_build_config = await self.build_workspace(workspace_id=workspace_id)
+                new_request_id = new_build_config.request_params.request_id
+                LOGGER.info(
+                    "New build triggered for workspace '%s'. Now monitoring new request ID: '%s'",
+                    workspace_id,
+                    new_request_id,
+                )
+                current_request_id = new_request_id
+                waiting_for_rebuild = False
+                continue  # Continue the loop to wait for the new response
+
+            # Check for a response matching our current request ID
+            if current_request_id in workspace_responses:
+                request_response = workspace_responses[current_request_id]
+                LOGGER.info("Got response for request '%s': %s", current_request_id, request_response)
+
+                if request_response.status == ResponseStatus.SUCCESS:
+                    LOGGER.info("Request '%s' for workspace '%s' completed successfully.", current_request_id, workspace_id)
+                    return request_response, workspace
+
+                if request_response.status == ResponseStatus.FAIL and request_response.code == ResponseCode.DECOMMISSION_DEVICES_INCOMPLETE:
+                    LOGGER.warning(
+                        "Build for request '%s' failed with DECOMMISSION_DEVICES_INCOMPLETE. "
+                        "Waiting for workspace '%s' to signal 'needs_build'=True for retry.",
+                        current_request_id,
+                        workspace_id,
+                    )
+                    waiting_for_rebuild = True
+                    continue  # Continue loop, waiting for needs_build to become True
+
             else:
                 LOGGER.debug(
-                    "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s. Received responses: %s",
-                    request_id,
-                    response.value.state,
-                    response.value.responses.values,
+                    "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s.",
+                    current_request_id,
+                    workspace.state,
                 )
 
-        # Use case where stream completed without getting a response for the expected request_id
-        msg = f"Failed to get a response for request '{request_id}' of the Workspace '{workspace_id}'."
+        # This is reached if the stream completes (e.g., timeout) without a terminal response
+        msg = f"Failed to get a terminal response for request '{current_request_id}' on workspace '{workspace_id}' before timeout."
         raise CVResourceNotFound(msg)

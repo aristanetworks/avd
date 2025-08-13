@@ -3,43 +3,76 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Protocol
+import logging
+from typing import TYPE_CHECKING
 
-from pyavd._cv.api.arista.studio_topology.v1 import DecommissionConfig, DecommissionConfigServiceStub, DecommissionConfigSetSomeRequest, DeviceKey
-
-from .async_decorators import GRPCRequestHandler
-from .constants import DEFAULT_API_TIMEOUT
+from pyavd._cv.client.exceptions import CVClientException, CVDecommissioningFailed
+from pyavd._cv.workflows.create_workspace_on_cv import create_workspace_on_cv
+from pyavd._cv.workflows.finalize_workspace_on_cv import finalize_workspace_on_cv
+from pyavd._cv.workflows.models import CVWorkspace, DeployToCvResult
 
 if TYPE_CHECKING:
-    from . import CVClientProtocol
+    from pyavd._cv.client import CVClient
 
 
-class StudioTopologyMixin(Protocol):
-    """Only to be used as mixin on CVClient class."""
+async def decommission_devices(
+    cv_client: CVClient,
+    device_ids: list[str],
+    workspace: CVWorkspace | None = None,
+    logger: logging.Logger | None = None,
+) -> None:
+    """
+    Decommission devices on CloudVision using the new Studio aware decommissioning workflow.
 
-    studio_topology_api_version: Literal["v1"] = "v1"
+    Args:
+        cv_client: An active and authenticated CVClient instance.
+        device_ids: List of device serial numbers to decommission.
+        workspace: CloudVision Workspace to create/build/submit.
+        logger: Logger instance.
 
-    @GRPCRequestHandler()
-    async def decommission_device(
-        self: CVClientProtocol,
-        device_ids: list[str],
-        workspace_id: str,
-        timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> list[DecommissionConfig]:
-        """
-        Decommission devices using arista.studio_topology.v1.DecommissionConfigService.SetSome API.
+    Returns:
+        None.
+    """
+    if logger is None:
+        logger = logging.getLogger(__name__)
 
-        Parameters:
-            device_ids: Device IDs to decommission.
-            workspace_id: Workspace ID to decommission the devices from.
-            timeout: Timeout in seconds.
+    result = DeployToCvResult(workspace=workspace or CVWorkspace(), change_control=None)
 
-        Returns:
-            List of DecommissionConfig objects.
-        """
-        decommission_configs = [DecommissionConfig(key=DeviceKey(device_id=device_id, workspace_id=workspace_id)) for device_id in device_ids]
-        request = DecommissionConfigSetSomeRequest(decommission_configs)
-        client = DecommissionConfigServiceStub(self._channel)
-        responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
+    try:
+        # Create a workspace
+        await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 
-        return [response.key async for response in responses]
+        try:
+            # Decommission devices
+            logger.info("Decommissioning devices %s in workspace %s", device_ids, result.workspace.id)
+            await cv_client.set_topology_decommissions(device_ids=device_ids, workspace_id=result.workspace.id)
+            logger.info("Getting the decommissioning status of all devices in workspace %s", result.workspace.id)
+            # Check for device decommissioning status to be successful
+            decommission_status = await cv_client.get_all_decommissions(device_ids=device_ids, workspace_id=result.workspace.id, state="success")
+            if decommission_status.error != "":
+                decommission_status.state = "failed"
+                logger.info("decommission_status: %s", decommission_status)
+                msg = f"Decommission failed during execution: {decommission_status.error}"
+                raise CVDecommissioningFailed(msg)
+
+            decommission_status.state = "success"
+
+        except CVClientException as e:
+            result.errors.append(e)
+            result.failed = True
+
+        # Build, submit or abandon Workspace. If failed, we always abandon.
+        if result.failed:
+            logger.warning("Abandoning workspace %s due to errors.", result.workspace.id)
+            await cv_client.abandon_workspace(workspace_id=result.workspace.id)
+            result.workspace.state = "abandoned"
+            return result
+
+        # Build and submit the workspace
+        await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
+
+    except CVClientException as e:
+        result.errors.append(e)
+        result.failed = True
+
+    return result
