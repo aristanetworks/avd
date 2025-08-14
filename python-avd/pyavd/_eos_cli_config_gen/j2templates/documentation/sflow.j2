@@ -44,7 +44,7 @@
 
 sFlow Sample Rate: {{ sflow.sample }}
 {%     endif %}
-{%     if sflow.sample_truncate_size is arista.avd.defined(true) %}
+{%     if sflow.sample_truncate_size is arista.avd.defined %}
 
 sFlow Sample Truncation Size: {{ sflow.sample_truncate_size }} bytes.
 {%     endif %}
