@@ -448,7 +448,7 @@ class FilteredTenantsMixin(Protocol):
 
         if svi.ospf.enabled:
             if not vrf.ospf.enabled:
-                msg = f"OSPF is enabled on SVI '{svi.name}' but not on VRF '{vrf.name}'."
+                msg = f"OSPF is enabled on SVI '{svi.name}' but not on 'tenants[name={tenant.name}].vrfs[name={vrf.name}]'."
                 raise AristaAvdError(msg)
             config._update(
                 ospf_area=svi.ospf.area,

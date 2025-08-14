@@ -40,7 +40,8 @@ class RouterOspfMixin(Protocol):
                     continue
 
                 if vrf.ospf.process_id == self.inputs.underlay_ospf_process_id:
-                    msg = f"OSPF process_id '{vrf.ospf.process_id}' in VRF '{vrf.name}' is same as underlay process_id '{self.inputs.underlay_ospf_process_id}'"
+                    msg = f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].ospf.process_id[process_id={vrf.ospf.process_id}]' should not be same as \
+Underlay OSPF process id. '{self.inputs.underlay_ospf_process_id}'"
                     raise AristaAvdInvalidInputsError(msg)
 
                 process_id = default(vrf.ospf.process_id, vrf.vrf_id)
