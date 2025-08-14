@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 from functools import cached_property
-from re import search
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
