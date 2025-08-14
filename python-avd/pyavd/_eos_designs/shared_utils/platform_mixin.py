@@ -61,9 +61,8 @@ class PlatformMixin(Protocol):
         """default_interfaces set based on default_interfaces."""
         # First look for a matching default interface set that matches our platform and type
         for default_interface in self.inputs.default_interfaces:
-            if self.platform is not None:
-                if self.match_regexes(default_interface.platforms, self.platform) and self.type in default_interface.types:
-                    return default_interface
+            if self.platform and self.match_regexes(default_interface.platforms, self.platform) and self.type in default_interface.types:
+                return default_interface
 
         # If not found, then look for a default default_interface that matches our type
         for default_interface in self.inputs.default_interfaces:
