@@ -93,12 +93,28 @@
           - cvp_results.change_control.requested_state == cc_requested_state
           - cvp_results.change_control.description == cc_desctiption
 
+    - name: 'Extract list of device tags to be deployed for intended device from CVP result'
+      run_once: true
+      ansible.builtin.set_fact:
+        device_tags: "{{ device_tags | default([]) + item.device_tags }}"
+      when: item.hostname == intended_tag_device
+      loop: "{{ cvp_results.devices }}"
+
+    - name: 'Check if list of extracted device tags is non-empty'
+      run_once: true
+      ansible.builtin.assert:
+        that:
+          - device_tags is not none
+          - device_tags | length > 0
+        msg: "Extracted device tags is empty for device {{intended_tag_device}}"
+
     - name: Check tags from output
       ansible.builtin.assert:
         that:
           - item.0.label == item.1.label
           - item.0.value == item.1.value
-      loop: "{{ cvp_results.deployed_device_tags | zip(cvp_results.device_tags) | list }}"
+          - item.0.device.hostname == intended_tag_device
+      loop: "{{ cvp_results.deployed_device_tags | zip(device_tags) | list }}"
 
     # WS asserts
     - name: Get workspace information

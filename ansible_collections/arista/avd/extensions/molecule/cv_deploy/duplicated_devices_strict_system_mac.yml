@@ -200,6 +200,29 @@
           tags: ["{{ test_id }}"]
           ansible.builtin.meta: clear_host_errors
 
+        - name: "(RESCUE) {{ test_id | upper }} Extract list of configs from CVP return output"
+          # Here we build list of dictionaries representing config from each device along with device info such as
+          # hostname/serial number/system mac address. This is used subsequently for comparison to check for duplicated info.
+          run_once: true
+          ansible.builtin.set_fact:
+            result_device_configs: >-
+              {{ result_device_configs | default([]) + [
+                {
+                  'device' : {
+                    'hostname': item.hostname,
+                    'serial_number': item.serial_number,
+                    'system_mac_address': item.system_mac_address
+                  },
+                  'configlet_name': item.config.configlet_name,
+                  'file': item.config.file
+                }
+              ] }}
+          loop: "{{ cv_deploy_results.devices }}"
+
+        - name: "(RESCUE) {{ test_id | upper }} Display extracted list of configs from CVP return output"
+          ansible.builtin.debug:
+            msg: "{{ result_device_configs }}"
+
         - name: "(RESCUE) {{ test_id | upper }} Check and assert CVP returns"
           tags: ["{{ test_id }}"]
           run_once: true
@@ -209,27 +232,27 @@
               - cv_deploy_results.workspace.state != cv_deploy_results.workspace.requested_state
               # confirm initial overlapping of system_mac_address on avd-ci-spine1 and avd-ci-spine2
               - >
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-spine1') |
+                result_device_configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-spine1') |
                 map(attribute='device.system_mac_address') ==
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-spine2') |
+                result_device_configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-spine2') |
                 map(attribute='device.system_mac_address')
               # confirm lack of initial overlapping of serial_number on avd-ci-spine1 and avd-ci-spine2
               - >
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-spine1') |
+                result_device_configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-spine1') |
                 map(attribute='device.serial_number') !=
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-spine2') |
+                result_device_configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-spine2') |
                 map(attribute='device.serial_number')
               # confirm initial overlapping of serial_number on avd-ci-leaf1 and avd-ci-leaf2
               - >
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-leaf1') |
+                result_device_configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-leaf1') |
                 map(attribute='device.serial_number') ==
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-leaf2') |
+                result_device_configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-leaf2') |
                 map(attribute='device.serial_number')
               # confirm lack of initial overlapping of system_mac_address on avd-ci-leaf1 and avd-ci-leaf2
               - >
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-leaf1') |
+                result_device_configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-leaf1') |
                 map(attribute='device.system_mac_address') !=
-                cv_deploy_results.configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-leaf2') |
+                result_device_configs | selectattr('device', 'defined') | selectattr('device.hostname', 'equalto', 'avd-ci-leaf2') |
                 map(attribute='device.system_mac_address')
               # confirm that cv_deploy has failed
               - cv_deploy_results.failed is defined and cv_deploy_results.failed

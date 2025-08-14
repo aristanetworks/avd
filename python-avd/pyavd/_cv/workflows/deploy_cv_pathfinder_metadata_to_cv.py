@@ -381,6 +381,10 @@ async def deploy_cv_pathfinder_metadata_to_cv(internal_devices: list[InternalDev
             device.result.pathfinder_metadata.skipped.append(device.avd_device.pathfinder_metadata)
             continue
 
+        if not device.avd_device.pathfinder_metadata.metadata:
+            # no CV pathfinder metadata within input for this device, implies no-op
+            continue
+
         device_role = get(device.avd_device.pathfinder_metadata.metadata, "role")
 
         if device_role in ["edge", "transit region"]:

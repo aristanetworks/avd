@@ -90,6 +90,13 @@
             cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_converge"
             cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_converge') | upper }}"
 
+        - name: "(BLOCK) {{ test_id | upper }} Extract device tags to be deployed for intended device from CVP result"
+          run_once: true
+          ansible.builtin.set_fact:
+            device_tags: "{{ device_tags | default([]) + item.device_tags }}"
+          when: item.hostname == intended_tag_device
+          loop: "{{ cv_deploy_results.devices }}"
+
         - name: "(BLOCK) {{ test_id | upper }} Check tags from output"
           tags: ["{{ test_id }}"]
           run_once: true
@@ -97,7 +104,8 @@
             that:
               - item.0.label == item.1.label
               - item.0.value == item.1.value
-          loop: "{{ cv_deploy_results.deployed_device_tags | zip(cv_deploy_results.device_tags) | list }}"
+              - item.0.device.hostname == intended_tag_device
+          loop: "{{ cv_deploy_results.deployed_device_tags | zip(device_tags) | list }}"
 
         - name: "(BLOCK) {{ test_id | upper }} Extract all device tags from structured configs"
           tags: ["{{ test_id }}"]
@@ -143,7 +151,7 @@
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.set_fact:
-            deivces_structure: '{{ cv_deploy_results.deployed_configs | from_yaml }}'
+            devices_structure: '{{ cv_deploy_results.deployed_configs | from_yaml }}'
             output_devices: []
 
         - name: "(BLOCK) {{ test_id | upper }} Extract devices from output"
@@ -151,7 +159,7 @@
           run_once: true
           ansible.builtin.set_fact:
             output_devices: "{{ output_devices + [item.device.hostname] }}"
-          loop: "{{ deivces_structure }}"
+          loop: "{{ devices_structure }}"
           loop_control:
             label: "{{ item.configlet_name }}"
 

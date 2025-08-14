@@ -437,7 +437,7 @@ class ActionModule(ActionBase):
         structured_config_suffix: str,
         configuration_dir: str,
         configlet_name_template: str,
-    ) -> AvdDevice:
+    ) -> AvdDevice | None:
         """
         Build AvdDevice object for one device.
 
