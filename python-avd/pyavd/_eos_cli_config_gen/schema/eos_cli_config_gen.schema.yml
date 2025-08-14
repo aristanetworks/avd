@@ -22508,7 +22508,7 @@ keys:
       sample_truncate_size:
         type: int
         min: 128
-        max: 256
+        max: 512
         convert_types:
         - str
         description: Maximum sample size, in bytes.
