@@ -65,7 +65,17 @@ cfm:
           synthetic:
             single_ended: true
             qos_cos: "5-6"
-            tx_interval: 10
+            tx_interval:
+              interval: 10
+              period_frames: 10
+
+    # Test for tx_interval without period
+    - name: profile_20G
+      measurement:
+        loss:
+          synthetic:
+            tx_interval:
+              interval: 10
 
     # A minimal profile demonstrating that most keys are optional.
     - name: profile_simple

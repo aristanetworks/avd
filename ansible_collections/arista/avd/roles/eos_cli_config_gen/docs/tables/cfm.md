@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;continuity_check_loc_state_action_disable_interface_routing</samp>](## "cfm.continuity_check_loc_state_action_disable_interface_routing") | Boolean |  |  |  | Disable routing on interfaces where a loss of connectivity (LOC) defect is detected.<br>This prevents traffic from being routed to a faulty link. |
     | [<samp>&nbsp;&nbsp;domains</samp>](## "cfm.domains") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cfm.domains.[].name") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "cfm.domains.[].level") | Integer | Required |  | Min: 0<br>Max: 7 | Maintenance domain level (0-7). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "cfm.domains.[].level") | Integer | Required |  | Min: 0<br>Max: 7 | Maintenance domain level. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;associations</samp>](## "cfm.domains.[].associations") | List, items: Dictionary |  |  |  | List of maintenance associations. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 65535 | Maintenance association ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "cfm.domains.[].associations.[].direction") | String |  |  | Valid Values:<br>- <code>up</code><br>- <code>down</code> | Set local maintenance end point direction. |
@@ -22,7 +22,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_end_points</samp>](## "cfm.domains.[].associations.[].remote_end_points") | List, items: Dictionary |  |  |  | Configure the remote maintenance end point(RMEP). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].remote_end_points.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 8191 | Configure remote maintenance end point ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "cfm.domains.[].associations.[].remote_end_points.[].mac_address") | String |  |  |  | MAC address of the RMEP. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "cfm.domains.[].associations.[].vlan") | Integer |  |  |  | Set VLAN in the maintenance association. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "cfm.domains.[].associations.[].vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set VLAN in the maintenance association. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intermediate_point</samp>](## "cfm.domains.[].intermediate_point") | Boolean |  |  |  | Configure the device as a maintenance intermediate point. |
     | [<samp>&nbsp;&nbsp;measurement_loss</samp>](## "cfm.measurement_loss") | Dictionary |  |  |  | Configure Ethernet OAM loss measurement functions. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband</samp>](## "cfm.measurement_loss.inband") | Boolean |  |  |  | Enable hardware-assisted support for OAM loss measurement. |
@@ -53,8 +53,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_interval</samp>](## "cfm.profiles.[].measurement.loss.tx_interval") | Integer |  |  |  | Interval in milliseconds between successive measurement frames.<br>The range is from 3.33 to 600000.00. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;synthetic</samp>](## "cfm.profiles.[].measurement.loss.synthetic") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;single_ended</samp>](## "cfm.profiles.[].measurement.loss.synthetic.single_ended") | Boolean |  |  |  | Enable single-ended synthetic loss measurement. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_cos</samp>](## "cfm.profiles.[].measurement.loss.synthetic.qos_cos") | String |  |  |  | Set the class of service (CoS) value or a range of values for synthetic loss measurement. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_interval</samp>](## "cfm.profiles.[].measurement.loss.synthetic.tx_interval") | Integer |  |  |  | Interval in milliseconds between successive measurement frames.<br>The range is from 3.33 to 600000.00. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_cos</samp>](## "cfm.profiles.[].measurement.loss.synthetic.qos_cos") | String |  |  |  | Set the class of service (CoS) value or a range of values (0-7) for synthetic loss measurement. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_interval</samp>](## "cfm.profiles.[].measurement.loss.synthetic.tx_interval") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "cfm.profiles.[].measurement.loss.synthetic.tx_interval.interval") | Integer | Required |  |  | Interval in milliseconds between successive measurement frames.<br>The range is from 3.33 to 600000.00. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;period_frames</samp>](## "cfm.profiles.[].measurement.loss.synthetic.tx_interval.period_frames") | Integer |  |  | Min: 1<br>Max: 65535 | Synthetic loss measurement transmission frames. |
 
 === "YAML"
 
@@ -69,7 +71,7 @@
       domains:
         - name: <str; required; unique>
 
-          # Maintenance domain level (0-7).
+          # Maintenance domain level.
           level: <int; 0-7; required>
 
           # List of maintenance associations.
@@ -104,7 +106,7 @@
                   mac_address: <str>
 
               # Set VLAN in the maintenance association.
-              vlan: <int>
+              vlan: <int; 1-4094>
 
           # Configure the device as a maintenance intermediate point.
           intermediate_point: <bool>
@@ -182,10 +184,14 @@
                 # Enable single-ended synthetic loss measurement.
                 single_ended: <bool>
 
-                # Set the class of service (CoS) value or a range of values for synthetic loss measurement.
+                # Set the class of service (CoS) value or a range of values (0-7) for synthetic loss measurement.
                 qos_cos: <str>
+                tx_interval:
 
-                # Interval in milliseconds between successive measurement frames.
-                # The range is from 3.33 to 600000.00.
-                tx_interval: <int>
+                  # Interval in milliseconds between successive measurement frames.
+                  # The range is from 3.33 to 600000.00.
+                  interval: <int; required>
+
+                  # Synthetic loss measurement transmission frames.
+                  period_frames: <int; 1-65535>
     ```

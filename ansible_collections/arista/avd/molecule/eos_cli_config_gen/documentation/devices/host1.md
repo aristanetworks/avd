@@ -2566,10 +2566,10 @@ monitor session default encapsulation gre payload inner-packet
 
 ##### CFM Profile Continuity Check
 
-| Profile | Enabled | QoS COS | TX Interval | RDI CCM | LOC State | Error CCM | Cross Connection |
-| ------- | ------- | ------- | ----------- | ------- | --------- | --------- | ---------------- |
-| profile_10G | True | 6 | 100 milliseconds | True | True | False | True |
-| profile_simple | True | - | 10 seconds | - | - | - | - |
+| Profile | Enabled | QoS COS | TX Interval | Alarm Defects |
+| ------- | ------- | ------- | ----------- | ------------- |
+| profile_10G | True | 6 | 100 milliseconds | rdi-ccm, loc-state, cross-connection |
+| profile_simple | True | - | 10 seconds | - |
 
 ##### CFM Profile Alarm Indication
 
@@ -2588,12 +2588,14 @@ monitor session default encapsulation gre payload inner-packet
 | Profile | Enabled | Single Ended | QoS COS | TX Interval |
 | ------- | ------- | ------------ | ------- | ----------- |
 | profile_10G | - | True | 3 | 445 |
+| profile_20G | - | - | - | - |
 
 ##### CFM Profile Synthetic Loss Measurement
 
-| Profile | Enabled | Single Ended | QoS COS | TX Interval |
-| ------- | ------- | ------------ | ------- | ----------- |
-| profile_10G | - | True | 5-6 | 10 |
+| Profile | Enabled | Single Ended | QoS COS | TX Interval | Period Frames |
+| ------- | ------- | ------------ | ------- | ----------- | ------------- |
+| profile_10G | - | True | 5-6 | 10 | 10 |
+| profile_20G | - | - | - | 10 | - |
 
 #### CFM Device Configuration
 
@@ -2618,8 +2620,11 @@ cfm
       measurement loss tx-interval 445 milliseconds
       measurement loss qos cos 3
       measurement loss synthetic single-ended
-      measurement loss synthetic tx-interval 10 milliseconds
+      measurement synthetic loss tx-interval 10 milliseconds period 10 frames
       measurement loss synthetic qos cos 5-6
+   !
+   profile profile_20G
+      measurement synthetic loss tx-interval 10 milliseconds
    !
    profile profile_simple
       continuity-check

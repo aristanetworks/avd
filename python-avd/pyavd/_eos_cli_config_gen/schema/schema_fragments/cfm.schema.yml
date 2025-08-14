@@ -32,7 +32,7 @@ keys:
               required: true
               min: 0
               max: 7
-              description: Maintenance domain level (0-7).
+              description: Maintenance domain level.
             associations:
               type: list
               primary_key: id
@@ -99,6 +99,8 @@ keys:
                     convert_types:
                       - str
                     description: Set VLAN in the maintenance association.
+                    min: 1
+                    max: 4094
             intermediate_point:
               type: bool
               description: Configure the device as a maintenance intermediate point.
@@ -230,11 +232,22 @@ keys:
                           description: Enable single-ended synthetic loss measurement.
                         qos_cos:
                           type: str
-                          description: Set the class of service (CoS) value or a range of values for synthetic loss measurement.
-                        tx_interval:
-                          type: int
+                          description: Set the class of service (CoS) value or a range of values (0-7) for synthetic loss measurement.
                           convert_types:
-                            - str
-                          description: |-
-                            Interval in milliseconds between successive measurement frames.
-                            The range is from 3.33 to 600000.00.
+                            - int
+                        tx_interval:
+                          type: dict
+                          keys:
+                            interval:
+                              type: int
+                              required: true
+                              convert_types:
+                                - str
+                              description: |-
+                                Interval in milliseconds between successive measurement frames.
+                                The range is from 3.33 to 600000.00.
+                            period_frames:
+                              type: int
+                              description: Synthetic loss measurement transmission frames.
+                              min: 1
+                              max: 65535

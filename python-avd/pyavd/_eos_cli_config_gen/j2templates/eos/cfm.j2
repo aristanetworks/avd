@@ -77,8 +77,12 @@ cfm
 {%         if profile.measurement.loss.synthetic.single_ended is arista.avd.defined(true) %}
       measurement loss synthetic single-ended
 {%         endif %}
-{%         if profile.measurement.loss.synthetic.tx_interval is arista.avd.defined %}
-      measurement loss synthetic tx-interval {{ profile.measurement.loss.synthetic.tx_interval }} milliseconds
+{%         if profile.measurement.loss.synthetic.tx_interval.interval is arista.avd.defined %}
+{%             set tx_interval_cli = "measurement synthetic loss tx-interval " ~ profile.measurement.loss.synthetic.tx_interval.interval ~ " milliseconds" %}
+{%             if profile.measurement.loss.synthetic.tx_interval.period_frames is arista.avd.defined %}
+{%                 set tx_interval_cli = tx_interval_cli ~ " period " ~ profile.measurement.loss.synthetic.tx_interval.period_frames ~ " frames" %}
+{%             endif %}
+      {{ tx_interval_cli }}
 {%         endif %}
 {%         if profile.measurement.loss.synthetic.qos_cos is arista.avd.defined %}
       measurement loss synthetic qos cos {{ profile.measurement.loss.synthetic.qos_cos }}
@@ -87,7 +91,7 @@ cfm
 {%     for domain in cfm.domains | arista.avd.natural_sort('name') %}
    !
    domain {{ domain.name }} level {{ domain.level }}
-{%         if domain.intermediate_point is arista.avd.defined %}
+{%         if domain.intermediate_point is arista.avd.defined(true) %}
       intermediate-point
 {%         endif %}
 {%         for association in domain.associations | arista.avd.natural_sort('id') %}

@@ -2818,7 +2818,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             }
             name: str
             level: int
-            """Maintenance domain level (0-7)."""
+            """Maintenance domain level."""
             associations: Associations
             """
             List of maintenance associations.
@@ -2847,7 +2847,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: name
-                        level: Maintenance domain level (0-7).
+                        level: Maintenance domain level.
                         associations:
                            List of maintenance associations.
 
@@ -3062,16 +3062,42 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class Synthetic(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"single_ended": {"type": bool}, "qos_cos": {"type": str}, "tx_interval": {"type": int}}
+                        class TxInterval(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"interval": {"type": int}, "period_frames": {"type": int}}
+                            interval: int
+                            """
+                            Interval in milliseconds between successive measurement frames.
+                            The range is from 3.33 to 600000.00.
+                            """
+                            period_frames: int | None
+                            """Synthetic loss measurement transmission frames."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, interval: int | UndefinedType = Undefined, period_frames: int | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    TxInterval.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        interval:
+                                           Interval in milliseconds between successive measurement frames.
+                                           The range is from 3.33 to 600000.00.
+                                        period_frames: Synthetic loss measurement transmission frames.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"single_ended": {"type": bool}, "qos_cos": {"type": str}, "tx_interval": {"type": TxInterval}}
                         single_ended: bool | None
                         """Enable single-ended synthetic loss measurement."""
                         qos_cos: str | None
-                        """Set the class of service (CoS) value or a range of values for synthetic loss measurement."""
-                        tx_interval: int | None
-                        """
-                        Interval in milliseconds between successive measurement frames.
-                        The range is from 3.33 to 600000.00.
-                        """
+                        """Set the class of service (CoS) value or a range of values (0-7) for synthetic loss measurement."""
+                        tx_interval: TxInterval
+                        """Subclass of AvdModel."""
 
                         if TYPE_CHECKING:
 
@@ -3080,7 +3106,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 *,
                                 single_ended: bool | None | UndefinedType = Undefined,
                                 qos_cos: str | None | UndefinedType = Undefined,
-                                tx_interval: int | None | UndefinedType = Undefined,
+                                tx_interval: TxInterval | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Synthetic.
@@ -3090,10 +3116,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     single_ended: Enable single-ended synthetic loss measurement.
-                                    qos_cos: Set the class of service (CoS) value or a range of values for synthetic loss measurement.
-                                    tx_interval:
-                                       Interval in milliseconds between successive measurement frames.
-                                       The range is from 3.33 to 600000.00.
+                                    qos_cos: Set the class of service (CoS) value or a range of values (0-7) for synthetic loss measurement.
+                                    tx_interval: Subclass of AvdModel.
 
                                 """
 
