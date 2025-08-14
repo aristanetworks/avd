@@ -291,6 +291,8 @@ class ActionModule(ActionBase):
               - Create CVDevice object and add to list of device_objects.
               - Create list of AvdDevice objects
         """
+        # TODO: Check if we still need to create list of eos_config/device_tags/interface_tags/pf_metadata objects
+        # We could consider returning just list of AvdDevice objects if others not needed for validating results
         coroutines = [
             self.build_object_for_device(hostname, structured_config_dir, structured_config_suffix, configuration_dir, configlet_name_template)
             for hostname in device_list

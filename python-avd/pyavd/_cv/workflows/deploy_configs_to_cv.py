@@ -79,7 +79,6 @@ async def deploy_configlets_to_cv(internal_devices: list[InternalDevice], worksp
     ]
 
     LOGGER.info("deploy_configlets_to_cv: Deploying %s configlets", len(configlets_devices))
-
     await cv_client.set_configlets_from_files(workspace_id=workspace_id, configlets=configlets_devices)
 
 
@@ -165,7 +164,7 @@ async def deploy_configlet_containers_to_cv(internal_devices: list[InternalDevic
             update_device_container_ids.add(container_id)
             update_device_containers.append((container_id, display_name, description, configlet_ids, query, None, None))
 
-    LOGGER.info(
+    LOGGER.debug(
         "deploy_configlet_containers_to_cv: update_device_containers: %s, update_device_container_ids: %s",
         len(update_device_containers),
         len(update_device_container_ids),

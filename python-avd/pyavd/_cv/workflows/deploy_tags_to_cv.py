@@ -73,6 +73,7 @@ async def deploy_tags_to_cv(
                 device.result.device_tags.skipped.extend(list(tags_matching_tag_type))
             continue
         if not device.serial_number:
+            # TODO: Check if logic below to raise exception is fine
             # We expect device.serial_number to be already populated (i.e. fetched from CV Inventory) when we get here
             # Bail out here else we would need to repeat such checks for rest of the wrappers.
             LOGGER.info("deploy_tags_to_cv: device %s in CV inventory, but no serial number found to be assigned in CV!", device.avd_device.hostname)
@@ -233,8 +234,6 @@ async def deploy_tags_to_cv(
                         todo_devices_by_serial_number[device_serial_number].interface_tags.to_remove.extend(
                             [AvdInterfaceTag(label=label, value=value, interface=interface)]
                         )
-
-    LOGGER.info("deploy_tags_to_cv: assignments_to_unassign len: %s", len(assignments_to_unassign))
 
     if assignments_to_unassign:
         LOGGER.info("deploy_tags_to_cv: Deleting %s tag assignments", len(assignments_to_unassign))
