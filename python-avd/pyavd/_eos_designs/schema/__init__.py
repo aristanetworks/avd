@@ -27262,7 +27262,13 @@ class EosDesigns(EosDesignsRootModel):
                     using port-channel trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
-                    """Default value: `0`"""
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
+                    """
                     inband_mgmt_ip: str | None
                     """
                     IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -28072,7 +28078,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable to L2 switches (switches
                                    using port-channel trunks as uplinks).
-                                inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -31594,7 +31603,13 @@ class EosDesigns(EosDesignsRootModel):
                         using port-channel trunks as uplinks).
                         """
                         inband_mgmt_subnet_offset: int
-                        """Default value: `0`"""
+                        """
+                        Offset value to adjust the calculated inband management IP address within the subnet.
+                        The assigned
+                        IP will be computed by adding this offset to the device ID.
+
+                        Default value: `0`
+                        """
                         inband_mgmt_ip: str | None
                         """
                         IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -32413,7 +32428,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                        This setting is applicable to L2 switches (switches
                                        using port-channel trunks as uplinks).
-                                    inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
+                                    inband_mgmt_subnet_offset:
+                                       Offset value to adjust the calculated inband management IP address within the subnet.
+                                       The assigned
+                                       IP will be computed by adding this offset to the device ID.
                                     inband_mgmt_ip:
                                        IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -35846,7 +35864,13 @@ class EosDesigns(EosDesignsRootModel):
                     using port-channel trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
-                    """Default value: `0`"""
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
+                    """
                     inband_mgmt_ip: str | None
                     """
                     IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -36667,7 +36691,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable to L2 switches (switches
                                    using port-channel trunks as uplinks).
-                                inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -40172,7 +40199,13 @@ class EosDesigns(EosDesignsRootModel):
                     using port-channel trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
-                    """Default value: `0`"""
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
+                    """
                     inband_mgmt_ip: str | None
                     """
                     IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -40991,7 +41024,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable to L2 switches (switches
                                    using port-channel trunks as uplinks).
-                                inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -52429,7 +52465,13 @@ class EosDesigns(EosDesignsRootModel):
                     using port-channel trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
-                    """Default value: `0`"""
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
+                    """
                     inband_mgmt_ip: str | None
                     """
                     IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -53239,7 +53281,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable to L2 switches (switches
                                    using port-channel trunks as uplinks).
-                                inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -56761,7 +56806,13 @@ class EosDesigns(EosDesignsRootModel):
                         using port-channel trunks as uplinks).
                         """
                         inband_mgmt_subnet_offset: int
-                        """Default value: `0`"""
+                        """
+                        Offset value to adjust the calculated inband management IP address within the subnet.
+                        The assigned
+                        IP will be computed by adding this offset to the device ID.
+
+                        Default value: `0`
+                        """
                         inband_mgmt_ip: str | None
                         """
                         IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -57580,7 +57631,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                        This setting is applicable to L2 switches (switches
                                        using port-channel trunks as uplinks).
-                                    inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
+                                    inband_mgmt_subnet_offset:
+                                       Offset value to adjust the calculated inband management IP address within the subnet.
+                                       The assigned
+                                       IP will be computed by adding this offset to the device ID.
                                     inband_mgmt_ip:
                                        IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -61013,7 +61067,13 @@ class EosDesigns(EosDesignsRootModel):
                     using port-channel trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
-                    """Default value: `0`"""
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
+                    """
                     inband_mgmt_ip: str | None
                     """
                     IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -61834,7 +61894,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable to L2 switches (switches
                                    using port-channel trunks as uplinks).
-                                inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -65339,7 +65402,13 @@ class EosDesigns(EosDesignsRootModel):
                     using port-channel trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
-                    """Default value: `0`"""
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
+                    """
                     inband_mgmt_ip: str | None
                     """
                     IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
@@ -66158,7 +66227,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                    This setting is applicable to L2 switches (switches
                                    using port-channel trunks as uplinks).
-                                inband_mgmt_subnet_offset: inband_mgmt_subnet_offset
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
