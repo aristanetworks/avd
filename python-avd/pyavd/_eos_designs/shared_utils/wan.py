@@ -32,7 +32,11 @@ class WanMixin(Protocol):
             return None
 
         default_wan_role = self.node_type_key_data.default_wan_role
-        return self.node_config.wan_role or default_wan_role
+        wan_role = self.node_config.wan_role or default_wan_role
+        if wan_role is not None and not self.platform_settings.feature_support.wan:
+            msg = f"The WAN features are not compatible with the '{self.node_config.platform}' platform used by node '{self.hostname}'."
+            raise AristaAvdInvalidInputsError(msg)
+        return wan_role
 
     @cached_property
     def is_wan_router(self: SharedUtilsProtocol) -> bool:
