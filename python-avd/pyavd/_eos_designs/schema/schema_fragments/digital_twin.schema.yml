@@ -35,12 +35,19 @@ keys:
             type: str
             description: |-
               Username for ACT Digital Twin fabric devices.
-            default: admin
+            default: cvpadmin
           act_password:
             type: str
             description: |-
               Cleartext password for ACT Digital Twin fabric devices.
-            default: admin
+            default: cvp123!
+          act_internet_access:
+            type: bool
+            default: false
+            description: |-
+              Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+              This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+              ACT does not provide direct Internet access to cloudeos or veos devices by default.
           act_ensure_eapi_access:
             type: bool
             description: |-
