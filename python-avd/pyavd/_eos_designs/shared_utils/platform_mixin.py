@@ -41,10 +41,10 @@ class PlatformMixin(Protocol):
         # First look for a matching platform setting specifying our platform
         if platform is not None:
             for platform_setting in self.inputs.custom_platform_settings:
-                if platform in platform_setting.platforms:
+                if self.match_regexes(platform_setting.platforms, platform):
                     return platform_setting
             for platform_setting in self.inputs.platform_settings:
-                if platform in platform_setting.platforms:
+                if self.match_regexes(platform_setting.platforms, platform):
                     return platform_setting
 
         # If not found, then look for a default platform setting
@@ -60,18 +60,15 @@ class PlatformMixin(Protocol):
     @cached_property
     def default_interfaces(self: SharedUtilsProtocol) -> EosDesigns.DefaultInterfacesItem:
         """default_interfaces set based on default_interfaces."""
-        device_platform = self.platform or "default"
-
         # First look for a matching default interface set that matches our platform and type
         for default_interface in self.inputs.default_interfaces:
-            for platform in default_interface.platforms:
-                if search(f"^{platform}$", device_platform) and self.type in default_interface.types:
+            if self.platform is not None:
+                if self.match_regexes(default_interface.platforms, self.platform) and self.type in default_interface.types:
                     return default_interface
 
         # If not found, then look for a default default_interface that matches our type
         for default_interface in self.inputs.default_interfaces:
-            for platform in default_interface.platforms:
-                if search(f"^{platform}$", "default") and self.type in default_interface.types:
-                    return default_interface
+            if "default" in default_interface.platforms and self.type in default_interface.types:
+                return default_interface
 
         return EosDesigns.DefaultInterfacesItem()
