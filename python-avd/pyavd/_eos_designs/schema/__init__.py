@@ -4306,6 +4306,49 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class EnablePasswordSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"disabled": {"type": bool, "default": True}, "hash_algorithm": {"type": str}, "key": {"type": str}}
+        disabled: bool
+        """
+        Set to `true` to configure `no enable password` which is the EOS default.
+
+        Default value: `True`
+        """
+        hash_algorithm: Literal["md5", "sha512"] | None
+        key: str | None
+        """
+        Must be the hash of the password using the specified algorithm.
+        By default EOS salts the password,
+        so the simplest is to generate the hash on an EOS device.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                disabled: bool | UndefinedType = Undefined,
+                hash_algorithm: Literal["md5", "sha512"] | None | UndefinedType = Undefined,
+                key: str | None | UndefinedType = Undefined,
+            ) -> None:
+                """
+                EnablePasswordSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    disabled: Set to `true` to configure `no enable password` which is the EOS default.
+                    hash_algorithm: hash_algorithm
+                    key:
+                       Must be the hash of the password using the specified algorithm.
+                       By default EOS salts the password,
+                       so the simplest is to generate the hash on an EOS device.
+
+                """
+
     class EosDesignsCustomTemplatesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -66472,6 +66515,7 @@ class EosDesigns(EosDesignsRootModel):
         "design": {"type": Design},
         "digital_twin": {"type": DigitalTwin},
         "dns_settings": {"type": DnsSettings},
+        "enable_password_settings": {"type": EnablePasswordSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
@@ -67441,6 +67485,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    enable_password_settings: EnablePasswordSettings
+    """Subclass of AvdModel."""
     enable_trunk_groups: bool
     """
     Enable Trunk Group support across eos_designs.
@@ -68873,6 +68919,7 @@ class EosDesigns(EosDesignsRootModel):
             design: Design | UndefinedType = Undefined,
             digital_twin: DigitalTwin | UndefinedType = Undefined,
             dns_settings: DnsSettings | UndefinedType = Undefined,
+            enable_password_settings: EnablePasswordSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
@@ -69499,6 +69546,7 @@ class EosDesigns(EosDesignsRootModel):
                    DNS settings
 
                    Subclass of AvdModel.
+                enable_password_settings: Subclass of AvdModel.
                 enable_trunk_groups:
                    Enable Trunk Group support across eos_designs.
                    Warning: Because of the nature of the EOS Trunk Group

@@ -1832,6 +1832,15 @@ keys:
 
           Can be set to `false` to avoid changes when migrating from the old `name_servers`
           model.'
+  enable_password_settings:
+    type: dict
+    $ref: eos_cli_config_gen#/keys/enable_password
+    keys:
+      disabled:
+        type: bool
+        default: true
+        description: Set to `true` to configure `no enable password` which is the
+          EOS default.
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings
