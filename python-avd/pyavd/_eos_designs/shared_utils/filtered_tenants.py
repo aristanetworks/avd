@@ -91,12 +91,29 @@ class FilteredTenantsMixin(Protocol):
         filtered_l2vlans = tenant.l2vlans._filtered(
             lambda l2vlan: self.is_accepted_vlan(l2vlan) and bool("all" in self.filter_tags or set(l2vlan.tags).intersection(self.filter_tags))
         )
-
-        if tenant.evpn_vlan_bundle:
-            for l2vlan in filtered_l2vlans:
+        for index, l2vlan in enumerate(filtered_l2vlans):
+            filtered_l2vlans[index] = self.apply_l2vlan_profile(l2vlan)
+            if tenant.evpn_vlan_bundle:
                 l2vlan.evpn_vlan_bundle = l2vlan.evpn_vlan_bundle or tenant.evpn_vlan_bundle
 
         return filtered_l2vlans._natural_sorted(sort_key="id")
+
+    def apply_l2vlan_profile(
+        self: SharedUtilsProtocol, vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem
+    ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem:
+        """Apply a profile to the l2vlan."""
+        if not vlan.profile:
+            # Nothing to do
+            return vlan
+
+        if vlan.profile not in self.inputs.l2vlan_profiles:
+            msg = f"Profile '{vlan.profile}' applied under l2vlan '{vlan.name}' does not exist in `l2vlan_profiles`."
+            raise AristaAvdInvalidInputsError(msg)
+
+        profile_as_interface = self.inputs.l2vlan_profiles[vlan.profile]._cast_as(
+            EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem
+        )
+        return vlan._deepinherited(profile_as_interface)
 
     def is_accepted_vlan(
         self: SharedUtilsProtocol,
