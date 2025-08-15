@@ -25236,7 +25236,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -25276,12 +25275,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -25309,7 +25302,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -25341,10 +25333,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -29539,7 +29527,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "mtu": {"type": int, "default": 9194},
                                 "ha_interfaces": {"type": HaInterfaces},
                                 "ha_ipv4_pool": {"type": str},
-                                "max_ha_interfaces": {"type": int},
                                 "port_channel_id": {"type": int},
                                 "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                                 "flow_tracking": {"type": FlowTracking},
@@ -29579,12 +29566,6 @@ class EosDesigns(EosDesignsRootModel):
                             first WAN router.
                             Not used for uplink interfaces.
                             """
-                            max_ha_interfaces: int | None
-                            """
-                            Number of parallel links towards HA switches.
-                            Can be used to reserve IP addresses for future
-                            parallel HA links.
-                            """
                             port_channel_id: int | None
                             """Port-channel ID to use for direct HA."""
                             use_port_channel_for_direct_ha: bool
@@ -29612,7 +29593,6 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: int | UndefinedType = Undefined,
                                     ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                     ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                    max_ha_interfaces: int | None | UndefinedType = Undefined,
                                     port_channel_id: int | None | UndefinedType = Undefined,
                                     use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -29644,10 +29624,6 @@ class EosDesigns(EosDesignsRootModel):
                                            subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                            first WAN router.
                                            Not used for uplink interfaces.
-                                        max_ha_interfaces:
-                                           Number of parallel links towards HA switches.
-                                           Can be used to reserve IP addresses for future
-                                           parallel HA links.
                                         port_channel_id: Port-channel ID to use for direct HA.
                                         use_port_channel_for_direct_ha:
                                            Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -33795,7 +33771,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -33835,12 +33810,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -33868,7 +33837,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -33900,10 +33868,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -38119,7 +38083,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -38159,12 +38122,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -38192,7 +38149,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -38224,10 +38180,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -50383,7 +50335,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -50423,12 +50374,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -50456,7 +50401,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -50488,10 +50432,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -54686,7 +54626,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "mtu": {"type": int, "default": 9194},
                                 "ha_interfaces": {"type": HaInterfaces},
                                 "ha_ipv4_pool": {"type": str},
-                                "max_ha_interfaces": {"type": int},
                                 "port_channel_id": {"type": int},
                                 "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                                 "flow_tracking": {"type": FlowTracking},
@@ -54726,12 +54665,6 @@ class EosDesigns(EosDesignsRootModel):
                             first WAN router.
                             Not used for uplink interfaces.
                             """
-                            max_ha_interfaces: int | None
-                            """
-                            Number of parallel links towards HA switches.
-                            Can be used to reserve IP addresses for future
-                            parallel HA links.
-                            """
                             port_channel_id: int | None
                             """Port-channel ID to use for direct HA."""
                             use_port_channel_for_direct_ha: bool
@@ -54759,7 +54692,6 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: int | UndefinedType = Undefined,
                                     ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                     ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                    max_ha_interfaces: int | None | UndefinedType = Undefined,
                                     port_channel_id: int | None | UndefinedType = Undefined,
                                     use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -54791,10 +54723,6 @@ class EosDesigns(EosDesignsRootModel):
                                            subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                            first WAN router.
                                            Not used for uplink interfaces.
-                                        max_ha_interfaces:
-                                           Number of parallel links towards HA switches.
-                                           Can be used to reserve IP addresses for future
-                                           parallel HA links.
                                         port_channel_id: Port-channel ID to use for direct HA.
                                         use_port_channel_for_direct_ha:
                                            Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -58942,7 +58870,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -58982,12 +58909,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -59015,7 +58936,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -59047,10 +58967,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -63266,7 +63182,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -63306,12 +63221,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -63339,7 +63248,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -63371,10 +63279,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
