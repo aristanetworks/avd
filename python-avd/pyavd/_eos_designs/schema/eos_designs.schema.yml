@@ -1772,6 +1772,14 @@ keys:
 
               ACT does not provide direct Internet access to cloudeos or veos devices
               by default.'
+      default_interfaces_of_original_platform:
+        type: bool
+        default: false
+        description: 'In Digital Twin mode, AVD by default uses the `default_interfaces`
+          settings associated with the alternate platform (identified via `platform_settings.[].digital_twin.platform`).
+
+          Set key `digital_twin.default_interfaces_of_original_platform` to `True`
+          to use `default_interfaces` settings of the original platform.'
   dns_settings:
     documentation_options:
       table: management-settings

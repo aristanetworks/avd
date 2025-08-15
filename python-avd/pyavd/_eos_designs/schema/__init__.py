@@ -4116,7 +4116,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"environment": {"type": str, "default": "act"}, "fabric": {"type": Fabric}}
+        _fields: ClassVar[dict] = {
+            "environment": {"type": str, "default": "act"},
+            "fabric": {"type": Fabric},
+            "default_interfaces_of_original_platform": {"type": bool, "default": False},
+        }
         environment: Literal["act"]
         """
         Targeted Digital Twin environment.
@@ -4129,10 +4133,26 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        default_interfaces_of_original_platform: bool
+        """
+        In Digital Twin mode, AVD by default uses the `default_interfaces` settings associated with the
+        alternate platform (identified via `platform_settings.[].digital_twin.platform`).
+        Set key
+        `digital_twin.default_interfaces_of_original_platform` to `True` to use `default_interfaces`
+        settings of the original platform.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, environment: Literal["act"] | UndefinedType = Undefined, fabric: Fabric | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                environment: Literal["act"] | UndefinedType = Undefined,
+                fabric: Fabric | UndefinedType = Undefined,
+                default_interfaces_of_original_platform: bool | UndefinedType = Undefined,
+            ) -> None:
                 """
                 DigitalTwin.
 
@@ -4145,6 +4165,12 @@ class EosDesigns(EosDesignsRootModel):
                        Settings for Digital Twin fabric devices.
 
                        Subclass of AvdModel.
+                    default_interfaces_of_original_platform:
+                       In Digital Twin mode, AVD by default uses the `default_interfaces` settings associated with the
+                       alternate platform (identified via `platform_settings.[].digital_twin.platform`).
+                       Set key
+                       `digital_twin.default_interfaces_of_original_platform` to `True` to use `default_interfaces`
+                       settings of the original platform.
 
                 """
 

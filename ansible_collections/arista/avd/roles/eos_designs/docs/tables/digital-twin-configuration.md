@@ -14,6 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_username</samp>](## "digital_twin.fabric.act_username") | String |  | `cvpadmin` |  | Username for ACT Digital Twin fabric devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_password</samp>](## "digital_twin.fabric.act_password") | String |  | `cvp123!` |  | Cleartext password for ACT Digital Twin fabric devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;act_internet_access</samp>](## "digital_twin.fabric.act_internet_access") | Boolean |  | `False` |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to cloudeos or veos devices by default. |
+    | [<samp>&nbsp;&nbsp;default_interfaces_of_original_platform</samp>](## "digital_twin.default_interfaces_of_original_platform") | Boolean |  | `False` |  | In Digital Twin mode, AVD by default uses the `default_interfaces` settings associated with the alternate platform (identified via `platform_settings.[].digital_twin.platform`).<br>Set key `digital_twin.default_interfaces_of_original_platform` to `True` to use `default_interfaces` settings of the original platform. |
 
 === "YAML"
 
@@ -41,4 +42,8 @@
         # This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
         # ACT does not provide direct Internet access to cloudeos or veos devices by default.
         act_internet_access: <bool; default=False>
+
+      # In Digital Twin mode, AVD by default uses the `default_interfaces` settings associated with the alternate platform (identified via `platform_settings.[].digital_twin.platform`).
+      # Set key `digital_twin.default_interfaces_of_original_platform` to `True` to use `default_interfaces` settings of the original platform.
+      default_interfaces_of_original_platform: <bool; default=False>
     ```

@@ -60,7 +60,10 @@ class PlatformMixin(Protocol):
     @cached_property
     def default_interfaces(self: SharedUtilsProtocol) -> EosDesigns.DefaultInterfacesItem:
         """default_interfaces set based on default_interfaces."""
-        device_platform = self.platform or "default"
+        if self.digital_twin and self.inputs.digital_twin.default_interfaces_of_original_platform:
+            device_platform = default(self.node_config.platform, self.cv_topology_platform) or "default"
+        else:
+            device_platform = self.platform or "default"
 
         # First look for a matching default interface set that matches our platform and type
         for default_interface in self.inputs.default_interfaces:
