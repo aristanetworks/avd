@@ -1451,13 +1451,6 @@ $defs:
                   Not used for uplink interfaces.
                 type: str
                 format: ipv4_pool
-              max_ha_interfaces:
-                type: int
-                convert_types:
-                  - str
-                description: |-
-                  Number of parallel links towards HA switches.
-                  Can be used to reserve IP addresses for future parallel HA links.
               port_channel_id:
                 type: int
                 convert_types:
