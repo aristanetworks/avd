@@ -18,6 +18,15 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.10.50.9/31
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
   peer: HARDWARE_FEATURES_CLOUDEOS
   peer_interface: Ethernet2
   peer_type: l3leaf
@@ -25,6 +34,15 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
+- name: Ethernet2
+  description: L2_HARDWARE_FEATURES_CLOUDEOS_2_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 2
+    mode: active
+  peer: HARDWARE_FEATURES_CLOUDEOS_2
+  peer_interface: Ethernet1
+  peer_type: l3leaf
 - name: Ethernet9
   description: P2P_HARDWARE_FEATURES_CUSTOM_PLATFORM_Ethernet9
   shutdown: false
@@ -50,6 +68,16 @@ ethernet_interfaces:
   description: SERVER_TEST_POE_ETH5_NO_POE
   shutdown: false
   l2_mru: 1002
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
   peer: TEST_POE
   peer_interface: ETH5_NO_POE
   peer_type: server
@@ -167,6 +195,16 @@ port_channel_interfaces:
     trunk:
       groups:
       - MLAG
+- name: Port-Channel2
+  description: L2_HARDWARE_FEATURES_CLOUDEOS_2_Port-Channel1
+  shutdown: false
+  sflow:
+    enable: true
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
 - name: Port-Channel8
   description: SERVER_TEST_MTU_MRU_PO_MTU_MRU_2
   shutdown: false
@@ -186,6 +224,24 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 10.10.40.8/31
+ptp:
+  mode: boundary
+  clock_identity: 00:1C:73:1e:00:05
+  priority1: 30
+  priority2: 5
+  domain: 127
+  monitor:
+    enabled: true
+    threshold:
+      offset_from_master: 250
+      mean_path_delay: 1500
+    missing_message:
+      sequence_ids:
+        enabled: true
+        announce: 3
+        delay_resp: 3
+        follow_up: 3
+        sync: 3
 queue_monitor_length:
   enabled: true
   notifying: true
