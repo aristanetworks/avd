@@ -435,6 +435,7 @@ class EosDesigns(EosDesignsRootModel):
             "authorization": {"type": EosCliConfigGen.AaaAuthorization},
             "accounting": {"type": EosCliConfigGen.AaaAccounting},
             "root_login": {"type": RootLogin},
+            "local_users": {"type": EosCliConfigGen.LocalUsers},
         }
         tacacs: Tacacs
         """Subclass of AvdModel."""
@@ -445,6 +446,7 @@ class EosDesigns(EosDesignsRootModel):
         accounting: EosCliConfigGen.AaaAccounting
         root_login: RootLogin
         """Subclass of AvdModel."""
+        local_users: EosCliConfigGen.LocalUsers
 
         if TYPE_CHECKING:
 
@@ -457,6 +459,7 @@ class EosDesigns(EosDesignsRootModel):
                 authorization: EosCliConfigGen.AaaAuthorization | UndefinedType = Undefined,
                 accounting: EosCliConfigGen.AaaAccounting | UndefinedType = Undefined,
                 root_login: RootLogin | UndefinedType = Undefined,
+                local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
             ) -> None:
                 """
                 AaaSettings.
@@ -471,6 +474,7 @@ class EosDesigns(EosDesignsRootModel):
                     authorization: authorization
                     accounting: accounting
                     root_login: Subclass of AvdModel.
+                    local_users: local_users
 
                 """
 

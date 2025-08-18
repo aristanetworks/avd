@@ -9,5 +9,9 @@ keys:
   local_users:
     documentation_options:
       table: management-settings
+    deprecation:
+      warning: true
+      removed: false
+      new_key: aaa_settings.local_users
     $ref: "eos_cli_config_gen#/keys/local_users"
     type: list
