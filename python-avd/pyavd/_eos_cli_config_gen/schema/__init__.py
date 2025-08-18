@@ -9660,15 +9660,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"id": {"type": int}, "random_detect": {"type": RandomDetect}}
+            _fields: ClassVar[dict] = {"id": {"type": int}, "scheduler_profile_responsive": {"type": bool}, "random_detect": {"type": RandomDetect}}
             id: int
             """TX-Queue ID."""
+            scheduler_profile_responsive: bool | None
+            """Set scheduler profile to optimize latency at the expense of burstiness."""
             random_detect: RandomDetect
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, id: int | UndefinedType = Undefined, random_detect: RandomDetect | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    id: int | UndefinedType = Undefined,
+                    scheduler_profile_responsive: bool | None | UndefinedType = Undefined,
+                    random_detect: RandomDetect | UndefinedType = Undefined,
+                ) -> None:
                     """
                     TxQueuesItem.
 
@@ -9677,6 +9685,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         id: TX-Queue ID.
+                        scheduler_profile_responsive: Set scheduler profile to optimize latency at the expense of burstiness.
                         random_detect: Subclass of AvdModel.
 
                     """
@@ -11613,6 +11622,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "native_vlan_tag": {"type": bool},
             "mode": {"type": str},
             "phone": {"type": Phone},
+            "arp_gratuitous_accept": {"type": bool},
             "l2_protocol": {"type": L2Protocol},
             "mac_timestamp": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
@@ -11748,6 +11758,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
         phone: Phone
         """Subclass of AvdModel."""
+        arp_gratuitous_accept: bool | None
+        """Accept gratuitous ARP."""
         l2_protocol: L2Protocol
         """Subclass of AvdModel."""
         mac_timestamp: Literal["before-fcs", "replace-fcs", "header"] | None
@@ -12010,6 +12022,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 native_vlan_tag: bool | None | UndefinedType = Undefined,
                 mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
                 phone: Phone | UndefinedType = Undefined,
+                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 l2_protocol: L2Protocol | UndefinedType = Undefined,
                 mac_timestamp: Literal["before-fcs", "replace-fcs", "header"] | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
@@ -12142,6 +12155,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     native_vlan_tag: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
                     mode: mode
                     phone: Subclass of AvdModel.
+                    arp_gratuitous_accept: Accept gratuitous ARP.
                     l2_protocol: Subclass of AvdModel.
                     mac_timestamp:
                        header: Insert timestamp in ethernet header. Supported on platforms like 7500E/R and 7280E/R.
@@ -18206,17 +18220,230 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"policies": {"type": Policies}}
+        class Cluster(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Flow(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"monitor": {"type": bool}, "source_learning_aging_timeout": {"type": int}}
+                monitor: bool | None
+                """Monitor the flows without affecting forwarding."""
+                source_learning_aging_timeout: int | None
+                """Flow aging timeout in seconds for flow discovery by learning."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, monitor: bool | None | UndefinedType = Undefined, source_learning_aging_timeout: int | None | UndefinedType = Undefined
+                    ) -> None:
+                        """
+                        Flow.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            monitor: Monitor the flows without affecting forwarding.
+                            source_learning_aging_timeout: Flow aging timeout in seconds for flow discovery by learning.
+
+                        """
+
+            class PortGroupsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Flow(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class ExhaustionAction(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"dscp": {"type": int}, "traffic_class": {"type": int}}
+                        dscp: int | None
+                        """Packet DSCP value."""
+                        traffic_class: int | None
+                        """Packet traffic-class value."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, dscp: int | None | UndefinedType = Undefined, traffic_class: int | None | UndefinedType = Undefined) -> None:
+                                """
+                                ExhaustionAction.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    dscp: Packet DSCP value.
+                                    traffic_class: Packet traffic-class value.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"limit": {"type": int}, "warning": {"type": int}, "exhaustion_action": {"type": ExhaustionAction}}
+                    limit: int | None
+                    """Maximum number of flows per port."""
+                    warning: int | None
+                    """Warning threshold of flows per port group."""
+                    exhaustion_action: ExhaustionAction
+                    """
+                    Forwarding action when flows reach limits.
+
+                    Subclass of AvdModel.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            limit: int | None | UndefinedType = Undefined,
+                            warning: int | None | UndefinedType = Undefined,
+                            exhaustion_action: ExhaustionAction | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Flow.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                limit: Maximum number of flows per port.
+                                warning: Warning threshold of flows per port group.
+                                exhaustion_action:
+                                   Forwarding action when flows reach limits.
+
+                                   Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"group": {"type": str}, "balance_factor": {"type": int}, "interface": {"type": str}, "flow": {"type": Flow}}
+                group: str
+                """Port group name."""
+                balance_factor: int | None
+                interface: str | None
+                """
+                Ethernet interface/subinterface name. It could be a `,` separated list or range.
+                eg. Ethernet2,
+                Ethernet2-5,
+                    Ethernet2.2,3.1,
+                    Ethernet3.1-2
+                """
+                flow: Flow
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        group: str | UndefinedType = Undefined,
+                        balance_factor: int | None | UndefinedType = Undefined,
+                        interface: str | None | UndefinedType = Undefined,
+                        flow: Flow | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PortGroupsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            group: Port group name.
+                            balance_factor: balance_factor
+                            interface:
+                               Ethernet interface/subinterface name. It could be a `,` separated list or range.
+                               eg. Ethernet2,
+                               Ethernet2-5,
+                                   Ethernet2.2,3.1,
+                                   Ethernet3.1-2
+                            flow: Subclass of AvdModel.
+
+                        """
+
+            class PortGroups(AvdIndexedList[str, PortGroupsItem]):
+                """Subclass of AvdIndexedList with `PortGroupsItem` items. Primary key is `group` (`str`)."""
+
+                _primary_key: ClassVar[str] = "group"
+
+            PortGroups._item_type = PortGroupsItem
+
+            _fields: ClassVar[dict] = {
+                "destination_grouping": {"type": str},
+                "prefix_length": {"type": int},
+                "forwarding_type": {"type": str},
+                "load_balance_method_flow_round_robin": {"type": bool},
+                "flow": {"type": Flow},
+                "port_groups": {"type": PortGroups},
+            }
+            destination_grouping: Literal["bgp field-set", "prefix length", "vtep"] | None
+            """Perform destination grouping using given setting."""
+            prefix_length: int | None
+            """
+            Network address prefix length for destination grouping using prefix length.
+            This setting must be
+            defined when `destination_grouping` is set to `prefix length`.
+            """
+            forwarding_type: Literal["bridged encapsulation vxlan ipv4", "routed ipv4"] | None
+            load_balance_method_flow_round_robin: bool | None
+            """Enable round-robin load balancing for flow-based traffic."""
+            flow: Flow
+            """Subclass of AvdModel."""
+            port_groups: PortGroups
+            """
+            Host ports settings.
+
+            Subclass of AvdIndexedList with `PortGroupsItem` items. Primary key is `group`
+            (`str`).
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    destination_grouping: Literal["bgp field-set", "prefix length", "vtep"] | None | UndefinedType = Undefined,
+                    prefix_length: int | None | UndefinedType = Undefined,
+                    forwarding_type: Literal["bridged encapsulation vxlan ipv4", "routed ipv4"] | None | UndefinedType = Undefined,
+                    load_balance_method_flow_round_robin: bool | None | UndefinedType = Undefined,
+                    flow: Flow | UndefinedType = Undefined,
+                    port_groups: PortGroups | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Cluster.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        destination_grouping: Perform destination grouping using given setting.
+                        prefix_length:
+                           Network address prefix length for destination grouping using prefix length.
+                           This setting must be
+                           defined when `destination_grouping` is set to `prefix length`.
+                        forwarding_type: forwarding_type
+                        load_balance_method_flow_round_robin: Enable round-robin load balancing for flow-based traffic.
+                        flow: Subclass of AvdModel.
+                        port_groups:
+                           Host ports settings.
+
+                           Subclass of AvdIndexedList with `PortGroupsItem` items. Primary key is `group`
+                           (`str`).
+
+                    """
+
+        _fields: ClassVar[dict] = {"policies": {"type": Policies}, "cluster": {"type": Cluster}}
         policies: Policies
         """
         Collection of load balancing policy definitions.
 
         Subclass of AvdModel.
         """
+        cluster: Cluster
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, policies: Policies | UndefinedType = Undefined) -> None:
+            def __init__(self, *, policies: Policies | UndefinedType = Undefined, cluster: Cluster | UndefinedType = Undefined) -> None:
                 """
                 LoadBalance.
 
@@ -18228,6 +18455,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Collection of load balancing policy definitions.
 
                        Subclass of AvdModel.
+                    cluster: Subclass of AvdModel.
 
                 """
 
@@ -23682,6 +23910,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "version": {"type": str},
                 "username": {"type": str},
                 "password": {"type": str},
+                "internet_access": {"type": bool},
             }
             environment: Literal["act"] | None
             """Targeted Digital Twin environment."""
@@ -23702,6 +23931,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Local username assigned to a replica of the fabric device within the Digital Twin environment."""
             password: str | None
             """Local password assigned to a replica of the fabric device within the Digital Twin environment."""
+            internet_access: bool | None
+            """
+            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+            This option
+            applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node
+            types.
+            ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
+            """
 
             if TYPE_CHECKING:
 
@@ -23714,6 +23951,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     version: str | None | UndefinedType = Undefined,
                     username: str | None | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    internet_access: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -23733,6 +23971,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         version: OS version used for deploying a replica of the fabric device within the Digital Twin environment.
                         username: Local username assigned to a replica of the fabric device within the Digital Twin environment.
                         password: Local password assigned to a replica of the fabric device within the Digital Twin environment.
+                        internet_access:
+                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                           This option
+                           applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node
+                           types.
+                           ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
 
                     """
 
@@ -27775,13 +28019,36 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"buffering_egress": {"type": BufferingEgress}}
+            class Voq(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"credit_rates_unified": {"type": bool}}
+                credit_rates_unified: bool | None
+                """Set Unified credit rates for all port speeds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, credit_rates_unified: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Voq.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            credit_rates_unified: Set Unified credit rates for all port speeds.
+
+                        """
+
+            _fields: ClassVar[dict] = {"buffering_egress": {"type": BufferingEgress}, "voq": {"type": Voq}}
             buffering_egress: BufferingEgress
+            """Subclass of AvdModel."""
+            voq: Voq
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, buffering_egress: BufferingEgress | UndefinedType = Undefined) -> None:
+                def __init__(self, *, buffering_egress: BufferingEgress | UndefinedType = Undefined, voq: Voq | UndefinedType = Undefined) -> None:
                     """
                     Fap.
 
@@ -27790,6 +28057,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         buffering_egress: Subclass of AvdModel.
+                        voq: Subclass of AvdModel.
 
                     """
 
@@ -32628,6 +32896,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "l2_mtu": {"type": int},
             "l2_mru": {"type": int},
             "vlans": {"type": str},
+            "arp_gratuitous_accept": {"type": bool},
             "snmp_trap_link_change": {"type": bool},
             "type": {"type": str},
             "encapsulation_dot1q_vlan": {"type": int},
@@ -32737,6 +33006,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         For an
         access port this would be a single vlan "123".
         """
+        arp_gratuitous_accept: bool | None
+        """Accept gratuitous ARP."""
         snmp_trap_link_change: bool | None
         type: Literal["routed", "switched", "l3dot1q", "l2dot1q"] | None
         """
@@ -32932,6 +33203,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 l2_mtu: int | None | UndefinedType = Undefined,
                 l2_mru: int | None | UndefinedType = Undefined,
                 vlans: str | None | UndefinedType = Undefined,
+                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 snmp_trap_link_change: bool | None | UndefinedType = Undefined,
                 type: Literal["routed", "switched", "l3dot1q", "l2dot1q"] | None | UndefinedType = Undefined,
                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -33041,6 +33313,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        For a trunk port this would be a range like "1-200,300".
                        For an
                        access port this would be a single vlan "123".
+                    arp_gratuitous_accept: Accept gratuitous ARP.
                     snmp_trap_link_change: snmp_trap_link_change
                     type:
                        l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
@@ -33606,6 +33879,41 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class FreeRunning(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_clock_hardware": {"type": bool}}
+            enabled: bool
+            """
+            Enables PTP configuration in free-running mode.
+            When set to true, the boundary clock can start
+            serving PTP downstream even before it locks to an upstream master.
+            When set to false, the clock will
+            not start serving PTP downstream before it has successfully locked to an upstream master.
+            """
+            source_clock_hardware: bool | None
+            """When enabled, the hardware clock is used as the source for PTP time during free-running mode."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, source_clock_hardware: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    FreeRunning.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Enables PTP configuration in free-running mode.
+                           When set to true, the boundary clock can start
+                           serving PTP downstream even before it locks to an upstream master.
+                           When set to false, the clock will
+                           not start serving PTP downstream before it has successfully locked to an upstream master.
+                        source_clock_hardware: When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "mode": {"type": str},
             "profile": {"type": str},
@@ -33619,6 +33927,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "domain": {"type": int},
             "message_type": {"type": MessageType},
             "monitor": {"type": Monitor},
+            "free_running": {"type": FreeRunning},
         }
         mode: Literal["boundary", "disabled", "e2etransparent", "gptp", "ordinarymaster", "p2ptransparent"] | None
         profile: Literal["g8275.1", "g8275.2"] | None
@@ -33635,6 +33944,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         message_type: MessageType
         """Subclass of AvdModel."""
         monitor: Monitor
+        """Subclass of AvdModel."""
+        free_running: FreeRunning
         """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
@@ -33654,6 +33965,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 domain: int | None | UndefinedType = Undefined,
                 message_type: MessageType | UndefinedType = Undefined,
                 monitor: Monitor | UndefinedType = Undefined,
+                free_running: FreeRunning | UndefinedType = Undefined,
             ) -> None:
                 """
                 Ptp.
@@ -33674,6 +33986,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     domain: domain
                     message_type: Subclass of AvdModel.
                     monitor: Subclass of AvdModel.
+                    free_running: Subclass of AvdModel.
 
                 """
 
@@ -33820,13 +34133,46 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TxQueue(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"shape_rate_percent_adaptive": {"type": bool}}
+            class QueuesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"id": {"type": int}, "scheduler_profile_responsive": {"type": bool}}
+                id: int
+                """Queue ID."""
+                scheduler_profile_responsive: bool | None
+                """Set scheduler profile to optimize latency at the expense of burstiness."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, id: int | UndefinedType = Undefined, scheduler_profile_responsive: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        QueuesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            id: Queue ID.
+                            scheduler_profile_responsive: Set scheduler profile to optimize latency at the expense of burstiness.
+
+                        """
+
+            class Queues(AvdIndexedList[int, QueuesItem]):
+                """Subclass of AvdIndexedList with `QueuesItem` items. Primary key is `id` (`int`)."""
+
+                _primary_key: ClassVar[str] = "id"
+
+            Queues._item_type = QueuesItem
+
+            _fields: ClassVar[dict] = {"shape_rate_percent_adaptive": {"type": bool}, "queues": {"type": Queues}}
             shape_rate_percent_adaptive: bool | None
             """Use the parent available bandwidth for transmit queue percentage-based allocation."""
+            queues: Queues
+            """Subclass of AvdIndexedList with `QueuesItem` items. Primary key is `id` (`int`)."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, shape_rate_percent_adaptive: bool | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, shape_rate_percent_adaptive: bool | None | UndefinedType = Undefined, queues: Queues | UndefinedType = Undefined) -> None:
                     """
                     TxQueue.
 
@@ -33835,6 +34181,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         shape_rate_percent_adaptive: Use the parent available bandwidth for transmit queue percentage-based allocation.
+                        queues: Subclass of AvdIndexedList with `QueuesItem` items. Primary key is `id` (`int`).
 
                     """
 
@@ -53984,14 +54331,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class LeakRoutesItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"source_vrf": {"type": str}, "subscribe_policy": {"type": str}}
+                _fields: ClassVar[dict] = {"source_vrf": {"type": str}, "subscribe_policy": {"type": str}, "subscribe_rcf": {"type": str}}
                 source_vrf: str | None
                 subscribe_policy: str | None
                 """Route-Map Policy."""
+                subscribe_rcf: str | None
+                """
+                RCF Policy name with parenthesis.
+                Example: MyFunction(myarg).
+                Mutually exclusive with
+                `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, source_vrf: str | None | UndefinedType = Undefined, subscribe_policy: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        source_vrf: str | None | UndefinedType = Undefined,
+                        subscribe_policy: str | None | UndefinedType = Undefined,
+                        subscribe_rcf: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         LeakRoutesItem.
 
@@ -54001,6 +54361,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             source_vrf: source_vrf
                             subscribe_policy: Route-Map Policy.
+                            subscribe_rcf:
+                               RCF Policy name with parenthesis.
+                               Example: MyFunction(myarg).
+                               Mutually exclusive with
+                               `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
 
                         """
 
@@ -62112,12 +62477,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Options(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"counter_per_interface": {"type": bool}}
+            _fields: ClassVar[dict] = {"counter_per_interface": {"type": bool}, "counter_interface_poll_interval": {"type": int}}
             counter_per_interface: bool | None
+            counter_interface_poll_interval: int | None
+            """Interval between consecutive polls in seconds."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, counter_per_interface: bool | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    counter_per_interface: bool | None | UndefinedType = Undefined,
+                    counter_interface_poll_interval: int | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     Options.
 
@@ -62126,6 +62498,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         counter_per_interface: counter_per_interface
+                        counter_interface_poll_interval: Interval between consecutive polls in seconds.
 
                     """
 
@@ -62295,6 +62668,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         class PoliciesItem(AvdModel):
             """Subclass of AvdModel."""
+
+            class Counters(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Counters._item_type = str
 
             class MatchesItem(AvdModel):
                 """Subclass of AvdModel."""
@@ -62483,21 +62861,200 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Actions(AvdModel):
                     """Subclass of AvdModel."""
 
+                    class Redirect(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class AggregationGroups(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        AggregationGroups._item_type = str
+
+                        class NextHop(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Ipv4Addresses(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Ipv4Addresses._item_type = str
+
+                            class Ipv6Addresses(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Ipv6Addresses._item_type = str
+
+                            class Groups(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Groups._item_type = str
+
+                            class RecursiveIpv4Addresses(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            RecursiveIpv4Addresses._item_type = str
+
+                            class RecursiveIpv6Addresses(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            RecursiveIpv6Addresses._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "ipv4_addresses": {"type": Ipv4Addresses},
+                                "ipv6_addresses": {"type": Ipv6Addresses},
+                                "vrf": {"type": str},
+                                "groups": {"type": Groups},
+                                "recursive_ipv4_addresses": {"type": RecursiveIpv4Addresses},
+                                "recursive_ipv6_addresses": {"type": RecursiveIpv6Addresses},
+                                "ttl": {"type": int},
+                            }
+                            ipv4_addresses: Ipv4Addresses
+                            """Subclass of AvdList with `str` items."""
+                            ipv6_addresses: Ipv6Addresses
+                            """Subclass of AvdList with `str` items."""
+                            vrf: str | None
+                            """
+                            Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses` or
+                            `recursive_ipv6_addresses`.
+                            """
+                            groups: Groups
+                            """
+                            Set groups to redirect flow.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            recursive_ipv4_addresses: RecursiveIpv4Addresses
+                            """Subclass of AvdList with `str` items."""
+                            recursive_ipv6_addresses: RecursiveIpv6Addresses
+                            """Subclass of AvdList with `str` items."""
+                            ttl: int | None
+                            """
+                            Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses`,
+                            `recursive_ipv6_addresses` or `groups`.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    ipv4_addresses: Ipv4Addresses | UndefinedType = Undefined,
+                                    ipv6_addresses: Ipv6Addresses | UndefinedType = Undefined,
+                                    vrf: str | None | UndefinedType = Undefined,
+                                    groups: Groups | UndefinedType = Undefined,
+                                    recursive_ipv4_addresses: RecursiveIpv4Addresses | UndefinedType = Undefined,
+                                    recursive_ipv6_addresses: RecursiveIpv6Addresses | UndefinedType = Undefined,
+                                    ttl: int | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    NextHop.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        ipv4_addresses: Subclass of AvdList with `str` items.
+                                        ipv6_addresses: Subclass of AvdList with `str` items.
+                                        vrf:
+                                           Resolve next-hop in a VRF for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses` or
+                                           `recursive_ipv6_addresses`.
+                                        groups:
+                                           Set groups to redirect flow.
+
+                                           Subclass of AvdList with `str` items.
+                                        recursive_ipv4_addresses: Subclass of AvdList with `str` items.
+                                        recursive_ipv6_addresses: Subclass of AvdList with `str` items.
+                                        ttl:
+                                           Set header TTL value for `ipv4_addresses`, `ipv6_addresses`, `recursive_ipv4_addresses`,
+                                           `recursive_ipv6_addresses` or `groups`.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"aggregation_groups": {"type": AggregationGroups}, "interface": {"type": str}, "next_hop": {"type": NextHop}}
+                        aggregation_groups: AggregationGroups
+                        """
+                        Redirect to aggregation groups in Tap Aggregation mode.
+
+                        Subclass of AvdList with `str` items.
+                        """
+                        interface: str | None
+                        """
+                        The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.
+                        Ex:
+                          1. Ethernet1
+                        2. Et1,2
+                          3. Po2-4
+                        """
+                        next_hop: NextHop
+                        """
+                        Redirect to next-hop.
+                        This option is mutually exclusive with `aggregation_groups` and `interface`.
+                        If all three are defined, aggregation_groups and interface take precedence over next-hop.
+                        Only one
+                        of the below keys can be specified, in the order of precedence: ipv4_addresses, ipv6_addresses,
+                        groups, recursive_ipv4_addresses, recursive_ipv6_addresses.
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                aggregation_groups: AggregationGroups | UndefinedType = Undefined,
+                                interface: str | None | UndefinedType = Undefined,
+                                next_hop: NextHop | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Redirect.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    aggregation_groups:
+                                       Redirect to aggregation groups in Tap Aggregation mode.
+
+                                       Subclass of AvdList with `str` items.
+                                    interface:
+                                       The allowed hardware Ethernet interface, LAG interface, InternalRecirc, Switch.
+                                       Ex:
+                                         1. Ethernet1
+                                       2. Et1,2
+                                         3. Po2-4
+                                    next_hop:
+                                       Redirect to next-hop.
+                                       This option is mutually exclusive with `aggregation_groups` and `interface`.
+                                       If all three are defined, aggregation_groups and interface take precedence over next-hop.
+                                       Only one
+                                       of the below keys can be specified, in the order of precedence: ipv4_addresses, ipv6_addresses,
+                                       groups, recursive_ipv4_addresses, recursive_ipv6_addresses.
+
+                                       Subclass of AvdModel.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "dscp": {"type": int},
                         "traffic_class": {"type": int},
                         "count": {"type": str},
                         "drop": {"type": bool},
                         "log": {"type": bool},
+                        "redirect": {"type": Redirect},
                     }
                     dscp: int | None
                     traffic_class: int | None
                     """Traffic class ID."""
                     count: str | None
-                    """Counter name."""
+                    """
+                    Counter name. This should also be added to the `policies[].counters` list.
+                    It will no longer be
+                    added automatically to the counters in AVD 6.0.
+                    """
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
+                    redirect: Redirect
+                    """Subclass of AvdModel."""
 
                     if TYPE_CHECKING:
 
@@ -62509,6 +63066,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             count: str | None | UndefinedType = Undefined,
                             drop: bool | None | UndefinedType = Undefined,
                             log: bool | None | UndefinedType = Undefined,
+                            redirect: Redirect | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Actions.
@@ -62519,9 +63077,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
-                                count: Counter name.
+                                count:
+                                   Counter name. This should also be added to the `policies[].counters` list.
+                                   It will no longer be
+                                   added automatically to the counters in AVD 6.0.
                                 drop: drop
                                 log: Only supported when action is set to drop.
+                                redirect: Subclass of AvdModel.
 
                             """
 
@@ -62620,7 +63182,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_class: int | None
                     """Traffic class ID."""
                     count: str | None
-                    """Counter name."""
+                    """Counter name. This should also be added to the `policies[].counters` list."""
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
@@ -62645,7 +63207,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
-                                count: Counter name.
+                                count: Counter name. This should also be added to the `policies[].counters` list.
                                 drop: drop
                                 log: Only supported when action is set to drop.
 
@@ -62665,7 +63227,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_class: int | None
                     """Traffic class ID."""
                     count: str | None
-                    """Counter name."""
+                    """Counter name. This should also be added to the `policies[].counters` list."""
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
@@ -62690,7 +63252,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
-                                count: Counter name.
+                                count: Counter name. This should also be added to the `policies[].counters` list.
                                 drop: drop
                                 log: Only supported when action is set to drop.
 
@@ -62717,9 +63279,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "matches": {"type": Matches}, "default_actions": {"type": DefaultActions}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "counters": {"type": Counters},
+                "matches": {"type": Matches},
+                "default_actions": {"type": DefaultActions},
+            }
             name: str
             """Traffic Policy Name."""
+            counters: Counters
+            """
+            Counter name.
+
+            Subclass of AvdList with `str` items.
+            """
             matches: Matches
             """Subclass of AvdIndexedList with `MatchesItem` items. Primary key is `name` (`str`)."""
             default_actions: DefaultActions
@@ -62731,6 +63304,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
+                    counters: Counters | UndefinedType = Undefined,
                     matches: Matches | UndefinedType = Undefined,
                     default_actions: DefaultActions | UndefinedType = Undefined,
                 ) -> None:
@@ -62742,6 +63316,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: Traffic Policy Name.
+                        counters:
+                           Counter name.
+
+                           Subclass of AvdList with `str` items.
                         matches: Subclass of AvdIndexedList with `MatchesItem` items. Primary key is `name` (`str`).
                         default_actions: Subclass of AvdModel.
 

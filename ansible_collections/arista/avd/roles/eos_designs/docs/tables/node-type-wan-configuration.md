@@ -20,7 +20,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_interfaces</samp>](## "<node_type_keys.key>.defaults.wan_ha.ha_interfaces") | List, items: String |  |  |  | Local WAN HA interfaces<br>Overwrite the default behavior which is to pick all the `uplink_interfaces`.<br>Can be used to filter uplink interfaces when there are multiple uplinks.<br>Limitations:<br>  Either all interfaces must be uplinks or all interfaces must not be uplinks.<br>  Only one interface is supported for non uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.wan_ha.ha_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.wan_ha.ha_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>The IPv4 subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the first WAN router.<br>Not used for uplink interfaces. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_ha_interfaces</samp>](## "<node_type_keys.key>.defaults.wan_ha.max_ha_interfaces") | Integer |  |  |  | Number of parallel links towards HA switches.<br>Can be used to reserve IP addresses for future parallel HA links. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel_id</samp>](## "<node_type_keys.key>.defaults.wan_ha.port_channel_id") | Integer |  |  |  | Port-channel ID to use for direct HA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_port_channel_for_direct_ha</samp>](## "<node_type_keys.key>.defaults.wan_ha.use_port_channel_for_direct_ha") | Boolean |  | `True` |  | Enable or disable using a port-channel interface for direct HA when there is only one interface.<br>This feature was introduced in EOS 4.33.0F. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.defaults.wan_ha.flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting. |
@@ -42,7 +41,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.ha_interfaces") | List, items: String |  |  |  | Local WAN HA interfaces<br>Overwrite the default behavior which is to pick all the `uplink_interfaces`.<br>Can be used to filter uplink interfaces when there are multiple uplinks.<br>Limitations:<br>  Either all interfaces must be uplinks or all interfaces must not be uplinks.<br>  Only one interface is supported for non uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.ha_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.ha_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>The IPv4 subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the first WAN router.<br>Not used for uplink interfaces. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_ha_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.max_ha_interfaces") | Integer |  |  |  | Number of parallel links towards HA switches.<br>Can be used to reserve IP addresses for future parallel HA links. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.port_channel_id") | Integer |  |  |  | Port-channel ID to use for direct HA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_port_channel_for_direct_ha</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.use_port_channel_for_direct_ha") | Boolean |  | `True` |  | Enable or disable using a port-channel interface for direct HA when there is only one interface.<br>This feature was introduced in EOS 4.33.0F. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting. |
@@ -60,7 +58,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.ha_interfaces") | List, items: String |  |  |  | Local WAN HA interfaces<br>Overwrite the default behavior which is to pick all the `uplink_interfaces`.<br>Can be used to filter uplink interfaces when there are multiple uplinks.<br>Limitations:<br>  Either all interfaces must be uplinks or all interfaces must not be uplinks.<br>  Only one interface is supported for non uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.ha_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.ha_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>The IPv4 subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the first WAN router.<br>Not used for uplink interfaces. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_ha_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.max_ha_interfaces") | Integer |  |  |  | Number of parallel links towards HA switches.<br>Can be used to reserve IP addresses for future parallel HA links. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel_id</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.port_channel_id") | Integer |  |  |  | Port-channel ID to use for direct HA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_port_channel_for_direct_ha</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.use_port_channel_for_direct_ha") | Boolean |  | `True` |  | Enable or disable using a port-channel interface for direct HA when there is only one interface.<br>This feature was introduced in EOS 4.33.0F. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting. |
@@ -80,7 +77,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_interfaces</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.ha_interfaces") | List, items: String |  |  |  | Local WAN HA interfaces<br>Overwrite the default behavior which is to pick all the `uplink_interfaces`.<br>Can be used to filter uplink interfaces when there are multiple uplinks.<br>Limitations:<br>  Either all interfaces must be uplinks or all interfaces must not be uplinks.<br>  Only one interface is supported for non uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.ha_interfaces.[]") | String |  |  | Pattern: `Ethernet[\d/]+` |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ha_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.ha_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>The IPv4 subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the first WAN router.<br>Not used for uplink interfaces. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_ha_interfaces</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.max_ha_interfaces") | Integer |  |  |  | Number of parallel links towards HA switches.<br>Can be used to reserve IP addresses for future parallel HA links. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel_id</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.port_channel_id") | Integer |  |  |  | Port-channel ID to use for direct HA. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_port_channel_for_direct_ha</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.use_port_channel_for_direct_ha") | Boolean |  | `True` |  | Enable or disable using a port-channel interface for direct HA when there is only one interface.<br>This feature was introduced in EOS 4.33.0F. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the HA interfaces. Overrides `fabric_flow_tracking.wan_ha_links` setting. |
@@ -150,10 +146,6 @@
           # The IPv4 subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the first WAN router.
           # Not used for uplink interfaces.
           ha_ipv4_pool: <str>
-
-          # Number of parallel links towards HA switches.
-          # Can be used to reserve IP addresses for future parallel HA links.
-          max_ha_interfaces: <int>
 
           # Port-channel ID to use for direct HA.
           port_channel_id: <int>
@@ -240,10 +232,6 @@
                 # Not used for uplink interfaces.
                 ha_ipv4_pool: <str>
 
-                # Number of parallel links towards HA switches.
-                # Can be used to reserve IP addresses for future parallel HA links.
-                max_ha_interfaces: <int>
-
                 # Port-channel ID to use for direct HA.
                 port_channel_id: <int>
 
@@ -315,10 +303,6 @@
             # The IPv4 subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the first WAN router.
             # Not used for uplink interfaces.
             ha_ipv4_pool: <str>
-
-            # Number of parallel links towards HA switches.
-            # Can be used to reserve IP addresses for future parallel HA links.
-            max_ha_interfaces: <int>
 
             # Port-channel ID to use for direct HA.
             port_channel_id: <int>
@@ -397,10 +381,6 @@
             # The IPv4 subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the first WAN router.
             # Not used for uplink interfaces.
             ha_ipv4_pool: <str>
-
-            # Number of parallel links towards HA switches.
-            # Can be used to reserve IP addresses for future parallel HA links.
-            max_ha_interfaces: <int>
 
             # Port-channel ID to use for direct HA.
             port_channel_id: <int>
