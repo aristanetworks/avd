@@ -33,6 +33,16 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet4
+  description: P2P_HARDWARE_FEATURES_VEOS_LAB_Ethernet4
+  shutdown: false
+  mtu: 9194
+  ip_address: 10.10.30.1/31
+  peer: HARDWARE_FEATURES_VEOS_LAB
+  peer_interface: Ethernet4
+  peer_type: l3leaf
+  switchport:
+    enabled: false
 - name: Ethernet9
   description: P2P_HARDWARE_FEATURES_720XP_Ethernet9
   shutdown: false
@@ -202,6 +212,11 @@ router_bgp:
     remote_as: '65001'
     peer: HARDWARE_FEATURES_7280R
     description: HARDWARE_FEATURES_7280R_Ethernet1
+  - ip_address: 10.10.30.0
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: HARDWARE_FEATURES_VEOS_LAB
+    description: HARDWARE_FEATURES_VEOS_LAB
   - ip_address: 10.10.60.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
