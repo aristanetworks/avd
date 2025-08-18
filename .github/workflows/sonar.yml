@@ -26,7 +26,7 @@ jobs:
 
       - name: Download coverage from ansible-test units
         continue-on-error: true
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ansible-test-units-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -36,7 +36,7 @@ jobs:
 
       - name: Download coverage from ansible-test integration
         continue-on-error: true
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ansible-test-integration-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -45,7 +45,8 @@ jobs:
           merge-multiple: true
 
       - name: Download coverage from pyavd tests
-        uses: actions/download-artifact@v4
+        continue-on-error: true
+        uses: actions/download-artifact@v5
         with:
           name: coverage-data
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -55,7 +56,7 @@ jobs:
 
       - name: Download coverage from pytest avdutils (bindings for rust)
         continue-on-error: true
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pytest-avdutils-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -65,7 +66,7 @@ jobs:
 
       - name: Download eos_designs compiled templates from pytest
         continue-on-error: true
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pytest-eos-designs-compiled-templates
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -75,7 +76,7 @@ jobs:
 
       - name: Download eos_cli_config_gen compiled templates from pytest
         continue-on-error: true
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pytest-eos-cli-config-gen-compiled-templates
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -85,7 +86,7 @@ jobs:
 
       - name: Download coverage report from rust tests
         continue-on-error: true
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: rust-llvm-cov
           github-token: ${{ secrets.GITHUB_TOKEN }}
