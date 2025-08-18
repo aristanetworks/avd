@@ -144,6 +144,7 @@ class MonitorSessionsMixin(Protocol):
                         if node_name != self.shared_utils.hostname:
                             continue
                         for monitor_session in l3_interface.monitor_sessions:
+                            # We merge using the adapter datamodel to catch conflicts in direction.
                             per_interface_monitor_session = monitor_session._deepcopy()._cast_as(
                                 EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessionsItem
                             )
