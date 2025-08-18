@@ -26,6 +26,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.wan_ha.flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.defaults.wan_ha.flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.defaults.dps_mss_ipv4") | String |  | `auto` |  | IPv4 MSS value configured under "router path-selection" on WAN Devices. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;data_plane_cpu_allocation_max</samp>](## "<node_type_keys.key>.defaults.data_plane_cpu_allocation_max") | Integer |  |  | Min: 1<br>Max: 128 | Set the maximum number of CPU used for the data plane.<br>This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane. |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
@@ -47,6 +48,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].wan_ha.flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].dps_mss_ipv4") | String |  | `auto` |  | IPv4 MSS value configured under "router path-selection" on WAN Devices. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_plane_cpu_allocation_max</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].data_plane_cpu_allocation_max") | Integer |  |  | Min: 1<br>Max: 128 | Set the maximum number of CPU used for the data plane.<br>This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_role</samp>](## "<node_type_keys.key>.node_groups.[].wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code> | Override the default WAN role.<br><br>This is used both for AutoVPN and Pathfinder designs.<br>That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.<br>`server` indicates that the router is a route-reflector. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_transit_mode</samp>](## "<node_type_keys.key>.node_groups.[].cv_pathfinder_transit_mode") | String |  |  | Valid Values:<br>- <code>region</code><br>- <code>zone</code> | Configure the transit mode for a WAN client for CV Pathfinder designs<br>only when the `wan_mode` root key is set to `cv_pathfinder`.<br><br>'zone' is currently not supported. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_pathfinder_region</samp>](## "<node_type_keys.key>.node_groups.[].cv_pathfinder_region") | String |  |  |  | The CV Pathfinder region name.<br>This key is required for WAN routers but optional for pathfinders.<br>The region name must be defined under 'cv_pathfinder_regions'. |
@@ -64,6 +66,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].wan_ha.flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.node_groups.[].dps_mss_ipv4") | String |  | `auto` |  | IPv4 MSS value configured under "router path-selection" on WAN Devices. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_plane_cpu_allocation_max</samp>](## "<node_type_keys.key>.node_groups.[].data_plane_cpu_allocation_max") | Integer |  |  | Min: 1<br>Max: 128 | Set the maximum number of CPU used for the data plane.<br>This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wan_role</samp>](## "<node_type_keys.key>.nodes.[].wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code> | Override the default WAN role.<br><br>This is used both for AutoVPN and Pathfinder designs.<br>That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.<br>`server` indicates that the router is a route-reflector. |
@@ -83,6 +86,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].wan_ha.flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.nodes.[].dps_mss_ipv4") | String |  | `auto` |  | IPv4 MSS value configured under "router path-selection" on WAN Devices. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data_plane_cpu_allocation_max</samp>](## "<node_type_keys.key>.nodes.[].data_plane_cpu_allocation_max") | Integer |  |  | Min: 1<br>Max: 128 | Set the maximum number of CPU used for the data plane.<br>This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane. |
 
 === "YAML"
 
@@ -163,6 +167,10 @@
 
         # IPv4 MSS value configured under "router path-selection" on WAN Devices.
         dps_mss_ipv4: <str; default="auto">
+
+        # Set the maximum number of CPU used for the data plane.
+        # This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
+        data_plane_cpu_allocation_max: <int; 1-128>
 
       # Define variables related to all nodes part of this group.
       node_groups:
@@ -249,6 +257,10 @@
               # IPv4 MSS value configured under "router path-selection" on WAN Devices.
               dps_mss_ipv4: <str; default="auto">
 
+              # Set the maximum number of CPU used for the data plane.
+              # This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
+              data_plane_cpu_allocation_max: <int; 1-128>
+
           # Override the default WAN role.
           #
           # This is used both for AutoVPN and Pathfinder designs.
@@ -320,6 +332,10 @@
 
           # IPv4 MSS value configured under "router path-selection" on WAN Devices.
           dps_mss_ipv4: <str; default="auto">
+
+          # Set the maximum number of CPU used for the data plane.
+          # This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
+          data_plane_cpu_allocation_max: <int; 1-128>
 
       # Define variables per node.
       nodes:
@@ -398,4 +414,8 @@
 
           # IPv4 MSS value configured under "router path-selection" on WAN Devices.
           dps_mss_ipv4: <str; default="auto">
+
+          # Set the maximum number of CPU used for the data plane.
+          # This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
+          data_plane_cpu_allocation_max: <int; 1-128>
     ```
