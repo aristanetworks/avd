@@ -705,8 +705,8 @@ jobs:
         if: matrix.python == '3.11'
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-data-${{ matrix.suite.name }}
-          path: coverage-${{ matrix.suite.name }}.dat
+          name: coverage-data-${{ matrix.suite.id }}
+          path: coverage-${{ matrix.suite.id }}.dat
       - name: Upload eos_designs compiled templates from pytest
         if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
         uses: actions/upload-artifact@v4
