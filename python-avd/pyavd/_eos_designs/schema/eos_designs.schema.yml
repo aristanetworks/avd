@@ -6028,6 +6028,15 @@ keys:
     convert_types:
     - str
     default: 12000
+  underlay_ospf_maximum_paths:
+    description: Maximum number of next-hops in an ECMP route.
+    documentation_options:
+      table: ospf-settings
+    type: int
+    min: 1
+    max: 128
+    convert_types:
+    - str
   underlay_ospf_process_id:
     documentation_options:
       table: ospf-settings
