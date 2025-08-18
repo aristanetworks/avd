@@ -2,7 +2,7 @@
 name: Analysis with Sonarlint and publish to SonarCloud
 "on":
   workflow_run:
-    workflows: ["Collection code testing"]
+    workflows: ["Collection code testing", "Test pyavd"]
     types: [completed]
 
 jobs:
@@ -15,6 +15,14 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install coverage
+        run: pip install "coverage[toml]"
 
       - name: Download coverage from ansible-test units
         continue-on-error: true
@@ -36,11 +44,10 @@ jobs:
           path: ansible_collections/arista/avd/
           merge-multiple: true
 
-      - name: Download coverage from pytest
-        continue-on-error: true
+      - name: Download coverage from pyavd tests
         uses: actions/download-artifact@v4
         with:
-          name: pytest-coverage
+          name: coverage-data
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
           path: python-avd/
@@ -83,6 +90,15 @@ jobs:
           name: rust-llvm-cov
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Combine and report test coverage for pyavd
+        working-directory: python-avd
+        run: |
+          set -ex
+          find . -type f -name "*.dat" -exec mv {} . \;
+          coverage combine --rcfile=pyproject.toml
+          coverage report --rcfile=pyproject.toml
+          coverage xml --rcfile=pyproject.toml
 
       - name: Get PR context
         # Source: https://github.com/orgs/community/discussions/25220#discussioncomment-11316244

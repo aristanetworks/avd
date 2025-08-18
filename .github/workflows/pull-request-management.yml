@@ -720,40 +720,6 @@ jobs:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
 
-  generate_pyavd_coverage_report:
-    name: Test pyavd python 3.11 coverage report
-    runs-on: ubuntu-latest
-    needs: [test_pyavd]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install coverage
-        run: pip install "coverage[toml]"
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: ./artifacts
-      - name: Combine and report test coverage
-        working-directory: python-avd
-        run: |
-          set -ex
-          find ../artifacts/coverage-data-*/ -type f -name "*.dat" -exec mv {} . \;
-          mkdir -p ./pyavd/_eos_designs/j2templates/compiled_templates/
-          mkdir -p ./pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
-          mv ../artifacts/pytest-eos-designs-compiled-templates/* ./pyavd/_eos_designs/j2templates/compiled_templates/
-          mv ../artifacts/pytest-eos-cli-config-gen-compiled-templates/* ./pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
-          coverage combine --rcfile=pyproject.toml coverage-*.dat
-          coverage report --rcfile=pyproject.toml
-          coverage xml --rcfile=pyproject.toml
-      - name: Upload pytest coverage report
-        uses: actions/upload-artifact@v4
-        with:
-          name: pytest-coverage
-          path: python-avd/coverage.xml
-
   # ----------------------------------- #
   # Cargo build, test and linting
   # ----------------------------------- #
