@@ -1003,7 +1003,7 @@ $defs:
               virtual-router: <subnet> + 1
               l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
               l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-              l2leafs       : <subnet> + 3 + <l2leaf id>
+              l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
               GW on l2leafs : <subnet> + 1
               Assign range larger than total l2leafs + 5
 

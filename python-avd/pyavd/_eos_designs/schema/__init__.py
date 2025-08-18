@@ -27253,13 +27253,15 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
                     """
@@ -28071,13 +28073,15 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
                                 inband_mgmt_subnet_offset:
                                    Offset value to adjust the calculated inband management IP address within the subnet.
                                    The assigned
@@ -31594,13 +31598,15 @@ class EosDesigns(EosDesignsRootModel):
                         2 (same IP on all l3leaf A)
                         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                         l2leafs       :
-                        <subnet> + 3 + <l2leaf id>
+                        <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                         GW on l2leafs : <subnet> + 1
-                        Assign range larger than total l2leafs + 5
+                        Assign range
+                        larger than total l2leafs + 5
+
                         Setting is ignored if 'inband_mgmt_ip' is set.
 
-                        This setting is applicable to L2 switches (switches
-                        using port-channel trunks as uplinks).
+                        This setting is
+                        applicable to L2 switches (switches using port-channel trunks as uplinks).
                         """
                         inband_mgmt_subnet_offset: int
                         """
@@ -32421,13 +32427,15 @@ class EosDesigns(EosDesignsRootModel):
                                        2 (same IP on all l3leaf A)
                                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                        l2leafs       :
-                                       <subnet> + 3 + <l2leaf id>
+                                       <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                        GW on l2leafs : <subnet> + 1
-                                       Assign range larger than total l2leafs + 5
+                                       Assign range
+                                       larger than total l2leafs + 5
+
                                        Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                       This setting is applicable to L2 switches (switches
-                                       using port-channel trunks as uplinks).
+                                       This setting is
+                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
                                     inband_mgmt_subnet_offset:
                                        Offset value to adjust the calculated inband management IP address within the subnet.
                                        The assigned
@@ -35855,13 +35863,15 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
                     """
@@ -36684,13 +36694,15 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
                                 inband_mgmt_subnet_offset:
                                    Offset value to adjust the calculated inband management IP address within the subnet.
                                    The assigned
@@ -40190,13 +40202,15 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
                     """
@@ -41017,13 +41031,15 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
                                 inband_mgmt_subnet_offset:
                                    Offset value to adjust the calculated inband management IP address within the subnet.
                                    The assigned
@@ -52456,13 +52472,15 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
                     """
@@ -53274,13 +53292,15 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
                                 inband_mgmt_subnet_offset:
                                    Offset value to adjust the calculated inband management IP address within the subnet.
                                    The assigned
@@ -56797,13 +56817,15 @@ class EosDesigns(EosDesignsRootModel):
                         2 (same IP on all l3leaf A)
                         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                         l2leafs       :
-                        <subnet> + 3 + <l2leaf id>
+                        <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                         GW on l2leafs : <subnet> + 1
-                        Assign range larger than total l2leafs + 5
+                        Assign range
+                        larger than total l2leafs + 5
+
                         Setting is ignored if 'inband_mgmt_ip' is set.
 
-                        This setting is applicable to L2 switches (switches
-                        using port-channel trunks as uplinks).
+                        This setting is
+                        applicable to L2 switches (switches using port-channel trunks as uplinks).
                         """
                         inband_mgmt_subnet_offset: int
                         """
@@ -57624,13 +57646,15 @@ class EosDesigns(EosDesignsRootModel):
                                        2 (same IP on all l3leaf A)
                                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                        l2leafs       :
-                                       <subnet> + 3 + <l2leaf id>
+                                       <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                        GW on l2leafs : <subnet> + 1
-                                       Assign range larger than total l2leafs + 5
+                                       Assign range
+                                       larger than total l2leafs + 5
+
                                        Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                       This setting is applicable to L2 switches (switches
-                                       using port-channel trunks as uplinks).
+                                       This setting is
+                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
                                     inband_mgmt_subnet_offset:
                                        Offset value to adjust the calculated inband management IP address within the subnet.
                                        The assigned
@@ -61058,13 +61082,15 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
                     """
@@ -61887,13 +61913,15 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
                                 inband_mgmt_subnet_offset:
                                    Offset value to adjust the calculated inband management IP address within the subnet.
                                    The assigned
@@ -65393,13 +65421,15 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
                     """
                     inband_mgmt_subnet_offset: int
                     """
@@ -66220,13 +66250,15 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
                                 inband_mgmt_subnet_offset:
                                    Offset value to adjust the calculated inband management IP address within the subnet.
                                    The assigned
