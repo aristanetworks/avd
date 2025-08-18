@@ -13,6 +13,10 @@ l3leaf:
       pim:
         ipv4:
           sparse_mode: true
+    uplink_switch_ethernet_structured_config:
+      pim:
+        ipv4:
+          sparse_mode: true
     mlag_peer_vlan_structured_config:
       description: "mlag_peer_vlan_structured_config_override"
     mlag_peer_l3_vlan_structured_config:

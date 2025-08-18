@@ -61,6 +61,10 @@ l3leaf:
       pim:
         ipv4:
           sparse_mode: true
+    uplink_switch_ethernet_structured_config:
+      pim:
+        ipv4:
+          sparse_mode: true
     filter:
       always_include_vrfs_in_tenants: [TenantA, TenantB]
   nodes:

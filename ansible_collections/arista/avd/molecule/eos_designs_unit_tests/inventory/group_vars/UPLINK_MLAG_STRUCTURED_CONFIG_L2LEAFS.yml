@@ -13,7 +13,11 @@ l2leaf:
           level: 25
     # Structured config applied to downlink port-channel of uplink switch.
     uplink_switch_port_channel_structured_config:
-      description: description from uplink_switch_port_channel_structured_config
+      storm_control:
+        broadcast:
+          level: 25
+        unknown_unicast:
+          level: 25
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     mlag_peer_ipv4_pool: 10.255.252.0/24
     mlag_port_channel_structured_config:  # Setting structured config here but it is overridden by 'null' on group level and applied again on node level.
@@ -27,6 +31,10 @@ l2leaf:
       mlag_port_channel_structured_config: null
       # Testing merging of uplink_structured_config which is a dict type with no schema.
       uplink_port_channel_structured_config:
+        switchport:
+          trunk:
+            native_vlan_tag: true
+      uplink_switch_port_channel_structured_config:
         switchport:
           trunk:
             native_vlan_tag: true

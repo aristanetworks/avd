@@ -86,10 +86,8 @@ class UtilsMixin(Protocol):
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
                     structured_config=uplink.structured_config,
-                    ethernet_structured_config=uplink.ethernet_structured_config,
-                    port_channel_structured_config=uplink.port_channel_structured_config,
-                    downlink_ethernet_structured_config=uplink.uplink_peer_ethernet_structured_config,
-                    downlink_port_channel_structured_config=uplink.uplink_peer_port_channel_structured_config,
+                    ethernet_structured_config=uplink.uplink_peer_ethernet_structured_config,
+                    port_channel_structured_config=uplink.uplink_peer_port_channel_structured_config,
                 )
 
                 if peer_facts.inband_ztp:
