@@ -15,6 +15,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "svi_profiles.[].nodes.[].name") | String |  |  |  | VLAN name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].nodes.[].enabled") | Boolean |  |  |  | Enable or disable interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "svi_profiles.[].nodes.[].description") | String |  |  |  | SVI description. By default set to VLAN name.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "svi_profiles.[].nodes.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "svi_profiles.[].nodes.[].ip_address") | String |  |  |  | IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "svi_profiles.[].nodes.[].ipv6_address") | String |  |  |  | IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "svi_profiles.[].nodes.[].ipv6_enable") | Boolean |  |  |  | Explicitly enable/disable link-local IPv6 addressing. |
@@ -69,6 +70,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "svi_profiles.[].name") | String |  |  |  | VLAN name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].enabled") | Boolean |  |  |  | Enable or disable interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "svi_profiles.[].description") | String |  |  |  | SVI description. By default set to VLAN name.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "svi_profiles.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "svi_profiles.[].ip_address") | String |  |  |  | IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "svi_profiles.[].ipv6_address") | String |  |  |  | IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "svi_profiles.[].ipv6_enable") | Boolean |  |  |  | Explicitly enable/disable link-local IPv6 addressing. |
@@ -157,6 +159,9 @@
 
             # SVI description. By default set to VLAN name.
             description: <str>
+
+            # Accept gratuitous ARP.
+            arp_gratuitous_accept: <bool>
 
             # IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
             ip_address: <str>
@@ -318,6 +323,9 @@
 
         # SVI description. By default set to VLAN name.
         description: <str>
+
+        # Accept gratuitous ARP.
+        arp_gratuitous_accept: <bool>
 
         # IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
         ip_address: <str>

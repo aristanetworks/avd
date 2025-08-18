@@ -156,6 +156,8 @@ tenant_a:
             mtu: 9000
             enabled: true
             description: "test"
+            # test for arp_gratuitous_accept
+            arp_gratuitous_accept: true
             ospf:
               enabled: true
               cost: 100
@@ -243,6 +245,8 @@ tenant_a:
             name: svi_with_no_tags
             enabled: true
             ip_address_virtual: 10.1.51.1/24
+            # test for arp_gratuitous_accept
+            arp_gratuitous_accept: true
             # No "tags" defined - should render on switches with tag "all" or no tags
           - id: 166
             name: L2VLAN_AND_SVI
