@@ -78,6 +78,7 @@ port_channel_interfaces:
       testing multi line comments with |
       applied to port-channel 15
     description: DC1_L2LEAF3_Po1
+    arp_gratuitous_accept: true
     link_tracking_groups:
       - name: EVPN_MH_ES2
         direction: upstream
