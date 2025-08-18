@@ -144,6 +144,7 @@ custom_platform_settings:
       hardware_speed_group: false
       per_interface_l2_mru: false
       sflow: false
+      ptp: false
     p2p_uplinks_mtu: 9194
   - platforms:
       - customplatform
@@ -197,6 +198,11 @@ l3leaf:
     mlag_peer_ipv4_pool: 10.10.30.0/24
     mlag_peer_l3_ipv4_pool: 10.10.40.0/24
     uplink_ipv4_pool: 10.10.50.0/24
+    # Test PTP
+    ptp:
+      enabled: true
+    uplink_ptp:
+      enable: true
   node_groups:
     - group: group_1
       nodes:
@@ -230,8 +236,18 @@ l3leaf:
         - name: HARDWARE_FEATURES_CUSTOM_PLATFORM
           id: 6
           platform: customplatform
+          uplink_type: port-channel
           uplink_switches:
-            - HARDWARE_FEATURES_720XP
+            - HARDWARE_FEATURES_CLOUDEOS_2
+    - group: group_4
+      nodes:
+        # Testing PTP on CloudEOS over PO uplink and downlink
+        - name: HARDWARE_FEATURES_CLOUDEOS_2
+          id: 7
+          platform: cloudEOS
+          uplink_type: port-channel
+          uplink_switches:
+            - HARDWARE_FEATURES_7280R
 
 # Test `queue-monitor`
 queue_monitor_length:
@@ -268,6 +284,9 @@ servers:
         l2_mtu: 1001
         l2_mru: 1002
         sflow: true
+        # Test PTP
+        ptp:
+          enabled: true
   - name: TEST_MTU_MRU
     adapters:
       - switch_ports:
@@ -542,3 +561,17 @@ sflow_settings:
   vrfs:
     - name: default
       source_interface: Vlan10
+
+core_interfaces:
+  p2p_links:
+    - nodes: [HARDWARE_FEATURES_VEOS_LAB, HARDWARE_FEATURES_CLOUDEOS]
+      interfaces: [Ethernet4, Ethernet4]
+      as: ["65000", "65001"]
+      ip: ["10.10.30.0/31", "10.10.30.1/31"]
+      # Test PTP
+      ptp:
+        enabled: true
+
+# Test PTP
+uplink_ptp:
+  enable: true

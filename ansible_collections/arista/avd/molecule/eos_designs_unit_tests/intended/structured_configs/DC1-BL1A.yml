@@ -122,6 +122,7 @@ ethernet_interfaces:
   description: test
   shutdown: false
   mtu: 9000
+  arp_gratuitous_accept: true
   vrf: Tenant_A_WAN_Zone
   ip_address: 10.10.10.10/24
   ospf_network_point_to_point: true
