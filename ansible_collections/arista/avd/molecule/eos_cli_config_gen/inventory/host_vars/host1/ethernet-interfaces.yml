@@ -163,6 +163,7 @@ ethernet_interfaces:
     peer: SRV-POD03
     peer_interface: Eth1
     peer_type: server
+    arp_gratuitous_accept: true
     description: SRV-POD02_Eth1
     comment: |
       testing multi line comments with |
@@ -427,6 +428,7 @@ ethernet_interfaces:
         random_detect:
           ecn:
             count: true
+        scheduler_profile_responsive: true
     sync_e:
       enable: true
       priority: disabled

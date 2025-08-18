@@ -711,6 +711,7 @@ vlan_interfaces:
   description: svi_with_no_tags
   shutdown: false
   vrf: Tenant_A_WAN_Zone
+  arp_gratuitous_accept: true
   ip_address_virtual: 10.1.51.1/24
   tenant: Tenant_A
 - name: Vlan166

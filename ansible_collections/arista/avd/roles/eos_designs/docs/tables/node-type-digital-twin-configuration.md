@@ -12,6 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "<node_type_keys.key>.defaults.digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Set the OS version and management IP address for the digital twin of the associated node(s). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "<node_type_keys.key>.defaults.digital_twin.act_os_version") | String |  |  |  | Desired ACT Digital Twin OS version.<br>Overrides global `digital_twin.fabric.act_os_version` flag. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.defaults.digital_twin.mgmt_ip") | String |  |  | Format: cidr | Desired management interface IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_internet_access</samp>](## "<node_type_keys.key>.defaults.digital_twin.act_internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to cloudeos or veos devices by default.<br>Overrides global `digital_twin.fabric.act_internet_access` flag. |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
@@ -19,14 +20,17 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Set the OS version and management IP address for the digital twin of the associated node(s). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].digital_twin.act_os_version") | String |  |  |  | Desired ACT Digital Twin OS version.<br>Overrides global `digital_twin.fabric.act_os_version` flag. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].digital_twin.mgmt_ip") | String |  |  | Format: cidr | Desired management interface IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_internet_access</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].digital_twin.act_internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to cloudeos or veos devices by default.<br>Overrides global `digital_twin.fabric.act_internet_access` flag. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "<node_type_keys.key>.node_groups.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Set the OS version and management IP address for the digital twin of the associated node(s). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "<node_type_keys.key>.node_groups.[].digital_twin.act_os_version") | String |  |  |  | Desired ACT Digital Twin OS version.<br>Overrides global `digital_twin.fabric.act_os_version` flag. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.node_groups.[].digital_twin.mgmt_ip") | String |  |  | Format: cidr | Desired management interface IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_internet_access</samp>](## "<node_type_keys.key>.node_groups.[].digital_twin.act_internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to cloudeos or veos devices by default.<br>Overrides global `digital_twin.fabric.act_internet_access` flag. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "<node_type_keys.key>.nodes.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Set the OS version and management IP address for the digital twin of the associated node(s). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "<node_type_keys.key>.nodes.[].digital_twin.act_os_version") | String |  |  |  | Desired ACT Digital Twin OS version.<br>Overrides global `digital_twin.fabric.act_os_version` flag. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "<node_type_keys.key>.nodes.[].digital_twin.mgmt_ip") | String |  |  | Format: cidr | Desired management interface IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_internet_access</samp>](## "<node_type_keys.key>.nodes.[].digital_twin.act_internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to cloudeos or veos devices by default.<br>Overrides global `digital_twin.fabric.act_internet_access` flag. |
 
 === "YAML"
 
@@ -46,6 +50,12 @@
 
           # Desired management interface IPv4 address.
           mgmt_ip: <str>
+
+          # Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+          # This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+          # ACT does not provide direct Internet access to cloudeos or veos devices by default.
+          # Overrides global `digital_twin.fabric.act_internet_access` flag.
+          act_internet_access: <bool>
 
       # Define variables related to all nodes part of this group.
       node_groups:
@@ -71,6 +81,12 @@
                 # Desired management interface IPv4 address.
                 mgmt_ip: <str>
 
+                # Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                # This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+                # ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                # Overrides global `digital_twin.fabric.act_internet_access` flag.
+                act_internet_access: <bool>
+
           # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
           # Set the OS version and management IP address for the digital twin of the associated node(s).
           digital_twin:
@@ -81,6 +97,12 @@
 
             # Desired management interface IPv4 address.
             mgmt_ip: <str>
+
+            # Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+            # This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+            # ACT does not provide direct Internet access to cloudeos or veos devices by default.
+            # Overrides global `digital_twin.fabric.act_internet_access` flag.
+            act_internet_access: <bool>
 
       # Define variables per node.
       nodes:
@@ -98,4 +120,10 @@
 
             # Desired management interface IPv4 address.
             mgmt_ip: <str>
+
+            # Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+            # This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+            # ACT does not provide direct Internet access to cloudeos or veos devices by default.
+            # Overrides global `digital_twin.fabric.act_internet_access` flag.
+            act_internet_access: <bool>
     ```
