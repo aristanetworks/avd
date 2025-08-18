@@ -675,11 +675,14 @@ jobs:
         python: ["3.10", "3.11", "3.12", "3.13"]
         suite:
           - name: "Main-Tests"
+            id: Main-Tests
             pytest_args: "--ignore=tests/pyavd/molecule_scenarios/test_get_device_config.py --ignore=tests/pyavd/molecule_scenarios/test_negative_eos_designs.py --ignore=tests/schema_tools/metaschema/test_meta_schema_model.py"
             upload_compiled_templates: true
-          - name: "Excluded-Tests(test_get_device_config and test_meta_schema_model)"
+          - name: "Excluded-Tests (test_get_device_config and test_meta_schema_model)"
+            id: Excluded-test_get_device_config-and-test_meta_schema_model
             pytest_args: "tests/pyavd/molecule_scenarios/test_get_device_config.py tests/schema_tools/metaschema/test_meta_schema_model.py"
-          - name: "Excluded-Tests(test_negative_eos_designs)"
+          - name: "Excluded-Tests (test_negative_eos_designs)"
+            id: Excluded-test_negative_eos_designs
             pytest_args: "tests/pyavd/molecule_scenarios/test_negative_eos_designs.py"
     steps:
       - uses: actions/checkout@v4
@@ -694,10 +697,10 @@ jobs:
         working-directory: python-avd
         run: |
           tox -- ${{ matrix.suite.pytest_args }}
-      - name: Find and rename the coverage file
+      - name: Rename the coverage file
         if: matrix.python == '3.11'
         run: |
-          mv ./python-avd/.coverage.* ./coverage-${{ matrix.suite.name }}.dat
+          mv ./python-avd/.coverage.* ./coverage-${{ matrix.suite.id }}.dat
       - name: Upload pytest coverage data
         if: matrix.python == '3.11'
         uses: actions/upload-artifact@v4
