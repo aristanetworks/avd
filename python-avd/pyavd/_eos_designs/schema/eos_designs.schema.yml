@@ -8512,6 +8512,9 @@ $defs:
                       items:
                         type: str
                         description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                     descriptions:
@@ -8682,6 +8685,9 @@ $defs:
                       type: str
                       required: true
                       description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                       description: 'Interface description.
@@ -11482,13 +11488,6 @@ $defs:
                   Not used for uplink interfaces.'
                 type: str
                 format: ipv4_pool
-              max_ha_interfaces:
-                type: int
-                convert_types:
-                - str
-                description: 'Number of parallel links towards HA switches.
-
-                  Can be used to reserve IP addresses for future parallel HA links.'
               port_channel_id:
                 type: int
                 convert_types:
@@ -12525,6 +12524,9 @@ $defs:
         description: 'SVI description. By default set to VLAN name.
 
           '
+      arp_gratuitous_accept:
+        type: bool
+        description: Accept gratuitous ARP.
       ip_address:
         type: str
         description: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4

@@ -397,6 +397,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ip_proxy_arp is arista.avd.defined(true) %}
    ip proxy-arp
 {%     endif %}
+{%     if ethernet_interface.arp_gratuitous_accept is arista.avd.defined(true) %}
+   arp gratuitous accept
+{%     endif %}
 {%     if ethernet_interface.ip_address is arista.avd.defined %}
    ip address {{ ethernet_interface.ip_address }}
 {%         for ip_address_secondary in ethernet_interface.ip_address_secondaries | arista.avd.natural_sort %}
