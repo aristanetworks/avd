@@ -28,6 +28,7 @@ jobs:
     outputs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
+      pyavd: ${{ steps.filter.outputs.pyavd }}
       cloudvision: ${{ steps.filter.outputs.cloudvision }}
       dhcp: ${{ steps.filter.outputs.dhcp }}
       plugins: ${{ steps.filter.outputs.plugins }}
@@ -666,7 +667,8 @@ jobs:
     needs: [file-changes]
     if: |
       needs.file-changes.outputs.eos_design == 'true' ||
-      needs.file-changes.outputs.config_gen == 'true'
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.pyavd == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -674,6 +676,7 @@ jobs:
         suite:
           - name: "Main-Tests"
             pytest_args: "--ignore=tests/pyavd/molecule_scenarios/test_get_device_config.py --ignore=tests/pyavd/molecule_scenarios/test_negative_eos_designs.py --ignore=tests/schema_tools/metaschema/test_meta_schema_model.py"
+            upload_compiled_templates: true
           - name: "Excluded-Tests(test_get_device_config and test_meta_schema_model)"
             pytest_args: "tests/pyavd/molecule_scenarios/test_get_device_config.py tests/schema_tools/metaschema/test_meta_schema_model.py"
           - name: "Excluded-Tests(test_negative_eos_designs)"
@@ -694,13 +697,7 @@ jobs:
       - name: Find and rename the coverage file
         if: matrix.python == '3.11'
         run: |
-          coverage_file=$(find ./python-avd -maxdepth 1 -name ".coverage.*")
-          if [ -z "$coverage_file" ]; then
-            echo "::error::Coverage file not found in python-avd/!"
-            exit 1
-          fi
-          new_name="coverage-${{ matrix.suite.name }}.dat"
-          mv "$coverage_file" "$new_name"
+          mv ./python-avd/.coverage.* ./coverage-${{ matrix.suite.name }}.dat
       - name: Upload pytest coverage data
         if: matrix.python == '3.11'
         uses: actions/upload-artifact@v4
@@ -708,13 +705,13 @@ jobs:
           name: coverage-data-${{ matrix.suite.name }}
           path: coverage-${{ matrix.suite.name }}.dat
       - name: Upload eos_designs compiled templates from pytest
-        if: matrix.suite.name == 'Main-Tests' && matrix.python == '3.11'
+        if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
         uses: actions/upload-artifact@v4
         with:
           name: pytest-eos-designs-compiled-templates
           path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
       - name: Upload eos_cli_config_gen compiled templates from pytest
-        if: matrix.suite.name == 'Main-Tests' && matrix.python == '3.11'
+        if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
         uses: actions/upload-artifact@v4
         with:
           name: pytest-eos-cli-config-gen-compiled-templates
