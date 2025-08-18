@@ -5710,6 +5710,16 @@ interface Ethernet84
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | - | True | - | - |
 
+##### VRRP Details
+
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| Port-Channel333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Port-Channel333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown |  | 2 | 2001:db8:333::1, 2002:db8:333::2 | text |
+| Port-Channel333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
+| Port-Channel667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Port-Channel667 | 2 | - | - | Enabled | - | - |  | 2 | 2001:db8:667::1 | text |
+
 ##### ISIS
 
 | Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
@@ -6370,6 +6380,36 @@ interface Port-Channel137
    traffic-engineering srlg TEST
    traffic-engineering metric 2
    traffic-engineering min-delay static 2 milliseconds
+!
+interface Port-Channel333
+   description Multiple VRIDs and tracking
+   no shutdown
+   vrrp 1 priority-level 105
+   vrrp 1 advertisement interval 2
+   vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
+   vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
+   vrrp 2 peer authentication text <removed>
+   vrrp 2 ipv6 2001:db8:333::1
+   vrrp 2 ipv6 2002:db8:333::2
+   no vrrp 3 preempt
+   vrrp 3 timers delay reload 900
+   vrrp 3 ipv4 100.64.0.1
+   vrrp 3 ipv4 version 3
+!
+interface Port-Channel667
+   description Multiple VRIDs
+   vrrp 1 priority-level 105
+   vrrp 1 advertisement interval 2
+   vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 peer authentication ietf-md5 key-string <removed>
+   vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
+   vrrp 2 peer authentication text 0 <removed>
+   vrrp 2 ipv6 2001:db8:667::1
 ```
 
 ### Loopback Interfaces
