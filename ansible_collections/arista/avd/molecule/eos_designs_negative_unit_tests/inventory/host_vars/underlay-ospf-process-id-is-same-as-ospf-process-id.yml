@@ -8,7 +8,7 @@ l3leaf:
     loopback_ipv4_offset: 8
     vtep_loopback_ipv4_pool: 192.168.254.0/24
   nodes:
-    - name: underlay-ospf-process-id-is-same-as-ospf-process-id
+    - name: underlay-ospf-process-id-is-same-as-ospf-process-id-under-vrf
       id: 102
       bgp_as: 102
 
