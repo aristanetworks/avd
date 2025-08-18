@@ -170,7 +170,7 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -202,7 +202,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -237,7 +237,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -297,7 +297,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -320,7 +320,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -368,7 +368,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -408,7 +408,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -444,7 +444,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -487,7 +487,7 @@ jobs:
             3.12
             3.13
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -512,7 +512,7 @@ jobs:
           python-version: |
             3.12
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -600,7 +600,7 @@ jobs:
         run: |
           pip install "ansible-core==2.16.0"
       - name: Download collection
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: avd-collection
       - name: Install galaxy-importer
@@ -637,7 +637,7 @@ jobs:
             3.12
             3.13
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -645,7 +645,7 @@ jobs:
         run: |
           pip install "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: Download collection
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: avd-collection
       - name: Extract collection
