@@ -10,6 +10,13 @@ title: Ansible Collection Role cvp_configlet_upload
 
 # cvp_configlet_upload
 
+!!! warning
+    Deprecation Warning!
+    The role 'arista.avd.cvp_configlet_upload' has been deprecated.
+    Update your playbook to leverage the new 'arista.avd.cv_deploy' role instead.
+    See [arista.avd.cv_deploy](../cv_deploy/README.md) documentation for more details.
+    This role will be removed in AVD version 6.0.0.
+
 ## Overview
 
 **cvp_configlet_upload**, is a role that deploys configlets stored in a local folder to the CloudVision server.
