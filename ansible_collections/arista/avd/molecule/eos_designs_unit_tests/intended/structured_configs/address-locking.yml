@@ -1,9 +1,10 @@
 aaa_root:
   disabled: true
 address_locking:
-  dhcp_servers_ipv4:
-  - 1.1.1.1
   local_interface: Management1
+  locked_address:
+    ipv4_enforcement_disabled: true
+    ipv6_enforcement_disabled: true
 config_end: true
 enable_password:
   disabled: true

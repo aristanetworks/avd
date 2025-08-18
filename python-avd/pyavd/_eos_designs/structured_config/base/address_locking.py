@@ -28,6 +28,9 @@ class AddressLockingMixin(Protocol):
         self.structured_config.address_locking._update(
             dhcp_servers_ipv4=address_locking_settings.dhcp_servers_ipv4._cast_as(EosCliConfigGen.AddressLocking.DhcpServersIpv4),
             local_interface=local_interface,
+            locked_address=address_locking_settings.locked_address._cast_as(EosCliConfigGen.AddressLocking.LockedAddress),
+            disabled=address_locking_settings.disabled,
+            leases=address_locking_settings.leases._cast_as(EosCliConfigGen.AddressLocking.Leases),
         )
 
     def _get_local_interface(self: AvdStructuredConfigBaseProtocol, input_interface: str | None) -> str | None:

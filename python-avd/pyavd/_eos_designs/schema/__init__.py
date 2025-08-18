@@ -482,10 +482,82 @@ class EosDesigns(EosDesignsRootModel):
 
         DhcpServersIpv4._item_type = str
 
-        _fields: ClassVar[dict] = {"dhcp_servers_ipv4": {"type": DhcpServersIpv4}, "local_interface": {"type": str}}
+        class LeasesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"ip": {"type": str}, "mac": {"type": str}}
+            ip: str
+            """IP address."""
+            mac: str
+            """MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ip: str | UndefinedType = Undefined, mac: str | UndefinedType = Undefined) -> None:
+                    """
+                    LeasesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ip: IP address.
+                        mac: MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh).
+
+                    """
+
+        class Leases(AvdList[LeasesItem]):
+            """Subclass of AvdList with `LeasesItem` items."""
+
+        Leases._item_type = LeasesItem
+
+        class LockedAddress(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "expiration_mac_disabled": {"type": bool},
+                "ipv4_enforcement_disabled": {"type": bool},
+                "ipv6_enforcement_disabled": {"type": bool},
+            }
+            expiration_mac_disabled: bool | None
+            """Configure deauthorizing locked addresses upon MAC aging out."""
+            ipv4_enforcement_disabled: bool | None
+            """Configure enforcement for locked IPv4 addresses."""
+            ipv6_enforcement_disabled: bool | None
+            """Configure enforcement for locked IPv6 addresses."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    expiration_mac_disabled: bool | None | UndefinedType = Undefined,
+                    ipv4_enforcement_disabled: bool | None | UndefinedType = Undefined,
+                    ipv6_enforcement_disabled: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    LockedAddress.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        expiration_mac_disabled: Configure deauthorizing locked addresses upon MAC aging out.
+                        ipv4_enforcement_disabled: Configure enforcement for locked IPv4 addresses.
+                        ipv6_enforcement_disabled: Configure enforcement for locked IPv6 addresses.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
+            "disabled": {"type": bool},
+            "leases": {"type": Leases},
+            "locked_address": {"type": LockedAddress},
+        }
         dhcp_servers_ipv4: DhcpServersIpv4
         """Subclass of AvdList with `str` items."""
-        local_interface: str | None
+        local_interface: str
         """
         The value will be interpreted according to these rules:
           - `use_mgmt_interface` will configure the
@@ -496,12 +568,26 @@ class EosDesigns(EosDesignsRootModel):
         configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
         of `default_mgmt_method`.
           - Any other string will be used directly as the local interface.
+
+        Default value: `"use_default_mgmt_method_interface"`
         """
+        disabled: bool | None
+        """Disable IP locking on configured ports."""
+        leases: Leases
+        """Subclass of AvdList with `LeasesItem` items."""
+        locked_address: LockedAddress
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
             def __init__(
-                self, *, dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined, local_interface: str | None | UndefinedType = Undefined
+                self,
+                *,
+                dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                local_interface: str | UndefinedType = Undefined,
+                disabled: bool | None | UndefinedType = Undefined,
+                leases: Leases | UndefinedType = Undefined,
+                locked_address: LockedAddress | UndefinedType = Undefined,
             ) -> None:
                 """
                 AddressLockingSettings.
@@ -521,6 +607,9 @@ class EosDesigns(EosDesignsRootModel):
                        configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
+                    disabled: Disable IP locking on configured ports.
+                    leases: Subclass of AvdList with `LeasesItem` items.
+                    locked_address: Subclass of AvdModel.
 
                 """
 

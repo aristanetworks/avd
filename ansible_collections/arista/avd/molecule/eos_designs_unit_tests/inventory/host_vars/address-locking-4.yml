@@ -24,4 +24,4 @@ tenants:
       - id: 101
         name: test-address-locking-2
         address_locking:
-          ipv4: true
+          ipv6: true

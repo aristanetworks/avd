@@ -105,7 +105,7 @@ vlans:
   name: test-address-locking-2
   address_locking:
     address_family:
-      ipv4: true
+      ipv6: true
   tenant: TENANT1
 vrfs:
 - name: MGMT

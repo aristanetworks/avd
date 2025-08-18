@@ -13,8 +13,9 @@ l3leaf:
       bgp_as: 101
 
 address_locking_settings:
-  dhcp_servers_ipv4:
-    - 1.1.1.1
+  locked_address:
+    ipv6_enforcement_disabled: true
+    ipv4_enforcement_disabled: true
   # Testing use_default_mgmt_method_interface
   local_interface: use_default_mgmt_method_interface
 

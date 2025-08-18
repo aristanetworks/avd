@@ -13,8 +13,17 @@ l3leaf:
       bgp_as: 101
 
 address_locking_settings:
-  dhcp_servers_ipv4:
-    - 1.1.1.1
+  disabled: true
+  leases:
+    - ip: 2.2.2.2
+      mac: deaf.beef.cafe
+    - ip: 3.3.3.3
+      mac: de:af:be:ef:ca:fe
+  locked_address:
+    expiration_mac_disabled: true
+    ipv4_enforcement_disabled: true
+    ipv6_enforcement_disabled: true
+
   # Testing use_mgmt_interface
   local_interface: use_mgmt_interface
 
