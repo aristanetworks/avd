@@ -1498,7 +1498,7 @@ $defs:
               L3 Port-Channel interfaces to configure on the node.
           data_plane_cpu_allocation_max:
             documentation_options:
-              table: system-settings
+              table: node-type-wan-configuration
             type: int
             $ref: "eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max"
             description: |-
