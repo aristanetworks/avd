@@ -89,7 +89,7 @@ EXAMPLES = r"""
     generate_device_config: false
     device_doc_toc: true
     directory_mode: "0o775"
-    file_mode: 0o664
+    file_mode: "0o664"
   delegate_to: localhost
   vars:
     structured_config_filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"

@@ -6,5 +6,5 @@ avd_structured_config_file_format: "yml"
 avd_data_validation_mode: "error"
 
 # Input variable file/dir permission
-avd_dir_mode: 0o775
-avd_file_mode: 0o664
+avd_dir_mode: "0o775"
+avd_file_mode: "0o664"

@@ -1,2 +1,2 @@
-avd_file_mode: 0o664
-avd_dir_mode: 0o777
+avd_file_mode: "0o664"
+avd_dir_mode: "0o777"

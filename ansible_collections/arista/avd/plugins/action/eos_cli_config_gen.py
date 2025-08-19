@@ -14,7 +14,14 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, YamlLoader, cprofile, get_templar, write_file
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    PythonToAnsibleContextFilter,
+    PythonToAnsibleHandler,
+    YamlLoader,
+    cprofile,
+    get_templar,
+    write_file,
+)
 
 try:
     from pyavd import get_device_config, get_device_doc
@@ -121,7 +128,9 @@ class ActionModule(ActionBase):
                         device_config += rendered_custom_templates
                     LOGGER.debug("Rendering config custom templates [done].")
 
-                result["changed"] = write_file(device_config, validated_args["config_filename"], validated_args.get("file_mode"), validated_args.get("directory_mode"))
+                result["changed"] = write_file(
+                    device_config, validated_args["config_filename"], validated_args.get("file_mode"), validated_args.get("directory_mode")
+                )
                 LOGGER.debug("Rendering configuration [done].")
 
             if validated_args["generate_device_doc"]:
@@ -136,7 +145,9 @@ class ActionModule(ActionBase):
                 if validated_args["device_doc_toc"]:
                     device_doc = add_md_toc(device_doc, skip_lines=3)
 
-                file_changed = write_file(device_doc, validated_args["documentation_filename"], validated_args.get("file_mode"), validated_args.get("directory_mode"))
+                file_changed = write_file(
+                    device_doc, validated_args["documentation_filename"], validated_args.get("file_mode"), validated_args.get("directory_mode")
+                )
                 result["changed"] = result.get("changed") or file_changed
                 LOGGER.debug("Rendering documentation [done].")
 

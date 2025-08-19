@@ -43,6 +43,12 @@ This behavior can be adjusted by setting the variable described below.
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-input-validation.md
 --8<--
 
+## Input Variables File/Dir Mode
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-input-mode.md
+--8<--
+
 ## Extensibility with Custom Templates
 
 - Custom templates can be added below the playbook directory.

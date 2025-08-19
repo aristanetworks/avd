@@ -2,7 +2,6 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from pathlib import Path
-import os
 
 
 def write_file(content: str, filename: str, file_mode: str = "0o664", dir_mode: str = "0o775", track_changes: bool = True) -> bool:
@@ -26,11 +25,11 @@ def write_file(content: str, filename: str, file_mode: str = "0o664", dir_mode: 
         # Create parent dirs automatically.
         path.parent.mkdir(mode=int(dir_mode, 8), parents=True, exist_ok=True)
         # ignore umask and apply given permissions
-        os.chmod(path.parent, int(dir_mode, 8))
+        Path.chmod(path.parent, int(dir_mode, 8))
         # Touch file
         path.touch(mode=int(file_mode, 8))
         # ignore umask and apply given permissions
-        os.chmod(path, int(file_mode, 8))
+        Path.chmod(path, int(file_mode, 8))
     elif track_changes and path.read_text(encoding="UTF-8") == content:
         return False
 
