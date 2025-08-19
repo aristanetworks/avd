@@ -81,7 +81,7 @@ class ActionModule(ActionBase):
             for host in sorted(ansible_play_hosts_all):
                 host_hostvars = hostvars[host]
                 # Hosts marked as not deployed do not have any results
-                if not get(host_hostvars, "is_deployed", default=True):
+                if not get(host_hostvars, "metadata.is_deployed", default=True):
                     display.warning(f"No test results for host {host} since 'is_deployed' is False")
                     continue
                 try:

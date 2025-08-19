@@ -280,7 +280,7 @@ class ActionModule(ActionBase):
             # No structured config file.
             structured_config = {}
 
-        if not get(structured_config, "is_deployed", default=True):
+        if not get(structured_config, "metadata.is_deployed", default=True):
             del structured_config
             return ([], [], [], [])
 

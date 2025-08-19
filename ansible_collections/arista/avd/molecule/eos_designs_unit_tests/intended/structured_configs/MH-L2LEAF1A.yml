@@ -48,7 +48,6 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 2001:db8::2
   vrf: MGMT
-is_deployed: true
 link_tracking_groups:
 - name: l2leaf-server02
   recovery_delay: 300
@@ -80,6 +79,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   pod_name: TENANT_NETWORKS_POD
   fabric_name: EOS_DESIGNS_UNIT_TESTS

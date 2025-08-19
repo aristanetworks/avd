@@ -6938,10 +6938,6 @@ keys:
           max: 4294967295
   ipv6_unicast_routing:
     type: bool
-  is_deployed:
-    description: Key only used for documentation or validation purposes.
-    type: bool
-    default: true
   kernel:
     type: dict
     keys:
@@ -8997,6 +8993,10 @@ keys:
 
       It will not affect the generated EOS configuration.'
     keys:
+      is_deployed:
+        description: Key only used for documentation or validation purposes.
+        type: bool
+        default: true
       platform:
         type: str
       system_mac_address:

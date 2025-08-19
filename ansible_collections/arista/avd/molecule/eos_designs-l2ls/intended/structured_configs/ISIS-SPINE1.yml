@@ -26,7 +26,6 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:9a
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -47,6 +46,7 @@ management_interfaces:
   type: oob
   gateway: 172.31.0.1
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   pod_name: L2LS_ISIS
   fabric_name: L2LS

@@ -310,7 +310,6 @@ ethernet_interfaces:
 hostname: connected_endpoints
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 link_tracking_groups:
 - name: LT_GROUP1
   recovery_delay: 300
@@ -319,6 +318,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   platform: 720XP
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:

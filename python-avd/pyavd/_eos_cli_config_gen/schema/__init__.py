@@ -23952,6 +23952,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         _fields: ClassVar[dict] = {
+            "is_deployed": {"type": bool, "default": True},
             "platform": {"type": str},
             "system_mac_address": {"type": str},
             "rack": {"type": str},
@@ -23962,6 +23963,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
         }
+        is_deployed: bool
+        """
+        Key only used for documentation or validation purposes.
+
+        Default value: `True`
+        """
         platform: str | None
         system_mac_address: str | None
         rack: str | None
@@ -23988,6 +23995,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
+                is_deployed: bool | UndefinedType = Undefined,
                 platform: str | None | UndefinedType = Undefined,
                 system_mac_address: str | None | UndefinedType = Undefined,
                 rack: str | None | UndefinedType = Undefined,
@@ -24005,6 +24013,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    is_deployed: Key only used for documentation or validation purposes.
                     platform: platform
                     system_mac_address: system_mac_address
                     rack: rack
@@ -67534,7 +67543,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ipv6_standard_access_lists": {"type": Ipv6StandardAccessLists},
         "ipv6_static_routes": {"type": Ipv6StaticRoutes},
         "ipv6_unicast_routing": {"type": bool},
-        "is_deployed": {"type": bool, "default": True},
         "kernel": {"type": Kernel},
         "l2_protocol": {"type": L2Protocol},
         "lacp": {"type": Lacp},
@@ -67934,12 +67942,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ipv6_static_routes: Ipv6StaticRoutes
     """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
     ipv6_unicast_routing: bool | None
-    is_deployed: bool
-    """
-    Key only used for documentation or validation purposes.
-
-    Default value: `True`
-    """
     kernel: Kernel
     """Subclass of AvdModel."""
     l2_protocol: L2Protocol
@@ -68313,7 +68315,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ipv6_standard_access_lists: Ipv6StandardAccessLists | UndefinedType = Undefined,
             ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
             ipv6_unicast_routing: bool | None | UndefinedType = Undefined,
-            is_deployed: bool | UndefinedType = Undefined,
             kernel: Kernel | UndefinedType = Undefined,
             l2_protocol: L2Protocol | UndefinedType = Undefined,
             lacp: Lacp | UndefinedType = Undefined,
@@ -68617,7 +68618,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_standard_access_lists: Subclass of AvdIndexedList with `Ipv6StandardAccessListsItem` items. Primary key is `name` (`str`).
                 ipv6_static_routes: Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                 ipv6_unicast_routing: ipv6_unicast_routing
-                is_deployed: Key only used for documentation or validation purposes.
                 kernel: Subclass of AvdModel.
                 l2_protocol: Subclass of AvdModel.
                 lacp:

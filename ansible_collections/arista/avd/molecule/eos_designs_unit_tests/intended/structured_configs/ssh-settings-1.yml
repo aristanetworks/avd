@@ -6,7 +6,6 @@ enable_password:
 hostname: ssh-settings-1
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -38,6 +37,7 @@ management_ssh:
     enable: true
     ip_access_group_in: ACL-SSH
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 static_routes:
