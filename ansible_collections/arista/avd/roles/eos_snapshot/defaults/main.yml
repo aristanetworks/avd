@@ -5,7 +5,7 @@ root_dir: '{{ inventory_dir }}'
 snapshots_backup_dir_name: 'snapshots'
 snapshots_backup_dir: '{{ root_dir }}/{{ snapshots_backup_dir_name }}'
 
-# Input variable file/dir permission
+# file/dir permissions
 avd_dir_mode: "0o775"
 avd_file_mode: "0o664"
 
