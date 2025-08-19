@@ -7,10 +7,11 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>avd_dir_mode</samp>](## "avd_dir_mode") | String |  | `0o775` |  |  |
+    | [<samp>avd_dir_mode</samp>](## "avd_dir_mode") | String |  | `0o775` |  | Directory permissions mode (octal string) to be applied to all directories created by the role. |
 
 === "YAML"
 
     ```yaml
+    # Directory permissions mode (octal string) to be applied to all directories created by the role.
     avd_dir_mode: <str; default="0o775">
     ```

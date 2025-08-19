@@ -9,3 +9,4 @@ keys:
   avd_dir_mode:
     type: str
     default: "0o775"
+    description: Directory permissions mode (octal string) to be applied to all directories created by the role.

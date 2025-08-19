@@ -865,9 +865,13 @@ keys:
   avd_dir_mode:
     type: str
     default: 0o775
+    description: Directory permissions mode (octal string) to be applied to all directories
+      created by the role.
   avd_file_mode:
     type: str
     default: 0o664
+    description: File permissions mode (octal string) to be applied to all files generated
+      by the role.
   banners:
     type: dict
     keys:

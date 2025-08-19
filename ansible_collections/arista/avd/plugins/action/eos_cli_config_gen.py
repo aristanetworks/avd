@@ -14,7 +14,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, YamlLoader, cprofile, get_templar
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler, YamlLoader, cprofile, get_templar, write_file
 
 try:
     from pyavd import get_device_config, get_device_doc
@@ -121,9 +121,7 @@ class ActionModule(ActionBase):
                         device_config += rendered_custom_templates
                     LOGGER.debug("Rendering config custom templates [done].")
 
-                result["changed"] = self.write_file(
-                    device_config, validated_args["config_filename"], validated_args.get("directory_mode"), validated_args.get("file_mode")
-                )
+                result["changed"] = write_file(device_config, validated_args["config_filename"], validated_args.get("file_mode"), validated_args.get("directory_mode"))
                 LOGGER.debug("Rendering configuration [done].")
 
             if validated_args["generate_device_doc"]:
@@ -138,9 +136,7 @@ class ActionModule(ActionBase):
                 if validated_args["device_doc_toc"]:
                     device_doc = add_md_toc(device_doc, skip_lines=3)
 
-                file_changed = self.write_file(
-                    device_doc, validated_args["documentation_filename"], validated_args.get("directory_mode"), validated_args.get("file_mode")
-                )
+                file_changed = write_file(device_doc, validated_args["documentation_filename"], validated_args.get("file_mode"), validated_args.get("directory_mode"))
                 result["changed"] = result.get("changed") or file_changed
                 LOGGER.debug("Rendering documentation [done].")
 
@@ -225,36 +221,6 @@ class ActionModule(ActionBase):
             self.ansible_templar = get_templar(self, task_vars)
 
         return template(templatefile, task_vars, self.ansible_templar)
-
-    def write_file(self, content: str, filename: str, dir_mode: str, file_mode: str) -> bool:
-        """
-        This function writes the file only if the content has changed.
-
-        Parameters
-        ----------
-            content: The content to write
-            filename: Target filename
-
-        Returns:
-        -------
-            bool: Indicate if the content of filename has changed.
-        """
-        path = Path(filename)
-        if path.exists():
-            if path.read_text(encoding="UTF-8") == content:
-                return False
-
-        else:
-            # Create parent dirs automatically.
-            # raise Exception(dir_mode, type(int(format(int(dir_mode, 8), "o"))), file_mode, int(format(int(file_mode, 8), "o")))
-            path.parent.mkdir(mode=int(format(int(dir_mode, 8), "o")), parents=True, exist_ok=True)
-            # path.parent.mkdir(mode=dir_mode, parents=True, exist_ok=True)
-            # Touch file
-            file_modes = int(file_mode, 8)
-            path.touch(mode=file_modes)
-
-        path.write_text(content, encoding="UTF-8")
-        return True
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:
