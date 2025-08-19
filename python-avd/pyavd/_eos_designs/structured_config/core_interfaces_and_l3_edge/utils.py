@@ -199,7 +199,7 @@ class UtilsMixin(Protocol):
         ptp_config = output_type()
 
         # Early return if PTP is not enabled
-        if not p2p_link.ptp.enabled:
+        if not (p2p_link.ptp.enabled and self.shared_utils.platform_settings.feature_support.ptp):
             return ptp_config
 
         if self.shared_utils.ptp_enabled:
@@ -308,10 +308,11 @@ class UtilsMixin(Protocol):
         if p2p_link.macsec_profile:
             interface.mac_security.profile = p2p_link.macsec_profile
 
-        if p2p_link.sflow is not None:
-            interface.sflow.enable = p2p_link.sflow
-        elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
-            interface.sflow.enable = p2p_link_sflow
+        if self.shared_utils.platform_settings.feature_support.sflow:
+            if p2p_link.sflow is not None:
+                interface.sflow.enable = p2p_link.sflow
+            elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
+                interface.sflow.enable = p2p_link_sflow
 
         # Adding type check to avoid confusing the type checker.
         if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR, this is for the type checker

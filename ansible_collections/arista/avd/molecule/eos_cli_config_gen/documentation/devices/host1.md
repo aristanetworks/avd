@@ -34,6 +34,7 @@
   - [Management defaults](#management-defaults)
   - [TACACS Servers](#tacacs-servers)
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
+  - [Radius Proxy](#radius-proxy)
   - [RADIUS Server](#radius-server)
   - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
   - [AAA Server Groups](#aaa-server-groups)
@@ -100,6 +101,7 @@
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
 - [Load Balance](#load-balance)
   - [Load Balance Profiles](#load-balance-profiles)
+  - [Load Balance Cluster](#load-balance-cluster)
   - [Load Balance Configuration](#load-balance-configuration)
   - [Link Tracking](#link-tracking)
 - [MLAG](#mlag)
@@ -661,9 +663,9 @@ PTP Profile: g8275.1
 
 #### PTP Summary
 
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
-| 11:11:11:11:11:11 | 1.1.2.3 | 101 | 102 | 12 | 17 | boundary | True |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running Enabled |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------------- |
+| 11:11:11:11:11:11 | 1.1.2.3 | 101 | 102 | 12 | 17 | boundary | True | True (Hardware) |
 
 #### PTP Device Configuration
 
@@ -671,6 +673,7 @@ PTP Profile: g8275.1
 !
 ptp clock-identity 11:11:11:11:11:11
 ptp domain 17
+ptp free-running source clock hardware
 ptp message-type event dscp 46 default
 ptp message-type general dscp 36 default
 ptp mode boundary one-step
@@ -1317,6 +1320,147 @@ ip tacacs vrf default source-interface loopback1
 ip tacacs vrf TEST1 source-interface lo3
 !
 ip tacacs source-interface loopback10
+```
+
+### Radius Proxy
+
+| Settings | Value |
+| -------- | ----- |
+| Dynamic Authorization | True |
+| Client Type-7 Key | <removed> |
+| Client Session Idle-timeout (seconds) | 46 |
+
+#### Client Group Summary
+
+##### Client Group: CG_1
+
+Server Groups: aaa bbb ccc
+
+###### VRF: vrf_1
+
+####### IPv4 Clients
+
+| Address | Type-7 Key |
+| ------- | ---------- |
+| 1.2.10.10 | <removed> |
+| 1.1.10.10 | - |
+| 1.2.10.6 | - |
+| 2.2.1.1 | - |
+| 1.2.10.8 | <removed> |
+
+####### IPv6 Clients
+
+| Address | Type-7 Key |
+| ------- | ---------- |
+| 2001:db8::1 | <removed> |
+| ::1 | - |
+| fd00::1234 | <removed> |
+
+####### Host Clients
+
+| Name | Type-7 Key |
+| ---- | ---------- |
+| host1 | <removed> |
+| host2 | - |
+| host3 | <removed> |
+
+###### VRF: vrf_2
+
+####### IPv4 Clients
+
+| Address | Type-7 Key |
+| ------- | ---------- |
+| 1.1.10.10 | <removed> |
+| 1.1.10.6 | - |
+| 2.1.1.1 | - |
+| 1.1.10.8 | <removed> |
+
+##### Client Group: CG_2
+
+##### Client Group: CG_3
+
+Server Groups: ddd
+
+##### Client Group: CG_4
+
+###### VRF: vrf_only_host
+
+####### Host Clients
+
+| Name | Type-7 Key |
+| ---- | ---------- |
+| host11 | <removed> |
+| host12 | - |
+| host13 | <removed> |
+
+###### VRF: vrf_only_ipv4
+
+####### IPv4 Clients
+
+| Address | Type-7 Key |
+| ------- | ---------- |
+| 1.2.10.11 | <removed> |
+| 1.2.10.16 | - |
+| 2.2.1.11 | - |
+| 1.2.10.18 | <removed> |
+
+##### Client Group: CG_5
+
+###### VRF: vrf_only_ipv6
+
+####### IPv6 Clients
+
+| Address | Type-7 Key |
+| ------- | ---------- |
+| 2001:db8::11 | <removed> |
+| ::12 | - |
+| fd0::1234 | <removed> |
+
+#### RADIUS Proxy Configuration
+
+```eos
+!
+radius proxy
+   dynamic-authorization
+   client key 7 <removed>
+   client session idle-timeout 46 seconds
+   !
+   client group CG_1
+      client ipv4 1.1.10.10 vrf vrf_1
+      client ipv4 1.1.10.10 vrf vrf_2 key 7 <removed>
+      client ipv4 1.1.10.6 vrf vrf_2
+      client ipv4 1.1.10.8 vrf vrf_2 key 7 <removed>
+      client ipv4 1.2.10.10 vrf vrf_1 key 7 <removed>
+      client ipv4 1.2.10.6 vrf vrf_1
+      client ipv4 1.2.10.8 vrf vrf_1 key 7 <removed>
+      client ipv4 2.1.1.1 vrf vrf_2
+      client ipv4 2.2.1.1 vrf vrf_1
+      client ipv6 2001:db8::1 vrf vrf_1 key 7 <removed>
+      client ipv6 ::1 vrf vrf_1
+      client ipv6 fd00::1234 vrf vrf_1 key 7 <removed>
+      client host host1 vrf vrf_1 key 7 <removed>
+      client host host2 vrf vrf_1
+      client host host3 vrf vrf_1 key 7 <removed>
+      server group aaa bbb ccc
+   !
+   client group CG_2
+   !
+   client group CG_3
+      server group ddd
+   !
+   client group CG_4
+      client ipv4 1.2.10.11 vrf vrf_only_ipv4 key 7 <removed>
+      client ipv4 1.2.10.16 vrf vrf_only_ipv4
+      client ipv4 1.2.10.18 vrf vrf_only_ipv4 key 7 <removed>
+      client ipv4 2.2.1.11 vrf vrf_only_ipv4
+      client host host11 vrf vrf_only_host key 7 <removed>
+      client host host12 vrf vrf_only_host
+      client host host13 vrf vrf_only_host key 7 <removed>
+   !
+   client group CG_5
+      client ipv6 2001:db8::11 vrf vrf_only_ipv6 key 7 <removed>
+      client ipv6 ::12 vrf vrf_only_ipv6
+      client ipv6 fd0::1234 vrf vrf_only_ipv6 key 7 <removed>
 ```
 
 ### RADIUS Server
@@ -2748,11 +2892,11 @@ event-handler without-trigger-key
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-| T2 | T2-E1 | - | - | No local interface |
-| T3 | T3-E1 | - | - | No local interface |
-| T3 | T3-E2 | - | - | No local interface |
-| T3 | T3-E3 | - | - | Management1 |
-| T3 | T3-E4 | - | - | No local interface |
+| T2 | T2-E1 | 42.42.42.42 | - | No local interface |
+| T3 | T3-E1 | 10.10.10.1<br>dead:beaf::cafe | 555<br>666 | No local interface |
+| T3 | T3-E2 | 10.10.10.10 | 777 | No local interface |
+| T3 | T3-E3 | this.is.my.awesome.collector.dns.name | 888 | Management1 |
+| T3 | T3-E4 | dead:beef::cafe | - | No local interface |
 
 #### Flow Tracking Hardware
 
@@ -2770,11 +2914,11 @@ Software export of IPFIX data records enabled.
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
-| T2 | T2-E1 | - | - | No local interface |
-| T3 | T3-E1 | - | - | No local interface |
-| T3 | T3-E2 | - | - | No local interface |
-| T3 | T3-E3 | - | - | Management1 |
-| T3 | T3-E4 | - | - | No local interface |
+| T2 | T2-E1 | 42.42.42.42 | - | No local interface |
+| T3 | T3-E1 | 10.10.10.1<br>dead:beaf::cafe | 555<br>666 | No local interface |
+| T3 | T3-E2 | 10.10.10.10 | 777 | No local interface |
+| T3 | T3-E3 | this.is.my.awesome.collector.dns.name | 888 | Management1 |
+| T3 | T3-E4 | dead:beef::cafe | - | No local interface |
 
 #### Flow Tracking mirror-on-drop
 
@@ -2813,6 +2957,8 @@ flow tracking hardware
    !
    tracker T3
       exporter T3-E1
+         collector 10.10.10.1 port 555
+         collector dead:beaf::cafe port 666
       !
       exporter T3-E2
          collector 10.10.10.10 port 777
@@ -2846,6 +2992,8 @@ flow tracking sampled
    tracker T3
       flow table size 100000 entries
       exporter T3-E1
+         collector 10.10.10.1 port 555
+         collector dead:beaf::cafe port 666
       !
       exporter T3-E2
          collector 10.10.10.10 port 777
@@ -3270,6 +3418,24 @@ hardware tcam
 | Match Hash Payload Bytes | 10 |
 | UDP Payload | 10-20 |
 
+### Load Balance Cluster
+
+| Setting | Value |
+| ------- | ----- |
+| Forwarding Type | routed ipv4 |
+| Destination Grouping | bgp field-set |
+| Load-balance Method Flow Round-robin | True |
+| Flow Monitor | True |
+| Flow Source Learning Aging Timeout | 45 seconds |
+
+#### Host Port Groups
+
+| Port Group | Interface | Flow Limit | Flow Warning | Balance Factor | Exhaustion Action DSCP | Exhaustion Action Traffic-class |
+| ---------- | --------- | ---------- | ------------ | -------------- | ---------------------- | ------------------------------- |
+| host_group1 | Ethernet 2-4 | 12 | 25 | 10 | 5 | 7 |
+| host_group2 | Ethernet 2,3 | - | - | 10 | 45 | - |
+| host_group3 | Ethernet 2.2,3.1 | - | - | - | - | 9 |
+
 ### Load Balance Configuration
 
 ```eos
@@ -3283,6 +3449,31 @@ load-balance policies
       fields udp dst-port 100
          match payload bits 10 pattern 0x7d1 hash payload bytes 10
          payload bytes 10-20
+!
+load-balance cluster
+   forwarding type routed ipv4
+   destination grouping bgp field-set
+   load-balance method flow round-robin
+   flow monitor
+   !
+   flow source learning
+      aging timeout 45 seconds
+   !
+   port group host host_group1
+      interface Ethernet 2-4
+      flow limit 12
+      balance factor 10
+      flow warning 25
+      flow exhaustion action dscp 5 traffic-class 7
+   !
+   port group host host_group2
+      interface Ethernet 2,3
+      balance factor 10
+      flow exhaustion action dscp 45
+   !
+   port group host host_group3
+      interface Ethernet 2.2,3.1
+      flow exhaustion action traffic-class 9
 ```
 
 ### Link Tracking
@@ -4357,6 +4548,7 @@ interface Ethernet2
    switchport mode trunk
    switchport
    address locking ipv4 ipv6
+   arp gratuitous accept
    ip address 10.1.255.3/24
    ip address 1.1.1.3/24 secondary
    ip address 1.1.1.4/24 secondary
@@ -4510,6 +4702,7 @@ interface Ethernet6
    qos cos 2
    !
    tx-queue 2
+      scheduler profile responsive
       random-detect ecn count
    logging event storm-control discards
    spanning-tree bpduguard enable
@@ -5689,6 +5882,7 @@ interface Port-Channel15
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    switchport
+   arp gratuitous accept
    mlag 15
    no ntp serve
    service-policy type qos input pmap_test1
@@ -7347,11 +7541,12 @@ router adaptive-virtual-topology
 
 #### VRF Route leaking
 
-| VRF | Source VRF | Route Map Policy |
-|-----|------------|------------------|
-| BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING |
-| BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING |
-| BLUE3 | BLUE-C1 | RM-BLUE-LEAKING |
+| VRF | Source VRF | Route Map Policy | RCF Policy |
+|-----|------------|------------------| ---------- |
+| BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING | - |
+| BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING | RCF_BLUE_C3() |
+| BLUE3 | BLUE-C1 | RM-BLUE-LEAKING | - |
+| BLUE3 | BLUE-C2 | - | RCF_BLUE_C2() |
 
 #### VRF Routes Dynamic Prefix-lists
 
@@ -7372,6 +7567,7 @@ router general
    !
    vrf BLUE3
       leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
+      leak routes source-vrf BLUE-C2 subscribe rcf RCF_BLUE_C2()
       exit
    !
    vrf BLUE-C2
@@ -10658,9 +10854,19 @@ ip as-path access-list mylist2 deny _64517$ igp
 
 #### 802.1X Radius AV pair
 
-| Service type | Framed MTU |
-| ------------ | ---------- |
-| True | 1500 |
+| Type | Value | Auth Only |
+| ---- | ----- | --------- |
+| Service Type | - | - |
+| Framed MTU | 1500 | - |
+| LLDP System-name | - | Yes |
+| LLDP System-description | - | Yes |
+| DHCP Hostname | - | Yes |
+| DHCP Parameter Request List | - | Yes |
+| DHCP Vendor Class ID | - | Yes |
+| Filter ID Delimiter Period | - | - |
+| Filter ID IPv4 IPv6 Required | - | - |
+| Filter ID Multiple | - | - |
+| Username Format | delimiter: colon</br>MAC string case: lowercase | - |
 
 #### 802.1X Captive-portal authentication
 
@@ -10718,6 +10924,55 @@ ip as-path access-list mylist2 deny _64517$ igp
 | Ethernet70 | - | - | - | - | - | - | - | - |
 | Ethernet71 | - | - | - | - | - | - | - | - |
 | Ethernet72 | - | - | - | - | - | - | - | - |
+
+#### Dot1x Configuration
+
+```eos
+dot1x
+   supplicant profile Profile1
+      identity user_id1
+      eap-method tls
+      passphrase 0 <removed>
+      ssl profile PF1
+   !
+   supplicant profile Profile2
+      identity user_id2
+      passphrase 7 <removed>
+   !
+   supplicant profile Profile3
+      ssl profile PF2
+   aaa unresponsive phone action apply cached-results timeout 10 hours else traffic allow
+   aaa unresponsive action traffic allow vlan 10
+   aaa unresponsive eap response success
+   aaa accounting update interval 6 seconds
+   mac based authentication delay 300 seconds
+   mac based authentication hold period 300 seconds
+   radius av-pair service-type
+   radius av-pair filter-id multiple
+   radius av-pair filter-id delimiter period
+   radius av-pair filter-id ipv4 ipv6 required
+   radius av-pair framed-mtu 1500
+   mac-based-auth radius av-pair user-name delimiter colon lowercase
+   aaa unresponsive recovery action reauthenticate
+   supplicant disconnect cached-results timeout 79 seconds
+   captive-portal url http://portal-nacm08/captiveredirect/ ssl profile Profile1
+   captive-portal access-list ipv4 ACL
+   captive-portal start limit infinite
+   vlan assignment group Assignment_1 members 400-407
+   vlan assignment group Assignment_2 members 55
+   vlan assignment group Assignment_3 members 1,3,15-20
+   statistics packets dropped
+   radius av-pair lldp system-name auth-only
+   radius av-pair lldp system-description auth-only
+   radius av-pair dhcp hostname auth-only
+   radius av-pair dhcp parameter-request-list auth-only
+   radius av-pair dhcp vendor-class-id auth-only
+   supplicant logging
+!
+dot1x system-auth-control
+dot1x protocol lldp bypass
+dot1x dynamic-authorization
+```
 
 ## Power Over Ethernet (PoE)
 
@@ -11301,6 +11556,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Settings | Value |
 | -------- | ----- |
 | Buffering Egress Profile | unicast |
+| VOQ Credit Rates Unified | True |
 
 ### Platform Device Configuration
 
@@ -11312,6 +11568,8 @@ platform sand forwarding mode arad
 platform sand lag mode 512x32
 platform sand lag hardware-only
 platform fap buffering egress profile unicast
+!
+platform fap voq credit rates unified
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7
 platform sand qos map traffic-class 2 to network-qos 15
@@ -12414,11 +12672,11 @@ mac security
 
 #### IPv4 Field Sets
 
-| Field Set Name | IPv4 Prefixes |
-| -------------- | ------------- |
-| DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16 |
-| DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8 |
-| DEMO-03 | - |
+| Field Set Name | IPv4 Prefixes | Excluded Prefixes |
+| -------------- | ------------- | ----------------- |
+| DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16 | 10.2.2.2/32<br/>10.10.0.0/16<br/>172.16.0.0/16 |
+| DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8 | - |
+| DEMO-03 | - | - |
 
 #### L4 Port Field Sets
 
@@ -12431,28 +12689,40 @@ mac security
 
 ##### BLUE-C1-POLICY
 
+Counters: DEMO-TRAFFIC, DROP-PACKETS
+
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
-| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>any | -<br/>SERVICE-DEMO | any<br/>any | -<br/>- | action: PASS<br/>traffic-class: 5 |
-| BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | -<br/>- | any<br/>- | SERVICE-DEMO<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
-| BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | any | icmp | - | - | - | - | action: DROP<br/>counter: DROP-PACKETS<br/>logging |
-| BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22<br/>- | -<br/>- | 80<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5 |
-| BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | bgp | - | - | - | - | action: PASS<br/>traffic-class: 5 |
-| BLUE-C1-POLICY-06 | ipv4 | any | any | neighbors<br/>udp<br/>tcp<br/>icmp | -<br/>22<br/>22<br/>- | -<br/>-<br/>-<br/>- | -<br/>1,10-20<br/>any<br/>- | -<br/>-<br/>-<br/>- | action: PASS |
-| BLUE-C1-POLICY-07 | ipv4 | any | 10.0.0.0/8<br/>192.168.0.0/16 | - | - | - | - | - | default action: PASS |
-| BLUE-C1-POLICY-08 | ipv4 | any | DEMO-01 | udp<br/>tcp | any<br/>any | -<br/>SERVICE-DEMO-SRC | 1,10-20<br/>any | -<br/>SERVICE-DEMO-DST | default action: PASS |
+| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>udp | 1,10-20<br/>any | -<br/>SERVICE-DEMO | any<br/>any | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 |
+| BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | -<br/>- | any<br/>- | SERVICE-DEMO<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop IPv4 address: 2.2.2.1 2.2.2.2 |
+| BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | any | icmp | - | - | - | - | action: DROP<br/>counter: DROP-PACKETS<br/>logging<br/>redirect aggregation groups: group1 group2 group3<br/>redirect interface: Ethernet 1-4 |
+| BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22<br/>- | -<br/>- | 80<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv4 address: 1.1.1.1 3.3.3.3 vrf: VRF_IPv4 |
+| BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | bgp | - | - | - | - | action: PASS<br/>traffic-class: 5<br/>redirect next-hop IPv6 address: 2001:0db8:0000:0000:0000:0000:0000:0001 fe80:0000:0000:0000:f2de:f1ff:fe3f:307e vrf: VRF_IPv6 |
+| BLUE-C1-POLICY-06 | ipv4 | any | any | neighbors<br/>udp<br/>tcp<br/>icmp | -<br/>22<br/>22<br/>- | -<br/>-<br/>-<br/>- | -<br/>1,10-20<br/>any<br/>- | -<br/>-<br/>-<br/>- | action: PASS<br/>redirect next-hop groups: load_balancers monitoring_tools |
+| BLUE-C1-POLICY-07 | ipv4 | any | 10.0.0.0/8<br/>192.168.0.0/16 | - | - | - | - | - | action: PASS<br/>redirect next-hop recursive IPv4 address: 1.1.1.3 3.3.3.1 vrf: VRF_IPv4_recursive |
+| BLUE-C1-POLICY-08 | ipv4 | any | DEMO-01 | udp<br/>tcp | any<br/>any | -<br/>SERVICE-DEMO-SRC | 1,10-20<br/>any | -<br/>SERVICE-DEMO-DST | action: PASS<br/>redirect next-hop recursive IPv4 address: 13.2.1.3 14.2.3.1 |
 
 ##### BLUE-C2-POLICY
 
+Counters: DEMO-TRAFFIC
+
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
-| BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | any | tcp<br/>icmp | 1,10-20<br/>- | -<br/>- | any<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5 |
-| BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | SERVICE-DEMO<br/>- | any<br/>- | -<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
-| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | any | tcp | any | - | any | - | action: DROP |
+| BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | any | tcp<br/>icmp | 1,10-20<br/>- | -<br/>- | any<br/>- | -<br/>- | action: PASS<br/>traffic-class: 5<br/>redirect next-hop recursive IPv6 address: 2a00:1450:4009:821::200e vrf: VRF_IPv6_recursive |
+| BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | any | tcp<br/>icmp | any<br/>- | SERVICE-DEMO<br/>- | any<br/>- | -<br/>- | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60<br/>redirect next-hop recursive IPv6 address: 2001:4860:4860::8888 2606:4700:4700::1111 |
+| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | any | tcp | any | - | any | - | action: DROP<br/>redirect next-hop IPv6 address: 2001:db8::1 fd00::abcd:1234 ttl: 3 |
+| BLUE-C2-POLICY-04 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect interface: Ethernet 6 |
+| BLUE-C2-POLICY-05 | ipv6 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop IPv4 address: 2.2.2.33 2.2.2.43 vrf: VRF_TTL_IPv4 ttl: 5 |
+| BLUE-C2-POLICY-06 | ipv4 | any | any | - | - | - | - | - | action: PASS<br/>redirect next-hop groups: Testing_TTL_GROUP ttl: 44 |
+| BLUE-C2-POLICY-07 | ipv4 | any | any | - | - | - | - | - | action: PASS |
 
 ##### BLUE-C3-POLICY
 
+Counters: test
+
 ##### BLUE-C4-POLICY
+
+Counters: test
 
 ##### BLUE-C5-POLICY
 
@@ -12482,12 +12752,14 @@ traffic-policies
    field-set l4-port SERVICE-DEMO2
    field-set ipv4 prefix DEMO-01
       10.0.0.0/8 192.168.0.0/16
+      except 10.2.2.2/32 10.10.0.0/16 172.16.0.0/16
    !
    field-set ipv4 prefix DEMO-02
       172.16.0.0/12 224.0.0.0/8
    !
    field-set ipv4 prefix DEMO-03
    counter interface per-interface ingress
+   counter interface poll interval 10 seconds
    !
    traffic-policy BLUE-C1-POLICY
       counter DEMO-TRAFFIC DROP-PACKETS
@@ -12500,6 +12772,7 @@ traffic-policies
          ttl 10, 20-30
          !
          actions
+            redirect next-hop 2001:db8::1 fd00::abcd:1234
             set traffic class 5
       !
       match BLUE-C1-POLICY-02 ipv4
@@ -12510,6 +12783,7 @@ traffic-policies
          !
          actions
             count DEMO-TRAFFIC
+            redirect next-hop 2.2.2.1 2.2.2.2
             set dscp 60
       !
       match BLUE-C1-POLICY-03 ipv4
@@ -12521,6 +12795,8 @@ traffic-policies
             count DROP-PACKETS
             drop
             log
+            redirect aggregation group group1 group2 group3
+            redirect interface Ethernet 1-4
       !
       match BLUE-C1-POLICY-04 ipv4
          source prefix field-set DEMO-02
@@ -12530,6 +12806,7 @@ traffic-policies
          protocol icmp
          !
          actions
+            redirect next-hop 1.1.1.1 3.3.3.3 vrf VRF_IPv4
             set traffic class 5
       !
       match BLUE-C1-POLICY-05 ipv4
@@ -12539,18 +12816,28 @@ traffic-policies
          fragment
          !
          actions
+            redirect next-hop 2001:0db8:0000:0000:0000:0000:0000:0001 fe80:0000:0000:0000:f2de:f1ff:fe3f:307e vrf VRF_IPv6
             set traffic class 5
       !
       match BLUE-C1-POLICY-06 ipv4
          protocol neighbors bgp
+         !
+         actions
+            redirect next-hop group load_balancers monitoring_tools
       !
       match BLUE-C1-POLICY-07 ipv4
          destination prefix 10.0.0.0/8 192.168.0.0/16
+         !
+         actions
+            redirect next-hop recursive 1.1.1.3 3.3.3.1 vrf VRF_IPv4_recursive
       !
       match BLUE-C1-POLICY-08 ipv4
          destination prefix 10.0.0.0/8 192.168.0.0/16
          protocol udp destination port 1,10-20
          protocol tcp source port field-set SERVICE-DEMO-SRC destination port field-set SERVICE-DEMO-DST
+         !
+         actions
+            redirect next-hop recursive 13.2.1.3 14.2.3.1
       !
       match ipv4-all-default ipv4
          actions
@@ -12567,6 +12854,7 @@ traffic-policies
          protocol icmp
          !
          actions
+            redirect next-hop recursive 2a00:1450:4009:821::200e vrf VRF_IPv6_recursive
             set traffic class 5
       !
       match BLUE-C2-POLICY-02 ipv4
@@ -12576,6 +12864,7 @@ traffic-policies
          !
          actions
             count DEMO-TRAFFIC
+            redirect next-hop recursive 2001:4860:4860::8888 2606:4700:4700::1111
             set dscp 60
       !
       match BLUE-C2-POLICY-03 ipv4
@@ -12584,6 +12873,26 @@ traffic-policies
          !
          actions
             drop
+            redirect next-hop 2001:db8::1 fd00::abcd:1234 ttl 3
+      !
+      match BLUE-C2-POLICY-04 ipv6
+         !
+         actions
+            redirect interface Ethernet 6
+      !
+      match BLUE-C2-POLICY-05 ipv6
+         !
+         actions
+            redirect next-hop 2.2.2.33 2.2.2.43 vrf VRF_TTL_IPv4 ttl 5
+      !
+      match BLUE-C2-POLICY-06 ipv4
+         !
+         actions
+            redirect next-hop group Testing_TTL_GROUP ttl 44
+      !
+      match BLUE-C2-POLICY-07 ipv4
+         !
+         actions
       !
       match ipv4-all-default ipv4
          actions
@@ -12593,6 +12902,8 @@ traffic-policies
       match ipv6-all-default ipv6
    !
    traffic-policy BLUE-C3-POLICY
+      counter test
+      !
       match ipv4-all-default ipv4
          actions
             count test
@@ -12602,6 +12913,8 @@ traffic-policies
       match ipv6-all-default ipv6
    !
    traffic-policy BLUE-C4-POLICY
+      counter test
+      !
       match ipv4-all-default ipv4
       !
       match ipv6-all-default ipv6
@@ -12646,6 +12959,15 @@ QOS random-detect ECN is set to allow **non-ect** **chip-based**
 
 QOS adaptive transmit queue percentage-based allocation: **enabled**
 
+##### QOS Transmit Queue Parameters
+
+| Queue ID | Scheduler Profile Responsive |
+| -------- | ---------------------------- |
+| 1 | True |
+| 2 | False |
+| 3 | True |
+| 4 | - |
+
 ##### QOS Mappings
 
 | COS to Traffic Class mappings |
@@ -12675,6 +12997,8 @@ QOS adaptive transmit queue percentage-based allocation: **enabled**
 !
 qos rewrite dscp
 qos tx-queue shape rate percent adaptive
+qos tx-queue 1 scheduler profile responsive
+qos tx-queue 3 scheduler profile responsive
 qos map cos 1 2 3 4 to traffic-class 2
 qos map cos 3 to traffic-class 3
 qos map dscp 8 9 10 11 12 13 14 15 16 17 19 21 23 24 25 27 29 31 32 33 35 37 39 40 41 42 43 44 45 47 49 50 51 52 53 54 55 57 58 59 60 61 62 63 to traffic-class 1

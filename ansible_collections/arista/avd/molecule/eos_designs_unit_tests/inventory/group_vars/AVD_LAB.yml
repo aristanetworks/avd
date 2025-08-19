@@ -159,6 +159,7 @@ custom_platform_settings:
       interface_storm_control: false
       bgp_update_wait_for_convergence: true
       bgp_update_wait_install: true
+      per_interface_mtu: false
 
   # Test overwriting an existing platform
   - platforms: [ 7280R ]

@@ -40,8 +40,11 @@ class UtilsMixin(Protocol):
         underlay_links = self.facts.uplinks._deepcopy()
 
         for uplink in underlay_links:
-            uplink.sflow_enabled = self.inputs.fabric_sflow.uplinks
+            if self.shared_utils.platform_settings.feature_support.sflow:
+                uplink.sflow_enabled = self.inputs.fabric_sflow.uplinks
             uplink.flow_tracking = self.inputs.fabric_flow_tracking.uplinks
+            if not self.shared_utils.platform_settings.feature_support.ptp:
+                uplink.ptp.enable = False
 
         downlinks_flow_tracking = (
             # Cast as uplink model since that is used in the facts' uplink which we reuse below model
@@ -73,13 +76,13 @@ class UtilsMixin(Protocol):
                     native_vlan=uplink.native_vlan,
                     trunk_groups=uplink.peer_trunk_groups._cast_as(EosDesignsFacts.UplinksItem.TrunkGroups),
                     bfd=uplink.bfd,
-                    ptp=uplink.ptp,
+                    ptp=uplink.ptp if self.shared_utils.platform_settings.feature_support.ptp else Undefined,
                     mac_security=uplink.mac_security,
                     short_esi=uplink.peer_short_esi,
                     mlag=uplink.peer_mlag,
                     underlay_multicast=uplink.underlay_multicast,
                     ipv6_enable=uplink.ipv6_enable,
-                    sflow_enabled=self.inputs.fabric_sflow.downlinks,
+                    sflow_enabled=self.inputs.fabric_sflow.downlinks if self.shared_utils.platform_settings.feature_support.sflow else None,
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
                     structured_config=uplink.structured_config,
@@ -195,10 +198,14 @@ class UtilsMixin(Protocol):
             del interfaces[link.interface]
         else:
             main_interface = EosCliConfigGen.EthernetInterfacesItem(
-                switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False), mtu=self.shared_utils.p2p_uplinks_mtu
+                switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False),
+                mtu=self.shared_utils.get_interface_mtu(link.interface, self.shared_utils.p2p_uplinks_mtu),
             )
 
-        if (mtu := default(main_interface.mtu, 1500)) != self.shared_utils.p2p_uplinks_mtu:
+        if (
+            self.shared_utils.platform_settings.feature_support.per_interface_mtu
+            and (mtu := default(main_interface.mtu, 1500)) != self.shared_utils.p2p_uplinks_mtu
+        ):
             msg = (
                 f"MTU '{self.shared_utils.p2p_uplinks_mtu}' set for 'p2p_uplinks_mtu' conflicts with MTU '{mtu}' "
                 f"set on SVI for uplink_native_vlan '{link.native_vlan}'."

@@ -1,0 +1,17 @@
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: missing-radius-server-key-and-cleartext-key
+      mgmt_ip: 192.168.0.2/24
+
+aaa_settings:
+  radius:
+    servers:
+      - host: 10.10.10.11
+        vrf: default
+        groups:
+          - TACACS1
+
+expected_error_message: >-
+  '`aaa_settings.radius.servers[host=10.10.10.11].key` or `aaa_settings.radius.servers[host=10.10.10.11].cleartext_key`' is required but was not found.
