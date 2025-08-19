@@ -862,6 +862,12 @@ keys:
       "warning" will produce warning messages.
 
       '
+  avd_dir_mode:
+    type: str
+    default: 0o775
+  avd_file_mode:
+    type: str
+    default: 0o664
   banners:
     type: dict
     keys:

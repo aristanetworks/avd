@@ -67451,6 +67451,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "arp": {"type": Arp},
         "as_path": {"type": AsPath},
         "avd_data_validation_mode": {"type": str, "default": "error"},
+        "avd_dir_mode": {"type": str, "default": "0o775"},
+        "avd_file_mode": {"type": str, "default": "0o664"},
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
         "boot": {"type": Boot},
@@ -67684,6 +67686,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     Default value: `"error"`
     """
+    avd_dir_mode: str
+    """Default value: `"0o775"`"""
+    avd_file_mode: str
+    """Default value: `"0o664"`"""
     banners: Banners
     """Subclass of AvdModel."""
     bgp_groups: BgpGroups
@@ -68230,6 +68236,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             arp: Arp | UndefinedType = Undefined,
             as_path: AsPath | UndefinedType = Undefined,
             avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
+            avd_dir_mode: str | UndefinedType = Undefined,
+            avd_file_mode: str | UndefinedType = Undefined,
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
@@ -68451,6 +68459,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    "error" will produce error messages and fail the
                    task.
                    "warning" will produce warning messages.
+                avd_dir_mode: avd_dir_mode
+                avd_file_mode: avd_file_mode
                 banners: Subclass of AvdModel.
                 bgp_groups: Subclass of AvdIndexedList with `BgpGroupsItem` items. Primary key is `name` (`str`).
                 boot:

@@ -45,6 +45,8 @@ ARGUMENT_SPEC = {
     "generate_device_doc": {"type": "bool", "default": True},
     "device_doc_toc": {"type": "bool", "default": True},
     "cprofile_file": {"type": "str"},
+    "directory_mode": {"type": "str", "default": "0o775"},
+    "file_mode": {"type": "str", "default": "0o664"}
 }
 
 
@@ -119,7 +121,7 @@ class ActionModule(ActionBase):
                         device_config += rendered_custom_templates
                     LOGGER.debug("Rendering config custom templates [done].")
 
-                result["changed"] = self.write_file(device_config, validated_args["config_filename"])
+                result["changed"] = self.write_file(device_config, validated_args["config_filename"], validated_args.get("directory_mode"), validated_args.get("file_mode"))
                 LOGGER.debug("Rendering configuration [done].")
 
             if validated_args["generate_device_doc"]:
@@ -134,7 +136,7 @@ class ActionModule(ActionBase):
                 if validated_args["device_doc_toc"]:
                     device_doc = add_md_toc(device_doc, skip_lines=3)
 
-                file_changed = self.write_file(device_doc, validated_args["documentation_filename"])
+                file_changed = self.write_file(device_doc, validated_args["documentation_filename"], validated_args.get("directory_mode"), validated_args.get("file_mode"))
                 result["changed"] = result.get("changed") or file_changed
                 LOGGER.debug("Rendering documentation [done].")
 
@@ -220,7 +222,7 @@ class ActionModule(ActionBase):
 
         return template(templatefile, task_vars, self.ansible_templar)
 
-    def write_file(self, content: str, filename: str) -> bool:
+    def write_file(self, content: str, filename: str, dir_mode: str, file_mode: str) -> bool:
         """
         This function writes the file only if the content has changed.
 
@@ -240,9 +242,12 @@ class ActionModule(ActionBase):
 
         else:
             # Create parent dirs automatically.
-            path.parent.mkdir(mode=0o775, parents=True, exist_ok=True)
+            # raise Exception(dir_mode, type(int(format(int(dir_mode, 8), "o"))), file_mode, int(format(int(file_mode, 8), "o")))
+            path.parent.mkdir(mode=int(format(int(dir_mode, 8), "o")), parents=True, exist_ok=True)
+            # path.parent.mkdir(mode=dir_mode, parents=True, exist_ok=True)
             # Touch file
-            path.touch(mode=0o664)
+            file_modes= int(file_mode, 8)
+            path.touch(mode=file_modes)
 
         path.write_text(content, encoding="UTF-8")
         return True
