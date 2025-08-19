@@ -17,7 +17,7 @@
   ansible.builtin.template:
     src: "cvp-devices-v3.j2"
     dest: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
-    mode: "0o664"
+    mode: "{{ avd_file_mode }}"
   delegate_to: localhost
   run_once: true
 

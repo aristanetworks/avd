@@ -5,6 +5,10 @@
 root_dir: "{{ inventory_dir }}"
 
 # AVD configurations output
+# Output file/dir permissions
+avd_dir_mode: "0o775"
+avd_file_mode: "0o664"
+
 # Main output directory
 output_dir_name: "intended"
 output_dir: "{{ root_dir }}/{{ output_dir_name }}"

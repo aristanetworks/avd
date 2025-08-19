@@ -18,7 +18,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: "0o775"
+    mode: "{{ anta_dir_mode }}"
   loop:
     - "{{ anta_dir }}"
     - "{{ avd_catalogs_dir }}"

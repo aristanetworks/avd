@@ -18,7 +18,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: "0o775"
+    mode: "{{ avd_dir_mode }}"
   loop:
     - "{{ structured_dir }}"
     - "{{ fabric_dir }}"
@@ -47,6 +47,7 @@
     debug_vars: "{{ avd_eos_designs_debug | arista.avd.default(false) }}"
     debug_vars_file: "{{ structured_dir }}/{{ inventory_hostname }}-debug-vars.yml"
     digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
+    mode: "{{ avd_file_mode }}"
   delegate_to: localhost
   check_mode: false
   register: structured_config
@@ -69,7 +70,7 @@
     toc: "{{ eos_designs_documentation.toc | arista.avd.default(true) }}"
     digital_twin_file: "{{ fabric_dir }}/{{ fabric_name }}-topology.yml"
     digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
-    mode: "0o664"
+    mode: "{{ avd_file_mode }}"
   delegate_to: localhost
   check_mode: false
   run_once: true

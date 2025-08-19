@@ -23,3 +23,7 @@ anta_runner_dry_run: false
 
 # Structured configuration file format. Supported formats: yml, yaml, json.
 avd_structured_config_file_format: "yml"
+
+# Ouput file/dir permissions
+anta_dir_mode: "0o775"
+anta_file_mode: "0o664"

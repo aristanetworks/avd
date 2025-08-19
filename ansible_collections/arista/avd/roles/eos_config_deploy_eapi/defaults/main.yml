@@ -4,6 +4,10 @@ eos_config_deploy_eapi_pre_running_config_backup: false
 # Root directory where to build output structure
 root_dir: '{{ inventory_dir }}'
 
+# Ouput file/dir permissions
+avd_dir_mode: "0o775"
+avd_file_mode: "0o664"
+
 # AVD configurations output
 # Main output directory
 output_dir_name: 'intended'
