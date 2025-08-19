@@ -55,6 +55,7 @@ tenants:
             peer_port_channel: Po11
             enabled: true
             node: network-services-l3-port-channels
+            arp_gratuitous_accept: true
             member_interfaces:
               - name: Ethernet10
                 peer_interface: Ethernet10
