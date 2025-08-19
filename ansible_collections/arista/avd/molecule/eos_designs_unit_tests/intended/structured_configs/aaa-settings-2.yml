@@ -39,7 +39,8 @@ aaa_server_groups:
     vrf: INBAND_MGMT
 config_end: true
 enable_password:
-  disabled: true
+  hash_algorithm: sha512
+  key: $6$rounds=656000$TVhOLBLMBmme6Anf$vEcSj1QEnWOl25WYQ4/.ZiHoM//dGZdL6s1uk9gl960MRaQndva4usAr/Ts/aYDEsMleHHgeau7SwI3Z4Vdpw/
 hostname: aaa-settings-2
 ip_igmp_snooping:
   globally_enabled: true

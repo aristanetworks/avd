@@ -11,6 +11,9 @@ l2leaf:
 default_mgmt_method: inband
 
 aaa_settings:
+  # adding test for enable_password.cleartext_password
+  enable_password:
+    cleartext_password: Str0ngP@ssw0rd!2025
   tacacs:
     servers:
       - host: 10.10.10.11

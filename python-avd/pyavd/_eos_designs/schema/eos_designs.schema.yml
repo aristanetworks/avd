@@ -12,6 +12,15 @@ keys:
   aaa_settings:
     type: dict
     keys:
+      enable_password:
+        type: dict
+        keys:
+          password:
+            type: str
+            description: SHA512 hashed password.
+          cleartext_password:
+            type: str
+            description: Cleartext password which will be SHA512 hashed by AVD.
       tacacs:
         type: dict
         keys:
@@ -1832,15 +1841,6 @@ keys:
 
           Can be set to `false` to avoid changes when migrating from the old `name_servers`
           model.'
-  enable_password_settings:
-    type: dict
-    $ref: eos_cli_config_gen#/keys/enable_password
-    keys:
-      disabled:
-        type: bool
-        default: true
-        description: Set to `true` to configure `no enable password` which is the
-          EOS default.
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings

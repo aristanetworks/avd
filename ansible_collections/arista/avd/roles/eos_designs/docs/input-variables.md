@@ -896,12 +896,6 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/overlay-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/evpn-settings.md
 --8<--
 
-## Enable password settings
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/enable-password-settings.md
---8<--
-
 ## WAN Settings
 
 ### WAN generic settings
