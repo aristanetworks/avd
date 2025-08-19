@@ -24,6 +24,7 @@ cfm:
           end_points:
             - id: 2001
               remote_end_point: "1001"
+              interface: Ethernet1/2
             - id: 2002
               remote_end_point: "1002"
     - name: PROVIDER_B
@@ -48,10 +49,9 @@ cfm:
         qos_cos: 6
         tx_interval: "100 milliseconds"
         alarm_defects:
-          rdi_ccm: true
-          loc_state: true
-          error_ccm: false
-          cross_connection: true
+          - rdi-ccm
+          - cross-connection
+          - loc-state
 
       measurement:
         delay:

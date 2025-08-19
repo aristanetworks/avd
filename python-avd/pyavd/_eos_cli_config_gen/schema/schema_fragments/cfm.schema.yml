@@ -74,6 +74,11 @@ keys:
                              The range is from 1 to 8191.
                           convert_types:
                             - int
+                        interface:
+                          type: str
+                          description: |-
+                            Specifies the interface on which to configure the local maintenance end point.
+                            Supported types include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs).
                   profile:
                     type: str
                     description: Apply connectivity fault management profile.
@@ -167,20 +172,21 @@ keys:
                     - "1 minutes"
                     - "10 minutes"
                 alarm_defects:
-                  type: dict
-                  keys:
-                    rdi_ccm:
-                      type: bool
-                      description: Allow continuity check messages (CCMs) with the remote defect indication (RDI) bit set to raise alarms.
-                    loc_state:
-                      type: bool
-                      description: Allow loss of connectivity (LOC) to raise alarms.
-                    error_ccm:
-                      type: bool
-                      description: Allow invalid continuity check messages (CCMs) to raise alarms.
-                    cross_connection:
-                      type: bool
-                      description: Allow cross-connection defects to raise alarms.
+                  type: list
+                  min_length: 1
+                  description: |-
+                    Defines alarm indication signal protocol parameters. Supported options:
+                    - rdi-ccm: Raise alarms on continuity check messages (CCMs) with the remote defect indication (RDI) bit set.
+                    - loc-state: Raise alarms on loss of connectivity (LOC).
+                    - error-ccm: Raise alarms on invalid continuity check messages (CCMs).
+                    - cross-connection: Raise alarms on cross-connection defects.
+                  items:
+                    type: str
+                    valid_values:
+                      - rdi-ccm
+                      - loc-state
+                      - error-ccm
+                      - cross-connection
             measurement:
               type: dict
               keys:
@@ -248,6 +254,8 @@ keys:
                                 The range is from 3.33 to 600000.00.
                             period_frames:
                               type: int
+                              convert_types:
+                                - str
                               description: Synthetic loss measurement transmission frames.
                               min: 1
                               max: 65535

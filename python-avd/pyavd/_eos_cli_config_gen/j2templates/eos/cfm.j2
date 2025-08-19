@@ -29,22 +29,7 @@ cfm
       continuity-check qos cos {{ profile.continuity_check.qos_cos }}
 {%         endif %}
 {%         if profile.continuity_check.alarm_defects is arista.avd.defined %}
-{%             set alarm_defects = [] %}
-{%             if profile.continuity_check.alarm_defects.rdi_ccm is arista.avd.defined(true) %}
-{%                 do alarm_defects.append('rdi-ccm') %}
-{%             endif %}
-{%             if profile.continuity_check.alarm_defects.loc_state is arista.avd.defined(true) %}
-{%                 do alarm_defects.append('loc-state') %}
-{%             endif %}
-{%             if profile.continuity_check.alarm_defects.error_ccm is arista.avd.defined(true) %}
-{%                 do alarm_defects.append('error-ccm') %}
-{%             endif %}
-{%             if profile.continuity_check.alarm_defects.cross_connection is arista.avd.defined(true) %}
-{%                 do alarm_defects.append('cross-connection') %}
-{%             endif %}
-{%             if alarm_defects %}
-      continuity-check alarm defect {{ alarm_defects | join(' ') }}
-{%             endif %}
+      continuity-check alarm defect {{ profile.continuity_check.alarm_defects | sort(reverse=true) | join(' ') }}
 {%         endif %}
 {%         if profile.alarm_indication.enabled is arista.avd.defined(true) %}
       alarm indication
@@ -116,6 +101,9 @@ cfm
 {%             for end_point in association.end_points | arista.avd.natural_sort('id') %}
          !
          end-point {{ end_point.id }}
+{%                 if end_point.interface is arista.avd.defined %}
+            interface {{ end_point.interface }}
+{%                 endif %}
 {%                 if end_point.remote_end_point is arista.avd.defined %}
             remote end-point {{ end_point.remote_end_point }}
 {%                 endif %}

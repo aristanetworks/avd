@@ -2550,10 +2550,10 @@ monitor session default encapsulation gre payload inner-packet
 
 ##### CFM Domain End Points
 
-| Domain | Association ID | End Point ID | Remote End Point |
-| ------ | -------------- | ------------ | ---------------- |
-| CUSTOMER_A | 101 | 2001 | 1001 |
-| CUSTOMER_A | 101 | 2002 | 1002 |
+| Domain | Association ID | End Point ID | Remote End Point | Interface |
+| ------ | -------------- | ------------ | ---------------- | --------- |
+| CUSTOMER_A | 101 | 2001 | 1001 | Ethernet1/2 |
+| CUSTOMER_A | 101 | 2002 | 1002 | - |
 
 ##### CFM Domain Remote End Points
 
@@ -2568,7 +2568,7 @@ monitor session default encapsulation gre payload inner-packet
 
 | Profile | Enabled | QoS COS | TX Interval | Alarm Defects |
 | ------- | ------- | ------- | ----------- | ------------- |
-| profile_10G | True | 6 | 100 milliseconds | rdi-ccm, loc-state, cross-connection |
+| profile_10G | True | 6 | 100 milliseconds | rdi-ccm, cross-connection, loc-state |
 | profile_simple | True | - | 10 seconds | - |
 
 ##### CFM Profile Alarm Indication
@@ -2645,6 +2645,7 @@ cfm
             mac address 001c.7300.000b
          !
          end-point 2001
+            interface Ethernet1/2
             remote end-point 1001
          !
          end-point 2002

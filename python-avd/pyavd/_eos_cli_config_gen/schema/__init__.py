@@ -2670,7 +2670,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class EndPointsItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"id": {"type": int}, "remote_end_point": {"type": str}}
+                    _fields: ClassVar[dict] = {"id": {"type": int}, "remote_end_point": {"type": str}, "interface": {"type": str}}
                     id: int
                     """Set local maintenance end point ID."""
                     remote_end_point: str | None
@@ -2679,10 +2679,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     The range is
                     from 1 to 8191.
                     """
+                    interface: str | None
+                    """
+                    Specifies the interface on which to configure the local maintenance end point.
+                    Supported types
+                    include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs).
+                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, id: int | UndefinedType = Undefined, remote_end_point: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            id: int | UndefinedType = Undefined,
+                            remote_end_point: str | None | UndefinedType = Undefined,
+                            interface: str | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
                             EndPointsItem.
 
@@ -2695,6 +2707,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                    Remote maintenance end point ID(s) or range(s) of remote maintenance end point ID(s).
                                    The range is
                                    from 1 to 8191.
+                                interface:
+                                   Specifies the interface on which to configure the local maintenance end point.
+                                   Supported types
+                                   include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs).
 
                             """
 
@@ -2927,52 +2943,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class ContinuityCheck(AvdModel):
                 """Subclass of AvdModel."""
 
-                class AlarmDefects(AvdModel):
-                    """Subclass of AvdModel."""
+                class AlarmDefects(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
 
-                    _fields: ClassVar[dict] = {
-                        "rdi_ccm": {"type": bool},
-                        "loc_state": {"type": bool},
-                        "error_ccm": {"type": bool},
-                        "cross_connection": {"type": bool},
-                    }
-                    rdi_ccm: bool | None
-                    """
-                    Allow continuity check messages (CCMs) with the remote defect indication (RDI) bit set to raise
-                    alarms.
-                    """
-                    loc_state: bool | None
-                    """Allow loss of connectivity (LOC) to raise alarms."""
-                    error_ccm: bool | None
-                    """Allow invalid continuity check messages (CCMs) to raise alarms."""
-                    cross_connection: bool | None
-                    """Allow cross-connection defects to raise alarms."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            rdi_ccm: bool | None | UndefinedType = Undefined,
-                            loc_state: bool | None | UndefinedType = Undefined,
-                            error_ccm: bool | None | UndefinedType = Undefined,
-                            cross_connection: bool | None | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            AlarmDefects.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                rdi_ccm:
-                                   Allow continuity check messages (CCMs) with the remote defect indication (RDI) bit set to raise
-                                   alarms.
-                                loc_state: Allow loss of connectivity (LOC) to raise alarms.
-                                error_ccm: Allow invalid continuity check messages (CCMs) to raise alarms.
-                                cross_connection: Allow cross-connection defects to raise alarms.
-
-                            """
+                AlarmDefects._item_type = str
 
                 _fields: ClassVar[dict] = {
                     "enabled": {"type": bool},
@@ -2987,7 +2961,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 tx_interval: Literal["3.33 milliseconds", "10 milliseconds", "100 milliseconds", "1 seconds", "10 seconds", "1 minutes", "10 minutes"] | None
                 """Set the transmission interval for continuity check messages (CCMs)."""
                 alarm_defects: AlarmDefects
-                """Subclass of AvdModel."""
+                """
+                Defines alarm indication signal protocol parameters. Supported options:
+                - rdi-ccm: Raise alarms on
+                continuity check messages (CCMs) with the remote defect indication (RDI) bit set.
+                - loc-state: Raise
+                alarms on loss of connectivity (LOC).
+                - error-ccm: Raise alarms on invalid continuity check messages
+                (CCMs).
+                - cross-connection: Raise alarms on cross-connection defects.
+
+                Subclass of AvdList with
+                `str` items.
+                """
 
                 if TYPE_CHECKING:
 
@@ -3011,7 +2997,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             enabled: Enable the continuity check protocol to monitor connectivity.
                             qos_cos: Set the class of service (CoS) value for CFM frames.
                             tx_interval: Set the transmission interval for continuity check messages (CCMs).
-                            alarm_defects: Subclass of AvdModel.
+                            alarm_defects:
+                               Defines alarm indication signal protocol parameters. Supported options:
+                               - rdi-ccm: Raise alarms on
+                               continuity check messages (CCMs) with the remote defect indication (RDI) bit set.
+                               - loc-state: Raise
+                               alarms on loss of connectivity (LOC).
+                               - error-ccm: Raise alarms on invalid continuity check messages
+                               (CCMs).
+                               - cross-connection: Raise alarms on cross-connection defects.
+
+                               Subclass of AvdList with
+                               `str` items.
 
                         """
 

@@ -37,12 +37,12 @@
 
 ##### CFM Domain End Points
 
-| Domain | Association ID | End Point ID | Remote End Point |
-| ------ | -------------- | ------------ | ---------------- |
+| Domain | Association ID | End Point ID | Remote End Point | Interface |
+| ------ | -------------- | ------------ | ---------------- | --------- |
 {%             for domain in cfm_domain_associations %}
 {%                 for association in domain.associations | arista.avd.natural_sort('id') %}
 {%                     for endpoint in association.end_points | arista.avd.natural_sort('id') %}
-| {{ domain.name }} | {{ association.id }} | {{ endpoint.id }} | {{ endpoint.remote_end_point | arista.avd.default('-') }} |
+| {{ domain.name }} | {{ association.id }} | {{ endpoint.id }} | {{ endpoint.remote_end_point | arista.avd.default('-') }} | {{ endpoint.interface | arista.avd.default('-') }} |
 {%                     endfor %}
 {%                 endfor %}
 {%             endfor %}
@@ -78,16 +78,9 @@
 | Profile | Enabled | QoS COS | TX Interval | Alarm Defects |
 | ------- | ------- | ------- | ----------- | ------------- |
 {%             for profile in cfm_profile_continuity_check %}
-{%                 set enabled_defects = [] %}
-{%                 for defect_key in ["rdi_ccm", "loc_state", "error_ccm", "cross_connection"] %}
-{%                     if profile.continuity_check.alarm_defects[defect_key] is arista.avd.defined(true) %}
-{%                         do enabled_defects.append(defect_key.replace('_', '-')) %}
-{%                     endif %}
-{%                 endfor %}
-{%                 if enabled_defects %}
-{%                     set enabled_defects = enabled_defects | join(', ') %}
-{%                 else %}
-{%                     set enabled_defects = "-" %}
+{%                 set enabled_defects = "-" %}
+{%                 if profile.continuity_check.alarm_defects is arista.avd.defined %}
+{%                     set enabled_defects = profile.continuity_check.alarm_defects | join(', ') %}
 {%                 endif %}
 | {{ profile.name }} | {{ profile.continuity_check.enabled | arista.avd.default('-') }} | {{ profile.continuity_check.qos_cos | arista.avd.default('-') }} | {{ profile.continuity_check.tx_interval | arista.avd.default('-') }} | {{ enabled_defects }} |
 {%             endfor %}

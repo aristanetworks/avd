@@ -18,6 +18,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_points</samp>](## "cfm.domains.[].associations.[].end_points") | List, items: Dictionary |  |  |  | Configure the maintenance end point(MEP). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].end_points.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 8191 | Set local maintenance end point ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_end_point</samp>](## "cfm.domains.[].associations.[].end_points.[].remote_end_point") | String |  |  |  | Remote maintenance end point ID(s) or range(s) of remote maintenance end point ID(s).<br>The range is from 1 to 8191. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "cfm.domains.[].associations.[].end_points.[].interface") | String |  |  |  | Specifies the interface on which to configure the local maintenance end point.<br>Supported types include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "cfm.domains.[].associations.[].profile") | String |  |  |  | Apply connectivity fault management profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_end_points</samp>](## "cfm.domains.[].associations.[].remote_end_points") | List, items: Dictionary |  |  |  | Configure the remote maintenance end point(RMEP). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].remote_end_points.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 8191 | Configure remote maintenance end point ID. |
@@ -37,11 +38,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "cfm.profiles.[].continuity_check.enabled") | Boolean |  |  |  | Enable the continuity check protocol to monitor connectivity. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_cos</samp>](## "cfm.profiles.[].continuity_check.qos_cos") | Integer |  |  | Min: 0<br>Max: 7 | Set the class of service (CoS) value for CFM frames. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_interval</samp>](## "cfm.profiles.[].continuity_check.tx_interval") | String |  |  | Valid Values:<br>- <code>3.33 milliseconds</code><br>- <code>10 milliseconds</code><br>- <code>100 milliseconds</code><br>- <code>1 seconds</code><br>- <code>10 seconds</code><br>- <code>1 minutes</code><br>- <code>10 minutes</code> | Set the transmission interval for continuity check messages (CCMs). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alarm_defects</samp>](## "cfm.profiles.[].continuity_check.alarm_defects") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rdi_ccm</samp>](## "cfm.profiles.[].continuity_check.alarm_defects.rdi_ccm") | Boolean |  |  |  | Allow continuity check messages (CCMs) with the remote defect indication (RDI) bit set to raise alarms. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loc_state</samp>](## "cfm.profiles.[].continuity_check.alarm_defects.loc_state") | Boolean |  |  |  | Allow loss of connectivity (LOC) to raise alarms. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;error_ccm</samp>](## "cfm.profiles.[].continuity_check.alarm_defects.error_ccm") | Boolean |  |  |  | Allow invalid continuity check messages (CCMs) to raise alarms. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cross_connection</samp>](## "cfm.profiles.[].continuity_check.alarm_defects.cross_connection") | Boolean |  |  |  | Allow cross-connection defects to raise alarms. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alarm_defects</samp>](## "cfm.profiles.[].continuity_check.alarm_defects") | List, items: String |  |  | Min Length: 1 | Defines alarm indication signal protocol parameters. Supported options:<br>- rdi-ccm: Raise alarms on continuity check messages (CCMs) with the remote defect indication (RDI) bit set.<br>- loc-state: Raise alarms on loss of connectivity (LOC).<br>- error-ccm: Raise alarms on invalid continuity check messages (CCMs).<br>- cross-connection: Raise alarms on cross-connection defects. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "cfm.profiles.[].continuity_check.alarm_defects.[]") | String |  |  | Valid Values:<br>- <code>rdi-ccm</code><br>- <code>loc-state</code><br>- <code>error-ccm</code><br>- <code>cross-connection</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;measurement</samp>](## "cfm.profiles.[].measurement") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "cfm.profiles.[].measurement.delay") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;single_ended</samp>](## "cfm.profiles.[].measurement.delay.single_ended") | Boolean |  |  |  | Enable single-ended delay measurement. |
@@ -93,6 +91,10 @@
                   # The range is from 1 to 8191.
                   remote_end_point: <str>
 
+                  # Specifies the interface on which to configure the local maintenance end point.
+                  # Supported types include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs).
+                  interface: <str>
+
               # Apply connectivity fault management profile.
               profile: <str>
 
@@ -143,19 +145,14 @@
 
             # Set the transmission interval for continuity check messages (CCMs).
             tx_interval: <str; "3.33 milliseconds" | "10 milliseconds" | "100 milliseconds" | "1 seconds" | "10 seconds" | "1 minutes" | "10 minutes">
-            alarm_defects:
 
-              # Allow continuity check messages (CCMs) with the remote defect indication (RDI) bit set to raise alarms.
-              rdi_ccm: <bool>
-
-              # Allow loss of connectivity (LOC) to raise alarms.
-              loc_state: <bool>
-
-              # Allow invalid continuity check messages (CCMs) to raise alarms.
-              error_ccm: <bool>
-
-              # Allow cross-connection defects to raise alarms.
-              cross_connection: <bool>
+            # Defines alarm indication signal protocol parameters. Supported options:
+            # - rdi-ccm: Raise alarms on continuity check messages (CCMs) with the remote defect indication (RDI) bit set.
+            # - loc-state: Raise alarms on loss of connectivity (LOC).
+            # - error-ccm: Raise alarms on invalid continuity check messages (CCMs).
+            # - cross-connection: Raise alarms on cross-connection defects.
+            alarm_defects: # >=1 items
+              - <str; "rdi-ccm" | "loc-state" | "error-ccm" | "cross-connection">
           measurement:
             delay:
 
