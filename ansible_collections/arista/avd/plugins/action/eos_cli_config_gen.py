@@ -46,7 +46,7 @@ ARGUMENT_SPEC = {
     "device_doc_toc": {"type": "bool", "default": True},
     "cprofile_file": {"type": "str"},
     "directory_mode": {"type": "str", "default": "0o775"},
-    "file_mode": {"type": "str", "default": "0o664"}
+    "file_mode": {"type": "str", "default": "0o664"},
 }
 
 
@@ -121,7 +121,9 @@ class ActionModule(ActionBase):
                         device_config += rendered_custom_templates
                     LOGGER.debug("Rendering config custom templates [done].")
 
-                result["changed"] = self.write_file(device_config, validated_args["config_filename"], validated_args.get("directory_mode"), validated_args.get("file_mode"))
+                result["changed"] = self.write_file(
+                    device_config, validated_args["config_filename"], validated_args.get("directory_mode"), validated_args.get("file_mode")
+                )
                 LOGGER.debug("Rendering configuration [done].")
 
             if validated_args["generate_device_doc"]:
@@ -136,7 +138,9 @@ class ActionModule(ActionBase):
                 if validated_args["device_doc_toc"]:
                     device_doc = add_md_toc(device_doc, skip_lines=3)
 
-                file_changed = self.write_file(device_doc, validated_args["documentation_filename"], validated_args.get("directory_mode"), validated_args.get("file_mode"))
+                file_changed = self.write_file(
+                    device_doc, validated_args["documentation_filename"], validated_args.get("directory_mode"), validated_args.get("file_mode")
+                )
                 result["changed"] = result.get("changed") or file_changed
                 LOGGER.debug("Rendering documentation [done].")
 
@@ -246,7 +250,7 @@ class ActionModule(ActionBase):
             path.parent.mkdir(mode=int(format(int(dir_mode, 8), "o")), parents=True, exist_ok=True)
             # path.parent.mkdir(mode=dir_mode, parents=True, exist_ok=True)
             # Touch file
-            file_modes= int(file_mode, 8)
+            file_modes = int(file_mode, 8)
             path.touch(mode=file_modes)
 
         path.write_text(content, encoding="UTF-8")
