@@ -4548,6 +4548,7 @@ interface Ethernet2
    switchport mode trunk
    switchport
    address locking ipv4 ipv6
+   arp gratuitous accept
    ip address 10.1.255.3/24
    ip address 1.1.1.3/24 secondary
    ip address 1.1.1.4/24 secondary
@@ -5881,6 +5882,7 @@ interface Port-Channel15
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    switchport
+   arp gratuitous accept
    mlag 15
    no ntp serve
    service-policy type qos input pmap_test1
@@ -7916,6 +7918,8 @@ router ospf 600
    area 0.0.20.25 nssa default-information-originate metric-type 1
    area 0.0.20.26 nssa no-summary
    area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
+!
+ip ospf router-id output-format hostnames
 ```
 
 ### IPv6 Router OSPF
