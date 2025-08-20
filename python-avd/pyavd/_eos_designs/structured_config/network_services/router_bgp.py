@@ -727,4 +727,4 @@ class RouterBgpMixin(Protocol):
                 for address in vrf.aggregate_addresses:
                     self.structured_config.router_bgp.aggregate_addresses.append(
                         address._cast_as(EosCliConfigGen.RouterBgp.AggregateAddressesItem, ignore_extra_keys=True)
-                        )
+                    )
