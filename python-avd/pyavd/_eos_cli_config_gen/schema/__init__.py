@@ -9125,8 +9125,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             application_override_100gbase_srbd: bool | None
             """
             Set legacy mode for 100GBASE-SRBD interoperability.
-            This key is mutually exclusive with
-            `application_overrides` and `application_override_lanes`; takes precedence over them.
+            This option is mutually exclusive with
+            `application_overrides` and `application_override_lanes`, and takes precedence over them.
             """
             application_override: int | None
             """Set CMIS transceiver application."""
@@ -9162,8 +9162,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         media: Subclass of AvdModel.
                         application_override_100gbase_srbd:
                            Set legacy mode for 100GBASE-SRBD interoperability.
-                           This key is mutually exclusive with
-                           `application_overrides` and `application_override_lanes`; takes precedence over them.
+                           This option is mutually exclusive with
+                           `application_overrides` and `application_override_lanes`, and takes precedence over them.
                         application_override: Set CMIS transceiver application.
                         application_override_lanes:
                            Set CMIS transceiver applications with lanes.

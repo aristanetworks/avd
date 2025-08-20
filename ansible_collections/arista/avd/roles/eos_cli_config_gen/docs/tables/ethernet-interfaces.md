@@ -426,7 +426,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frequency_unit</samp>](## "ethernet_interfaces.[].transceiver.frequency_unit") | String |  |  | Valid Values:<br>- <code>ghz</code> | Unit of Transceiver Laser Frequency. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "ethernet_interfaces.[].transceiver.media") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.media.override") | String |  |  |  | Transceiver type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override_100gbase_srbd</samp>](## "ethernet_interfaces.[].transceiver.application_override_100gbase_srbd") | Boolean |  |  |  | Set legacy mode for 100GBASE-SRBD interoperability.<br>This key is mutually exclusive with `application_overrides` and `application_override_lanes`; takes precedence over them. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override_100gbase_srbd</samp>](## "ethernet_interfaces.[].transceiver.application_override_100gbase_srbd") | Boolean |  |  |  | Set legacy mode for 100GBASE-SRBD interoperability.<br>This option is mutually exclusive with `application_overrides` and `application_override_lanes`, and takes precedence over them. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override</samp>](## "ethernet_interfaces.[].transceiver.application_override") | Integer |  |  | Min: 0<br>Max: 15 | Set CMIS transceiver application. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override_lanes</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes") | List, items: Dictionary |  |  |  | Set CMIS transceiver applications with lanes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes.[].override") | Integer | Required |  | Min: 0<br>Max: 15 |  |
@@ -1532,7 +1532,7 @@
             override: <str>
 
           # Set legacy mode for 100GBASE-SRBD interoperability.
-          # This key is mutually exclusive with `application_overrides` and `application_override_lanes`; takes precedence over them.
+          # This option is mutually exclusive with `application_overrides` and `application_override_lanes`, and takes precedence over them.
           application_override_100gbase_srbd: <bool>
 
           # Set CMIS transceiver application.
