@@ -191,7 +191,7 @@ tenant_a:
               always: false
             update_source: Loopback123
             ebgp_multihop: 3
-            nodes: [DC1-BL1A, DC1-BL1B]
+            nodes: [DC1-BL1.*$]
             set_ipv4_next_hop: 123.1.1.1
             route_map_in: RM-123-1-1-10-IN
             shutdown: true
