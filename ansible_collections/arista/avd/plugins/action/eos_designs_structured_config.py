@@ -71,7 +71,7 @@ class ActionModule(ActionBase):
         all_facts = AvdSwitchFactsDefaultDict(avd_switch_facts)
 
         # TODO: AVD 6.0.0 remove 'switch'
-        # Fist check if switch itself contains a template - before adding the deprecation notice.
+        # First check if switch itself contains a template - before adding the deprecation notice.
         task_vars["switch"] = avd_switch_facts[hostname]
         if self._templar.is_template(task_vars["switch"]):
             # Var contains a jinja2 template.
