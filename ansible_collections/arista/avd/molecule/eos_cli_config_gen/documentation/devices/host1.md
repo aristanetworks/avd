@@ -7918,6 +7918,8 @@ router ospf 600
    area 0.0.20.25 nssa default-information-originate metric-type 1
    area 0.0.20.26 nssa no-summary
    area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
+!
+ip ospf router-id output-format hostnames
 ```
 
 ### IPv6 Router OSPF
