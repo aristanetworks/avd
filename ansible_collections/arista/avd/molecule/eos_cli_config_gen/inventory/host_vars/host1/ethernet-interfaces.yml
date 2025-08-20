@@ -1585,6 +1585,14 @@ ethernet_interfaces:
     shutdown: false
     transceiver:
       frequency: 190050
+      application_override: 5
+      application_override_lanes:
+        - override: 5
+          first_lane: 1
+          last_lane: 1
+        - override: 5
+          first_lane: 2
+          last_lane: 3
     mac_timestamp: before-fcs
 
   - name: Ethernet67.1

@@ -4234,7 +4234,7 @@ interface Dps1
 | Interface | Transceiver Frequency | Media Override | Application Override |
 | --------- | --------------------- | -------------- | -------------------- |
 | Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 |
-| Ethernet67 | 190050.000 | - | - |
+| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 |
 | Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
 | Ethernet73 | - | 100gbase-ar4 | 100gbase-srbd |
 
@@ -5291,6 +5291,9 @@ interface Ethernet67
    no shutdown
    switchport
    mac timestamp before-fcs
+   transceiver application override 5
+   transceiver application override 5 lanes start 1 end 1
+   transceiver application override 5 lanes start 2
    transceiver frequency 190050.000
 !
 interface Ethernet67.1
