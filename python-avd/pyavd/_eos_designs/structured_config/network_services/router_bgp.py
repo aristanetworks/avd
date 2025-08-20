@@ -719,7 +719,7 @@ class RouterBgpMixin(Protocol):
                 )
 
     def _router_bgp_aggregate_addresses(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
-        """Set structured config for bgp aggregate addresses"""
+        """Set structured config for bgp aggregate addresses."""
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 if not vrf.aggregate_addresses:
