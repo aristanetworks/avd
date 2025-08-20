@@ -1,0 +1,77 @@
+{#
+ Copyright (c) 2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - radius-proxy #}
+{% if radius_proxy is arista.avd.defined %}
+
+### Radius Proxy
+
+| Settings | Value |
+| -------- | ----- |
+| Dynamic Authorization | {{ radius_proxy.dynamic_authorization | arista.avd.default('-') }} |
+| Client Type-7 Key | {{ radius_proxy.client_key | arista.avd.hide_passwords(hide_passwords) | arista.avd.default('-') }} |
+| Client Session Idle-timeout (seconds) | {{ radius_proxy.client_session_idle_timeout | arista.avd.default('-') }} |
+{%     if radius_proxy.client_groups is arista.avd.defined %}
+
+#### Client Group Summary
+{%         for client_group in radius_proxy.client_groups | arista.avd.natural_sort("name") %}
+
+##### Client Group: {{ client_group.name }}
+{%             if client_group.server_groups is arista.avd.defined %}
+
+Server Groups: {{ client_group.server_groups | join(", ") }}
+{%             endif %}
+{%             for vrf in client_group.vrfs | arista.avd.natural_sort("name") %}
+
+###### VRF: {{ vrf.name }}
+{%                 if vrf.ipv4_clients is arista.avd.defined %}
+
+####### IPv4 Clients
+
+| Address | Type-7 Key |
+| ------- | ---------- |
+{%                     for ipv4_client in vrf.ipv4_clients %}
+{%                         if ipv4_client.key is arista.avd.defined %}
+{%                             set ipv4_client_key = ipv4_client.key | arista.avd.hide_passwords(hide_passwords) %}
+{%                         endif %}
+| {{ ipv4_client.address }} | {{ ipv4_client_key | arista.avd.default("-") }} |
+{%                     endfor %}
+{%                 endif %}
+{%                 if vrf.ipv6_clients is arista.avd.defined %}
+
+####### IPv6 Clients
+
+| Address | Type-7 Key |
+| ------- | ---------- |
+{%                     for ipv6_client in vrf.ipv6_clients %}
+{%                         if ipv6_client.key is arista.avd.defined %}
+{%                             set ipv6_client_key = ipv6_client.key | arista.avd.hide_passwords(hide_passwords) %}
+{%                         endif %}
+| {{ ipv6_client.address }} | {{ ipv6_client_key | arista.avd.default("-") }} |
+{%                     endfor %}
+{%                 endif %}
+{%                 if vrf.host_clients is arista.avd.defined %}
+
+####### Host Clients
+
+| Name | Type-7 Key |
+| ---- | ---------- |
+{%                     for host_client in vrf.host_clients %}
+{%                         if host_client.key is arista.avd.defined %}
+{%                             set host_client_key = host_client.key | arista.avd.hide_passwords(hide_passwords) %}
+{%                         endif %}
+| {{ host_client.name }} | {{ host_client_key | arista.avd.default("-") }} |
+{%                     endfor %}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+
+#### RADIUS Proxy Configuration
+
+```eos
+{%     include 'eos/radius-proxy.j2' %}
+```
+{% endif %}

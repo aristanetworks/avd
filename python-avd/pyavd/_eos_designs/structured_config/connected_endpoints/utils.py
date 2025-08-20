@@ -242,7 +242,7 @@ class UtilsMixin(Protocol):
         output_type: type[T_Ptp],
     ) -> T_Ptp | UndefinedType:
         """Return ptp for one adapter."""
-        if not adapter.ptp.enabled:
+        if not (adapter.ptp.enabled and self.shared_utils.platform_settings.feature_support.ptp):
             return Undefined
 
         # Apply PTP profile config

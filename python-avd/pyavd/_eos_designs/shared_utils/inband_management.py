@@ -112,7 +112,7 @@ class InbandManagementMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         subnet = ip_network(self.node_config.inband_mgmt_subnet, strict=False)
-        inband_mgmt_ip = str(subnet[3 + self.id])
+        inband_mgmt_ip = str(subnet[3 + self.id + self.node_config.inband_mgmt_subnet_offset])
         return f"{inband_mgmt_ip}/{subnet.prefixlen}"
 
     @cached_property
