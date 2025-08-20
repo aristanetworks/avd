@@ -23952,7 +23952,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         _fields: ClassVar[dict] = {
-            "is_deployed": {"type": bool, "default": True},
+            "is_deployed": {"type": bool},
             "platform": {"type": str},
             "system_mac_address": {"type": str},
             "rack": {"type": str},
@@ -23963,12 +23963,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
         }
-        is_deployed: bool
-        """
-        Key only used for documentation or validation purposes.
-
-        Default value: `True`
-        """
+        is_deployed: bool | None
+        """Key only used for documentation or validation purposes."""
         platform: str | None
         system_mac_address: str | None
         rack: str | None
@@ -23995,7 +23991,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
-                is_deployed: bool | UndefinedType = Undefined,
+                is_deployed: bool | None | UndefinedType = Undefined,
                 platform: str | None | UndefinedType = Undefined,
                 system_mac_address: str | None | UndefinedType = Undefined,
                 rack: str | None | UndefinedType = Undefined,

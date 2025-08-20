@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>metadata</samp>](## "metadata") | Dictionary |  |  |  | The data under `metadata` is used for documentation, validation or integration purposes.<br>It will not affect the generated EOS configuration. |
-    | [<samp>&nbsp;&nbsp;is_deployed</samp>](## "metadata.is_deployed") | Boolean |  | `True` |  | Key only used for documentation or validation purposes. |
+    | [<samp>&nbsp;&nbsp;is_deployed</samp>](## "metadata.is_deployed") | Boolean |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;platform</samp>](## "metadata.platform") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;system_mac_address</samp>](## "metadata.system_mac_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;rack</samp>](## "metadata.rack") | String |  |  |  |  |
@@ -141,7 +141,7 @@
     metadata:
 
       # Key only used for documentation or validation purposes.
-      is_deployed: <bool; default=True>
+      is_deployed: <bool>
       platform: <str>
       system_mac_address: <str>
       rack: <str>

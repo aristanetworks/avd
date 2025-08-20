@@ -8996,7 +8996,6 @@ keys:
       is_deployed:
         description: Key only used for documentation or validation purposes.
         type: bool
-        default: true
       platform:
         type: str
       system_mac_address:
