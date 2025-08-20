@@ -1,8 +1,10 @@
 type: l3leaf
 
 l2vlan_profiles:
-  - profile: MYPROFILE
-    name: vlan-name-from-profile
+  - profile: research1
+    private_vlan:
+      type: isolated
+      primary_vlan: 120
 
 l3leaf:
   defaults:
