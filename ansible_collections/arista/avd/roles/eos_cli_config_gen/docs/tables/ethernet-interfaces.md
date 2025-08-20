@@ -24,6 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;phone</samp>](## "ethernet_interfaces.[].phone") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>switchport.phone</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "ethernet_interfaces.[].phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>tagged phone</code><br>- <code>untagged</code><br>- <code>untagged phone</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].phone.vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "ethernet_interfaces.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_protocol</samp>](## "ethernet_interfaces.[].l2_protocol") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "ethernet_interfaces.[].l2_protocol.encapsulation_dot1q_vlan") | Integer |  |  |  | Vlan tag to configure on sub-interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forwarding_profile</samp>](## "ethernet_interfaces.[].l2_protocol.forwarding_profile") | String |  |  |  | L2 protocol forwarding profile. |
@@ -688,6 +689,9 @@
         phone:
           trunk: <str; "tagged" | "tagged phone" | "untagged" | "untagged phone">
           vlan: <int; 1-4094>
+
+        # Accept gratuitous ARP.
+        arp_gratuitous_accept: <bool>
         l2_protocol:
 
           # Vlan tag to configure on sub-interface.

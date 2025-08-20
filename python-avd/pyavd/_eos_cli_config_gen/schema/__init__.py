@@ -11593,6 +11593,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "native_vlan_tag": {"type": bool},
             "mode": {"type": str},
             "phone": {"type": Phone},
+            "arp_gratuitous_accept": {"type": bool},
             "l2_protocol": {"type": L2Protocol},
             "mac_timestamp": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
@@ -11728,6 +11729,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
         phone: Phone
         """Subclass of AvdModel."""
+        arp_gratuitous_accept: bool | None
+        """Accept gratuitous ARP."""
         l2_protocol: L2Protocol
         """Subclass of AvdModel."""
         mac_timestamp: Literal["before-fcs", "replace-fcs", "header"] | None
@@ -11990,6 +11993,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 native_vlan_tag: bool | None | UndefinedType = Undefined,
                 mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
                 phone: Phone | UndefinedType = Undefined,
+                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 l2_protocol: L2Protocol | UndefinedType = Undefined,
                 mac_timestamp: Literal["before-fcs", "replace-fcs", "header"] | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
@@ -12122,6 +12126,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     native_vlan_tag: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
                     mode: mode
                     phone: Subclass of AvdModel.
+                    arp_gratuitous_accept: Accept gratuitous ARP.
                     l2_protocol: Subclass of AvdModel.
                     mac_timestamp:
                        header: Insert timestamp in ethernet header. Supported on platforms like 7500E/R and 7280E/R.
@@ -23876,6 +23881,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "version": {"type": str},
                 "username": {"type": str},
                 "password": {"type": str},
+                "internet_access": {"type": bool},
             }
             environment: Literal["act"] | None
             """Targeted Digital Twin environment."""
@@ -23896,6 +23902,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Local username assigned to a replica of the fabric device within the Digital Twin environment."""
             password: str | None
             """Local password assigned to a replica of the fabric device within the Digital Twin environment."""
+            internet_access: bool | None
+            """
+            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+            This option
+            applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node
+            types.
+            ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
+            """
 
             if TYPE_CHECKING:
 
@@ -23908,6 +23922,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     version: str | None | UndefinedType = Undefined,
                     username: str | None | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    internet_access: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -23927,6 +23942,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         version: OS version used for deploying a replica of the fabric device within the Digital Twin environment.
                         username: Local username assigned to a replica of the fabric device within the Digital Twin environment.
                         password: Local password assigned to a replica of the fabric device within the Digital Twin environment.
+                        internet_access:
+                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                           This option
+                           applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node
+                           types.
+                           ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
 
                     """
 
@@ -32846,6 +32867,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "l2_mtu": {"type": int},
             "l2_mru": {"type": int},
             "vlans": {"type": str},
+            "arp_gratuitous_accept": {"type": bool},
             "snmp_trap_link_change": {"type": bool},
             "type": {"type": str},
             "encapsulation_dot1q_vlan": {"type": int},
@@ -32955,6 +32977,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         For an
         access port this would be a single vlan "123".
         """
+        arp_gratuitous_accept: bool | None
+        """Accept gratuitous ARP."""
         snmp_trap_link_change: bool | None
         type: Literal["routed", "switched", "l3dot1q", "l2dot1q"] | None
         """
@@ -33150,6 +33174,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 l2_mtu: int | None | UndefinedType = Undefined,
                 l2_mru: int | None | UndefinedType = Undefined,
                 vlans: str | None | UndefinedType = Undefined,
+                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 snmp_trap_link_change: bool | None | UndefinedType = Undefined,
                 type: Literal["routed", "switched", "l3dot1q", "l2dot1q"] | None | UndefinedType = Undefined,
                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -33259,6 +33284,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        For a trunk port this would be a range like "1-200,300".
                        For an
                        access port this would be a single vlan "123".
+                    arp_gratuitous_accept: Accept gratuitous ARP.
                     snmp_trap_link_change: snmp_trap_link_change
                     type:
                        l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
@@ -54276,14 +54302,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class LeakRoutesItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"source_vrf": {"type": str}, "subscribe_policy": {"type": str}}
+                _fields: ClassVar[dict] = {"source_vrf": {"type": str}, "subscribe_policy": {"type": str}, "subscribe_rcf": {"type": str}}
                 source_vrf: str | None
                 subscribe_policy: str | None
                 """Route-Map Policy."""
+                subscribe_rcf: str | None
+                """
+                RCF Policy name with parenthesis.
+                Example: MyFunction(myarg).
+                Mutually exclusive with
+                `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, source_vrf: str | None | UndefinedType = Undefined, subscribe_policy: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        source_vrf: str | None | UndefinedType = Undefined,
+                        subscribe_policy: str | None | UndefinedType = Undefined,
+                        subscribe_rcf: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         LeakRoutesItem.
 
@@ -54293,6 +54332,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             source_vrf: source_vrf
                             subscribe_policy: Route-Map Policy.
+                            subscribe_rcf:
+                               RCF Policy name with parenthesis.
+                               Example: MyFunction(myarg).
+                               Mutually exclusive with
+                               `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
 
                         """
 
@@ -62596,6 +62640,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class PoliciesItem(AvdModel):
             """Subclass of AvdModel."""
 
+            class Counters(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Counters._item_type = str
+
             class MatchesItem(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -62967,7 +63016,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_class: int | None
                     """Traffic class ID."""
                     count: str | None
-                    """Counter name."""
+                    """
+                    Counter name. This should also be added to the `policies[].counters` list.
+                    It will no longer be
+                    added automatically to the counters in AVD 6.0.
+                    """
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
@@ -62995,7 +63048,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
-                                count: Counter name.
+                                count:
+                                   Counter name. This should also be added to the `policies[].counters` list.
+                                   It will no longer be
+                                   added automatically to the counters in AVD 6.0.
                                 drop: drop
                                 log: Only supported when action is set to drop.
                                 redirect: Subclass of AvdModel.
@@ -63097,7 +63153,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_class: int | None
                     """Traffic class ID."""
                     count: str | None
-                    """Counter name."""
+                    """Counter name. This should also be added to the `policies[].counters` list."""
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
@@ -63122,7 +63178,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
-                                count: Counter name.
+                                count: Counter name. This should also be added to the `policies[].counters` list.
                                 drop: drop
                                 log: Only supported when action is set to drop.
 
@@ -63142,7 +63198,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_class: int | None
                     """Traffic class ID."""
                     count: str | None
-                    """Counter name."""
+                    """Counter name. This should also be added to the `policies[].counters` list."""
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
@@ -63167,7 +63223,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
-                                count: Counter name.
+                                count: Counter name. This should also be added to the `policies[].counters` list.
                                 drop: drop
                                 log: Only supported when action is set to drop.
 
@@ -63194,9 +63250,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "matches": {"type": Matches}, "default_actions": {"type": DefaultActions}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "counters": {"type": Counters},
+                "matches": {"type": Matches},
+                "default_actions": {"type": DefaultActions},
+            }
             name: str
             """Traffic Policy Name."""
+            counters: Counters
+            """
+            Counter name.
+
+            Subclass of AvdList with `str` items.
+            """
             matches: Matches
             """Subclass of AvdIndexedList with `MatchesItem` items. Primary key is `name` (`str`)."""
             default_actions: DefaultActions
@@ -63208,6 +63275,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     name: str | UndefinedType = Undefined,
+                    counters: Counters | UndefinedType = Undefined,
                     matches: Matches | UndefinedType = Undefined,
                     default_actions: DefaultActions | UndefinedType = Undefined,
                 ) -> None:
@@ -63219,6 +63287,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         name: Traffic Policy Name.
+                        counters:
+                           Counter name.
+
+                           Subclass of AvdList with `str` items.
                         matches: Subclass of AvdIndexedList with `MatchesItem` items. Primary key is `name` (`str`).
                         default_actions: Subclass of AvdModel.
 
@@ -67441,6 +67513,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_name_server_groups": {"type": IpNameServerGroups},
         "ip_name_servers": {"type": IpNameServers},
         "ip_nat": {"type": IpNat},
+        "ip_ospf_router_id_output_format_hostnames": {"type": bool},
         "ip_radius_source_interfaces": {"type": IpRadiusSourceInterfaces},
         "ip_routing": {"type": bool},
         "ip_routing_ipv6_interfaces": {"type": bool},
@@ -67824,6 +67897,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdList with `IpNameServersItem` items."""
     ip_nat: IpNat
     """Subclass of AvdModel."""
+    ip_ospf_router_id_output_format_hostnames: bool | None
+    """Display DNS-resolved router names for OSPF router IDs."""
     ip_radius_source_interfaces: IpRadiusSourceInterfaces
     """Subclass of AvdList with `IpRadiusSourceInterfacesItem` items."""
     ip_routing: bool | None
@@ -68220,6 +68295,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_name_server_groups: IpNameServerGroups | UndefinedType = Undefined,
             ip_name_servers: IpNameServers | UndefinedType = Undefined,
             ip_nat: IpNat | UndefinedType = Undefined,
+            ip_ospf_router_id_output_format_hostnames: bool | None | UndefinedType = Undefined,
             ip_radius_source_interfaces: IpRadiusSourceInterfaces | UndefinedType = Undefined,
             ip_routing: bool | None | UndefinedType = Undefined,
             ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
@@ -68524,6 +68600,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_name_server_groups: Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`).
                 ip_name_servers: Subclass of AvdList with `IpNameServersItem` items.
                 ip_nat: Subclass of AvdModel.
+                ip_ospf_router_id_output_format_hostnames: Display DNS-resolved router names for OSPF router IDs.
                 ip_radius_source_interfaces: Subclass of AvdList with `IpRadiusSourceInterfacesItem` items.
                 ip_routing: ip_routing
                 ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces

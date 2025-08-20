@@ -31,6 +31,7 @@ class RouterOspfMixin(Protocol):
             passive_interface_default=True,
             router_id=self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None,
             max_lsa=self.inputs.underlay_ospf_max_lsa,
+            maximum_paths=self.inputs.underlay_ospf_maximum_paths,
             bfd_enable=self.inputs.underlay_ospf_bfd_enable,
         )
         for link in self._underlay_links:

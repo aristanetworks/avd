@@ -141,6 +141,7 @@ port_channel_interfaces:
 - name: Port-Channel11
   description: Po11
   shutdown: false
+  arp_gratuitous_accept: true
   peer_interface: Po11
   peer_type: l3_port_channel
   switchport:

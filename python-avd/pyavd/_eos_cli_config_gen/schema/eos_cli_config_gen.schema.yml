@@ -2283,6 +2283,9 @@ keys:
               max: 4094
               convert_types:
               - str
+        arp_gratuitous_accept:
+          type: bool
+          description: Accept gratuitous ARP.
         l2_protocol:
           type: dict
           keys:
@@ -6251,6 +6254,9 @@ keys:
                   min: 0
                   max: 4294967295
                   description: In seconds.
+  ip_ospf_router_id_output_format_hostnames:
+    type: bool
+    description: Display DNS-resolved router names for OSPF router IDs.
   ip_radius_source_interfaces:
     type: list
     items:
@@ -9367,6 +9373,16 @@ keys:
             type: str
             description: Local password assigned to a replica of the fabric device
               within the Digital Twin environment.
+          internet_access:
+            type: bool
+            description: 'Specifies if the ACT Digital Twin device is deployed with
+              direct access to the Internet.
+
+              This option applies only to the `cloudeos` and `veos` node types and
+              will be ignored for all other ACT node types.
+
+              ACT does not provide direct Internet access to `cloudeos` or `veos`
+              devices by default.'
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -11396,6 +11412,9 @@ keys:
             removed: false
             remove_in_version: 6.0.0
             new_key: switchport.access_vlan or switchport.trunk.allowed_vlan
+        arp_gratuitous_accept:
+          type: bool
+          description: Accept gratuitous ARP.
         snmp_trap_link_change:
           type: bool
         type:
@@ -20394,6 +20413,14 @@ keys:
                   subscribe_policy:
                     type: str
                     description: Route-Map Policy.
+                  subscribe_rcf:
+                    type: str
+                    description: 'RCF Policy name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      Mutually exclusive with `subscribe_policy`, if both are defined
+                      `subscribe_policy` takes precedence.'
             routes:
               type: dict
               keys:
@@ -23583,6 +23610,13 @@ keys:
             name:
               type: str
               description: Traffic Policy Name.
+            counters:
+              type: list
+              items:
+                type: str
+                convert_types:
+                - int
+              description: Counter name.
             matches:
               type: list
               primary_key: name
@@ -23688,7 +23722,13 @@ keys:
                         description: Traffic class ID.
                       count:
                         type: str
-                        description: Counter name.
+                        convert_types:
+                        - int
+                        description: 'Counter name. This should also be added to the
+                          `policies[].counters` list.
+
+                          It will no longer be added automatically to the counters
+                          in AVD 6.0.'
                       drop:
                         type: bool
                       log:
@@ -23778,7 +23818,10 @@ keys:
                       description: Traffic class ID.
                     count:
                       type: str
-                      description: Counter name.
+                      convert_types:
+                      - int
+                      description: Counter name. This should also be added to the
+                        `policies[].counters` list.
                     drop:
                       type: bool
                     log:
@@ -23798,7 +23841,10 @@ keys:
                       description: Traffic class ID.
                     count:
                       type: str
-                      description: Counter name.
+                      convert_types:
+                      - int
+                      description: Counter name. This should also be added to the
+                        `policies[].counters` list.
                     drop:
                       type: bool
                     log:
