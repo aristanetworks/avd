@@ -67,7 +67,7 @@ jobs:
       - name: Starting container build
         run: echo "Starting container build. Be patient. 🐢"
       - name: Checkout code ✅
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       # Build image tags based on Python version and AVD version (if defined).
       # If container_tags is not defined, then image_tags will be auto-generated.
       # If container_tags is latest, it will be added to auto-generated image_tags.
