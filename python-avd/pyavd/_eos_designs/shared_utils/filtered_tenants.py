@@ -92,28 +92,47 @@ class FilteredTenantsMixin(Protocol):
             lambda l2vlan: self.is_accepted_vlan(l2vlan) and bool("all" in self.filter_tags or set(l2vlan.tags).intersection(self.filter_tags))
         )
         for index, l2vlan in enumerate(filtered_l2vlans):
-            filtered_l2vlans[index] = self.apply_l2vlan_profile(l2vlan)
+            filtered_l2vlans[index] = self.get_merged_l2vlan_config(l2vlan)
             if tenant.evpn_vlan_bundle:
                 l2vlan.evpn_vlan_bundle = l2vlan.evpn_vlan_bundle or tenant.evpn_vlan_bundle
 
         return filtered_l2vlans._natural_sorted(sort_key="id")
 
-    def apply_l2vlan_profile(
+    def get_merged_l2vlan_config(
         self: SharedUtilsProtocol, vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem
     ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem:
-        """Apply a profile to the l2vlan."""
-        if not vlan.profile:
-            # Nothing to do
-            return vlan
+        """
+        Return structured config for one l2vlan after inheritance.
 
-        if vlan.profile not in self.inputs.l2vlan_profiles:
-            msg = f"Profile '{vlan.profile}' applied under l2vlan '{vlan.name}' does not exist in `l2vlan_profiles`."
-            raise AristaAvdInvalidInputsError(msg)
+        Handle inheritance of l2vlan_profiles in two levels:
 
-        profile_as_interface = self.inputs.l2vlan_profiles[vlan.profile]._cast_as(
-            EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem
-        )
-        return vlan._deepinherited(profile_as_interface)
+        l2vlan > l2vlan_profile > l2vlan_parent_profile --> l2vlan_cfg
+        """
+        if vlan.profile:
+            if vlan.profile not in self.inputs.l2vlan_profiles:
+                msg = f"Profile '{vlan.profile}' applied under l2vlan '{vlan.name}' does not exist in `l2vlan_profiles`."
+                raise AristaAvdInvalidInputsError(msg)
+            l2vlan_profile = self.inputs.l2vlan_profiles[vlan.profile]._deepcopy()
+
+            if l2vlan_profile.parent_profile:
+                if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
+                    msg = (
+                        f"Profile '{l2vlan_profile.parent_profile}' applied under L2VLAN Profile '{l2vlan_profile.profile}' does not exist in "
+                        "`l2vlans_profiles`."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+
+                # Inherit from the parent profile
+                l2vlan_profile._deepinherit(self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile])
+
+            # Inherit from the profile
+            merged_vlan = vlan._deepinherited(
+                l2vlan_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem, ignore_extra_keys=True)
+            )
+        else:
+            merged_vlan = vlan
+
+        return merged_vlan
 
     def is_accepted_vlan(
         self: SharedUtilsProtocol,

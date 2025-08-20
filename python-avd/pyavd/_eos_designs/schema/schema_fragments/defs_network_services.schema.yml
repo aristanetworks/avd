@@ -1590,6 +1590,7 @@ $defs:
                 type: str
                 description: |-
                   L2VLAN profile name. Profile defined under `l2vlan_profiles`.
+                  L2VLAN can refer to one l2vlan_profile which again can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings

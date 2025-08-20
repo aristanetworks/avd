@@ -6735,6 +6735,7 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "profile": {"type": str},
+            "parent_profile": {"type": str},
             "vni_override": {"type": int},
             "rt_override": {"type": str},
             "rd_override": {"type": str},
@@ -6753,6 +6754,12 @@ class EosDesigns(EosDesignsRootModel):
         }
         profile: str
         """L2VLAN profile name. Any variable supported under `l2vlans` can be inherited from a profile."""
+        parent_profile: str | None
+        """
+        Parent L2VLAN profile name to apply.
+        l2vlan_profiles can refer to another l2vlan_profile to inherit
+        settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+        """
         vni_override: int | None
         """
         By default the VNI will be derived from mac_vrf_vni_base.
@@ -6860,6 +6867,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 profile: str | UndefinedType = Undefined,
+                parent_profile: str | None | UndefinedType = Undefined,
                 vni_override: int | None | UndefinedType = Undefined,
                 rt_override: str | None | UndefinedType = Undefined,
                 rd_override: str | None | UndefinedType = Undefined,
@@ -6884,6 +6892,10 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     profile: L2VLAN profile name. Any variable supported under `l2vlans` can be inherited from a profile.
+                    parent_profile:
+                       Parent L2VLAN profile name to apply.
+                       l2vlan_profiles can refer to another l2vlan_profile to inherit
+                       settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
                     vni_override:
                        By default the VNI will be derived from mac_vrf_vni_base.
                        The vni_override, allows to override this
@@ -48684,7 +48696,12 @@ class EosDesigns(EosDesignsRootModel):
                     name: str
                     """VLAN name."""
                     profile: str | None
-                    """L2VLAN profile name. Profile defined under `l2vlan_profiles`."""
+                    """
+                    L2VLAN profile name. Profile defined under `l2vlan_profiles`.
+                    L2VLAN can refer to one l2vlan_profile
+                    which again can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan ->
+                    l2vlan_profile -> l2vlan_parent_profile).
+                    """
                     vni_override: int | None
                     """
                     By default the VNI will be derived from mac_vrf_vni_base.
@@ -48819,7 +48836,11 @@ class EosDesigns(EosDesignsRootModel):
                             Args:
                                 id: VLAN ID.
                                 name: VLAN name.
-                                profile: L2VLAN profile name. Profile defined under `l2vlan_profiles`.
+                                profile:
+                                   L2VLAN profile name. Profile defined under `l2vlan_profiles`.
+                                   L2VLAN can refer to one l2vlan_profile
+                                   which again can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan ->
+                                   l2vlan_profile -> l2vlan_parent_profile).
                                 vni_override:
                                    By default the VNI will be derived from mac_vrf_vni_base.
                                    The vni_override, allows to override this

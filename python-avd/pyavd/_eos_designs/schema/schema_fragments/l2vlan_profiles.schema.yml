@@ -20,3 +20,8 @@ keys:
         profile:
           type: str
           description: L2VLAN profile name. Any variable supported under `l2vlans` can be inherited from a profile.
+        parent_profile:
+          type: str
+          description: |
+            Parent L2VLAN profile name to apply.
+            l2vlan_profiles can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).

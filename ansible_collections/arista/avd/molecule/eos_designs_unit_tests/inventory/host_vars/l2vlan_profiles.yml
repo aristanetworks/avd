@@ -6,6 +6,12 @@ l2vlan_profiles:
     private_vlan:
       type: isolated
       primary_vlan: 120
+  - profile: parent_profile
+    private_vlan:
+      type: community
+      primary_vlan: 120
+  - profile: child_profile
+    parent_profile: parent_profile
 
 l3leaf:
   defaults:
@@ -38,3 +44,8 @@ tenants:
         private_vlan:
           type: community
           primary_vlan: 110
+      - id: 130
+        name: research3
+        tags: ['research']
+        # Test to apply the parent profile parameters to l2vlan
+        profile: child_profile
