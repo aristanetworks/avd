@@ -32,6 +32,10 @@ platform sand lag hardware-only
 {%         if platform.fap.buffering_egress.profile is arista.avd.defined %}
 platform fap buffering egress profile {{ platform.fap.buffering_egress.profile }}
 {%         endif %}
+{%         if platform.fap.voq.credit_rates_unified is arista.avd.defined(true) %}
+!
+platform fap voq credit rates unified
+{%         endif %}
 {%         for qos_map in platform.sand.qos_maps | arista.avd.natural_sort('traffic_class') %}
 {%             if qos_map.traffic_class is arista.avd.defined and qos_map.to_network_qos is arista.avd.defined %}
 platform sand qos map traffic-class {{ qos_map.traffic_class }} to network-qos {{ qos_map.to_network_qos }}

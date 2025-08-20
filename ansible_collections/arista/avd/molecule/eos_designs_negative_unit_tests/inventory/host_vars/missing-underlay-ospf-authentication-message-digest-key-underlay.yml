@@ -17,8 +17,8 @@ l3leaf:
     uplink_ipv4_pool: 10.0.42.0/24
     # using another of the ansible group switch as uplink to trigger
     uplink_switches: [missing-underlay-ospf-authentication-message-digest-key-mlag]
-    uplink_interfaces: [Ethernet1] 
-    uplink_switch_interfaces: [Ethernet1] 
+    uplink_interfaces: [Ethernet1]
+    uplink_switch_interfaces: [Ethernet1]
   nodes:
     - name: missing-underlay-ospf-authentication-message-digest-key-underlay
       id: 101
