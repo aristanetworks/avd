@@ -1,7 +1,9 @@
 type: l3leaf
+
 l2vlan_profiles:
   - profile: MYPROFILE
     name: vlan-name-from-profile
+
 l3leaf:
   defaults:
     loopback_ipv4_pool: 10.10.0.0/24
