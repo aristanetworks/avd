@@ -5231,6 +5231,7 @@ interface Ethernet63
    description DHCP client interface
    no switchport
    ip address dhcp
+   dhcp client accept default-route
 !
 interface Ethernet64
    description DHCP server interface
