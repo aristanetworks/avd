@@ -13,7 +13,6 @@ from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import Undefined, UndefinedType, get_v2, short_esi_to_route_target
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
     from typing import TypeVar
 
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -95,24 +94,16 @@ class UtilsMixin(Protocol):
 
             if not network_port_settings.switches and not network_port_settings.platforms:
                 continue
-            if network_port_settings.switches and not self._match_regexes(network_port_settings.switches, self.shared_utils.hostname):
+            if network_port_settings.switches and not self.shared_utils.match_regexes(network_port_settings.switches, self.shared_utils.hostname):
                 continue
             if network_port_settings.platforms and (
-                not self.shared_utils.platform or not self._match_regexes(network_port_settings.platforms, self.shared_utils.platform)
+                not self.shared_utils.platform or not self.shared_utils.match_regexes(network_port_settings.platforms, self.shared_utils.platform)
             ):
                 continue
 
             filtered_network_ports.append(network_port_settings)
 
         return filtered_network_ports
-
-    def _match_regexes(self: AvdStructuredConfigConnectedEndpointsProtocol, regexes: Iterable[str], value: str) -> bool:
-        """
-        Match a list of regexes with the supplied value.
-
-        Regex must match the full value to pass.
-        """
-        return any(re.fullmatch(regex, value) for regex in regexes)
 
     def _get_short_esi(
         self: AvdStructuredConfigConnectedEndpointsProtocol,

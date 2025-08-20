@@ -60,6 +60,19 @@ tenant_a:
           router_id: 10.10.10.10
           nodes:
             - DC1-LEAF1A
+        aggregate_addresses:
+          - prefix: 1.1.1.0/24
+            advertise_only: true
+            nodes: [DC1-LEAF1.*$]
+          - prefix: 2.2.1.0/24
+            nodes: [DC1-LEAF1A]
+          - prefix: 1.12.1.0/24
+            as_set: true
+            summary_only: true
+            attribute_map: RM-ATTRIBUTE
+            match_map: RM-MATCH
+            advertise_only: true
+            nodes: [DC1-LEAF2A]
       - name: Tenant_A_WEB_Zone
         vrf_vni: 11
         # Testing multiple pools and ranges to represent 172.31.11.0/24

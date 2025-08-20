@@ -289,6 +289,10 @@ router_bgp:
     remote_as: '65001'
     peer: DC1-SPINE4
     description: DC1-SPINE4
+  aggregate_addresses:
+  - prefix: 1.1.1.0/24
+    advertise_only: true
+  - prefix: 2.2.1.0/24
   redistribute:
     connected:
       enabled: true

@@ -182,9 +182,6 @@ keys:
             default: false
           sha512_password:
             type: str
-      local_users:
-        $ref: eos_cli_config_gen#/keys/local_users
-        type: list
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
@@ -9375,6 +9372,19 @@ $defs:
                         type: str
                       description: Nodes is required to restrict configuration of
                         BGP neighbors to certain nodes in the network.
+              aggregate_addresses:
+                type: list
+                items:
+                  type: dict
+                  $ref: eos_cli_config_gen#/keys/router_bgp/keys/aggregate_addresses/items
+                  keys:
+                    nodes:
+                      type: list
+                      description: Nodes is required to restrict configuration of
+                        aggregate_addresses to certain nodes in the network.
+                      items:
+                        type: str
+                        description: Node name or regex pattern.
               raw_eos_cli:
                 type: str
                 description: EOS CLI rendered directly on the root level of the final

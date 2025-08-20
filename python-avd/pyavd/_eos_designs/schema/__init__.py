@@ -47601,6 +47601,75 @@ class EosDesigns(EosDesignsRootModel):
 
                     AdditionalRouteTargets._item_type = AdditionalRouteTargetsItem
 
+                    class AggregateAddressesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Nodes(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Nodes._item_type = str
+
+                        _fields: ClassVar[dict] = {
+                            "nodes": {"type": Nodes},
+                            "prefix": {"type": str},
+                            "advertise_only": {"type": bool},
+                            "as_set": {"type": bool},
+                            "summary_only": {"type": bool},
+                            "attribute_map": {"type": str},
+                            "match_map": {"type": str},
+                        }
+                        nodes: Nodes
+                        """
+                        Nodes is required to restrict configuration of aggregate_addresses to certain nodes in the network.
+                        Subclass of AvdList with `str` items.
+                        """
+                        prefix: str | None
+                        """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                        advertise_only: bool | None
+                        as_set: bool | None
+                        summary_only: bool | None
+                        attribute_map: str | None
+                        """Route-map name."""
+                        match_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                nodes: Nodes | UndefinedType = Undefined,
+                                prefix: str | None | UndefinedType = Undefined,
+                                advertise_only: bool | None | UndefinedType = Undefined,
+                                as_set: bool | None | UndefinedType = Undefined,
+                                summary_only: bool | None | UndefinedType = Undefined,
+                                attribute_map: str | None | UndefinedType = Undefined,
+                                match_map: str | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                AggregateAddressesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    nodes:
+                                       Nodes is required to restrict configuration of aggregate_addresses to certain nodes in the network.
+                                       Subclass of AvdList with `str` items.
+                                    prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                    advertise_only: advertise_only
+                                    as_set: as_set
+                                    summary_only: summary_only
+                                    attribute_map: Route-map name.
+                                    match_map: Route-map name.
+
+                                """
+
+                    class AggregateAddresses(AvdList[AggregateAddressesItem]):
+                        """Subclass of AvdList with `AggregateAddressesItem` items."""
+
+                    AggregateAddresses._item_type = AggregateAddressesItem
+
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
                         "address_families": {"type": AddressFamilies, "default": lambda cls: coerce_type(["evpn"], target_type=cls)},
@@ -47633,6 +47702,7 @@ class EosDesigns(EosDesignsRootModel):
                         "bgp": {"type": Bgp},
                         "bgp_peer_groups": {"type": BgpPeerGroups},
                         "additional_route_targets": {"type": AdditionalRouteTargets},
+                        "aggregate_addresses": {"type": AggregateAddresses},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen},
                     }
@@ -47885,6 +47955,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `AdditionalRouteTargetsItem` items.
                     """
+                    aggregate_addresses: AggregateAddresses
+                    """Subclass of AvdList with `AggregateAddressesItem` items."""
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
@@ -47926,6 +47998,7 @@ class EosDesigns(EosDesignsRootModel):
                             bgp: Bgp | UndefinedType = Undefined,
                             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
                             additional_route_targets: AdditionalRouteTargets | UndefinedType = Undefined,
+                            aggregate_addresses: AggregateAddresses | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen | UndefinedType = Undefined,
                         ) -> None:
@@ -48121,6 +48194,7 @@ class EosDesigns(EosDesignsRootModel):
                                    address families.
 
                                    Subclass of AvdList with `AdditionalRouteTargetsItem` items.
+                                aggregate_addresses: Subclass of AvdList with `AggregateAddressesItem` items.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
                                 structured_config: Custom structured config for eos_cli_config_gen.
 
