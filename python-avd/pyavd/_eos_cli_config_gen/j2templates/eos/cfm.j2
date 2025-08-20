@@ -63,7 +63,7 @@ cfm
       measurement loss synthetic single-ended
 {%         endif %}
 {%         if profile.measurement.loss.synthetic.tx_interval.interval is arista.avd.defined %}
-{%             set tx_interval_cli = "measurement synthetic loss tx-interval " ~ profile.measurement.loss.synthetic.tx_interval.interval ~ " milliseconds" %}
+{%             set tx_interval_cli = "measurement loss synthetic tx-interval " ~ profile.measurement.loss.synthetic.tx_interval.interval ~ " milliseconds" %}
 {%             if profile.measurement.loss.synthetic.tx_interval.period_frames is arista.avd.defined %}
 {%                 set tx_interval_cli = tx_interval_cli ~ " period " ~ profile.measurement.loss.synthetic.tx_interval.period_frames ~ " frames" %}
 {%             endif %}
