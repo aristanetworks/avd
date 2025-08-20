@@ -710,6 +710,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-wan-confi
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-ptp-configuration.md
 --8<--
 
+## Custom node type settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-node-type-keys.key.md
+--8<--
+
 ## Default interface settings
 
 - Set default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).
@@ -961,6 +967,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-pathfinder-inter
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/zscaler-endpoints.md
 --8<--
 
+### WAN Zscaler Integration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-cv-pathfinder-zscaler-integration.md
+--8<--
+
 ## Management settings
 
 --8<--
@@ -1023,6 +1035,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/system-settings.md
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/cloudvision-settings.md
+--8<--
+
+## CloudVision Tags Settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/cloudvision-tags.md
 --8<--
 
 ## Endpoint connectivity
