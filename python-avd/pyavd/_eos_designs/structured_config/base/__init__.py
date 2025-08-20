@@ -5,8 +5,6 @@ from __future__ import annotations
 
 from typing import Protocol
 
-from passlib.hash import sha512_crypt
-
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import (
     StructuredConfigGenerator,
@@ -255,16 +253,10 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def enable_password(self) -> None:
-        """enable_password.disable is always set to match EOS default config and historic configs."""
+        """enable_password.disable is set to match EOS default config and historic configs if aaa_settings.enable_password.password is not defined."""
         if self.inputs.aaa_settings.enable_password.password:
-            if not sha512_crypt.identify(self.inputs.aaa_settings.enable_password.password):
-                msg = f"Invalid SHA512 hash for 'aaa_settings.enable_password.password': {self.inputs.aaa_settings.enable_password.password}"
-                raise AristaAvdInvalidInputsError(msg)
             self.structured_config.enable_password.hash_algorithm = "sha512"
             self.structured_config.enable_password.key = self.inputs.aaa_settings.enable_password.password
-        elif self.inputs.aaa_settings.enable_password.cleartext_password:
-            self.structured_config.enable_password.hash_algorithm = "sha512"
-            self.structured_config.enable_password.key = sha512_crypt.hash(self.inputs.aaa_settings.enable_password.cleartext_password)
         else:
             self.structured_config.enable_password.disabled = True
 

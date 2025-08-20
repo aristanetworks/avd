@@ -18,9 +18,6 @@ keys:
           password:
             type: str
             description: SHA512 hashed password.
-          cleartext_password:
-            type: str
-            description: Cleartext password which will be SHA512 hashed by AVD.
       tacacs:
         type: dict
         keys:

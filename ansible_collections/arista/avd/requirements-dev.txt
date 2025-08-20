@@ -19,7 +19,6 @@ identify>=1.4.20
 jsonschema-rs>=0.24
 molecule>=6.0
 molecule-plugins[docker]>=23.4.0
-passlib
 pydantic>=2.3.0
 pylint>=3.2.6
 pre-commit>=3.2.0

@@ -26,15 +26,13 @@ class EosDesigns(EosDesignsRootModel):
         class EnablePassword(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"password": {"type": str}, "cleartext_password": {"type": str}}
+            _fields: ClassVar[dict] = {"password": {"type": str}}
             password: str | None
             """SHA512 hashed password."""
-            cleartext_password: str | None
-            """Cleartext password which will be SHA512 hashed by AVD."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, password: str | None | UndefinedType = Undefined, cleartext_password: str | None | UndefinedType = Undefined) -> None:
+                def __init__(self, *, password: str | None | UndefinedType = Undefined) -> None:
                     """
                     EnablePassword.
 
@@ -43,7 +41,6 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         password: SHA512 hashed password.
-                        cleartext_password: Cleartext password which will be SHA512 hashed by AVD.
 
                     """
 

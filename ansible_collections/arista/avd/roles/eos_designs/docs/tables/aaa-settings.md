@@ -10,7 +10,6 @@
     | [<samp>aaa_settings</samp>](## "aaa_settings") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enable_password</samp>](## "aaa_settings.enable_password") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "aaa_settings.enable_password.password") | String |  |  |  | SHA512 hashed password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "aaa_settings.enable_password.cleartext_password") | String |  |  |  | Cleartext password which will be SHA512 hashed by AVD. |
     | [<samp>&nbsp;&nbsp;tacacs</samp>](## "aaa_settings.tacacs") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "aaa_settings.tacacs.servers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "aaa_settings.tacacs.servers.[].host") | String | Required |  |  | Host IP address or name.<br>Combination of `host` and `vrf` should be unique. |
@@ -128,9 +127,6 @@
 
         # SHA512 hashed password.
         password: <str>
-
-        # Cleartext password which will be SHA512 hashed by AVD.
-        cleartext_password: <str>
       tacacs:
         servers:
 
