@@ -549,14 +549,12 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         _fields: ClassVar[dict] = {
-            "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
             "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
+            "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
             "disabled": {"type": bool},
             "leases": {"type": Leases},
             "locked_address": {"type": LockedAddress},
         }
-        dhcp_servers_ipv4: DhcpServersIpv4
-        """Subclass of AvdList with `str` items."""
         local_interface: str
         """
         The value will be interpreted according to these rules:
@@ -571,6 +569,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `"use_default_mgmt_method_interface"`
         """
+        dhcp_servers_ipv4: DhcpServersIpv4
+        """Subclass of AvdList with `str` items."""
         disabled: bool | None
         """Disable IP locking on configured ports."""
         leases: Leases
@@ -583,8 +583,8 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
                 local_interface: str | UndefinedType = Undefined,
+                dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
                 disabled: bool | None | UndefinedType = Undefined,
                 leases: Leases | UndefinedType = Undefined,
                 locked_address: LockedAddress | UndefinedType = Undefined,
@@ -596,7 +596,6 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    dhcp_servers_ipv4: Subclass of AvdList with `str` items.
                     local_interface:
                        The value will be interpreted according to these rules:
                          - `use_mgmt_interface` will configure the
@@ -607,6 +606,7 @@ class EosDesigns(EosDesignsRootModel):
                        configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
                        of `default_mgmt_method`.
                          - Any other string will be used directly as the local interface.
+                    dhcp_servers_ipv4: Subclass of AvdList with `str` items.
                     disabled: Disable IP locking on configured ports.
                     leases: Subclass of AvdList with `LeasesItem` items.
                     locked_address: Subclass of AvdModel.

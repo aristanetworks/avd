@@ -186,11 +186,6 @@ keys:
     type: dict
     $ref: eos_cli_config_gen#/keys/address_locking
     keys:
-      dhcp_servers_ipv4:
-        type: list
-        items:
-          type: str
-          description: DHCP server IPv4 address.
       local_interface:
         type: str
         default: use_default_mgmt_method_interface
