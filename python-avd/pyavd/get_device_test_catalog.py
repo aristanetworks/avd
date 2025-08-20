@@ -104,7 +104,7 @@ def get_device_test_catalog(
     catalog = create_catalog(hostname, structured_config, minimal_structured_configs, settings.input_factory_settings, filtered_test_specs)
 
     if settings.output_dir:
-        dump_anta_catalog(hostname, catalog, settings.output_dir)
+        dump_anta_catalog(hostname, catalog, settings.output_dir, settings.output_file_mode)
 
     stop_time = perf_counter()
     LOGGER.debug("<%s> Generated ANTA catalog in %.4f seconds", hostname, stop_time - start_time)

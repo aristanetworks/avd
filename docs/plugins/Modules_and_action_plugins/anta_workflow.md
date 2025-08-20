@@ -63,6 +63,8 @@ The plugin offers the following capabilities:
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;json_output</samp> | str | optional | None |  | Path to the JSON report file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;filters</samp> | dict | optional | None |  | Filters used to hide specific test statuses from the reports. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hide_statuses</samp> | list | optional | None | Valid values:<br>- <code>success</code><br>- <code>failure</code><br>- <code>error</code><br>- <code>skipped</code><br>- <code>unset</code> | List of test statuses to hide from the reports. |
+| <samp>anta_dir_mode</samp> | str | optional | 0o775 |  | Directory permissions (octal string) to be applied to all directories created by the role. |
+| <samp>anta_file_mode</samp> | str | optional | 0o664 |  | File permissions (octal string) to be applied to all files created by the role. |
 
 ## See Also
 
@@ -79,8 +81,13 @@ The plugin offers the following capabilities:
     - name: Run ANTA workflow
       run_once: true
       delegate_to: localhost
+      vars:
+        anta_dir_mode: "0o777"
+        anta_file_mode: "0o666"
       arista.avd.anta_workflow:
         device_list: "{{ ansible_play_hosts }}"
+        anta_dir_mode: "{{ anta_dir_mode }}"
+        anta_file_mode: "{{ anta_file_mode }}"
         avd_catalogs:
           enabled: true
           output_dir: "{{ inventory_dir }}/anta/avd_catalogs"

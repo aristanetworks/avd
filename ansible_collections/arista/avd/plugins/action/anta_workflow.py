@@ -110,6 +110,8 @@ ARGUMENT_SPEC = {
             },
         },
     },
+    "anta_dir_mode": {"type": "str", "default": "0o775"},
+    "anta_file_mode": {"type": "str", "default": "0o664"},
 }
 
 # Global variables to share data between processes. Since the plugin is forked, these variables are inherited by child processes.
@@ -198,7 +200,7 @@ class ActionModule(ActionBase):
                 batch_results = executor.map(run_anta, batches)
 
             # Build the ANTA reports and summary
-            anta_tests_summary = build_reports(batch_results, report_settings=get(PLUGIN_ARGS, "report"))
+            anta_tests_summary = build_reports(batch_results, report_settings=get(PLUGIN_ARGS, "report"), anta_file_mode=get(PLUGIN_ARGS, "anta_file_mode"))
 
             result = update_ansible_result(result, anta_tests_summary, has_errors_ref)
 
@@ -236,7 +238,7 @@ def run_anta(devices: list[str]) -> ResultManager:
     return result_manager
 
 
-def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[str, Any]) -> dict[str, Any]:
+def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[str, Any], anta_file_mode: str) -> dict[str, Any]:
     """Build the ANTA reports from the batch results and return a summary dictionary containing ANTA test statistics."""
     hide_statuses = get(report_settings, "filters.hide_statuses")
     csv_output_path = get(report_settings, "csv_output")
@@ -262,18 +264,21 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
         path = Path(csv_output_path)
         report_csv = ReportCsv()
         report_csv.generate(result_manager, path)
+        path.chmod(int(anta_file_mode, 8))
 
     if md_output_path:
         LOGGER.info("Generating Markdown report at %s", md_output_path)
         path = Path(md_output_path)
         md_report = MDReportGenerator()
         md_report.generate(result_manager, path)
+        path.chmod(int(anta_file_mode, 8))
 
     if json_output_path:
         LOGGER.info("Generating JSON report at %s", json_output_path)
         path = Path(json_output_path)
         with path.open("w", encoding="UTF-8") as file:
             file.write(result_manager.json)
+            path.chmod(int(anta_file_mode, 8))
 
     # Build a summary with ANTA test stats
     tests_summary = {
@@ -384,6 +389,7 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
     input_factory_settings = InputFactorySettings(allow_bgp_vrfs=get(PLUGIN_ARGS, "avd_catalogs.allow_bgp_vrfs"))
     output_dir = get(PLUGIN_ARGS, "avd_catalogs.output_dir")
     avd_catalogs_filters = get(PLUGIN_ARGS, "avd_catalogs.filters", default=[])
+    output_file_mode = get(PLUGIN_ARGS, "anta_file_mode")
 
     for device in devices:
         anta_device = build_anta_device(device)
@@ -393,6 +399,7 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
             settings = AvdCatalogGenerationSettings(
                 input_factory_settings=input_factory_settings,
                 output_dir=output_dir,
+                output_file_mode=output_file_mode,
                 **get_device_catalog_filters(device, avd_catalogs_filters),
             )
             catalog = get_device_test_catalog(

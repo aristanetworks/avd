@@ -121,6 +121,14 @@ options:
             type: list
             elements: str
             choices: ["success", "failure", "error", "skipped", "unset"]
+  anta_dir_mode:
+    description: Directory permissions (octal string) to be applied to all directories created by the role.
+    type: str
+    default: "0o775"
+  anta_file_mode:
+    description: File permissions (octal string) to be applied to all files created by the role.
+    type: str
+    default: "0o664"
 seealso:
   - name: ANTA website
     description: Documentation for the ANTA test framework
@@ -136,8 +144,13 @@ EXAMPLES = r"""
     - name: Run ANTA workflow
       run_once: true
       delegate_to: localhost
+      vars:
+        anta_dir_mode: "0o777"
+        anta_file_mode: "0o666"
       arista.avd.anta_workflow:
         device_list: "{{ ansible_play_hosts }}"
+        anta_dir_mode: "{{ anta_dir_mode }}"
+        anta_file_mode: "{{ anta_file_mode }}"
         avd_catalogs:
           enabled: true
           output_dir: "{{ inventory_dir }}/anta/avd_catalogs"

@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 LOGGER = getLogger(__name__)
 
 
-def dump_anta_catalog(hostname: str, catalog: AntaCatalog, catalog_dir: str | Path) -> None:
+def dump_anta_catalog(hostname: str, catalog: AntaCatalog, catalog_dir: str | Path, catalog_mode: str) -> None:
     """
     Dump the ANTA catalog for a device to the provided catalog directory.
 
@@ -28,3 +28,4 @@ def dump_anta_catalog(hostname: str, catalog: AntaCatalog, catalog_dir: str | Pa
     LOGGER.debug("<%s> Dumping ANTA catalog at %s", hostname, catalog_path)
     with catalog_path.open(mode="w", encoding="UTF-8") as stream:
         stream.write(catalog_dump.to_json())
+        catalog_path.chmod(int(catalog_mode, 8))

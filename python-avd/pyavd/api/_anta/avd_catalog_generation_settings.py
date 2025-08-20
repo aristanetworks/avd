@@ -41,6 +41,8 @@ class AvdCatalogGenerationSettings(BaseModel):
             List of custom test specs.
         output_dir : str | Path | None, optional
             Directory to output test catalog.
+        output_file_mode: str
+            File permissions to be applied to the generated catalogs.
         ignore_is_deployed : bool
             Whether to ignore the `is_deployed` key in the structured config.
             When set to `True`, the catalog will still be generated even if the `is_deployed` key is `False`.
@@ -54,6 +56,7 @@ class AvdCatalogGenerationSettings(BaseModel):
     custom_test_specs: list[TestSpec] = Field(default_factory=list)
     output_dir: str | Path | None = Field(default=None)
     ignore_is_deployed: bool = Field(default=False)
+    output_file_mode: str = Field(default="0o664")
 
     @field_validator("output_dir")
     @classmethod

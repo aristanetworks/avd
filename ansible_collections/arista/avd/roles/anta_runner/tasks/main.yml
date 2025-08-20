@@ -38,6 +38,8 @@
       structured_config_suffix: "{{ avd_structured_config_file_format }}"
       allow_bgp_vrfs: "{{ avd_catalogs_allow_bgp_vrfs }}"
       filters: "{{ avd_catalogs_filters | arista.avd.default([]) }}"
+    anta_file_mode: "{{ anta_file_mode }}"
+    anta_dir_mode: "{{ anta_dir_mode }}"
     user_catalogs:
       input_dir: "{{ user_catalogs_dir }}"
     runner:
