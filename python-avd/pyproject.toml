@@ -60,9 +60,6 @@ ansible-collection = [
     # distlib is required to install the collection from source as it is using manifest
     "distlib>=0.3.9",
 ]
-coverage = [
-    "coverage[toml]",
-]
 
 [build-system]
 requires = [

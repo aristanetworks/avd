@@ -730,8 +730,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install pyavd with coverage extras
-        run: pip install "pyavd[coverage]"
+      - name: Install coverage
+        run: pip install "coverage[toml]"
       - name: Download coverage artifacts
         uses: actions/download-artifact@v5
         with:
