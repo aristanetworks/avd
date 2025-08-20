@@ -74,7 +74,7 @@ vlan_interfaces:
 - name: Vlan101
   description: Inband Management
   shutdown: false
-  ip_address: 192.168.101.4/24
+  ip_address: 192.168.101.7/24
   mtu: 1500
   type: inband_mgmt
 vlan_internal_order:
