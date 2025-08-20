@@ -33,10 +33,6 @@ Ansible inventory to connect to EOS devices. The default variables can be change
 - JSON file: one report per fabric
 - YAML file: one report per fabric
 
-!!! Note
-    Output file permission defaults to `0o664`.
-    Output directory permission defaults to `0o775`.
-
 **Tasks:**
 
 1. Create output structure

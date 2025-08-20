@@ -5,10 +5,6 @@ root_dir: '{{ inventory_dir }}'
 snapshots_backup_dir_name: 'snapshots'
 snapshots_backup_dir: '{{ root_dir }}/{{ snapshots_backup_dir_name }}'
 
-# file/dir permissions
-avd_dir_mode: "0o775"
-avd_file_mode: "0o664"
-
 # list of desired formats. Supported values are markdown, yaml, json and text.
 # text: one file per device and show command
 # markdown: one report per device
