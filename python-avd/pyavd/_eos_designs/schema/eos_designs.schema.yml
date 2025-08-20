@@ -8512,6 +8512,9 @@ $defs:
                       items:
                         type: str
                         description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                     descriptions:
@@ -8682,6 +8685,9 @@ $defs:
                       type: str
                       required: true
                       description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                       description: 'Interface description.
@@ -10932,7 +10938,7 @@ $defs:
 
               l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
 
-              l2leafs       : <subnet> + 3 + <l2leaf id>
+              l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
 
               GW on l2leafs : <subnet> + 1
 
@@ -10948,6 +10954,18 @@ $defs:
               '
             type: str
             format: ipv4_cidr
+          inband_mgmt_subnet_offset:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            type: int
+            convert_types:
+            - str
+            default: 0
+            description: 'Offset value to adjust the calculated inband management
+              IP address within the subnet.
+
+              The assigned IP will be computed by adding this offset to the device
+              ID.'
           inband_mgmt_ip:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -11482,13 +11500,6 @@ $defs:
                   Not used for uplink interfaces.'
                 type: str
                 format: ipv4_pool
-              max_ha_interfaces:
-                type: int
-                convert_types:
-                - str
-                description: 'Number of parallel links towards HA switches.
-
-                  Can be used to reserve IP addresses for future parallel HA links.'
               port_channel_id:
                 type: int
                 convert_types:
@@ -11536,7 +11547,7 @@ $defs:
             description: L3 Port-Channel interfaces to configure on the node.
           data_plane_cpu_allocation_max:
             documentation_options:
-              table: system-settings
+              table: node-type-wan-configuration
             type: int
             $ref: eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max
             description: 'Set the maximum number of CPU used for the data plane.
@@ -12525,6 +12536,9 @@ $defs:
         description: 'SVI description. By default set to VLAN name.
 
           '
+      arp_gratuitous_accept:
+        type: bool
+        description: Accept gratuitous ARP.
       ip_address:
         type: str
         description: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4
