@@ -32,6 +32,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node_type</samp>](## "digital_twin.auxiliary_systems.[].node_type") | String | Required |  | Valid Values:<br>- <code>act-tools-server</code> | Node type of the auxiliary system.<br>Naming convention: '<digital_twin_environment>-<node_type>'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_os_version</samp>](## "digital_twin.auxiliary_systems.[].act_os_version") | String |  |  |  | OS version of the auxiliary system.<br>Overrides parent `digital_twin.act_<node_type>_os_version` value. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_mgmt_ip</samp>](## "digital_twin.auxiliary_systems.[].act_mgmt_ip") | String |  |  | Format: cidr | Management interface IPv4 address of the auxiliary system.<br>Required for ACT auxiliary system. |
+    | [<samp>&nbsp;&nbsp;act_internet_access</samp>](## "digital_twin.act_internet_access") | Boolean |  | `False` |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to cloudeos or veos devices by default. |
 
 === "YAML"
 
@@ -115,4 +116,9 @@
           # Management interface IPv4 address of the auxiliary system.
           # Required for ACT auxiliary system.
           act_mgmt_ip: <str>
+
+      # Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+      # This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+      # ACT does not provide direct Internet access to cloudeos or veos devices by default.
+      act_internet_access: <bool; default=False>
     ```

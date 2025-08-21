@@ -7,10 +7,12 @@ nodes:
     node_type: veos
     ip_addr: 192.168.1.11/24
     version: 4.33.1.1F
+    internet_access: true
 - DC1-POD1-L2LEAF2B:
     node_type: veos
     ip_addr: 192.168.1.12/24
     version: 4.33.1.1F
+    internet_access: true
 - DC1-POD1-LEAF1A:
     node_type: veos
     ip_addr: 192.168.1.7/24
@@ -31,6 +33,7 @@ nodes:
     node_type: veos
     ip_addr: 192.168.1.6/24
     version: 4.33.1F
+    internet_access: true
 - DC1-POD2-LEAF1A:
     node_type: veos
     ip_addr: 192.168.1.15/24

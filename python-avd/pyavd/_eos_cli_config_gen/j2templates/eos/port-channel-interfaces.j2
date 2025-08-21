@@ -332,6 +332,9 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.ip_proxy_arp is arista.avd.defined(true) %}
    ip proxy-arp
 {%     endif %}
+{%     if port_channel_interface.arp_gratuitous_accept is arista.avd.defined(true) %}
+   arp gratuitous accept
+{%     endif %}
 {%     if port_channel_interface.ip_address is arista.avd.defined %}
    ip address {{ port_channel_interface.ip_address }}
 {%     endif %}

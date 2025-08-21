@@ -185,6 +185,13 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts, 
             node_type=digital_twin_node_type,
             ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
             version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
+            # Set internet_access to None unless it is a cloudeos or veos node and its metadata.digital_twin.internet_access is True
+            internet_access=internet_access
+            if (
+                (internet_access := get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..internet_access", separator=".."))
+                and digital_twin_node_type in ["cloudeos", "veos"]
+            )
+            else None,
         )
 
     # Process auxiliary_systems (eg., tools-servers, cvps)
@@ -209,7 +216,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts, 
                     # auxiliary_system is defined for another Digital Twin environment. Continue.
                     continue
 
-            new_auxiliary_system = ActNodeSettings(node_type=matched_node_type, ip_addr=mgmt_ip, version=os_version)
+            new_auxiliary_system = ActNodeSettings(node_type=matched_node_type, ip_addr=mgmt_ip, version=os_version, internet_access=None)
 
             # Check for overlapping names between fabric and auxiliary nodes
             # TODO: pytest coverage for exceptions raised while generating fabric documentation

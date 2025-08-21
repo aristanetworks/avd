@@ -141,6 +141,7 @@ metadata:
     version: 4.33.1F
     username: cvpadmin
     password: cvp123!
+    internet_access: true
 router_bgp:
   as: '65110.100'
   router_id: 172.16.110.2

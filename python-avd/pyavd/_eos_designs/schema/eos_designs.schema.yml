@@ -22,7 +22,9 @@ keys:
               keys:
                 host:
                   type: str
-                  description: Host IP address or name.
+                  description: 'Host IP address or name.
+
+                    Combination of `host` and `vrf` should be unique.'
                   required: true
                 groups:
                   type: list
@@ -103,7 +105,9 @@ keys:
               keys:
                 host:
                   type: str
-                  description: Host IP address or name.
+                  description: 'Host IP address or name.
+
+                    Combination of `host` and `vrf` should be unique.'
                   required: true
                 groups:
                   type: list
@@ -178,6 +182,9 @@ keys:
             default: false
           sha512_password:
             type: str
+      local_users:
+        $ref: eos_cli_config_gen#/keys/local_users
+        type: list
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
@@ -200,6 +207,13 @@ keys:
           there.\n- `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.\n
           \ If `default_mgmt_method` is 'none', the VRF must be specified. For VRF
           default set the string \"default\"."
+      inband_mgmt_attached_hosts:
+        type: bool
+        default: false
+        description: 'Opt-in to the new behavior for inband management route export:
+
+          - `ip attached-host route export` will only be rendered for inband management
+          VLAN interfaces if the underlay protocol is BGP.'
   avd_data_conversion_mode:
     documentation_options:
       table: role-input-validation
@@ -1205,7 +1219,7 @@ keys:
                   type: str
                   description: Short name for the CVaaS cluster. Required here, but
                     only used when configuring multiple clusters.
-                  pattern: ^[a-zA-Z1-9-_]+$
+                  pattern: ^[a-zA-Z0-9-_]+$
                 region:
                   type: str
                   description: 'Optionally set the region to stream to.
@@ -1274,7 +1288,7 @@ keys:
               type: str
               description: Short name for the cluster. Required here, but only used
                 when configuring multiple clusters.
-              pattern: ^[a-zA-Z1-9-_]+$
+              pattern: ^[a-zA-Z0-9-_]+$
             servers:
               type: list
               required: true
@@ -1840,6 +1854,17 @@ keys:
 
                 Required for ACT auxiliary system.'
               format: cidr
+      act_internet_access:
+        type: bool
+        default: false
+        description: 'Specifies if the ACT Digital Twin device is deployed with direct
+          access to the Internet.
+
+          This option applies only to the ''cloudeos'' and ''veos'' node types and
+          will be ignored for all other ACT node types.
+
+          ACT does not provide direct Internet access to cloudeos or veos devices
+          by default.'
   dns_settings:
     documentation_options:
       table: management-settings
@@ -2983,6 +3008,11 @@ keys:
   local_users:
     documentation_options:
       table: management-settings
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 6.0.0
+      new_key: aaa_settings.local_users
     $ref: eos_cli_config_gen#/keys/local_users
     type: list
   logging_settings:
@@ -4553,6 +4583,18 @@ keys:
 
                 The feature will be ignored on platforms where this is false.'
               default: true
+            wan:
+              type: bool
+              description: 'Support for Arista WAN features.
+
+                An error will be raised if the feature is enabled and this is false.'
+              default: true
+            ptp:
+              type: bool
+              description: 'Support for Precision Time Protocol (PTP).
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
         management_interface:
           type: str
           default: Management1
@@ -6081,6 +6123,15 @@ keys:
     convert_types:
     - str
     default: 12000
+  underlay_ospf_maximum_paths:
+    description: Maximum number of next-hops in an ECMP route.
+    documentation_options:
+      table: ospf-settings
+    type: int
+    min: 1
+    max: 128
+    convert_types:
+    - str
   underlay_ospf_process_id:
     documentation_options:
       table: ospf-settings
@@ -8554,12 +8605,20 @@ $defs:
                       type: list
                       $ref: eos_designs#/$defs/static_routes
                       description: Static routes to be configured on every device
-                        when this interface is configured.
+                        where this interface is configured.
+                    ipv6_static_routes:
+                      type: list
+                      $ref: eos_designs#/$defs/static_routes
+                      description: IPv6 static routes to be configured on every device
+                        where this interface is configured.
                     nodes:
                       type: list
                       items:
                         type: str
                         description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                     descriptions:
@@ -8730,6 +8789,9 @@ $defs:
                       type: str
                       required: true
                       description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                       description: 'Interface description.
@@ -8833,9 +8895,14 @@ $defs:
                       - int
                     static_routes:
                       type: list
-                      description: Static routes to be configured on the device when
-                        this Port-channel is configured.
+                      description: Static routes to be configured on the device where
+                        this Port-channel interface is configured.
                       $ref: eos_designs#/$defs/static_routes
+                    ipv6_static_routes:
+                      type: list
+                      $ref: eos_designs#/$defs/static_routes
+                      description: IPv6 static routes to be configured on the device
+                        where this Port-channel interface is configured.
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
@@ -10975,7 +11042,7 @@ $defs:
 
               l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
 
-              l2leafs       : <subnet> + 3 + <l2leaf id>
+              l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
 
               GW on l2leafs : <subnet> + 1
 
@@ -10991,6 +11058,18 @@ $defs:
               '
             type: str
             format: ipv4_cidr
+          inband_mgmt_subnet_offset:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            type: int
+            convert_types:
+            - str
+            default: 0
+            description: 'Offset value to adjust the calculated inband management
+              IP address within the subnet.
+
+              The assigned IP will be computed by adding this offset to the device
+              ID.'
           inband_mgmt_ip:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -11525,13 +11604,6 @@ $defs:
                   Not used for uplink interfaces.'
                 type: str
                 format: ipv4_pool
-              max_ha_interfaces:
-                type: int
-                convert_types:
-                - str
-                description: 'Number of parallel links towards HA switches.
-
-                  Can be used to reserve IP addresses for future parallel HA links.'
               port_channel_id:
                 type: int
                 convert_types:
@@ -11579,7 +11651,7 @@ $defs:
             description: L3 Port-Channel interfaces to configure on the node.
           data_plane_cpu_allocation_max:
             documentation_options:
-              table: system-settings
+              table: node-type-wan-configuration
             type: int
             $ref: eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max
             description: 'Set the maximum number of CPU used for the data plane.
@@ -11669,6 +11741,18 @@ $defs:
                 type: str
                 description: Desired management interface IPv4 address.
                 format: cidr
+              act_internet_access:
+                type: bool
+                description: 'Specifies if the ACT Digital Twin device is deployed
+                  with direct access to the Internet.
+
+                  This option applies only to the ''cloudeos'' and ''veos'' node types
+                  and will be ignored for all other ACT node types.
+
+                  ACT does not provide direct Internet access to cloudeos or veos
+                  devices by default.
+
+                  Overrides global `digital_twin.fabric.act_internet_access` flag.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -12556,6 +12640,9 @@ $defs:
         description: 'SVI description. By default set to VLAN name.
 
           '
+      arp_gratuitous_accept:
+        type: bool
+        description: Accept gratuitous ARP.
       ip_address:
         type: str
         description: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4
@@ -12670,6 +12757,11 @@ $defs:
         $ref: eos_designs#/$defs/static_routes
         description: Static routes to be configured on every device where the SVI
           is configured.
+      ipv6_static_routes:
+        type: list
+        $ref: eos_designs#/$defs/static_routes
+        description: IPv6 static routes to be configured on every device where the
+          SVI is configured.
       vni_override:
         type: int
         convert_types:
