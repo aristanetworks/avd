@@ -435,6 +435,7 @@ class EosDesigns(EosDesignsRootModel):
             "authorization": {"type": EosCliConfigGen.AaaAuthorization},
             "accounting": {"type": EosCliConfigGen.AaaAccounting},
             "root_login": {"type": RootLogin},
+            "local_users": {"type": EosCliConfigGen.LocalUsers},
         }
         tacacs: Tacacs
         """Subclass of AvdModel."""
@@ -445,6 +446,7 @@ class EosDesigns(EosDesignsRootModel):
         accounting: EosCliConfigGen.AaaAccounting
         root_login: RootLogin
         """Subclass of AvdModel."""
+        local_users: EosCliConfigGen.LocalUsers
 
         if TYPE_CHECKING:
 
@@ -457,6 +459,7 @@ class EosDesigns(EosDesignsRootModel):
                 authorization: EosCliConfigGen.AaaAuthorization | UndefinedType = Undefined,
                 accounting: EosCliConfigGen.AaaAccounting | UndefinedType = Undefined,
                 root_login: RootLogin | UndefinedType = Undefined,
+                local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
             ) -> None:
                 """
                 AaaSettings.
@@ -471,13 +474,14 @@ class EosDesigns(EosDesignsRootModel):
                     authorization: authorization
                     accounting: accounting
                     root_login: Subclass of AvdModel.
+                    local_users: local_users
 
                 """
 
     class Avd6Behaviors(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}}
+        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}, "inband_mgmt_attached_hosts": {"type": bool, "default": False}}
         snmp_settings_vrfs: bool
         """
         Opt-in to the new behavior for snmp_settings:
@@ -492,10 +496,18 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        inband_mgmt_attached_hosts: bool
+        """
+        Opt-in to the new behavior for inband management route export:
+        - `ip attached-host route export`
+        will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined) -> None:
+            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined, inband_mgmt_attached_hosts: bool | UndefinedType = Undefined) -> None:
                 """
                 Avd6Behaviors.
 
@@ -513,6 +525,10 @@ class EosDesigns(EosDesignsRootModel):
                          If
                        `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
                        "default".
+                    inband_mgmt_attached_hosts:
+                       Opt-in to the new behavior for inband management route export:
+                       - `ip attached-host route export`
+                       will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
 
                 """
 
@@ -12283,6 +12299,8 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "sflow": {"type": bool, "default": True},
+                "wan": {"type": bool, "default": True},
+                "ptp": {"type": bool, "default": True},
             }
             queue_monitor: bool
             """
@@ -12424,6 +12442,22 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            wan: bool
+            """
+            Support for Arista WAN features.
+            An error will be raised if the feature is enabled and this is
+            false.
+
+            Default value: `True`
+            """
+            ptp: bool
+            """
+            Support for Precision Time Protocol (PTP).
+            The feature will be ignored on platforms where this is
+            false.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -12447,6 +12481,8 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     sflow: bool | UndefinedType = Undefined,
+                    wan: bool | UndefinedType = Undefined,
+                    ptp: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -12531,6 +12567,14 @@ class EosDesigns(EosDesignsRootModel):
                         sflow:
                            Support for sFlow.
                            The feature will be ignored on platforms where this is false.
+                        wan:
+                           Support for Arista WAN features.
+                           An error will be raised if the feature is enabled and this is
+                           false.
+                        ptp:
+                           Support for Precision Time Protocol (PTP).
+                           The feature will be ignored on platforms where this is
+                           false.
 
                     """
 
@@ -12988,6 +13032,8 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "sflow": {"type": bool, "default": True},
+                "wan": {"type": bool, "default": True},
+                "ptp": {"type": bool, "default": True},
             }
             queue_monitor: bool
             """
@@ -13129,6 +13175,22 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            wan: bool
+            """
+            Support for Arista WAN features.
+            An error will be raised if the feature is enabled and this is
+            false.
+
+            Default value: `True`
+            """
+            ptp: bool
+            """
+            Support for Precision Time Protocol (PTP).
+            The feature will be ignored on platforms where this is
+            false.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -13152,6 +13214,8 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     sflow: bool | UndefinedType = Undefined,
+                    wan: bool | UndefinedType = Undefined,
+                    ptp: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -13236,6 +13300,14 @@ class EosDesigns(EosDesignsRootModel):
                         sflow:
                            Support for sFlow.
                            The feature will be ignored on platforms where this is false.
+                        wan:
+                           Support for Arista WAN features.
+                           An error will be raised if the feature is enabled and this is
+                           false.
+                        ptp:
+                           Support for Precision Time Protocol (PTP).
+                           The feature will be ignored on platforms where this is
+                           false.
 
                     """
 
@@ -16789,6 +16861,67 @@ class EosDesigns(EosDesignsRootModel):
 
             StaticRoutes._item_type = StaticRoutesItem
 
+            class Ipv6StaticRoutesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "prefix": {"type": str},
+                    "next_hop": {"type": str},
+                    "track_bfd": {"type": bool},
+                    "distance": {"type": int},
+                    "tag": {"type": int},
+                    "name": {"type": str},
+                    "metric": {"type": int},
+                    "interface": {"type": str},
+                }
+                prefix: str | None
+                next_hop: str | None
+                track_bfd: bool | None
+                """Track next-hop using BFD."""
+                distance: int | None
+                tag: int | None
+                name: str | None
+                """description."""
+                metric: int | None
+                interface: str | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | None | UndefinedType = Undefined,
+                        next_hop: str | None | UndefinedType = Undefined,
+                        track_bfd: bool | None | UndefinedType = Undefined,
+                        distance: int | None | UndefinedType = Undefined,
+                        tag: int | None | UndefinedType = Undefined,
+                        name: str | None | UndefinedType = Undefined,
+                        metric: int | None | UndefinedType = Undefined,
+                        interface: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ipv6StaticRoutesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: prefix
+                            next_hop: next_hop
+                            track_bfd: Track next-hop using BFD.
+                            distance: distance
+                            tag: tag
+                            name: description.
+                            metric: metric
+                            interface: interface
+
+                        """
+
+            class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+            Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
+
             class TrunkGroups(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -17108,6 +17241,7 @@ class EosDesigns(EosDesignsRootModel):
                 "name": {"type": str},
                 "enabled": {"type": bool},
                 "description": {"type": str},
+                "arp_gratuitous_accept": {"type": bool},
                 "ip_address": {"type": str},
                 "ipv6_address": {"type": str},
                 "ipv6_enable": {"type": bool},
@@ -17120,6 +17254,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv4_acl_out": {"type": str},
                 "ip_helpers": {"type": IpHelpers},
                 "static_routes": {"type": StaticRoutes},
+                "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                 "vni_override": {"type": int},
                 "rt_override": {"type": str},
                 "rd_override": {"type": str},
@@ -17146,6 +17281,8 @@ class EosDesigns(EosDesignsRootModel):
             """Enable or disable interface."""
             description: str | None
             """SVI description. By default set to VLAN name."""
+            arp_gratuitous_accept: bool | None
+            """Accept gratuitous ARP."""
             ip_address: str | None
             """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
             ipv6_address: str | None
@@ -17223,6 +17360,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdList
             with `StaticRoutesItem` items.
+            """
+            ipv6_static_routes: Ipv6StaticRoutes
+            """
+            IPv6 static routes to be configured on every device where the SVI is configured.
+
+            Subclass of
+            AvdList with `Ipv6StaticRoutesItem` items.
             """
             vni_override: int | None
             """
@@ -17334,6 +17478,7 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | None | UndefinedType = Undefined,
                     enabled: bool | None | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
+                    arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
                     ipv6_address: str | None | UndefinedType = Undefined,
                     ipv6_enable: bool | None | UndefinedType = Undefined,
@@ -17346,6 +17491,7 @@ class EosDesigns(EosDesignsRootModel):
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
+                    ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                     vni_override: int | None | UndefinedType = Undefined,
                     rt_override: str | None | UndefinedType = Undefined,
                     rd_override: str | None | UndefinedType = Undefined,
@@ -17375,6 +17521,7 @@ class EosDesigns(EosDesignsRootModel):
                         name: VLAN name.
                         enabled: Enable or disable interface.
                         description: SVI description. By default set to VLAN name.
+                        arp_gratuitous_accept: Accept gratuitous ARP.
                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                         ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                         ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
@@ -17432,6 +17579,11 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdList
                            with `StaticRoutesItem` items.
+                        ipv6_static_routes:
+                           IPv6 static routes to be configured on every device where the SVI is configured.
+
+                           Subclass of
+                           AvdList with `Ipv6StaticRoutesItem` items.
                         vni_override:
                            By default the VNI will be derived from "mac_vrf_vni_base".
                            The vni_override allows us to override
@@ -17633,6 +17785,67 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `StaticRoutesItem` items."""
 
         StaticRoutes._item_type = StaticRoutesItem
+
+        class Ipv6StaticRoutesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "prefix": {"type": str},
+                "next_hop": {"type": str},
+                "track_bfd": {"type": bool},
+                "distance": {"type": int},
+                "tag": {"type": int},
+                "name": {"type": str},
+                "metric": {"type": int},
+                "interface": {"type": str},
+            }
+            prefix: str | None
+            next_hop: str | None
+            track_bfd: bool | None
+            """Track next-hop using BFD."""
+            distance: int | None
+            tag: int | None
+            name: str | None
+            """description."""
+            metric: int | None
+            interface: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    prefix: str | None | UndefinedType = Undefined,
+                    next_hop: str | None | UndefinedType = Undefined,
+                    track_bfd: bool | None | UndefinedType = Undefined,
+                    distance: int | None | UndefinedType = Undefined,
+                    tag: int | None | UndefinedType = Undefined,
+                    name: str | None | UndefinedType = Undefined,
+                    metric: int | None | UndefinedType = Undefined,
+                    interface: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6StaticRoutesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        prefix: prefix
+                        next_hop: next_hop
+                        track_bfd: Track next-hop using BFD.
+                        distance: distance
+                        tag: tag
+                        name: description.
+                        metric: metric
+                        interface: interface
+
+                    """
+
+        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
         class TrunkGroups(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -17955,6 +18168,7 @@ class EosDesigns(EosDesignsRootModel):
             "name": {"type": str},
             "enabled": {"type": bool},
             "description": {"type": str},
+            "arp_gratuitous_accept": {"type": bool},
             "ip_address": {"type": str},
             "ipv6_address": {"type": str},
             "ipv6_enable": {"type": bool},
@@ -17967,6 +18181,7 @@ class EosDesigns(EosDesignsRootModel):
             "ipv4_acl_out": {"type": str},
             "ip_helpers": {"type": IpHelpers},
             "static_routes": {"type": StaticRoutes},
+            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
             "vni_override": {"type": int},
             "rt_override": {"type": str},
             "rd_override": {"type": str},
@@ -18009,6 +18224,8 @@ class EosDesigns(EosDesignsRootModel):
         """Enable or disable interface."""
         description: str | None
         """SVI description. By default set to VLAN name."""
+        arp_gratuitous_accept: bool | None
+        """Accept gratuitous ARP."""
         ip_address: str | None
         """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
         ipv6_address: str | None
@@ -18086,6 +18303,13 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList
         with `StaticRoutesItem` items.
+        """
+        ipv6_static_routes: Ipv6StaticRoutes
+        """
+        IPv6 static routes to be configured on every device where the SVI is configured.
+
+        Subclass of
+        AvdList with `Ipv6StaticRoutesItem` items.
         """
         vni_override: int | None
         """
@@ -18199,6 +18423,7 @@ class EosDesigns(EosDesignsRootModel):
                 name: str | None | UndefinedType = Undefined,
                 enabled: bool | None | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
+                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
@@ -18211,6 +18436,7 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                 vni_override: int | None | UndefinedType = Undefined,
                 rt_override: str | None | UndefinedType = Undefined,
                 rd_override: str | None | UndefinedType = Undefined,
@@ -18252,6 +18478,7 @@ class EosDesigns(EosDesignsRootModel):
                     name: VLAN name.
                     enabled: Enable or disable interface.
                     description: SVI description. By default set to VLAN name.
+                    arp_gratuitous_accept: Accept gratuitous ARP.
                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                     ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                     ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
@@ -18309,6 +18536,11 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList
                        with `StaticRoutesItem` items.
+                    ipv6_static_routes:
+                       IPv6 static routes to be configured on every device where the SVI is configured.
+
+                       Subclass of
+                       AvdList with `Ipv6StaticRoutesItem` items.
                     vni_override:
                        By default the VNI will be derived from "mac_vrf_vni_base".
                        The vni_override allows us to override
@@ -25018,7 +25250,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -25058,12 +25289,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -25091,7 +25316,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -25123,10 +25347,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -26414,6 +26634,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -27034,13 +27255,23 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    """
+                    inband_mgmt_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
                     """
                     inband_mgmt_ip: str | None
                     """
@@ -27400,6 +27631,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -27843,13 +28075,19 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -29321,7 +29559,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "mtu": {"type": int, "default": 9194},
                                 "ha_interfaces": {"type": HaInterfaces},
                                 "ha_ipv4_pool": {"type": str},
-                                "max_ha_interfaces": {"type": int},
                                 "port_channel_id": {"type": int},
                                 "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                                 "flow_tracking": {"type": FlowTracking},
@@ -29361,12 +29598,6 @@ class EosDesigns(EosDesignsRootModel):
                             first WAN router.
                             Not used for uplink interfaces.
                             """
-                            max_ha_interfaces: int | None
-                            """
-                            Number of parallel links towards HA switches.
-                            Can be used to reserve IP addresses for future
-                            parallel HA links.
-                            """
                             port_channel_id: int | None
                             """Port-channel ID to use for direct HA."""
                             use_port_channel_for_direct_ha: bool
@@ -29394,7 +29625,6 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: int | UndefinedType = Undefined,
                                     ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                     ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                    max_ha_interfaces: int | None | UndefinedType = Undefined,
                                     port_channel_id: int | None | UndefinedType = Undefined,
                                     use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -29426,10 +29656,6 @@ class EosDesigns(EosDesignsRootModel):
                                            subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                            first WAN router.
                                            Not used for uplink interfaces.
-                                        max_ha_interfaces:
-                                           Number of parallel links towards HA switches.
-                                           Can be used to reserve IP addresses for future
-                                           parallel HA links.
                                         port_channel_id: Port-channel ID to use for direct HA.
                                         use_port_channel_for_direct_ha:
                                            Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -30731,6 +30957,7 @@ class EosDesigns(EosDesignsRootModel):
                             "inband_mgmt_interface": {"type": str},
                             "inband_mgmt_vlan": {"type": int, "default": 4092},
                             "inband_mgmt_subnet": {"type": str},
+                            "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                             "inband_mgmt_ip": {"type": str},
                             "inband_mgmt_gateway": {"type": str},
                             "inband_mgmt_ipv6_address": {"type": str},
@@ -31361,13 +31588,23 @@ class EosDesigns(EosDesignsRootModel):
                         2 (same IP on all l3leaf A)
                         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                         l2leafs       :
-                        <subnet> + 3 + <l2leaf id>
+                        <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                         GW on l2leafs : <subnet> + 1
-                        Assign range larger than total l2leafs + 5
+                        Assign range
+                        larger than total l2leafs + 5
+
                         Setting is ignored if 'inband_mgmt_ip' is set.
 
-                        This setting is applicable to L2 switches (switches
-                        using port-channel trunks as uplinks).
+                        This setting is
+                        applicable to L2 switches (switches using port-channel trunks as uplinks).
+                        """
+                        inband_mgmt_subnet_offset: int
+                        """
+                        Offset value to adjust the calculated inband management IP address within the subnet.
+                        The assigned
+                        IP will be computed by adding this offset to the device ID.
+
+                        Default value: `0`
                         """
                         inband_mgmt_ip: str | None
                         """
@@ -31729,6 +31966,7 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                                 inband_mgmt_vlan: int | UndefinedType = Undefined,
                                 inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                                inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                                 inband_mgmt_ip: str | None | UndefinedType = Undefined,
                                 inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                                 inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -32179,13 +32417,19 @@ class EosDesigns(EosDesignsRootModel):
                                        2 (same IP on all l3leaf A)
                                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                        l2leafs       :
-                                       <subnet> + 3 + <l2leaf id>
+                                       <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                        GW on l2leafs : <subnet> + 1
-                                       Assign range larger than total l2leafs + 5
+                                       Assign range
+                                       larger than total l2leafs + 5
+
                                        Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                       This setting is applicable to L2 switches (switches
-                                       using port-channel trunks as uplinks).
+                                       This setting is
+                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                    inband_mgmt_subnet_offset:
+                                       Offset value to adjust the calculated inband management IP address within the subnet.
+                                       The assigned
+                                       IP will be computed by adding this offset to the device ID.
                                     inband_mgmt_ip:
                                        IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -33577,7 +33821,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -33617,12 +33860,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -33650,7 +33887,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -33682,10 +33918,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -34975,6 +35207,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -35608,13 +35841,23 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    """
+                    inband_mgmt_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
                     """
                     inband_mgmt_ip: str | None
                     """
@@ -35976,6 +36219,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -36428,13 +36672,19 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -37901,7 +38151,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -37941,12 +38190,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -37974,7 +38217,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -38006,10 +38248,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -39299,6 +39537,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -39929,13 +40168,23 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    """
+                    inband_mgmt_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
                     """
                     inband_mgmt_ip: str | None
                     """
@@ -40297,6 +40546,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -40747,13 +40997,19 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -42938,6 +43194,67 @@ class EosDesigns(EosDesignsRootModel):
 
                             StaticRoutes._item_type = StaticRoutesItem
 
+                            class Ipv6StaticRoutesItem(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "prefix": {"type": str},
+                                    "next_hop": {"type": str},
+                                    "track_bfd": {"type": bool},
+                                    "distance": {"type": int},
+                                    "tag": {"type": int},
+                                    "name": {"type": str},
+                                    "metric": {"type": int},
+                                    "interface": {"type": str},
+                                }
+                                prefix: str | None
+                                next_hop: str | None
+                                track_bfd: bool | None
+                                """Track next-hop using BFD."""
+                                distance: int | None
+                                tag: int | None
+                                name: str | None
+                                """description."""
+                                metric: int | None
+                                interface: str | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        prefix: str | None | UndefinedType = Undefined,
+                                        next_hop: str | None | UndefinedType = Undefined,
+                                        track_bfd: bool | None | UndefinedType = Undefined,
+                                        distance: int | None | UndefinedType = Undefined,
+                                        tag: int | None | UndefinedType = Undefined,
+                                        name: str | None | UndefinedType = Undefined,
+                                        metric: int | None | UndefinedType = Undefined,
+                                        interface: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Ipv6StaticRoutesItem.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            prefix: prefix
+                                            next_hop: next_hop
+                                            track_bfd: Track next-hop using BFD.
+                                            distance: distance
+                                            tag: tag
+                                            name: description.
+                                            metric: metric
+                                            interface: interface
+
+                                        """
+
+                            class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                                """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                            Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
+
                             class TrunkGroups(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
@@ -43269,6 +43586,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "name": {"type": str},
                                 "enabled": {"type": bool},
                                 "description": {"type": str},
+                                "arp_gratuitous_accept": {"type": bool},
                                 "ip_address": {"type": str},
                                 "ipv6_address": {"type": str},
                                 "ipv6_enable": {"type": bool},
@@ -43281,6 +43599,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv4_acl_out": {"type": str},
                                 "ip_helpers": {"type": IpHelpers},
                                 "static_routes": {"type": StaticRoutes},
+                                "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                                 "vni_override": {"type": int},
                                 "rt_override": {"type": str},
                                 "rd_override": {"type": str},
@@ -43317,6 +43636,8 @@ class EosDesigns(EosDesignsRootModel):
                             """Enable or disable interface."""
                             description: str | None
                             """SVI description. By default set to VLAN name."""
+                            arp_gratuitous_accept: bool | None
+                            """Accept gratuitous ARP."""
                             ip_address: str | None
                             """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
                             ipv6_address: str | None
@@ -43394,6 +43715,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList
                             with `StaticRoutesItem` items.
+                            """
+                            ipv6_static_routes: Ipv6StaticRoutes
+                            """
+                            IPv6 static routes to be configured on every device where the SVI is configured.
+
+                            Subclass of
+                            AvdList with `Ipv6StaticRoutesItem` items.
                             """
                             vni_override: int | None
                             """
@@ -43506,6 +43834,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name: str | None | UndefinedType = Undefined,
                                     enabled: bool | None | UndefinedType = Undefined,
                                     description: str | None | UndefinedType = Undefined,
+                                    arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
                                     ipv6_address: str | None | UndefinedType = Undefined,
                                     ipv6_enable: bool | None | UndefinedType = Undefined,
@@ -43518,6 +43847,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
                                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
+                                    ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                     vni_override: int | None | UndefinedType = Undefined,
                                     rt_override: str | None | UndefinedType = Undefined,
                                     rd_override: str | None | UndefinedType = Undefined,
@@ -43553,6 +43883,7 @@ class EosDesigns(EosDesignsRootModel):
                                         name: VLAN name.
                                         enabled: Enable or disable interface.
                                         description: SVI description. By default set to VLAN name.
+                                        arp_gratuitous_accept: Accept gratuitous ARP.
                                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                                         ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                                         ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
@@ -43610,6 +43941,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass of AvdList
                                            with `StaticRoutesItem` items.
+                                        ipv6_static_routes:
+                                           IPv6 static routes to be configured on every device where the SVI is configured.
+
+                                           Subclass of
+                                           AvdList with `Ipv6StaticRoutesItem` items.
                                         vni_override:
                                            By default the VNI will be derived from "mac_vrf_vni_base".
                                            The vni_override allows us to override
@@ -43811,6 +44147,67 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `StaticRoutesItem` items."""
 
                         StaticRoutes._item_type = StaticRoutesItem
+
+                        class Ipv6StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
                         class TrunkGroups(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -44140,6 +44537,7 @@ class EosDesigns(EosDesignsRootModel):
                             "nodes": {"type": Nodes},
                             "enabled": {"type": bool},
                             "description": {"type": str},
+                            "arp_gratuitous_accept": {"type": bool},
                             "ip_address": {"type": str},
                             "ipv6_address": {"type": str},
                             "ipv6_enable": {"type": bool},
@@ -44152,6 +44550,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv4_acl_out": {"type": str},
                             "ip_helpers": {"type": IpHelpers},
                             "static_routes": {"type": StaticRoutes},
+                            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "vni_override": {"type": int},
                             "rt_override": {"type": str},
                             "rd_override": {"type": str},
@@ -44212,6 +44611,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Enable or disable interface."""
                         description: str | None
                         """SVI description. By default set to VLAN name."""
+                        arp_gratuitous_accept: bool | None
+                        """Accept gratuitous ARP."""
                         ip_address: str | None
                         """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
                         ipv6_address: str | None
@@ -44289,6 +44690,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList
                         with `StaticRoutesItem` items.
+                        """
+                        ipv6_static_routes: Ipv6StaticRoutes
+                        """
+                        IPv6 static routes to be configured on every device where the SVI is configured.
+
+                        Subclass of
+                        AvdList with `Ipv6StaticRoutesItem` items.
                         """
                         vni_override: int | None
                         """
@@ -44404,6 +44812,7 @@ class EosDesigns(EosDesignsRootModel):
                                 nodes: Nodes | UndefinedType = Undefined,
                                 enabled: bool | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
+                                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 ipv6_address: str | None | UndefinedType = Undefined,
                                 ipv6_enable: bool | None | UndefinedType = Undefined,
@@ -44416,6 +44825,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 vni_override: int | None | UndefinedType = Undefined,
                                 rt_override: str | None | UndefinedType = Undefined,
                                 rd_override: str | None | UndefinedType = Undefined,
@@ -44469,6 +44879,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                                     enabled: Enable or disable interface.
                                     description: SVI description. By default set to VLAN name.
+                                    arp_gratuitous_accept: Accept gratuitous ARP.
                                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                                     ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                                     ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
@@ -44526,6 +44937,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList
                                        with `StaticRoutesItem` items.
+                                    ipv6_static_routes:
+                                       IPv6 static routes to be configured on every device where the SVI is configured.
+
+                                       Subclass of
+                                       AvdList with `Ipv6StaticRoutesItem` items.
                                     vni_override:
                                        By default the VNI will be derived from "mac_vrf_vni_base".
                                        The vni_override allows us to override
@@ -44683,6 +45099,67 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `StaticRoutesItem` items."""
 
                         StaticRoutes._item_type = StaticRoutesItem
+
+                        class Ipv6StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
                         class Nodes(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -44897,7 +45374,9 @@ class EosDesigns(EosDesignsRootModel):
                             "encapsulation_dot1q_vlan": {"type": EncapsulationDot1qVlan},
                             "ip_addresses": {"type": IpAddresses},
                             "static_routes": {"type": StaticRoutes},
+                            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "nodes": {"type": Nodes},
+                            "arp_gratuitous_accept": {"type": bool},
                             "description": {"type": str},
                             "descriptions": {"type": Descriptions},
                             "enabled": {"type": bool, "default": True},
@@ -44924,13 +45403,22 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
                         static_routes: StaticRoutes
                         """
-                        Static routes to be configured on every device when this interface is configured.
+                        Static routes to be configured on every device where this interface is configured.
 
                         Subclass of
                         AvdList with `StaticRoutesItem` items.
                         """
+                        ipv6_static_routes: Ipv6StaticRoutes
+                        """
+                        IPv6 static routes to be configured on every device where this interface is configured.
+
+                        Subclass of
+                        AvdList with `Ipv6StaticRoutesItem` items.
+                        """
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
+                        arp_gratuitous_accept: bool | None
+                        """Accept gratuitous ARP."""
                         description: str | None
                         descriptions: Descriptions
                         """
@@ -44995,7 +45483,9 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: EncapsulationDot1qVlan | UndefinedType = Undefined,
                                 ip_addresses: IpAddresses | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
+                                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 descriptions: Descriptions | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
@@ -45024,11 +45514,17 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdList with `int` items.
                                     ip_addresses: Subclass of AvdList with `str` items.
                                     static_routes:
-                                       Static routes to be configured on every device when this interface is configured.
+                                       Static routes to be configured on every device where this interface is configured.
 
                                        Subclass of
                                        AvdList with `StaticRoutesItem` items.
+                                    ipv6_static_routes:
+                                       IPv6 static routes to be configured on every device where this interface is configured.
+
+                                       Subclass of
+                                       AvdList with `Ipv6StaticRoutesItem` items.
                                     nodes: Subclass of AvdList with `str` items.
+                                    arp_gratuitous_accept: Accept gratuitous ARP.
                                     description: description
                                     descriptions:
                                        "descriptions" has precedence over "description".
@@ -45225,6 +45721,67 @@ class EosDesigns(EosDesignsRootModel):
 
                         StaticRoutes._item_type = StaticRoutesItem
 
+                        class Ipv6StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
+
                         class Ospf(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -45401,6 +45958,7 @@ class EosDesigns(EosDesignsRootModel):
                         _fields: ClassVar[dict] = {
                             "name": {"type": str},
                             "node": {"type": str},
+                            "arp_gratuitous_accept": {"type": bool},
                             "description": {"type": str},
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
@@ -45413,6 +45971,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
+                            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "ospf": {"type": Ospf},
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
@@ -45426,6 +45985,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         node: str
                         """Node."""
+                        arp_gratuitous_accept: bool | None
+                        """Accept gratuitous ARP."""
                         description: str | None
                         """
                         Interface description.
@@ -45472,10 +46033,13 @@ class EosDesigns(EosDesignsRootModel):
                         """Name of the IPv4 Access-list to be assigned in the egress direction."""
                         static_routes: StaticRoutes
                         """
-                        Static routes to be configured on the device when this Port-channel is configured.
-
-                        Subclass of
-                        AvdList with `StaticRoutesItem` items.
+                        Static routes to be configured on the device where this Port-channel interface is configured.
+                        Subclass of AvdList with `StaticRoutesItem` items.
+                        """
+                        ipv6_static_routes: Ipv6StaticRoutes
+                        """
+                        IPv6 static routes to be configured on the device where this Port-channel interface is configured.
+                        Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                         """
                         ospf: Ospf
                         """
@@ -45505,6 +46069,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 name: str | UndefinedType = Undefined,
                                 node: str | UndefinedType = Undefined,
+                                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
@@ -45517,6 +46082,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
@@ -45534,6 +46100,7 @@ class EosDesigns(EosDesignsRootModel):
                                        For a
                                        Port-Channel subinterface, the parent Port-Channel interface must be defined as well.
                                     node: Node.
+                                    arp_gratuitous_accept: Accept gratuitous ARP.
                                     description:
                                        Interface description.
                                        If not set, a default description will be configured with '[<peer>[
@@ -45558,10 +46125,11 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
                                     ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
                                     static_routes:
-                                       Static routes to be configured on the device when this Port-channel is configured.
-
-                                       Subclass of
-                                       AvdList with `StaticRoutesItem` items.
+                                       Static routes to be configured on the device where this Port-channel interface is configured.
+                                       Subclass of AvdList with `StaticRoutesItem` items.
+                                    ipv6_static_routes:
+                                       IPv6 static routes to be configured on the device where this Port-channel interface is configured.
+                                       Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                                     ospf:
                                        OSPF interface configuration.
 
@@ -49873,7 +50441,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -49913,12 +50480,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -49946,7 +50507,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -49978,10 +50538,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -51269,6 +51825,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -51889,13 +52446,23 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    """
+                    inband_mgmt_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
                     """
                     inband_mgmt_ip: str | None
                     """
@@ -52255,6 +52822,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -52698,13 +53266,19 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -54176,7 +54750,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "mtu": {"type": int, "default": 9194},
                                 "ha_interfaces": {"type": HaInterfaces},
                                 "ha_ipv4_pool": {"type": str},
-                                "max_ha_interfaces": {"type": int},
                                 "port_channel_id": {"type": int},
                                 "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                                 "flow_tracking": {"type": FlowTracking},
@@ -54216,12 +54789,6 @@ class EosDesigns(EosDesignsRootModel):
                             first WAN router.
                             Not used for uplink interfaces.
                             """
-                            max_ha_interfaces: int | None
-                            """
-                            Number of parallel links towards HA switches.
-                            Can be used to reserve IP addresses for future
-                            parallel HA links.
-                            """
                             port_channel_id: int | None
                             """Port-channel ID to use for direct HA."""
                             use_port_channel_for_direct_ha: bool
@@ -54249,7 +54816,6 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: int | UndefinedType = Undefined,
                                     ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                     ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                    max_ha_interfaces: int | None | UndefinedType = Undefined,
                                     port_channel_id: int | None | UndefinedType = Undefined,
                                     use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -54281,10 +54847,6 @@ class EosDesigns(EosDesignsRootModel):
                                            subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                            first WAN router.
                                            Not used for uplink interfaces.
-                                        max_ha_interfaces:
-                                           Number of parallel links towards HA switches.
-                                           Can be used to reserve IP addresses for future
-                                           parallel HA links.
                                         port_channel_id: Port-channel ID to use for direct HA.
                                         use_port_channel_for_direct_ha:
                                            Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -55586,6 +56148,7 @@ class EosDesigns(EosDesignsRootModel):
                             "inband_mgmt_interface": {"type": str},
                             "inband_mgmt_vlan": {"type": int, "default": 4092},
                             "inband_mgmt_subnet": {"type": str},
+                            "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                             "inband_mgmt_ip": {"type": str},
                             "inband_mgmt_gateway": {"type": str},
                             "inband_mgmt_ipv6_address": {"type": str},
@@ -56216,13 +56779,23 @@ class EosDesigns(EosDesignsRootModel):
                         2 (same IP on all l3leaf A)
                         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                         l2leafs       :
-                        <subnet> + 3 + <l2leaf id>
+                        <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                         GW on l2leafs : <subnet> + 1
-                        Assign range larger than total l2leafs + 5
+                        Assign range
+                        larger than total l2leafs + 5
+
                         Setting is ignored if 'inband_mgmt_ip' is set.
 
-                        This setting is applicable to L2 switches (switches
-                        using port-channel trunks as uplinks).
+                        This setting is
+                        applicable to L2 switches (switches using port-channel trunks as uplinks).
+                        """
+                        inband_mgmt_subnet_offset: int
+                        """
+                        Offset value to adjust the calculated inband management IP address within the subnet.
+                        The assigned
+                        IP will be computed by adding this offset to the device ID.
+
+                        Default value: `0`
                         """
                         inband_mgmt_ip: str | None
                         """
@@ -56584,6 +57157,7 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                                 inband_mgmt_vlan: int | UndefinedType = Undefined,
                                 inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                                inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                                 inband_mgmt_ip: str | None | UndefinedType = Undefined,
                                 inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                                 inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -57034,13 +57608,19 @@ class EosDesigns(EosDesignsRootModel):
                                        2 (same IP on all l3leaf A)
                                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                        l2leafs       :
-                                       <subnet> + 3 + <l2leaf id>
+                                       <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                        GW on l2leafs : <subnet> + 1
-                                       Assign range larger than total l2leafs + 5
+                                       Assign range
+                                       larger than total l2leafs + 5
+
                                        Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                       This setting is applicable to L2 switches (switches
-                                       using port-channel trunks as uplinks).
+                                       This setting is
+                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                    inband_mgmt_subnet_offset:
+                                       Offset value to adjust the calculated inband management IP address within the subnet.
+                                       The assigned
+                                       IP will be computed by adding this offset to the device ID.
                                     inband_mgmt_ip:
                                        IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -58432,7 +59012,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -58472,12 +59051,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -58505,7 +59078,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -58537,10 +59109,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -59830,6 +60398,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -60463,13 +61032,23 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    """
+                    inband_mgmt_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
                     """
                     inband_mgmt_ip: str | None
                     """
@@ -60831,6 +61410,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -61283,13 +61863,19 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -62756,7 +63342,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -62796,12 +63381,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -62829,7 +63408,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -62861,10 +63439,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -64154,6 +64728,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -64784,13 +65359,23 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    """
+                    inband_mgmt_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
                     """
                     inband_mgmt_ip: str | None
                     """
@@ -65152,6 +65737,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -65602,13 +66188,19 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -66348,6 +66940,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
         "underlay_ospf_graceful_restart": {"type": bool, "default": False},
         "underlay_ospf_max_lsa": {"type": int, "default": 12000},
+        "underlay_ospf_maximum_paths": {"type": int},
         "underlay_ospf_process_id": {"type": int, "default": 100},
         "underlay_rfc5549": {"type": bool, "default": False},
         "underlay_routing_protocol": {"type": str},
@@ -68177,6 +68770,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     underlay_ospf_max_lsa: int
     """Default value: `12000`"""
+    underlay_ospf_maximum_paths: int | None
+    """Maximum number of next-hops in an ECMP route."""
     underlay_ospf_process_id: int
     """Default value: `100`"""
     underlay_rfc5549: bool
@@ -68551,6 +69146,7 @@ class EosDesigns(EosDesignsRootModel):
             underlay_ospf_bfd_enable: bool | UndefinedType = Undefined,
             underlay_ospf_graceful_restart: bool | UndefinedType = Undefined,
             underlay_ospf_max_lsa: int | UndefinedType = Undefined,
+            underlay_ospf_maximum_paths: int | None | UndefinedType = Undefined,
             underlay_ospf_process_id: int | UndefinedType = Undefined,
             underlay_rfc5549: bool | UndefinedType = Undefined,
             underlay_routing_protocol: Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
@@ -69892,6 +70488,7 @@ class EosDesigns(EosDesignsRootModel):
                 underlay_ospf_bfd_enable: underlay_ospf_bfd_enable
                 underlay_ospf_graceful_restart: Enable graceful restart for OSPF underlay.
                 underlay_ospf_max_lsa: underlay_ospf_max_lsa
+                underlay_ospf_maximum_paths: Maximum number of next-hops in an ECMP route.
                 underlay_ospf_process_id: underlay_ospf_process_id
                 underlay_rfc5549:
                    Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
