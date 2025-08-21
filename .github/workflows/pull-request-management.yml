@@ -731,7 +731,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install coverage
-        run: pip install "coverage[toml]"
+        run: pip install --group coverage
       - name: Download coverage artifacts
         uses: actions/download-artifact@v5
         with:
