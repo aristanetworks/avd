@@ -297,6 +297,7 @@ ptp:
         delay_resp: 3
         follow_up: 3
         sync: 3
+  forward_v1: true
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
