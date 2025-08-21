@@ -137,7 +137,7 @@ class RoutingMixin(Protocol):
         except IndexError as exc:
             msg = (
                 f"Unable to allocate BGP AS: bgp_as range '{self.node_config.bgp_as}' is too small ({len(bgp_as_range_expanded)}) for the id "
-                f"'{self.id}' of the device"
+                f"'{self.id}'."
             )
             raise AristaAvdInvalidInputsError(msg, host=self.hostname) from exc
 
