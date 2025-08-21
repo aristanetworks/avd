@@ -24997,7 +24997,32 @@ keys:
                       - str
                     multicast_group:
                       type: str
-                      description: IP Multicast Group Address.
+                      description: Default IP Multicast Group Address for the VRF.
+                    multicast_group_encap_range:
+                      type: str
+                      description: 'N:M mapping, the overlay groups in the VRF are
+                        mapped to one of
+
+                        the underlay groups defined within the encap range.
+
+                        The format is X.X.X.X/YY.'
+                    multicast_groups:
+                      type: list
+                      primary_key: overlay_group
+                      description: 'List of 1:1 mappings where each configured overlay
+                        is mapped
+
+                        directly to the specified underlay group ''encap''.'
+                      items:
+                        type: dict
+                        keys:
+                          overlay_group:
+                            type: str
+                            description: Overlay multicast group.
+                          encap:
+                            type: str
+                            required: true
+                            description: Underlay multicast group.
               flood_vteps:
                 type: list
                 items:

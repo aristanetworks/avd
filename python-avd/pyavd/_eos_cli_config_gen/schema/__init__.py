@@ -66750,12 +66750,65 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class VrfsItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"name": {"type": str}, "vni": {"type": int}, "multicast_group": {"type": str}}
+                    class MulticastGroupsItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"overlay_group": {"type": str}, "encap": {"type": str}}
+                        overlay_group: str
+                        """Overlay multicast group."""
+                        encap: str
+                        """Underlay multicast group."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, overlay_group: str | UndefinedType = Undefined, encap: str | UndefinedType = Undefined) -> None:
+                                """
+                                MulticastGroupsItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    overlay_group: Overlay multicast group.
+                                    encap: Underlay multicast group.
+
+                                """
+
+                    class MulticastGroups(AvdIndexedList[str, MulticastGroupsItem]):
+                        """Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is `overlay_group` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "overlay_group"
+
+                    MulticastGroups._item_type = MulticastGroupsItem
+
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "vni": {"type": int},
+                        "multicast_group": {"type": str},
+                        "multicast_group_encap_range": {"type": str},
+                        "multicast_groups": {"type": MulticastGroups},
+                    }
                     name: str
                     """VRF Name."""
                     vni: int | None
                     multicast_group: str | None
-                    """IP Multicast Group Address."""
+                    """Default IP Multicast Group Address for the VRF."""
+                    multicast_group_encap_range: str | None
+                    """
+                    N:M mapping, the overlay groups in the VRF are mapped to one of
+                    the underlay groups defined within
+                    the encap range.
+                    The format is X.X.X.X/YY.
+                    """
+                    multicast_groups: MulticastGroups
+                    """
+                    List of 1:1 mappings where each configured overlay is mapped
+                    directly to the specified underlay
+                    group 'encap'.
+
+                    Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is
+                    `overlay_group` (`str`).
+                    """
 
                     if TYPE_CHECKING:
 
@@ -66765,6 +66818,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             name: str | UndefinedType = Undefined,
                             vni: int | None | UndefinedType = Undefined,
                             multicast_group: str | None | UndefinedType = Undefined,
+                            multicast_group_encap_range: str | None | UndefinedType = Undefined,
+                            multicast_groups: MulticastGroups | UndefinedType = Undefined,
                         ) -> None:
                             """
                             VrfsItem.
@@ -66775,7 +66830,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 name: VRF Name.
                                 vni: vni
-                                multicast_group: IP Multicast Group Address.
+                                multicast_group: Default IP Multicast Group Address for the VRF.
+                                multicast_group_encap_range:
+                                   N:M mapping, the overlay groups in the VRF are mapped to one of
+                                   the underlay groups defined within
+                                   the encap range.
+                                   The format is X.X.X.X/YY.
+                                multicast_groups:
+                                   List of 1:1 mappings where each configured overlay is mapped
+                                   directly to the specified underlay
+                                   group 'encap'.
+
+                                   Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is
+                                   `overlay_group` (`str`).
 
                             """
 
@@ -67214,12 +67281,65 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class VrfsItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"name": {"type": str}, "vni": {"type": int}, "multicast_group": {"type": str}}
+                    class MulticastGroupsItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"overlay_group": {"type": str}, "encap": {"type": str}}
+                        overlay_group: str
+                        """Overlay multicast group."""
+                        encap: str
+                        """Underlay multicast group."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, overlay_group: str | UndefinedType = Undefined, encap: str | UndefinedType = Undefined) -> None:
+                                """
+                                MulticastGroupsItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    overlay_group: Overlay multicast group.
+                                    encap: Underlay multicast group.
+
+                                """
+
+                    class MulticastGroups(AvdIndexedList[str, MulticastGroupsItem]):
+                        """Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is `overlay_group` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "overlay_group"
+
+                    MulticastGroups._item_type = MulticastGroupsItem
+
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "vni": {"type": int},
+                        "multicast_group": {"type": str},
+                        "multicast_group_encap_range": {"type": str},
+                        "multicast_groups": {"type": MulticastGroups},
+                    }
                     name: str
                     """VRF Name."""
                     vni: int | None
                     multicast_group: str | None
-                    """IP Multicast Group Address."""
+                    """Default IP Multicast Group Address for the VRF."""
+                    multicast_group_encap_range: str | None
+                    """
+                    N:M mapping, the overlay groups in the VRF are mapped to one of
+                    the underlay groups defined within
+                    the encap range.
+                    The format is X.X.X.X/YY.
+                    """
+                    multicast_groups: MulticastGroups
+                    """
+                    List of 1:1 mappings where each configured overlay is mapped
+                    directly to the specified underlay
+                    group 'encap'.
+
+                    Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is
+                    `overlay_group` (`str`).
+                    """
 
                     if TYPE_CHECKING:
 
@@ -67229,6 +67349,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             name: str | UndefinedType = Undefined,
                             vni: int | None | UndefinedType = Undefined,
                             multicast_group: str | None | UndefinedType = Undefined,
+                            multicast_group_encap_range: str | None | UndefinedType = Undefined,
+                            multicast_groups: MulticastGroups | UndefinedType = Undefined,
                         ) -> None:
                             """
                             VrfsItem.
@@ -67239,7 +67361,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 name: VRF Name.
                                 vni: vni
-                                multicast_group: IP Multicast Group Address.
+                                multicast_group: Default IP Multicast Group Address for the VRF.
+                                multicast_group_encap_range:
+                                   N:M mapping, the overlay groups in the VRF are mapped to one of
+                                   the underlay groups defined within
+                                   the encap range.
+                                   The format is X.X.X.X/YY.
+                                multicast_groups:
+                                   List of 1:1 mappings where each configured overlay is mapped
+                                   directly to the specified underlay
+                                   group 'encap'.
+
+                                   Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is
+                                   `overlay_group` (`str`).
 
                             """
 
