@@ -27,6 +27,8 @@ class FilteredTenantsMixin(Protocol):
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
+    resolved_l2vlan_profiles_cache: dict[str, EosDesigns.L2vlanProfilesItem] | None = None
+
     @cached_property
     def filtered_tenants(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices:
         """
@@ -109,21 +111,7 @@ class FilteredTenantsMixin(Protocol):
         l2vlan > l2vlan_profile > l2vlan_parent_profile --> l2vlan_cfg
         """
         if vlan.profile:
-            if vlan.profile not in self.inputs.l2vlan_profiles:
-                msg = f"Profile '{vlan.profile}' applied under l2vlan '{vlan.name}' does not exist in `l2vlan_profiles`."
-                raise AristaAvdInvalidInputsError(msg)
-            l2vlan_profile = self.inputs.l2vlan_profiles[vlan.profile]._deepcopy()
-
-            if l2vlan_profile.parent_profile:
-                if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
-                    msg = (
-                        f"Profile '{l2vlan_profile.parent_profile}' applied under L2VLAN Profile '{l2vlan_profile.profile}' does not exist in "
-                        "`l2vlans_profiles`."
-                    )
-                    raise AristaAvdInvalidInputsError(msg)
-
-                # Inherit from the parent profile
-                l2vlan_profile._deepinherit(self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile])
+            l2vlan_profile = self.get_merged_l2vlan_profile(vlan.profile, f"{vlan.name}")
 
             # Inherit from the profile
             merged_vlan = vlan._deepinherited(
@@ -131,8 +119,46 @@ class FilteredTenantsMixin(Protocol):
             )
         else:
             merged_vlan = vlan
-
         return merged_vlan
+
+    def get_merged_l2vlan_profile(self: SharedUtilsProtocol, profile_name: str, context: str) -> EosDesigns.L2vlanProfilesItem:
+        """
+        Returns a merged "l2vlan_profile" where "parent_profile" has been applied.
+
+        Leverages a dict of resolved profiles as a cache.
+        """
+        if self.resolved_l2vlan_profiles_cache and profile_name in self.resolved_l2vlan_profiles_cache:
+            return self.resolved_l2vlan_profiles_cache[profile_name]
+
+        resolved_profile = self.resolve_l2vlan_profile(profile_name, context)
+
+        # Update the cache so we don't resolve again next time.
+        if self.resolved_l2vlan_profiles_cache is None:
+            self.resolved_l2vlan_profiles_cache = {}
+        self.resolved_l2vlan_profiles_cache[profile_name] = resolved_profile
+
+        return resolved_profile
+
+    def resolve_l2vlan_profile(self: SharedUtilsProtocol, profile_name: str, context: str) -> EosDesigns.L2vlanProfilesItem:
+        """Resolve one l2vlan profile and return it."""
+        if profile_name not in self.inputs.l2vlan_profiles:
+            msg = f"Profile `{profile_name}` applied under l2vlan `{context}` does not exist in `l2vlan_profiles`."
+            raise AristaAvdInvalidInputsError(msg)
+
+        l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]
+        if l2vlan_profile.parent_profile:
+            if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
+                msg = f"Profile `{l2vlan_profile.parent_profile}` applied under L2VLAN Profile `{profile_name}` does not exist in `l2vlan_profiles`."
+                raise AristaAvdInvalidInputsError(msg)
+
+            parent_profile = self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile]
+
+            # Notice reuse of the same variable with the merged content.
+            l2vlan_profile = l2vlan_profile._deepinherited(parent_profile)
+
+        delattr(l2vlan_profile, "parent_profile")
+
+        return l2vlan_profile
 
     def is_accepted_vlan(
         self: SharedUtilsProtocol,
