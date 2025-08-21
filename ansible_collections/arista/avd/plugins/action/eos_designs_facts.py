@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import cProfile
 import pstats
+import warnings
 from collections import ChainMap
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
@@ -142,7 +143,22 @@ class ActionModule(ActionBase):
                 continue
 
             # Load input vars into the EosDesigns data class.
-            host_inputs = EosDesigns._from_dict(host_hostvars)
+            with warnings.catch_warnings(record=True) as w:
+                # Cause all warnings to always be triggered.
+                warnings.simplefilter("always")
+                host_inputs = EosDesigns._from_dict(host_hostvars)
+            # handle warnings
+            for warning in w:
+                # warning is undocumented type WarningMessage.
+                if isinstance(warning.message, DeprecationWarning):
+                    # Deprecation warnings are displayed using Ansible's deprecation notices.
+                    display.deprecated(
+                        msg=warning.message.args[0],
+                        version="6.0.0",
+                        date=None,
+                        collection_name="arista.avd",
+                        removed=False,
+                    )
 
             all_inputs[host] = host_inputs
             all_hostvars[host] = host_hostvars
