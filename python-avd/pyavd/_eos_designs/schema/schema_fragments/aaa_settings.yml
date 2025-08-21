@@ -13,7 +13,9 @@ keys:
               keys:
                 host:
                   type: str
-                  description: Host IP address or name.
+                  description: |-
+                    Host IP address or name.
+                    Combination of `host` and `vrf` should be unique.
                   required: true
                 groups:
                   type: list
@@ -83,7 +85,9 @@ keys:
               keys:
                 host:
                   type: str
-                  description: Host IP address or name.
+                  description: |-
+                    Host IP address or name.
+                    Combination of `host` and `vrf` should be unique.
                   required: true
                 groups:
                   type: list
@@ -151,3 +155,6 @@ keys:
             default: false
           sha512_password:
             type: str
+      local_users:
+        $ref: "eos_cli_config_gen#/keys/local_users"
+        type: list

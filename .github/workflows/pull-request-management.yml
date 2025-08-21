@@ -36,7 +36,7 @@ jobs:
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
       rust_src_or_ci_changed: ${{ steps.filter.outputs.rust_src_or_ci_changed }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -117,7 +117,7 @@ jobs:
     outputs:
       wheel_file: ${{ steps.build_step.outputs.wheel_file }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           python-version: |
@@ -136,16 +136,16 @@ jobs:
           name: pyavd
           path: ./python-avd/dist/*.whl
 
-  # --------------------------------------- #
-  # Python linting not covered in pre-commit
-  # --------------------------------------- #
-  # TODO: Pending action to be allowed.
-  # python_linting:
-  #   name: Python Linting not covered in pre-commit
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: PyRight static type checker
-  #       uses: jakebailey/pyright-action@v2
+  # -------------------------------------------- #
+  # Python type checking not covered in pre-commit
+  # -------------------------------------------- #
+  python_type_checking:
+    name: Python Linting not covered in pre-commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: PyRight static type checker
+        # Specific SHA as allowed by github org admins
+        uses: jakebailey/pyright-action@b5d50e5cde6547546a5c4ac92e416a8c2c1a1dfe
 
   # ----------------------------------- #
   # Test Requirements
@@ -164,13 +164,13 @@ jobs:
           - "3.12"
           - "3.13"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python_version }}
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -200,9 +200,9 @@ jobs:
             ansible_version: "ansible-core==2.16.0"
     if: needs.file-changes.outputs.config_gen == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -235,9 +235,9 @@ jobs:
     needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.dhcp == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -295,9 +295,9 @@ jobs:
     needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -318,9 +318,9 @@ jobs:
     needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -366,9 +366,9 @@ jobs:
     if: needs.file-changes.outputs.cloudvision == 'true' || needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -406,9 +406,9 @@ jobs:
     needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -442,9 +442,9 @@ jobs:
     needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.validate_state == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -477,7 +477,7 @@ jobs:
             pip_installation: "--user https://github.com/ansible/ansible/archive/devel.tar.gz"
             skip_test: "--skip-test ansible-doc"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3
         uses: actions/setup-python@v5
         with:
@@ -487,7 +487,7 @@ jobs:
             3.12
             3.13
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -505,14 +505,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3
         uses: actions/setup-python@v5
         with:
           python-version: |
             3.12
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -536,7 +536,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [file-changes]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3
         uses: actions/setup-python@v5
         with:
@@ -569,7 +569,7 @@ jobs:
         with:
           python-version: |
             3.12
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Python & Ansible requirements
         run: |
           # distlib is required when using manifest
@@ -595,12 +595,12 @@ jobs:
         with:
           python-version: |
             3.11
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Python & Ansible requirements
         run: |
           pip install "ansible-core==2.16.0"
       - name: Download collection
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: avd-collection
       - name: Install galaxy-importer
@@ -627,7 +627,7 @@ jobs:
     env:
       ANSIBLE_COLLECTIONS_PATH: /home/runner/work/avd/avd
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3
         uses: actions/setup-python@v5
         with:
@@ -637,7 +637,7 @@ jobs:
             3.12
             3.13
       - name: Download pyavd Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
@@ -645,7 +645,7 @@ jobs:
         run: |
           pip install "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: Download collection
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: avd-collection
       - name: Extract collection
@@ -672,7 +672,7 @@ jobs:
       matrix:
         python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3
         uses: actions/setup-python@v5
         with:
@@ -730,7 +730,7 @@ jobs:
             macos-latest,
           ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         # This is needed for arm machines since they don't ship with 2024 edition.
       - name: Upgrade rust and cargo
         run: rustup update stable
@@ -789,7 +789,7 @@ jobs:
           ]
         python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         # This is needed for arm machines since they don't ship with 2024 edition.
       - name: Upgrade rust and cargo
         run: rustup update stable
@@ -813,7 +813,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [file-changes]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Upgrade rust and cargo
         run: rustup update stable
       - uses: actions/setup-python@v5
