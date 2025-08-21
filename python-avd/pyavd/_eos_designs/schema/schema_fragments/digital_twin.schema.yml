@@ -48,12 +48,11 @@ keys:
               Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
               This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
               ACT does not provide direct Internet access to cloudeos or veos devices by default.
-      default_interfaces_of_original_platform:
+      use_default_interfaces_of_digital_twin_platform:
         type: bool
         default: false
         description: |-
-           In Digital Twin mode, AVD by default uses the `default_interfaces` settings associated with the alternate platform (identified via `platform_settings.[].digital_twin.platform`).
-           Set key `digital_twin.default_interfaces_of_original_platform` to `True` to use `default_interfaces` settings of the original platform.
+           In Digital Twin mode, AVD can either use the default interfaces of the original or the digital twin platform (as set in `platform_settings.[].digital_twin.platform`).
       # TODO: Add this in a separate PR.
       # endpoints:
       #   type: dict

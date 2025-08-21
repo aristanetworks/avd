@@ -266,6 +266,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario:
+          - "digital_twin"
           - "ansible_only"
           - "eos_designs_deprecated_vars"
           - "eos_designs-l2ls"

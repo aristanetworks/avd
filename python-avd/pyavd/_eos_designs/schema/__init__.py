@@ -4123,7 +4123,7 @@ class EosDesigns(EosDesignsRootModel):
         _fields: ClassVar[dict] = {
             "environment": {"type": str, "default": "act"},
             "fabric": {"type": Fabric},
-            "default_interfaces_of_original_platform": {"type": bool, "default": False},
+            "use_default_interfaces_of_digital_twin_platform": {"type": bool, "default": False},
         }
         environment: Literal["act"]
         """
@@ -4137,13 +4137,10 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        default_interfaces_of_original_platform: bool
+        use_default_interfaces_of_digital_twin_platform: bool
         """
-        In Digital Twin mode, AVD by default uses the `default_interfaces` settings associated with the
-        alternate platform (identified via `platform_settings.[].digital_twin.platform`).
-        Set key
-        `digital_twin.default_interfaces_of_original_platform` to `True` to use `default_interfaces`
-        settings of the original platform.
+        In Digital Twin mode, AVD can either use the default interfaces of the original or the digital twin
+        platform (as set in `platform_settings.[].digital_twin.platform`).
 
         Default value: `False`
         """
@@ -4155,7 +4152,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 environment: Literal["act"] | UndefinedType = Undefined,
                 fabric: Fabric | UndefinedType = Undefined,
-                default_interfaces_of_original_platform: bool | UndefinedType = Undefined,
+                use_default_interfaces_of_digital_twin_platform: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 DigitalTwin.
@@ -4169,12 +4166,9 @@ class EosDesigns(EosDesignsRootModel):
                        Settings for Digital Twin fabric devices.
 
                        Subclass of AvdModel.
-                    default_interfaces_of_original_platform:
-                       In Digital Twin mode, AVD by default uses the `default_interfaces` settings associated with the
-                       alternate platform (identified via `platform_settings.[].digital_twin.platform`).
-                       Set key
-                       `digital_twin.default_interfaces_of_original_platform` to `True` to use `default_interfaces`
-                       settings of the original platform.
+                    use_default_interfaces_of_digital_twin_platform:
+                       In Digital Twin mode, AVD can either use the default interfaces of the original or the digital twin
+                       platform (as set in `platform_settings.[].digital_twin.platform`).
 
                 """
 
