@@ -188,6 +188,9 @@ keys:
             default: false
           sha512_password:
             type: str
+      local_users:
+        $ref: eos_cli_config_gen#/keys/local_users
+        type: list
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
@@ -2921,6 +2924,11 @@ keys:
   local_users:
     documentation_options:
       table: management-settings
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 6.0.0
+      new_key: aaa_settings.local_users
     $ref: eos_cli_config_gen#/keys/local_users
     type: list
   logging_settings:
@@ -6034,6 +6042,15 @@ keys:
     convert_types:
     - str
     default: 12000
+  underlay_ospf_maximum_paths:
+    description: Maximum number of next-hops in an ECMP route.
+    documentation_options:
+      table: ospf-settings
+    type: int
+    min: 1
+    max: 128
+    convert_types:
+    - str
   underlay_ospf_process_id:
     documentation_options:
       table: ospf-settings

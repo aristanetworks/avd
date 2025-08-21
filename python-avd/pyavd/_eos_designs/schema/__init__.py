@@ -457,6 +457,7 @@ class EosDesigns(EosDesignsRootModel):
             "authorization": {"type": EosCliConfigGen.AaaAuthorization},
             "accounting": {"type": EosCliConfigGen.AaaAccounting},
             "root_login": {"type": RootLogin},
+            "local_users": {"type": EosCliConfigGen.LocalUsers},
         }
         enable_password: EnablePassword
         """Subclass of AvdModel."""
@@ -469,6 +470,7 @@ class EosDesigns(EosDesignsRootModel):
         accounting: EosCliConfigGen.AaaAccounting
         root_login: RootLogin
         """Subclass of AvdModel."""
+        local_users: EosCliConfigGen.LocalUsers
 
         if TYPE_CHECKING:
 
@@ -482,6 +484,7 @@ class EosDesigns(EosDesignsRootModel):
                 authorization: EosCliConfigGen.AaaAuthorization | UndefinedType = Undefined,
                 accounting: EosCliConfigGen.AaaAccounting | UndefinedType = Undefined,
                 root_login: RootLogin | UndefinedType = Undefined,
+                local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
             ) -> None:
                 """
                 AaaSettings.
@@ -497,6 +500,7 @@ class EosDesigns(EosDesignsRootModel):
                     authorization: authorization
                     accounting: accounting
                     root_login: Subclass of AvdModel.
+                    local_users: local_users
 
                 """
 
@@ -66962,6 +66966,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
         "underlay_ospf_graceful_restart": {"type": bool, "default": False},
         "underlay_ospf_max_lsa": {"type": int, "default": 12000},
+        "underlay_ospf_maximum_paths": {"type": int},
         "underlay_ospf_process_id": {"type": int, "default": 100},
         "underlay_rfc5549": {"type": bool, "default": False},
         "underlay_routing_protocol": {"type": str},
@@ -68791,6 +68796,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     underlay_ospf_max_lsa: int
     """Default value: `12000`"""
+    underlay_ospf_maximum_paths: int | None
+    """Maximum number of next-hops in an ECMP route."""
     underlay_ospf_process_id: int
     """Default value: `100`"""
     underlay_rfc5549: bool
@@ -69165,6 +69172,7 @@ class EosDesigns(EosDesignsRootModel):
             underlay_ospf_bfd_enable: bool | UndefinedType = Undefined,
             underlay_ospf_graceful_restart: bool | UndefinedType = Undefined,
             underlay_ospf_max_lsa: int | UndefinedType = Undefined,
+            underlay_ospf_maximum_paths: int | None | UndefinedType = Undefined,
             underlay_ospf_process_id: int | UndefinedType = Undefined,
             underlay_rfc5549: bool | UndefinedType = Undefined,
             underlay_routing_protocol: Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
@@ -70506,6 +70514,7 @@ class EosDesigns(EosDesignsRootModel):
                 underlay_ospf_bfd_enable: underlay_ospf_bfd_enable
                 underlay_ospf_graceful_restart: Enable graceful restart for OSPF underlay.
                 underlay_ospf_max_lsa: underlay_ospf_max_lsa
+                underlay_ospf_maximum_paths: Maximum number of next-hops in an ECMP route.
                 underlay_ospf_process_id: underlay_ospf_process_id
                 underlay_rfc5549:
                    Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
