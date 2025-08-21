@@ -126,10 +126,9 @@ ansible_host: <str>
 anta_user: <str>
 ansible_user: <str>
 
-# One of the following must be set for the authentication.
+# The password to use for the connection.
+# Precedence: `anta_password` -> `ansible_password` -> `ansible_httpapi_pass` -> `ansible_httpapi_password`
 anta_password: <str>
-anta_httpapi_pass: <str>
-anta_httpapi_password: <str>
 ansible_password: <str>
 ansible_httpapi_pass: <str>
 ansible_httpapi_password: <str>

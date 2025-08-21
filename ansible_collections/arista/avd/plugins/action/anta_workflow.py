@@ -51,9 +51,7 @@ ANSIBLE_CONNECTION_VARS = [
     "ansible_password",
     "anta_password",
     "ansible_httpapi_pass",
-    "anta_httpapi_pass",
     "ansible_httpapi_password",
-    "anta_httpapi_password",
     "ansible_become",
     "anta_enable_mode",
     "ansible_become_password",
@@ -463,8 +461,6 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
     username = default(get(device_vars, "anta_user"), get(device_vars, "ansible_user"))
     password = default(
         get(device_vars, "anta_password"),
-        get(device_vars, "anta_httpapi_pass"),
-        get(device_vars, "anta_httpapi_password"),
         get(device_vars, "ansible_password"),
         get(device_vars, "ansible_httpapi_pass"),
         get(device_vars, "ansible_httpapi_password"),
