@@ -19,6 +19,9 @@ $defs:
         type: str
         description: |
           SVI description. By default set to VLAN name.
+      arp_gratuitous_accept:
+        type: bool
+        description: Accept gratuitous ARP.
       ip_address:
         type: str
         description: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
