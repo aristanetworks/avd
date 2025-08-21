@@ -18,7 +18,7 @@ custom_structured_configuration_ethernet_interfaces:
     ip_address: dhcp
     peer: dc2-leaf3a.arista.com
     peer_interface: Ethernet16
-    # Test to skip the VerifyLLDPNeighbors test case for a peer with shutdown interfae
+    # Test to skip the VerifyLLDPNeighbors test case for a peer with shutdown interface
     shutdown: true
     switchport:
       enabled: false
