@@ -827,11 +827,7 @@ The following diagram shows the additional route-maps configured to support eBGP
   <img src="../../../../../../../docs/_media/wan_ebgp_lan_single_router.png" alt="WAN eBGP LAN Single Router"/>
 </div>
 
-##### HA (PREVIEW)
-
-!!! warning "PREVIEW: Changes ahead"
-
-    This configuration currently in PREVIEW **will** change in future version of AVD.
+##### HA
 
 for eBGP LAN routing protocol the following is done to enable HA:
 
@@ -852,7 +848,7 @@ This is described in the following diagram:
   <img src="../../../../../../../docs/_media/wan_ebgp_lan_ha.png" alt="WAN eBGP LAN with HA"/>
 </div>
 
-##### HA with Direct Link (PREVIEW)
+##### HA with Direct Link
 
 In the situation where the LAN is EBGP but HA is configured over a direct link, there is no peering with the HA peer required via the LAN and the configuration is simplified as follow:
 
