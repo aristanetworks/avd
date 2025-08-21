@@ -182,6 +182,9 @@ keys:
             default: false
           sha512_password:
             type: str
+      local_users:
+        $ref: eos_cli_config_gen#/keys/local_users
+        type: list
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
@@ -2915,6 +2918,11 @@ keys:
   local_users:
     documentation_options:
       table: management-settings
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 6.0.0
+      new_key: aaa_settings.local_users
     $ref: eos_cli_config_gen#/keys/local_users
     type: list
   logging_settings:
@@ -6028,6 +6036,15 @@ keys:
     convert_types:
     - str
     default: 12000
+  underlay_ospf_maximum_paths:
+    description: Maximum number of next-hops in an ECMP route.
+    documentation_options:
+      table: ospf-settings
+    type: int
+    min: 1
+    max: 128
+    convert_types:
+    - str
   underlay_ospf_process_id:
     documentation_options:
       table: ospf-settings
@@ -10938,7 +10955,7 @@ $defs:
 
               l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
 
-              l2leafs       : <subnet> + 3 + <l2leaf id>
+              l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
 
               GW on l2leafs : <subnet> + 1
 
@@ -10954,6 +10971,18 @@ $defs:
               '
             type: str
             format: ipv4_cidr
+          inband_mgmt_subnet_offset:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            type: int
+            convert_types:
+            - str
+            default: 0
+            description: 'Offset value to adjust the calculated inband management
+              IP address within the subnet.
+
+              The assigned IP will be computed by adding this offset to the device
+              ID.'
           inband_mgmt_ip:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -11535,7 +11564,7 @@ $defs:
             description: L3 Port-Channel interfaces to configure on the node.
           data_plane_cpu_allocation_max:
             documentation_options:
-              table: system-settings
+              table: node-type-wan-configuration
             type: int
             $ref: eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max
             description: 'Set the maximum number of CPU used for the data plane.
