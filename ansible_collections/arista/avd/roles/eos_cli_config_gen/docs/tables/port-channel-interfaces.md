@@ -322,6 +322,36 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;egress</samp>](## "port_channel_interfaces.[].sflow.egress") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "port_channel_interfaces.[].sflow.egress.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unmodified_enable</samp>](## "port_channel_interfaces.[].sflow.egress.unmodified_enable") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrrp_ids</samp>](## "port_channel_interfaces.[].vrrp_ids") | List, items: Dictionary |  |  |  | VRRP model. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "port_channel_interfaces.[].vrrp_ids.[].id") | Integer | Required, Unique |  |  | VRID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority_level</samp>](## "port_channel_interfaces.[].vrrp_ids.[].priority_level") | Integer |  |  | Min: 1<br>Max: 254 | Instance priority. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advertisement</samp>](## "port_channel_interfaces.[].vrrp_ids.[].advertisement") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "port_channel_interfaces.[].vrrp_ids.[].advertisement.interval") | Integer |  |  | Min: 1<br>Max: 255 | Interval in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preempt</samp>](## "port_channel_interfaces.[].vrrp_ids.[].preempt") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_channel_interfaces.[].vrrp_ids.[].preempt.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "port_channel_interfaces.[].vrrp_ids.[].preempt.delay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimum</samp>](## "port_channel_interfaces.[].vrrp_ids.[].preempt.delay.minimum") | Integer |  |  | Min: 0<br>Max: 3600 | Minimum preempt delay in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reload</samp>](## "port_channel_interfaces.[].vrrp_ids.[].preempt.delay.reload") | Integer |  |  | Min: 0<br>Max: 3600 | Reload preempt delay in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "port_channel_interfaces.[].vrrp_ids.[].timers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "port_channel_interfaces.[].vrrp_ids.[].timers.delay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reload</samp>](## "port_channel_interfaces.[].vrrp_ids.[].timers.delay.reload") | Integer |  |  | Min: 0<br>Max: 3600 | Delay after reload in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tracked_object</samp>](## "port_channel_interfaces.[].vrrp_ids.[].tracked_object") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "port_channel_interfaces.[].vrrp_ids.[].tracked_object.[].name") | String | Required, Unique |  |  | Tracked object name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decrement</samp>](## "port_channel_interfaces.[].vrrp_ids.[].tracked_object.[].decrement") | Integer |  |  | Min: 1<br>Max: 254 | Decrement VRRP priority by 1-254. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "port_channel_interfaces.[].vrrp_ids.[].tracked_object.[].shutdown") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv4") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv4.address") | String | Required |  |  | Virtual IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secondary_addresses</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv4.secondary_addresses") | List, items: String |  |  |  | Additional VRRP IPv4 addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv4.secondary_addresses.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv4.version") | Integer |  |  | Valid Values:<br>- <code>2</code><br>- <code>3</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv6") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv6.address") <span style="color:red">deprecated</span> | String |  |  |  | Virtual IPv6 address.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>addresses</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv6.addresses") | List, items: String |  |  |  | Virtual IPv6 addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv6.addresses.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_authentication</samp>](## "port_channel_interfaces.[].vrrp_ids.[].peer_authentication") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "port_channel_interfaces.[].vrrp_ids.[].peer_authentication.mode") | String | Required |  | Valid Values:<br>- <code>text</code><br>- <code>ietf-md5</code> | Authentication mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "port_channel_interfaces.[].vrrp_ids.[].peer_authentication.key") | String | Required |  |  | Authentication key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "port_channel_interfaces.[].vrrp_ids.[].peer_authentication.key_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Authentication key type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switchport</samp>](## "port_channel_interfaces.[].switchport") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_channel_interfaces.[].switchport.enabled") | Boolean |  |  |  | Warning: This should not be combined with `port_channel_interfaces[].type = routed`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "port_channel_interfaces.[].switchport.mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> | Warning: This should not be combined with `port_channel_interfaces[].mode` |
@@ -1149,6 +1179,71 @@
           egress:
             enable: <bool>
             unmodified_enable: <bool>
+
+        # VRRP model.
+        vrrp_ids:
+
+            # VRID.
+          - id: <int; required; unique>
+
+            # Instance priority.
+            priority_level: <int; 1-254>
+            advertisement:
+
+              # Interval in seconds.
+              interval: <int; 1-255>
+            preempt:
+              enabled: <bool; required>
+              delay:
+
+                # Minimum preempt delay in seconds.
+                minimum: <int; 0-3600>
+
+                # Reload preempt delay in seconds.
+                reload: <int; 0-3600>
+            timers:
+              delay:
+
+                # Delay after reload in seconds.
+                reload: <int; 0-3600>
+            tracked_object:
+
+                # Tracked object name.
+              - name: <str; required; unique>
+
+                # Decrement VRRP priority by 1-254.
+                decrement: <int; 1-254>
+                shutdown: <bool>
+            ipv4:
+
+              # Virtual IPv4 address.
+              address: <str; required>
+
+              # Additional VRRP IPv4 addresses.
+              secondary_addresses:
+                - <str>
+              version: <int; 2 | 3>
+            ipv6:
+
+              # Virtual IPv6 address.
+              # This key is deprecated.
+              # Support will be removed in AVD version 6.0.0.
+              # Use `addresses` instead.
+              address: <str>
+
+              # Virtual IPv6 addresses.
+              addresses:
+                - <str>
+            peer_authentication:
+
+              # Authentication mode.
+              mode: <str; "text" | "ietf-md5"; required>
+
+              # Authentication key.
+              key: <str; required>
+
+              # Authentication key type.
+              key_type: <str; "0" | "7" | "8a">
         switchport:
 
           # Warning: This should not be combined with `port_channel_interfaces[].type = routed`.

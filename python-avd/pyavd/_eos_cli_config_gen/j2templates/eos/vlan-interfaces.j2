@@ -517,10 +517,17 @@ interface {{ vlan_interface.name }}
 {%             if vrid.ipv4.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv4 {{ vrid.ipv4.address }}
 {%             endif %}
+{%             for secondary_ip in vrid.ipv4.secondary_addresses | arista.avd.natural_sort %}
+   vrrp {{ vrid.id }} ipv4 {{ secondary_ip }} secondary
+{%             endfor %}
 {%             if vrid.ipv4.version is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv4 version {{ vrid.ipv4.version }}
 {%             endif %}
-{%             if vrid.ipv6.address is arista.avd.defined %}
+{%             if vrid.ipv6.addresses is arista.avd.defined %}
+{%                 for ipv6_address in vrid.ipv6.addresses | arista.avd.natural_sort %}
+   vrrp {{ vrid.id }} ipv6 {{ ipv6_address }}
+{%                 endfor %}
+{%             elif vrid.ipv6.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv6 {{ vrid.ipv6.address }}
 {%             endif %}
 {%             for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}
