@@ -155,3 +155,6 @@ keys:
             default: false
           sha512_password:
             type: str
+      local_users:
+        $ref: "eos_cli_config_gen#/keys/local_users"
+        type: list
