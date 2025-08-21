@@ -674,6 +674,7 @@ PTP Profile: g8275.1
 ptp clock-identity 11:11:11:11:11:11
 ptp domain 17
 ptp free-running source clock hardware
+ptp hold-ptp-time 43200
 ptp message-type event dscp 46 default
 ptp message-type general dscp 36 default
 ptp mode boundary one-step

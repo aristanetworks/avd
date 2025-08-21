@@ -34280,6 +34280,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "priority2": {"type": int},
             "ttl": {"type": int},
             "domain": {"type": int},
+            "hold_ptp_time": {"type": int},
             "message_type": {"type": MessageType},
             "monitor": {"type": Monitor},
             "free_running": {"type": FreeRunning},
@@ -34296,6 +34297,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         priority2: int | None
         ttl: int | None
         domain: int | None
+        hold_ptp_time: int | None
+        """
+        The length of time that PTP will remain in hold-down on the internal oscillator if the connection to
+        the GM is lost.
+        If a new GM is not elected before the expiry of the hold-down time, the clock will
+        revert to free-running.
+        Some platforms support larger maximum values, however 172000 seconds was the
+        max for 7150 series, and was widely used.
+        """
         message_type: MessageType
         """Subclass of AvdModel."""
         monitor: Monitor
@@ -34318,6 +34328,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 priority2: int | None | UndefinedType = Undefined,
                 ttl: int | None | UndefinedType = Undefined,
                 domain: int | None | UndefinedType = Undefined,
+                hold_ptp_time: int | None | UndefinedType = Undefined,
                 message_type: MessageType | UndefinedType = Undefined,
                 monitor: Monitor | UndefinedType = Undefined,
                 free_running: FreeRunning | UndefinedType = Undefined,
@@ -34339,6 +34350,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     priority2: priority2
                     ttl: ttl
                     domain: domain
+                    hold_ptp_time:
+                       The length of time that PTP will remain in hold-down on the internal oscillator if the connection to
+                       the GM is lost.
+                       If a new GM is not elected before the expiry of the hold-down time, the clock will
+                       revert to free-running.
+                       Some platforms support larger maximum values, however 172000 seconds was the
+                       max for 7150 series, and was widely used.
                     message_type: Subclass of AvdModel.
                     monitor: Subclass of AvdModel.
                     free_running: Subclass of AvdModel.
