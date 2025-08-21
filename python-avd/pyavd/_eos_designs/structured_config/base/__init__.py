@@ -429,11 +429,12 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def local_users(self) -> None:
-        """local_users set based on local_users data model."""
-        if not self.inputs.local_users:
+        """local_users set based on global local_users data model or aaa_settings.local_users data model."""
+        local_users = self.inputs.aaa_settings.local_users or self.inputs.local_users
+        if not local_users:
             return
 
-        self.structured_config.local_users = self.inputs.local_users._natural_sorted()
+        self.structured_config.local_users = local_users._natural_sorted()
 
     @structured_config_contributor
     def clock(self) -> None:
