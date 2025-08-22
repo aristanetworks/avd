@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 from unittest import mock
 
 import pytest
@@ -14,7 +15,7 @@ from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._schema.store import create_store
 from pyavd.api.pool_manager import PoolManager
-from pyavd.api.pool_manager.base_classes import FILE_HEADER
+from pyavd.api.pool_manager.base_classes import FILE_HEADER, Pool
 
 # Load schema from pickled file into lru_cache before we start mocking the file open.
 create_store(load_from_yaml=False)
@@ -354,6 +355,43 @@ def test_avdpoolmanager_load_data_negative(mock_file_data: dict, shared_utils: D
         pool_manager = PoolManager(Path(DUMMYDIR))
         with pytest.raises(type(expected_exception), match=str(expected_exception)):
             pool_manager.get_pool("node_id_pools", shared_utils)
+
+
+@pytest.mark.parametrize(
+    ("mock_file_data", "expected_exception"),
+    [
+        pytest.param("not_a_dict", TypeError("Invalid type for 'pool' '<class 'str'>'. Expected a dict."), id="Wrong data format"),
+        pytest.param(
+            {"pool_key": "pool_key_not_a_dict"}, TypeError("Invalid type for 'pool_key' '<class 'str'>'. Expected a dict."), id="Wrong data format for pool_key"
+        ),
+        pytest.param(
+            {"pool_key": {}, "assignments": "not_a_list"},
+            TypeError("Invalid type for 'assignments' '<class 'str'>'. Expected a list."),
+            id="Wrong data format for assignments",
+        ),
+        pytest.param(
+            {"pool_key": {}, "assignments": ["not_a_dict"]},
+            TypeError("Invalid assignment type '<class 'str'>'. Expected a dict."),
+            id="Wrong data format for one assignment",
+        ),
+        pytest.param(
+            {"pool_key": {}, "assignments": [{"key": "not_a_dict"}]},
+            TypeError("Invalid type for assignment 'key' '<class 'str'>'. Expected a dict."),
+            id="Wrong data format for one assignment key",
+        ),
+        pytest.param(
+            {"pool_key": {}, "assignments": [{"key": {}, "value": "not_an_int"}]},
+            TypeError("Invalid type for assignment 'value' '<class 'str'>'. Expected a int."),
+            id="Wrong data format for one assignment value",
+        ),
+    ],
+)
+def test_avdpoolmanager_load_old_format_negative(mock_file_data: dict[str, Any] | str, expected_exception: Exception) -> None:
+    # mocking value_type for collection for the last test
+    mocked_collection = mock.MagicMock()
+    mocked_collection.value_type = int
+    with pytest.raises(type(expected_exception), match=str(expected_exception)):
+        Pool.load_old_format(mock_file_data, mocked_collection)
 
 
 def test_avdpoolmanager_upgrade_old_data() -> None:
