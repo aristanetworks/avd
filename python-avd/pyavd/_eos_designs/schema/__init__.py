@@ -44710,6 +44710,11 @@ class EosDesigns(EosDesignsRootModel):
                         name: str
                         """VLAN name."""
                         address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
+                        """
+                        To configure `address_locking.ipv4/v6`, you must define either
+                        `address_locking_settings.dhcp_servers_ipv4` or
+                        `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
+                        """
                         profile: str | None
                         """
                         SVI profile name to apply.
@@ -44991,7 +44996,10 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     id: SVI interface id and VLAN id.
                                     name: VLAN name.
-                                    address_locking: address_locking
+                                    address_locking:
+                                       To configure `address_locking.ipv4/v6`, you must define either
+                                       `address_locking_settings.dhcp_servers_ipv4` or
+                                       `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
                                     profile:
                                        SVI profile name to apply.
                                        SVI can refer to one svi_profile which again can refer to another
