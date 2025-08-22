@@ -255,8 +255,7 @@ class AvdStructuredConfigBaseProtocol(
     def enable_password(self) -> None:
         """enable_password.disable is set to match EOS default config and historic configs if aaa_settings.enable_password.password is not defined."""
         if self.inputs.aaa_settings.enable_password.password:
-            self.structured_config.enable_password.hash_algorithm = "sha512"
-            self.structured_config.enable_password.key = self.inputs.aaa_settings.enable_password.password
+            self.structured_config.enable_password._update(hash_algorithm = "sha512", key = self.inputs.aaa_settings.enable_password.password)
         else:
             self.structured_config.enable_password.disabled = True
 
