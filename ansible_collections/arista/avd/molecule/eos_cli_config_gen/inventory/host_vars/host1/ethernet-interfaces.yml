@@ -1503,6 +1503,9 @@ ethernet_interfaces:
             reload: 800
         ipv4:
           address: 192.0.2.1
+          secondary_addresses:
+            - 192.0.3.3
+            - 192.0.4.4
         peer_authentication:
           mode: ietf-md5
           key: auth_key
@@ -1512,7 +1515,9 @@ ethernet_interfaces:
           enabled: true
           delay:
         ipv6:
-          address: 2001:db8::1
+          addresses:
+            - 2001:db8::1
+            - 2002:db8::2
         peer_authentication:
           mode: text
           key: auth_key
@@ -1551,7 +1556,8 @@ ethernet_interfaces:
           enabled: true
           delay:
         ipv6:
-          address: 2001:db8::1
+          addresses:
+            - 2001:db8::1
         tracked_object:
           - name: ID2TrackedObjectDecrement
             decrement: 10

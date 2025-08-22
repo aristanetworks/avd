@@ -28,6 +28,7 @@ jobs:
     outputs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
+      pyavd: ${{ steps.filter.outputs.pyavd }}
       cloudvision: ${{ steps.filter.outputs.cloudvision }}
       dhcp: ${{ steps.filter.outputs.dhcp }}
       plugins: ${{ steps.filter.outputs.plugins }}
@@ -625,7 +626,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_pyavd, build_collection]
     env:
-      ANSIBLE_COLLECTIONS_PATH: /home/runner/work/avd/avd
+      ANSIBLE_COLLECTIONS_PATH: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python 3
@@ -660,8 +661,8 @@ jobs:
   # ----------------------------------- #
   # Test of pyavd
   # ----------------------------------- #
-  pyavd:
-    name: Test pyavd
+  test_pyavd:
+    name: Test pyavd (Python ${{ matrix.python }}, Suite ${{ matrix.suite.name }})
     runs-on: ubuntu-latest
     needs: [file-changes]
     if: |
@@ -669,8 +670,20 @@ jobs:
       needs.file-changes.outputs.config_gen == 'true' ||
       needs.file-changes.outputs.pyavd == 'true'
     strategy:
+      fail-fast: false
       matrix:
         python: ["3.10", "3.11", "3.12", "3.13"]
+        suite:
+          - name: "Main-Tests"
+            id: Main-Tests
+            pytest_args: "--ignore=tests/pyavd/molecule_scenarios/test_get_device_config.py --ignore=tests/pyavd/molecule_scenarios/test_negative_eos_designs.py --ignore=tests/schema_tools/metaschema/test_meta_schema_model.py"
+            upload_compiled_templates: true
+          - name: "Excluded-Tests (test_get_device_config and test_meta_schema_model)"
+            id: Excluded-test_get_device_config-and-test_meta_schema_model
+            pytest_args: "tests/pyavd/molecule_scenarios/test_get_device_config.py tests/schema_tools/metaschema/test_meta_schema_model.py"
+          - name: "Excluded-Tests (test_negative_eos_designs)"
+            id: Excluded-test_negative_eos_designs
+            pytest_args: "tests/pyavd/molecule_scenarios/test_negative_eos_designs.py"
     steps:
       - uses: actions/checkout@v5
       - name: Set up Python 3
@@ -683,31 +696,71 @@ jobs:
       - name: Run pytest via tox for ${{ matrix.python }}
         working-directory: python-avd
         run: |
-          tox
-      - name: Upload coverage from pytest
-        # Coverage only runs as part of 3.11.
-        if: |
-          matrix.python == '3.11'
+          tox -- ${{ matrix.suite.pytest_args }}
+      - name: Rename the coverage file
+        if: matrix.python == '3.11'
+        run: |
+          mv ./python-avd/.coverage.* ./coverage-${{ matrix.suite.id }}.dat
+      - name: Upload pytest coverage data
+        if: matrix.python == '3.11'
         uses: actions/upload-artifact@v4
         with:
-          name: pytest-coverage
-          path: python-avd/coverage.xml
-
+          name: coverage-data-${{ matrix.suite.id }}
+          path: coverage-${{ matrix.suite.id }}.dat
       - name: Upload eos_designs compiled templates from pytest
-        if: |
-          matrix.python == '3.11'
+        if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
         uses: actions/upload-artifact@v4
         with:
           name: pytest-eos-designs-compiled-templates
           path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
-
       - name: Upload eos_cli_config_gen compiled templates from pytest
-        if: |
-          matrix.python == '3.11'
+        if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
         uses: actions/upload-artifact@v4
         with:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
+
+  generate_pyavd_coverage_report:
+    name: Test pyavd python 3.11 coverage report
+    runs-on: ubuntu-latest
+    needs: [test_pyavd]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install coverage
+        working-directory: python-avd
+        run: pip install --group coverage
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v5
+        with:
+          pattern: coverage-data-*
+          path: python-avd
+          merge-multiple: true
+      - name: Download eos_designs compiled templates artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: pytest-eos-designs-compiled-templates
+          path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
+      - name: Download eos_cli_config_gen compiled templates artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: pytest-eos-cli-config-gen-compiled-templates
+          path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
+      - name: Combine and report test coverage
+        working-directory: python-avd
+        run: |
+          set -ex
+          coverage combine --rcfile=pyproject.toml coverage-*.dat
+          coverage report --rcfile=pyproject.toml
+          coverage xml --rcfile=pyproject.toml
+      - name: Upload pytest coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-coverage
+          path: python-avd/coverage.xml
 
   # ----------------------------------- #
   # Cargo build, test and linting
