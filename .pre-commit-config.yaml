@@ -247,12 +247,14 @@ repos:
           - "ansible_collections/arista/avd"
           - --table-files
           - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*.md"
-          - "ansible_collections/arista/avd/roles/eos_deisgns/docs/tables/*.md"
+          - "ansible_collections/arista/avd/roles/eos_designs/docs/tables/*.md"
           - --global-docs
           - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md"
-          - "ansible_collections/arista/avd/roles/eos_deisgns/docs/*.md"
+          - "ansible_collections/arista/avd/roles/eos_designs/docs/*.md"
           - --ignore-files
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
+          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
+          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-node-type-keys.key.md
         pass_filenames: false
 
       - id: templates
