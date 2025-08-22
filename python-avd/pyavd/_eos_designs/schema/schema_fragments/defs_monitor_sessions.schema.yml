@@ -1,0 +1,104 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  monitor_sessions:
+    type: list
+    description: Used to define interfaces as source or destination for monitoring sessions.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Session name.
+        role:
+          type: str
+          valid_values:
+            - "source"
+            - "destination"
+        source_settings:
+          type: dict
+          keys:
+            direction:
+              type: str
+              valid_values:
+                - "rx"
+                - "tx"
+                - "both"
+            access_group:
+              type: dict
+              description: This can only be set when `session_settings.access_group` is not set.
+              keys:
+                type:
+                  type: str
+                  valid_values:
+                    - "ip"
+                    - "ipv6"
+                    - "mac"
+                name:
+                  description: ACL name.
+                  type: str
+                priority:
+                  type: int
+                  convert_types:
+                    - str
+        session_settings:
+          type: dict
+          description: |
+            Session settings are defined per session name.
+            Different session_settings for the same session name will be combined/merged.
+          keys:
+            encapsulation_gre_metadata_tx:
+              type: bool
+            header_remove_size:
+              type: int
+              description: Number of bytes to remove from header.
+              convert_types:
+                - str
+            access_group:
+              type: dict
+              keys:
+                type:
+                  type: str
+                  valid_values:
+                    - "ip"
+                    - "ipv6"
+                    - "mac"
+                name:
+                  description: ACL name.
+                  type: str
+            rate_limit_per_ingress_chip:
+              type: str
+              description: |
+                Ratelimit and unit as string.
+                Examples:
+                  "100000 bps"
+                  "100 kbps"
+                  "10 mbps"
+            rate_limit_per_egress_chip:
+              type: str
+              description: |
+                Ratelimit and unit as string.
+                Examples:
+                  "100000 bps"
+                  "100 kbps"
+                  "10 mbps"
+            sample:
+              type: int
+              convert_types:
+                - str
+            truncate:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                size:
+                  type: int
+                  description: Size in bytes.
+                  convert_types:
+                    - str
