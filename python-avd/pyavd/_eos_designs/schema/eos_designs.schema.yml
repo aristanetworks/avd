@@ -10147,8 +10147,8 @@ $defs:
               table: node-type-uplink-configuration
               hide_keys: true
             relaxed_validation: true
-            description: Custom structured config applied to `uplink_interfaces` and
-              `uplink_switch_interfaces` for uplink_type == "p2p".
+            description: Custom structured config applied to `uplink_interfaces` for
+              uplink_type == "p2p".
           uplink_port_channel_structured_config:
             type: dict
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
@@ -10156,8 +10156,8 @@ $defs:
               table: node-type-uplink-configuration
               hide_keys: true
             relaxed_validation: true
-            description: Custom structured config applied to `uplink_interfaces` and
-              `uplink_switch_interfaces` for uplink_type == "port-channel".
+            description: Custom structured config applied to `uplink_interfaces` for
+              uplink_type == "port-channel".
           uplink_switch_ethernet_structured_config:
             type: dict
             $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
@@ -10175,7 +10175,7 @@ $defs:
               hide_keys: true
             relaxed_validation: true
             description: Custom structured config applied to `uplink_switch_interfaces`
-              and `uplink_switch_interfaces` for port-channel uplinks.
+              for port-channel uplinks.
           mlag_port_channel_structured_config:
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
             documentation_options:

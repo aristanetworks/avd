@@ -118,10 +118,6 @@ class PortChannelInterfacesMixin(Protocol):
 
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
 
-            if link.port_channel_structured_config:
-                self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_name)._deepmerge(
-                    link.port_channel_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-                )
         # Support l3_port_channels including sub-interfaces
         subif_parent_port_channel_names = set()
         regular_l3_port_channel_names = set()

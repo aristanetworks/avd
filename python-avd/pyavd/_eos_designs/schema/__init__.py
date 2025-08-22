@@ -26937,22 +26937,13 @@ class EosDesigns(EosDesignsRootModel):
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                    uplink_type == "p2p".
-                    """
+                    """Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p"."""
                     uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                    uplink_type == "port-channel".
-                    """
+                    """Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel"."""
                     uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
                     uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                    port-channel uplinks.
-                    """
+                    """Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks."""
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
                     Custom structured config applied to MLAG peer link port-channel id.
@@ -27885,16 +27876,10 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                                uplink_ethernet_structured_config:
-                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                   uplink_type == "p2p".
-                                uplink_port_channel_structured_config:
-                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                   uplink_type == "port-channel".
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p".
+                                uplink_port_channel_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel".
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
-                                uplink_switch_port_channel_structured_config:
-                                   Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                                   port-channel uplinks.
+                                uplink_switch_port_channel_structured_config: Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -31299,22 +31284,13 @@ class EosDesigns(EosDesignsRootModel):
                         by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         """
                         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
-                        """
-                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                        uplink_type == "p2p".
-                        """
+                        """Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p"."""
                         uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                        """
-                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                        uplink_type == "port-channel".
-                        """
+                        """Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel"."""
                         uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
                         uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                        """
-                        Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                        port-channel uplinks.
-                        """
+                        """Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks."""
                         mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
                         Custom structured config applied to MLAG peer link port-channel id.
@@ -32256,16 +32232,10 @@ class EosDesigns(EosDesignsRootModel):
                                        "structured_config" defined on node-level.
                                        Note! The content of this dictionary is _not_ validated
                                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                                    uplink_ethernet_structured_config:
-                                       Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                       uplink_type == "p2p".
-                                    uplink_port_channel_structured_config:
-                                       Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                       uplink_type == "port-channel".
+                                    uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p".
+                                    uplink_port_channel_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel".
                                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
-                                    uplink_switch_port_channel_structured_config:
-                                       Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                                       port-channel uplinks.
+                                    uplink_switch_port_channel_structured_config: Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks.
                                     mlag_port_channel_structured_config:
                                        Custom structured config applied to MLAG peer link port-channel id.
                                        Added under
@@ -35581,22 +35551,13 @@ class EosDesigns(EosDesignsRootModel):
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                    uplink_type == "p2p".
-                    """
+                    """Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p"."""
                     uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                    uplink_type == "port-channel".
-                    """
+                    """Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel"."""
                     uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
                     uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                    port-channel uplinks.
-                    """
+                    """Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks."""
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
                     Custom structured config applied to MLAG peer link port-channel id.
@@ -36540,16 +36501,10 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                                uplink_ethernet_structured_config:
-                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                   uplink_type == "p2p".
-                                uplink_port_channel_structured_config:
-                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                   uplink_type == "port-channel".
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p".
+                                uplink_port_channel_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel".
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
-                                uplink_switch_port_channel_structured_config:
-                                   Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                                   port-channel uplinks.
+                                uplink_switch_port_channel_structured_config: Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -39937,22 +39892,13 @@ class EosDesigns(EosDesignsRootModel):
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                    uplink_type == "p2p".
-                    """
+                    """Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p"."""
                     uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                    uplink_type == "port-channel".
-                    """
+                    """Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel"."""
                     uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
                     uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                    port-channel uplinks.
-                    """
+                    """Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks."""
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
                     Custom structured config applied to MLAG peer link port-channel id.
@@ -40894,16 +40840,10 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                                uplink_ethernet_structured_config:
-                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                   uplink_type == "p2p".
-                                uplink_port_channel_structured_config:
-                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                   uplink_type == "port-channel".
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p".
+                                uplink_port_channel_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel".
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
-                                uplink_switch_port_channel_structured_config:
-                                   Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                                   port-channel uplinks.
+                                uplink_switch_port_channel_structured_config: Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -52224,22 +52164,13 @@ class EosDesigns(EosDesignsRootModel):
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                    uplink_type == "p2p".
-                    """
+                    """Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p"."""
                     uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                    uplink_type == "port-channel".
-                    """
+                    """Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel"."""
                     uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
                     uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                    port-channel uplinks.
-                    """
+                    """Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks."""
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
                     Custom structured config applied to MLAG peer link port-channel id.
@@ -53172,16 +53103,10 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                                uplink_ethernet_structured_config:
-                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                   uplink_type == "p2p".
-                                uplink_port_channel_structured_config:
-                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                   uplink_type == "port-channel".
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p".
+                                uplink_port_channel_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel".
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
-                                uplink_switch_port_channel_structured_config:
-                                   Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                                   port-channel uplinks.
+                                uplink_switch_port_channel_structured_config: Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -56586,22 +56511,13 @@ class EosDesigns(EosDesignsRootModel):
                         by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                         """
                         uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
-                        """
-                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                        uplink_type == "p2p".
-                        """
+                        """Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p"."""
                         uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                        """
-                        Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                        uplink_type == "port-channel".
-                        """
+                        """Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel"."""
                         uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
                         uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                        """
-                        Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                        port-channel uplinks.
-                        """
+                        """Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks."""
                         mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
                         Custom structured config applied to MLAG peer link port-channel id.
@@ -57543,16 +57459,10 @@ class EosDesigns(EosDesignsRootModel):
                                        "structured_config" defined on node-level.
                                        Note! The content of this dictionary is _not_ validated
                                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                                    uplink_ethernet_structured_config:
-                                       Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                       uplink_type == "p2p".
-                                    uplink_port_channel_structured_config:
-                                       Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                       uplink_type == "port-channel".
+                                    uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p".
+                                    uplink_port_channel_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel".
                                     uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
-                                    uplink_switch_port_channel_structured_config:
-                                       Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                                       port-channel uplinks.
+                                    uplink_switch_port_channel_structured_config: Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks.
                                     mlag_port_channel_structured_config:
                                        Custom structured config applied to MLAG peer link port-channel id.
                                        Added under
@@ -60868,22 +60778,13 @@ class EosDesigns(EosDesignsRootModel):
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                    uplink_type == "p2p".
-                    """
+                    """Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p"."""
                     uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                    uplink_type == "port-channel".
-                    """
+                    """Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel"."""
                     uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
                     uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                    port-channel uplinks.
-                    """
+                    """Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks."""
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
                     Custom structured config applied to MLAG peer link port-channel id.
@@ -61827,16 +61728,10 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                                uplink_ethernet_structured_config:
-                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                   uplink_type == "p2p".
-                                uplink_port_channel_structured_config:
-                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                   uplink_type == "port-channel".
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p".
+                                uplink_port_channel_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel".
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
-                                uplink_switch_port_channel_structured_config:
-                                   Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                                   port-channel uplinks.
+                                uplink_switch_port_channel_structured_config: Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -65224,22 +65119,13 @@ class EosDesigns(EosDesignsRootModel):
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
                     """
                     uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                    uplink_type == "p2p".
-                    """
+                    """Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p"."""
                     uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                    uplink_type == "port-channel".
-                    """
+                    """Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel"."""
                     uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
                     """Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks."""
                     uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                    """
-                    Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                    port-channel uplinks.
-                    """
+                    """Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks."""
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
                     Custom structured config applied to MLAG peer link port-channel id.
@@ -66181,16 +66067,10 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                                uplink_ethernet_structured_config:
-                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                   uplink_type == "p2p".
-                                uplink_port_channel_structured_config:
-                                   Custom structured config applied to `uplink_interfaces` and `uplink_switch_interfaces` for
-                                   uplink_type == "port-channel".
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p".
+                                uplink_port_channel_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel".
                                 uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` for ethernet interface uplinks.
-                                uplink_switch_port_channel_structured_config:
-                                   Custom structured config applied to `uplink_switch_interfaces` and `uplink_switch_interfaces` for
-                                   port-channel uplinks.
+                                uplink_switch_port_channel_structured_config: Custom structured config applied to `uplink_switch_interfaces` for port-channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
