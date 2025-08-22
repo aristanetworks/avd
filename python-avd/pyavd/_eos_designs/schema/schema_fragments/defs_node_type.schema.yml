@@ -1003,7 +1003,7 @@ $defs:
               virtual-router: <subnet> + 1
               l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
               l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-              l2leafs       : <subnet> + 3 + <l2leaf id>
+              l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
               GW on l2leafs : <subnet> + 1
               Assign range larger than total l2leafs + 5
 
@@ -1012,6 +1012,16 @@ $defs:
               This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
             type: str
             format: ipv4_cidr
+          inband_mgmt_subnet_offset:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            type: int
+            convert_types:
+              - str
+            default: 0
+            description: |-
+              Offset value to adjust the calculated inband management IP address within the subnet.
+              The assigned IP will be computed by adding this offset to the device ID.
           inband_mgmt_ip:
             documentation_options:
               table: node-type-inband-management-configuration
