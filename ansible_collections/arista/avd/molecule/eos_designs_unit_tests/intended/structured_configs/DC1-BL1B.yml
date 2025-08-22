@@ -237,6 +237,16 @@ management_interfaces:
 metadata:
   platform: 7280R
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+monitor_sessions:
+- name: DMF
+  sources:
+  - name: Ethernet8
+    direction: both
+  - name: Ethernet9
+    direction: both
+  destinations:
+  - Ethernet7
+  encapsulation_gre_metadata_tx: true
 ntp: null
 platform:
   sand:

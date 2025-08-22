@@ -8,15 +8,14 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import groupby_obj
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.schema import EosDesigns
-
-    from . import AvdStructuredConfigConnectedEndpointsProtocol
+    from . import AvdStructuredConfigBaseProtocol
 
 
 class MonitorSessionsMixin(Protocol):
@@ -27,7 +26,7 @@ class MonitorSessionsMixin(Protocol):
     """
 
     @structured_config_contributor
-    def monitor_sessions(self: AvdStructuredConfigConnectedEndpointsProtocol) -> None:
+    def monitor_sessions(self: AvdStructuredConfigBaseProtocol) -> None:
         """Set the structured_config for monitor_sessions."""
         if not self._monitor_session_configs:
             return
@@ -79,11 +78,11 @@ class MonitorSessionsMixin(Protocol):
 
     @cached_property
     def _monitor_session_configs(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        self: AvdStructuredConfigBaseProtocol,
     ) -> list[EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessionsItem]:
         """Return list of monitor session configs extracted from every interface."""
         monitor_session_configs = []
-        for connected_endpoint in self._filtered_connected_endpoints:
+        for connected_endpoint in self.shared_utils.filtered_connected_endpoints:
             for adapter in connected_endpoint.adapters:
                 if not adapter.monitor_sessions:
                     continue
@@ -113,7 +112,7 @@ class MonitorSessionsMixin(Protocol):
                         per_interface_monitor_session._internal_data.context = adapter._internal_data.context
                         monitor_session_configs.append(per_interface_monitor_session)
 
-        for network_port in self._filtered_network_ports:
+        for network_port in self.shared_utils.filtered_network_ports:
             if not network_port.monitor_sessions:
                 continue
 
@@ -137,5 +136,23 @@ class MonitorSessionsMixin(Protocol):
                     per_interface_monitor_session._internal_data.interface = ethernet_interface_name
                     per_interface_monitor_session._internal_data.context = network_port._internal_data.context
                     monitor_session_configs.append(per_interface_monitor_session)
+
+        for tenant in self.shared_utils.filtered_tenants:
+            for vrf in tenant.vrfs:
+                for l3_interface_index, l3_interface in enumerate(vrf.l3_interfaces):
+                    for node_index, node_name in enumerate(l3_interface.nodes):
+                        if node_name != self.shared_utils.hostname:
+                            continue
+                        for monitor_session in l3_interface.monitor_sessions:
+                            # We merge using the adapter datamodel to catch conflicts in direction.
+                            per_interface_monitor_session = monitor_session._deepcopy()._cast_as(
+                                EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.MonitorSessionsItem
+                            )
+                            per_interface_monitor_session._internal_data.interface = l3_interface.interfaces[node_index]
+                            per_interface_monitor_session._internal_data.context = (
+                                f"{tenant._internal_data.context}[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[{l3_interface_index}]"
+                            )
+
+                            monitor_session_configs.append(per_interface_monitor_session)
 
         return monitor_session_configs

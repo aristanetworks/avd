@@ -73,6 +73,7 @@ class VlanInterfacesMixin(Protocol):
             ip_address=svi.ip_address,
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
+            arp_gratuitous_accept=svi.arp_gratuitous_accept,
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )

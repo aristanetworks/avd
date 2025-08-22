@@ -19,6 +19,9 @@ ptp domain {{ ptp.domain }}
 {%         endif %}
 {{ ptp_free_running }}
 {%     endif %}
+{%     if ptp.hold_ptp_time is arista.avd.defined %}
+ptp hold-ptp-time {{ ptp.hold_ptp_time }}
+{%     endif %}
 {%     if ptp.message_type.event.dscp is arista.avd.defined %}
 ptp message-type event dscp {{ ptp.message_type.event.dscp }} default
 {%     endif %}
