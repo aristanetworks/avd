@@ -15,7 +15,7 @@ address_locking_settings:
   dhcp_servers_ipv4:
     - 1.1.1.1
   # Testing any interface
-  local_interface: Eth1
+  local_interface: Ethernet1
 
 tenants:
   - name: TENANT1
