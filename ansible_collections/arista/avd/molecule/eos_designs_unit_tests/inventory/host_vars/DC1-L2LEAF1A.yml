@@ -10,7 +10,3 @@ overlay_routing_protocol_address_family: ipv6
 # Expicitely disabling management api-http commands
 management_eapi:
   enabled: false
-
-# Testing enable_password_settings
-enable_password_settings:
-  disabled: true
