@@ -10,10 +10,9 @@ title: Ansible Collection Role cvp_configlet_upload
 
 # cvp_configlet_upload
 
-!!! warning
-    Deprecation Warning!
-    The role 'arista.avd.cvp_configlet_upload' has been deprecated and will be removed in AVD version 6.0.0.
-    Update your playbook to leverage the new 'arista.avd.cv_deploy' role instead.
+!!! warning "Deprecation Warning"
+    The role 'arista.avd.cvp_configlet_upload' has been deprecated and will be removed in AVD version 6.0.0.<br/>
+    Update your playbook to leverage the new 'arista.avd.cv_deploy' role instead.<br/>
     See [arista.avd.cv_deploy](../cv_deploy/README.md) documentation for more details.
 
 ## Overview
