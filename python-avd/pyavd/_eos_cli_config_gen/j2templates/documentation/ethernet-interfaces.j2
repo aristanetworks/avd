@@ -561,10 +561,10 @@
 
 ##### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- | ------------------------ |
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
 {%         for ethernet_interface in ethernet_interfaces_vrrp_details | arista.avd.natural_sort('name') %}
-{%             for vrid in ethernet_interface.vrrp_ids if vrid.id is arista.avd.defined %}
+{%             for vrid in ethernet_interface.vrrp_ids | arista.avd.natural_sort('id') %}
 {%                 set row_id = vrid.id %}
 {%                 set row_prio_level = vrid.priority_level | arista.avd.default('-') %}
 {%                 set row_ad_interval = vrid.advertisement.interval | arista.avd.default('-') %}
@@ -587,10 +587,16 @@
 {%                     set row_tracked_object_action = row_tracked_object_action | join(", ") %}
 {%                 endif %}
 {%                 set peer_auth_mode = vrid.peer_authentication.mode | arista.avd.default('-') %}
-{%                 set row_ipv4_virt = vrid.ipv4.address | arista.avd.default('-') %}
-{%                 set row_ipv4_vers = vrid.ipv4.version | arista.avd.default('2') %}
-{%                 set row_ipv6_virt = vrid.ipv6.address | arista.avd.default('-') %}
-| {{ ethernet_interface.name }} | {{ row_id }} | {{ row_prio_level }} | {{ row_ad_interval }} | {{ row_preempt }} | {{ row_tracked_object_name | arista.avd.default('-') }} | {{ row_tracked_object_action | arista.avd.default('-') }} | {{ row_ipv4_virt }} | {{ row_ipv4_vers }} | {{ row_ipv6_virt }} | {{ peer_auth_mode }} |
+{%                 set row_ipv4_virtual_ips = [] %}
+{%                 if vrid.ipv4.address is arista.avd.defined %}
+{%                     do row_ipv4_virtual_ips.append(vrid.ipv4.address) %}
+{%                 endif %}
+{%                 if vrid.ipv4.secondary_addresses is arista.avd.defined %}
+{%                     do row_ipv4_virtual_ips.extend(vrid.ipv4.secondary_addresses) %}
+{%                 endif %}
+{%                 set row_ipv4_version = vrid.ipv4.version | arista.avd.default('2') %}
+{%                 set row_ipv6_virtual_ips = vrid.ipv6.addresses | arista.avd.default(vrid.ipv6.address, '-') | join(', ') %}
+| {{ ethernet_interface.name }} | {{ row_id }} | {{ row_prio_level }} | {{ row_ad_interval }} | {{ row_preempt }} | {{ row_tracked_object_name | arista.avd.default('-') }} | {{ row_tracked_object_action | arista.avd.default('-') }} | {{ row_ipv4_virtual_ips | join(", ") | arista.avd.default("-") }} | {{ row_ipv4_version }} | {{ row_ipv6_virtual_ips }} | {{ peer_auth_mode }} |
 {%             endfor %}
 {%         endfor %}
 {%     endif %}

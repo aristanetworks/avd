@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
 
+from .connected_endpoints import ConnectedEndpointsMixin
 from .cv_topology import CvTopology
 from .filtered_tenants import FilteredTenantsMixin
 from .flow_tracking import FlowTrackingMixin
@@ -40,6 +41,7 @@ if TYPE_CHECKING:
 
 
 class SharedUtilsProtocol(
+    ConnectedEndpointsMixin,
     FilteredTenantsMixin,
     InbandManagementMixin,
     InterfaceDescriptionsMixin,

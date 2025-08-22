@@ -169,12 +169,26 @@ tenant_a:
                   key: "AQQvKeimxJu+uGQ/yYvv9w=="
                 - id: 2
                   key: "AQQvKeimxJu+uGQ/yYvv9w=="
+            monitor_sessions:
+              - name: MonitoringSessionServer18
+                role: source
+                source_settings:
+                  direction: tx
+                  access_group:
+                    type: ip
+                    name: myIpAVL
+                    priority: 5
           - interfaces: [Ethernet7]
             ip_addresses: [10.10.20.20/24]
             nodes: [DC1-BL1B]
             mtu: 9000
             enabled: true
             description: "test"
+            monitor_sessions:
+              - name: DMF
+                role: destination
+                session_settings:
+                  encapsulation_gre_metadata_tx: true
         static_routes:
           - prefix: 10.3.4.0/24
             next_hop: 1.2.3.4
@@ -279,6 +293,13 @@ tenant_a:
             mtu: 9000
             enabled: true
             description: "test"
+            monitor_sessions:
+              - name: DMF
+                role: source
+                source_settings:
+                  direction: both
+                session_settings:
+                  encapsulation_gre_metadata_tx: true
           - interfaces: [Ethernet10, Ethernet10]
             ip_addresses: [10.10.30.10/24, 10.10.40.20/24]
             nodes: [DC1-BL1A, DC1-BL1B]
@@ -326,6 +347,15 @@ tenant_a:
             ospf:
               enabled: true
               point_to_point: true
+            monitor_sessions:
+              - name: MonitoringSessionServer18
+                role: source
+                source_settings:
+                  direction: rx
+                  access_group:
+                    type: ip
+                    name: myIpAL
+                    priority: 10
         loopbacks:
           - loopback: 123
             ip_address: 10.1.53.0/32
