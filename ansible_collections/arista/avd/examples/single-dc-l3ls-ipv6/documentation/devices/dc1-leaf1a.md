@@ -646,11 +646,11 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
-| VRF10 | 10 | - |
-| VRF11 | 11 | - |
-| VRF12 | 12 | - |
+| VRF | VNI | Multicast Group | Multicast Group Encap Range | Overlay Multicast Group | Underlay Multicast Group (Encap) |
+| --- | --- | --------------- | --------------------------- | ----------------------- | -------------------------------- |
+| VRF10 | 10 | - | - | - | - |
+| VRF11 | 11 | - | - | - | - |
+| VRF12 | 12 | - | - | - | - |
 
 #### VXLAN Interface Device Configuration
 

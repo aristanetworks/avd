@@ -575,10 +575,10 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
-| BLUE | 100 | - |
-| RED | 101 | - |
+| VRF | VNI | Multicast Group | Multicast Group Encap Range | Overlay Multicast Group | Underlay Multicast Group (Encap) |
+| --- | --- | --------------- | --------------------------- | ----------------------- | -------------------------------- |
+| BLUE | 100 | - | - | - | - |
+| RED | 101 | - | - | - | - |
 
 #### VXLAN Interface Device Configuration
 

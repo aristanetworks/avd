@@ -508,9 +508,9 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
-| Tenant_B_OP_Zone | 20 | - |
+| VRF | VNI | Multicast Group | Multicast Group Encap Range | Overlay Multicast Group | Underlay Multicast Group (Encap) |
+| --- | --- | --------------- | --------------------------- | ----------------------- | -------------------------------- |
+| Tenant_B_OP_Zone | 20 | - | - | - | - |
 
 #### VXLAN Interface Device Configuration
 
