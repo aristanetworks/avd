@@ -42,7 +42,7 @@ pytest = [
     "referencing>=0.35.0",
 ]
 coverage = [
-    "coverage[toml]",
+    "coverage[toml]==7.10.4",
 ]
 
 [project.optional-dependencies]
@@ -116,6 +116,7 @@ extend_skip_glob = [
 
 [tool.coverage.run]
 branch = true
+parallel = true
 
 [tool.coverage.report]
 show_missing = true
