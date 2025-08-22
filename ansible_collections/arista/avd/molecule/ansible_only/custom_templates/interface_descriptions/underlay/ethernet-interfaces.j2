@@ -1,4 +1,7 @@
 {# j2lint: disable=jinja-statements-delimiter #}
+{%- if link.main_interface_wan_carrier is arista.avd.defined -%}
+{{ link.main_interface_wan_carrier }}
+{%- endif -%}
 {%- if link.type is arista.avd.defined('underlay_p2p') -%}
 {%-     if switch.struct_cfg.tags is arista.avd.defined() -%}
 {{ description_prefix }}_P2P_LINK_TO_{{ link.peer | upper }}_{{ link.peer_interface }} {{ switch.struct_cfg.tags | arista.avd.default() }}

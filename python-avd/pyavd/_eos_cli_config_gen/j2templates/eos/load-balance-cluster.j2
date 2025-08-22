@@ -1,0 +1,57 @@
+{#
+ Copyright (c) 2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - load balance cluster #}
+{% if load_balance.cluster is arista.avd.defined %}
+!
+load-balance cluster
+{%     if load_balance.cluster.forwarding_type is arista.avd.defined %}
+   forwarding type {{ load_balance.cluster.forwarding_type }}
+{%     endif %}
+{%     if load_balance.cluster.destination_grouping is arista.avd.defined %}
+{%         if load_balance.cluster.destination_grouping != "prefix length" %}
+   destination grouping {{ load_balance.cluster.destination_grouping }}
+{%         elif load_balance.cluster.prefix_length is arista.avd.defined %}
+   destination grouping {{ load_balance.cluster.destination_grouping }} {{ load_balance.cluster.prefix_length }}
+{%         endif %}
+{%     endif %}
+{%     if load_balance.cluster.load_balance_method_flow_round_robin is arista.avd.defined(true) %}
+   load-balance method flow round-robin
+{%     endif %}
+{%     if load_balance.cluster.flow.monitor is arista.avd.defined(true) %}
+   flow monitor
+{%     endif %}
+{%     if load_balance.cluster.flow.source_learning_aging_timeout is arista.avd.defined %}
+   !
+   flow source learning
+      aging timeout {{ load_balance.cluster.flow.source_learning_aging_timeout }} seconds
+{%     endif %}
+{%     for port_group in load_balance.cluster.port_groups | arista.avd.natural_sort('group')  %}
+   !
+   port group host {{ port_group.group }}
+{%         if port_group.interface is arista.avd.defined %}
+      interface {{ port_group.interface }}
+{%         endif %}
+{%         if port_group.flow.limit is arista.avd.defined %}
+      flow limit {{ port_group.flow.limit }}
+{%         endif %}
+{%         if port_group.balance_factor is arista.avd.defined %}
+      balance factor {{ port_group.balance_factor }}
+{%         endif %}
+{%         if port_group.flow.warning is arista.avd.defined %}
+      flow warning {{ port_group.flow.warning }}
+{%         endif %}
+{%         if port_group.flow.exhaustion_action.dscp is arista.avd.defined or port_group.flow.exhaustion_action.traffic_class is arista.avd.defined %}
+{%             set exhaustion_action_cli = "flow exhaustion action" %}
+{%             if port_group.flow.exhaustion_action.dscp is arista.avd.defined %}
+{%                 set exhaustion_action_cli =  exhaustion_action_cli ~ " dscp " ~ port_group.flow.exhaustion_action.dscp %}
+{%             endif %}
+{%             if port_group.flow.exhaustion_action.traffic_class is arista.avd.defined %}
+{%                 set exhaustion_action_cli =  exhaustion_action_cli ~ " traffic-class " ~ port_group.flow.exhaustion_action.traffic_class %}
+{%             endif %}
+      {{ exhaustion_action_cli }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

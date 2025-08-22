@@ -300,7 +300,7 @@ class RouterBgpMixin(Protocol):
         if self.shared_utils.wan_ha:
             self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.enable = True
             self.structured_config.router_bgp.address_family_evpn.neighbors.append_new(
-                ip_address=self._wan_ha_peer_vtep_ip(),
+                ip_address=self.shared_utils._wan_ha_peer_vtep_ip,
                 activate=True,
                 encapsulation=self.inputs.wan_encapsulation,
             )
@@ -454,7 +454,6 @@ class RouterBgpMixin(Protocol):
                     remote_as=data["bgp_as"],
                     overlay_peering_interface=data.get("overlay_peering_interface"),
                 )
-
                 if self.inputs.evpn_prevent_readvertise_to_server:
                     neighbor.route_map_out = f"RM-EVPN-FILTER-AS{data['bgp_as']}"
                 neighbors.append(neighbor)
@@ -522,7 +521,7 @@ class RouterBgpMixin(Protocol):
 
             if self.shared_utils.wan_ha:
                 neighbors.append_new(
-                    ip_address=self._wan_ha_peer_vtep_ip(),
+                    ip_address=self.shared_utils._wan_ha_peer_vtep_ip,
                     peer=self.shared_utils.wan_ha_peer,
                     description=self.shared_utils.wan_ha_peer,
                     remote_as=self.shared_utils.bgp_as,
@@ -601,21 +600,16 @@ class RouterBgpMixin(Protocol):
             self.structured_config.router_bgp.neighbors.append(neighbor)
 
     def _set_mpls_route_clients(self: AvdStructuredConfigOverlayProtocol) -> None:
-        if self._is_mpls_server is not True:
+        if not self._is_mpls_server:
             return
 
         for route_reflector_client in natural_sort(self.facts.mpls_route_reflector_clients):
-            if route_reflector_client in self._mpls_route_reflectors:
-                continue
-
             peer_facts = self.shared_utils.get_peer_facts(route_reflector_client)
             if not self._is_peer_mpls_client(peer_facts):
                 continue
 
-            if not (ip_address := peer_facts.overlay.peering_address):
-                msg = f"Unable to determine the remote IP address to use for the MPLS Route Reflector client '{route_reflector_client}'."
-                raise AristaAvdInvalidInputsError(msg)
-
+            # since _is_peer_mpls_client check passed above, we will always have peer_facts.overlay.peering_address
+            ip_address = cast("str", peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
                 ip_address,
                 route_reflector_client,
@@ -639,9 +633,8 @@ class RouterBgpMixin(Protocol):
             if not self._is_peer_mpls_client(peer_facts):
                 continue
 
-            if not (ip_address := peer_facts.overlay.peering_address):
-                msg = f"Unable to determine the remote IP address to use for the MPLS PE '{fabric_switch}'."
-                raise AristaAvdInvalidInputsError(msg)
+            # since _is_peer_mpls_client check passed above, we will always have peer_facts.overlay.peering_address
+            ip_address = cast("str", peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
                 ip_address,
                 fabric_switch,
@@ -651,7 +644,7 @@ class RouterBgpMixin(Protocol):
             self.structured_config.router_bgp.neighbors.append(neighbor)
 
     def _set_mpls_rr_peers(self: AvdStructuredConfigOverlayProtocol) -> None:
-        if self._is_mpls_server is not True:
+        if not self._is_mpls_server:
             return
 
         for route_reflector in self.facts.mpls_route_reflectors:
@@ -662,10 +655,8 @@ class RouterBgpMixin(Protocol):
             if not self._is_peer_mpls_server(peer_facts):
                 continue
 
-            if not (ip_address := peer_facts.overlay.peering_address):
-                msg = f"Unable to determine the remote IP address to use for the peer MPLS Route Reflector '{route_reflector}'."
-                raise AristaAvdInvalidInputsError(msg)
-
+            # since _is_peer_mpls_server check passed above, we will always have peer_facts.overlay.peering_address
+            ip_address = cast("str", peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
                 ip_address,
                 route_reflector,
@@ -682,10 +673,8 @@ class RouterBgpMixin(Protocol):
             if not self._is_peer_mpls_server(peer_facts):
                 continue
 
-            if not (ip_address := peer_facts.overlay.peering_address):
-                msg = f"Unable to determine the remote IP address to use for the peer MPLS Route Reflector '{route_reflector_client}'."
-                raise AristaAvdInvalidInputsError(msg)
-
+            # since _is_peer_mpls_server check passed above, we will always have peer_facts.overlay.peering_address
+            ip_address = cast("str", peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
                 ip_address,
                 route_reflector_client,

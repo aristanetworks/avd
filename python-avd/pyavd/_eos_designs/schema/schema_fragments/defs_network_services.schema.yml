@@ -196,6 +196,7 @@ $defs:
               type: str
               description: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
               format: ipv4_pool
+            # TODO: make the default value of the offset 1
             underlay_l2_multicast_group_ipv4_pool_offset:
               type: int
               default: 0
@@ -212,6 +213,29 @@ $defs:
                 Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is enabled will take up additional control-plane and data-plane resources,
                 but it is required to support forwarding of TTL=1 multicast traffic within the VLAN.
                 This can be overridden per SVI.
+        vxlan_flood_multicast:
+          documentation_options:
+            table: network-services-multicast-settings
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              required: true
+              description: |-
+                Enable Flood group Multicast for all SVIs and l2vlans within Tenant.
+            underlay_l2_multicast_group_ipv4_pool:
+              type: str
+              description: |-
+                IPv4 Pool to allocate vxlan flood groups from.
+                The VLAN ID - 1 + `underlay_l2_multicast_group_ipv4_pool_offset` is the offset for each group.
+                Comma separated list of prefixes (IPv4_address/Mask) or ranges (IPv4_address-IPv4_address).
+              format: ipv4_pool
+            # TODO: make the default value of the offset 1
+            underlay_l2_multicast_group_ipv4_pool_offset:
+              type: int
+              default: 0
+              convert_types:
+                - str
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -469,7 +493,7 @@ $defs:
                     type: str
                     description: |-
                       Provide a custom description or description template to be used on the VRF diagnostic loopback interface.
-                      This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                      This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
                       The available template fields are:
                         - `interface`: The Loopback interface name.
                         - `vrf`: The VRF name.
@@ -803,12 +827,20 @@ $defs:
                     static_routes:
                       type: list
                       $ref: "eos_designs#/$defs/static_routes"
-                      description: Static routes to be configured on every device when this interface is configured.
+                      description: Static routes to be configured on every device where this interface is configured.
+                    ipv6_static_routes:
+                      type: list
+                      # Reusing the schema from `static_routes` since IPv4 and IPv6 static routes share the same keys.
+                      $ref: "eos_designs#/$defs/static_routes"
+                      description: IPv6 static routes to be configured on every device where this interface is configured.
                     nodes:
                       type: list
                       items:
                         type: str
                         description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                     descriptions:
@@ -918,6 +950,9 @@ $defs:
                       $ref: "eos_designs#/$defs/flow_tracking_link"
                       description: |-
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+                    monitor_sessions:
+                      type: list
+                      $ref: "eos_designs#/$defs/monitor_sessions"
                     campus_link_type:
                       type: list
                       $ref: "eos_designs#/$defs/campus_link_type"
@@ -953,6 +988,9 @@ $defs:
                       type: str
                       required: true
                       description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                       description: |-
@@ -1051,8 +1089,13 @@ $defs:
                         - int
                     static_routes:
                       type: list
-                      description: Static routes to be configured on the device when this Port-channel is configured.
+                      description: Static routes to be configured on the device where this Port-channel interface is configured.
                       $ref: "eos_designs#/$defs/static_routes"
+                    ipv6_static_routes:
+                      type: list
+                      # Reusing the schema from `static_routes` since IPv4 and IPv6 static routes share the same keys.
+                      $ref: "eos_designs#/$defs/static_routes"
+                      description: IPv6 static routes to be configured on the device where this Port-channel interface is configured.
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
@@ -1634,6 +1677,18 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+              vxlan_flood_multicast:
+                documentation_options:
+                  table: network-services-multicast-settings
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: |-
+                      Explicitly enable or disable vxlan_flood_multicast to override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                  underlay_multicast_group:
+                    description: Specific multicast group to use for this VLAN.
+                    type: str
               igmp_snooping_enabled:
                 documentation_options:
                   table: network-services-multicast-settings

@@ -13,6 +13,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get_ip_from_pool
+from pyavd._utils.password_utils.password import isis_encrypt
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
@@ -198,7 +199,7 @@ class UtilsMixin(Protocol):
         ptp_config = output_type()
 
         # Early return if PTP is not enabled
-        if not p2p_link.ptp.enabled:
+        if not (p2p_link.ptp.enabled and self.shared_utils.platform_settings.feature_support.ptp):
             return ptp_config
 
         if self.shared_utils.ptp_enabled:
@@ -212,8 +213,8 @@ class UtilsMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
 
             else:
-                ptp_profile_config = self.inputs.ptp_profiles[p2p_link.ptp.profile]
-                if hasattr(ptp_profile_config, "profile"):
+                ptp_profile_config = self.inputs.ptp_profiles[p2p_link.ptp.profile]._deepcopy()
+                if ptp_profile_config.profile:
                     delattr(ptp_profile_config, "profile")
                 ptp_config = ptp_profile_config._cast_as(output_type, ignore_extra_keys=True)
 
@@ -290,16 +291,28 @@ class UtilsMixin(Protocol):
                 mode: Literal["md5", "text"] | None = default(p2p_link.isis_authentication_mode, self.inputs.underlay_isis_authentication_mode)
                 interface.isis_authentication.both.mode = mode
 
-                if isis_authentication_key := default(p2p_link.isis_authentication_key, self.inputs.underlay_isis_authentication_key):
+                if p2p_link.isis_authentication_key is not None:
+                    interface.isis_authentication.both._update(key=p2p_link.isis_authentication_key, key_type="7")
+                elif p2p_link.isis_authentication_cleartext_key is not None:
+                    interface.isis_authentication.both._update(
+                        key=isis_encrypt(
+                            password=p2p_link.isis_authentication_cleartext_key,
+                            key=cast("str", self.shared_utils.isis_instance_name),
+                            mode=mode or "none",
+                        ),
+                        key_type="7",
+                    )
+                elif (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                     interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
         if p2p_link.macsec_profile:
             interface.mac_security.profile = p2p_link.macsec_profile
 
-        if p2p_link.sflow is not None:
-            interface.sflow.enable = p2p_link.sflow
-        elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
-            interface.sflow.enable = p2p_link_sflow
+        if self.shared_utils.platform_settings.feature_support.sflow:
+            if p2p_link.sflow is not None:
+                interface.sflow.enable = p2p_link.sflow
+            elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
+                interface.sflow.enable = p2p_link_sflow
 
         # Adding type check to avoid confusing the type checker.
         if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR, this is for the type checker

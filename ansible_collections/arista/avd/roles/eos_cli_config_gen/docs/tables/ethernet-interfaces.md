@@ -24,6 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;phone</samp>](## "ethernet_interfaces.[].phone") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>switchport.phone</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "ethernet_interfaces.[].phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>tagged phone</code><br>- <code>untagged</code><br>- <code>untagged phone</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].phone.vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "ethernet_interfaces.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_protocol</samp>](## "ethernet_interfaces.[].l2_protocol") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "ethernet_interfaces.[].l2_protocol.encapsulation_dot1q_vlan") | Integer |  |  |  | Vlan tag to configure on sub-interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forwarding_profile</samp>](## "ethernet_interfaces.[].l2_protocol.forwarding_profile") | String |  |  |  | L2 protocol forwarding profile. |
@@ -468,6 +469,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weight</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect.ecn.threshold.weight") | Integer |  |  | Min: 0<br>Max: 15 | Set the random-detect ECN weight. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tx_queues</samp>](## "ethernet_interfaces.[].tx_queues") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "ethernet_interfaces.[].tx_queues.[].id") | Integer | Required, Unique |  |  | TX-Queue ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scheduler_profile_responsive</samp>](## "ethernet_interfaces.[].tx_queues.[].scheduler_profile_responsive") | Boolean |  |  |  | Set scheduler profile to optimize latency at the expense of burstiness. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;random_detect</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn") | Dictionary |  |  |  | Explicit Congestion Notification. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn.count") | Boolean |  |  |  | Enable counter for random-detect ECNs. |
@@ -496,9 +498,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "ethernet_interfaces.[].vrrp_ids.[].tracked_object.[].shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv4.address") | String | Required |  |  | Virtual IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secondary_addresses</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv4.secondary_addresses") | List, items: String |  |  |  | Additional VRRP IPv4 addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv4.secondary_addresses.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv4.version") | Integer |  |  | Valid Values:<br>- <code>2</code><br>- <code>3</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv6") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv6.address") | String | Required |  |  | Virtual IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv6.address") <span style="color:red">deprecated</span> | String |  |  |  | Virtual IPv6 address.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>addresses</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv6.addresses") | List, items: String |  |  |  | Virtual IPv6 addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv6.addresses.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_authentication</samp>](## "ethernet_interfaces.[].vrrp_ids.[].peer_authentication") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].vrrp_ids.[].peer_authentication.mode") | String | Required |  | Valid Values:<br>- <code>text</code><br>- <code>ietf-md5</code> | Authentication mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "ethernet_interfaces.[].vrrp_ids.[].peer_authentication.key") | String | Required |  |  | Authentication key. |
@@ -507,7 +513,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "ethernet_interfaces.[].validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switchport</samp>](## "ethernet_interfaces.[].switchport") | Dictionary |  |  |  | This should not be combined with `ethernet_interfaces[].type = switched/routed`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ethernet_interfaces.[].switchport.enabled") | Boolean |  |  |  | Warning: This should not be combined with `ethernet_interfaces[].type = routed`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].switchport.mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> | Warning: This should not be combined with `ethernet_interfaces[].mode`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].switchport.mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code><br>- <code>tap</code><br>- <code>tool</code><br>- <code>tap-tool</code> | Warning: This should not be combined with `ethernet_interfaces[].mode`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_vlan</samp>](## "ethernet_interfaces.[].switchport.access_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set VLAN when interface is in access mode.<br>Warning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel` and `ethernet_interface[].vlans`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "ethernet_interfaces.[].switchport.trunk") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowed_vlan</samp>](## "ethernet_interfaces.[].switchport.trunk.allowed_vlan") | String |  |  |  | VLAN ID or range(s) of VLAN IDs.<br>Warning: This should not be combined with `ethernet_interfaces[].mode = trunk` and `ethernet_interface[].vlans`. |
@@ -687,6 +693,9 @@
         phone:
           trunk: <str; "tagged" | "tagged phone" | "untagged" | "untagged phone">
           vlan: <int; 1-4094>
+
+        # Accept gratuitous ARP.
+        arp_gratuitous_accept: <bool>
         l2_protocol:
 
           # Vlan tag to configure on sub-interface.
@@ -1608,6 +1617,9 @@
 
             # TX-Queue ID.
           - id: <int; required; unique>
+
+            # Set scheduler profile to optimize latency at the expense of burstiness.
+            scheduler_profile_responsive: <bool>
             random_detect:
 
               # Explicit Congestion Notification.
@@ -1670,11 +1682,22 @@
 
               # Virtual IPv4 address.
               address: <str; required>
+
+              # Additional VRRP IPv4 addresses.
+              secondary_addresses:
+                - <str>
               version: <int; 2 | 3>
             ipv6:
 
               # Virtual IPv6 address.
-              address: <str; required>
+              # This key is deprecated.
+              # Support will be removed in AVD version 6.0.0.
+              # Use `addresses` instead.
+              address: <str>
+
+              # Virtual IPv6 addresses.
+              addresses:
+                - <str>
             peer_authentication:
 
               # Authentication mode.
@@ -1699,7 +1722,7 @@
           enabled: <bool>
 
           # Warning: This should not be combined with `ethernet_interfaces[].mode`.
-          mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone">
+          mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone" | "tap" | "tool" | "tap-tool">
 
           # Set VLAN when interface is in access mode.
           # Warning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel` and `ethernet_interface[].vlans`.

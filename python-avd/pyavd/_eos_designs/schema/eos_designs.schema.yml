@@ -9,6 +9,184 @@ $schema: avd_meta_schema
 type: dict
 allow_other_keys: true
 keys:
+  aaa_settings:
+    documentation_options:
+      table: management-settings
+    type: dict
+    keys:
+      tacacs:
+        type: dict
+        keys:
+          servers:
+            type: list
+            items:
+              type: dict
+              keys:
+                host:
+                  type: str
+                  description: 'Host IP address or name.
+
+                    Combination of `host` and `vrf` should be unique.'
+                  required: true
+                groups:
+                  type: list
+                  required: true
+                  min_length: 1
+                  items:
+                    type: str
+                vrf:
+                  type: str
+                  description: "VRF name.\nThe value will be interpreted according
+                    to these rules:\n- `use_mgmt_interface_vrf` will configure the
+                    TACACS host under the VRF set with `mgmt_interface_vrf`.\n  An
+                    error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
+                    for the device.\n- `use_inband_mgmt_vrf` will configure the TACACS
+                    host under the VRF set with `inband_mgmt_vrf`.\n  An error will
+                    be raised if inband management is not configured for the device.\n-
+                    `use_default_mgmt_method_vrf` will configure the VRF and source-interface
+                    for one of the two options above depending on the value of `default_mgmt_method`.\n-
+                    Any other string will be used directly as the VRF name."
+                  convert_types:
+                  - int
+                key:
+                  type: str
+                  description: 'Encrypted Type 7 key.
+
+                    Takes precedence over `cleartext_key` if both are provided.
+
+                    Either `key` or `cleartext_key` must be set to render the configuration;
+
+                    otherwise, an error will be raised.'
+                cleartext_key:
+                  type: str
+                  description: 'Plaintext password that will be encrypted to Type
+                    7 by AVD.
+
+                    To protect the password at rest it is strongly recommended to
+                    make use of a vault or similar.
+
+                    Either `key` or `cleartext_key` must be set to render the configuration;
+
+                    otherwise, an error will be raised.'
+                  convert_types:
+                  - int
+          vrfs:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: VRF Name.
+                  convert_types:
+                  - int
+                source_interface:
+                  type: str
+                  description: 'Source interface to use for TACACS hosts in this VRF.
+
+                    If not set, the source interface may be set automatically when
+                    the TACACS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                    or `use_default_mgmt_method_vrf`.
+
+                    If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
+                    this setting will take precedence.'
+          policy:
+            type: dict
+            keys:
+              ignore_unknown_mandatory_attribute:
+                type: bool
+                default: false
+      radius:
+        type: dict
+        keys:
+          servers:
+            type: list
+            items:
+              type: dict
+              keys:
+                host:
+                  type: str
+                  description: 'Host IP address or name.
+
+                    Combination of `host` and `vrf` should be unique.'
+                  required: true
+                groups:
+                  type: list
+                  required: true
+                  min_length: 1
+                  items:
+                    type: str
+                vrf:
+                  type: str
+                  description: "VRF name.\nThe value will be interpreted according
+                    to these rules:\n- `use_mgmt_interface_vrf` will configure the
+                    Radius host under the VRF set with `mgmt_interface_vrf`.\n  An
+                    error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
+                    for the device.\n- `use_inband_mgmt_vrf` will configure the Radius
+                    host under the VRF set with `inband_mgmt_vrf`.\n  An error will
+                    be raised if inband management is not configured for the device.\n-
+                    `use_default_mgmt_method_vrf` will configure the VRF and source-interface
+                    for one of the two options above depending on the value of `default_mgmt_method`.\n-
+                    Any other string will be used directly as the VRF name."
+                  convert_types:
+                  - int
+                key:
+                  type: str
+                  description: 'Encrypted type-7 key.
+
+                    Takes precedence over `cleartext_key`.'
+                cleartext_key:
+                  type: str
+                  description: 'Cleartext password.
+
+                    Encrypted to Type 7 by AVD.
+
+                    To protect the password at rest it is strongly recommended to
+                    make use of a vault or similar.'
+                  convert_types:
+                  - int
+          vrfs:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: VRF Name.
+                  convert_types:
+                  - int
+                source_interface:
+                  type: str
+                  description: 'Source interface to use for RADIUS hosts in this VRF.
+
+                    If not set, the source interface may be set automatically when
+                    the RADIUS server VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                    or `use_default_mgmt_method_vrf`.
+
+                    If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
+                    this setting will take precedence.'
+      authentication:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/aaa_authentication
+      authorization:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/aaa_authorization
+      accounting:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/aaa_accounting
+      root_login:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            default: false
+          sha512_password:
+            type: str
+      local_users:
+        $ref: eos_cli_config_gen#/keys/local_users
+        type: list
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
@@ -31,6 +209,13 @@ keys:
           there.\n- `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.\n
           \ If `default_mgmt_method` is 'none', the VRF must be specified. For VRF
           default set the string \"default\"."
+      inband_mgmt_attached_hosts:
+        type: bool
+        default: false
+        description: 'Opt-in to the new behavior for inband management route export:
+
+          - `ip attached-host route export` will only be rendered for inband management
+          VLAN interfaces if the underlay protocol is BGP.'
   avd_data_conversion_mode:
     documentation_options:
       table: role-input-validation
@@ -62,6 +247,24 @@ keys:
       "warning" will produce warning messages.
 
       '
+  avd_digital_twin_mode:
+    documentation_options:
+      table: role-settings
+    type: bool
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
+
+      Enable generation of the Digital Twin version of the fabric (Digital Twin topology,
+      adjusted configuration, etc.).
+
+      By default, Digital Twin artifacts (such as the topology file, adjusted structured
+      and EOS configuration, device and fabric documentation) will replace original
+      fabric artifacts.
+
+      To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name`
+      variables for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated
+      output location.'
+    default: false
   avd_eos_designs_debug:
     documentation_options:
       table: role-settings
@@ -1018,7 +1221,7 @@ keys:
                   type: str
                   description: Short name for the CVaaS cluster. Required here, but
                     only used when configuring multiple clusters.
-                  pattern: ^[a-zA-Z1-9-_]+$
+                  pattern: ^[a-zA-Z0-9-_]+$
                 region:
                   type: str
                   description: 'Optionally set the region to stream to.
@@ -1087,7 +1290,7 @@ keys:
               type: str
               description: Short name for the cluster. Required here, but only used
                 when configuring multiple clusters.
-              pattern: ^[a-zA-Z1-9-_]+$
+              pattern: ^[a-zA-Z0-9-_]+$
             servers:
               type: list
               required: true
@@ -1157,7 +1360,7 @@ keys:
         description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
           `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
 
-          Can be set to `false` to avoid changes when migrating from old `cv_instances`
+          Can be set to `false` to avoid changes when migrating from the old `cv_instances`
           model.'
         default: true
   cv_tags_topology_type:
@@ -1304,7 +1507,7 @@ keys:
       table: default-connected-endpoints-description
     description: "Default description or description template to be used on all ports
       to connected endpoints.\nThis can be a template using the AVD string formatter
-      syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `endpoint_type`: The `type` from `connected_endpoints_keys`
       like `server`, `router` etc.\n  - `endpoint`: The name of the connected endpoint\n
       \ - `endpoint_port`: The value from `endpoint_ports` for this switch port if
@@ -1318,7 +1521,7 @@ keys:
       table: default-connected-endpoints-description
     description: "Default description or description template to be used on all port-channels
       to connected endpoints.\nThis can be a template using the AVD string formatter
-      syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `endpoint_type`: The `type` from `connected_endpoints_keys`
       like `server`, `router` etc.\n  - `endpoint`: The name of the connected endpoint\n
       \ - `endpoint_port_channel`: The value of `endpoint_port_channel` if set.\n
@@ -1391,6 +1594,14 @@ keys:
           items:
             type: str
             description: Interface range or interface.
+        mlag_interfaces_speed:
+          type: str
+          description: 'Set MLAG interfaces speed.
+
+            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
+            or `auto <interface_speed>`.
+
+            '
         downlink_interfaces:
           type: list
           description: List of downlink interfaces or downlink interface ranges.
@@ -1406,13 +1617,13 @@ keys:
     type: str
     description: "`default_mgmt_method` controls the default VRF and source interface
       used for the following management and monitoring protocols configured with `eos_designs`:\n
-      \ - `logging_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n  - `snmp_settings`\n
-      \ - `ssh_settings`\n\n`oob` means the protocols will be configured with the
-      VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.\n`inband`
-      means the protocols will be configured with the VRF set by `inband_mgmt_vrf`
-      and `inband_mgmt_interface` as the source interface.\n`none` means the VRF and
-      or interface must be manually set for each protocol.\nThis can be overridden
-      under the settings for each protocol.\n"
+      \ - `aaa_settings`\n  - `cv_settings`\n  - `logging_settings`\n  - `management_eapi`\n
+      \ - `ntp_settings`\n  - `sflow_settings`\n  - `snmp_settings`\n  - `ssh_settings`\n\n`oob`
+      means the protocols will be configured with the VRF set by `mgmt_interface_vrf`
+      and `mgmt_interface` as the source interface.\n`inband` means the protocols
+      will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface`
+      as the source interface.\n`none` means the VRF and or interface must be manually
+      set for each protocol.\nThis can be overridden under the settings for each protocol.\n"
     valid_values:
     - oob
     - inband
@@ -1424,7 +1635,7 @@ keys:
       table: default-network-ports-description
     description: "Default description or description template to be used on all ports
       defined under `network_ports`.\nThis can be a template using the AVD string
-      formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `endpoint_type`: Always set to `network_port`.\n
       \ - `endpoint`: The value of the `endpoint` key if set.\n  - `port_channel_id`:
       The port-channel number for the switch.\n\nBy default the description is templated
@@ -1436,7 +1647,7 @@ keys:
       table: default-network-ports-description
     description: "Default description or description template to be used on all port-channels
       defined under `network_ports`.\nThis can be a template using the AVD string
-      formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `endpoint_type`: Always set to `network_port`.\n
       \ - `endpoint`: The value of the `endpoint` key if set.\n  - `endpoint_port_channel`:
       The value of `endpoint_port_channel` if set.\n  - `port_channel_id`: The port-channel
@@ -1472,7 +1683,7 @@ keys:
     description: "The default description or description template to be used on L3
       point-to-point ethernet interfaces.\nThe interfaces using this are the routed
       uplinks and `p2p_links` defined under `l3_edge` or `core_interfaces`.\nThis
-      can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `peer`: The name of the peer.\n  - `interface`:
       The local interface name.\n  - `peer_interface`: The interface on the peer.\n
       \ - `vrf`: The name of the VRF if set (Only applicable for `uplink_type: p2p-vrfs`).\n\nBy
@@ -1485,7 +1696,7 @@ keys:
     description: "The default description or description template to be used on L3
       point-to-point port-channel interfaces.\nThe port-channels using this are `p2p_links`
       defined under `l3_edge` or `core_interfaces`.\nThis can be a template using
-      the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `peer`: The name of the peer.\n  - `interface`:
       The local interface name.\n  - `peer_interface`: The interface on the peer.\n
       \ - `port_channel_id`: The local port-channel ID.\n  - `peer_port_channel_id`:
@@ -1498,7 +1709,7 @@ keys:
       table: fabric-settings
     description: "The default description or description template to be used on VRF
       diagnostic loopback interfaces.\nThis can be a template using the AVD string
-      formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `interface`: The Loopback interface name.\n
       \ - `vrf`: The VRF name.\n  - `tenant`: The tenant name.\n\nBy default the description
       is templated from the VRF name."
@@ -1524,6 +1735,48 @@ keys:
         - mpls
         - l2ls
         default: l3ls-evpn
+  digital_twin:
+    documentation_options:
+      table: digital-twin-configuration
+    type: dict
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
+
+      Global settings to configure the Digital Twin of the Fabric.'
+    keys:
+      environment:
+        type: str
+        description: Targeted Digital Twin environment.
+        valid_values:
+        - act
+        default: act
+      fabric:
+        type: dict
+        description: Settings for Digital Twin fabric devices.
+        required: true
+        keys:
+          act_os_version:
+            type: str
+            description: OS version for ACT Digital Twin fabric devices.
+          act_username:
+            type: str
+            description: Username for ACT Digital Twin fabric devices.
+            default: cvpadmin
+          act_password:
+            type: str
+            description: Cleartext password for ACT Digital Twin fabric devices.
+            default: cvp123!
+          act_internet_access:
+            type: bool
+            default: false
+            description: 'Specifies if the ACT Digital Twin device is deployed with
+              direct access to the Internet.
+
+              This option applies only to the ''cloudeos'' and ''veos'' node types
+              and will be ignored for all other ACT node types.
+
+              ACT does not provide direct Internet access to cloudeos or veos devices
+              by default.'
   dns_settings:
     documentation_options:
       table: management-settings
@@ -1543,17 +1796,19 @@ keys:
           keys:
             vrf:
               type: str
-              description: "If not set, the VRF is automatically picked up from the
-                global setting `default_mgmt_method`.\nThe value of `vrf` will be
-                interpreted according to these rules:\n- `use_mgmt_interface_vrf`
-                will configure the DNS server under the VRF set with `mgmt_interface_vrf`
-                and set the `mgmt_interface` as DNS lookup source-interface.\n  An
-                error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
-                for the device.\n- `use_inband_mgmt_vrf` will configure the DNS server
-                under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface`
-                as DNS lookup source-interface.\n  An error will be raised if inband
-                management is not configured for the device.\n- Any other string will
-                be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface`
+              default: use_default_mgmt_method_vrf
+              description: "The value of `vrf` will be interpreted according to these
+                rules:\n- `use_mgmt_interface_vrf` will configure the DNS server under
+                the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface`
+                as DNS lookup source-interface.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+                will configure the DNS server under the VRF set with `inband_mgmt_vrf`
+                and set the `inband_mgmt_interface` as DNS lookup source-interface.\n
+                \ An error will be raised if inband management is not configured for
+                the device.\n- `use_default_mgmt_method_vrf` will configure the VRF
+                and source-interface for one of the two options above depending on
+                the value of `default_mgmt_method`.\n- Any other string will be used
+                directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface`
                 if needed."
               convert_types:
               - int
@@ -1577,10 +1832,10 @@ keys:
       set_source_interfaces:
         type: bool
         default: true
-        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`
-          and `use_inband_mgmt_vrf`.
+        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+          `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
 
-          Can be set to `false` to avoid changes when migrating from old `name_servers`
+          Can be set to `false` to avoid changes when migrating from the old `name_servers`
           model.'
   enable_trunk_groups:
     documentation_options:
@@ -2084,7 +2339,7 @@ keys:
       Node ID pool.\nFor each device the Node ID is assigned from a pool shared by
       all devices rendering the same pool name.\nThis can be modified to include fewer
       or more fields to keep separate pools or to use the same pool across areas.\nThis
-      can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `fabric_name`: The `fabric_name` assigned
       to the device.\n  - `dc_name`: The `dc_name` assigned to the device.\n  - `pod_name`:
       The `pod_name` assigned to the device.\n  - `type`: The `type` assigned to the
@@ -2241,6 +2496,15 @@ keys:
                         max: 65535
                         convert_types:
                         - str
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 6.0.0
+                      new_key: collectors
+                  collectors:
+                    type: list
+                    primary_key: host
+                    $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/collectors
                   format:
                     type: dict
                     keys:
@@ -2265,8 +2529,8 @@ keys:
             on_interval: 300000
           exporters:
           - name: CV-TELEMETRY
-            collector:
-              host: 127.0.0.1
+            collectors:
+            - host: 127.0.0.1
             local_interface: Loopback0
             template_interval: 3600000
   generate_cv_tags:
@@ -2464,7 +2728,20 @@ keys:
   ipv4_prefix_list_catalog:
     type: list
     primary_key: name
-    description: IPv4 prefix-list catalog.
+    description: 'IPv4 prefix-list catalog.
+
+      Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in the
+      configuration when
+
+      they are explicitly referenced in one of the following node config keys:
+
+      - `l3_interfaces.[].bgp.ipv4_prefix_list_in`
+
+      - `l3_interfaces.[].bgp.ipv4_prefix_list_out`
+
+      - `l3_port_channels.[].bgp.ipv4_prefix_list_in`
+
+      - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.'
     items:
       type: dict
       keys:
@@ -2643,6 +2920,11 @@ keys:
   local_users:
     documentation_options:
       table: management-settings
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 6.0.0
+      new_key: aaa_settings.local_users
     $ref: eos_cli_config_gen#/keys/local_users
     type: list
   logging_settings:
@@ -2664,17 +2946,19 @@ keys:
               required: true
             vrf:
               type: str
-              description: "If not set, the VRF is automatically picked up from the
-                global setting `default_mgmt_method`.\nThe value of `vrf` will be
-                interpreted according to these rules:\n- `use_mgmt_interface_vrf`
-                will configure the logging destination under the VRF set with `mgmt_interface_vrf`
-                and set the `mgmt_interface` as logging source-interface.\n  An error
-                will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for
-                the device.\n- `use_inband_mgmt_vrf` will configure the logging destination
-                under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface`
-                as logging source-interface.\n  An error will be raised if inband
-                management is not configured for the device.\n- Any other string will
-                be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface`
+              default: use_default_mgmt_method_vrf
+              description: "The value of `vrf` will be interpreted according to these
+                rules:\n- `use_mgmt_interface_vrf` will configure the logging destination
+                under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface`
+                as logging source-interface.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+                will configure the logging destination under the VRF set with `inband_mgmt_vrf`
+                and set the `inband_mgmt_interface` as logging source-interface.\n
+                \ An error will be raised if inband management is not configured for
+                the device.\n- `use_default_mgmt_method_vrf` will configure the VRF
+                and source-interface for one of the two options above depending on
+                the value of `default_mgmt_method`.\n- Any other string will be used
+                directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface`
                 if needed."
               convert_types:
               - int
@@ -2739,8 +3023,6 @@ keys:
       table: management-settings
     description: 'Default is HTTPS management eAPI enabled.
 
-      The VRF is set to < mgmt_interface_vrf >.
-
       '
     type: dict
     keys:
@@ -2755,6 +3037,51 @@ keys:
         default: true
       default_services:
         type: bool
+      vrfs:
+        default:
+        - name: use_mgmt_interface_vrf
+          enabled: true
+        type: list
+        primary_key: name
+        description: 'Note: For backward compatibility, `mgmt_ip` presence is not
+          enforced when `vrfs` is **not** configured and the default value of `use_mgmt_interface_vrf`
+          is used.
+
+          To enforce the presence of `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`,
+          explicitly define an entry in `vrfs` using `name: use_mgmt_interface_vrf`.
+
+          This behavior will be removed in AVD 6.0.'
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: "VRF name.\nThe value will be interpreted according to
+                these rules:\n- `use_mgmt_interface_vrf` will configure the eAPI under
+                the VRF set with `mgmt_interface_vrf`.\n  An error will be raised
+                if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n-
+                `use_inband_mgmt_vrf` will configure the eAPI under the VRF set with
+                `inband_mgmt_vrf`.\n  An error will be raised if inband management
+                is not configured for the device.\n- `use_default_mgmt_method_vrf`
+                will configure the eAPI under VRF for one of the two options above
+                depending on the value of `default_mgmt_method`.\n- Any other string
+                will be used directly as the VRF name."
+              convert_types:
+              - int
+            enabled:
+              type: bool
+              required: true
+              description: Enable/disable Management eAPI for this VRF.
+            ipv4_acl:
+              type: str
+              description: IPv4 access-list name.
+              convert_types:
+              - int
+            ipv6_acl:
+              type: str
+              description: IPv6 access-list name.
+              convert_types:
+              - int
   mgmt_destination_networks:
     documentation_options:
       table: management-interface-settings
@@ -2809,7 +3136,7 @@ keys:
       table: fabric-settings
     description: "Description or description template to be used on the MLAG BGP peers
       including those in VRFs.\nThis can be a template using the AVD string formatter
-      syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `interface`: The local MLAG L3 VLAN interface.\n  - `peer_interface`: The
       MLAG L3 VLAN interface on the MLAG peer.\n  - `vrf`: The name of the VRF. Not
@@ -2821,7 +3148,7 @@ keys:
     documentation_options:
       table: fabric-settings
     description: "Description or description template to be used on the MLAG BGP peer-group.\nThis
-      can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n\nThe
       default description is the name of the MLAG peers."
     default: '{mlag_peer}'
@@ -2856,7 +3183,7 @@ keys:
       table: fabric-settings
     description: "Description or description template to be used on MLAG peer-link
       ethernet interfaces.\nThis can be a template using the AVD string formatter
-      syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `interface`: The local MLAG port-channel interface.\n  - `peer_interface`:
       The port-channel interface on the MLAG peer.\n  - `mlag_port_channel_id`: The
@@ -2880,7 +3207,7 @@ keys:
       table: fabric-settings
     description: "Description or description template to be used on MLAG L3 peering
       SVI (Interface Vlan4093 by default).\nThis can be a template using the AVD string
-      formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `interface`: The MLAG L3 peering SVI name.\n  - `mlag_peer_l3_vlan`: The
       MLAG L3 peering VLAN ID."
@@ -2890,7 +3217,7 @@ keys:
     documentation_options:
       table: fabric-settings
     description: "Name or name template to be used on MLAG L3 VLAN (VLAN 4093 by default).\nThis
-      can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `mlag_peer_l3_vlan`: The MLAG L3 peering VLAN ID."
     default: MLAG_L3
@@ -2900,7 +3227,7 @@ keys:
       table: fabric-settings
     description: "Description or description template to be used on MLAG L3 peering
       SVI for VRFs.\nThis can be a template using the AVD string formatter syntax:
-      https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `interface`: The MLAG L3 VRF peering SVI name.\n  - `vlan`: The MLAG L3
       VRF peering VLAN ID.\n  - `vrf`: The VRF name."
@@ -2910,7 +3237,7 @@ keys:
     documentation_options:
       table: fabric-settings
     description: "Name or name template to be used on MLAG L3 peering VLAN for VRFs.\nThis
-      can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `vlan`: The MLAG L3 VRF peering VLAN ID.\n  - `vrf`: The VRF name."
     default: MLAG_L3_VRF_{vrf}
@@ -2920,7 +3247,7 @@ keys:
       table: fabric-settings
     description: "Description or description template to be used on MLAG peering SVI
       (Interface Vlan4094 by default).\nThis can be a template using the AVD string
-      formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `interface`: The MLAG peering SVI name.\n  - `mlag_peer_vlan`: The MLAG
       peering VLAN ID."
@@ -2931,7 +3258,7 @@ keys:
       table: fabric-settings
     description: "Name or name template to be used on MLAG peering VLAN (VLAN 4094
       by default).\nThis can be a template using the AVD string formatter syntax:
-      https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `mlag_peer_vlan`: The MLAG peering VLAN ID."
     default: MLAG
@@ -2941,7 +3268,7 @@ keys:
       table: fabric-settings
     description: "Description or description template to be used on MLAG peer-link
       port-channel interfaces.\nThis can be a template using the AVD string formatter
-      syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
       \ - `interface`: The local MLAG port-channel interface.\n  - `peer_interface`:
       The port-channel interface on the MLAG peer.\n  - `mlag_port_channel_id`: The
@@ -2999,7 +3326,7 @@ keys:
         description:
           type: str
           description: "Description or description template to be used on all ports.\nThis
-            can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+            can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
             available template fields are:\n  - `endpoint_type` - always set to `network_port`.\n
             \ - `endpoint` - content of the `endpoint` key if set.\n  - `port_channel_id`:
             The port-channel number for the switch.\n\nThe default description is
@@ -3416,7 +3743,33 @@ keys:
         type: bool
       authentication_keys:
         type: list
-        $ref: eos_cli_config_gen#/keys/ntp/keys/authentication_keys
+        primary_key: id
+        items:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/ntp/keys/authentication_keys/items
+          keys:
+            key:
+              type: str
+              description: 'Authentication provided using the `key_type` format.
+
+                Will be rendered as such.
+
+                Takes precedence over `cleartext_key`.'
+              required: false
+            cleartext_key:
+              type: str
+              description: 'Cleartext key for the NTP authentication key. Encrypted
+                to Type 7 by AVD.
+
+                `key_type` does not influence this key.
+
+                To protect the password at rest it is strongly recommended to make
+                use of a vault or similar.'
+            key_type:
+              type: str
+              description: 'Key type of the `key`.
+
+                Does not have any influence on `cleartext_key`.'
       trusted_keys:
         type: str
         $ref: eos_cli_config_gen#/keys/ntp/keys/trusted_keys
@@ -3442,7 +3795,7 @@ keys:
     documentation_options:
       table: overlay-settings
     description: "Description or description template to be used on the overlay BGP
-      peers.\nThis can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      peers.\nThis can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `peer`: The name of the BGP peer.\n  - `peer_interface`:
       The interface on the BGP peer if available.\n\nThe default description is built
       from the name and interface of the BGP peer."
@@ -3904,15 +4257,31 @@ keys:
         feature_support:
           type: dict
           keys:
+            queue_monitor:
+              type: bool
+              description: 'Support for LANZ.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
             queue_monitor_length_notify:
               type: bool
+              description: 'Support for LANZ notifying mode. Requires the parent `queue_monitor`
+                feature to be enabled.
+
+                The feature will be ignored on platforms where this is false.'
               default: true
             interface_storm_control:
               type: bool
               default: true
+              description: 'Support for storm-control.
+
+                The feature will be ignored on platforms where this is false.'
             poe:
               type: bool
               default: false
+              description: 'Support for PoE.
+
+                The feature will be ignored on platforms where this is false.'
             subinterface_mtu:
               type: bool
               default: true
@@ -3935,6 +4304,24 @@ keys:
                 interface MTU setting. Set this via "default_interface_mtu"
 
                 '
+            per_interface_l2_mtu:
+              type: bool
+              default: true
+              description: 'Support for configuration of per interface L2 MTU on Ethernet
+                or Port-channel interfaces.
+
+                The feature will be ignored on platforms where this is false.
+
+                '
+            per_interface_l2_mru:
+              type: bool
+              default: true
+              description: 'Support for configuration of per interface L2 MRU (maximum
+                receive unit) on Ethernet and Port-Channel interfaces.
+
+                The feature will be ignored on platforms where this is false.
+
+                '
             bgp_update_wait_install:
               type: bool
               default: true
@@ -3942,6 +4329,8 @@ keys:
                 BGP instance is initiated until the BGP convergence state is reached.
 
                 Can be overridden by setting "bgp_update_wait_install" host/group_vars.
+
+                The feature will be ignored on platforms where this is false.
 
                 '
             bgp_update_wait_for_convergence:
@@ -3955,6 +4344,8 @@ keys:
                 into the forwarding plane.
 
                 Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
+
+                The feature will be ignored on platforms where this is false.
 
                 '
             platform_sfe_interface_profile:
@@ -3974,7 +4365,119 @@ keys:
             evpn_gateway_all_active_multihoming:
               type: bool
               default: false
-              description: Support for all-active EVPN gateway redundancy.
+              description: 'Support for all-active EVPN gateway redundancy.
+
+                An error will be raised if the feature is enabled and this is false.'
+            hardware_counters:
+              type: bool
+              description: 'Support for enabling counters using programmable hardware
+                counter resources.
+
+                Setting this key to `false` for the specific platform will ignore
+                all hardware counter features for this platform.'
+              default: true
+            hardware_counter_features:
+              type: dict
+              description: 'Per-feature support for the hardware counters.
+
+                Features set to `false` will be ignored for this platform.'
+              keys:
+                acl:
+                  type: bool
+                  default: true
+                decap_group:
+                  type: bool
+                  default: true
+                directflow:
+                  type: bool
+                  default: true
+                ecn:
+                  type: bool
+                  default: true
+                flow_spec:
+                  type: bool
+                  default: true
+                gre_tunnel_interface:
+                  type: bool
+                  default: true
+                ip:
+                  type: bool
+                  default: true
+                mpls_interface:
+                  type: bool
+                  default: true
+                mpls_lfib:
+                  type: bool
+                  default: true
+                mpls_tunnel:
+                  type: bool
+                  default: true
+                multicast:
+                  type: bool
+                  default: true
+                nexthop:
+                  type: bool
+                  default: true
+                pbr:
+                  type: bool
+                  default: true
+                pdp:
+                  type: bool
+                  default: true
+                policing_interface:
+                  type: bool
+                  default: true
+                qos:
+                  type: bool
+                  default: true
+                qos_dual_rate_policer:
+                  type: bool
+                  default: true
+                route:
+                  type: bool
+                  default: true
+                routed_port:
+                  type: bool
+                  default: true
+                segment_security:
+                  type: bool
+                  default: true
+                subinterface:
+                  type: bool
+                  default: true
+                tapagg:
+                  type: bool
+                  default: true
+                traffic_class:
+                  type: bool
+                  default: true
+                traffic_policy:
+                  type: bool
+                  default: true
+                vlan:
+                  type: bool
+                  default: true
+                vlan_interface:
+                  type: bool
+                  default: true
+                vni_decap:
+                  type: bool
+                  default: true
+                vni_encap:
+                  type: bool
+                  default: true
+                vtep_decap:
+                  type: bool
+                  default: true
+                vtep_encap:
+                  type: bool
+                  default: true
+            hardware_speed_group:
+              type: bool
+              description: 'Support for configurable speeds per speed-group.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
             private_vlan:
               type: bool
               default: true
@@ -3986,6 +4489,24 @@ keys:
                 See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
 
                 '
+            sflow:
+              type: bool
+              description: 'Support for sFlow.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
+            wan:
+              type: bool
+              description: 'Support for Arista WAN features.
+
+                An error will be raised if the feature is enabled and this is false.'
+              default: true
+            ptp:
+              type: bool
+              description: 'Support for Precision Time Protocol (PTP).
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
         management_interface:
           type: str
           default: Management1
@@ -4006,6 +4527,30 @@ keys:
             hardware_exclusive:
               type: bool
               description: Only use entropy from the hardware source.
+        digital_twin:
+          type: dict
+          description: 'PREVIEW: This option is marked as "preview", meaning the data
+            models or generated configuration can change at any time.
+
+            Digital Twin settings applied when `avd_digital_twin_mode` is `true`.'
+          keys:
+            platform:
+              type: str
+              description: 'Name of an alternate `platform_settings` platform used
+                when running in Digital Twin mode.
+
+                The `platform_settings` for the regular `platform` is used if this
+                is not set.'
+            act_node_type:
+              type: str
+              description: ACT node type.
+              valid_values:
+              - cloudeos
+              - cvp
+              - generic
+              - third-party
+              - tools-server
+              - veos
         structured_config:
           type: dict
           relaxed_validation: true
@@ -4025,6 +4570,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7050X3
       feature_support:
@@ -4034,6 +4581,8 @@ keys:
         non_mlag: 330
       trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
         l3-shared 131072
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 720XP
       feature_support:
@@ -4044,6 +4593,8 @@ keys:
         non_mlag: 330
       trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000
         l3-shared 22000
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - '750'
       - '755'
@@ -4055,6 +4606,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 720DP
       - 722XP
@@ -4065,6 +4618,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7010TX
       feature_support:
@@ -4073,6 +4628,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7280R
       - 7280R2
@@ -4084,6 +4641,8 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         private_vlan: false
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7280R3
       reload_delay:
@@ -4093,6 +4652,8 @@ keys:
       feature_support:
         evpn_gateway_all_active_multihoming: true
         private_vlan: false
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7500R
       - 7500R2
@@ -4104,6 +4665,8 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         private_vlan: false
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7500R3
       - 7800R3
@@ -4115,6 +4678,8 @@ keys:
       feature_support:
         evpn_gateway_all_active_multihoming: true
         private_vlan: false
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7358X4
       management_interface: Management1/1
@@ -4126,12 +4691,16 @@ keys:
         interface_storm_control: true
         bgp_update_wait_for_convergence: true
         bgp_update_wait_install: false
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7368X4
       management_interface: Management0
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - 7300X3
       management_interface: Management0
@@ -4140,6 +4709,8 @@ keys:
         non_mlag: 1320
       trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
         l3-shared 131072
+      digital_twin:
+        platform: vEOS-lab
     - platforms:
       - VEOS
       - VEOS-LAB
@@ -4154,6 +4725,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        act_node_type: veos
     - platforms:
       - CEOS
       - cEOS
@@ -4169,6 +4742,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        act_node_type: veos
     - platforms:
       - CloudEOS
       feature_support:
@@ -4176,6 +4751,8 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
       p2p_uplinks_mtu: 9194
+      digital_twin:
+        act_node_type: cloudeos
     - platforms:
       - AWE-5310
       - AWE-7230R
@@ -4189,6 +4766,8 @@ keys:
           max_rx_queues: 6
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
+      digital_twin:
+        platform: CloudEOS
     - platforms:
       - AWE-5510
       - AWE-7250R
@@ -4202,6 +4781,8 @@ keys:
           max_rx_queues: 16
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
+      digital_twin:
+        platform: CloudEOS
     - platforms:
       - AWE-7220R
       feature_support:
@@ -4212,6 +4793,8 @@ keys:
         poe: true
       management_interface: Management1
       p2p_uplinks_mtu: 9194
+      digital_twin:
+        platform: CloudEOS
   platform_speed_groups:
     documentation_options:
       table: platform-settings
@@ -4591,7 +5174,7 @@ keys:
                 `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set
                 with `inband_mgmt_vrf`.\n  An error will be raised if inband management
                 is not configured for the device.\n- `use_default_mgmt_method_vrf`
-                will configure the VRF and source-interface for one of the two options
+                will configure the SNMP ACL under the VRF for one of the two options
                 above depending on the value of `default_mgmt_method`.\n- Any other
                 string will be used directly as the VRF name."
               convert_types:
@@ -4602,6 +5185,9 @@ keys:
             source_interface:
               type: str
               description: 'Source interface to use for SNMP hosts in this VRF.
+
+                If not set, the source interface may be set automatically when VRF
+                is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
 
                 If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
                 this setting will take precedence.'
@@ -4729,32 +5315,37 @@ keys:
                 will configure the SNMP host under the VRF set with `inband_mgmt_vrf`
                 and set the `inband_mgmt_interface` as SNMP source-interface.\n  An
                 error will be raised if inband management is not configured for the
-                device.\n- `use_default_mgmt_method_vrf` will configure the VRF and
-                source-interface for one of the two options above depending on the
-                value of `default_mgmt_method`.\n- Any other string will be used directly
-                as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface`
-                if needed."
+                device.\n- `use_default_mgmt_method_vrf` will configure the SNMP host
+                under the VRF and set the source-interface for one of the two options
+                above depending on the value of `default_mgmt_method`.\n- Any other
+                string will be used directly as the VRF name. Remember to set the
+                `snmp_settings.vrfs[].source_interface` if needed."
               convert_types:
               - int
             use_mgmt_interface_vrf:
               type: bool
-              description: Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-                Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the
-                device, so if the host is only configured with this VRF, the host
-                will not be configured at all. Can be used in combination with "vrf"
-                and "use_inband_mgmt_vrf" to configure the SNMP host under multiple
-                VRFs.
+              description: 'Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
+
+                Ignored if ''mgmt_ip'' or ''ipv6_mgmt_ip'' are not configured for
+                the device, so if the host is only configured with this VRF, the host
+                will not be configured at all.
+
+                Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to
+                configure the SNMP host under multiple VRFs.'
               deprecation:
                 warning: true
                 remove_in_version: 6.0.0
                 new_key: 'vrf: "use_mgmt_interface_vrf"'
             use_inband_mgmt_vrf:
               type: bool
-              description: Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+              description: 'Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+
                 Ignored if inband management is not configured for the device, so
                 if the host is only configured with this VRF, the host will not be
-                configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
-                to configure the SNMP host under multiple VRFs.
+                configured at all.
+
+                Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
+                to configure the SNMP host under multiple VRFs.'
               deprecation:
                 warning: true
                 remove_in_version: 6.0.0
@@ -4849,6 +5440,11 @@ keys:
       radius:
         type: dict
         description: IP Radius source-interfaces.
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: 'aaa_settings.radius.vrfs[].source_interface or aaa_settings.radius.servers[].vrf:
+            use_mgmt_interface_vrf or aaa_settings.radius.servers[].vrf: use_inband_mgmt_vrf'
         keys:
           mgmt_interface:
             type: bool
@@ -4918,6 +5514,11 @@ keys:
       tacacs:
         type: dict
         description: IP Tacacs source-interfaces.
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: 'aaa_settings.tacacs.vrfs[].source_interface or aaa_settings.tacacs.servers[].vrf:
+            use_mgmt_interface_vrf or aaa_settings.tacacs.servers[].vrf: use_inband_mgmt_vrf'
         keys:
           mgmt_interface:
             type: bool
@@ -5178,11 +5779,26 @@ keys:
       \ - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n  - inband_ztp\n"
     type: bool
     default: false
+  underlay_isis_authentication_cleartext_key:
+    documentation_options:
+      table: isis-settings
+    type: str
+    description: 'Cleartext password.
+
+      Encrypted to Type 7 by AVD.
+
+      To protect the password at rest it is strongly recommended to make use of a
+      vault or similar.'
   underlay_isis_authentication_key:
     documentation_options:
       table: isis-settings
     type: str
-    description: Type-7 encrypted password.
+    description: 'Type-7 encrypted password.
+
+      Takes precedence over `underlay_isis_authentication_cleartext_key`.
+
+      To protect the password at rest it is strongly recommended to make use of a
+      vault or similar.'
   underlay_isis_authentication_mode:
     documentation_options:
       table: isis-settings
@@ -5208,7 +5824,7 @@ keys:
       table: fabric-settings
     description: "The description or description template to be used on L2 ethernet
       interfaces.\nThe interfaces using this are the member interfaces of port-channel
-      uplinks.\nThis can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      uplinks.\nThis can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `peer`: The name of the peer.\n  - `interface`:
       The local interface name.\n  - `peer_interface`: The interface on the peer.\n\nBy
       default the description is templated from the hostname and interface of the
@@ -5220,7 +5836,7 @@ keys:
       table: fabric-settings
     description: "The description or description template to be used on L2 port-channel
       interfaces.\nThe interfaces using this are port-channel uplinks.\nThis can be
-      a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
       available template fields are:\n  - `peer`: The name of the peer.\n  - `interface`:
       The local interface name.\n  - `peer_interface`: The interface on the peer.\n
       \ - `port_channel_id`: The local port-channel ID.\n  - `peer_port_channel_id`:
@@ -5422,6 +6038,15 @@ keys:
     convert_types:
     - str
     default: 12000
+  underlay_ospf_maximum_paths:
+    description: Maximum number of next-hops in an ECMP route.
+    documentation_options:
+      table: ospf-settings
+    type: int
+    min: 1
+    max: 128
+    convert_types:
+    - str
   underlay_ospf_process_id:
     documentation_options:
       table: ospf-settings
@@ -6080,7 +6705,7 @@ $defs:
       description:
         type: str
         description: "Description or description template to be used on all ports.\nThis
-          can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+          can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
           available template fields are:\n  - `endpoint_type` - the `type` from `connected_endpoints_keys`
           like `server`, `router` etc.\n  - `endpoint` - The name of the connected
           endpoint\n  - `endpoint_port` - The value from `endpoint_ports` for this
@@ -6309,96 +6934,7 @@ $defs:
             $ref: eos_designs#/$defs/adapter_config/keys/storm_control/keys/all
       monitor_sessions:
         type: list
-        description: Used to define switchports as source or destination for monitoring
-          sessions.
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              required: true
-              description: Session name.
-            role:
-              type: str
-              valid_values:
-              - source
-              - destination
-            source_settings:
-              type: dict
-              keys:
-                direction:
-                  type: str
-                  valid_values:
-                  - rx
-                  - tx
-                  - both
-                access_group:
-                  type: dict
-                  description: This can only be set when `session_settings.access_group`
-                    is not set.
-                  keys:
-                    type:
-                      type: str
-                      valid_values:
-                      - ip
-                      - ipv6
-                      - mac
-                    name:
-                      description: ACL name.
-                      type: str
-                    priority:
-                      type: int
-                      convert_types:
-                      - str
-            session_settings:
-              type: dict
-              description: 'Session settings are defined per session name.
-
-                Different session_settings for the same session name will be combined/merged.
-
-                '
-              keys:
-                encapsulation_gre_metadata_tx:
-                  type: bool
-                header_remove_size:
-                  type: int
-                  description: Number of bytes to remove from header.
-                  convert_types:
-                  - str
-                access_group:
-                  type: dict
-                  keys:
-                    type:
-                      type: str
-                      valid_values:
-                      - ip
-                      - ipv6
-                      - mac
-                    name:
-                      description: ACL name.
-                      type: str
-                rate_limit_per_ingress_chip:
-                  type: str
-                  description: "Ratelimit and unit as string.\nExamples:\n  \"100000
-                    bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n"
-                rate_limit_per_egress_chip:
-                  type: str
-                  description: "Ratelimit and unit as string.\nExamples:\n  \"100000
-                    bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n"
-                sample:
-                  type: int
-                  convert_types:
-                  - str
-                truncate:
-                  type: dict
-                  keys:
-                    enabled:
-                      type: bool
-                    size:
-                      type: int
-                      description: Size in bytes.
-                      convert_types:
-                      - str
+        $ref: eos_designs#/$defs/monitor_sessions
       ethernet_segment:
         type: dict
         description: Settings for all or single-active EVPN multihoming.
@@ -6477,7 +7013,7 @@ $defs:
             type: str
             description: "Description or description template to be used on the port-channel
               interface.\nThis can be a template using the AVD string formatter syntax:
-              https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+              https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
               available template fields are:\n  - `endpoint_type` - the `type` from
               `connected_endpoints_keys` like `server`, `router` etc.\n  - `endpoint`
               - The name of the connected endpoint\n  - `endpoint_port_channel` -
@@ -6756,7 +7292,7 @@ $defs:
                 type: list
                 description: "Unique description per port. When set, takes priority
                   over description.\nThis can be a template using the AVD string formatter
-                  syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                  syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
                   available template fields are:\n  - `endpoint_type` - the `type`
                   from `connected_endpoints_keys` like `server`, `router` etc.\n  -
                   `endpoint` - The name of the connected endpoint\n  - `endpoint_port`
@@ -6844,6 +7380,98 @@ $defs:
             profile:
               type: str
               description: P2P profile name. Profile defined under p2p_profiles.
+  monitor_sessions:
+    type: list
+    description: Used to define interfaces as source or destination for monitoring
+      sessions.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Session name.
+        role:
+          type: str
+          valid_values:
+          - source
+          - destination
+        source_settings:
+          type: dict
+          keys:
+            direction:
+              type: str
+              valid_values:
+              - rx
+              - tx
+              - both
+            access_group:
+              type: dict
+              description: This can only be set when `session_settings.access_group`
+                is not set.
+              keys:
+                type:
+                  type: str
+                  valid_values:
+                  - ip
+                  - ipv6
+                  - mac
+                name:
+                  description: ACL name.
+                  type: str
+                priority:
+                  type: int
+                  convert_types:
+                  - str
+        session_settings:
+          type: dict
+          description: 'Session settings are defined per session name.
+
+            Different session_settings for the same session name will be combined/merged.
+
+            '
+          keys:
+            encapsulation_gre_metadata_tx:
+              type: bool
+            header_remove_size:
+              type: int
+              description: Number of bytes to remove from header.
+              convert_types:
+              - str
+            access_group:
+              type: dict
+              keys:
+                type:
+                  type: str
+                  valid_values:
+                  - ip
+                  - ipv6
+                  - mac
+                name:
+                  description: ACL name.
+                  type: str
+            rate_limit_per_ingress_chip:
+              type: str
+              description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n
+                \ \"100 kbps\"\n  \"10 mbps\"\n"
+            rate_limit_per_egress_chip:
+              type: str
+              description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n
+                \ \"100 kbps\"\n  \"10 mbps\"\n"
+            sample:
+              type: int
+              convert_types:
+              - str
+            truncate:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                size:
+                  type: int
+                  description: Size in bytes.
+                  convert_types:
+                  - str
   network_services:
     documentation_options:
       table: network-services-common-settings
@@ -7104,6 +7732,30 @@ $defs:
                 within the VLAN.
 
                 This can be overridden per SVI.'
+        vxlan_flood_multicast:
+          documentation_options:
+            table: network-services-multicast-settings
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              required: true
+              description: Enable Flood group Multicast for all SVIs and l2vlans within
+                Tenant.
+            underlay_l2_multicast_group_ipv4_pool:
+              type: str
+              description: 'IPv4 Pool to allocate vxlan flood groups from.
+
+                The VLAN ID - 1 + `underlay_l2_multicast_group_ipv4_pool_offset` is
+                the offset for each group.
+
+                Comma separated list of prefixes (IPv4_address/Mask) or ranges (IPv4_address-IPv4_address).'
+              format: ipv4_pool
+            underlay_l2_multicast_group_ipv4_pool_offset:
+              type: int
+              default: 0
+              convert_types:
+              - str
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -7443,7 +8095,7 @@ $defs:
                     type: str
                     description: "Provide a custom description or description template
                       to be used on the VRF diagnostic loopback interface.\nThis can
-                      be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                      be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
                       available template fields are:\n  - `interface`: The Loopback
                       interface name.\n  - `vrf`: The VRF name.\n  - `tenant`: The
                       tenant name.\n\nThe default description is set by `default_vrf_diag_loopback_description`.\nBy
@@ -7871,12 +8523,20 @@ $defs:
                       type: list
                       $ref: eos_designs#/$defs/static_routes
                       description: Static routes to be configured on every device
-                        when this interface is configured.
+                        where this interface is configured.
+                    ipv6_static_routes:
+                      type: list
+                      $ref: eos_designs#/$defs/static_routes
+                      description: IPv6 static routes to be configured on every device
+                        where this interface is configured.
                     nodes:
                       type: list
                       items:
                         type: str
                         description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                     descriptions:
@@ -8005,6 +8665,9 @@ $defs:
                       $ref: eos_designs#/$defs/flow_tracking_link
                       description: Configures flow-tracking on the interface. Overrides
                         `fabric_flow_tracking.l3_interfaces` setting.
+                    monitor_sessions:
+                      type: list
+                      $ref: eos_designs#/$defs/monitor_sessions
                     campus_link_type:
                       type: list
                       $ref: eos_designs#/$defs/campus_link_type
@@ -8047,6 +8710,9 @@ $defs:
                       type: str
                       required: true
                       description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                       description: 'Interface description.
@@ -8150,9 +8816,14 @@ $defs:
                       - int
                     static_routes:
                       type: list
-                      description: Static routes to be configured on the device when
-                        this Port-channel is configured.
+                      description: Static routes to be configured on the device where
+                        this Port-channel interface is configured.
                       $ref: eos_designs#/$defs/static_routes
+                    ipv6_static_routes:
+                      type: list
+                      $ref: eos_designs#/$defs/static_routes
+                      description: IPv6 static routes to be configured on the device
+                        where this Port-channel interface is configured.
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
@@ -8852,6 +9523,18 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+              vxlan_flood_multicast:
+                documentation_options:
+                  table: network-services-multicast-settings
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: Explicitly enable or disable vxlan_flood_multicast
+                      to override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                  underlay_multicast_group:
+                    description: Specific multicast group to use for this VLAN.
+                    type: str
               igmp_snooping_enabled:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -10280,7 +10963,7 @@ $defs:
 
               l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
 
-              l2leafs       : <subnet> + 3 + <l2leaf id>
+              l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
 
               GW on l2leafs : <subnet> + 1
 
@@ -10296,6 +10979,18 @@ $defs:
               '
             type: str
             format: ipv4_cidr
+          inband_mgmt_subnet_offset:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            type: int
+            convert_types:
+            - str
+            default: 0
+            description: 'Offset value to adjust the calculated inband management
+              IP address within the subnet.
+
+              The assigned IP will be computed by adding this offset to the device
+              ID.'
           inband_mgmt_ip:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -10830,13 +11525,6 @@ $defs:
                   Not used for uplink interfaces.'
                 type: str
                 format: ipv4_pool
-              max_ha_interfaces:
-                type: int
-                convert_types:
-                - str
-                description: 'Number of parallel links towards HA switches.
-
-                  Can be used to reserve IP addresses for future parallel HA links.'
               port_channel_id:
                 type: int
                 convert_types:
@@ -10884,7 +11572,7 @@ $defs:
             description: L3 Port-Channel interfaces to configure on the node.
           data_plane_cpu_allocation_max:
             documentation_options:
-              table: system-settings
+              table: node-type-wan-configuration
             type: int
             $ref: eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max
             description: 'Set the maximum number of CPU used for the data plane.
@@ -10955,6 +11643,37 @@ $defs:
             description: Device type that CloudVision should use when generating the
               Topology like "leaf", "spine", "core", "edge" or "member-leaf".
             type: str
+          digital_twin:
+            documentation_options:
+              table: node-type-digital-twin-configuration
+            description: 'PREVIEW: This option is marked as "preview", meaning the
+              data models or generated configuration can change at any time.
+
+              Set the OS version and management IP address for the digital twin of
+              the associated node(s).'
+            type: dict
+            keys:
+              act_os_version:
+                type: str
+                description: 'Desired ACT Digital Twin OS version.
+
+                  Overrides global `digital_twin.fabric.act_os_version` flag.'
+              mgmt_ip:
+                type: str
+                description: Desired management interface IPv4 address.
+                format: cidr
+              act_internet_access:
+                type: bool
+                description: 'Specifies if the ACT Digital Twin device is deployed
+                  with direct access to the Internet.
+
+                  This option applies only to the ''cloudeos'' and ''veos'' node types
+                  and will be ignored for all other ACT node types.
+
+                  ACT does not provide direct Internet access to cloudeos or veos
+                  devices by default.
+
+                  Overrides global `digital_twin.fabric.act_internet_access` flag.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -11131,12 +11850,16 @@ $defs:
               description: 'Prefix List Name. Accept routes for only these prefixes
                 from the peer.
 
-                Required for wan interfaces.'
+                Required for wan interfaces.
+
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
             ipv4_prefix_list_out:
               type: str
               description: 'Prefix List Name. Advertise routes for only these prefixes.
 
-                If not specified, nothing would be advertised.'
+                If not specified, nothing would be advertised.
+
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
@@ -11375,12 +12098,16 @@ $defs:
               description: 'Prefix List Name. Accept routes for only these prefixes
                 from the peer.
 
-                Required for wan interfaces.'
+                Required for wan interfaces.
+
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
             ipv4_prefix_list_out:
               type: str
               description: 'Prefix List Name. Advertise routes for only these prefixes.
 
-                If not specified, nothing would be advertised.'
+                If not specified, nothing would be advertised.
+
+                The specified prefix list name must exist in `ipv4_prefix_list_catalog`.'
         ipv4_acl_in:
           description: 'Name of the IPv4 access-list to be assigned in the ingress
             direction.
@@ -11530,7 +12257,7 @@ $defs:
             type: str
             description: "Description or description template to be used on the ethernet
               interface.\nThis can be a template using the AVD string formatter syntax:
-              https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+              https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
               available template fields are:\n  - `peer`: The name of the peer.\n
               \ - `interface`: The local interface name.\n  - `peer_interface`: The
               interface on the peer.\n\nThe default description is set by `default_underlay_p2p_ethernet_description`.\nBy
@@ -11560,7 +12287,25 @@ $defs:
           - text
         isis_authentication_key:
           type: str
-          description: Type-7 encrypted password.
+          description: 'Type-7 encrypted password.
+
+            Takes precedence over ''underlay_isis_authentication_key'', ''underlay_isis_authentication_cleartext_key''
+
+            and `isis_authentication_cleartext_key`.
+
+            '
+        isis_authentication_cleartext_key:
+          type: str
+          description: 'Cleartext password.
+
+            Encrypted to Type 7 by AVD.
+
+            Takes precedence over ''underlay_isis_authentication_key'' and ''underlay_isis_authentication_cleartext_key''.
+
+            To protect the password at rest it is strongly recommended to make use
+            of a vault or similar.
+
+            '
         isis_network_type:
           type: str
           default: point-to-point
@@ -11631,7 +12376,7 @@ $defs:
               type: str
               description: "Description or description template to be used on the
                 port-channel interface.\nThis can be a template using the AVD string
-                formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+                formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
                 available template fields are:\n  - `peer`: The name of the peer.\n
                 \ - `interface`: The local port-channel interface name.\n  - `peer_interface`:
                 The port-channel interface on the peer.\n  - `port_channel_id`: The
@@ -11816,6 +12561,9 @@ $defs:
         description: 'SVI description. By default set to VLAN name.
 
           '
+      arp_gratuitous_accept:
+        type: bool
+        description: Accept gratuitous ARP.
       ip_address:
         type: str
         description: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4
@@ -11930,6 +12678,11 @@ $defs:
         $ref: eos_designs#/$defs/static_routes
         description: Static routes to be configured on every device where the SVI
           is configured.
+      ipv6_static_routes:
+        type: list
+        $ref: eos_designs#/$defs/static_routes
+        description: IPv6 static routes to be configured on every device where the
+          SVI is configured.
       vni_override:
         type: int
         convert_types:
@@ -12003,6 +12756,18 @@ $defs:
 
               but it is required to support forwarding of TTL=1 multicast traffic
               within the VLAN.'
+      vxlan_flood_multicast:
+        documentation_options:
+          table: network-services-multicast-settings
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Explicitly enable or disable vxlan_flood_multicast to override
+              settings of `<network_services_key>.[].vxlan_flood_multicast`.
+          underlay_multicast_group:
+            description: Specific multicast group to use for this SVI.
+            type: str
       evpn_l3_multicast:
         documentation_options:
           table: network-services-multicast-settings

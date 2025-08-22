@@ -163,6 +163,7 @@ ethernet_interfaces:
     peer: SRV-POD03
     peer_interface: Eth1
     peer_type: server
+    arp_gratuitous_accept: true
     description: SRV-POD02_Eth1
     comment: |
       testing multi line comments with |
@@ -427,6 +428,7 @@ ethernet_interfaces:
         random_detect:
           ecn:
             count: true
+        scheduler_profile_responsive: true
     sync_e:
       enable: true
       priority: disabled
@@ -1501,6 +1503,9 @@ ethernet_interfaces:
             reload: 800
         ipv4:
           address: 192.0.2.1
+          secondary_addresses:
+            - 192.0.3.3
+            - 192.0.4.4
         peer_authentication:
           mode: ietf-md5
           key: auth_key
@@ -1510,7 +1515,9 @@ ethernet_interfaces:
           enabled: true
           delay:
         ipv6:
-          address: 2001:db8::1
+          addresses:
+            - 2001:db8::1
+            - 2002:db8::2
         peer_authentication:
           mode: text
           key: auth_key
@@ -1549,7 +1556,8 @@ ethernet_interfaces:
           enabled: true
           delay:
         ipv6:
-          address: 2001:db8::1
+          addresses:
+            - 2001:db8::1
         tracked_object:
           - name: ID2TrackedObjectDecrement
             decrement: 10
@@ -1944,6 +1952,7 @@ ethernet_interfaces:
   - name: Ethernet82
     description: Switchport_tap_tool
     switchport:
+      mode: tap-tool
       tap:
         allowed_vlan: 25
         default:
@@ -2010,6 +2019,7 @@ ethernet_interfaces:
   - name: Ethernet83
     description: Test_tap_tool
     switchport:
+      mode: tap-tool
       tap:
         identity:
           id: 5
@@ -2028,6 +2038,7 @@ ethernet_interfaces:
 
   - name: Ethernet84
     switchport:
+      mode: tap
       tap:
         encapsulation:
           gre:

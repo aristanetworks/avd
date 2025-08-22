@@ -13,6 +13,8 @@ router_general:
           subscribe_policy: RM-BLUE-LEAKING
         - source_vrf: BLUE-C3
           subscribe_policy: RM-BLUE-LEAKING
+          # RCF configuration will not work.
+          subscribe_rcf: RCF_BLUE_C3()
       routes:
         dynamic_prefix_lists:
           - name: DYNAMIC_TEST_PREFIX_LIST_2
@@ -21,6 +23,8 @@ router_general:
       leak_routes:
         - source_vrf: BLUE-C1
           subscribe_policy: RM-BLUE-LEAKING
+        - source_vrf: BLUE-C2
+          subscribe_rcf: RCF_BLUE_C2()
   control_functions:
     code_units:
       - name: code1

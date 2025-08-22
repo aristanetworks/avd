@@ -9,3 +9,18 @@
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:
         name: arista.avd.eos_designs
+
+- name: Converge
+  hosts: TWODC_5STAGE_CLOS
+  gather_facts: false
+  connection: local
+  vars:
+    output_dir_name: "digital_twin/intended"
+    documentation_dir_name: "digital_twin/documentation"
+    avd_digital_twin_mode: true
+  tasks:
+
+    - name: Generate intended variables in ACT Digital Twin mode
+      delegate_to: 127.0.0.1
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs

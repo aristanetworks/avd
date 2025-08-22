@@ -15,12 +15,6 @@ source_interfaces:
   http_client:
     mgmt_interface: true
     inband_mgmt_interface: true
-  radius:
-    mgmt_interface: true
-    inband_mgmt_interface: true
   ssh_client:
-    mgmt_interface: true
-    inband_mgmt_interface: true
-  tacacs:
     mgmt_interface: true
     inband_mgmt_interface: true

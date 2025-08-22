@@ -82,6 +82,8 @@
 {% include 'eos/queue-monitor-length.j2' %}
 {# monitor layer1 #}
 {% include 'eos/monitor-layer1.j2' %}
+{# load balance #}
+{% include 'eos/load-balance.j2' %}
 {# Link Tracking #}
 {% include 'eos/link-tracking-groups.j2' %}
 {# lldp #}
@@ -126,6 +128,8 @@
 {% include 'eos/ptp.j2' %}
 {# qos-profiles #}
 {% include 'eos/qos-profiles.j2' %}
+{# radius-proxy #}
+{% include 'eos/radius-proxy.j2' %}
 {# redundancy #}
 {% include 'eos/redundancy.j2' %}
 {# router adaptive-virtual-topology #}
@@ -228,6 +232,8 @@
 {% include 'eos/tcam-profile.j2' %}
 {# application traffic recognition #}
 {% include 'eos/application-traffic-recognition.j2' %}
+{# Load-balance Cluster #}
+{% include 'eos/load-balance-cluster.j2' %}
 {# Connectivity monitor configuration #}
 {% include 'eos/monitor-connectivity.j2' %}
 {# MAC address-table aging #}

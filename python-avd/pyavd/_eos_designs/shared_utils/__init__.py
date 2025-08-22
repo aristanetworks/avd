@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
 
+from .connected_endpoints import ConnectedEndpointsMixin
 from .cv_topology import CvTopology
 from .filtered_tenants import FilteredTenantsMixin
 from .flow_tracking import FlowTrackingMixin
@@ -40,6 +41,7 @@ if TYPE_CHECKING:
 
 
 class SharedUtilsProtocol(
+    ConnectedEndpointsMixin,
     FilteredTenantsMixin,
     InbandManagementMixin,
     InterfaceDescriptionsMixin,
@@ -71,6 +73,7 @@ class SharedUtilsProtocol(
     templar: Templar | None
     peer_facts: Mapping[str, EosDesignsFactsProtocol]
     pool_manager: PoolManager | None
+    digital_twin: bool
 
 
 class SharedUtils(SharedUtilsProtocol):
@@ -94,6 +97,7 @@ class SharedUtils(SharedUtilsProtocol):
         templar: Templar | None,
         peer_facts: Mapping[str, EosDesignsFactsProtocol],
         pool_manager: PoolManager | None = None,
+        digital_twin: bool = False,
     ) -> None:
         self.hostname = hostname
         self.hostvars = hostvars
@@ -101,3 +105,4 @@ class SharedUtils(SharedUtilsProtocol):
         self.templar = templar
         self.peer_facts = peer_facts
         self.pool_manager = pool_manager
+        self.digital_twin = digital_twin

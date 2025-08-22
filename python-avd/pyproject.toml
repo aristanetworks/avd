@@ -42,7 +42,7 @@ pytest = [
     "referencing>=0.35.0",
 ]
 coverage = [
-    "coverage[toml]",
+    "coverage[toml]==7.10.4",
 ]
 
 [project.optional-dependencies]
@@ -74,7 +74,7 @@ requires = [
     "pydantic>=2.3.0",
     "cryptography>=38.0.4",
     "aristaproto>=0.1.1",
-    "ruff==0.12.0",
+    "ruff==0.12.9",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
@@ -116,6 +116,7 @@ extend_skip_glob = [
 
 [tool.coverage.run]
 branch = true
+parallel = true
 
 [tool.coverage.report]
 show_missing = true
@@ -162,6 +163,7 @@ extend = "../pyproject.toml"
 [tool.pytest.ini_options]
 markers = [
     "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios.",
+    "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode.",
 ]
 asyncio_default_fixture_loop_scope = "function"
 

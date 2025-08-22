@@ -56,6 +56,16 @@ ethernet_interfaces:
   peer: OLD_SW-1/2
   peer_interface: ENDPOINT_PORT2
   peer_type: server
+flow_tracking:
+  sampled:
+    sample: 10000
+    trackers:
+    - name: FT_Test
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+    shutdown: false
 hostname: host1
 ip_domain_lookup:
   source_interfaces:
@@ -69,13 +79,35 @@ ip_name_servers:
   vrf: default
 - ip_address: 8.8.8.8
   vrf: default
+ip_radius_source_interfaces:
+- name: Management1
+- name: Vlan10
+  vrf: INBANDMGMT
 ip_routing: true
+ip_tacacs_source_interfaces:
+- name: Management1
+- name: Vlan10
+  vrf: INBANDMGMT
 ipv6_static_routes:
 - vrf: default
   prefix: ::/0
   next_hop: 2001:db8:311::4
   name: IPv6-test-2
 is_deployed: true
+local_users:
+- name: admin
+  disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+  ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+    cvpadmin@hostmachine.local
+  secondary_ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkz=
+    cvpadmin@hostmachine.local
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -101,6 +133,13 @@ management_interfaces:
 metadata:
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 port_channel_interfaces:
+- name: Port-Channel11
+  shutdown: false
+  flow_tracker:
+    sampled: FT_Test
+  peer_type: l3_port_channel
+  switchport:
+    enabled: false
 - name: Port-Channel1
   description: SERVER_OLD_SW-1/2_ENDPOINT_PORT_CHANNEL
   shutdown: false
@@ -205,3 +244,4 @@ vxlan_interface:
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
+custom_key2: foo

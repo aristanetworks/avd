@@ -108,6 +108,9 @@ keys:
               max: 4094
               convert_types:
                 - str
+        arp_gratuitous_accept:
+          type: bool
+          description: Accept gratuitous ARP.
         l2_protocol:
           type: dict
           keys:
@@ -1529,6 +1532,9 @@ keys:
                   - str
                 required: true
                 description: TX-Queue ID.
+              scheduler_profile_responsive:
+                type: bool
+                description: Set scheduler profile to optimize latency at the expense of burstiness.
               random_detect:
                 type: dict
                 keys:
@@ -1667,6 +1673,11 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv4 address.
+                  secondary_addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
                     convert_types:
@@ -1679,8 +1690,17 @@ keys:
                 keys:
                   address:
                     type: str
-                    required: true
                     description: Virtual IPv6 address.
+                    deprecation:
+                      warning: true
+                      remove_in_version: 6.0.0
+                      new_key: addresses
+                  # TODO: AVD6.0 the `addresses` key should be made required once the deprecated key `address` is removed in AVD6.0
+                  addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Virtual IPv6 addresses.
               peer_authentication:
                 type: dict
                 keys:
@@ -1723,7 +1743,7 @@ keys:
                 Warning: This should not be combined with `ethernet_interfaces[].type = routed`.
             mode:
               type: str
-              valid_values: ["access", "dot1q-tunnel", "trunk", "trunk phone"]
+              valid_values: ["access", "dot1q-tunnel", "trunk", "trunk phone", "tap", "tool", "tap-tool"]
               # TODO: AVD6.0 the warning below should be removed when the `ethernet_interfaces[].mode` is removed in AVD6.0
               description: |-
                 Warning: This should not be combined with `ethernet_interfaces[].mode`.

@@ -34,7 +34,7 @@ class PortChannelInterfacesMixin(Protocol):
         - Silently ignore duplicate port-channels if they contain _exactly_ the same configuration
         - Raise a duplicate error for any other duplicate port-channel interface
         """
-        for connected_endpoint in self._filtered_connected_endpoints:
+        for connected_endpoint in self.shared_utils.filtered_connected_endpoints:
             for adapter in connected_endpoint.adapters:
                 if not adapter.port_channel or not adapter.port_channel.mode:
                     continue
@@ -70,7 +70,7 @@ class PortChannelInterfacesMixin(Protocol):
         # Notice this is keyed by the ethernet interface, so we get duplication check between the members.
         # Values are the real structured config and the custom structured config for this interface.
         network_ports_port_channel_interfaces: dict[str, tuple[EosCliConfigGen.PortChannelInterfacesItem, EosCliConfigGen.PortChannelInterfacesItem]] = {}
-        for network_port in self._filtered_network_ports:
+        for network_port in self.shared_utils.filtered_network_ports:
             if not network_port.port_channel.mode:
                 continue
 
@@ -168,14 +168,15 @@ class PortChannelInterfacesMixin(Protocol):
             validate_lldp=None if (adapter.validate_lldp if adapter.validate_lldp is not None else True) else False,
             eos_cli=adapter.port_channel.raw_eos_cli,
         )
-        port_channel_interface.sflow.enable = default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
+        if self.shared_utils.platform_settings.feature_support.sflow:
+            port_channel_interface.sflow.enable = default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
 
         if adapter.port_channel.subinterfaces:
             port_channel_interface.switchport.enabled = False
         else:
             port_channel_interface._update(
-                l2_mtu=adapter.l2_mtu,
-                l2_mru=adapter.l2_mru,
+                l2_mtu=self._get_adapter_l2_mtu(adapter),
+                l2_mru=self._get_adapter_l2_mru(adapter),
                 spanning_tree_portfast=adapter.spanning_tree_portfast,
                 spanning_tree_bpdufilter=adapter.spanning_tree_bpdufilter,
                 spanning_tree_bpduguard=adapter.spanning_tree_bpduguard,
