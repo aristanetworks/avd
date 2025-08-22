@@ -205,7 +205,7 @@ tenant_a:
               always: false
             update_source: Loopback123
             ebgp_multihop: 3
-            nodes: [DC1-BL1.*$]
+            nodes: [DC1-BL1A, DC1-BL1B]
             set_ipv4_next_hop: 123.1.1.1
             route_map_in: RM-123-1-1-10-IN
             shutdown: true
@@ -238,7 +238,7 @@ tenant_a:
             prefix_list_out: PL-TEST-OUT-AF6
           - ip_address: fd5a:fe45:8831:06c5::b
             remote_as: 12345
-            nodes: [DC1-BL1A, DC1-BL1B]
+            nodes: [DC1-BL.*]
         svis:
           - id: 150
             name: Tenant_A_WAN_Zone_1
