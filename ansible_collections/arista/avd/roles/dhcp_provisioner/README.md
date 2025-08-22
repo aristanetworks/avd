@@ -10,8 +10,7 @@ title: Ansible Collection Role dhcp_provisioner
 
 # dhcp_provisioner
 
-!!! warning
-    Deprecation Warning!
+!!! warning "Deprecation Warning"
     The role 'arista.avd.dhcp_provisioner' has been deprecated and will be removed in AVD version 6.0.0.
 
 ## Overview
