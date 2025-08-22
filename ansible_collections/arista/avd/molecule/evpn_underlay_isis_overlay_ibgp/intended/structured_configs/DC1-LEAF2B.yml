@@ -5,11 +5,11 @@ daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
   cvauth:
-    method: key
-    key: telarista
+    method: token
+    token_file: /tmp/token
+  cvsourceintf: Management1
   cvvrf: MGMT
   disable_aaa: true
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true

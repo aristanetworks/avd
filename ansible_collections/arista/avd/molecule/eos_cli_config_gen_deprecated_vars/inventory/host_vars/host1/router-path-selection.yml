@@ -1,0 +1,4 @@
+# Test for deprecated ipv4_segment_size key
+router_path_selection:
+  tcp_mss_ceiling:
+    ipv4_segment_size: 200

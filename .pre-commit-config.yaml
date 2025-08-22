@@ -2,10 +2,11 @@
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
   autoupdate_commit_msg: "CI: pre-commit autoupdate"
+  skip: [pyright]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         name: Trims trailing whitespace.
@@ -93,7 +94,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.11.10
+    rev: v0.12.9
     hooks:
       # Run the linter.
       - id: ruff
@@ -102,8 +103,24 @@ repos:
       # Run the formatter.
       - id: ruff-format
 
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.403
+    hooks:
+      - id: pyright
+        name: PyRight static type checker
+        types: [python]
+        additional_dependencies:
+          - 'anta==1.4.0'
+          - 'ansible-core>=2.16.0,<2.19.0'
+          - 'deepmerge>=1.1.0'
+          - 'PyYAML>=6.0.0'
+          - 'pydantic>=2.3.0'
+          - 'jsonschema-rs>=0.24'
+          - 'referencing>=0.35.0'
+          - 'ruff==0.11.11'
+
   - repo: https://github.com/pycqa/pylint
-    rev: "v3.3.7"
+    rev: "v3.3.8"
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
@@ -221,6 +238,23 @@ repos:
         pass_filenames: false
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.7.2']
 
+      - id: check-schema-tables-in-docs
+        name: Check for schema tables in documentation.
+        entry: development/find_missing_tables.py
+        language: python
+        args:
+          - --root-path
+          - "ansible_collections/arista/avd"
+          - --table-files
+          - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*.md"
+          - "ansible_collections/arista/avd/roles/eos_deisgns/docs/tables/*.md"
+          - --global-docs
+          - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md"
+          - "ansible_collections/arista/avd/roles/eos_deisgns/docs/*.md"
+          - --ignore-files
+          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
+        pass_filenames: false
+
       - id: templates
         name: Precompile Jinja2 templates
         entry: sh -c 'python-avd/scripts/compile_templates.py'
@@ -231,7 +265,7 @@ repos:
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     # Keep v0.18.0 for now as pre-commit.ci fails on v0.18.1
-    rev: v0.18.0
+    rev: v0.18.1
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.github/.markdownlint.yaml`.

@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: 'Start docker compose stack'
         run: |
           docker compose -f development/docker-compose.yml up -d webdoc_avd
@@ -29,7 +29,7 @@ jobs:
           bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8000)" != "200" ]]; do sleep 5; done'
       - name: Check links for 404
         run: |
-          docker run --network container:webdoc_avd raviqqe/muffet:2.10.1 http://127.0.0.1:8000/ -f \
+          docker run --network container:webdoc_avd raviqqe/muffet:2.10.9 http://127.0.0.1:8000/ -f \
             --buffer-size 8192 \
             --exclude ".*fonts.googleapis.com.*" \
             --exclude ".*fonts.gstatic.com.*" \

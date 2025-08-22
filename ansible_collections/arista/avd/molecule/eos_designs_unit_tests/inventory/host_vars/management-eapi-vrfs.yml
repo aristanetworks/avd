@@ -1,0 +1,43 @@
+---
+# Testing with both inband and oob management.
+type: l3leaf
+default_mgmt_method: oob
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.10.0/24
+    vtep_loopback_ipv4_pool: 10.10.11.0/24
+    bgp_as: 65042
+  nodes:
+    - name: management-eapi-vrfs
+      loopback_ipv4_address: 10.42.42.42
+      mgmt_ip: 192.168.66.22/24
+      inband_mgmt_interface: Vlan123
+      inband_mgmt_vrf: inband_mgmt_1
+      id: 12
+
+management_eapi:
+  vrfs:
+    - name: VRF-ENABLED
+      enabled: true
+    - name: VRF_Enable_1
+      enabled: true
+      ipv4_acl: ACL_EAPI_IPv4
+      ipv6_acl: ACL_EAPI_IPv6
+    - name: VRF_Enable_2
+      enabled: true
+      ipv4_acl: ACL_EAPI_IPv4_1
+    - name: VRF_Enable_3
+      enabled: true
+      ipv6_acl: ACL_EAPI_IPv6_1
+    - name: VRF_Disable
+      enabled: false
+      ipv4_acl: ACL_EAPI_IPv4_2
+      ipv6_acl: ACL_EAPI_IPv6_2
+    - name: use_inband_mgmt_vrf
+      enabled: true
+      ipv4_acl: ACL_EAPI_IPv4_3
+    - name: use_default_mgmt_method_vrf
+      enabled: true
+      ipv4_acl: ACL_EAPI_IPv4_4
+      ipv6_acl: ACL_EAPI_IPv6_3

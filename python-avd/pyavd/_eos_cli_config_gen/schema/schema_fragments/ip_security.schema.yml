@@ -48,7 +48,7 @@ keys:
               type: int
               convert_types:
                 - str
-              valid_values: [1, 2, 5, 14, 15, 16, 17, 20, 21, 24]
+              valid_values: [1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24]
               description: Diffie-Hellman group for the key exchange.
             integrity:
               type: str
@@ -115,7 +115,7 @@ keys:
               type: int
               convert_types:
                 - str
-              valid_values: [1, 2, 5, 14, 15, 16, 17, 20, 21, 24]
+              valid_values: [1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24]
       profiles:
         type: list
         description: IPSec profiles.

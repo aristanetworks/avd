@@ -40,6 +40,7 @@
   - [Flow Tracking](#flow-tracking)
   - [Monitor Telemetry Postcard Policy](#monitor-telemetry-postcard-policy)
   - [Monitor Server Radius Summary](#monitor-server-radius-summary)
+  - [Transceiver](#transceiver)
 - [Monitor Connectivity](#monitor-connectivity)
   - [Global Configuration](#global-configuration)
   - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)
@@ -48,6 +49,9 @@
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Custom TCAM Profiles](#custom-tcam-profiles)
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
+- [Load Balance](#load-balance)
+  - [Load Balance Cluster](#load-balance-cluster)
+  - [Load Balance Configuration](#load-balance-configuration)
 - [LLDP](#lldp)
   - [LLDP Summary](#lldp-summary)
   - [LLDP Device Configuration](#lldp-device-configuration)
@@ -95,9 +99,13 @@
   - [AS Path Lists](#as-path-lists)
 - [802.1X Port Security](#8021x-port-security)
   - [802.1X Summary](#8021x-summary)
+- [Platform](#platform)
+  - [Platform Summary](#platform-summary)
+  - [Platform Device Configuration](#platform-device-configuration)
 - [Application Traffic Recognition](#application-traffic-recognition)
   - [Applications](#applications)
   - [Router Application-Traffic-Recognition Device Configuration](#router-application-traffic-recognition-device-configuration)
+  - [Router Path-selection](#router-path-selection)
 - [Router L2 VPN](#router-l2-vpn)
   - [Router L2 VPN Summary](#router-l2-vpn-summary)
   - [Router L2 VPN Device Configuration](#router-l2-vpn-device-configuration)
@@ -192,18 +200,26 @@ ntp authenticate
 
 #### PTP Summary
 
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
-| - | - | - | - | - | - | - | - |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running Enabled |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------------- |
+| - | - | - | - | - | - | - | - | True |
 
 #### PTP Device Configuration
 
 ```eos
 !
+ptp free-running
 no ptp monitor sequence-id
 ```
 
 ### Management SSH
+
+#### VRFs
+
+| VRF | Enabled | IPv4 ACL | IPv6 ACL |
+| --- | ------- | -------- | -------- |
+| mgt | True | ACL-SSH-VRF | - |
+| default | False | ACL-SSH | - |
 
 #### Authentication Settings
 
@@ -211,44 +227,19 @@ no ptp monitor sequence-id
 | ------------------------ | --------------- |
 | keyboard-interactive, public-key | permit |
 
-#### IPv4 ACL
+#### Other SSH Settings
 
-| IPv4 ACL | VRF |
-| -------- | --- |
-| ACL-SSH | - |
-| ACL-SSH-VRF | mgt |
-
-#### SSH Timeout and Management
-
-| Idle Timeout | SSH Management |
-| ------------ | -------------- |
-| 15 | Disabled |
-
-#### Max number of SSH sessions limit and per-host limit
-
-| Connection Limit | Max from a single Host |
-| ---------------- | ---------------------- |
-| 55 | - |
-
-#### Ciphers and Algorithms
-
-| Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
-|---------|----------------------|----------------|---------------------------|
-| aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521 |
-
-#### VRFs
-
-| VRF | Status |
-| --- | ------ |
-| mgt | Enabled |
+| Idle Timeout | Connection Limit | Max from a single Host | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
+| ------------ | ---------------- | ---------------------- | ------- | -------------------- | -------------- | ------------------------- |
+| 15 | 55 | - | aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521 |
 
 #### Management SSH Device Configuration
 
 ```eos
 !
 management ssh
-   ip access-group ACL-SSH in
    ip access-group ACL-SSH-VRF vrf mgt in
+   ip access-group ACL-SSH in
    idle-timeout 15
    cipher aes256-cbc aes256-ctr aes256-gcm@openssh.com
    key-exchange ecdh-sha2-nistp521
@@ -441,6 +432,7 @@ aaa accounting commands 0 default none
 | Settings | Value |
 | -------- | ----- |
 | Reversible password encryption | aes-256-gcm |
+| Signature verification | Enabled |
 
 ### Management Security SSL Profiles
 
@@ -453,6 +445,7 @@ aaa accounting commands 0 default none
 ```eos
 !
 management security
+   signature-verification extension
    password encryption reversible aes-256-gcm
    !
    ssl profile cipher-v1.0-v1.3
@@ -650,6 +643,18 @@ sflow interface egress enable default
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
 
+#### Flow Tracking mirror-on-drop
+
+| Sample Limit Size | Encapsulations |
+| ----------------- | -------------- |
+| default | mpls |
+
+##### Trackers Summary
+
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters |
+| ------------ | --------------------------------- | ------------------------- | ------------------- |
+| T1 | 3666 | 5666 | 0 |
+
 #### Flow Tracking Device Configuration
 
 ```eos
@@ -661,6 +666,11 @@ flow tracking sampled
       record export on inactive timeout 3666
       record export on interval 5666
       record export mpls
+!
+flow tracking mirror-on-drop
+   tracker T1
+      record export on inactive timeout 3666
+      record export on interval 5666
 ```
 
 ### Monitor Telemetry Postcard Policy
@@ -691,6 +701,10 @@ monitor telemetry postcard policy
 monitor server radius
    probe method status-server
 ```
+
+### Transceiver
+
+Transceiver dom-threshold file: default
 
 ## Monitor Connectivity
 
@@ -749,6 +763,26 @@ hardware tcam
    profile MY_TCAM_PROFILE
 Thisisnotaidealinput
    !
+```
+
+## Load Balance
+
+### Load Balance Cluster
+
+| Setting | Value |
+| ------- | ----- |
+| Forwarding Type | bridged encapsulation vxlan ipv4 |
+| Destination Grouping | prefix length 10 |
+| Load-balance Method Flow Round-robin | False |
+| Flow Monitor | False |
+
+### Load Balance Configuration
+
+```eos
+!
+load-balance cluster
+   forwarding type bridged encapsulation vxlan ipv4
+   destination grouping prefix length 10
 ```
 
 ## LLDP
@@ -1297,9 +1331,9 @@ mpls rsvp
 
 ### Queue Monitor Length
 
-| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
-| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
-| True | - | 100 | - | disabled | disabled | - | - |
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low | Mirroring Enabled | Mirror destinations |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ | ----------------- | ------------------ |
+| True | - | 100 | - | disabled | disabled | - | - | - | Tunnel |
 
 ### Queue Monitor Streaming
 
@@ -1314,6 +1348,8 @@ mpls rsvp
 queue-monitor length
 no queue-monitor length notifying
 queue-monitor length default threshold 100
+!
+queue-monitor length mirror destination tunnel mode gre source 1.1.1.1 destination 3.3.3.3 ttl 200 dscp 45 protocol 0xFFFF vrf VRF10
 !
 queue-monitor streaming
    shutdown
@@ -1424,9 +1460,51 @@ router pim sparse-mode
 
 #### 802.1X Radius AV pair
 
-| Service type | Framed MTU |
-| ------------ | ---------- |
-| True | 1500 |
+| Type | Value | Auth Only |
+| ---- | ----- | --------- |
+| Service Type | - | - |
+| Framed MTU | 1500 | - |
+
+#### Dot1x Configuration
+
+```eos
+dot1x
+   aaa unresponsive phone action apply cached-results
+   aaa unresponsive action traffic allow
+   radius av-pair service-type
+   radius av-pair framed-mtu 1500
+!
+dot1x system-auth-control
+dot1x protocol lldp bypass
+dot1x protocol bpdu bypass
+dot1x dynamic-authorization
+```
+
+## Platform
+
+### Platform Summary
+
+#### Platform Trident Summary
+
+| Settings | Value |
+| -------- | ----- |
+| MMU Headroom-pool Limit | 557 bytes |
+
+#### Platform FAP Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Buffering Egress Profile | balanced |
+| VOQ Credit Rates Unified | False |
+
+### Platform Device Configuration
+
+```eos
+!
+platform fap buffering egress profile balanced
+!
+platform trident mmu headroom-pool limit 557
+```
 
 ## Application Traffic Recognition
 
@@ -1461,6 +1539,20 @@ application traffic recognition
    application l4 l4-app-1
       protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1
       protocol udp
+```
+
+### Router Path-selection
+
+#### MTU Discovery Summary
+
+- MTU discovery for hosts on the LAN: Enabled
+
+#### Router Path-selection Device Configuration
+
+```eos
+!
+router path-selection
+   mtu discovery hosts
 ```
 
 ## Router L2 VPN
@@ -1575,10 +1667,10 @@ mac security
 
 #### IPv6 Field Sets
 
-| Field Set Name | IPv6 Prefixes |
-| -------------- | ------------- |
-| IPv6-DEMO-1 | 11:22:33:44:55:66:77:88 |
-| IPv6-DEMO-2 | - |
+| Field Set Name | IPv6 Prefixes | Excluded Prefixes |
+| -------------- | ------------- | ----------------- |
+| IPv6-DEMO-1 | 11:22:33:44:55:66:77:88/128<br/>dead::/64 | 22:33:44:55:66:77:88:11/128<br/>cafe::/32<br/>dead::/64 |
+| IPv6-DEMO-2 | - | - |
 
 #### Traffic Policies Device Configuration
 
@@ -1586,7 +1678,8 @@ mac security
 !
 traffic-policies
    field-set ipv6 prefix IPv6-DEMO-1
-      11:22:33:44:55:66:77:88
+      11:22:33:44:55:66:77:88/128 dead::/64
+      except 22:33:44:55:66:77:88:11/128 cafe::/32 dead::/64
    !
    field-set ipv6 prefix IPv6-DEMO-2
 ```

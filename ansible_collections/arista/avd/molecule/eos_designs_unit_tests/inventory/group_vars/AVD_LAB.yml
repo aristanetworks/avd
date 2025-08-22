@@ -30,33 +30,35 @@ default_vrf_diag_loopback_description: "{vrf}_VTEP_DIAGNOSTICS"
 mlag_bgp_peer_group_description: "MLAG_PEER_{mlag_peer}"
 
 # local users
-local_users:
-  - name: admin
-    # Test disabling admin user. Other keys will be ignored.
-    disabled: true
-    privilege: 15
-    role: network-admin
-    no_password: true
+aaa_settings:
+  local_users:
+    - name: admin
+      # Test disabling admin user. Other keys will be ignored.
+      disabled: true
+      privilege: 15
+      role: network-admin
+      no_password: true
 
-  - name: cvpadmin
-    privilege: 15
-    role: network-admin
-    sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
-    ssh_key: >-
-      ssh-rsa
-      AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
-      cvpadmin@hostmachine.local
-    secondary_ssh_key: >-
-      ssh-rsa
-      AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkz=
-      cvpadmin@hostmachine.local
+    - name: cvpadmin
+      privilege: 15
+      role: network-admin
+      sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
+      ssh_key: >-
+        ssh-rsa
+        AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+        cvpadmin@hostmachine.local
+      secondary_ssh_key: >-
+        ssh-rsa
+        AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkz=
+        cvpadmin@hostmachine.local
 
 # Cloud Vision server
-cvp_instance_ips:
-  - 192.168.200.11
-
-cvp_ingestauth_key: telarista
-terminattr_disable_aaa: false
+cv_settings:
+  onprem_clusters:
+    - name: test
+      servers:
+        - name: 192.168.200.11
+  set_source_interfaces: false
 
 snmp_settings:
   contact: example@example.com
@@ -66,11 +68,13 @@ snmp_settings:
 mgmt_gateway: 192.168.200.5
 
 # dns servers.
-name_servers:
-  - 192.168.200.5
-  - 8.8.8.8
-  - 2001:db8::1
-  - 2001:db8::2
+dns_settings:
+  servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
+    - ip_address: 2001:db8::1
+    - ip_address: 2001:db8::2
+  set_source_interfaces: false
 
 # Management api-http
 management_eapi:
@@ -156,6 +160,7 @@ custom_platform_settings:
       interface_storm_control: false
       bgp_update_wait_for_convergence: true
       bgp_update_wait_install: true
+      per_interface_mtu: false
 
   # Test overwriting an existing platform
   - platforms: [ 7280R ]

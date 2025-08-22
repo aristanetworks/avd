@@ -41,16 +41,13 @@ class PortChannelInterfacesMixin(Protocol):
         regular_l3_port_channel_names: set[str] = set()
         """Collect all L3 subinterface parent port-channel names across tenants."""
 
-        # point_to_point port-channels tracking structures.
-        potential_parent_interfaces = EosCliConfigGen.PortChannelInterfaces()
+        parent_port_channel_interfaces = EosCliConfigGen.PortChannelInterfaces()
         """
-        Keeping separate list of auto-generated parent interfaces for point-to-point port-channel
+        list of auto-generated parent interfaces for point-to-point port-channel
         This is used to check for conflicts between auto-generated parents
         At the end of _set_point_to_point_port_channel_interfaces, parent interfaces are
-        added to structured_config if they were not explicitly configured.
+        added to structured_config.
         """
-        configured_physical_po: set[str] = set()
-        """Set to collect all the physical port-channels explicitly configured by _set_point_to_point_port_channel_interfaces."""
 
         for tenant in self.shared_utils.filtered_tenants:
             self._set_l3_port_channels(tenant, subif_parent_port_channel_names, regular_l3_port_channel_names)
@@ -58,11 +55,10 @@ class PortChannelInterfacesMixin(Protocol):
             if not tenant.point_to_point_services:
                 continue
 
-            self._set_point_to_point_port_channel_interfaces(tenant, potential_parent_interfaces, configured_physical_po)
+            self._set_point_to_point_port_channel_interfaces(tenant, parent_port_channel_interfaces)
 
-            for potential_parent_interface in potential_parent_interfaces:
-                if potential_parent_interface.name not in configured_physical_po:
-                    self.structured_config.port_channel_interfaces.append(potential_parent_interface)
+            for parent_port_channel_interface in parent_port_channel_interfaces:
+                self.structured_config.port_channel_interfaces.append(parent_port_channel_interface)
 
         # Sanity check if there are any L3 sub-interfaces for which parent Port-channel is not explicitly specified
         # This does not concerned point-to-point port channels.
@@ -90,9 +86,6 @@ class PortChannelInterfacesMixin(Protocol):
         """
         for vrf in tenant.vrfs:
             for l3_port_channel in vrf.l3_port_channels:
-                if l3_port_channel.node != self.shared_utils.hostname:
-                    continue
-
                 if not (is_subinterface := "." in l3_port_channel.name):
                     # This is a regular Port-Channel (not sub-interface)
                     regular_l3_port_channel_names.add(l3_port_channel.name)
@@ -126,13 +119,14 @@ class PortChannelInterfacesMixin(Protocol):
                 port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
                     name=l3_port_channel.name,
                     peer=l3_port_channel.peer,
-                    mtu=l3_port_channel.mtu if self.shared_utils.platform_settings.feature_support.per_interface_mtu else None,
+                    mtu=self.shared_utils.get_interface_mtu(l3_port_channel.name, l3_port_channel.mtu),
                     description=interface_description or None,
                     ip_address=l3_port_channel.ip_address,
+                    arp_gratuitous_accept=l3_port_channel.arp_gratuitous_accept,
                     shutdown=not l3_port_channel.enabled,
                     eos_cli=l3_port_channel.raw_eos_cli,
                     flow_tracker=self.shared_utils.get_flow_tracker(
-                        l3_port_channel.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker
+                        l3_port_channel.flow_tracking, output_type=EosCliConfigGen.PortChannelInterfacesItem.FlowTracker
                     ),
                     vrf=vrf.name if vrf.name != "default" else None,
                     peer_type="l3_port_channel",
@@ -165,20 +159,7 @@ class PortChannelInterfacesMixin(Protocol):
                         ospf_network_point_to_point=l3_port_channel.ospf.point_to_point,
                         ospf_cost=l3_port_channel.ospf.cost,
                     )
-                    ospf_authentication = l3_port_channel.ospf.authentication
-                    if ospf_authentication == "simple" and (ospf_simple_auth_key := l3_port_channel.ospf.simple_auth_key) is not None:
-                        port_channel_interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
-                    elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := l3_port_channel.ospf.message_digest_keys) is not None:
-                        for ospf_key in ospf_message_digest_keys:
-                            if not (ospf_key.id and ospf_key.key):
-                                continue
-                            port_channel_interface.ospf_message_digest_keys.append_new(
-                                id=ospf_key.id,
-                                hash_algorithm=ospf_key.hash_algorithm,
-                                key=ospf_key.key,
-                            )
-                        if port_channel_interface.ospf_message_digest_keys:
-                            port_channel_interface.ospf_authentication = ospf_authentication
+                    self.shared_utils.update_ospf_authentication(port_channel_interface, l3_port_channel, vrf, tenant)
 
                 if is_subinterface:
                     port_channel_interface.encapsulation_dot1q.vlan = default(
@@ -199,8 +180,7 @@ class PortChannelInterfacesMixin(Protocol):
     def _set_point_to_point_port_channel_interfaces(
         self: AvdStructuredConfigNetworkServicesProtocol,
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
-        potential_parent_interfaces: EosCliConfigGen.PortChannelInterfaces,
-        configured_physical_po_names: set[str],
+        parent_port_channel_interfaces: EosCliConfigGen.PortChannelInterfaces,
     ) -> None:
         """Set the structured_config port_channel_interfaces with the point-to-point interfaces defined under network_services."""
         for point_to_point_service in tenant.point_to_point_services._natural_sorted():
@@ -232,7 +212,7 @@ class PortChannelInterfacesMixin(Protocol):
                             parent_interface.lacp_id = short_esi.replace(":", ".")
 
                     # Adding the auto-generated parent to the list of potential parents
-                    potential_parent_interfaces.append(parent_interface)
+                    parent_port_channel_interfaces.append(parent_interface)
 
                     for subif in point_to_point_service.subinterfaces:
                         subif_name = f"{interface_name}.{subif.number}"
@@ -272,5 +252,3 @@ class PortChannelInterfacesMixin(Protocol):
                             port_channel_interface.lacp_id = short_esi.replace(":", ".")
 
                     self.structured_config.port_channel_interfaces.append(port_channel_interface)
-                    # Tracking the physical interfaces to determine which auto-generated should be injected.
-                    configured_physical_po_names.add(interface_name)

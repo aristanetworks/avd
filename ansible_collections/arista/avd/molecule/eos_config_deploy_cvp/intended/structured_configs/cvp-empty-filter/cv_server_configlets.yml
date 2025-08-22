@@ -2,20 +2,20 @@ cvp_configlets:
   AVD_DC1-BL1A: "!\nno enable password\nno aaa root\n!\nusername admin privilege 15
     role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\ntransceiver
-    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
-    DC1-BL1A\nip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree
-    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nvlan
-    150\n   name Tenant_A_WAN_Zone_1\n!\nvlan 250\n   name Tenant_B_WAN_Zone_1\n!\nvlan
-    350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 3013\n   name MLAG_L3_VRF_Tenant_A_WAN_Zone\n
-    \  trunk group MLAG\n!\nvlan 3020\n   name MLAG_L3_VRF_Tenant_B_WAN_Zone\n   trunk
-    group MLAG\n!\nvlan 3030\n   name MLAG_L3_VRF_Tenant_C_WAN_Zone\n   trunk group
-    MLAG\n!\nvlan 4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan 4094\n   name
-    MLAG\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance Tenant_A_WAN_Zone\n!\nvrf
-    instance Tenant_B_WAN_Zone\n!\nvrf instance Tenant_C_WAN_Zone\n!\nmanagement api
-    http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname DC1-BL1A\nip name-server vrf MGMT 8.8.8.8\nip name-server
+    vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree
+    mst 0 priority 4096\n!\nvlan 150\n   name Tenant_A_WAN_Zone_1\n!\nvlan 250\n   name
+    Tenant_B_WAN_Zone_1\n!\nvlan 350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 3013\n
+    \  name MLAG_L3_VRF_Tenant_A_WAN_Zone\n   trunk group MLAG\n!\nvlan 3020\n   name
+    MLAG_L3_VRF_Tenant_B_WAN_Zone\n   trunk group MLAG\n!\nvlan 3030\n   name MLAG_L3_VRF_Tenant_C_WAN_Zone\n
+    \  trunk group MLAG\n!\nvlan 4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan
+    4094\n   name MLAG\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance
+    Tenant_A_WAN_Zone\n!\nvrf instance Tenant_B_WAN_Zone\n!\nvrf instance Tenant_C_WAN_Zone\n!\nmanagement
+    api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ninterface Port-Channel5\n   description MLAG_DC1-BL1B_Port-Channel5\n
     \  no shutdown\n   switchport mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface
     Ethernet1\n   description P2P_DC1-SPINE1_Ethernet6\n   no shutdown\n   mtu 1500\n
@@ -119,20 +119,20 @@ cvp_configlets:
   AVD_DC1-BL1B: "!\nno enable password\nno aaa root\n!\nusername admin privilege 15
     role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\ntransceiver
-    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
-    DC1-BL1B\nip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree
-    mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nvlan
-    150\n   name Tenant_A_WAN_Zone_1\n!\nvlan 250\n   name Tenant_B_WAN_Zone_1\n!\nvlan
-    350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 3013\n   name MLAG_L3_VRF_Tenant_A_WAN_Zone\n
-    \  trunk group MLAG\n!\nvlan 3020\n   name MLAG_L3_VRF_Tenant_B_WAN_Zone\n   trunk
-    group MLAG\n!\nvlan 3030\n   name MLAG_L3_VRF_Tenant_C_WAN_Zone\n   trunk group
-    MLAG\n!\nvlan 4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan 4094\n   name
-    MLAG\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance Tenant_A_WAN_Zone\n!\nvrf
-    instance Tenant_B_WAN_Zone\n!\nvrf instance Tenant_C_WAN_Zone\n!\nmanagement api
-    http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname DC1-BL1B\nip name-server vrf MGMT 8.8.8.8\nip name-server
+    vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree
+    mst 0 priority 4096\n!\nvlan 150\n   name Tenant_A_WAN_Zone_1\n!\nvlan 250\n   name
+    Tenant_B_WAN_Zone_1\n!\nvlan 350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 3013\n
+    \  name MLAG_L3_VRF_Tenant_A_WAN_Zone\n   trunk group MLAG\n!\nvlan 3020\n   name
+    MLAG_L3_VRF_Tenant_B_WAN_Zone\n   trunk group MLAG\n!\nvlan 3030\n   name MLAG_L3_VRF_Tenant_C_WAN_Zone\n
+    \  trunk group MLAG\n!\nvlan 4093\n   name MLAG_L3\n   trunk group MLAG\n!\nvlan
+    4094\n   name MLAG\n   trunk group MLAG\n!\nvrf instance MGMT\n!\nvrf instance
+    Tenant_A_WAN_Zone\n!\nvrf instance Tenant_B_WAN_Zone\n!\nvrf instance Tenant_C_WAN_Zone\n!\nmanagement
+    api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no
     shutdown\n!\ninterface Port-Channel5\n   description MLAG_DC1-BL1A_Port-Channel5\n
     \  no shutdown\n   switchport mode trunk\n   switchport trunk group MLAG\n   switchport\n!\ninterface
     Ethernet1\n   description P2P_DC1-SPINE1_Ethernet7\n   no shutdown\n   mtu 1500\n
@@ -236,10 +236,10 @@ cvp_configlets:
   AVD_DC1-L2LEAF1A: "!\nno enable password\nno aaa root\n!\nusername admin privilege
     15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\nno
-    ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-L2LEAF1A\nip name-server
     vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree mode
     mstp\nspanning-tree mst 0 priority 16384\n!\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan
@@ -258,10 +258,10 @@ cvp_configlets:
   AVD_DC1-L2LEAF2A: "!\nno enable password\nno aaa root\n!\nusername admin privilege
     15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\nno
-    ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-L2LEAF2A\nip name-server
     vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree mode
     mstp\nno spanning-tree vlan-id 4094\nspanning-tree mst 0 priority 16384\n!\nvlan
@@ -294,10 +294,10 @@ cvp_configlets:
   AVD_DC1-L2LEAF2B: "!\nno enable password\nno aaa root\n!\nusername admin privilege
     15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\nno
-    ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-L2LEAF2B\nip name-server
     vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree mode
     mstp\nno spanning-tree vlan-id 4094\nspanning-tree mst 0 priority 16384\n!\nvlan
@@ -330,10 +330,10 @@ cvp_configlets:
   AVD_DC1-LEAF1A: "!\nno enable password\nno aaa root\n!\nusername admin privilege
     15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\nno
-    ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-LEAF1A\nip name-server vrf
     MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nspanning-tree
     mst 0 priority 4096\n!\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name
@@ -411,10 +411,10 @@ cvp_configlets:
   AVD_DC1-LEAF2A: "!\nno enable password\nno aaa root\n!\nusername admin privilege
     15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\nno
-    ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-LEAF2A\nip name-server vrf
     MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nno
     spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nvlan 110\n
@@ -592,10 +592,10 @@ cvp_configlets:
   AVD_DC1-LEAF2B: "!\nno enable password\nno aaa root\n!\nusername admin privilege
     15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\nno
-    ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-LEAF2B\nip name-server vrf
     MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nno
     spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nvlan 110\n
@@ -773,36 +773,37 @@ cvp_configlets:
   AVD_DC1-SPINE1: "!\nno enable password\nno aaa root\n!\nusername admin privilege
     15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\ntransceiver
-    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
-    DC1-SPINE1\nip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree
-    mode none\n!\nvrf instance MGMT\n!\nmanagement api http-commands\n   protocol
-    https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\ninterface Ethernet1\n
-    \  description P2P_DC1-LEAF1A_Ethernet1\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.0/31\n!\ninterface Ethernet2\n   description P2P_DC1-LEAF2A_Ethernet1\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.8/31\n!\ninterface
-    Ethernet3\n   description P2P_DC1-LEAF2B_Ethernet1\n   no shutdown\n   mtu 1500\n
-    \  no switchport\n   ip address 172.31.255.16/31\n!\ninterface Ethernet4\n   description
-    P2P_DC1-SVC3A_Ethernet1\n   shutdown\n   mtu 1500\n   no switchport\n   ip address
-    172.31.255.24/31\n!\ninterface Ethernet5\n   description P2P_DC1-SVC3B_Ethernet1\n
-    \  shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.32/31\n!\ninterface
-    Ethernet6\n   description P2P_DC1-BL1A_Ethernet1\n   no shutdown\n   mtu 1500\n
-    \  no switchport\n   ip address 172.31.255.40/31\n!\ninterface Ethernet7\n   description
-    P2P_DC1-BL1B_Ethernet1\n   no shutdown\n   mtu 1500\n   no switchport\n   ip address
-    172.31.255.48/31\n!\ninterface Loopback0\n   description ROUTER_ID\n   no shutdown\n
-    \  ip address 192.168.255.1/32\n!\ninterface Management1\n   description OOB_MANAGEMENT\n
-    \  no shutdown\n   vrf MGMT\n   ip address 192.168.200.101/24\n!\nip routing\nno
-    ip routing vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit
-    192.168.255.0/24 eq 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface
-    vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nroute-map RM-CONN-2-BGP
-    permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter
-    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65001\n
-    \  router-id 192.168.255.1\n   update wait-install\n   no bgp default ipv4-unicast\n
-    \  maximum-paths 4 ecmp 4\n   distance bgp 20 200 200\n   neighbor EVPN-OVERLAY-PEERS
-    peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS
-    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname DC1-SPINE1\nip name-server vrf MGMT 8.8.8.8\nip
+    name-server vrf MGMT 192.168.200.5\n!\nspanning-tree mode none\n!\nvrf instance
+    MGMT\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n   !\n
+    \  vrf MGMT\n      no shutdown\n!\ninterface Ethernet1\n   description P2P_DC1-LEAF1A_Ethernet1\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.0/31\n!\ninterface
+    Ethernet2\n   description P2P_DC1-LEAF2A_Ethernet1\n   no shutdown\n   mtu 1500\n
+    \  no switchport\n   ip address 172.31.255.8/31\n!\ninterface Ethernet3\n   description
+    P2P_DC1-LEAF2B_Ethernet1\n   no shutdown\n   mtu 1500\n   no switchport\n   ip
+    address 172.31.255.16/31\n!\ninterface Ethernet4\n   description P2P_DC1-SVC3A_Ethernet1\n
+    \  shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.24/31\n!\ninterface
+    Ethernet5\n   description P2P_DC1-SVC3B_Ethernet1\n   shutdown\n   mtu 1500\n
+    \  no switchport\n   ip address 172.31.255.32/31\n!\ninterface Ethernet6\n   description
+    P2P_DC1-BL1A_Ethernet1\n   no shutdown\n   mtu 1500\n   no switchport\n   ip address
+    172.31.255.40/31\n!\ninterface Ethernet7\n   description P2P_DC1-BL1B_Ethernet1\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.48/31\n!\ninterface
+    Loopback0\n   description ROUTER_ID\n   no shutdown\n   ip address 192.168.255.1/32\n!\ninterface
+    Management1\n   description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip
+    address 192.168.200.101/24\n!\nip routing\nno ip routing vrf MGMT\n!\nip prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.255.0/24 eq 32\n!\nip route
+    vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp
+    server vrf MGMT 192.168.200.5 prefer\n!\nroute-map RM-CONN-2-BGP permit 10\n   match
+    ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval
+    1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65001\n   router-id 192.168.255.1\n
+    \  update wait-install\n   no bgp default ipv4-unicast\n   maximum-paths 4 ecmp
+    4\n   distance bgp 20 200 200\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
+    EVPN-OVERLAY-PEERS next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS update-source
+    Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS
     ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
@@ -843,36 +844,37 @@ cvp_configlets:
   AVD_DC1-SPINE2: "!\nno enable password\nno aaa root\n!\nusername admin privilege
     15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\ntransceiver
-    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
-    DC1-SPINE2\nip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree
-    mode none\n!\nvrf instance MGMT\n!\nmanagement api http-commands\n   protocol
-    https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\ninterface Ethernet1\n
-    \  description P2P_DC1-LEAF1A_Ethernet2\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.2/31\n!\ninterface Ethernet2\n   description P2P_DC1-LEAF2A_Ethernet2\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.10/31\n!\ninterface
-    Ethernet3\n   description P2P_DC1-LEAF2B_Ethernet2\n   no shutdown\n   mtu 1500\n
-    \  no switchport\n   ip address 172.31.255.18/31\n!\ninterface Ethernet4\n   description
-    P2P_DC1-SVC3A_Ethernet2\n   shutdown\n   mtu 1500\n   no switchport\n   ip address
-    172.31.255.26/31\n!\ninterface Ethernet5\n   description P2P_DC1-SVC3B_Ethernet2\n
-    \  shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.34/31\n!\ninterface
-    Ethernet6\n   description P2P_DC1-BL1A_Ethernet2\n   no shutdown\n   mtu 1500\n
-    \  no switchport\n   ip address 172.31.255.42/31\n!\ninterface Ethernet7\n   description
-    P2P_DC1-BL1B_Ethernet2\n   no shutdown\n   mtu 1500\n   no switchport\n   ip address
-    172.31.255.50/31\n!\ninterface Loopback0\n   description ROUTER_ID\n   no shutdown\n
-    \  ip address 192.168.255.2/32\n!\ninterface Management1\n   description OOB_MANAGEMENT\n
-    \  no shutdown\n   vrf MGMT\n   ip address 192.168.200.102/24\n!\nip routing\nno
-    ip routing vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit
-    192.168.255.0/24 eq 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface
-    vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nroute-map RM-CONN-2-BGP
-    permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter
-    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65001\n
-    \  router-id 192.168.255.2\n   update wait-install\n   no bgp default ipv4-unicast\n
-    \  maximum-paths 4 ecmp 4\n   distance bgp 20 200 200\n   neighbor EVPN-OVERLAY-PEERS
-    peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS
-    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname DC1-SPINE2\nip name-server vrf MGMT 8.8.8.8\nip
+    name-server vrf MGMT 192.168.200.5\n!\nspanning-tree mode none\n!\nvrf instance
+    MGMT\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n   !\n
+    \  vrf MGMT\n      no shutdown\n!\ninterface Ethernet1\n   description P2P_DC1-LEAF1A_Ethernet2\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.2/31\n!\ninterface
+    Ethernet2\n   description P2P_DC1-LEAF2A_Ethernet2\n   no shutdown\n   mtu 1500\n
+    \  no switchport\n   ip address 172.31.255.10/31\n!\ninterface Ethernet3\n   description
+    P2P_DC1-LEAF2B_Ethernet2\n   no shutdown\n   mtu 1500\n   no switchport\n   ip
+    address 172.31.255.18/31\n!\ninterface Ethernet4\n   description P2P_DC1-SVC3A_Ethernet2\n
+    \  shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.26/31\n!\ninterface
+    Ethernet5\n   description P2P_DC1-SVC3B_Ethernet2\n   shutdown\n   mtu 1500\n
+    \  no switchport\n   ip address 172.31.255.34/31\n!\ninterface Ethernet6\n   description
+    P2P_DC1-BL1A_Ethernet2\n   no shutdown\n   mtu 1500\n   no switchport\n   ip address
+    172.31.255.42/31\n!\ninterface Ethernet7\n   description P2P_DC1-BL1B_Ethernet2\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.50/31\n!\ninterface
+    Loopback0\n   description ROUTER_ID\n   no shutdown\n   ip address 192.168.255.2/32\n!\ninterface
+    Management1\n   description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip
+    address 192.168.200.102/24\n!\nip routing\nno ip routing vrf MGMT\n!\nip prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.255.0/24 eq 32\n!\nip route
+    vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp
+    server vrf MGMT 192.168.200.5 prefer\n!\nroute-map RM-CONN-2-BGP permit 10\n   match
+    ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval
+    1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65001\n   router-id 192.168.255.2\n
+    \  update wait-install\n   no bgp default ipv4-unicast\n   maximum-paths 4 ecmp
+    4\n   distance bgp 20 200 200\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
+    EVPN-OVERLAY-PEERS next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS update-source
+    Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS
     ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
@@ -913,36 +915,37 @@ cvp_configlets:
   AVD_DC1-SPINE3: "!\nno enable password\nno aaa root\n!\nusername admin privilege
     15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\ntransceiver
-    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
-    DC1-SPINE3\nip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree
-    mode none\n!\nvrf instance MGMT\n!\nmanagement api http-commands\n   protocol
-    https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\ninterface Ethernet1\n
-    \  description P2P_DC1-LEAF1A_Ethernet3\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.4/31\n!\ninterface Ethernet2\n   description P2P_DC1-LEAF2A_Ethernet3\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.12/31\n!\ninterface
-    Ethernet3\n   description P2P_DC1-LEAF2B_Ethernet3\n   no shutdown\n   mtu 1500\n
-    \  no switchport\n   ip address 172.31.255.20/31\n!\ninterface Ethernet4\n   description
-    P2P_DC1-SVC3A_Ethernet3\n   shutdown\n   mtu 1500\n   no switchport\n   ip address
-    172.31.255.28/31\n!\ninterface Ethernet5\n   description P2P_DC1-SVC3B_Ethernet3\n
-    \  shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.36/31\n!\ninterface
-    Ethernet6\n   description P2P_DC1-BL1A_Ethernet3\n   no shutdown\n   mtu 1500\n
-    \  no switchport\n   ip address 172.31.255.44/31\n!\ninterface Ethernet7\n   description
-    P2P_DC1-BL1B_Ethernet3\n   no shutdown\n   mtu 1500\n   no switchport\n   ip address
-    172.31.255.52/31\n!\ninterface Loopback0\n   description ROUTER_ID\n   no shutdown\n
-    \  ip address 192.168.255.3/32\n!\ninterface Management1\n   description OOB_MANAGEMENT\n
-    \  no shutdown\n   vrf MGMT\n   ip address 192.168.200.103/24\n!\nip routing\nno
-    ip routing vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit
-    192.168.255.0/24 eq 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface
-    vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nroute-map RM-CONN-2-BGP
-    permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter
-    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65001\n
-    \  router-id 192.168.255.3\n   update wait-install\n   no bgp default ipv4-unicast\n
-    \  maximum-paths 4 ecmp 4\n   distance bgp 20 200 200\n   neighbor EVPN-OVERLAY-PEERS
-    peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS
-    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname DC1-SPINE3\nip name-server vrf MGMT 8.8.8.8\nip
+    name-server vrf MGMT 192.168.200.5\n!\nspanning-tree mode none\n!\nvrf instance
+    MGMT\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n   !\n
+    \  vrf MGMT\n      no shutdown\n!\ninterface Ethernet1\n   description P2P_DC1-LEAF1A_Ethernet3\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.4/31\n!\ninterface
+    Ethernet2\n   description P2P_DC1-LEAF2A_Ethernet3\n   no shutdown\n   mtu 1500\n
+    \  no switchport\n   ip address 172.31.255.12/31\n!\ninterface Ethernet3\n   description
+    P2P_DC1-LEAF2B_Ethernet3\n   no shutdown\n   mtu 1500\n   no switchport\n   ip
+    address 172.31.255.20/31\n!\ninterface Ethernet4\n   description P2P_DC1-SVC3A_Ethernet3\n
+    \  shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.28/31\n!\ninterface
+    Ethernet5\n   description P2P_DC1-SVC3B_Ethernet3\n   shutdown\n   mtu 1500\n
+    \  no switchport\n   ip address 172.31.255.36/31\n!\ninterface Ethernet6\n   description
+    P2P_DC1-BL1A_Ethernet3\n   no shutdown\n   mtu 1500\n   no switchport\n   ip address
+    172.31.255.44/31\n!\ninterface Ethernet7\n   description P2P_DC1-BL1B_Ethernet3\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.52/31\n!\ninterface
+    Loopback0\n   description ROUTER_ID\n   no shutdown\n   ip address 192.168.255.3/32\n!\ninterface
+    Management1\n   description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip
+    address 192.168.200.103/24\n!\nip routing\nno ip routing vrf MGMT\n!\nip prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.255.0/24 eq 32\n!\nip route
+    vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp
+    server vrf MGMT 192.168.200.5 prefer\n!\nroute-map RM-CONN-2-BGP permit 10\n   match
+    ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval
+    1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65001\n   router-id 192.168.255.3\n
+    \  update wait-install\n   no bgp default ipv4-unicast\n   maximum-paths 4 ecmp
+    4\n   distance bgp 20 200 200\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
+    EVPN-OVERLAY-PEERS next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS update-source
+    Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS
     ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
@@ -983,36 +986,37 @@ cvp_configlets:
   AVD_DC1-SPINE4: "!\nno enable password\nno aaa root\n!\nusername admin privilege
     15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\ntransceiver
-    qsfp default-mode 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname
-    DC1-SPINE4\nip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree
-    mode none\n!\nvrf instance MGMT\n!\nmanagement api http-commands\n   protocol
-    https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\ninterface Ethernet1\n
-    \  description P2P_DC1-LEAF1A_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n
-    \  ip address 172.31.255.6/31\n!\ninterface Ethernet2\n   description P2P_DC1-LEAF2A_Ethernet4\n
-    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.14/31\n!\ninterface
-    Ethernet3\n   description P2P_DC1-LEAF2B_Ethernet4\n   no shutdown\n   mtu 1500\n
-    \  no switchport\n   ip address 172.31.255.22/31\n!\ninterface Ethernet4\n   description
-    P2P_DC1-SVC3A_Ethernet4\n   shutdown\n   mtu 1500\n   no switchport\n   ip address
-    172.31.255.30/31\n!\ninterface Ethernet5\n   description P2P_DC1-SVC3B_Ethernet4\n
-    \  shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.38/31\n!\ninterface
-    Ethernet6\n   description P2P_DC1-BL1A_Ethernet4\n   no shutdown\n   mtu 1500\n
-    \  no switchport\n   ip address 172.31.255.46/31\n!\ninterface Ethernet7\n   description
-    P2P_DC1-BL1B_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n   ip address
-    172.31.255.54/31\n!\ninterface Loopback0\n   description ROUTER_ID\n   no shutdown\n
-    \  ip address 192.168.255.4/32\n!\ninterface Management1\n   description OOB_MANAGEMENT\n
-    \  no shutdown\n   vrf MGMT\n   ip address 192.168.200.104/24\n!\nip routing\nno
-    ip routing vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit
-    192.168.255.0/24 eq 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface
-    vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nroute-map RM-CONN-2-BGP
-    permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter
-    bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65001\n
-    \  router-id 192.168.255.4\n   update wait-install\n   no bgp default ipv4-unicast\n
-    \  maximum-paths 4 ecmp 4\n   distance bgp 20 200 200\n   neighbor EVPN-OVERLAY-PEERS
-    peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS
-    update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols
+    model multi-agent\n!\nhostname DC1-SPINE4\nip name-server vrf MGMT 8.8.8.8\nip
+    name-server vrf MGMT 192.168.200.5\n!\nspanning-tree mode none\n!\nvrf instance
+    MGMT\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n   !\n
+    \  vrf MGMT\n      no shutdown\n!\ninterface Ethernet1\n   description P2P_DC1-LEAF1A_Ethernet4\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.6/31\n!\ninterface
+    Ethernet2\n   description P2P_DC1-LEAF2A_Ethernet4\n   no shutdown\n   mtu 1500\n
+    \  no switchport\n   ip address 172.31.255.14/31\n!\ninterface Ethernet3\n   description
+    P2P_DC1-LEAF2B_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n   ip
+    address 172.31.255.22/31\n!\ninterface Ethernet4\n   description P2P_DC1-SVC3A_Ethernet4\n
+    \  shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.30/31\n!\ninterface
+    Ethernet5\n   description P2P_DC1-SVC3B_Ethernet4\n   shutdown\n   mtu 1500\n
+    \  no switchport\n   ip address 172.31.255.38/31\n!\ninterface Ethernet6\n   description
+    P2P_DC1-BL1A_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n   ip address
+    172.31.255.46/31\n!\ninterface Ethernet7\n   description P2P_DC1-BL1B_Ethernet4\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.54/31\n!\ninterface
+    Loopback0\n   description ROUTER_ID\n   no shutdown\n   ip address 192.168.255.4/32\n!\ninterface
+    Management1\n   description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip
+    address 192.168.200.104/24\n!\nip routing\nno ip routing vrf MGMT\n!\nip prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.255.0/24 eq 32\n!\nip route
+    vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp
+    server vrf MGMT 192.168.200.5 prefer\n!\nroute-map RM-CONN-2-BGP permit 10\n   match
+    ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval
+    1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65001\n   router-id 192.168.255.4\n
+    \  update wait-install\n   no bgp default ipv4-unicast\n   maximum-paths 4 ecmp
+    4\n   distance bgp 20 200 200\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor
+    EVPN-OVERLAY-PEERS next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS update-source
+    Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS
     ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n
     \  neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS
     maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS
@@ -1053,10 +1057,10 @@ cvp_configlets:
   AVD_DC1-SVC3A: "!\nno enable password\nno aaa root\n!\nusername admin privilege
     15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\nno
-    ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-SVC3A\nip name-server vrf
     MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nno
     spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nvlan 110\n
@@ -1273,10 +1277,10 @@ cvp_configlets:
   AVD_DC1-SVC3B: "!\nno enable password\nno aaa root\n!\nusername admin privilege
     15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin
     secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n!\ndaemon
-    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista
-    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    -taillogs\n   no shutdown\n!\nvlan internal order ascending range 1006 1199\n!\nno
-    ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    TerminAttr\n   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs
+    -cvsourceintf=Management1\n   no shutdown\n!\nvlan internal order ascending range
+    1006 1199\n!\nno ip igmp snooping vlan 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
     routing protocols model multi-agent\n!\nhostname DC1-SVC3B\nip name-server vrf
     MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nno
     spanning-tree vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nvlan 110\n

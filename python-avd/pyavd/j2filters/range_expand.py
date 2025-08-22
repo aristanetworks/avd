@@ -7,6 +7,7 @@ from __future__ import annotations
 import re
 from collections.abc import Sequence
 from dataclasses import dataclass
+from typing import cast
 
 
 @dataclass
@@ -22,9 +23,11 @@ class InterfaceData:
     last_module: int | None = None
 
 
-def expand_subinterfaces(interface_string: str, data: InterfaceData) -> list:
-    result = []
+def expand_subinterfaces(interface_string: str, data: InterfaceData) -> list[str]:
+    result: list[str] = []
     if data.last_subinterface is not None:
+        # if data.last_subinterface is not None then we know data.first_subinterface is not None coming from range_expand
+        data.first_subinterface = cast("int", data.first_subinterface)
         if data.first_subinterface > data.last_subinterface:
             msg = (
                 f"Range {data.one_range} could not be expanded because the first subinterface {data.first_subinterface} is larger than last"
@@ -37,22 +40,27 @@ def expand_subinterfaces(interface_string: str, data: InterfaceData) -> list:
     return result
 
 
-def expand_interfaces(interface_string: str, data: InterfaceData) -> list:
-    result = []
-    if data.first_interface > data.last_interface:
-        msg = (
-            f"Range {data.one_range} could not be expanded because the first interface {data.first_interface} is larger than last interface"
-            f" {data.last_interface} in the range."
-        )
-        raise ValueError(msg)
-    for interface in range(data.first_interface, data.last_interface + 1):
-        result.extend(expand_subinterfaces(f"{interface_string}{interface}", data))
+def expand_interfaces(interface_string: str, data: InterfaceData) -> list[str]:
+    result: list[str] = []
+    if data.last_interface is not None:
+        # if data.last_interface is not None then we know data.first_interface is not None coming from range_expand
+        data.first_interface = cast("int", data.first_interface)
+        if data.first_interface > data.last_interface:
+            msg = (
+                f"Range {data.one_range} could not be expanded because the first interface {data.first_interface} is larger than last interface"
+                f" {data.last_interface} in the range."
+            )
+            raise ValueError(msg)
+        for interface in range(data.first_interface, data.last_interface + 1):
+            result.extend(expand_subinterfaces(f"{interface_string}{interface}", data))
     return result
 
 
-def expand_parent_interfaces(interface_string: str, data: InterfaceData) -> list:
-    result = []
+def expand_parent_interfaces(interface_string: str, data: InterfaceData) -> list[str]:
+    result: list[str] = []
     if data.last_parent_interface is not None:
+        # if data.last_parent_interface is not None then we know data.first_parent_interface is not None coming from range_expand
+        data.first_parent_interface = cast("int", data.first_parent_interface)
         if data.first_parent_interface > data.last_parent_interface:
             msg = (
                 f"Range {data.one_range} could not be expanded because the first interface {data.first_parent_interface} is larger than last"
@@ -66,9 +74,11 @@ def expand_parent_interfaces(interface_string: str, data: InterfaceData) -> list
     return result
 
 
-def expand_module(interface_string: str, data: InterfaceData) -> list:
-    result = []
+def expand_module(interface_string: str, data: InterfaceData) -> list[str]:
+    result: list[str] = []
     if data.last_module is not None:
+        # if data.last_module is not None then we know data.first_module is not None coming from range_expand
+        data.first_module = cast("int", data.first_module)
         if data.first_module > data.last_module:
             msg = (
                 f"Range {data.one_range} could not be expanded because the first module {data.first_module} is larger than last module"
@@ -82,12 +92,12 @@ def expand_module(interface_string: str, data: InterfaceData) -> list:
     return result
 
 
-def range_expand(range_to_expand: Sequence) -> list:
+def range_expand(range_to_expand: Sequence[str]) -> list[str]:
     if not isinstance(range_to_expand, Sequence):
         msg = f"value must be a Sequence, got {type(range_to_expand)}"
         raise TypeError(msg)
 
-    result = []
+    result: list[str] = []
 
     # If we got a list, unpack it and run this function recursively
     if not isinstance(range_to_expand, str):

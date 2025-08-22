@@ -1,0 +1,18 @@
+# Copyright (c) 2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  underlay_ospf_maximum_paths:
+    # TODO: AVD 6.0 - Set default: 128
+    description: Maximum number of next-hops in an ECMP route.
+    documentation_options:
+      table: ospf-settings
+    type: int
+    min: 1
+    max: 128
+    convert_types:
+      - str

@@ -132,8 +132,9 @@ class EthernetInterfacesMixin(Protocol):
                     name=interface_name,
                     peer_type="l3_interface",
                     ip_address=l3_interface.ip_addresses[node_index],
-                    mtu=l3_interface.mtu if self.shared_utils.platform_settings.feature_support.per_interface_mtu else None,
+                    mtu=self.shared_utils.get_interface_mtu(interface_name, l3_interface.mtu),
                     shutdown=not l3_interface.enabled,
+                    arp_gratuitous_accept=l3_interface.arp_gratuitous_accept,
                     description=interface_description,
                     eos_cli=l3_interface.raw_eos_cli,
                     flow_tracker=self.shared_utils.get_flow_tracker(l3_interface.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
@@ -144,7 +145,7 @@ class EthernetInterfacesMixin(Protocol):
                         l3_interface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                     )
 
-                if self.inputs.fabric_sflow.l3_interfaces is not None:
+                if self.shared_utils.platform_settings.feature_support.sflow and self.inputs.fabric_sflow.l3_interfaces is not None:
                     interface.sflow.enable = self.inputs.fabric_sflow.l3_interfaces
 
                 if l3_interface.ipv4_acl_in:
@@ -188,20 +189,7 @@ class EthernetInterfacesMixin(Protocol):
                         ospf_cost=l3_interface.ospf.cost,
                     )
 
-                    ospf_authentication = l3_interface.ospf.authentication
-                    if ospf_authentication == "simple" and (ospf_simple_auth_key := l3_interface.ospf.simple_auth_key) is not None:
-                        interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
-                    elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := l3_interface.ospf.message_digest_keys) is not None:
-                        for ospf_key in ospf_message_digest_keys:
-                            if not (ospf_key.id and ospf_key.key):
-                                continue
-                            interface.ospf_message_digest_keys.append_new(
-                                id=ospf_key.id,
-                                hash_algorithm=ospf_key.hash_algorithm,
-                                key=ospf_key.key,
-                            )
-                        if interface.ospf_message_digest_keys:
-                            interface.ospf_authentication = ospf_authentication
+                    self.shared_utils.update_ospf_authentication(interface, l3_interface, vrf, tenant)
 
                 if l3_interface.pim.enabled:
                     if not getattr(vrf._internal_data, "evpn_l3_multicast_enabled", False):
@@ -226,6 +214,10 @@ class EthernetInterfacesMixin(Protocol):
                         raise AristaAvdError(msg)
 
                     interface.pim.ipv4.sparse_mode = True
+
+                # Propagate campus_link_type for campus devices
+                if self.shared_utils.is_campus_device and l3_interface.campus_link_type:
+                    interface._internal_data.campus_link_type = list(l3_interface.campus_link_type)
                 self.structured_config.ethernet_interfaces.append(interface)
 
     def _set_point_to_point_interfaces(

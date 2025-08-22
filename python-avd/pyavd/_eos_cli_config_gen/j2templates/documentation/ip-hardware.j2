@@ -1,0 +1,28 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - ip hardware #}
+{% if ip_hardware.fib.optimize.prefixes.profile is arista.avd.defined or ip_hardware.fib.load_balance_distribution.dynamic is arista.avd.defined %}
+
+## IP Hardware FIB
+
+### IP Hardware FIB Summary
+
+{%     if ip_hardware.fib.optimize.prefixes.profile is arista.avd.defined %}
+IP hardware FIB optimize prefixes profile: {{ ip_hardware.fib.optimize.prefixes.profile }}
+{%     endif %}
+{%     if ip_hardware.fib.load_balance_distribution.dynamic.enabled is arista.avd.defined(true) %}
+IP hardware FIB dynamic load balancing: Enabled
+{%     endif %}
+{%     if ip_hardware.fib.load_balance_distribution.dynamic.flow_set_size is arista.avd.defined %}
+IP hardware FIB dynamic load balancing flow-set-size: {{ ip_hardware.fib.load_balance_distribution.dynamic.flow_set_size }}
+{%     endif %}
+
+### IP Hardware FIB Configuration
+
+```eos
+{%     include 'eos/ip-hardware.j2' %}
+```
+{% endif %}

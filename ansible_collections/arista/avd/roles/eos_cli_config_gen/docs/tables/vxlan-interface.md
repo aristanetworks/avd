@@ -18,6 +18,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "vxlan_interface.vxlan1.vxlan.controller_client.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_source_interface</samp>](## "vxlan_interface.vxlan1.vxlan.mlag_source_interface") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_port</samp>](## "vxlan_interface.vxlan1.vxlan.udp_port") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulations</samp>](## "vxlan_interface.vxlan1.vxlan.encapsulations") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "vxlan_interface.vxlan1.vxlan.encapsulations.ipv4") | Boolean |  |  |  | Use IPv4 for VXLAN Encapsulation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "vxlan_interface.vxlan1.vxlan.encapsulations.ipv6") | Boolean |  |  |  | Use IPv6 for VXLAN Encapsulation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_to_vtep_bridging</samp>](## "vxlan_interface.vxlan1.vxlan.vtep_to_vtep_bridging") | Boolean |  |  |  | Enable bridging between different VTEPs in vxlan overlay. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_encapsulation_mac_address</samp>](## "vxlan_interface.vxlan1.vxlan.virtual_router_encapsulation_mac_address") | String |  |  |  | "mlag-system-id" or ethernet_address (H.H.H).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_vtep_evpn</samp>](## "vxlan_interface.vxlan1.vxlan.bfd_vtep_evpn") | Dictionary |  |  |  |  |
@@ -29,6 +32,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp_propagation_encapsulation</samp>](## "vxlan_interface.vxlan1.vxlan.qos.dscp_propagation_encapsulation") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn_propagation</samp>](## "vxlan_interface.vxlan1.vxlan.qos.ecn_propagation") | Boolean |  |  |  | Enable copying the ECN marking to/from encapsulated packets.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map_dscp_to_traffic_class_decapsulation</samp>](## "vxlan_interface.vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp_ecn</samp>](## "vxlan_interface.vxlan1.vxlan.qos.dscp_ecn") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rewrite_bridged_enabled</samp>](## "vxlan_interface.vxlan1.vxlan.qos.dscp_ecn.rewrite_bridged_enabled") | Boolean |  |  |  | Enable DSCP and ECN rewrite for VXLAN bridged packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_range</samp>](## "vxlan_interface.vxlan1.vxlan.vlan_range") | Dictionary |  |  |  | Set VNI on range of VLANs. Number of VLANs must equal number of VNIs.<br>If a VNI is set for a VLAN using `vlan_range`, VNI setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "vxlan_interface.vxlan1.vxlan.vlan_range.vlans") | String | Required |  |  | e.g. "94,96,100-110". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vnis</samp>](## "vxlan_interface.vxlan1.vxlan.vlan_range.vnis") | String | Required |  |  | Set `vnis` in the correct sequence as `vlans`.<br>e.g. "10094,10096,10100-10110". |
@@ -38,6 +43,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group</samp>](## "vxlan_interface.vxlan1.vxlan.vlans.[].multicast_group") | String |  |  |  | IP Multicast Group Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vteps</samp>](## "vxlan_interface.vxlan1.vxlan.vlans.[].flood_vteps") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vxlan_interface.vxlan1.vxlan.vlans.[].flood_vteps.[]") | String |  |  |  | Remote VTEP IP Address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_group</samp>](## "vxlan_interface.vxlan1.vxlan.vlans.[].flood_group") | String |  |  |  | Flood multicast group address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].vni") | Integer |  |  |  |  |
@@ -56,6 +62,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "vxlan_interface.Vxlan1.vxlan.controller_client.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_source_interface</samp>](## "vxlan_interface.Vxlan1.vxlan.mlag_source_interface") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_port</samp>](## "vxlan_interface.Vxlan1.vxlan.udp_port") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulations</samp>](## "vxlan_interface.Vxlan1.vxlan.encapsulations") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "vxlan_interface.Vxlan1.vxlan.encapsulations.ipv4") | Boolean |  |  |  | Use IPv4 for VXLAN Encapsulation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "vxlan_interface.Vxlan1.vxlan.encapsulations.ipv6") | Boolean |  |  |  | Use IPv6 for VXLAN Encapsulation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_to_vtep_bridging</samp>](## "vxlan_interface.Vxlan1.vxlan.vtep_to_vtep_bridging") | Boolean |  |  |  | Enable bridging between different VTEPs in vxlan overlay. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;virtual_router_encapsulation_mac_address</samp>](## "vxlan_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address") | String |  |  |  | "mlag-system-id" or ethernet_address (H.H.H).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_vtep_evpn</samp>](## "vxlan_interface.Vxlan1.vxlan.bfd_vtep_evpn") | Dictionary |  |  |  |  |
@@ -67,6 +76,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp_propagation_encapsulation</samp>](## "vxlan_interface.Vxlan1.vxlan.qos.dscp_propagation_encapsulation") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn_propagation</samp>](## "vxlan_interface.Vxlan1.vxlan.qos.ecn_propagation") | Boolean |  |  |  | Enable copying the ECN marking to/from encapsulated packets.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map_dscp_to_traffic_class_decapsulation</samp>](## "vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp_ecn</samp>](## "vxlan_interface.Vxlan1.vxlan.qos.dscp_ecn") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rewrite_bridged_enabled</samp>](## "vxlan_interface.Vxlan1.vxlan.qos.dscp_ecn.rewrite_bridged_enabled") | Boolean |  |  |  | Enable DSCP and ECN rewrite for VXLAN bridged packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_range</samp>](## "vxlan_interface.Vxlan1.vxlan.vlan_range") | Dictionary |  |  |  | Set VNI on range of VLANs. Number of VLANs must equal number of VNIs.<br>If a VNI is set for a VLAN using `vlan_range`, VNI setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "vxlan_interface.Vxlan1.vxlan.vlan_range.vlans") | String | Required |  |  | e.g. "94,96,100-110". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vnis</samp>](## "vxlan_interface.Vxlan1.vxlan.vlan_range.vnis") | String | Required |  |  | Set `vnis` in the correct sequence as `vlans`.<br>e.g. "10094,10096,10100-10110". |
@@ -76,6 +87,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].multicast_group") | String |  |  |  | IP Multicast Group Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vteps</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].flood_vteps") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].flood_vteps.[]") | String |  |  |  | Remote VTEP IP Address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_group</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].flood_group") | String |  |  |  | Flood multicast group address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].vni") | Integer |  |  |  |  |
@@ -103,6 +115,13 @@
             enabled: <bool>
           mlag_source_interface: <str>
           udp_port: <int>
+          encapsulations:
+
+            # Use IPv4 for VXLAN Encapsulation.
+            ipv4: <bool>
+
+            # Use IPv6 for VXLAN Encapsulation.
+            ipv6: <bool>
 
           # Enable bridging between different VTEPs in vxlan overlay.
           vtep_to_vtep_bridging: <bool>
@@ -123,6 +142,10 @@
             # Enable copying the ECN marking to/from encapsulated packets.
             ecn_propagation: <bool>
             map_dscp_to_traffic_class_decapsulation: <bool>
+            dscp_ecn:
+
+              # Enable DSCP and ECN rewrite for VXLAN bridged packets.
+              rewrite_bridged_enabled: <bool>
 
           # Set VNI on range of VLANs. Number of VLANs must equal number of VNIs.
           # If a VNI is set for a VLAN using `vlan_range`, VNI setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN.
@@ -149,6 +172,9 @@
 
                   # Remote VTEP IP Address.
                 - <str>
+
+              # Flood multicast group address.
+              flood_group: <str>
           vrfs:
 
               # VRF Name.
@@ -167,7 +193,7 @@
         eos_cli: <str>
       # This key is deprecated.
       # Support will be removed in AVD version 6.0.0.
-      # Use <samp>vxlan1</samp> instead.
+      # Use `vxlan1` instead.
       Vxlan1:
         description: <str>
         vxlan:
@@ -182,6 +208,13 @@
             enabled: <bool>
           mlag_source_interface: <str>
           udp_port: <int>
+          encapsulations:
+
+            # Use IPv4 for VXLAN Encapsulation.
+            ipv4: <bool>
+
+            # Use IPv6 for VXLAN Encapsulation.
+            ipv6: <bool>
 
           # Enable bridging between different VTEPs in vxlan overlay.
           vtep_to_vtep_bridging: <bool>
@@ -202,6 +235,10 @@
             # Enable copying the ECN marking to/from encapsulated packets.
             ecn_propagation: <bool>
             map_dscp_to_traffic_class_decapsulation: <bool>
+            dscp_ecn:
+
+              # Enable DSCP and ECN rewrite for VXLAN bridged packets.
+              rewrite_bridged_enabled: <bool>
 
           # Set VNI on range of VLANs. Number of VLANs must equal number of VNIs.
           # If a VNI is set for a VLAN using `vlan_range`, VNI setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN.
@@ -228,6 +265,9 @@
 
                   # Remote VTEP IP Address.
                 - <str>
+
+              # Flood multicast group address.
+              flood_group: <str>
           vrfs:
 
               # VRF Name.

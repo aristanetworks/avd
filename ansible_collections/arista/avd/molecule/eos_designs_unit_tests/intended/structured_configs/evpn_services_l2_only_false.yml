@@ -8,11 +8,10 @@ daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
   cvauth:
-    method: key
-    key: telarista
+    method: token
+    token_file: /tmp/token
   cvvrf: MGMT
   disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
@@ -712,6 +711,7 @@ vlan_interfaces:
   description: svi_with_no_tags
   shutdown: false
   vrf: Tenant_A_WAN_Zone
+  arp_gratuitous_accept: true
   ip_address_virtual: 10.1.51.1/24
   tenant: Tenant_A
 - name: Vlan166

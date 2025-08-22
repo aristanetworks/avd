@@ -14,11 +14,12 @@ local_users:
     sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
 
 # Cloud Vision server
-cvp_instance_ips:
-  - 192.168.200.11
-
-cvp_ingestauth_key: telarista
-terminattr_disable_aaa: false
+cv_settings:
+  onprem_clusters:
+    - name: test
+      vrf: use_mgmt_interface_vrf
+      servers:
+        - name: 192.168.200.11
 
 snmp_settings:
   contact: example@example.com
@@ -28,9 +29,11 @@ snmp_settings:
 mgmt_gateway: 192.168.200.5
 
 # dns servers.
-name_servers:
-  - 192.168.200.5
-  - 8.8.8.8
+dns_settings:
+  servers:
+    - ip_address: 192.168.200.5
+    - ip_address: 8.8.8.8
+  set_source_interfaces: false
 
 # NTP Servers IP or DNS name, first NTP server will be preferred and sourced from Management
 ntp_settings:

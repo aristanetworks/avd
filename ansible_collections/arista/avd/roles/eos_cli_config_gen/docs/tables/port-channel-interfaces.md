@@ -20,6 +20,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_mtu</samp>](## "port_channel_interfaces.[].l2_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_mru</samp>](## "port_channel_interfaces.[].l2_mru") | Integer |  |  | Min: 68<br>Max: 65535 | "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "port_channel_interfaces.[].vlans") <span style="color:red">deprecated</span> | String |  |  |  | List of switchport vlans as string.<br>For a trunk port this would be a range like "1-200,300".<br>For an access port this would be a single vlan "123".<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>switchport.access_vlan or switchport.trunk.allowed_vlan</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "port_channel_interfaces.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;snmp_trap_link_change</samp>](## "port_channel_interfaces.[].snmp_trap_link_change") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "port_channel_interfaces.[].type") <span style="color:red">deprecated</span> | String |  |  | Valid Values:<br>- <code>routed</code><br>- <code>switched</code><br>- <code>l3dot1q</code><br>- <code>l2dot1q</code> | l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.<br>Interface will not be listed in device documentation, unless "type" is set.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. See [here](https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation) for details.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "port_channel_interfaces.[].encapsulation_dot1q_vlan") <span style="color:red">deprecated</span> | Integer |  |  |  | VLAN tag to configure on sub-interface.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>encapsulation_dot1q.vlan</samp> instead.</span> |
@@ -282,6 +283,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sparse_mode</samp>](## "port_channel_interfaces.[].pim.ipv4.sparse_mode") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "port_channel_interfaces.[].pim.ipv4.bfd") | Boolean |  |  |  | Set the default for whether Bidirectional Forwarding Detection is enabled for PIM. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bidirectional</samp>](## "port_channel_interfaces.[].pim.ipv4.bidirectional") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor_filter</samp>](## "port_channel_interfaces.[].pim.ipv4.neighbor_filter") | String |  |  |  | Standard access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hello</samp>](## "port_channel_interfaces.[].pim.ipv4.hello") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "port_channel_interfaces.[].pim.ipv4.hello.count") | String |  |  |  | Number of missed hellos after which the neighbor expires. Range <1.5-65535>. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "port_channel_interfaces.[].pim.ipv4.hello.interval") | Integer |  |  | Min: 1<br>Max: 65535 | PIM hello interval in seconds. |
@@ -320,6 +322,36 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;egress</samp>](## "port_channel_interfaces.[].sflow.egress") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "port_channel_interfaces.[].sflow.egress.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unmodified_enable</samp>](## "port_channel_interfaces.[].sflow.egress.unmodified_enable") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrrp_ids</samp>](## "port_channel_interfaces.[].vrrp_ids") | List, items: Dictionary |  |  |  | VRRP model. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "port_channel_interfaces.[].vrrp_ids.[].id") | Integer | Required, Unique |  |  | VRID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority_level</samp>](## "port_channel_interfaces.[].vrrp_ids.[].priority_level") | Integer |  |  | Min: 1<br>Max: 254 | Instance priority. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advertisement</samp>](## "port_channel_interfaces.[].vrrp_ids.[].advertisement") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "port_channel_interfaces.[].vrrp_ids.[].advertisement.interval") | Integer |  |  | Min: 1<br>Max: 255 | Interval in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preempt</samp>](## "port_channel_interfaces.[].vrrp_ids.[].preempt") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_channel_interfaces.[].vrrp_ids.[].preempt.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "port_channel_interfaces.[].vrrp_ids.[].preempt.delay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimum</samp>](## "port_channel_interfaces.[].vrrp_ids.[].preempt.delay.minimum") | Integer |  |  | Min: 0<br>Max: 3600 | Minimum preempt delay in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reload</samp>](## "port_channel_interfaces.[].vrrp_ids.[].preempt.delay.reload") | Integer |  |  | Min: 0<br>Max: 3600 | Reload preempt delay in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "port_channel_interfaces.[].vrrp_ids.[].timers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "port_channel_interfaces.[].vrrp_ids.[].timers.delay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reload</samp>](## "port_channel_interfaces.[].vrrp_ids.[].timers.delay.reload") | Integer |  |  | Min: 0<br>Max: 3600 | Delay after reload in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tracked_object</samp>](## "port_channel_interfaces.[].vrrp_ids.[].tracked_object") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "port_channel_interfaces.[].vrrp_ids.[].tracked_object.[].name") | String | Required, Unique |  |  | Tracked object name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decrement</samp>](## "port_channel_interfaces.[].vrrp_ids.[].tracked_object.[].decrement") | Integer |  |  | Min: 1<br>Max: 254 | Decrement VRRP priority by 1-254. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "port_channel_interfaces.[].vrrp_ids.[].tracked_object.[].shutdown") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv4") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv4.address") | String | Required |  |  | Virtual IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secondary_addresses</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv4.secondary_addresses") | List, items: String |  |  |  | Additional VRRP IPv4 addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv4.secondary_addresses.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv4.version") | Integer |  |  | Valid Values:<br>- <code>2</code><br>- <code>3</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv6") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv6.address") <span style="color:red">deprecated</span> | String |  |  |  | Virtual IPv6 address.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>addresses</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv6.addresses") | List, items: String |  |  |  | Virtual IPv6 addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].vrrp_ids.[].ipv6.addresses.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_authentication</samp>](## "port_channel_interfaces.[].vrrp_ids.[].peer_authentication") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "port_channel_interfaces.[].vrrp_ids.[].peer_authentication.mode") | String | Required |  | Valid Values:<br>- <code>text</code><br>- <code>ietf-md5</code> | Authentication mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "port_channel_interfaces.[].vrrp_ids.[].peer_authentication.key") | String | Required |  |  | Authentication key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "port_channel_interfaces.[].vrrp_ids.[].peer_authentication.key_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Authentication key type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switchport</samp>](## "port_channel_interfaces.[].switchport") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_channel_interfaces.[].switchport.enabled") | Boolean |  |  |  | Warning: This should not be combined with `port_channel_interfaces[].type = routed`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "port_channel_interfaces.[].switchport.mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> | Warning: This should not be combined with `port_channel_interfaces[].mode` |
@@ -435,7 +467,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_channel_interfaces.[].traffic_engineering.enabled") | Boolean |  |  |  | Whether to enable traffic-engineering on this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;administrative_groups</samp>](## "port_channel_interfaces.[].traffic_engineering.administrative_groups") | List, items: String |  |  |  | List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single integers 0-127. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].traffic_engineering.administrative_groups.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;srlg</samp>](## "port_channel_interfaces.[].traffic_engineering.srlg") | String |  |  |  | SRLG name or number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;srlgs</samp>](## "port_channel_interfaces.[].traffic_engineering.srlgs") | List, items: String |  |  |  | List of SRLGs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].traffic_engineering.srlgs.[]") | String |  |  |  | SRLG name or number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;srlg</samp>](## "port_channel_interfaces.[].traffic_engineering.srlg") <span style="color:red">deprecated</span> | String |  |  |  | SRLG name or number.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>srlgs</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric</samp>](## "port_channel_interfaces.[].traffic_engineering.metric") | Integer |  |  | Min: 1<br>Max: 16777215 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bandwidth</samp>](## "port_channel_interfaces.[].traffic_engineering.bandwidth") | Dictionary |  |  |  | Interface maximum reservable bandwidth. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number</samp>](## "port_channel_interfaces.[].traffic_engineering.bandwidth.number") | Integer | Required |  | Min: 0<br>Max: 10000 |  |
@@ -484,8 +518,11 @@
         # For an access port this would be a single vlan "123".
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.access_vlan or switchport.trunk.allowed_vlan</samp> instead.
+        # Use `switchport.access_vlan` or `switchport.trunk.allowed_vlan` instead.
         vlans: <str>
+
+        # Accept gratuitous ARP.
+        arp_gratuitous_accept: <bool>
         snmp_trap_link_change: <bool>
 
         # l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
@@ -498,7 +535,7 @@
         # VLAN tag to configure on sub-interface.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>encapsulation_dot1q.vlan</samp> instead.
+        # Use `encapsulation_dot1q.vlan` instead.
         encapsulation_dot1q_vlan: <int>
 
         # Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.
@@ -581,19 +618,19 @@
         vlan_id: <int; 1-4094>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.mode</samp> instead.
+        # Use `switchport.mode` instead.
         mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone">
 
         # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.trunk.native_vlan</samp> instead.
+        # Use `switchport.trunk.native_vlan` instead.
         native_vlan: <int>
 
         # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.trunk.native_vlan_tag</samp> instead.
+        # Use `switchport.trunk.native_vlan_tag` instead.
         native_vlan_tag: <bool>
         link_tracking_groups:
 
@@ -610,7 +647,7 @@
             - <str>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.phone</samp> instead.
+        # Use `switchport.phone` instead.
         phone:
           trunk: <str; "tagged" | "untagged">
           vlan: <int; 1-4094>
@@ -627,7 +664,7 @@
         mlag: <int; 1-2000>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.trunk.groups</samp> instead.
+        # Use `switchport.trunk.groups` instead.
         trunk_groups:
           - <str>
 
@@ -680,17 +717,17 @@
         ntp_serve: <bool>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.trunk.private_vlan_secondary</samp> instead.
+        # Use `switchport.trunk.private_vlan_secondary` instead.
         trunk_private_vlan_secondary: <bool>
 
         # List of vlans as string.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.pvlan_mapping</samp> instead.
+        # Use `switchport.pvlan_mapping` instead.
         pvlan_mapping: <str>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.vlan_translations</samp> instead.
+        # Use `switchport.vlan_translations` instead.
         vlan_translations:
 
             # List of vlans as string (only one vlan if direction is "both").
@@ -751,13 +788,13 @@
         isis_hello_padding: <bool>
         # This key is deprecated.
         # Support will be removed in AVD version v6.0.0.
-        # Use <samp>port_channel_interfaces[].isis_authentication.both.mode or port_channel_interfaces[].isis_authentication.level_1.mode or port_channel_interfaces[].isis_authentication.level_2.mode</samp> instead.
+        # Use `port_channel_interfaces[].isis_authentication.both.mode` or `port_channel_interfaces[].isis_authentication.level_1.mode` or `port_channel_interfaces[].isis_authentication.level_2.mode` instead.
         isis_authentication_mode: <str; "text" | "md5">
 
         # Type-7 encrypted password.
         # This key is deprecated.
         # Support will be removed in AVD version v6.0.0.
-        # Use <samp>port_channel_interfaces[].isis_authentication.both.key or port_channel_interfaces[].isis_authentication.level_1.key or port_channel_interfaces[].isis_authentication.level_2.key</samp> instead.
+        # Use `port_channel_interfaces[].isis_authentication.both.key` or `port_channel_interfaces[].isis_authentication.level_1.key` or `port_channel_interfaces[].isis_authentication.level_2.key` instead.
         isis_authentication_key: <str>
 
         # This key should not be mixed with port_channel_interfaces[].isis_authentication_mode or ethernet_interfaces[].isis_authentication_key.
@@ -1067,6 +1104,9 @@
             # Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
             bfd: <bool>
             bidirectional: <bool>
+
+            # Standard access list name.
+            neighbor_filter: <str>
             hello:
 
               # Number of missed hellos after which the neighbor expires. Range <1.5-65535>.
@@ -1139,6 +1179,71 @@
           egress:
             enable: <bool>
             unmodified_enable: <bool>
+
+        # VRRP model.
+        vrrp_ids:
+
+            # VRID.
+          - id: <int; required; unique>
+
+            # Instance priority.
+            priority_level: <int; 1-254>
+            advertisement:
+
+              # Interval in seconds.
+              interval: <int; 1-255>
+            preempt:
+              enabled: <bool; required>
+              delay:
+
+                # Minimum preempt delay in seconds.
+                minimum: <int; 0-3600>
+
+                # Reload preempt delay in seconds.
+                reload: <int; 0-3600>
+            timers:
+              delay:
+
+                # Delay after reload in seconds.
+                reload: <int; 0-3600>
+            tracked_object:
+
+                # Tracked object name.
+              - name: <str; required; unique>
+
+                # Decrement VRRP priority by 1-254.
+                decrement: <int; 1-254>
+                shutdown: <bool>
+            ipv4:
+
+              # Virtual IPv4 address.
+              address: <str; required>
+
+              # Additional VRRP IPv4 addresses.
+              secondary_addresses:
+                - <str>
+              version: <int; 2 | 3>
+            ipv6:
+
+              # Virtual IPv6 address.
+              # This key is deprecated.
+              # Support will be removed in AVD version 6.0.0.
+              # Use `addresses` instead.
+              address: <str>
+
+              # Virtual IPv6 addresses.
+              addresses:
+                - <str>
+            peer_authentication:
+
+              # Authentication mode.
+              mode: <str; "text" | "ietf-md5"; required>
+
+              # Authentication key.
+              key: <str; required>
+
+              # Authentication key type.
+              key_type: <str; "0" | "7" | "8a">
         switchport:
 
           # Warning: This should not be combined with `port_channel_interfaces[].type = routed`.
@@ -1452,7 +1557,16 @@
           administrative_groups:
             - <str>
 
+          # List of SRLGs.
+          srlgs:
+
+              # SRLG name or number.
+            - <str>
+
           # SRLG name or number.
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use `srlgs` instead.
           srlg: <str>
           metric: <int; 1-16777215>
 

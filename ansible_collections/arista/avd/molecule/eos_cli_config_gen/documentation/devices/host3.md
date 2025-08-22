@@ -59,31 +59,35 @@ ntp serve ipv6 access-group test_ACL_v6 vrf RED in
 ntp serve ipv6 access-group test_ACL_v6 in
 ```
 
+### PTP
+
+#### PTP Summary
+
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running Enabled |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------------- |
+| - | - | - | - | - | - | - | - | False |
+
+#### PTP Device Configuration
+
+```eos
+!
+no ptp free-running
+```
+
 ### Management SSH
-
-#### SSH Timeout and Management
-
-| Idle Timeout | SSH Management |
-| ------------ | -------------- |
-| default | Enabled |
-
-#### Max number of SSH sessions limit and per-host limit
-
-| Connection Limit | Max from a single Host |
-| ---------------- | ---------------------- |
-| - | - |
-
-#### Ciphers and Algorithms
-
-| Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
-|---------|----------------------|----------------|---------------------------|
-| default | default | default | default |
 
 #### VRFs
 
-| VRF | Status |
-| --- | ------ |
-| mgt | Disabled |
+| VRF | Enabled | IPv4 ACL | IPv6 ACL |
+| --- | ------- | -------- | -------- |
+| mgt | - | - | - |
+| default | True | - | - |
+
+#### Other SSH Settings
+
+| Idle Timeout | Connection Limit | Max from a single Host | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
+| ------------ | ---------------- | ---------------------- | ------- | -------------------- | -------------- | ------------------------- |
+| default | - | - | default | default | default | default |
 
 #### Management SSH Device Configuration
 

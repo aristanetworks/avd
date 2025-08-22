@@ -73,11 +73,17 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
 
     Generates test inputs for verifying the following reachability checks:
 
-    - Point-to-point links between Ethernet interfaces with `peer`, `peer_interface`,
-    and `ip_address` (non-dhcp) configured. Links are checked when interfaces are not `shutdown`,
-    fabric peers exist and are deployed (`is_deployed: true`), and peer interfaces have IP addresses.
+    - Point-to-Point Ethernet Links:
+        Inputs are generated for Ethernet interfaces that meet all the following criteria:
+        * `peer`, `peer_interface` and `ip_address` are defined
+        * `ip_address` is static - *not* 'dhcp' and *not* 'unnumbered'
+        * Interface is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`
+        * `peer` device is deployed - `is_deployed=True`
+        * `peer_interface` on the `peer` device has a defined static `ip_address` - *not* 'dhcp' and *not* 'unnumbered'
 
-    - IPv4 BGP neighbors with `update_source` configured.
+    - BGP Neighbors:
+        Inputs are generated for BGP neighbors that meet all the following criteria:
+        * `update_source` IP address defined
     """
 
     def create(self) -> list[VerifyReachability.Input] | None:
@@ -116,6 +122,11 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
                 self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=intf.name)
                 continue
 
+            # TODO: Consider adding reachability check between lending interfaces without creating duplicate src-dst pairs
+            if "unnumbered" in intf.ip_address:
+                self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=intf.name)
+                continue
+
             if (peer_interface_ip := self.get_interface_ip(intf.peer, intf.peer_interface, intf.name)) is None:
                 continue
 
@@ -139,7 +150,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
 
         Only support BGP neighbors with an update source configured for now.
         """
-        description = "Verifies reachability to IPv4 BGP neighbors with an update source configured."
+        description = "Verifies reachability to BGP neighbors with an update source configured."
         hosts = [
             Host(
                 destination=neighbor.ip_address,

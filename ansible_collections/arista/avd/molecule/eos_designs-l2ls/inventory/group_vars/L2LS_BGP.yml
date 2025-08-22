@@ -28,11 +28,65 @@ tenants:
         static_routes: # Testing creation of static route in default VRF including redistribute static under the underlay protocol
           - prefix: 10.0.0.0/8
             next_hop: 10.1.100.100
-            nodes: [ BGP-SPINE2 ]
+            nodes: [BGP-SPINE2]
+        l3_interfaces:
+          # Labeled as Campus Egress
+          - interfaces:
+              - Ethernet9
+            ip_addresses:
+              - "10.0.1.0/31"
+            nodes:
+              - BGP-SPINE1
+            campus_link_type: ["egress"]
+          # Not labeled as Campus Egress
+          - interfaces:
+              - Ethernet9
+            ip_addresses:
+              - "10.0.1.2/31"
+            nodes:
+              - BGP-SPINE2
+          # Sub-interface labeled as Campus Egress
+          - interfaces:
+              - Ethernet18.100
+            ip_addresses:
+              - "10.0.1.4/31"
+            nodes:
+              - BGP-SPINE1
+            campus_link_type: ["egress"]
+          # Sub-interface not labeled as Campus Egress
+          - interfaces:
+              - Ethernet18.100
+            ip_addresses:
+              - "10.0.1.6/31"
+            nodes:
+              - BGP-SPINE2
+      - name: New_VRF
+        vrf_id: 101
+        l3_interfaces:
+          # Sub-interface labeled as Campus Egress
+          - interfaces:
+              - Ethernet18.101
+            ip_addresses:
+              - "10.0.1.8/31"
+            nodes:
+              - BGP-SPINE1
+            campus_link_type: ["egress"]
+          # Sub-interface not labeled as Campus Egress
+          - interfaces:
+              - Ethernet18.101
+            ip_addresses:
+              - "10.0.1.10/31"
+            nodes:
+              - BGP-SPINE2
+
+port_profiles:
+  - profile: campus_eggress
+    campus_link_type: ["egress"]
+  - profile: no_campus_eggress
 
 network_ports:
   - switches:
-      - "BGP-LEAF[1-2]"
+      - "BGP-LEAF[1-3]"
     switch_ports:
       - "Ethernet10-11"
     vlans: 100
@@ -55,13 +109,201 @@ network_ports:
     phone_trunk_mode: untagged
     mode: trunk phone
     description: IP Phone with no native VLAN
+
+  # Standalone interface labeled as Campus Egress
+  - switches:
+      - "BGP-SPINE1"
+    switch_ports:
+      - "Ethernet10"
+    campus_link_type: ["egress"]
+  # Standalone interface not labeled as Campus Egress
+  - switches:
+      - "BGP-SPINE2"
+    switch_ports:
+      - "Ethernet10"
+
+  # Standalone profiled interface labeled as Campus Egress
+  - switches:
+      - "BGP-SPINE1"
+    switch_ports:
+      - "Ethernet11"
+    profile: campus_eggress
+  # Standalone profiled interface not labeled as Campus Egress
+  - switches:
+      - "BGP-SPINE2"
+    switch_ports:
+      - "Ethernet11"
+    profile: no_campus_eggress
+
+  # Port-channel member interface labeled as Campus Egress
+  - switches:
+      - "BGP-SPINE1"
+    switch_ports:
+      - "Ethernet12"
+    port_channel:
+      mode: active
+    campus_link_type: ["egress"]
+  # Port-channel member interface not labeled as Campus Egress
+  - switches:
+      - "BGP-SPINE2"
+    switch_ports:
+      - "Ethernet12"
+    port_channel:
+      mode: active
+
+  # Port-channel profiled member interface labeled as Campus Egress
+  - switches:
+      - "BGP-SPINE1"
+    switch_ports:
+      - "Ethernet13"
+    port_channel:
+      mode: active
+    profile: campus_eggress
+  # Port-channel profiled member interface not labeled as Campus Egress
+  - switches:
+      - "BGP-SPINE2"
+    switch_ports:
+      - "Ethernet13"
+    port_channel:
+      mode: active
+    profile: no_campus_eggress
+
+firewalls:
+  - name: CAMPUS_EGRESS_FW_1
+    adapters:
+      # Standalone interface labeled as Campus Egress
+      - endpoint_ports: [Eth0]
+        switch_ports: [Ethernet14]
+        switches: [BGP-SPINE1]
+        campus_link_type: ["egress"]
+      # Standalone interface not labeled as Campus Egress
+      - endpoint_ports: [Eth1]
+        switch_ports: [Ethernet14]
+        switches: [BGP-SPINE2]
+
+      # Standalone profiled interface labeled as Campus Egress
+      - endpoint_ports: [Eth2]
+        switch_ports: [Ethernet15]
+        switches: [BGP-SPINE1]
+        profile: campus_eggress
+      # Standalone profiled interface not labeled as Campus Egress
+      - endpoint_ports: [Eth3]
+        switch_ports: [Ethernet15]
+        switches: [BGP-SPINE2]
+        profile: no_campus_eggress
+
+      # Port-channel member interface labeled as Campus Egress
+      - endpoint_ports: [Eth4]
+        switch_ports: [Ethernet16]
+        switches: [BGP-SPINE1]
+        port_channel:
+          mode: active
+        campus_link_type: ["egress"]
+      # Port-channel member interface not labeled as Campus Egress
+      - endpoint_ports: [Eth5]
+        switch_ports: [Ethernet16]
+        switches: [BGP-SPINE2]
+        port_channel:
+          mode: active
+
+      # Port-channel profiled member interface labeled as Campus Egress
+      - endpoint_ports: [Eth6]
+        switch_ports: [Ethernet17]
+        switches: [BGP-SPINE1]
+        port_channel:
+          mode: active
+        profile: campus_eggress
+      # Port-channel profiled member interface not labeled as Campus Egress
+      - endpoint_ports: [Eth7]
+        switch_ports: [Ethernet17]
+        switches: [BGP-SPINE2]
+        port_channel:
+          mode: active
+        profile: no_campus_eggress
+
+# Tests covering both core_interfaces and l3_edge data models
 core_interfaces:
+  p2p_links_profiles:
+    - name: campus_egress
+      campus_link_type: ["egress"]
+    - name: not_campus_egress
   p2p_links:
+    # Standalone interface labeled as Campus Egress
     - subnet: 192.168.253.4/31
-      nodes: [ BGP-SPINE1, DUMMY-CORE ]
-      interfaces: [ Ethernet5, Ethernet1/3 ]
-      as: [ 65001, 65000 ]
+      nodes: [BGP-SPINE1, DUMMY-CORE]
+      interfaces: [Ethernet5, Ethernet1/3]
+      as: [65001, 65000]
+      campus_link_type: ["egress"]
+    # Standalone interface not labeled as Campus Egress
     - subnet: 192.168.253.6/31
-      nodes: [ BGP-SPINE2, DUMMY-CORE ]
-      interfaces: [ Ethernet5, Ethernet1/4 ]
-      as: [ 65001, 65000 ]
+      nodes: [BGP-SPINE2, DUMMY-CORE]
+      interfaces: [Ethernet5, Ethernet1/4]
+      as: [65001, 65000]
+
+    # Standalone profiled interface labeled as Campus Egress
+    - subnet: 192.168.253.8/31
+      nodes: [BGP-SPINE1, DUMMY-CORE]
+      interfaces: [Ethernet6, Ethernet1/5]
+      as: [65001, 65000]
+      profile: campus_egress
+    # Standalone profiled interface not labeled as Campus Egress
+    - subnet: 192.168.253.10/31
+      nodes: [BGP-SPINE2, DUMMY-CORE]
+      interfaces: [Ethernet6, Ethernet1/6]
+      as: [65001, 65000]
+      profile: not_campus_egress
+
+    # Port-channel member interface labeled as Campus Egress
+    - subnet: 192.168.253.12/31
+      nodes: [BGP-SPINE1, DUMMY-CORE]
+      as: [65001, 65000]
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          - node: BGP-SPINE1
+            interfaces: [Ethernet7]
+          - node: DUMMY-CORE
+            interfaces: [Ethernet1/7]
+      campus_link_type: ["egress"]
+    # Port-channel member interface not labeled as Campus Egress
+    - subnet: 192.168.253.14/31
+      nodes: [BGP-SPINE2, DUMMY-CORE]
+      as: [65001, 65000]
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          - node: BGP-SPINE2
+            interfaces: [Ethernet7]
+          - node: DUMMY-CORE
+            interfaces: [Ethernet1/8]
+
+    # Port-channel profiled member interface labeled as Campus Egress
+    - subnet: 192.168.253.16/31
+      nodes: [BGP-SPINE1, DUMMY-CORE]
+      as: [65001, 65000]
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          - node: BGP-SPINE1
+            interfaces: [Ethernet8]
+          - node: DUMMY-CORE
+            interfaces: [Ethernet1/9]
+      profile: campus_egress
+    # Port-channel profiled member interface not labeled as Campus Egress
+    - subnet: 192.168.253.18/31
+      nodes: [BGP-SPINE2, DUMMY-CORE]
+      as: [65001, 65000]
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          - node: BGP-SPINE2
+            interfaces: [Ethernet8]
+          - node: DUMMY-CORE
+            interfaces: [Ethernet1/10]
+      profile: not_campus_egress
+
+generate_cv_tags:
+  topology_hints: true
+  campus_fabric: true
+
+campus: City_A

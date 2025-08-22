@@ -8,11 +8,10 @@ daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
   cvauth:
-    method: key
-    key: telarista
+    method: token
+    token_file: /tmp/token
   cvvrf: MGMT
   disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
@@ -238,6 +237,16 @@ management_interfaces:
 metadata:
   platform: 7280R
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+monitor_sessions:
+- name: DMF
+  sources:
+  - name: Ethernet8
+    direction: both
+  - name: Ethernet9
+    direction: both
+  destinations:
+  - Ethernet7
+  encapsulation_gre_metadata_tx: true
 ntp: null
 platform:
   sand:

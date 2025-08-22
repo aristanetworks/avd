@@ -7,9 +7,8 @@ daemon_terminattr:
   cvauth:
     method: token-secure
     token_file: /tmp/cv-onboarding-token
-  cvvrf: MGMT
+  cvvrf: default
   disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
@@ -37,9 +36,9 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:
 - ip_address: 1.1.1.1
-  vrf: MGMT
+  vrf: default
 - ip_address: 8.8.8.8
-  vrf: MGMT
+  vrf: default
 is_deployed: true
 management_api_http:
   enable_https: true
@@ -48,10 +47,15 @@ management_api_http:
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:
+  local_interface:
+    name: Vlan101
+    vrf: default
   servers:
   - name: 2.2.2.55
     preferred: true
+    vrf: default
   - name: pool.ntp.org
+    vrf: default
 port_channel_interfaces:
 - name: Port-Channel1
   description: INBAND-MGMT-PARENT_Po21
@@ -70,7 +74,7 @@ vlan_interfaces:
 - name: Vlan101
   description: Inband Management
   shutdown: false
-  ip_address: 192.168.101.4/24
+  ip_address: 192.168.101.7/24
   mtu: 1500
   type: inband_mgmt
 vlan_internal_order:

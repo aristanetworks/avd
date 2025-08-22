@@ -4,7 +4,12 @@
  that can be found in the LICENSE file.
 #}
 {# eos - platform #}
-{% if platform is arista.avd.defined %}
+{% if platform.trident.l3 is arista.avd.defined or
+    platform.trident.forwarding_table_partition is arista.avd.defined or
+    platform.sand is arista.avd.defined or
+    platform.sfe is arista.avd.defined or
+    platform.fap is arista.avd.defined or
+    port_channel.load_balance_sand_profile is arista.avd.defined %}
 !
 {%     if platform.trident.l3 is arista.avd.defined %}
 {%         if platform.trident.l3.routing_mac_address_per_vlan is arista.avd.defined(true) %}
@@ -14,7 +19,7 @@ platform trident l3 routing mac-address per-vlan
 {%     if platform.trident.forwarding_table_partition is arista.avd.defined %}
 platform trident forwarding-table partition {{ platform.trident.forwarding_table_partition }}
 {%     endif %}
-{%     if platform.sand is arista.avd.defined %}
+{%     if platform.sand is arista.avd.defined or platform.fap is arista.avd.defined %}
 {%         if platform.sand.forwarding_mode is arista.avd.defined %}
 platform sand forwarding mode {{ platform.sand.forwarding_mode }}
 {%         endif %}
@@ -24,11 +29,22 @@ platform sand lag mode {{ platform.sand.lag.mode }}
 {%         if platform.sand.lag.hardware_only is arista.avd.defined(true) %}
 platform sand lag hardware-only
 {%         endif %}
+{%         if platform.fap.buffering_egress.profile is arista.avd.defined %}
+platform fap buffering egress profile {{ platform.fap.buffering_egress.profile }}
+{%         endif %}
+{%         if platform.fap.voq.credit_rates_unified is arista.avd.defined(true) %}
+!
+platform fap voq credit rates unified
+{%         endif %}
 {%         for qos_map in platform.sand.qos_maps | arista.avd.natural_sort('traffic_class') %}
 {%             if qos_map.traffic_class is arista.avd.defined and qos_map.to_network_qos is arista.avd.defined %}
 platform sand qos map traffic-class {{ qos_map.traffic_class }} to network-qos {{ qos_map.to_network_qos }}
 {%             endif %}
 {%         endfor %}
+{%         if port_channel.load_balance_sand_profile is arista.avd.defined %}
+!
+port-channel load-balance sand profile {{ port_channel.load_balance_sand_profile }}
+{%         endif %}
 {%         if platform.sand.multicast_replication.default is arista.avd.defined %}
 platform sand multicast replication default {{ platform.sand.multicast_replication.default }}
 {%         endif %}

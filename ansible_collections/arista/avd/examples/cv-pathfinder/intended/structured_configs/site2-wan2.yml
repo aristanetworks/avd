@@ -67,13 +67,13 @@ application_traffic_recognition:
 config_end: true
 daemon_terminattr:
   cvaddrs:
-  - www.cv-staging.corp.arista.io:443
+  - apiserver.arista.io:443
   cvauth:
     method: token-secure
     token_file: /tmp/cv-onboarding-token
+  cvsourceintf: Management1
   cvvrf: MGMT
   disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 dns_domain: wan.example.local
 dps_interfaces:
@@ -190,6 +190,10 @@ ip_access_lists:
     protocol: ip
     source: any
     destination: any
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
@@ -239,10 +243,10 @@ ip_security:
     profile: DP-PROFILE
 is_deployed: true
 local_users:
-- name: ansible
+- name: admin
   privilege: 15
   role: network-admin
-  sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+  no_password: true
 - name: arista
   privilege: 15
   role: network-admin
@@ -741,7 +745,7 @@ router_path_selection:
     - name: INTERNET
     - name: LAN_HA
   tcp_mss_ceiling:
-    ipv4_segment_size: auto
+    ipv4: auto
 router_traffic_engineering:
   enabled: true
 service_routing_protocols_model: multi-agent

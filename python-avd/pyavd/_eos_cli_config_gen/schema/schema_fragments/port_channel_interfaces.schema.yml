@@ -65,6 +65,9 @@ keys:
             removed: false
             remove_in_version: 6.0.0
             new_key: switchport.access_vlan or switchport.trunk.allowed_vlan
+        arp_gratuitous_accept:
+          type: bool
+          description: Accept gratuitous ARP.
         snmp_trap_link_change:
           type: bool
         type:
@@ -910,6 +913,11 @@ keys:
                   description: Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
                 bidirectional:
                   type: bool
+                neighbor_filter:
+                  type: str
+                  convert_types:
+                    - int
+                  description: Standard access list name.
                 hello:
                   type: dict
                   keys:
@@ -1060,6 +1068,9 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        vrrp_ids:
+          type: list
+          $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids"
         switchport:
           type: dict
           keys:
@@ -1414,9 +1425,22 @@ keys:
                 type: str
                 convert_types:
                   - int
+            srlgs:
+              description: List of SRLGs.
+              type: list
+              items:
+                type: str
+                description: SRLG name or number.
+                convert_types:
+                  - int
             srlg:
               description: SRLG name or number.
               type: str
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: srlgs
               convert_types:
                 - int
             metric:

@@ -1,0 +1,62 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: host3
+ip_igmp_snooping:
+  globally_enabled: true
+is_deployed: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 10.10.10.43/26
+  type: oob
+  gateway: 10.10.10.1
+metadata:
+  fabric_name: EOS_DESIGNS_DEPRECATED_VARS
+service_routing_protocols_model: multi-agent
+snmp_server:
+  ipv4_acls:
+  - name: acl-for-vrf-MGMT
+  - name: acl-for-vrf-default
+    vrf: default
+  ipv6_acls:
+  - name: acl-for-vrf-MGMT
+  - name: acl-for-vrf-default
+    vrf: default
+  local_interfaces:
+  - name: Management1
+    vrf: MGMT
+  hosts:
+  - host: 10.6.75.124
+    version: '3'
+    users:
+    - username: USER-WRITE
+      authentication_level: auth
+  - host: 10.6.75.130
+    vrf: MGMT
+    version: 2c
+    community: SNMP-COMMUNITY-2
+  vrfs:
+  - name: default
+    enable: false
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 10.10.10.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

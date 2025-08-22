@@ -4,6 +4,9 @@ custom_structured_configuration_router_bgp:
     - ip_address: 10.1.1.1
       description: External peer
       peer_group: EVPN-OVERLAY-PEERS
+  neighbor_interfaces:
+    - name: Ethernet1
+      remote_as: "577"
 
 # Custom router path selection structured_config to test negative case for STUN client test case
 custom_structured_configuration_router_path_selection:
@@ -16,6 +19,10 @@ custom_structured_configuration_router_path_selection:
       id: 210
       local_interfaces:
         - name: Ethernet3
+
+# Custom router adaptive virtual topology structured_config to test skip the anta test VerifyAVTSpecificPath for empty static peers
+custom_structured_configuration_router_adaptive_virtual_topology:
+  topology_role: edge
 
 # Custom inputs for the hardware tests
 accepted_xcvr_manufacturers:

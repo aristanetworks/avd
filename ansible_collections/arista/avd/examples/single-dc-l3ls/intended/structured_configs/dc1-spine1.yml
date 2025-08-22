@@ -7,9 +7,9 @@ daemon_terminattr:
   cvauth:
     method: token
     token_file: /tmp/token
+  cvsourceintf: Management1
   cvvrf: MGMT
   disable_aaa: true
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
@@ -55,6 +55,10 @@ ethernet_interfaces:
   switchport:
     enabled: false
 hostname: dc1-spine1
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
 ip_name_servers:
 - ip_address: 192.168.1.1
   vrf: MGMT
@@ -65,10 +69,10 @@ local_users:
   privilege: 15
   role: network-admin
   no_password: true
-- name: ansible
+- name: arista
   privilege: 15
   role: network-admin
-  sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

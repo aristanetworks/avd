@@ -59,11 +59,13 @@ def defined(
     -------
     bool
         True if variable matches criteria, False in other cases.
+
+    TODO: Remove the run_tests flag and internal logic only used for unit tests.
     """
+    warnings_count = {}
     if isinstance(value, Undefined) or value is None:
         # Invalid value - return false
         if str(fail_action).lower() == "warning":
-            warnings_count = {}
             if var_name is not None:
                 warning_msg = f"{var_name} was expected but not set. Output may be incorrect or incomplete!"
                 warnings.warn(warning_msg)  # noqa: B028
@@ -79,13 +81,12 @@ def defined(
             msg = "A variable was expected but not set!"
             raise ValueError(msg)
         if run_tests:
-            return False, warnings_count
+            return False, warnings_count  # pyright: ignore [reportReturnType]
         return False
 
     if test_value is not None and value != test_value:
         # Valid value but not matching the optional argument
         if str(fail_action).lower() == "warning":
-            warnings_count = {}
             if var_name is not None:
                 warning_msg = f"{var_name} was set to {value} but we expected {test_value}. Output may be incorrect or incomplete!"
                 warnings.warn(warning_msg)  # noqa: B028
@@ -101,7 +102,7 @@ def defined(
             msg = f"A variable was set to {value} but we expected {test_value}!"
             raise ValueError(msg)
         if run_tests:
-            return False, warnings_count
+            return False, warnings_count  # pyright: ignore [reportReturnType]
         return False
     if str(var_type).lower() in ["float", "int", "str", "list", "dict", "tuple", "bool"] and str(var_type).lower() != type(value).__name__:
         # Invalid class - return false
@@ -122,7 +123,7 @@ def defined(
             msg = f"A variable was a {type(value).__name__} but we expected a {str(var_type).lower()}!"
             raise ValueError(msg)
         if run_tests:
-            return False, warnings_count
+            return False, warnings_count  # pyright: ignore [reportReturnType]
         return False
     # Valid value and is matching optional argument if provided - return true
     return True

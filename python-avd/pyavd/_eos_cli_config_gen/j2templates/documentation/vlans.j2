@@ -5,7 +5,7 @@
 #}
 {# doc - vlans #}
 {% if vlans is arista.avd.defined %}
-{%     set ns = namespace(show_private_vlan_table = false) %}
+{%     set ns = namespace(show_private_vlan_table = false, show_e_tree_table = false) %}
 
 ## VLANs
 
@@ -16,6 +16,9 @@
 {%     for vlan in vlans | arista.avd.natural_sort('id') %}
 {%         if vlan.private_vlan is arista.avd.defined %}
 {%             set ns.show_private_vlan_table = true %}
+{%         endif %}
+{%         if vlan.e_tree.leaf_role is arista.avd.defined %}
+{%             set ns.show_e_tree_table = true %}
 {%         endif %}
 {%         set row_name = vlan.name | arista.avd.default('-') %}
 {%         if vlan.trunk_groups is arista.avd.defined %}
@@ -29,13 +32,30 @@
 
 #### Private VLANs
 
-| Primary Vlan ID | Secondary VLAN ID | Private Vlan Type |
+| Primary VLAN ID | Secondary VLAN ID | Private VLAN Type |
 | --------------- | ----------------- | ----------------- |
 {%         for vlan in vlans | arista.avd.natural_sort('id') %}
 {%             if vlan.private_vlan.type is arista.avd.defined and
                   vlan.private_vlan.primary_vlan is arista.avd.defined %}
 | {{ vlan.private_vlan.type }} | {{ vlan.id }} | {{ vlan.private_vlan.primary_vlan }} |
 {%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if ns.show_e_tree_table %}
+
+#### E-Tree Role
+
+| VLAN ID | VLAN Name | Role | Remote Leaf Host Drop |
+| ------- | --------- | ---- | --------------------- |
+{%         for vlan in vlans | arista.avd.natural_sort('id') %}
+{%             set row_name = vlan.name | arista.avd.default('-') %}
+{%             if vlan.e_tree.leaf_role is arista.avd.defined(true) %}
+{%                 set row_role = 'Leaf' %}
+{%             else %}
+{%                 set row_role = 'Root' %}
+{%             endif %}
+{%             set row_host_drop = vlan.e_tree.remote_leaf_host_drop | arista.avd.default('-' ) %}
+| {{ vlan.id }} | {{ row_name }} | {{ row_role }} | {{ row_host_drop }} |
 {%         endfor %}
 {%     endif %}
 

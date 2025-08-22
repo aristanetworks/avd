@@ -1,0 +1,36 @@
+type: l3leaf
+mgmt_gateway: 192.168.200.1
+
+underlay_multicast: true
+evpn_multicast: true
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    bgp_as: 65101
+  nodes:
+    - name: missing-vrf-vtep-diagnostic-loopback
+      id: 1
+      mgmt_ip: 192.168.200.105/24
+
+tenants:
+  - name: Tenant_A
+    evpn_l2_multicast:
+      enabled: true
+    vrfs:
+      - name: MULTICAST_ENABLED_110
+        description: "MULTICAST_ENABLED_110"
+        svis:
+          - id: 110
+            name: "MULTICAST_ENABLED_110"
+            enabled: true
+            ip_address_virtual: 10.1.10.1/24
+            evpn_l3_multicast:
+              enabled: true
+
+expected_error_message: >-
+  No vtep_diagnostic loopback defined on VRF 'MULTICAST_ENABLED_110' in Tenant 'Tenant_A'.
+  This is required when 'l3_multicast' is enabled on the VRF and 'ip_address_virtual' is used on an SVI in that VRF.
