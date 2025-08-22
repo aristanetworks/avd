@@ -2,6 +2,16 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
+- name: Deprecation warning!
+  delegate_to: localhost
+  ansible.builtin.debug:
+    msg:
+      - "!!! Deprecation Warning - The role 'arista.avd.eos_validate_state' has been deprecated."
+      - "!!! Deprecation Warning - Update your playbook to leverage the new 'arista.avd.anta_runner' role instead."
+      - "!!! Deprecation Warning - See 'https://avd.arista.com' for details on 'arista.avd.anta_runner'."
+      - "!!! Deprecation Warning - This role will be removed in AVD version 6.0.0."
+  run_once: true
+
 - name: Verify Requirements
   delegate_to: localhost
   when: avd_requirements is not defined and avd_verify_requirements | default(true)
