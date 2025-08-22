@@ -45,6 +45,7 @@ class FilteredTenantsMixin(Protocol):
                 if original_tenant.name not in filter_tenants and "all" not in filter_tenants:
                     continue
                 tenant = original_tenant._deepcopy()
+                tenant._internal_data.context = f"{network_services_key.key}"
                 tenant.l2vlans = self.filtered_l2vlans(tenant)
                 tenant.vrfs = self.filtered_vrfs(tenant)
                 filtered_tenants.append(tenant)

@@ -950,6 +950,9 @@ $defs:
                       $ref: "eos_designs#/$defs/flow_tracking_link"
                       description: |-
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+                    monitor_sessions:
+                      type: list
+                      $ref: "eos_designs#/$defs/monitor_sessions"
                     campus_link_type:
                       type: list
                       $ref: "eos_designs#/$defs/campus_link_type"

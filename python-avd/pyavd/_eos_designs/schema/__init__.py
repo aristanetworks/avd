@@ -10201,7 +10201,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         monitor_sessions: MonitorSessions
         """
-        Used to define switchports as source or destination for monitoring sessions.
+        Used to define interfaces as source or destination for monitoring sessions.
 
         Subclass of AvdList
         with `MonitorSessionsItem` items.
@@ -10422,7 +10422,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     monitor_sessions:
-                       Used to define switchports as source or destination for monitoring sessions.
+                       Used to define interfaces as source or destination for monitoring sessions.
 
                        Subclass of AvdList
                        with `MonitorSessionsItem` items.
@@ -14785,7 +14785,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         monitor_sessions: MonitorSessions
         """
-        Used to define switchports as source or destination for monitoring sessions.
+        Used to define interfaces as source or destination for monitoring sessions.
 
         Subclass of AvdList
         with `MonitorSessionsItem` items.
@@ -14965,7 +14965,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     monitor_sessions:
-                       Used to define switchports as source or destination for monitoring sessions.
+                       Used to define interfaces as source or destination for monitoring sessions.
 
                        Subclass of AvdList
                        with `MonitorSessionsItem` items.
@@ -22099,7 +22099,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     monitor_sessions: MonitorSessions
                     """
-                    Used to define switchports as source or destination for monitoring sessions.
+                    Used to define interfaces as source or destination for monitoring sessions.
 
                     Subclass of AvdList
                     with `MonitorSessionsItem` items.
@@ -22317,7 +22317,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 monitor_sessions:
-                                   Used to define switchports as source or destination for monitoring sessions.
+                                   Used to define interfaces as source or destination for monitoring sessions.
 
                                    Subclass of AvdList
                                    with `MonitorSessionsItem` items.
@@ -23723,7 +23723,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     monitor_sessions: MonitorSessions
                     """
-                    Used to define switchports as source or destination for monitoring sessions.
+                    Used to define interfaces as source or destination for monitoring sessions.
 
                     Subclass of AvdList
                     with `MonitorSessionsItem` items.
@@ -23941,7 +23941,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 monitor_sessions:
-                                   Used to define switchports as source or destination for monitoring sessions.
+                                   Used to define interfaces as source or destination for monitoring sessions.
 
                                    Subclass of AvdList
                                    with `MonitorSessionsItem` items.
@@ -45364,6 +45364,261 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class MonitorSessionsItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class SourceSettings(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class AccessGroup(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
+                                    type: Literal["ip", "ipv6", "mac"] | None
+                                    name: str | None
+                                    """ACL name."""
+                                    priority: int | None
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                                            name: str | None | UndefinedType = Undefined,
+                                            priority: int | None | UndefinedType = Undefined,
+                                        ) -> None:
+                                            """
+                                            AccessGroup.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                type: type
+                                                name: ACL name.
+                                                priority: priority
+
+                                            """
+
+                                _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
+                                direction: Literal["rx", "tx", "both"] | None
+                                access_group: AccessGroup
+                                """
+                                This can only be set when `session_settings.access_group` is not set.
+
+                                Subclass of AvdModel.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        direction: Literal["rx", "tx", "both"] | None | UndefinedType = Undefined,
+                                        access_group: AccessGroup | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        SourceSettings.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            direction: direction
+                                            access_group:
+                                               This can only be set when `session_settings.access_group` is not set.
+
+                                               Subclass of AvdModel.
+
+                                        """
+
+                            class SessionSettings(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class AccessGroup(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
+                                    type: Literal["ip", "ipv6", "mac"] | None
+                                    name: str | None
+                                    """ACL name."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                                            name: str | None | UndefinedType = Undefined,
+                                        ) -> None:
+                                            """
+                                            AccessGroup.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                type: type
+                                                name: ACL name.
+
+                                            """
+
+                                class Truncate(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "size": {"type": int}}
+                                    enabled: bool | None
+                                    size: int | None
+                                    """Size in bytes."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self, *, enabled: bool | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined
+                                        ) -> None:
+                                            """
+                                            Truncate.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                enabled: enabled
+                                                size: Size in bytes.
+
+                                            """
+
+                                _fields: ClassVar[dict] = {
+                                    "encapsulation_gre_metadata_tx": {"type": bool},
+                                    "header_remove_size": {"type": int},
+                                    "access_group": {"type": AccessGroup},
+                                    "rate_limit_per_ingress_chip": {"type": str},
+                                    "rate_limit_per_egress_chip": {"type": str},
+                                    "sample": {"type": int},
+                                    "truncate": {"type": Truncate},
+                                }
+                                encapsulation_gre_metadata_tx: bool | None
+                                header_remove_size: int | None
+                                """Number of bytes to remove from header."""
+                                access_group: AccessGroup
+                                """Subclass of AvdModel."""
+                                rate_limit_per_ingress_chip: str | None
+                                """
+                                Ratelimit and unit as string.
+                                Examples:
+                                  "100000 bps"
+                                  "100 kbps"
+                                  "10 mbps"
+                                """
+                                rate_limit_per_egress_chip: str | None
+                                """
+                                Ratelimit and unit as string.
+                                Examples:
+                                  "100000 bps"
+                                  "100 kbps"
+                                  "10 mbps"
+                                """
+                                sample: int | None
+                                truncate: Truncate
+                                """Subclass of AvdModel."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        encapsulation_gre_metadata_tx: bool | None | UndefinedType = Undefined,
+                                        header_remove_size: int | None | UndefinedType = Undefined,
+                                        access_group: AccessGroup | UndefinedType = Undefined,
+                                        rate_limit_per_ingress_chip: str | None | UndefinedType = Undefined,
+                                        rate_limit_per_egress_chip: str | None | UndefinedType = Undefined,
+                                        sample: int | None | UndefinedType = Undefined,
+                                        truncate: Truncate | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        SessionSettings.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            encapsulation_gre_metadata_tx: encapsulation_gre_metadata_tx
+                                            header_remove_size: Number of bytes to remove from header.
+                                            access_group: Subclass of AvdModel.
+                                            rate_limit_per_ingress_chip:
+                                               Ratelimit and unit as string.
+                                               Examples:  # fmt: skip
+                                                 "100000 bps"
+                                                 "100 kbps"
+                                                 "10 mbps"
+                                            rate_limit_per_egress_chip:
+                                               Ratelimit and unit as string.
+                                               Examples:  # fmt: skip
+                                                 "100000 bps"
+                                                 "100 kbps"
+                                                 "10 mbps"
+                                            sample: sample
+                                            truncate: Subclass of AvdModel.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "name": {"type": str},
+                                "role": {"type": str},
+                                "source_settings": {"type": SourceSettings},
+                                "session_settings": {"type": SessionSettings},
+                            }
+                            name: str
+                            """Session name."""
+                            role: Literal["source", "destination"] | None
+                            source_settings: SourceSettings
+                            """Subclass of AvdModel."""
+                            session_settings: SessionSettings
+                            """
+                            Session settings are defined per session name.
+                            Different session_settings for the same session name
+                            will be combined/merged.
+
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    name: str | UndefinedType = Undefined,
+                                    role: Literal["source", "destination"] | None | UndefinedType = Undefined,
+                                    source_settings: SourceSettings | UndefinedType = Undefined,
+                                    session_settings: SessionSettings | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    MonitorSessionsItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        name: Session name.
+                                        role: role
+                                        source_settings: Subclass of AvdModel.
+                                        session_settings:
+                                           Session settings are defined per session name.
+                                           Different session_settings for the same session name
+                                           will be combined/merged.
+
+
+                                           Subclass of AvdModel.
+
+                                    """
+
+                        class MonitorSessions(AvdList[MonitorSessionsItem]):
+                            """Subclass of AvdList with `MonitorSessionsItem` items."""
+
+                        MonitorSessions._item_type = MonitorSessionsItem
+
                         class CampusLinkType(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -45386,6 +45641,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ospf": {"type": Ospf},
                             "pim": {"type": Pim},
                             "flow_tracking": {"type": FlowTracking},
+                            "monitor_sessions": {"type": MonitorSessions},
                             "campus_link_type": {"type": CampusLinkType},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "raw_eos_cli": {"type": str},
@@ -45455,6 +45711,13 @@ class EosDesigns(EosDesignsRootModel):
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                         Subclass of AvdModel.
                         """
+                        monitor_sessions: MonitorSessions
+                        """
+                        Used to define interfaces as source or destination for monitoring sessions.
+
+                        Subclass of AvdList
+                        with `MonitorSessionsItem` items.
+                        """
                         campus_link_type: CampusLinkType
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -45495,6 +45758,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ospf: Ospf | UndefinedType = Undefined,
                                 pim: Pim | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
+                                monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                                 campus_link_type: CampusLinkType | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
@@ -45552,6 +45816,11 @@ class EosDesigns(EosDesignsRootModel):
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                                        Subclass of AvdModel.
+                                    monitor_sessions:
+                                       Used to define interfaces as source or destination for monitoring sessions.
+
+                                       Subclass of AvdList
+                                       with `MonitorSessionsItem` items.
                                     campus_link_type:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
