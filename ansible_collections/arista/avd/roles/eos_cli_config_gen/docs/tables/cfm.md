@@ -10,18 +10,18 @@
     | [<samp>cfm</samp>](## "cfm") | Dictionary |  |  |  | Configure connectivity fault management (CFM).<br>CFM is a network protocol for monitoring and troubleshooting Ethernet networks. |
     | [<samp>&nbsp;&nbsp;continuity_check_loc_state_action_disable_interface_routing</samp>](## "cfm.continuity_check_loc_state_action_disable_interface_routing") | Boolean |  |  |  | Disable routing on interfaces where a loss of connectivity (LOC) defect is detected.<br>This prevents traffic from being routed to a faulty link. |
     | [<samp>&nbsp;&nbsp;domains</samp>](## "cfm.domains") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cfm.domains.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cfm.domains.[].name") | String | Required, Unique |  |  | CFM domain name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "cfm.domains.[].level") | Integer | Required |  | Min: 0<br>Max: 7 | Maintenance domain level. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;associations</samp>](## "cfm.domains.[].associations") | List, items: Dictionary |  |  |  | List of maintenance associations. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 65535 | Maintenance association ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "cfm.domains.[].associations.[].direction") | String |  |  | Valid Values:<br>- <code>up</code><br>- <code>down</code> | Set local maintenance end point direction. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_points</samp>](## "cfm.domains.[].associations.[].end_points") | List, items: Dictionary |  |  |  | Configure the maintenance end point(MEP). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].end_points.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 8191 | Set local maintenance end point ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_end_point</samp>](## "cfm.domains.[].associations.[].end_points.[].remote_end_point") | String |  |  |  | Remote maintenance end point ID(s) or range(s) of remote maintenance end point ID(s).<br>The range is from 1 to 8191. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "cfm.domains.[].associations.[].end_points.[].interface") | String |  |  |  | Specifies the interface on which to configure the local maintenance end point.<br>Supported types include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "cfm.domains.[].associations.[].direction") | String |  |  | Valid Values:<br>- <code>up</code><br>- <code>down</code> | Local maintenance endpoint direction. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end_points</samp>](## "cfm.domains.[].associations.[].end_points") | List, items: Dictionary |  |  |  | Configure the maintenance endpoint(MEP). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].end_points.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 8191 | Local maintenance endpoint ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_end_point</samp>](## "cfm.domains.[].associations.[].end_points.[].remote_end_point") | String |  |  |  | Remote maintenance endpoint ID(s) or range(s) of remote maintenance endpoint ID(s).<br>The range is from 1 to 8191. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "cfm.domains.[].associations.[].end_points.[].interface") | String |  |  |  | Specifies the interface on which to configure the local maintenance endpoint.<br>Supported types include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "cfm.domains.[].associations.[].profile") | String |  |  |  | Apply connectivity fault management profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_end_points</samp>](## "cfm.domains.[].associations.[].remote_end_points") | List, items: Dictionary |  |  |  | Configure the remote maintenance end point(RMEP). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].remote_end_points.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 8191 | Configure remote maintenance end point ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_end_points</samp>](## "cfm.domains.[].associations.[].remote_end_points") | List, items: Dictionary |  |  |  | Configure the remote maintenance endpoint(RMEP). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "cfm.domains.[].associations.[].remote_end_points.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 8191 | Configure remote maintenance endpoint ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "cfm.domains.[].associations.[].remote_end_points.[].mac_address") | String |  |  |  | MAC address of the RMEP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "cfm.domains.[].associations.[].vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set VLAN in the maintenance association. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intermediate_point</samp>](## "cfm.domains.[].intermediate_point") | Boolean |  |  |  | Configure the device as a maintenance intermediate point. |
@@ -44,16 +44,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "cfm.profiles.[].measurement.delay") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;single_ended</samp>](## "cfm.profiles.[].measurement.delay.single_ended") | Boolean |  |  |  | Enable single-ended delay measurement. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_cos</samp>](## "cfm.profiles.[].measurement.delay.qos_cos") | Integer |  |  | Min: 0<br>Max: 7 | Set the class of service (CoS) value for CFM frames. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_interval</samp>](## "cfm.profiles.[].measurement.delay.tx_interval") | Integer |  |  |  | Interval in milliseconds between successive measurement frames.<br>The range is from 3.33 to 600000.00. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_interval</samp>](## "cfm.profiles.[].measurement.delay.tx_interval") | String |  |  |  | Interval in milliseconds between successive measurement frames.<br>The range is from 3.33 to 600000. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loss</samp>](## "cfm.profiles.[].measurement.loss") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;single_ended</samp>](## "cfm.profiles.[].measurement.loss.single_ended") | Boolean |  |  |  | Enable single-ended loss measurement. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_cos</samp>](## "cfm.profiles.[].measurement.loss.qos_cos") | Integer |  |  | Min: 0<br>Max: 7 | Set the class of service (CoS) value for CFM frames. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_interval</samp>](## "cfm.profiles.[].measurement.loss.tx_interval") | Integer |  |  |  | Interval in milliseconds between successive measurement frames.<br>The range is from 3.33 to 600000.00. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_interval</samp>](## "cfm.profiles.[].measurement.loss.tx_interval") | String |  |  |  | Interval in milliseconds between successive measurement frames.<br>The range is from 3.33 to 600000. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;synthetic</samp>](## "cfm.profiles.[].measurement.loss.synthetic") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;single_ended</samp>](## "cfm.profiles.[].measurement.loss.synthetic.single_ended") | Boolean |  |  |  | Enable single-ended synthetic loss measurement. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_cos</samp>](## "cfm.profiles.[].measurement.loss.synthetic.qos_cos") | String |  |  |  | Set the class of service (CoS) value or a range of values (0-7) for synthetic loss measurement. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_interval</samp>](## "cfm.profiles.[].measurement.loss.synthetic.tx_interval") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "cfm.profiles.[].measurement.loss.synthetic.tx_interval.interval") | Integer | Required |  |  | Interval in milliseconds between successive measurement frames.<br>The range is from 3.33 to 600000.00. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "cfm.profiles.[].measurement.loss.synthetic.tx_interval.interval") | String | Required |  |  | Interval in milliseconds between successive measurement frames.<br>The range is from 3.33 to 600000. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;period_frames</samp>](## "cfm.profiles.[].measurement.loss.synthetic.tx_interval.period_frames") | Integer |  |  | Min: 1<br>Max: 65535 | Synthetic loss measurement transmission frames. |
 
 === "YAML"
@@ -67,6 +67,8 @@
       # This prevents traffic from being routed to a faulty link.
       continuity_check_loc_state_action_disable_interface_routing: <bool>
       domains:
+
+          # CFM domain name.
         - name: <str; required; unique>
 
           # Maintenance domain level.
@@ -78,30 +80,30 @@
               # Maintenance association ID.
             - id: <int; 1-65535; required; unique>
 
-              # Set local maintenance end point direction.
+              # Local maintenance endpoint direction.
               direction: <str; "up" | "down">
 
-              # Configure the maintenance end point(MEP).
+              # Configure the maintenance endpoint(MEP).
               end_points:
 
-                  # Set local maintenance end point ID.
+                  # Local maintenance endpoint ID.
                 - id: <int; 1-8191; required; unique>
 
-                  # Remote maintenance end point ID(s) or range(s) of remote maintenance end point ID(s).
+                  # Remote maintenance endpoint ID(s) or range(s) of remote maintenance endpoint ID(s).
                   # The range is from 1 to 8191.
                   remote_end_point: <str>
 
-                  # Specifies the interface on which to configure the local maintenance end point.
+                  # Specifies the interface on which to configure the local maintenance endpoint.
                   # Supported types include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs).
                   interface: <str>
 
               # Apply connectivity fault management profile.
               profile: <str>
 
-              # Configure the remote maintenance end point(RMEP).
+              # Configure the remote maintenance endpoint(RMEP).
               remote_end_points:
 
-                  # Configure remote maintenance end point ID.
+                  # Configure remote maintenance endpoint ID.
                 - id: <int; 1-8191; required; unique>
 
                   # MAC address of the RMEP.
@@ -163,8 +165,8 @@
               qos_cos: <int; 0-7>
 
               # Interval in milliseconds between successive measurement frames.
-              # The range is from 3.33 to 600000.00.
-              tx_interval: <int>
+              # The range is from 3.33 to 600000.
+              tx_interval: <str>
             loss:
 
               # Enable single-ended loss measurement.
@@ -174,8 +176,8 @@
               qos_cos: <int; 0-7>
 
               # Interval in milliseconds between successive measurement frames.
-              # The range is from 3.33 to 600000.00.
-              tx_interval: <int>
+              # The range is from 3.33 to 600000.
+              tx_interval: <str>
               synthetic:
 
                 # Enable single-ended synthetic loss measurement.
@@ -186,8 +188,8 @@
                 tx_interval:
 
                   # Interval in milliseconds between successive measurement frames.
-                  # The range is from 3.33 to 600000.00.
-                  interval: <int; required>
+                  # The range is from 3.33 to 600000.
+                  interval: <str; required>
 
                   # Synthetic loss measurement transmission frames.
                   period_frames: <int; 1-65535>

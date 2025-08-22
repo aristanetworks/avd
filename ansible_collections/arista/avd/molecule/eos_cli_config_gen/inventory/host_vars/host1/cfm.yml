@@ -61,7 +61,7 @@ cfm:
         loss:
           single_ended: true
           qos_cos: 3
-          tx_interval: 445
+          tx_interval: 445.445
           synthetic:
             single_ended: true
             qos_cos: "5-6"

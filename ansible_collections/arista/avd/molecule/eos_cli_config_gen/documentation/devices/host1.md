@@ -2587,7 +2587,7 @@ monitor session default encapsulation gre payload inner-packet
 
 | Profile | Enabled | Single Ended | QoS COS | TX Interval |
 | ------- | ------- | ------------ | ------- | ----------- |
-| profile_10G | - | True | 3 | 445 |
+| profile_10G | - | True | 3 | 445.445 |
 | profile_20G | - | - | - | - |
 
 ##### CFM Profile Synthetic Loss Measurement
@@ -2617,7 +2617,7 @@ cfm
       measurement delay tx-interval 44 milliseconds
       measurement delay qos cos 5
       measurement loss single-ended
-      measurement loss tx-interval 445 milliseconds
+      measurement loss tx-interval 445.445 milliseconds
       measurement loss qos cos 3
       measurement loss synthetic single-ended
       measurement loss synthetic tx-interval 10 milliseconds period 10 frames

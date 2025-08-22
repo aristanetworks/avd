@@ -25,6 +25,7 @@ keys:
           keys:
             name:
               type: str
+              description: CFM domain name.
             level:
               type: int
               convert_types:
@@ -52,11 +53,11 @@ keys:
                     valid_values:
                       - up
                       - down
-                    description: Set local maintenance end point direction.
+                    description: Local maintenance endpoint direction.
                   end_points:
                     type: list
                     primary_key: id
-                    description: Configure the maintenance end point(MEP).
+                    description: Configure the maintenance endpoint(MEP).
                     items:
                       type: dict
                       keys:
@@ -66,18 +67,18 @@ keys:
                             - str
                           min: 1
                           max: 8191
-                          description: Set local maintenance end point ID.
+                          description: Local maintenance endpoint ID.
                         remote_end_point:
                           type: str
                           description: |-
-                             Remote maintenance end point ID(s) or range(s) of remote maintenance end point ID(s).
+                             Remote maintenance endpoint ID(s) or range(s) of remote maintenance endpoint ID(s).
                              The range is from 1 to 8191.
                           convert_types:
                             - int
                         interface:
                           type: str
                           description: |-
-                            Specifies the interface on which to configure the local maintenance end point.
+                            Specifies the interface on which to configure the local maintenance endpoint.
                             Supported types include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs).
                   profile:
                     type: str
@@ -85,7 +86,7 @@ keys:
                   remote_end_points:
                     type: list
                     primary_key: id
-                    description: Configure the remote maintenance end point(RMEP).
+                    description: Configure the remote maintenance endpoint(RMEP).
                     items:
                       type: dict
                       keys:
@@ -95,7 +96,7 @@ keys:
                             - str
                           min: 1
                           max: 8191
-                          description: Configure remote maintenance end point ID.
+                          description: Configure remote maintenance endpoint ID.
                         mac_address:
                           type: str
                           description: MAC address of the RMEP.
@@ -204,12 +205,13 @@ keys:
                       min: 0
                       max: 7
                     tx_interval:
-                      type: int
+                      type: str
                       convert_types:
-                        - str
+                        - int
+                        - float
                       description: |-
                         Interval in milliseconds between successive measurement frames.
-                        The range is from 3.33 to 600000.00.
+                        The range is from 3.33 to 600000.
                 loss:
                   type: dict
                   keys:
@@ -224,12 +226,13 @@ keys:
                       max: 7
                       description: Set the class of service (CoS) value for CFM frames.
                     tx_interval:
-                      type: int
+                      type: str
                       convert_types:
-                        - str
+                        - int
+                        - float
                       description: |-
                         Interval in milliseconds between successive measurement frames.
-                        The range is from 3.33 to 600000.00.
+                        The range is from 3.33 to 600000.
                     synthetic:
                       type: dict
                       keys:
@@ -245,13 +248,14 @@ keys:
                           type: dict
                           keys:
                             interval:
-                              type: int
+                              type: str
                               required: true
                               convert_types:
-                                - str
+                                - int
+                                - float
                               description: |-
                                 Interval in milliseconds between successive measurement frames.
-                                The range is from 3.33 to 600000.00.
+                                The range is from 3.33 to 600000.
                             period_frames:
                               type: int
                               convert_types:

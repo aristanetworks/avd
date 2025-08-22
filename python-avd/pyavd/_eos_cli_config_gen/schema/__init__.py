@@ -2672,16 +2672,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"id": {"type": int}, "remote_end_point": {"type": str}, "interface": {"type": str}}
                     id: int
-                    """Set local maintenance end point ID."""
+                    """Local maintenance endpoint ID."""
                     remote_end_point: str | None
                     """
-                    Remote maintenance end point ID(s) or range(s) of remote maintenance end point ID(s).
+                    Remote maintenance endpoint ID(s) or range(s) of remote maintenance endpoint ID(s).
                     The range is
                     from 1 to 8191.
                     """
                     interface: str | None
                     """
-                    Specifies the interface on which to configure the local maintenance end point.
+                    Specifies the interface on which to configure the local maintenance endpoint.
                     Supported types
                     include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs).
                     """
@@ -2702,13 +2702,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                id: Set local maintenance end point ID.
+                                id: Local maintenance endpoint ID.
                                 remote_end_point:
-                                   Remote maintenance end point ID(s) or range(s) of remote maintenance end point ID(s).
+                                   Remote maintenance endpoint ID(s) or range(s) of remote maintenance endpoint ID(s).
                                    The range is
                                    from 1 to 8191.
                                 interface:
-                                   Specifies the interface on which to configure the local maintenance end point.
+                                   Specifies the interface on which to configure the local maintenance endpoint.
                                    Supported types
                                    include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs).
 
@@ -2726,7 +2726,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"id": {"type": int}, "mac_address": {"type": str}}
                     id: int
-                    """Configure remote maintenance end point ID."""
+                    """Configure remote maintenance endpoint ID."""
                     mac_address: str | None
                     """MAC address of the RMEP."""
 
@@ -2740,7 +2740,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                id: Configure remote maintenance end point ID.
+                                id: Configure remote maintenance endpoint ID.
                                 mac_address: MAC address of the RMEP.
 
                             """
@@ -2763,10 +2763,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 id: int
                 """Maintenance association ID."""
                 direction: Literal["up", "down"] | None
-                """Set local maintenance end point direction."""
+                """Local maintenance endpoint direction."""
                 end_points: EndPoints
                 """
-                Configure the maintenance end point(MEP).
+                Configure the maintenance endpoint(MEP).
 
                 Subclass of AvdIndexedList with `EndPointsItem` items.
                 Primary key is `id` (`int`).
@@ -2775,7 +2775,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Apply connectivity fault management profile."""
                 remote_end_points: RemoteEndPoints
                 """
-                Configure the remote maintenance end point(RMEP).
+                Configure the remote maintenance endpoint(RMEP).
 
                 Subclass of AvdIndexedList with
                 `RemoteEndPointsItem` items. Primary key is `id` (`int`).
@@ -2803,15 +2803,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             id: Maintenance association ID.
-                            direction: Set local maintenance end point direction.
+                            direction: Local maintenance endpoint direction.
                             end_points:
-                               Configure the maintenance end point(MEP).
+                               Configure the maintenance endpoint(MEP).
 
                                Subclass of AvdIndexedList with `EndPointsItem` items.
                                Primary key is `id` (`int`).
                             profile: Apply connectivity fault management profile.
                             remote_end_points:
-                               Configure the remote maintenance end point(RMEP).
+                               Configure the remote maintenance endpoint(RMEP).
 
                                Subclass of AvdIndexedList with
                                `RemoteEndPointsItem` items. Primary key is `id` (`int`).
@@ -2833,6 +2833,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "intermediate_point": {"type": bool},
             }
             name: str
+            """CFM domain name."""
             level: int
             """Maintenance domain level."""
             associations: Associations
@@ -2862,7 +2863,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: name
+                        name: CFM domain name.
                         level: Maintenance domain level.
                         associations:
                            List of maintenance associations.
@@ -3018,15 +3019,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Delay(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"single_ended": {"type": bool}, "qos_cos": {"type": int}, "tx_interval": {"type": int}}
+                    _fields: ClassVar[dict] = {"single_ended": {"type": bool}, "qos_cos": {"type": int}, "tx_interval": {"type": str}}
                     single_ended: bool | None
                     """Enable single-ended delay measurement."""
                     qos_cos: int | None
                     """Set the class of service (CoS) value for CFM frames."""
-                    tx_interval: int | None
+                    tx_interval: str | None
                     """
                     Interval in milliseconds between successive measurement frames.
-                    The range is from 3.33 to 600000.00.
+                    The range is from 3.33 to 600000.
                     """
 
                     if TYPE_CHECKING:
@@ -3036,7 +3037,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             single_ended: bool | None | UndefinedType = Undefined,
                             qos_cos: int | None | UndefinedType = Undefined,
-                            tx_interval: int | None | UndefinedType = Undefined,
+                            tx_interval: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Delay.
@@ -3049,7 +3050,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 qos_cos: Set the class of service (CoS) value for CFM frames.
                                 tx_interval:
                                    Interval in milliseconds between successive measurement frames.
-                                   The range is from 3.33 to 600000.00.
+                                   The range is from 3.33 to 600000.
 
                             """
 
@@ -3062,18 +3063,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         class TxInterval(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"interval": {"type": int}, "period_frames": {"type": int}}
-                            interval: int
+                            _fields: ClassVar[dict] = {"interval": {"type": str}, "period_frames": {"type": int}}
+                            interval: str
                             """
                             Interval in milliseconds between successive measurement frames.
-                            The range is from 3.33 to 600000.00.
+                            The range is from 3.33 to 600000.
                             """
                             period_frames: int | None
                             """Synthetic loss measurement transmission frames."""
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, interval: int | UndefinedType = Undefined, period_frames: int | None | UndefinedType = Undefined) -> None:
+                                def __init__(self, *, interval: str | UndefinedType = Undefined, period_frames: int | None | UndefinedType = Undefined) -> None:
                                     """
                                     TxInterval.
 
@@ -3083,7 +3084,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     Args:
                                         interval:
                                            Interval in milliseconds between successive measurement frames.
-                                           The range is from 3.33 to 600000.00.
+                                           The range is from 3.33 to 600000.
                                         period_frames: Synthetic loss measurement transmission frames.
 
                                     """
@@ -3121,17 +3122,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {
                         "single_ended": {"type": bool},
                         "qos_cos": {"type": int},
-                        "tx_interval": {"type": int},
+                        "tx_interval": {"type": str},
                         "synthetic": {"type": Synthetic},
                     }
                     single_ended: bool | None
                     """Enable single-ended loss measurement."""
                     qos_cos: int | None
                     """Set the class of service (CoS) value for CFM frames."""
-                    tx_interval: int | None
+                    tx_interval: str | None
                     """
                     Interval in milliseconds between successive measurement frames.
-                    The range is from 3.33 to 600000.00.
+                    The range is from 3.33 to 600000.
                     """
                     synthetic: Synthetic
                     """Subclass of AvdModel."""
@@ -3143,7 +3144,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             single_ended: bool | None | UndefinedType = Undefined,
                             qos_cos: int | None | UndefinedType = Undefined,
-                            tx_interval: int | None | UndefinedType = Undefined,
+                            tx_interval: str | None | UndefinedType = Undefined,
                             synthetic: Synthetic | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -3157,7 +3158,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 qos_cos: Set the class of service (CoS) value for CFM frames.
                                 tx_interval:
                                    Interval in milliseconds between successive measurement frames.
-                                   The range is from 3.33 to 600000.00.
+                                   The range is from 3.33 to 600000.
                                 synthetic: Subclass of AvdModel.
 
                             """
