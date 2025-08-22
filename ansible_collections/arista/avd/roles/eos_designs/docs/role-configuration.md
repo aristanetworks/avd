@@ -43,6 +43,12 @@ This behavior can be adjusted by setting the variable described below.
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-input-validation.md
 --8<--
 
+## Input Variables File/Dir Mode
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-file-permission-mode.md
+--8<--
+
 ## Generation of facts, structured configuration and documentation
 
 The following settings can be leveraged to control generation of facts, structured configuration and fabric documentation.

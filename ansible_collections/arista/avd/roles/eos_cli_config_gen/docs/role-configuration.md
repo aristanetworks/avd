@@ -46,7 +46,7 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-input-v
 ## Input Variables File/Dir Mode
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-input-mode.md
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-file-permission-mode.md
 --8<--
 
 ## Extensibility with Custom Templates
