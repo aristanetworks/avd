@@ -34,7 +34,14 @@ class AddressLockingMixin(Protocol):
         )
 
     def _get_local_interface(self: AvdStructuredConfigBaseProtocol, input_interface: str | None) -> str | None:
-        """Returns local interface for the given interface."""
+        """
+        Resolve and return the appropriate local interface.
+
+        Given an `input_interface`, this function determines the corresponding local interface.
+        If the input is None, empty, or one of the predefined keywords, it returns the relevant
+        management or inband interface from `self.shared_utils`.
+        Otherwise, the provided interface name is returned as-is.
+        """
         match input_interface:
             case None | "" | "use_default_mgmt_method_interface":
                 return self.shared_utils.default_mgmt_protocol_interface
