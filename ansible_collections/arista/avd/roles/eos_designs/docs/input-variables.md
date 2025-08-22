@@ -710,12 +710,6 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-wan-confi
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-ptp-configuration.md
 --8<--
 
-## Custom node type settings
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-node-type-keys.key.md
---8<--
-
 ## Default interface settings
 
 - Set default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).
