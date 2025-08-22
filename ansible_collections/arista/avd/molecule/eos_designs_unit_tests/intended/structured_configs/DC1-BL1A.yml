@@ -282,6 +282,22 @@ metadata:
       value: leaf
     - name: topology_hint_rack
       value: DC1_BL1
+monitor_sessions:
+- name: DMF
+  sources:
+  - name: Ethernet8
+    direction: both
+  - name: Ethernet9
+    direction: both
+  encapsulation_gre_metadata_tx: true
+- name: MonitoringSessionServer18
+  sources:
+  - name: Ethernet7
+    direction: tx
+    access_group:
+      type: ip
+      name: myIpAVL
+      priority: 5
 ntp: null
 platform:
   sand:
