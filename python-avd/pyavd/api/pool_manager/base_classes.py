@@ -259,14 +259,6 @@ class PoolCollection(ABC, Generic[T_ValueType]):
 
         return {pool.pool_key: pool for pool_key, pool_assignments in data.items() if (pool := self.pool_cls.load(pool_key, pool_assignments, collection=self))}
 
-    def _load_old_format(self, data: list) -> dict[str, Pool[T_ValueType]]:
-        for item in data:
-            if not isinstance(item, dict):
-                msg = f"Invalid type '{type(item)}'. Expected a dict."
-                raise TypeError(msg)
-
-        return {pool.pool_key: pool for pool_key, pool_assignments in data if (pool := self.pool_cls.load(pool_key, pool_assignments, collection=self))}
-
     def get_pool(self, pool_key: str) -> Pool[T_ValueType]:
         """
         Returns the pool for the given key if found in the collection.
