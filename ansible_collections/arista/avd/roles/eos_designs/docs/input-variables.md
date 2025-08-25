@@ -1601,6 +1601,12 @@ See the [Configuring PTP](how-to/ptp.md) how-to for details.
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ptp_settings.md
 --8<--
 
+## Address locking settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/address-locking-settings.md
+--8<--
+
 ## Custom Structured Configuration
 
 See the [Custom Structured Configuration](how-to/custom-structured-configuration.md) how-to for details.
