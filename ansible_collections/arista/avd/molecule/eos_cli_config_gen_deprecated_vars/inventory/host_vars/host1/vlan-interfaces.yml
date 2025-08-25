@@ -1,0 +1,9 @@
+---
+# Test deprecated 'address' key for vrrp_ids under VLAN interfaces
+
+vlan_interfaces:
+  - name: Vlan10
+    vrrp_ids:
+      - id: 2
+        ipv6:
+          address: 2001:db8::2
