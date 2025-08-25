@@ -1,0 +1,36 @@
+---
+fabric_name: FABRIC_SMALL_BGP_AS_RANGE_ON_UPLINK_SWITCH
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - .*-spine
+  - node_type: l3leaf
+    match_hostnames:
+      - .*-leaf
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+    bgp_as: 65001-65002
+  nodes:
+    - name: small-bgp-as-range-on-uplink-switch-spine
+      # ID is too big as compared to bgp_as range
+      id: 10
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.1.0/24
+    uplink_ipv4_pool: 10.0.2.0/24
+    vtep_loopback_ipv4_pool: 192.168.2.0/24
+    bgp_as: 65000-65100
+    uplink_switches: [small-bgp-as-range-on-uplink-switch-spine]
+    uplink_interfaces: [Ethernet1]
+  nodes:
+    - name: small-bgp-as-range-on-uplink-switch-leaf
+      id: 42
+      uplink_switch_interfaces: [Ethernet3]
+
+expected_error_message: >-
+  Unable to allocate BGP AS: bgp_as range '65001-65002' is too small (2) for the id '10' for host
+  'small-bgp-as-range-on-uplink-switch-spine'.
