@@ -896,6 +896,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/overlay-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/evpn-settings.md
 --8<--
 
+## Address locking settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/address-locking-settings.md
+--8<--
+
 ## WAN Settings
 
 ### WAN generic settings
@@ -1599,12 +1605,6 @@ See the [Configuring PTP](how-to/ptp.md) how-to for details.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/ptp_settings.md
---8<--
-
-## Address locking settings
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/address-locking-settings.md
 --8<--
 
 ## Custom Structured Configuration
