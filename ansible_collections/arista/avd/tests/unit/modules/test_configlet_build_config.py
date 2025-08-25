@@ -9,7 +9,7 @@ import pytest
 
 from ansible_collections.arista.avd.plugins.modules.configlet_build_config import get_configlet
 
-CONFIGLETS_DIR = str(Path(__file__).parents[3] / "molecule/eos_designs_unit_tests/intended/configs")
+CONFIGLETS_DIR = str(Path(__file__).parents[2] / "inventory/intended/configs")
 
 CONFIGLETS_DATA = {
     "valid_source": {"src_folder": CONFIGLETS_DIR, "prefix": "AVD"},

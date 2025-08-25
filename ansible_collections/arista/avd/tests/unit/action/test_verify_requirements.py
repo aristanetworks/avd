@@ -4,6 +4,7 @@
 
 import os
 from importlib.metadata import PackageNotFoundError
+from itertools import repeat
 from pathlib import Path
 from typing import NamedTuple
 from unittest.mock import patch
@@ -125,7 +126,7 @@ def test__validate_python_requirements(n_reqs: int, mocked_version: str | None, 
          - not testing for wrongly formatted requirements
     """
     result = {}
-    requirements = [f"test-dep>={requirement_version}" for _ in range(n_reqs)]  # pylint: disable=disallowed-name
+    requirements = list(repeat(f"test-dep>={requirement_version}", n_reqs))
     with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.version") as patched_version:
         patched_version.return_value = mocked_version
         if mocked_version is None:
@@ -193,12 +194,6 @@ def test__validate_python_requirements_pyavd(extras: bool, running_from_source: 
             False,
             id="invalid ansible version",
         ),
-        # pytest.param(
-        #     "2.12.6",
-        #     True,
-        #     True,
-        #     id="deprecated ansible version",  # noqa: ERA001
-        # ),
     ],
 )
 def test__validate_ansible_version(mocked_running_version: str, deprecated_version: bool, expected_return: bool) -> None:
@@ -234,7 +229,7 @@ def test__validate_ansible_collections(n_reqs: int, mocked_version: str | None, 
     # Create the metadata based on test input data
     metadata = {}
     if n_reqs > 0:
-        metadata["collections"] = [{"name": "test-collection"} for _ in range(n_reqs)]  # pylint: disable=disallowed-name
+        metadata["collections"] = list(repeat({"name": "test-collection"}, n_reqs))
         if requirement_version is not None:
             for collection in metadata["collections"]:
                 collection["version"] = requirement_version
