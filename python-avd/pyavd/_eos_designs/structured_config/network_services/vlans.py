@@ -111,8 +111,10 @@ class VlansMixin(Protocol):
             if self.inputs.address_locking_settings.dhcp_servers_ipv4 or self.inputs.address_locking_settings.locked_address.ipv6_enforcement_disabled:
                 vlans_vlan.address_locking.address_family.ipv6 = vlan.address_locking.ipv6
             else:
-                msg = f"To configure address locking ipv6 for tenant: {tenant.name} and vlan id: {vlan.id} either \
-`address_locking_settings.dhcp_servers_ipv4` or `address_locking_settings.locked_address.ipv6_enforcement_disabled` is required."
+                msg = (
+                    f"To configure address locking ipv6 for vlan {vlan.id} in Tenant '{tenant.name}' either `address_locking_settings.dhcp_servers_ipv4` "
+                    "or `address_locking_settings.locked_address.ipv6_enforcement_disabled` is required."
+                )
                 raise AristaAvdInvalidInputsError(msg)
         if self.inputs.enable_trunk_groups:
             trunk_groups = vlan.trunk_groups
