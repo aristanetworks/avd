@@ -6165,7 +6165,6 @@ keys:
   wan_ha:
     documentation_options:
       table: wan-settings
-    description: 'PREVIEW: The `wan_ha` key is currently not supported.'
     type: dict
     keys:
       lan_ha_path_group_name:
@@ -11478,10 +11477,7 @@ $defs:
             documentation_options:
               table: node-type-wan-configuration
             type: dict
-            description: 'PREVIEW: This key is currently not supported
-
-
-              The key is supported only if `wan_mode` == `cv-pathfinder`.
+            description: 'The key is supported only if `wan_mode` == `cv-pathfinder`.
 
               AutoVPN support is still to be determined.
 
