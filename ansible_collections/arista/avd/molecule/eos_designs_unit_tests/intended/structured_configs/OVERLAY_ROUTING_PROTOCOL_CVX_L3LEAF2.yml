@@ -13,7 +13,7 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.254.2/32
-- name: Loopback1
+- name: Loopback5
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.253.2/32
@@ -102,7 +102,7 @@ vxlan_interface:
   vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF2_VTEP
     vxlan:
-      source_interface: Loopback1
+      source_interface: Loopback5
       controller_client:
         enabled: true
       udp_port: 4789

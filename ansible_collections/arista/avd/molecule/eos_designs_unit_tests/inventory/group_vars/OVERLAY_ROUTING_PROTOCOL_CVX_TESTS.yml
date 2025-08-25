@@ -26,7 +26,8 @@ node_type_keys:
       l3: true
     vtep: true
     default_ptp_priority1: 30
-
+    # Setting Loopback interface used for VTEP.
+    default_vtep_loopback: Loopback5
 cvxserver:
   nodes:
     - name: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1
