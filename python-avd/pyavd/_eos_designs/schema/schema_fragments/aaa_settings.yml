@@ -5,6 +5,12 @@ keys:
       table: management-settings
     type: dict
     keys:
+      enable_password:
+        type: dict
+        keys:
+          password:
+            type: str
+            description: SHA512 hashed password.
       tacacs:
         type: dict
         keys:
