@@ -28,24 +28,6 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
-- name: Ethernet6.6
-  description: L2_sflow-subinterface-tests-l2-leaf1_Ethernet11.11
-  shutdown: false
-  channel_group:
-    id: 66
-    mode: active
-  peer: sflow-subinterface-tests-l2-leaf1
-  peer_interface: Ethernet11.11
-  peer_type: l2leaf
-- name: Ethernet7.7
-  description: L2_sflow-subinterface-tests-l2-leaf2_Ethernet11.11
-  shutdown: false
-  channel_group:
-    id: 77
-    mode: active
-  peer: sflow-subinterface-tests-l2-leaf2
-  peer_interface: Ethernet11.11
-  peer_type: l2leaf
 - name: Ethernet10
   description: SERVER_single-interface-true_eth1
   shutdown: false
@@ -112,27 +94,6 @@ management_interfaces:
 metadata:
   platform: vEOS-lab
   fabric_name: SFLOW_TESTS
-port_channel_interfaces:
-- name: Port-Channel66
-  description: L2_sflow-subinterface-tests-l2-leaf1_Port-Channel1111
-  shutdown: false
-  sflow:
-    enable: true
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: 11,4092
-- name: Port-Channel77
-  description: L2_sflow-subinterface-tests-l2-leaf2_Port-Channel1111
-  shutdown: false
-  sflow:
-    enable: true
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: 11,4092
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -140,10 +101,6 @@ prefix_lists:
     action: permit 10.254.1.0/27 eq 32
   - sequence: 20
     action: permit 10.254.11.0/27 eq 32
-- name: PL-L2LEAF-INBAND-MGMT
-  sequence_numbers:
-  - sequence: 10
-    action: permit 10.254.254.0/24
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -151,10 +108,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  - sequence: 20
-    type: permit
-    match:
-    - ip address prefix-list PL-L2LEAF-INBAND-MGMT
 router_bfd:
   multihop:
     interval: 300
@@ -198,8 +151,6 @@ router_bgp:
     peer: sflow-tests-spine1
     description: sflow-tests-spine1_Loopback0
   redistribute:
-    attached_host:
-      enabled: true
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
@@ -269,16 +220,6 @@ vlan_interfaces:
   vrf: VRF1
   ip_address: 172.16.11.1/24
   tenant: SFLOW
-- name: Vlan4092
-  description: Inband Management
-  shutdown: false
-  ip_address: 10.254.254.2/24
-  ip_virtual_router_addresses:
-  - 10.254.254.1
-  mtu: 1500
-  ip_attached_host_route_export:
-    enabled: true
-    distance: 19
 vlan_internal_order:
   allocation: ascending
   range:
@@ -288,9 +229,6 @@ vlans:
 - id: 11
   name: VLAN11
   tenant: SFLOW
-- id: 4092
-  name: INBAND_MGMT
-  tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
