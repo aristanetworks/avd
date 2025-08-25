@@ -22544,6 +22544,13 @@ keys:
         type: int
         convert_types:
         - str
+      sample_truncate_size:
+        type: int
+        min: 128
+        max: 512
+        convert_types:
+        - str
+        description: Maximum sample size, in bytes.
       sample_input_subinterface:
         type: bool
       sample_output_subinterface:

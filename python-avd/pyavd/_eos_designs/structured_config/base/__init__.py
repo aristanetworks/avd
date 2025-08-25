@@ -255,8 +255,11 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def enable_password(self) -> None:
-        """enable_password.disable is always set to match EOS default config and historic configs."""
-        self.structured_config.enable_password.disabled = True
+        """enable_password.disable is set to match EOS default config and historic configs if aaa_settings.enable_password.password is not defined."""
+        if self.inputs.aaa_settings.enable_password.password:
+            self.structured_config.enable_password._update(hash_algorithm="sha512", key=self.inputs.aaa_settings.enable_password.password)
+        else:
+            self.structured_config.enable_password.disabled = True
 
     @structured_config_contributor
     def transceiver_qsfp_default_mode_4x10(self) -> None:
