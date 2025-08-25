@@ -19,7 +19,7 @@ keys:
       keys:
         profile:
           type: str
-          description: L2VLAN profile name. Any variable supported under `l2vlans` can be inherited from a profile.
+          description: Profile name.
         parent_profile:
           type: str
           description: |

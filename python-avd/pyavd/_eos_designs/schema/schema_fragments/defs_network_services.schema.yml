@@ -1575,7 +1575,7 @@ $defs:
           $ref: "eos_designs#/$defs/l2vlans"
           documentation_options:
             table: network-services-l2vlans-settings
-          description: Define L2 network services organized by vlan id.
+          description: Define L2 network services organized by VLAN ID.
           primary_key: id
           allow_duplicate_primary_key: true
           items:
