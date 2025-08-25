@@ -183,7 +183,7 @@ class EosDesignsFactsGeneratorProtocol(
         """Exposed in avd_switch_facts."""
         if self.shared_utils.underlay_ipv6_numbered:
             return None
-        if self.shared_utils.node_type_key_data.default_vtep_loopback == "Loopback0":
+        if (loopback := self.shared_utils.node_type_key_data.default_vtep_loopback) and loopback.lower() == "loopback0":
             return None
         if self.shared_utils.vtep is True:
             return self.shared_utils.vtep_loopback_ipv4_pool
