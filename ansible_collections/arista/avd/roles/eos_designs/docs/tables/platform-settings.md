@@ -553,7 +553,6 @@
             platform: vEOS-lab
           feature_support:
             queue_monitor_length_notify: false
-            sflow_subinterfaces: false
           platforms:
           - 7050X3
           reload_delay:

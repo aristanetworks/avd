@@ -377,7 +377,6 @@ keys:
           - 7050X3
         feature_support:
           queue_monitor_length_notify: false
-          sflow_subinterfaces: false
         reload_delay:
           mlag: 300
           non_mlag: 330

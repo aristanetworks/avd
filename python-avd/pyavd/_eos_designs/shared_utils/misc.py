@@ -185,7 +185,6 @@ class MiscMixin(Protocol):
         Returns:
             The configured_sflow value if supported, otherwise None.
         """
-        # This variable is True only if sFlow is supported on this specific interface.
         sflow_supported_on_interface = self.platform_settings.feature_support.sflow and (
             "." not in interface or self.platform_settings.feature_support.sflow_subinterfaces
         )
