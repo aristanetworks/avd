@@ -103,7 +103,7 @@ class UtilsMixin(Protocol):
     def _vtep_loopback_ipv4_address(self: AvdIpAddressingProtocol) -> str | None:
         if self.shared_utils.node_type_key_data.default_vtep_loopback == "Loopback0":
             return self.shared_utils.router_id
-        return self.shared_utils.node_config.vtep_loopback_ipv4_address 
+        return self.shared_utils.node_config.vtep_loopback_ipv4_address
 
     @cached_property
     def _vtep_loopback_ipv6_address(self: AvdIpAddressingProtocol) -> str:
