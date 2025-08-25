@@ -4493,6 +4493,12 @@ keys:
 
                 The feature will be ignored on platforms where this is false.'
               default: true
+            sflow_subinterfaces:
+              type: bool
+              description: 'Support for sFlow on sub-interfaces.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
             wan:
               type: bool
               description: 'Support for Arista WAN features.
@@ -4574,6 +4580,7 @@ keys:
       - 7050X3
       feature_support:
         queue_monitor_length_notify: false
+        sflow_subinterfaces: false
       reload_delay:
         mlag: 300
         non_mlag: 330

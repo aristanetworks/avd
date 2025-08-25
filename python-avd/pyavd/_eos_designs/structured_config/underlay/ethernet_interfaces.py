@@ -67,7 +67,7 @@ class EthernetInterfacesMixin(Protocol):
                         name=link_tracking_group.name,
                         direction=link_tracking_group.direction,
                     )
-                if self.shared_utils.platform_settings.feature_support.sflow:
+                if self.shared_utils._is_sflow_supported_on_interface(ethernet_interface.name):
                     ethernet_interface.sflow.enable = link.sflow_enabled
 
                 # PTP
@@ -210,7 +210,7 @@ class EthernetInterfacesMixin(Protocol):
                     )
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
 
-                    if self.shared_utils.platform_settings.feature_support.sflow:
+                    if self.shared_utils._is_sflow_supported_on_interface(ethernet_subinterface.name):
                         ethernet_subinterface.sflow.enable = link.sflow_enabled
 
                     if subinterface.ip_address:
@@ -297,7 +297,7 @@ class EthernetInterfacesMixin(Protocol):
             self.custom_structured_configs.nested.ethernet_interfaces.obtain(l3_interface.name)._deepmerge(
                 l3_interface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
-        if self.shared_utils.platform_settings.feature_support.sflow and self.inputs.fabric_sflow.l3_interfaces is not None:
+        if self.shared_utils._is_sflow_supported_on_interface(interface.name) and self.inputs.fabric_sflow.l3_interfaces is not None:
             interface.sflow.enable = self.inputs.fabric_sflow.l3_interfaces
 
         if (

@@ -176,6 +176,19 @@ class MiscMixin(Protocol):
             return None
         return configured_mtu
 
+    def _is_sflow_supported_on_interface(self: SharedUtilsProtocol, interface: str) -> bool:
+        """
+        Checks if sFlow is supported on a given interface based on platform settings.
+
+        Considers global sFlow support and specific support for subinterfaces.
+        """
+        # Return False immediately if the platform does not support sFlow at all.
+        if not self.platform_settings.feature_support.sflow:
+            return False
+
+        # Return True if it's a main interface, OR if sFlow on subinterfaces is supported.
+        return "." not in interface or self.platform_settings.feature_support.sflow_subinterfaces
+
     def get_ipv4_acl(
         self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None
     ) -> EosDesigns.Ipv4AclsItem:

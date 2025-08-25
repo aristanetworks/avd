@@ -168,7 +168,7 @@ class PortChannelInterfacesMixin(Protocol):
             validate_lldp=None if (adapter.validate_lldp if adapter.validate_lldp is not None else True) else False,
             eos_cli=adapter.port_channel.raw_eos_cli,
         )
-        if self.shared_utils.platform_settings.feature_support.sflow:
+        if self.shared_utils._is_sflow_supported_on_interface(port_channel_interface.name):
             port_channel_interface.sflow.enable = default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
 
         if adapter.port_channel.subinterfaces:
@@ -256,6 +256,9 @@ class PortChannelInterfacesMixin(Protocol):
                 identifier=f"{self.inputs.evpn_short_esi_prefix}{short_esi}",
                 route_target=short_esi_to_route_target(short_esi),
             )
+
+        if self.shared_utils._is_sflow_supported_on_interface(port_channel_interface.name):
+            port_channel_interface.sflow.enable = default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
 
         if subinterface.structured_config:
             self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_subinterface_name)._deepmerge(

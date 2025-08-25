@@ -1,0 +1,40 @@
+---
+type: l2leaf
+
+default_mgmt_method: inband
+fabric_sflow:
+  uplinks: true
+  downlinks: true
+
+sflow_settings:
+  polling_interval: 1
+  sample:
+    rate: 10
+  destinations:
+    - destination: 10.10.10.10
+      vrf: use_inband_mgmt_vrf
+    - destination: 10.10.10.11
+    - destination: 10.10.10.12
+      vrf: use_mgmt_interface_vrf
+
+l2leaf:
+  defaults:
+    platform: vEOS-lab
+    uplink_interfaces: ['Ethernet11.11', 'Ethernet12.12']
+    uplink_switches: ['sflow-tests-leaf1', 'sflow-tests-leaf2']
+    inband_mgmt_subnet: "10.254.254.0/24"
+
+  nodes:
+    - name: sflow-subinterface-tests-l2-leaf1
+      id: 1
+      mgmt_ip: 192.168.0.211/24
+      uplink_switch_interfaces:
+        - Ethernet6.6
+        - Ethernet6.6
+
+    - name: sflow-subinterface-tests-l2-leaf2
+      id: 2
+      mgmt_ip: 192.168.0.212/24
+      uplink_switch_interfaces:
+        - Ethernet7.7
+        - Ethernet7.7

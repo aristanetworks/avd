@@ -200,7 +200,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             # except in the case where the same trunk group name is defined.
             port_channel_interface.switchport.trunk.groups.append(self.inputs.trunk_groups.mlag_l3.name)
 
-        if self.shared_utils.platform_settings.feature_support.sflow and self.inputs.fabric_sflow.mlag_interfaces is not None:
+        if self.shared_utils._is_sflow_supported_on_interface(port_channel_interface.name) and self.inputs.fabric_sflow.mlag_interfaces is not None:
             port_channel_interface.sflow.enable = self.inputs.fabric_sflow.mlag_interfaces
 
         if self.shared_utils.ptp_enabled and self.shared_utils.node_config.ptp.mlag:

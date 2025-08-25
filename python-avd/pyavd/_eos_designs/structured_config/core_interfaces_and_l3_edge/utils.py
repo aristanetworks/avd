@@ -308,7 +308,7 @@ class UtilsMixin(Protocol):
         if p2p_link.macsec_profile:
             interface.mac_security.profile = p2p_link.macsec_profile
 
-        if self.shared_utils.platform_settings.feature_support.sflow:
+        if self.shared_utils._is_sflow_supported_on_interface(interface.name):
             if p2p_link.sflow is not None:
                 interface.sflow.enable = p2p_link.sflow
             elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
