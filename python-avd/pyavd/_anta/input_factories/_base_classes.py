@@ -75,6 +75,8 @@ class AntaTestInputFactory(ABC):
         """
         Check if a peer's Ethernet interface is in a shutdown state.
 
+        Assumes the peer is available and its structured config has been loaded.
+
         Args:
             peer: The name of the peer device.
             peer_interface: The name of the Ethernet interface on the peer device.
@@ -83,9 +85,6 @@ class AntaTestInputFactory(ABC):
         Returns:
             The shutdown state (True or False) if the interface is found, otherwise None.
         """
-        if not self.is_peer_available(peer, identity=interface):
-            return None
-
         peer_intf = next((intf for intf in self.minimal_structured_configs[peer].ethernet_interfaces if intf.name == peer_interface), None)
 
         if peer_intf is None:
