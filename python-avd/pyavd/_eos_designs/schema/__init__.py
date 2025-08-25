@@ -23,6 +23,27 @@ class EosDesigns(EosDesignsRootModel):
     class AaaSettings(AvdModel):
         """Subclass of AvdModel."""
 
+        class EnablePassword(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"password": {"type": str}}
+            password: str | None
+            """SHA512 hashed password."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, password: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    EnablePassword.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        password: SHA512 hashed password.
+
+                    """
+
         class Tacacs(AvdModel):
             """Subclass of AvdModel."""
 
@@ -429,6 +450,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         _fields: ClassVar[dict] = {
+            "enable_password": {"type": EnablePassword},
             "tacacs": {"type": Tacacs},
             "radius": {"type": Radius},
             "authentication": {"type": EosCliConfigGen.AaaAuthentication},
@@ -437,6 +459,8 @@ class EosDesigns(EosDesignsRootModel):
             "root_login": {"type": RootLogin},
             "local_users": {"type": EosCliConfigGen.LocalUsers},
         }
+        enable_password: EnablePassword
+        """Subclass of AvdModel."""
         tacacs: Tacacs
         """Subclass of AvdModel."""
         radius: Radius
@@ -453,6 +477,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
+                enable_password: EnablePassword | UndefinedType = Undefined,
                 tacacs: Tacacs | UndefinedType = Undefined,
                 radius: Radius | UndefinedType = Undefined,
                 authentication: EosCliConfigGen.AaaAuthentication | UndefinedType = Undefined,
@@ -468,6 +493,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    enable_password: Subclass of AvdModel.
                     tacacs: Subclass of AvdModel.
                     radius: Subclass of AvdModel.
                     authentication: authentication
