@@ -10,6 +10,11 @@ title: Ansible Collection Role eos_config_deploy_cvp
 
 # eos_config_deploy_cvp
 
+!!! warning "Deprecation Warning"
+    The role `arista.avd.eos_config_deploy_cvp` has been deprecated and will be removed in AVD version 6.0.0.<br/>
+    Update your playbook to leverage the new `arista.avd.cv_deploy` role instead.<br/>
+    See [arista.avd.cv_deploy](../cv_deploy/README.md) documentation for more details.
+
 ## Overview
 
 **eos_config_deploy_cvp** is a role that deploys the configuration to Arista EOS devices via the CloudVision Management platform.
