@@ -2592,6 +2592,8 @@ tap aggregation
 
 sFlow Sample Rate: 1000
 
+sFlow Sample Truncation Size: 256 bytes.
+
 sFlow Sample Input Subinterface is enabled.
 
 sFlow Sample Output Subinterface is enabled.
