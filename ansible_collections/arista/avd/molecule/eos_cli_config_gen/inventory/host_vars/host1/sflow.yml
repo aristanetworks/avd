@@ -42,6 +42,7 @@ sflow:
   sample: 1000
   sample_input_subinterface: true
   sample_output_subinterface: true
+  sample_truncate_size: 256
   dangerous: true
   polling_interval: 10
   extensions:
