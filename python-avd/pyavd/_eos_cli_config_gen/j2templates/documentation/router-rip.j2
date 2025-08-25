@@ -8,6 +8,8 @@
 
 ### Router RIP
 
+#### Router RIP Summary
+
 | VRF | Enabled | Default Metric | Networks |
 | --- | ------- | -------------- | -------- |
 {%     for rip in router_rip | arista.avd.natural_sort(sort_key='vrf', ignore_case=False) %}

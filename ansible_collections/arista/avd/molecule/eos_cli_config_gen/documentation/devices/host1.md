@@ -9922,6 +9922,8 @@ router bgp 65101
 
 ### Router RIP
 
+#### Router RIP Summary
+
 | VRF | Enabled | Default Metric | Networks |
 | --- | ------- | -------------- | -------- |
 | VRF1 | True | 10 | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
