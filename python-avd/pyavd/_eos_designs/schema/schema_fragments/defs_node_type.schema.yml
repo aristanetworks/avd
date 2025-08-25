@@ -1419,8 +1419,6 @@ $defs:
               table: node-type-wan-configuration
             type: dict
             description: |-
-              PREVIEW: This key is currently not supported
-
               The key is supported only if `wan_mode` == `cv-pathfinder`.
               AutoVPN support is still to be determined.
 
