@@ -12,6 +12,7 @@ node_type_keys:
     default_overlay_routing_protocol: "ibgp"
     default_flow_tracker_type: "hardware"
     vtep: true
+    # Use Loopback0 IP as VTEP IP.
     default_vtep_loopback: Loopback0
     network_services:
       l3: true

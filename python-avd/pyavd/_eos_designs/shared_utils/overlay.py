@@ -25,11 +25,10 @@ class OverlayMixin(Protocol):
 
     @cached_property
     def vtep_loopback(self: SharedUtilsProtocol) -> str:
-        """The default is Loopback1 except for WAN devices where the default is Dps1."""
+        """The default is Loopback1 except for WAN devices where the default is Dps1."""    
+        default_vtep_loopback = "Dps1" if self.is_wan_router else "Loopback1"
         if self.node_type_key_data.default_vtep_loopback == "Loopback0":
             default_vtep_loopback = "Loopback0"
-        else:
-            default_vtep_loopback = "Dps1" if self.is_wan_router else "Loopback1"
 
         return default(self.node_config.vtep_loopback, default_vtep_loopback)
 
