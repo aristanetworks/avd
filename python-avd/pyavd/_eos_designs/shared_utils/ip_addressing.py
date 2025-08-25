@@ -59,7 +59,7 @@ class IpAddressingMixin(Protocol):
         if self.inputs.underlay_ipv6_numbered:
             return None
 
-        if self.node_type_key_data.default_vtep_loopback == "Loopback0":
+        if (loopback:=self.node_type_key_data.default_vtep_loopback) and loopback.lower() == "loopback0":
             return None
 
         if not self.node_config.vtep_loopback_ipv4_pool:
