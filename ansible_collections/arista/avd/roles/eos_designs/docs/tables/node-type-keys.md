@@ -29,6 +29,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_router</samp>](## "custom_node_type_keys.[].underlay_router") | Boolean |  | `True` |  | Is this node type a L3 device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "custom_node_type_keys.[].uplink_type") | String |  | `p2p` | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | `uplink_type` must be `p2p`, `p2p-vrfs` or `lan` if `vtep` or `underlay_router` is true.<br><br>For `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF<br>in `network_services` present on both the uplink and the downlink switch.<br>The subinterface ID is the `vrf_id`.<br>'underlay_router' and 'network_services.l3' must be set to true.<br>VRF `default` is always configured on the physical interface using the underlay routing protocol.<br>All subinterfaces use the same IP address as the physical interface.<br>Multicast is not supported.<br>Only BGP is supported for subinterfaces.<br><br>For `lan`, a single uplink interface is supported and will be configured as an L3 Interface with<br>subinterfaces for each SVI defined under the VRFs in `network_services` as long as the uplink switch also<br>has the VLAN permitted by tag/tenant filtering. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep</samp>](## "custom_node_type_keys.[].vtep") | Boolean |  | `False` |  | Is this switch an EVPN VTEP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_vtep_loopback</samp>](## "custom_node_type_keys.[].default_vtep_loopback") | String |  |  | Pattern: `Loopback[\d/]+` | Set default VXLAN source interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls_lsr</samp>](## "custom_node_type_keys.[].mpls_lsr") | Boolean |  | `False` |  | Is this switch an MPLS LSR. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_addressing</samp>](## "custom_node_type_keys.[].ip_addressing") | Dictionary |  |  |  | Override ip_addressing templates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp>](## "custom_node_type_keys.[].ip_addressing.python_module") | String |  |  |  | Custom Python Module to import for IP addressing. |
@@ -79,6 +80,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_router</samp>](## "node_type_keys.[].underlay_router") | Boolean |  | `True` |  | Is this node type a L3 device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "node_type_keys.[].uplink_type") | String |  | `p2p` | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code><br>- <code>lan</code> | `uplink_type` must be `p2p`, `p2p-vrfs` or `lan` if `vtep` or `underlay_router` is true.<br><br>For `p2p-vrfs`, the uplinks are configured as L3 interfaces with a subinterface for each VRF<br>in `network_services` present on both the uplink and the downlink switch.<br>The subinterface ID is the `vrf_id`.<br>'underlay_router' and 'network_services.l3' must be set to true.<br>VRF `default` is always configured on the physical interface using the underlay routing protocol.<br>All subinterfaces use the same IP address as the physical interface.<br>Multicast is not supported.<br>Only BGP is supported for subinterfaces.<br><br>For `lan`, a single uplink interface is supported and will be configured as an L3 Interface with<br>subinterfaces for each SVI defined under the VRFs in `network_services` as long as the uplink switch also<br>has the VLAN permitted by tag/tenant filtering. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep</samp>](## "node_type_keys.[].vtep") | Boolean |  | `False` |  | Is this switch an EVPN VTEP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_vtep_loopback</samp>](## "node_type_keys.[].default_vtep_loopback") | String |  |  | Pattern: `Loopback[\d/]+` | Set default VXLAN source interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls_lsr</samp>](## "node_type_keys.[].mpls_lsr") | Boolean |  | `False` |  | Is this switch an MPLS LSR. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_addressing</samp>](## "node_type_keys.[].ip_addressing") | Dictionary |  |  |  | Override ip_addressing templates. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp>](## "node_type_keys.[].ip_addressing.python_module") | String |  |  |  | Custom Python Module to import for IP addressing. |
@@ -197,6 +199,9 @@
 
         # Is this switch an EVPN VTEP.
         vtep: <bool; default=False>
+
+        # Set default VXLAN source interface.
+        default_vtep_loopback: <str>
 
         # Is this switch an MPLS LSR.
         mpls_lsr: <bool; default=False>
@@ -375,6 +380,9 @@
 
         # Is this switch an EVPN VTEP.
         vtep: <bool; default=False>
+
+        # Set default VXLAN source interface.
+        default_vtep_loopback: <str>
 
         # Is this switch an MPLS LSR.
         mpls_lsr: <bool; default=False>

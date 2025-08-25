@@ -3,6 +3,19 @@
 # for cv-pathfinder deployment use-case.
 type: wan_router
 
+node_type_keys:
+  - key: wan_router
+    type: "wan_router"
+    default_evpn_role: "client"
+    default_wan_role: "client"
+    default_underlay_routing_protocol: "none"
+    default_overlay_routing_protocol: "ibgp"
+    default_flow_tracker_type: "hardware"
+    vtep: true
+    default_vtep_loopback: Loopback0
+    network_services:
+      l3: true
+
 cv_pathfinder_regions:
   - name: AVD_Land_East
     id: 43
@@ -16,7 +29,7 @@ bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
     listen_range_prefixes:
-      - 192.168.142.0/24
+      - 192.168.255.0/24
       - 192.168.143.0/24
 
 wan_ipsec_profiles:
@@ -35,7 +48,6 @@ wan_router:
         - name: node-type-l3-port-channels
           id: 1
           loopback_ipv4_pool: 192.168.255.0/24
-          vtep_loopback_ipv4_pool: 192.168.142.0/24
           bgp_as: 65005
           l3_port_channels:
             - # Port-Channel with 3 member ports

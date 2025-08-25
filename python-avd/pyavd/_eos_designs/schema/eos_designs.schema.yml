@@ -3589,6 +3589,10 @@ keys:
           type: bool
           default: false
           description: Is this switch an EVPN VTEP.
+        default_vtep_loopback:
+          description: Set default VXLAN source interface.
+          type: str
+          pattern: Loopback[\d/]+
         mpls_lsr:
           type: bool
           default: false

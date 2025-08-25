@@ -10732,6 +10732,7 @@ class EosDesigns(EosDesignsRootModel):
             "underlay_router": {"type": bool, "default": True},
             "uplink_type": {"type": str, "default": "p2p"},
             "vtep": {"type": bool, "default": False},
+            "default_vtep_loopback": {"type": str},
             "mpls_lsr": {"type": bool, "default": False},
             "ip_addressing": {"type": IpAddressing},
             "interface_descriptions": {"type": InterfaceDescriptions},
@@ -10861,6 +10862,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        default_vtep_loopback: str | None
+        """Set default VXLAN source interface."""
         mpls_lsr: bool
         """
         Is this switch an MPLS LSR.
@@ -10911,6 +10914,7 @@ class EosDesigns(EosDesignsRootModel):
                 underlay_router: bool | UndefinedType = Undefined,
                 uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | UndefinedType = Undefined,
                 vtep: bool | UndefinedType = Undefined,
+                default_vtep_loopback: str | None | UndefinedType = Undefined,
                 mpls_lsr: bool | UndefinedType = Undefined,
                 ip_addressing: IpAddressing | UndefinedType = Undefined,
                 interface_descriptions: InterfaceDescriptions | UndefinedType = Undefined,
@@ -10984,6 +10988,7 @@ class EosDesigns(EosDesignsRootModel):
                        the uplink switch also
                        has the VLAN permitted by tag/tenant filtering.
                     vtep: Is this switch an EVPN VTEP.
+                    default_vtep_loopback: Set default VXLAN source interface.
                     mpls_lsr: Is this switch an MPLS LSR.
                     ip_addressing:
                        Override ip_addressing templates.
@@ -11254,6 +11259,7 @@ class EosDesigns(EosDesignsRootModel):
             "underlay_router": {"type": bool, "default": True},
             "uplink_type": {"type": str, "default": "p2p"},
             "vtep": {"type": bool, "default": False},
+            "default_vtep_loopback": {"type": str},
             "mpls_lsr": {"type": bool, "default": False},
             "ip_addressing": {"type": IpAddressing},
             "interface_descriptions": {"type": InterfaceDescriptions},
@@ -11383,6 +11389,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        default_vtep_loopback: str | None
+        """Set default VXLAN source interface."""
         mpls_lsr: bool
         """
         Is this switch an MPLS LSR.
@@ -11433,6 +11441,7 @@ class EosDesigns(EosDesignsRootModel):
                 underlay_router: bool | UndefinedType = Undefined,
                 uplink_type: Literal["p2p", "port-channel", "p2p-vrfs", "lan"] | UndefinedType = Undefined,
                 vtep: bool | UndefinedType = Undefined,
+                default_vtep_loopback: str | None | UndefinedType = Undefined,
                 mpls_lsr: bool | UndefinedType = Undefined,
                 ip_addressing: IpAddressing | UndefinedType = Undefined,
                 interface_descriptions: InterfaceDescriptions | UndefinedType = Undefined,
@@ -11506,6 +11515,7 @@ class EosDesigns(EosDesignsRootModel):
                        the uplink switch also
                        has the VLAN permitted by tag/tenant filtering.
                     vtep: Is this switch an EVPN VTEP.
+                    default_vtep_loopback: Set default VXLAN source interface.
                     mpls_lsr: Is this switch an MPLS LSR.
                     ip_addressing:
                        Override ip_addressing templates.

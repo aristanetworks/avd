@@ -14,6 +14,7 @@ node_type_keys:
     vtep: true
     default_evpn_encapsulation: vxlan
     default_overlay_address_families: [ vpn-ipv4, evpn ]
+    default_vtep_loopback: Loopback0
   - key: pe
     type: pe
     mpls_lsr: true
