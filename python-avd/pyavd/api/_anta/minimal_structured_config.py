@@ -14,7 +14,7 @@ class MinimalEthernetInterface:
 
     name: str
     ip_address: str
-    shutdown: bool | None
+    shutdown: bool
 
 
 @dataclass(frozen=True)
@@ -50,7 +50,7 @@ def get_minimal_structured_configs(structured_configs: dict[str, dict]) -> dict[
         # Parse the Ethernet interfaces
         minimal_ethernet_interfaces = [
             MinimalEthernetInterface(
-                name=intf["name"], ip_address=intf_ip, shutdown=get(intf, "shutdown", get(structured_config, "interface_defaults.ethernet.shutdown"))
+                name=intf["name"], ip_address=intf_ip, shutdown=get(intf, "shutdown", get(structured_config, "interface_defaults.ethernet.shutdown", False))
             )
             for intf in get(structured_config, "ethernet_interfaces", default=[])
             if (intf_ip := get(intf, "ip_address")) and get(intf, "switchport.enabled") is False

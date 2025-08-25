@@ -53,8 +53,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
             if not self.is_peer_available(intf.peer, identity=intf.name):
                 continue
 
-            if self.is_peer_interface_shutdown(intf.peer, intf.peer_interface):
-                self.logger_adapter.debug(LogMessage.PEER_INTERFACE_SHUTDOWN, interface=intf.peer_interface)
+            if self.is_peer_interface_shutdown(intf.peer, intf.peer_interface, intf.name):
                 continue
 
             # LLDP neighbor is the FQDN when dns domain is set in EOS
@@ -135,8 +134,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
             if (peer_interface_ip := self.get_interface_ip(intf.peer, intf.peer_interface, intf.name)) is None:
                 continue
 
-            if self.is_peer_interface_shutdown(intf.peer, intf.peer_interface):
-                self.logger_adapter.debug(LogMessage.PEER_INTERFACE_SHUTDOWN, interface=intf.peer_interface)
+            if self.is_peer_interface_shutdown(intf.peer, intf.peer_interface, intf.name) is True:
                 continue
 
             hosts.append(
