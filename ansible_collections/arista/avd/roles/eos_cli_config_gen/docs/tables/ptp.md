@@ -19,6 +19,7 @@
     | [<samp>&nbsp;&nbsp;priority2</samp>](## "ptp.priority2") | Integer |  |  | Min: 0<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;ttl</samp>](## "ptp.ttl") | Integer |  |  | Min: 1<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;domain</samp>](## "ptp.domain") | Integer |  |  | Min: 0<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;hold_ptp_time</samp>](## "ptp.hold_ptp_time") | Integer |  |  | Min: 0<br>Max: 172000 | The length of time that PTP will remain in hold-down on the internal oscillator if the connection to the GM is lost.<br>If a new GM is not elected before the expiry of the hold-down time, the clock will revert to free-running.<br>Some platforms support larger maximum values, however 172000 seconds was the max for 7150 series, and was widely used. |
     | [<samp>&nbsp;&nbsp;message_type</samp>](## "ptp.message_type") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;general</samp>](## "ptp.message_type.general") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "ptp.message_type.general.dscp") | Integer |  |  |  |  |
@@ -66,6 +67,11 @@
       priority2: <int; 0-255>
       ttl: <int; 1-255>
       domain: <int; 0-255>
+
+      # The length of time that PTP will remain in hold-down on the internal oscillator if the connection to the GM is lost.
+      # If a new GM is not elected before the expiry of the hold-down time, the clock will revert to free-running.
+      # Some platforms support larger maximum values, however 172000 seconds was the max for 7150 series, and was widely used.
+      hold_ptp_time: <int; 0-172000>
       message_type:
         general:
           dscp: <int>

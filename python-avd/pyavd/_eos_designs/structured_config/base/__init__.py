@@ -17,6 +17,7 @@ from pyavd.j2filters import natural_sort
 
 from .daemon_terminattr import DaemonTerminattrMixin
 from .management_ssh import ManagementSshMixin
+from .monitor_sessions import MonitorSessionsMixin
 from .ntp import NtpMixin
 from .platform_mixin import PlatformMixin
 from .router_general import RouterGeneralMixin
@@ -31,6 +32,7 @@ class AvdStructuredConfigBaseProtocol(
     SnmpServerMixin,
     RouterGeneralMixin,
     PlatformMixin,
+    MonitorSessionsMixin,
     UtilsMixin,
     StructuredConfigGeneratorProtocol,
     Protocol,
@@ -253,8 +255,11 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def enable_password(self) -> None:
-        """enable_password.disable is always set to match EOS default config and historic configs."""
-        self.structured_config.enable_password.disabled = True
+        """enable_password.disable is set to match EOS default config and historic configs if aaa_settings.enable_password.password is not defined."""
+        if self.inputs.aaa_settings.enable_password.password:
+            self.structured_config.enable_password._update(hash_algorithm="sha512", key=self.inputs.aaa_settings.enable_password.password)
+        else:
+            self.structured_config.enable_password.disabled = True
 
     @structured_config_contributor
     def transceiver_qsfp_default_mode_4x10(self) -> None:
@@ -429,11 +434,12 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def local_users(self) -> None:
-        """local_users set based on local_users data model."""
-        if not self.inputs.local_users:
+        """local_users set based on global local_users data model or aaa_settings.local_users data model."""
+        local_users = self.inputs.aaa_settings.local_users or self.inputs.local_users
+        if not local_users:
             return
 
-        self.structured_config.local_users = self.inputs.local_users._natural_sorted()
+        self.structured_config.local_users = local_users._natural_sorted()
 
     @structured_config_contributor
     def clock(self) -> None:
