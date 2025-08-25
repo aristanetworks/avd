@@ -27482,14 +27482,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -28246,14 +28243,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -31815,14 +31809,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         wan_ha: WanHa
                         """
-                        PREVIEW: This key is currently not supported
+                        The key is supported only if `wan_mode` == `cv-pathfinder`.
+                        AutoVPN support is still to be
+                        determined.
 
-                        The key is supported only if `wan_mode` == `cv-
-                        pathfinder`.
-                        AutoVPN support is still to be determined.
-
-                        Maximum 2 devices supported by group for
-                        HA.
+                        Maximum 2 devices supported by group for HA.
 
                         Subclass of AvdModel.
                         """
@@ -32588,14 +32579,11 @@ class EosDesigns(EosDesignsRootModel):
                                        For pathfinders without `cv_pathfinder_region` set,
                                        the site must be defined under `cv_pathfinder_global_sites`.
                                     wan_ha:
-                                       PREVIEW: This key is currently not supported
+                                       The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                       AutoVPN support is still to be
+                                       determined.
 
-                                       The key is supported only if `wan_mode` == `cv-
-                                       pathfinder`.
-                                       AutoVPN support is still to be determined.
-
-                                       Maximum 2 devices supported by group for
-                                       HA.
+                                       Maximum 2 devices supported by group for HA.
 
                                        Subclass of AvdModel.
                                     dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -36068,14 +36056,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -36843,14 +36828,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -40395,14 +40377,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -41168,14 +41147,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -52942,14 +52918,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -53706,14 +53679,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -57275,14 +57245,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         wan_ha: WanHa
                         """
-                        PREVIEW: This key is currently not supported
+                        The key is supported only if `wan_mode` == `cv-pathfinder`.
+                        AutoVPN support is still to be
+                        determined.
 
-                        The key is supported only if `wan_mode` == `cv-
-                        pathfinder`.
-                        AutoVPN support is still to be determined.
-
-                        Maximum 2 devices supported by group for
-                        HA.
+                        Maximum 2 devices supported by group for HA.
 
                         Subclass of AvdModel.
                         """
@@ -58048,14 +58015,11 @@ class EosDesigns(EosDesignsRootModel):
                                        For pathfinders without `cv_pathfinder_region` set,
                                        the site must be defined under `cv_pathfinder_global_sites`.
                                     wan_ha:
-                                       PREVIEW: This key is currently not supported
+                                       The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                       AutoVPN support is still to be
+                                       determined.
 
-                                       The key is supported only if `wan_mode` == `cv-
-                                       pathfinder`.
-                                       AutoVPN support is still to be determined.
-
-                                       Maximum 2 devices supported by group for
-                                       HA.
+                                       Maximum 2 devices supported by group for HA.
 
                                        Subclass of AvdModel.
                                     dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -61528,14 +61492,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -62303,14 +62264,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -65855,14 +65813,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -66628,14 +66583,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -69136,11 +69088,7 @@ class EosDesigns(EosDesignsRootModel):
     Default value: `"path-selection"`
     """
     wan_ha: WanHa
-    """
-    PREVIEW: The `wan_ha` key is currently not supported.
-
-    Subclass of AvdModel.
-    """
+    """Subclass of AvdModel."""
     wan_ipsec_profiles: WanIpsecProfiles
     """
     Define IPsec profiles parameters for WAN configuration.
@@ -70822,10 +70770,7 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of
                    AvdIndexedList with `WanCarriersItem` items. Primary key is `name` (`str`).
                 wan_encapsulation: Select the encapsulation to use for EVPN peerings for WAN BGP peers.
-                wan_ha:
-                   PREVIEW: The `wan_ha` key is currently not supported.
-
-                   Subclass of AvdModel.
+                wan_ha: Subclass of AvdModel.
                 wan_ipsec_profiles:
                    Define IPsec profiles parameters for WAN configuration.
 
