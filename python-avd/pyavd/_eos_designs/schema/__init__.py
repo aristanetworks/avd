@@ -46779,6 +46779,8 @@ class EosDesigns(EosDesignsRootModel):
                         nodes: Nodes
                         """
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                        The
+                        hostname should match fully with any one of the regex patterns in the list.
                         Subclass of AvdList with `str` items.
                         """
                         set_ipv4_next_hop: str | None
@@ -46888,6 +46890,8 @@ class EosDesigns(EosDesignsRootModel):
                                     ebgp_multihop: Time-to-live in range of hops.
                                     nodes:
                                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                                       The
+                                       hostname should match fully with any one of the regex patterns in the list.
                                        Subclass of AvdList with `str` items.
                                     set_ipv4_next_hop:
                                        IPv4_address

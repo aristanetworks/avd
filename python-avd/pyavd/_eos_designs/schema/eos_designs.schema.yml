@@ -9140,8 +9140,11 @@ $defs:
                       type: list
                       items:
                         type: str
-                      description: Nodes is required to restrict configuration of
+                      description: 'Nodes is required to restrict configuration of
                         BGP neighbors to certain nodes in the network.
+
+                        The hostname should match fully with any one of the regex
+                        patterns in the list.                    '
                     set_ipv4_next_hop:
                       type: str
                       description: 'IPv4_address
