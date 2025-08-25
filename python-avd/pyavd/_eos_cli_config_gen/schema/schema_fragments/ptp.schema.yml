@@ -60,6 +60,16 @@ keys:
         max: 255
         convert_types:
         - str
+      hold_ptp_time:
+        type: int
+        min: 0
+        max: 172000
+        description: |-
+          The length of time that PTP will remain in hold-down on the internal oscillator if the connection to the GM is lost.
+          If a new GM is not elected before the expiry of the hold-down time, the clock will revert to free-running.
+          Some platforms support larger maximum values, however 172000 seconds was the max for 7150 series, and was widely used.
+        convert_types:
+        - str
       message_type:
         type: dict
         keys:
