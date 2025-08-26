@@ -434,11 +434,19 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             if len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
                 uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
             else:
+                # max_id = 0 # noqa: ERA001
+                # downlink_switches = uplink_switch_facts._downlink_switches # noqa: ERA001
+                # for downlink_switch in downlink_switches:
+                #     dl_s_facts = self.get_peer_facts_generator(downlink_switch) # noqa: ERA001
+                #     max_id = max(self.id, dl_s_facts.id) # noqa: ERA001
+                # required_downlink_interfaces = max_id * self.shared_utils.node_config.max_parallel_uplinks # noqa: ERA001
+                # This exception is to print the value of uplink_switch_facts._downlink_switches and required_downlink_interfaces
+                # raise Exception(uplink_switch_facts._downlink_switches, required_downlink_interfaces) # noqa: ERA001
                 msg = (
                     f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
                     f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces' "
                     f"(only {len(uplink_switch_facts._default_downlink_interfaces)} allocated). "
-                    f"This switch requires at least {downlink_index + 1} downlink_interfaces."
+                    f"The uplink switch requires at least {downlink_index + 1} downlink_interfaces."
                 )
                 raise AristaAvdError(msg)
 
