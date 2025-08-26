@@ -436,7 +436,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             else:
                 msg = (
                     f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
-                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'."
+                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces' "
+                    f"(only {len(uplink_switch_facts._default_downlink_interfaces)} allocated). "
+                    f"This switch requires at least {downlink_index + 1} downlink_interfaces."
                 )
                 raise AristaAvdError(msg)
 
