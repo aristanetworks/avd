@@ -4,7 +4,10 @@
 
 
 class AristaAvdError(Exception):
-    def __init__(self, message: str = "An Error has occurred in an arista.avd plugin") -> None:
+    host: str | None
+
+    def __init__(self, message: str = "An Error has occurred in an arista.avd plugin", host: str | None = None) -> None:
+        self.host = host
         self.message = message
         super().__init__(self.message)
 
@@ -22,8 +25,10 @@ class AristaAvdError(Exception):
 
 
 class AristaAvdInvalidInputsError(AristaAvdError):
-    def __init__(self, message: str) -> None:
-        super().__init__(message)
+    host: str | None
+
+    def __init__(self, message: str, host: str | None = None) -> None:
+        super().__init__(message, host=host)
 
 
 class AristaAvdMissingVariableError(AristaAvdError):
@@ -31,11 +36,12 @@ class AristaAvdMissingVariableError(AristaAvdError):
     host: str | None
 
     def __init__(self, variable: str | None = None, host: str | None = None) -> None:
+        """Fact host message is used only if host is set as well."""
         self.variable = variable
         self.host = host
         host_msg = f" for host '{host}'" if host else ""
         message = f"'{variable}' is required but was not found{host_msg}."
-        super().__init__(message)
+        super().__init__(message, host=host)
 
 
 class AvdSchemaError(AristaAvdError):
@@ -99,8 +105,8 @@ class AvdDeprecationWarning(AristaAvdError):  # noqa: N818
 
 
 class AristaAvdDuplicateDataError(AristaAvdError):
-    def __init__(self, context: str, context_item_a: str, context_item_b: str) -> None:
+    def __init__(self, context: str, context_item_a: str, context_item_b: str, host: str | None = None) -> None:
         self.message = (
             f"Found duplicate objects with conflicting data while generating configuration for {context}. {context_item_a} conflicts with {context_item_b}."
         )
-        super().__init__(self.message)
+        super().__init__(self.message, host=host)
