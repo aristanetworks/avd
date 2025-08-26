@@ -67245,12 +67245,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
                     multicast_groups: MulticastGroups
                     """
-                    List of 1:1 mappings where each configured overlay is mapped
-                    directly to the specified underlay
-                    group 'encap'.
+                    List of 1:1 mappings where each configured overlay multicast group is mapped
+                    directly to the
+                    specified underlay multicast group.
 
-                    Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is
-                    `overlay_group` (`str`).
+                    Subclass of AvdIndexedList with `MulticastGroupsItem` items.
+                    Primary key is `overlay_group` (`str`).
                     """
 
                     if TYPE_CHECKING:
@@ -67280,12 +67280,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                    the encap range.
                                    The format is X.X.X.X/YY.
                                 multicast_groups:
-                                   List of 1:1 mappings where each configured overlay is mapped
-                                   directly to the specified underlay
-                                   group 'encap'.
+                                   List of 1:1 mappings where each configured overlay multicast group is mapped
+                                   directly to the
+                                   specified underlay multicast group.
 
-                                   Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is
-                                   `overlay_group` (`str`).
+                                   Subclass of AvdIndexedList with `MulticastGroupsItem` items.
+                                   Primary key is `overlay_group` (`str`).
 
                             """
 
@@ -67776,12 +67776,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
                     multicast_groups: MulticastGroups
                     """
-                    List of 1:1 mappings where each configured overlay is mapped
-                    directly to the specified underlay
-                    group 'encap'.
+                    List of 1:1 mappings where each configured overlay multicast group is mapped
+                    directly to the
+                    specified underlay multicast group.
 
-                    Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is
-                    `overlay_group` (`str`).
+                    Subclass of AvdIndexedList with `MulticastGroupsItem` items.
+                    Primary key is `overlay_group` (`str`).
                     """
 
                     if TYPE_CHECKING:
@@ -67811,12 +67811,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                    the encap range.
                                    The format is X.X.X.X/YY.
                                 multicast_groups:
-                                   List of 1:1 mappings where each configured overlay is mapped
-                                   directly to the specified underlay
-                                   group 'encap'.
+                                   List of 1:1 mappings where each configured overlay multicast group is mapped
+                                   directly to the
+                                   specified underlay multicast group.
 
-                                   Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is
-                                   `overlay_group` (`str`).
+                                   Subclass of AvdIndexedList with `MulticastGroupsItem` items.
+                                   Primary key is `overlay_group` (`str`).
 
                             """
 

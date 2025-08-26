@@ -49,7 +49,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].vni") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group") | String |  |  |  | Default IP Multicast Group Address for the VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group_encap_range</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group_encap_range") | String |  |  |  | N:M mapping, the overlay groups in the VRF are mapped to one of<br>the underlay groups defined within the encap range.<br>The format is X.X.X.X/YY. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_groups</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_groups") | List, items: Dictionary |  |  |  | List of 1:1 mappings where each configured overlay is mapped<br>directly to the specified underlay group 'encap'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_groups</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_groups") | List, items: Dictionary |  |  |  | List of 1:1 mappings where each configured overlay multicast group is mapped<br>directly to the specified underlay multicast group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;overlay_group</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_groups.[].overlay_group") | String | Required, Unique |  |  | Overlay multicast group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encap</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_groups.[].encap") | String | Required |  |  | Underlay multicast group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vteps</samp>](## "vxlan_interface.vxlan1.vxlan.flood_vteps") | List, items: String |  |  |  |  |
@@ -97,7 +97,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].vni") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_group") | String |  |  |  | Default IP Multicast Group Address for the VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group_encap_range</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_group_encap_range") | String |  |  |  | N:M mapping, the overlay groups in the VRF are mapped to one of<br>the underlay groups defined within the encap range.<br>The format is X.X.X.X/YY. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_groups</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_groups") | List, items: Dictionary |  |  |  | List of 1:1 mappings where each configured overlay is mapped<br>directly to the specified underlay group 'encap'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_groups</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_groups") | List, items: Dictionary |  |  |  | List of 1:1 mappings where each configured overlay multicast group is mapped<br>directly to the specified underlay multicast group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;overlay_group</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_groups.[].overlay_group") | String | Required, Unique |  |  | Overlay multicast group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encap</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_groups.[].encap") | String | Required |  |  | Underlay multicast group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vteps</samp>](## "vxlan_interface.Vxlan1.vxlan.flood_vteps") | List, items: String |  |  |  |  |
@@ -197,8 +197,8 @@
               # The format is X.X.X.X/YY.
               multicast_group_encap_range: <str>
 
-              # List of 1:1 mappings where each configured overlay is mapped
-              # directly to the specified underlay group 'encap'.
+              # List of 1:1 mappings where each configured overlay multicast group is mapped
+              # directly to the specified underlay multicast group.
               multicast_groups:
 
                   # Overlay multicast group.
@@ -305,8 +305,8 @@
               # The format is X.X.X.X/YY.
               multicast_group_encap_range: <str>
 
-              # List of 1:1 mappings where each configured overlay is mapped
-              # directly to the specified underlay group 'encap'.
+              # List of 1:1 mappings where each configured overlay multicast group is mapped
+              # directly to the specified underlay multicast group.
               multicast_groups:
 
                   # Overlay multicast group.
