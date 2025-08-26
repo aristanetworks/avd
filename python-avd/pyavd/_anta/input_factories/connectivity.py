@@ -25,7 +25,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
     Peers must be available (`is_deployed: true`).
 
     The factory respects `validate_state` and `validate_lldp` settings, excludes
-    subinterfaces and shutdown interfaces (considering `interface_defaults.ethernet.shutdown`
+    subinterfaces and shutdown interfaces on local or peer (considering `interface_defaults.ethernet.shutdown`
     when not set), and uses peer FQDN when `dns_domain` is configured to match EOS
     LLDP format.
     """
@@ -51,6 +51,9 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
                 continue
 
             if not self.is_peer_available(intf.peer, identity=intf.name):
+                continue
+
+            if self.is_peer_interface_shutdown(intf.peer, intf.peer_interface, intf.name):
                 continue
 
             # LLDP neighbor is the FQDN when dns domain is set in EOS
@@ -80,6 +83,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
         * Interface is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`
         * `peer` device is deployed - `is_deployed=True`
         * `peer_interface` on the `peer` device has a defined static `ip_address` - *not* 'dhcp' and *not* 'unnumbered'
+        * `peer_interface` is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`
 
     - BGP Neighbors:
         Inputs are generated for BGP neighbors that meet all the following criteria:
@@ -128,6 +132,9 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
                 continue
 
             if (peer_interface_ip := self.get_interface_ip(intf.peer, intf.peer_interface, intf.name)) is None:
+                continue
+
+            if self.is_peer_interface_shutdown(intf.peer, intf.peer_interface, intf.name) is True:
                 continue
 
             hosts.append(
