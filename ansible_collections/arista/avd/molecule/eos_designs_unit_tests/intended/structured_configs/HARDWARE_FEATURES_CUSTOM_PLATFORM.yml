@@ -34,6 +34,16 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
+- name: Ethernet9.9
+  description: P2P_HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet9.9
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.60.5/31
+  peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+  peer_interface: Ethernet9.9
+  peer_type: l3leaf
+  switchport:
+    enabled: false
 hardware_counters:
   features: null
 hostname: HARDWARE_FEATURES_CUSTOM_PLATFORM
