@@ -124,7 +124,7 @@
 {%                 do multicast_groups_overlay.append(multicast_group.overlay_group) %}
 {%                 do multicast_groups_underlay_encap.append(multicast_group.encap) %}
 {%             endfor %}
-{%             if multicast_groups_overlay != [] and multicast_groups_underlay_encap != [] %}
+{%             if multicast_groups_overlay  %}
 {%                 set multicast_groups_overlay = multicast_groups_overlay | join(", ") %}
 {%                 set multicast_groups_underlay_encap = multicast_groups_underlay_encap | join(", ") %}
 {%             else %}
