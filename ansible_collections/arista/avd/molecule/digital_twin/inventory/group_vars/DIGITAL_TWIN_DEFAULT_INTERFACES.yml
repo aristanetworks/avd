@@ -5,7 +5,7 @@ l2spine:
   defaults:
     platform: CUSTOM_PLATFORM
   nodes:
-    - name: DIGITAL_TWIN_DEFAULT_INTERFACES_DIGITAL_TWIN_PLATFORM
+    - name: digital-twin-default-interfaces-digital-twin-platform
       id: 1
       mgmt_ip: 10.10.10.100/24
 
@@ -13,9 +13,9 @@ l2leaf:
   defaults:
     platform: CUSTOM_PLATFORM
   nodes:
-    - name: DIGITAL_TWIN_DEFAULT_INTERFACES_ORIGINAL_PLATFORM
+    - name: digital-twin-default-interfaces-original-platform
       id: 1
-      uplink_switches: [DIGITAL_TWIN_DEFAULT_INTERFACES_DIGITAL_TWIN_PLATFORM]
+      uplink_switches: [digital-twin-default-interfaces-digital-twin-platform]
       mgmt_ip: 10.10.10.101/24
 
 custom_platform_settings:

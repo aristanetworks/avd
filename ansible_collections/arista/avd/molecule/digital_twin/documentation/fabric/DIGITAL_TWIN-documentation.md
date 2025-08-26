@@ -17,8 +17,8 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| DIGITAL_TWIN | l2spine | DIGITAL_TWIN_DEFAULT_INTERFACES_DIGITAL_TWIN_PLATFORM | 10.10.10.100/24 | CUSTOM_PLATFORM | Provisioned | - |
-| DIGITAL_TWIN | l2leaf | DIGITAL_TWIN_DEFAULT_INTERFACES_ORIGINAL_PLATFORM | 10.10.10.101/24 | CUSTOM_PLATFORM | Provisioned | - |
+| DIGITAL_TWIN | l2spine | digital-twin-default-interfaces-digital-twin-platform | 10.10.10.100/24 | CUSTOM_PLATFORM | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-default-interfaces-original-platform | 10.10.10.101/24 | CUSTOM_PLATFORM | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -31,7 +31,7 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
-| l2spine | DIGITAL_TWIN_DEFAULT_INTERFACES_DIGITAL_TWIN_PLATFORM | Ethernet4 | l2leaf | DIGITAL_TWIN_DEFAULT_INTERFACES_ORIGINAL_PLATFORM | Ethernet2 |
+| l2spine | digital-twin-default-interfaces-digital-twin-platform | Ethernet4 | l2leaf | digital-twin-default-interfaces-original-platform | Ethernet2 |
 
 ## Fabric IP Allocation
 

@@ -5,15 +5,15 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet2
-  description: L2_DIGITAL_TWIN_DEFAULT_INTERFACES_DIGITAL_TWIN_PLATFORM_Ethernet3
+  description: L2_digital-twin-default-interfaces-digital-twin-platform_Ethernet3
   shutdown: false
   channel_group:
     id: 2
     mode: active
-  peer: DIGITAL_TWIN_DEFAULT_INTERFACES_DIGITAL_TWIN_PLATFORM
+  peer: digital-twin-default-interfaces-digital-twin-platform
   peer_interface: Ethernet3
   peer_type: l2spine
-hostname: DIGITAL_TWIN_DEFAULT_INTERFACES_ORIGINAL_PLATFORM
+hostname: digital-twin-default-interfaces-original-platform
 ip_igmp_snooping:
   globally_enabled: true
 is_deployed: true
@@ -40,7 +40,7 @@ metadata:
     password: cvp123!
 port_channel_interfaces:
 - name: Port-Channel2
-  description: L2_DIGITAL_TWIN_DEFAULT_INTERFACES_DIGITAL_TWIN_PLATFORM_Port-Channel3
+  description: L2_digital-twin-default-interfaces-digital-twin-platform_Port-Channel3
   shutdown: false
   switchport:
     enabled: true

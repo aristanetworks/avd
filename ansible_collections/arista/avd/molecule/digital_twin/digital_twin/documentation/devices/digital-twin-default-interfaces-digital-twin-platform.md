@@ -1,4 +1,4 @@
-# DIGITAL_TWIN_DEFAULT_INTERFACES_ORIGINAL_PLATFORM
+# digital-twin-default-interfaces-digital-twin-platform
 
 ## Table of Contents
 
@@ -33,7 +33,7 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.10.10.101/24 | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.10.10.100/24 | - |
 
 ##### IPv6
 
@@ -49,7 +49,7 @@ interface Management1
    description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
-   ip address 10.10.10.101/24
+   ip address 10.10.10.100/24
 ```
 
 ### Management API HTTP
@@ -109,7 +109,7 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet2 | L2_DIGITAL_TWIN_DEFAULT_INTERFACES_DIGITAL_TWIN_PLATFORM_Ethernet4 | *trunk | *none | *- | *- | 2 |
+| Ethernet3 | L2_digital-twin-default-interfaces-original-platform_Ethernet2 | *trunk | *none | *- | *- | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -117,10 +117,10 @@ vlan internal order ascending range 1006 1199
 
 ```eos
 !
-interface Ethernet2
-   description L2_DIGITAL_TWIN_DEFAULT_INTERFACES_DIGITAL_TWIN_PLATFORM_Ethernet4
+interface Ethernet3
+   description L2_digital-twin-default-interfaces-original-platform_Ethernet2
    no shutdown
-   channel-group 2 mode active
+   channel-group 3 mode active
 ```
 
 ### Port-Channel Interfaces
@@ -131,14 +131,14 @@ interface Ethernet2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel2 | L2_DIGITAL_TWIN_DEFAULT_INTERFACES_DIGITAL_TWIN_PLATFORM_Port-Channel4 | trunk | none | - | - | - | - | - | - |
+| Port-Channel3 | L2_digital-twin-default-interfaces-original-platform_Port-Channel2 | trunk | none | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
-interface Port-Channel2
-   description L2_DIGITAL_TWIN_DEFAULT_INTERFACES_DIGITAL_TWIN_PLATFORM_Port-Channel4
+interface Port-Channel3
+   description L2_digital-twin-default-interfaces-original-platform_Port-Channel2
    no shutdown
    switchport trunk allowed vlan none
    switchport mode trunk
