@@ -9174,7 +9174,7 @@ $defs:
                         BGP neighbors to certain nodes in the network.
 
                         The hostname should match fully with any one of the regex
-                        patterns in the list.                    '
+                        patterns in the list.'
                     set_ipv4_next_hop:
                       type: str
                       description: 'IPv4_address
