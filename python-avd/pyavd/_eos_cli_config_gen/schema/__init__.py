@@ -67241,7 +67241,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     N:M mapping, the overlay groups in the VRF are mapped to one of
                     the underlay groups defined within
                     the encap range.
-                    The format is X.X.X.X/YY.
+                    The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and
+                    32).
+                    Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for
+                    this feature to work.
+                    See the TOI at
+                    https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
                     """
                     multicast_groups: MulticastGroups
                     """
@@ -67278,7 +67283,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                    N:M mapping, the overlay groups in the VRF are mapped to one of
                                    the underlay groups defined within
                                    the encap range.
-                                   The format is X.X.X.X/YY.
+                                   The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and
+                                   32).
+                                   Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for
+                                   this feature to work.
+                                   See the TOI at
+                                   https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
                                 multicast_groups:
                                    List of 1:1 mappings where each configured overlay multicast group is mapped
                                    directly to the
@@ -67772,7 +67782,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     N:M mapping, the overlay groups in the VRF are mapped to one of
                     the underlay groups defined within
                     the encap range.
-                    The format is X.X.X.X/YY.
+                    The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and
+                    32).
+                    Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for
+                    this feature to work.
+                    See the TOI at
+                    https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
                     """
                     multicast_groups: MulticastGroups
                     """
@@ -67809,7 +67824,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                    N:M mapping, the overlay groups in the VRF are mapped to one of
                                    the underlay groups defined within
                                    the encap range.
-                                   The format is X.X.X.X/YY.
+                                   The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and
+                                   32).
+                                   Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for
+                                   this feature to work.
+                                   See the TOI at
+                                   https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
                                 multicast_groups:
                                    List of 1:1 mappings where each configured overlay multicast group is mapped
                                    directly to the
