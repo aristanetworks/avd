@@ -47,17 +47,23 @@ ANSIBLE_CONNECTION_VARS = [
     "inventory_hostname",
     "ansible_host",
     "ansible_user",
-    "anta_user",
     "ansible_password",
-    "anta_password",
     "ansible_httpapi_pass",
     "ansible_httpapi_password",
     "ansible_become",
-    "anta_enable_mode",
     "ansible_become_password",
-    "anta_enable_password",
     "ansible_httpapi_port",
     "ansible_httpapi_use_ssl",
+]
+
+ANTA_CONNECTION_VARS = [
+    "anta_user",
+    "anta_password",
+    "anta_enable",
+    "anta_enable_password",
+    "anta_port",
+    "anta_use_ssl",
+    "anta_tags",
 ]
 
 ARGUMENT_SPEC = {
@@ -369,8 +375,7 @@ def get_ansible_vars(device_list: list[str], action_plugin_vars: ActionPluginVar
         # Adding the Ansible connection variables following the HTTPAPI connection plugin settings
         ansible_vars[device] = {key: get(device_vars, key) for key in ANSIBLE_CONNECTION_VARS}
 
-        # Same as above, we also honor the `anta_tags` variable if provided in the hostvars
-        ansible_vars[device]["anta_tags"] = get(device_vars, "anta_tags")
+        ansible_vars[device].update({key: get(device_vars, key) for key in ANTA_CONNECTION_VARS})
 
     return ansible_vars
 
@@ -465,8 +470,18 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
         get(device_vars, "ansible_httpapi_pass"),
         get(device_vars, "ansible_httpapi_password"),
     )
-    enable_mode = default(get(device_vars, "anta_enable_mode"), get(device_vars, "ansible_become", default=False))
+    port = default(
+        get(device_vars, "anta_port"),
+        (80 if get(device_vars, "anta_use_ssl") is False else None),
+        get(
+            device_vars,
+            "ansible_httpapi_port",
+            default=(80 if get(device_vars, "ansible_httpapi_use_ssl", default=True) is False else 443),
+        ),
+    )
+    enable_mode = default(get(device_vars, "anta_enable"), get(device_vars, "ansible_become", default=False))
     enable_password = default(get(device_vars, "anta_enable_password"), get(device_vars, "ansible_become_password"))
+    proto = "https" if default(get(device_vars, "anta_use_ssl"), get(device_vars, "ansible_httpapi_use_ssl", default=True)) else "http"
 
     device_settings = {
         "name": device,
@@ -475,11 +490,8 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
         "password": password,
         "enable": enable_mode,
         "enable_password": enable_password,
-        "port": get(
-            device_vars,
-            "ansible_httpapi_port",
-            default=(80 if get(device_vars, "ansible_httpapi_use_ssl", default=True) is False else 443),
-        ),
+        "port": port,
+        "proto": proto,
         "timeout": get(PLUGIN_ARGS, "runner.timeout"),
         "tags": set(get(device_vars, "anta_tags", default=[])),
     }

@@ -134,8 +134,8 @@ ansible_httpapi_pass: <str>
 ansible_httpapi_password: <str>
 
 # Some tests require elevated privileges to run (enable mode).
-# Priority: `anta_enable_mode` → `ansible_become` → false
-anta_enable_mode: <bool>
+# Priority: `anta_enable` -> `ansible_become` -> false
+anta_enable: <bool>
 ansible_become: <bool; default=false>
 
 # The password for privileged (enable) mode. `anta_enable_password` takes precedence over `ansible_become_password`.
@@ -143,8 +143,15 @@ anta_enable_password: <str>
 ansible_become_password: <str>
 
 # eAPI port and SSL verification.
+# Priority: `anta_port` -> `ansible_httpapi_port` -> 80 or 443 depending on SSL
+# Priority: `anta_use_ssl` -> `ansible_httpapi_use_ssl` -> true
+anta_port: <int>
+anta_use_ssl: <bool>
 ansible_httpapi_port: <int; default=80 or 443 depending on ansible_httpapi_use_ssl>
 ansible_httpapi_use_ssl: <bool; default=true>
+
+# ANTA tags to assign to the device.
+anta_tags: <list[str]>
 ```
 
 ### Directory Configuration
