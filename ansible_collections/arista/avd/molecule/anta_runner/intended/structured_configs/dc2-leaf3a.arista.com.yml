@@ -108,6 +108,13 @@ ethernet_interfaces:
   peer_interface: Ethernet19
   switchport:
     enabled: false
+- name: Ethernet20
+  description: Test_peer_shutdown_interface_connectivity
+  ip_address: 10.19.20.0/31
+  peer: dc2-leaf3b.arista.com
+  peer_interface: Ethernet20
+  switchport:
+    enabled: false
 hostname: dc2-leaf3a.arista.com
 ip_igmp_snooping:
   globally_enabled: true

@@ -2593,6 +2593,8 @@ tap aggregation
 
 sFlow Sample Rate: 1000
 
+sFlow Sample Truncation Size: 256 bytes.
+
 sFlow Sample Input Subinterface is enabled.
 
 sFlow Sample Output Subinterface is enabled.
@@ -2645,6 +2647,7 @@ sFlow hardware accelerated Sample Rate: 1024
 ```eos
 !
 sflow sample dangerous 1000
+sflow sample truncate size 256
 sflow polling-interval 10
 sflow vrf AAA destination 10.6.75.62 123
 sflow vrf AAA destination 10.6.75.63 333

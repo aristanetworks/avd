@@ -60756,6 +60756,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "sample": {"type": int},
+            "sample_truncate_size": {"type": int},
             "sample_input_subinterface": {"type": bool},
             "sample_output_subinterface": {"type": bool},
             "dangerous": {"type": bool},
@@ -60770,6 +60771,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "hardware_acceleration": {"type": HardwareAcceleration},
         }
         sample: int | None
+        sample_truncate_size: int | None
+        """Maximum sample size, in bytes."""
         sample_input_subinterface: bool | None
         sample_output_subinterface: bool | None
         dangerous: bool | None
@@ -60801,6 +60804,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 sample: int | None | UndefinedType = Undefined,
+                sample_truncate_size: int | None | UndefinedType = Undefined,
                 sample_input_subinterface: bool | None | UndefinedType = Undefined,
                 sample_output_subinterface: bool | None | UndefinedType = Undefined,
                 dangerous: bool | None | UndefinedType = Undefined,
@@ -60822,6 +60826,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     sample: sample
+                    sample_truncate_size: Maximum sample size, in bytes.
                     sample_input_subinterface: sample_input_subinterface
                     sample_output_subinterface: sample_output_subinterface
                     dangerous: dangerous
