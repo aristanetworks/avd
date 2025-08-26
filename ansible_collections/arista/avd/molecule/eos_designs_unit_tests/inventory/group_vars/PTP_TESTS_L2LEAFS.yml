@@ -26,10 +26,6 @@ l2leaf:
         - Ethernet12
       ptp:
         enabled: true
-      uplink_switch_port_channel_structured_config:
-        ptp:
-          announce:
-            interval: 1
 
     - name: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
       id: 3
