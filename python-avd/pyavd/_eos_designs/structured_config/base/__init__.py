@@ -15,6 +15,7 @@ from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import Undefined, default, get_v2
 from pyavd.j2filters import natural_sort
 
+from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
 from .management_ssh import ManagementSshMixin
 from .monitor_sessions import MonitorSessionsMixin
@@ -26,6 +27,7 @@ from .utils import UtilsMixin
 
 
 class AvdStructuredConfigBaseProtocol(
+    AddressLockingMixin,
     DaemonTerminattrMixin,
     ManagementSshMixin,
     NtpMixin,
