@@ -193,6 +193,23 @@ keys:
       local_users:
         $ref: eos_cli_config_gen#/keys/local_users
         type: list
+  address_locking_settings:
+    type: dict
+    $ref: eos_cli_config_gen#/keys/address_locking
+    keys:
+      local_interface:
+        type: str
+        default: use_default_mgmt_method_interface
+        description: "The value will be interpreted according to these rules:\n  -
+          `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.\n
+          \ - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface`
+          as the local interface.\n  - `use_default_mgmt_method_interface` will configure
+          `mgmt_interface` or `inband_mgmt_interface` as the local interface depending
+          on the value of `default_mgmt_method`.\n  - Any other string will be used
+          directly as the local interface."
+      local_users:
+        $ref: eos_cli_config_gen#/keys/local_users
+        type: list
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
@@ -8426,6 +8443,12 @@ $defs:
                       type: str
                       description: VLAN name.
                       required: true
+                    address_locking:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family
+                      description: To configure `address_locking.ipv4/v6`, you must
+                        define either `address_locking_settings.dhcp_servers_ipv4`
+                        or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
                     profile:
                       type: str
                       description: 'SVI profile name to apply.
@@ -9416,6 +9439,9 @@ $defs:
                 min: 1
                 max: 4094
                 description: VLAN ID.
+              address_locking:
+                type: dict
+                $ref: eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family
               vni_override:
                 type: int
                 convert_types:
