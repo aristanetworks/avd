@@ -1617,7 +1617,7 @@ ethernet_interfaces:
       frequency_unit: ghz
       media:
         override: 100gbase-ar4
-      application_override_100gbase_srbd: true
+      application_override: 100gbase-srbd
 
   - name: Ethernet68.1
     description: Test_encapsulation_vlan1
@@ -1787,7 +1787,6 @@ ethernet_interfaces:
     transceiver:
       media:
         override: 100gbase-ar4
-      application_override_100gbase_srbd: true
       application_override: 5
 
   - name: Ethernet74

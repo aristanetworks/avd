@@ -4240,7 +4240,7 @@ interface Dps1
 | Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 |
 | Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 |
 | Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
-| Ethernet73 | - | 100gbase-ar4 | 100gbase-srbd |
+| Ethernet73 | - | 100gbase-ar4 | 5 |
 
 ##### Link Tracking Groups
 
@@ -5397,7 +5397,7 @@ interface Ethernet73
    description DC1-AGG01_Ethernet1
    channel-group 5 mode active
    transceiver media override 100gbase-ar4
-   transceiver application override 100gbase-srbd
+   transceiver application override 5
 !
 interface Ethernet74
    description MLAG_PEER_DC1-LEAF1B_Ethernet3

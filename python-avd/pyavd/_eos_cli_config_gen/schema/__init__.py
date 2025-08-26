@@ -9063,11 +9063,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"override": {"type": int}, "first_lane": {"type": int}, "last_lane": {"type": int}}
                 override: int
                 first_lane: int
-                """
-                Set the start value of host lanes for which overrides should be applied.
-                The ranges of `lanes`
-                should not overlap.
-                """
+                """Set the start value of host lanes for which overrides should be applied."""
                 last_lane: int | None
                 """
                 Set the last value of host lanes for which overrides should be applied.
@@ -9092,10 +9088,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             override: override
-                            first_lane:
-                               Set the start value of host lanes for which overrides should be applied.
-                               The ranges of `lanes`
-                               should not overlap.
+                            first_lane: Set the start value of host lanes for which overrides should be applied.
                             last_lane:
                                Set the last value of host lanes for which overrides should be applied.
                                The ranges of `lanes` should
@@ -9112,8 +9105,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "frequency": {"type": str},
                 "frequency_unit": {"type": str},
                 "media": {"type": Media},
-                "application_override_100gbase_srbd": {"type": bool},
-                "application_override": {"type": int},
+                "application_override": {"type": str},
                 "application_override_lanes": {"type": ApplicationOverrideLanes},
             }
             frequency: str | None
@@ -9122,20 +9114,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Unit of Transceiver Laser Frequency."""
             media: Media
             """Subclass of AvdModel."""
-            application_override_100gbase_srbd: bool | None
-            """
-            Set legacy mode for 100GBASE-SRBD interoperability.
-            This option is mutually exclusive with
-            `application_overrides` and `application_override_lanes`, and takes precedence over them.
-            """
-            application_override: int | None
+            application_override: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"] | None
             """Set CMIS transceiver application."""
             application_override_lanes: ApplicationOverrideLanes
             """
-            Set CMIS transceiver applications with lanes.
+            Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
 
-            Subclass of AvdList with
-            `ApplicationOverrideLanesItem` items.
+            Subclass of
+            AvdList with `ApplicationOverrideLanesItem` items.
             """
 
             if TYPE_CHECKING:
@@ -9146,8 +9132,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     frequency: str | None | UndefinedType = Undefined,
                     frequency_unit: Literal["ghz"] | None | UndefinedType = Undefined,
                     media: Media | UndefinedType = Undefined,
-                    application_override_100gbase_srbd: bool | None | UndefinedType = Undefined,
-                    application_override: int | None | UndefinedType = Undefined,
+                    application_override: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"]
+                    | None
+                    | UndefinedType = Undefined,
                     application_override_lanes: ApplicationOverrideLanes | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -9160,16 +9147,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         frequency: Transceiver Laser Frequency in GHz (min 190000, max 200000).
                         frequency_unit: Unit of Transceiver Laser Frequency.
                         media: Subclass of AvdModel.
-                        application_override_100gbase_srbd:
-                           Set legacy mode for 100GBASE-SRBD interoperability.
-                           This option is mutually exclusive with
-                           `application_overrides` and `application_override_lanes`, and takes precedence over them.
                         application_override: Set CMIS transceiver application.
                         application_override_lanes:
-                           Set CMIS transceiver applications with lanes.
+                           Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
 
-                           Subclass of AvdList with
-                           `ApplicationOverrideLanesItem` items.
+                           Subclass of
+                           AvdList with `ApplicationOverrideLanesItem` items.
 
                     """
 

@@ -1354,21 +1354,15 @@ keys:
                 override:
                   type: str
                   description: Transceiver type.
-            application_override_100gbase_srbd:
-              type: bool
-              description: |-
-                Set legacy mode for 100GBASE-SRBD interoperability.
-                This option is mutually exclusive with `application_overrides` and `application_override_lanes`, and takes precedence over them.
             application_override:
-              type: int
+              type: str
               description: Set CMIS transceiver application.
-              min: 0
-              max: 15
+              valid_values: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"]
               convert_types:
-                - str
+                - int
             application_override_lanes:
               type: list
-              description: Set CMIS transceiver applications with lanes.
+              description: Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
               items:
                 type: dict
                 keys:
@@ -1383,7 +1377,6 @@ keys:
                     type: int
                     description: |-
                       Set the start value of host lanes for which overrides should be applied.
-                      The ranges of `lanes` should not overlap.
                     required: true
                     min: 1
                     max: 8
