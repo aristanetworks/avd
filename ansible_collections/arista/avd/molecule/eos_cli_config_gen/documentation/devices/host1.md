@@ -9977,11 +9977,23 @@ router bgp 65101
 
 #### Router RIP Summary
 
-| VRF | Enabled | Default Metric | Networks |
-| --- | ------- | -------------- | -------- |
-| VRF1 | True | 10 | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
-| default | True | - | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
-| vrf2 | False | - | - |
+##### VRF: VRF1
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+| True | 10 | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
+
+##### VRF: default
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+| True | - | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
+
+##### VRF: vrf2
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+| False | - | - |
 
 #### Router RIP Device Configuration
 

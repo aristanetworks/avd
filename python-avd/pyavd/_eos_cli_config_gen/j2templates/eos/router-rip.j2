@@ -4,22 +4,24 @@
  that can be found in the LICENSE file.
 #}
 {# eos - router rip #}
-{% for rip in router_rip | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
+{% if router_rip.vrfs is arista.avd.defined %}
+{%     for rip_vrf in router_rip.vrfs | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
 !
-{%     if rip.vrf == "default" %}
+{%         if rip_vrf.vrf == "default" %}
 router rip
-{%     else %}
-router rip vrf {{ rip.vrf }}
-{%     endif %}
-{%     if rip.metric_default is arista.avd.defined %}
-   metric default {{ rip.metric_default }}
-{%     endif %}
-{%     for network in rip.networks | arista.avd.natural_sort %}
+{%         else %}
+router rip vrf {{ rip_vrf.vrf }}
+{%         endif %}
+{%         if rip_vrf.metric_default is arista.avd.defined %}
+   metric default {{ rip_vrf.metric_default }}
+{%         endif %}
+{%         for network in rip_vrf.networks | arista.avd.natural_sort %}
    network {{ network }}
-{%     endfor %}
-{%     if rip.enabled is arista.avd.defined(true) %}
+{%         endfor %}
+{%         if rip_vrf.enabled is arista.avd.defined(true) %}
    no shutdown
-{%     else %}
+{%         else %}
    shutdown
-{%     endif %}
-{% endfor %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

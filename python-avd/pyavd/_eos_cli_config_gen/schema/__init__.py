@@ -59467,52 +59467,73 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
-    class RouterRipItem(AvdModel):
+    class RouterRip(AvdModel):
         """Subclass of AvdModel."""
 
-        class Networks(AvdList[str]):
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Networks(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Networks._item_type = str
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str}, "metric_default": {"type": int}, "networks": {"type": Networks}}
+            enabled: bool | None
+            vrf: str
+            metric_default: int | None
+            """Set default metric for the routes."""
+            networks: Networks
             """Subclass of AvdList with `str` items."""
 
-        Networks._item_type = str
+            if TYPE_CHECKING:
 
-        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str}, "metric_default": {"type": int}, "networks": {"type": Networks}}
-        enabled: bool | None
-        vrf: str
-        metric_default: int | None
-        """Set default metric for the routes."""
-        networks: Networks
-        """Subclass of AvdList with `str` items."""
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    vrf: str | UndefinedType = Undefined,
+                    metric_default: int | None | UndefinedType = Undefined,
+                    networks: Networks | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        vrf: vrf
+                        metric_default: Set default metric for the routes.
+                        networks: Subclass of AvdList with `str` items.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `vrf` (`str`)."""
+
+            _primary_key: ClassVar[str] = "vrf"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}}
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `vrf` (`str`)."""
 
         if TYPE_CHECKING:
 
-            def __init__(
-                self,
-                *,
-                enabled: bool | None | UndefinedType = Undefined,
-                vrf: str | UndefinedType = Undefined,
-                metric_default: int | None | UndefinedType = Undefined,
-                networks: Networks | UndefinedType = Undefined,
-            ) -> None:
+            def __init__(self, *, vrfs: Vrfs | UndefinedType = Undefined) -> None:
                 """
-                RouterRipItem.
+                RouterRip.
 
 
                 Subclass of AvdModel.
 
                 Args:
-                    enabled: enabled
-                    vrf: vrf
-                    metric_default: Set default metric for the routes.
-                    networks: Subclass of AvdList with `str` items.
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `vrf` (`str`).
 
                 """
-
-    class RouterRip(AvdIndexedList[str, RouterRipItem]):
-        """Subclass of AvdIndexedList with `RouterRipItem` items. Primary key is `vrf` (`str`)."""
-
-        _primary_key: ClassVar[str] = "vrf"
-
-    RouterRip._item_type = RouterRipItem
 
     class RouterSegmentSecurity(AvdModel):
         """Subclass of AvdModel."""
@@ -68621,8 +68642,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     Routing Information Protocol settings.
 
-    Subclass of AvdIndexedList with `RouterRipItem` items.
-    Primary key is `vrf` (`str`).
+    Subclass of AvdModel.
     """
     router_segment_security: RouterSegmentSecurity
     """Subclass of AvdModel."""
@@ -69227,8 +69247,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 router_rip:
                    Routing Information Protocol settings.
 
-                   Subclass of AvdIndexedList with `RouterRipItem` items.
-                   Primary key is `vrf` (`str`).
+                   Subclass of AvdModel.
                 router_segment_security: Subclass of AvdModel.
                 router_service_insertion:
                    Configure network services inserted to data forwarding.

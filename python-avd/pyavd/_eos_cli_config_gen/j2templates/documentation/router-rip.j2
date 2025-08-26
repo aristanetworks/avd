@@ -9,12 +9,14 @@
 ### Router RIP
 
 #### Router RIP Summary
+{%     for rip_vrf in router_rip.vrfs | arista.avd.natural_sort(sort_key='vrf', ignore_case=False) %}
 
-| VRF | Enabled | Default Metric | Networks |
-| --- | ------- | -------------- | -------- |
-{%     for rip in router_rip | arista.avd.natural_sort(sort_key='vrf', ignore_case=False) %}
-{%         set networks = rip.networks | arista.avd.default(["-"]) | join(", ") %}
-| {{ rip.vrf }} | {{ rip.enabled | arista.avd.default("-") }} | {{ rip.metric_default | arista.avd.default("-") }} | {{ networks }} |
+##### VRF: {{ rip_vrf.vrf }}
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+{%         set networks = rip_vrf.networks | arista.avd.default(["-"]) | join(", ") %}
+| {{ rip_vrf.enabled | arista.avd.default("-") }} | {{ rip_vrf.metric_default | arista.avd.default("-") }} | {{ networks }} |
 {%     endfor %}
 
 #### Router RIP Device Configuration
