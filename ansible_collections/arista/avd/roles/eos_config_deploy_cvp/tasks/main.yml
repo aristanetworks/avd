@@ -2,6 +2,15 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
+- name: Deprecation warning!
+  delegate_to: localhost
+  ansible.builtin.debug:
+    msg:
+      - "!!! Deprecation Warning - The role 'arista.avd.eos_config_deploy_cvp' has been deprecated and will be removed in AVD version 6.0.0."
+      - "!!! Deprecation Warning - Update your playbook to leverage the new 'arista.avd.cv_deploy' role instead."
+      - "!!! Deprecation Warning - See 'https://avd.arista.com' for details on 'arista.avd.cv_deploy'."
+  run_once: true
+
 - name: Create required output directories if not present
   when: avd_create_directories | arista.avd.default(true)
   ansible.builtin.file:

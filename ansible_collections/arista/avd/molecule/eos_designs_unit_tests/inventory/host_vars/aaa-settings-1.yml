@@ -7,6 +7,9 @@ l2leaf:
       mgmt_ip: 192.168.0.2/24
 
 aaa_settings:
+  # adding test for enable_password.password
+  enable_password:
+    password: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.
   tacacs:
     servers:
       - host: 10.10.10.11
