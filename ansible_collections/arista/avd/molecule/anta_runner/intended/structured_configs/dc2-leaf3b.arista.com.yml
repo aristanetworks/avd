@@ -53,6 +53,7 @@ ethernet_interfaces:
   peer_type: firewall
 - name: Ethernet16
   description: Test_dhcp_interface_connectivity
+  shutdown: true
   ip_address: dhcp
   peer: dc2-leaf3a.arista.com
   peer_interface: Ethernet16
@@ -77,6 +78,14 @@ ethernet_interfaces:
   ip_address: unnumbered Loopback0
   peer: dc2-leaf3a.arista.com
   peer_interface: Ethernet19
+  switchport:
+    enabled: false
+- name: Ethernet20
+  description: Test_peer_shutdown_interface_connectivity
+  shutdown: true
+  ip_address: 10.19.20.1/31
+  peer: dc2-leaf3a.arista.com
+  peer_interface: Ethernet20
   switchport:
     enabled: false
 hostname: dc2-leaf3b.arista.com

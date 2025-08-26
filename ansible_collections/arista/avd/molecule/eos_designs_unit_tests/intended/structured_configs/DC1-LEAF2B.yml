@@ -347,6 +347,29 @@ metadata:
   platform: 7280R
   rack: rackD
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+monitor_sessions:
+- name: MonitoringSessionServer18
+  sources:
+  - name: Port-Channel26
+    direction: tx
+    access_group:
+      type: ip
+      name: myIpAVL
+      priority: 5
+  - name: Ethernet24
+    direction: rx
+    access_group:
+      type: ip
+      name: myIpAL
+      priority: 10
+- name: MonitoringSessionServer19
+  sources:
+  - name: Port-Channel20
+    direction: tx
+    access_group:
+      type: ip
+      name: myIpAVL
+      priority: 5
 ntp:
   local_interface:
     name: Management99

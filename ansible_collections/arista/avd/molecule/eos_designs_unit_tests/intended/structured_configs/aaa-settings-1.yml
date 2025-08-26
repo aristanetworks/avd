@@ -181,7 +181,8 @@ aaa_server_groups:
     vrf: MGMT
 config_end: true
 enable_password:
-  disabled: true
+  hash_algorithm: sha512
+  key: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.
 hostname: aaa-settings-1
 ip_igmp_snooping:
   globally_enabled: true
