@@ -165,8 +165,8 @@ keys:
                       type: list
                       primary_key: overlay_group
                       description: |-
-                        List of 1:1 mappings where each configured overlay is mapped
-                        directly to the specified underlay group 'encap'.
+                        List of 1:1 mappings where each configured overlay multicast group is mapped
+                        directly to the specified underlay multicast group.
                       items:
                         type: dict
                         keys:
