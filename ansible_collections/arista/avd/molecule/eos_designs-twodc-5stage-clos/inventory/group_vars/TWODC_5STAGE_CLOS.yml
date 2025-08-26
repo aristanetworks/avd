@@ -108,7 +108,7 @@ platform_settings:
       act_node_type: veos
   - platforms: [CloudEOS]
     digital_twin:
-      act_node_type: cloudeos
+      act_node_type: third-party
 
 custom_platform_settings:
   - platforms:
@@ -117,13 +117,6 @@ custom_platform_settings:
       platform: CloudEOS
     feature_support:
       poe: true
-  - platforms:
-      - TOOLS-SERVER
-    reload_delay:
-      mlag: 300
-      non_mlag: 330
-    digital_twin:
-      act_node_type: tools-server
 
 custom_structured_configuration_list_merge: 'append'
 
@@ -233,3 +226,12 @@ eos_designs_documentation:
   connected_endpoints: true
   topology_csv: true
   p2p_links_csv: true
+
+digital_twin:
+  auxiliary_systems:
+    - node_name: tools-server-1
+      node_type: act-tools-server
+      act_mgmt_ip: 192.168.0.150/24
+    - node_name: tools-server-2
+      node_type: act-tools-server
+      act_mgmt_ip: 192.168.0.151/24

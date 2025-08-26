@@ -201,8 +201,8 @@ l2leaf:
             mgmt_ip: 192.168.1.11/24
           uplink_switch_interfaces: ["Ethernet3", "Ethernet3"]
         - name: DC1-POD1-L2LEAF2B
+          platform: vEOS-LAB
           # id: 3 Using pool manager for ID
-          platform: TOOLS-SERVER
           mgmt_ip: 192.168.1.12/24
           uplink_switch_interfaces: ["Ethernet4", "Ethernet4"]
           raw_eos_cli: |

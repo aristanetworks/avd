@@ -1,18 +1,18 @@
 nodes:
 - DC1-POD1-L2LEAF1A:
-    node_type: cloudeos
+    node_type: third-party
     ip_addr: 192.168.1.10/24
-    version: 4.33.2F
-    internet_access: true
+    version: byod
 - DC1-POD1-L2LEAF2A:
     node_type: veos
     ip_addr: 192.168.1.11/24
     version: 4.33.1.1F
     internet_access: true
 - DC1-POD1-L2LEAF2B:
-    node_type: tools-server
+    node_type: veos
     ip_addr: 192.168.1.12/24
-    version: ubuntu-2204-lts
+    version: 4.33.1.1F
+    internet_access: true
 - DC1-POD1-LEAF1A:
     node_type: veos
     ip_addr: 192.168.1.7/24
@@ -106,12 +106,20 @@ nodes:
     node_type: veos
     ip_addr: 192.168.1.17/24
     version: 4.33.1.1F
-cloudeos:
-  username: cvpadmin
-  password: cvp123!
+- tools-server-1:
+    node_type: tools-server
+    ip_addr: 192.168.0.150/24
+    version: ubuntu-2204-lts
+- tools-server-2:
+    node_type: tools-server
+    ip_addr: 192.168.0.151/24
+    version: ubuntu-2204-lts
+third-party:
+  username: ansible
+  password: ansible
 tools-server:
-  username: cvpadmin
-  password: cvp123!
+  username: ansible
+  password: ansible
 veos:
   username: cvpadmin
   password: cvp123!

@@ -8,6 +8,7 @@ from unittest.mock import patch
 import pytest
 
 from pyavd import get_fabric_documentation
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd._utils import get
 from pyavd.api.fabric_documentation import ACTDigitalTwin, FabricDocumentation
 from tests.models import MoleculeScenario
@@ -46,6 +47,7 @@ def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
         topology_csv = get(first_hostvars, "eos_designs_documentation.topology_csv", default=False)
         p2p_links_csv = get(first_hostvars, "eos_designs_documentation.p2p_links_csv", default=False)
         toc = get(first_hostvars, "eos_designs_documentation.toc", default=True)
+        inputs = EosDesigns._from_dict(first_hostvars) if molecule_scenario.digital_twin else None
 
         fabric_documentation_obj = get_fabric_documentation(
             avd_facts=molecule_avd_facts,
@@ -57,6 +59,7 @@ def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
             p2p_links_csv=p2p_links_csv,
             toc=toc,
             digital_twin=molecule_scenario.digital_twin,
+            inputs=inputs,
         )
 
     assert isinstance(fabric_documentation_obj, FabricDocumentation)

@@ -21,33 +21,135 @@ keys:
         valid_values:
           - act
         default: act
-      fabric:
-        type: dict
+      act_cloudeos_username:
+        type: str
         description: |-
-          Settings for Digital Twin fabric devices.
-        required: true
-        keys:
-          act_os_version:
-            type: str
-            description: |-
-              OS version for ACT Digital Twin fabric devices.
-          act_username:
-            type: str
-            description: |-
-              Username for ACT Digital Twin fabric devices.
-            default: cvpadmin
-          act_password:
-            type: str
-            description: |-
-              Cleartext password for ACT Digital Twin fabric devices.
-            default: cvp123!
-          act_internet_access:
-            type: bool
-            default: false
-            description: |-
-              Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
-              This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
-              ACT does not provide direct Internet access to cloudeos or veos devices by default.
+          Username for ACT Digital Twin 'cloudeos' nodes.
+        default: cvpadmin
+      act_cloudeos_password:
+        type: str
+        description: |-
+          Password for ACT Digital Twin 'cloudeos' nodes.
+        default: cvp123!
+      act_cloudeos_os_version:
+        type: str
+        description: |-
+          OS version for ACT Digital Twin 'cloudeos' nodes.
+        default: "4.33.2F"
+      act_cvp_username:
+        type: str
+        description: |-
+          Username for ACT Digital Twin 'cvp' nodes.
+        default: root
+      act_cvp_password:
+        type: str
+        description: |-
+          Password for ACT Digital Twin 'cvp' nodes.
+        default: cvproot
+      act_cvp_os_version:
+        type: str
+        description: |-
+          OS version for ACT Digital Twin 'cvp' nodes.
+        default: "2024.3.2"
+      act_generic_username:
+        type: str
+        description: |-
+          Username for ACT Digital Twin 'generic' nodes.
+        default: ansible
+      act_generic_password:
+        type: str
+        description: |-
+          Password for ACT Digital Twin 'generic' nodes.
+        default: ansible
+      act_generic_os_version:
+        type: str
+        description: |-
+          OS version for ACT Digital Twin 'generic' nodes.
+        default: "ubuntu-2204-lts"
+      act_third_party_username:
+        type: str
+        description: |-
+          Username for ACT Digital Twin 'third-party' nodes.
+        default: ansible
+      act_third_party_password:
+        type: str
+        description: |-
+          Password for ACT Digital Twin 'third-party' nodes.
+        default: ansible
+      act_third_party_os_version:
+        type: str
+        description: |-
+          OS version for ACT Digital Twin 'third-party' nodes.
+        default: "byod"
+      act_tools_server_username:
+        type: str
+        description: |-
+          Username for ACT Digital Twin 'tools-server' nodes.
+        default: ansible
+      act_tools_server_password:
+        type: str
+        description: |-
+          Password for ACT Digital Twin 'tools-server' nodes.
+        default: ansible
+      act_tools_server_os_version:
+        type: str
+        description: |-
+          OS version for ACT Digital Twin 'tools-server' nodes.
+        default: "ubuntu-2204-lts"
+      act_veos_username:
+        type: str
+        description: |-
+          Username for ACT Digital Twin 'veos' nodes.
+        default: cvpadmin
+      act_veos_password:
+        type: str
+        description: |-
+          Password for ACT Digital Twin 'veos' nodes.
+        default: cvp123!
+      act_veos_os_version:
+        type: str
+        description: |-
+          OS version for ACT Digital Twin 'veos' nodes.
+        default: "4.33.1.1F"
+      auxiliary_systems:
+        type: list
+        description: |-
+          Auxiliary systems (e.g., CloudVision portal, general Linux servers) deployed as part of the Digital Twin infrastructure alongside the fabric devices.
+          Specific auxiliary system will be rendered only if their 'node_type' is matching the targeted Digital Twin environment.
+        items:
+          type: dict
+          keys:
+            node_name:
+              type: str
+              description: |-
+                Name of the auxiliary system.
+              required: true
+            node_type:
+              type: str
+              description: |-
+                Node type of the auxiliary system.
+                Naming convention: '<digital_twin_environment>-<node_type>'.
+              required: true
+              valid_values:
+                - act-tools-server
+            act_os_version:
+              type: str
+              description: |-
+                OS version of the auxiliary system.
+                Overrides parent `digital_twin.act_<node_type>_os_version` value.
+            act_mgmt_ip:
+              type: str
+              description: |-
+                Management interface IPv4 address of the auxiliary system.
+                Required for ACT auxiliary system.
+              format: cidr
+      act_internet_access:
+        type: bool
+        default: false
+        description: |-
+          Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+          This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+          ACT does not provide direct Internet access to cloudeos or veos devices by default.
       # TODO: Add this in a separate PR.
       # endpoints:
       #   type: dict

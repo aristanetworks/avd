@@ -4226,38 +4226,27 @@ class EosDesigns(EosDesignsRootModel):
     class DigitalTwin(AvdModel):
         """Subclass of AvdModel."""
 
-        class Fabric(AvdModel):
+        class AuxiliarySystemsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "act_os_version": {"type": str},
-                "act_username": {"type": str, "default": "cvpadmin"},
-                "act_password": {"type": str, "default": "cvp123!"},
-                "act_internet_access": {"type": bool, "default": False},
-            }
+            _fields: ClassVar[dict] = {"node_name": {"type": str}, "node_type": {"type": str}, "act_os_version": {"type": str}, "act_mgmt_ip": {"type": str}}
+            node_name: str
+            """Name of the auxiliary system."""
+            node_type: Literal["act-tools-server"]
+            """
+            Node type of the auxiliary system.
+            Naming convention: '<digital_twin_environment>-<node_type>'.
+            """
             act_os_version: str | None
-            """OS version for ACT Digital Twin fabric devices."""
-            act_username: str
             """
-            Username for ACT Digital Twin fabric devices.
-
-            Default value: `"cvpadmin"`
+            OS version of the auxiliary system.
+            Overrides parent `digital_twin.act_<node_type>_os_version`
+            value.
             """
-            act_password: str
+            act_mgmt_ip: str | None
             """
-            Cleartext password for ACT Digital Twin fabric devices.
-
-            Default value: `"cvp123!"`
-            """
-            act_internet_access: bool
-            """
-            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
-            This option
-            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
-            types.
-            ACT does not provide direct Internet access to cloudeos or veos devices by default.
-
-            Default value: `False`
+            Management interface IPv4 address of the auxiliary system.
+            Required for ACT auxiliary system.
             """
 
             if TYPE_CHECKING:
@@ -4265,47 +4254,222 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    node_name: str | UndefinedType = Undefined,
+                    node_type: Literal["act-tools-server"] | UndefinedType = Undefined,
                     act_os_version: str | None | UndefinedType = Undefined,
-                    act_username: str | UndefinedType = Undefined,
-                    act_password: str | UndefinedType = Undefined,
-                    act_internet_access: bool | UndefinedType = Undefined,
+                    act_mgmt_ip: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
-                    Fabric.
+                    AuxiliarySystemsItem.
 
 
                     Subclass of AvdModel.
 
                     Args:
-                        act_os_version: OS version for ACT Digital Twin fabric devices.
-                        act_username: Username for ACT Digital Twin fabric devices.
-                        act_password: Cleartext password for ACT Digital Twin fabric devices.
-                        act_internet_access:
-                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
-                           This option
-                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
-                           types.
-                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        node_name: Name of the auxiliary system.
+                        node_type:
+                           Node type of the auxiliary system.
+                           Naming convention: '<digital_twin_environment>-<node_type>'.
+                        act_os_version:
+                           OS version of the auxiliary system.
+                           Overrides parent `digital_twin.act_<node_type>_os_version`
+                           value.
+                        act_mgmt_ip:
+                           Management interface IPv4 address of the auxiliary system.
+                           Required for ACT auxiliary system.
 
                     """
 
-        _fields: ClassVar[dict] = {"environment": {"type": str, "default": "act"}, "fabric": {"type": Fabric}}
+        class AuxiliarySystems(AvdList[AuxiliarySystemsItem]):
+            """Subclass of AvdList with `AuxiliarySystemsItem` items."""
+
+        AuxiliarySystems._item_type = AuxiliarySystemsItem
+
+        _fields: ClassVar[dict] = {
+            "environment": {"type": str, "default": "act"},
+            "act_cloudeos_username": {"type": str, "default": "cvpadmin"},
+            "act_cloudeos_password": {"type": str, "default": "cvp123!"},
+            "act_cloudeos_os_version": {"type": str, "default": "4.33.2F"},
+            "act_cvp_username": {"type": str, "default": "root"},
+            "act_cvp_password": {"type": str, "default": "cvproot"},
+            "act_cvp_os_version": {"type": str, "default": "2024.3.2"},
+            "act_generic_username": {"type": str, "default": "ansible"},
+            "act_generic_password": {"type": str, "default": "ansible"},
+            "act_generic_os_version": {"type": str, "default": "ubuntu-2204-lts"},
+            "act_third_party_username": {"type": str, "default": "ansible"},
+            "act_third_party_password": {"type": str, "default": "ansible"},
+            "act_third_party_os_version": {"type": str, "default": "byod"},
+            "act_tools_server_username": {"type": str, "default": "ansible"},
+            "act_tools_server_password": {"type": str, "default": "ansible"},
+            "act_tools_server_os_version": {"type": str, "default": "ubuntu-2204-lts"},
+            "act_veos_username": {"type": str, "default": "cvpadmin"},
+            "act_veos_password": {"type": str, "default": "cvp123!"},
+            "act_veos_os_version": {"type": str, "default": "4.33.1.1F"},
+            "auxiliary_systems": {"type": AuxiliarySystems},
+            "act_internet_access": {"type": bool, "default": False},
+        }
         environment: Literal["act"]
         """
         Targeted Digital Twin environment.
 
         Default value: `"act"`
         """
-        fabric: Fabric
+        act_cloudeos_username: str
         """
-        Settings for Digital Twin fabric devices.
+        Username for ACT Digital Twin 'cloudeos' nodes.
 
-        Subclass of AvdModel.
+        Default value: `"cvpadmin"`
+        """
+        act_cloudeos_password: str
+        """
+        Password for ACT Digital Twin 'cloudeos' nodes.
+
+        Default value: `"cvp123!"`
+        """
+        act_cloudeos_os_version: str
+        """
+        OS version for ACT Digital Twin 'cloudeos' nodes.
+
+        Default value: `"4.33.2F"`
+        """
+        act_cvp_username: str
+        """
+        Username for ACT Digital Twin 'cvp' nodes.
+
+        Default value: `"root"`
+        """
+        act_cvp_password: str
+        """
+        Password for ACT Digital Twin 'cvp' nodes.
+
+        Default value: `"cvproot"`
+        """
+        act_cvp_os_version: str
+        """
+        OS version for ACT Digital Twin 'cvp' nodes.
+
+        Default value: `"2024.3.2"`
+        """
+        act_generic_username: str
+        """
+        Username for ACT Digital Twin 'generic' nodes.
+
+        Default value: `"ansible"`
+        """
+        act_generic_password: str
+        """
+        Password for ACT Digital Twin 'generic' nodes.
+
+        Default value: `"ansible"`
+        """
+        act_generic_os_version: str
+        """
+        OS version for ACT Digital Twin 'generic' nodes.
+
+        Default value: `"ubuntu-2204-lts"`
+        """
+        act_third_party_username: str
+        """
+        Username for ACT Digital Twin 'third-party' nodes.
+
+        Default value: `"ansible"`
+        """
+        act_third_party_password: str
+        """
+        Password for ACT Digital Twin 'third-party' nodes.
+
+        Default value: `"ansible"`
+        """
+        act_third_party_os_version: str
+        """
+        OS version for ACT Digital Twin 'third-party' nodes.
+
+        Default value: `"byod"`
+        """
+        act_tools_server_username: str
+        """
+        Username for ACT Digital Twin 'tools-server' nodes.
+
+        Default value: `"ansible"`
+        """
+        act_tools_server_password: str
+        """
+        Password for ACT Digital Twin 'tools-server' nodes.
+
+        Default value: `"ansible"`
+        """
+        act_tools_server_os_version: str
+        """
+        OS version for ACT Digital Twin 'tools-server' nodes.
+
+        Default value: `"ubuntu-2204-lts"`
+        """
+        act_veos_username: str
+        """
+        Username for ACT Digital Twin 'veos' nodes.
+
+        Default value: `"cvpadmin"`
+        """
+        act_veos_password: str
+        """
+        Password for ACT Digital Twin 'veos' nodes.
+
+        Default value: `"cvp123!"`
+        """
+        act_veos_os_version: str
+        """
+        OS version for ACT Digital Twin 'veos' nodes.
+
+        Default value: `"4.33.1.1F"`
+        """
+        auxiliary_systems: AuxiliarySystems
+        """
+        Auxiliary systems (e.g., CloudVision portal, general Linux servers) deployed as part of the Digital
+        Twin infrastructure alongside the fabric devices.
+        Specific auxiliary system will be rendered only if
+        their 'node_type' is matching the targeted Digital Twin environment.
+
+        Subclass of AvdList with
+        `AuxiliarySystemsItem` items.
+        """
+        act_internet_access: bool
+        """
+        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+        This option
+        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+        types.
+        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+
+        Default value: `False`
         """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, environment: Literal["act"] | UndefinedType = Undefined, fabric: Fabric | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                environment: Literal["act"] | UndefinedType = Undefined,
+                act_cloudeos_username: str | UndefinedType = Undefined,
+                act_cloudeos_password: str | UndefinedType = Undefined,
+                act_cloudeos_os_version: str | UndefinedType = Undefined,
+                act_cvp_username: str | UndefinedType = Undefined,
+                act_cvp_password: str | UndefinedType = Undefined,
+                act_cvp_os_version: str | UndefinedType = Undefined,
+                act_generic_username: str | UndefinedType = Undefined,
+                act_generic_password: str | UndefinedType = Undefined,
+                act_generic_os_version: str | UndefinedType = Undefined,
+                act_third_party_username: str | UndefinedType = Undefined,
+                act_third_party_password: str | UndefinedType = Undefined,
+                act_third_party_os_version: str | UndefinedType = Undefined,
+                act_tools_server_username: str | UndefinedType = Undefined,
+                act_tools_server_password: str | UndefinedType = Undefined,
+                act_tools_server_os_version: str | UndefinedType = Undefined,
+                act_veos_username: str | UndefinedType = Undefined,
+                act_veos_password: str | UndefinedType = Undefined,
+                act_veos_os_version: str | UndefinedType = Undefined,
+                auxiliary_systems: AuxiliarySystems | UndefinedType = Undefined,
+                act_internet_access: bool | UndefinedType = Undefined,
+            ) -> None:
                 """
                 DigitalTwin.
 
@@ -4314,10 +4478,38 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     environment: Targeted Digital Twin environment.
-                    fabric:
-                       Settings for Digital Twin fabric devices.
+                    act_cloudeos_username: Username for ACT Digital Twin 'cloudeos' nodes.
+                    act_cloudeos_password: Password for ACT Digital Twin 'cloudeos' nodes.
+                    act_cloudeos_os_version: OS version for ACT Digital Twin 'cloudeos' nodes.
+                    act_cvp_username: Username for ACT Digital Twin 'cvp' nodes.
+                    act_cvp_password: Password for ACT Digital Twin 'cvp' nodes.
+                    act_cvp_os_version: OS version for ACT Digital Twin 'cvp' nodes.
+                    act_generic_username: Username for ACT Digital Twin 'generic' nodes.
+                    act_generic_password: Password for ACT Digital Twin 'generic' nodes.
+                    act_generic_os_version: OS version for ACT Digital Twin 'generic' nodes.
+                    act_third_party_username: Username for ACT Digital Twin 'third-party' nodes.
+                    act_third_party_password: Password for ACT Digital Twin 'third-party' nodes.
+                    act_third_party_os_version: OS version for ACT Digital Twin 'third-party' nodes.
+                    act_tools_server_username: Username for ACT Digital Twin 'tools-server' nodes.
+                    act_tools_server_password: Password for ACT Digital Twin 'tools-server' nodes.
+                    act_tools_server_os_version: OS version for ACT Digital Twin 'tools-server' nodes.
+                    act_veos_username: Username for ACT Digital Twin 'veos' nodes.
+                    act_veos_password: Password for ACT Digital Twin 'veos' nodes.
+                    act_veos_os_version: OS version for ACT Digital Twin 'veos' nodes.
+                    auxiliary_systems:
+                       Auxiliary systems (e.g., CloudVision portal, general Linux servers) deployed as part of the Digital
+                       Twin infrastructure alongside the fabric devices.
+                       Specific auxiliary system will be rendered only if
+                       their 'node_type' is matching the targeted Digital Twin environment.
 
-                       Subclass of AvdModel.
+                       Subclass of AvdList with
+                       `AuxiliarySystemsItem` items.
+                    act_internet_access:
+                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                       This option
+                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                       types.
+                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
 
                 """
 
@@ -12799,7 +12991,7 @@ class EosDesigns(EosDesignsRootModel):
             The
             `platform_settings` for the regular `platform` is used if this is not set.
             """
-            act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None
+            act_node_type: Literal["cloudeos", "third-party", "veos"] | None
             """ACT node type."""
 
             if TYPE_CHECKING:
@@ -12808,7 +13000,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     platform: str | None | UndefinedType = Undefined,
-                    act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None | UndefinedType = Undefined,
+                    act_node_type: Literal["cloudeos", "third-party", "veos"] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -13532,7 +13724,7 @@ class EosDesigns(EosDesignsRootModel):
             The
             `platform_settings` for the regular `platform` is used if this is not set.
             """
-            act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None
+            act_node_type: Literal["cloudeos", "third-party", "veos"] | None
             """ACT node type."""
 
             if TYPE_CHECKING:
@@ -13541,7 +13733,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     platform: str | None | UndefinedType = Undefined,
-                    act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None | UndefinedType = Undefined,
+                    act_node_type: Literal["cloudeos", "third-party", "veos"] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.

@@ -337,10 +337,7 @@ keys:
                 ACT node type.
               valid_values:
                 - cloudeos
-                - cvp
-                - generic
                 - third-party
-                - tools-server
                 - veos
         structured_config:
           type: dict
