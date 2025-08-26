@@ -77,6 +77,9 @@ ethernet_interfaces:
 - name: Ethernet51
   description: L2_UPLINK_P2P_VRFS_TESTS_L2LEAF1_Ethernet1
   shutdown: false
+  pim:
+    ipv4:
+      sparse_mode: true
   channel_group:
     id: 51
     mode: active
@@ -86,6 +89,9 @@ ethernet_interfaces:
 - name: Ethernet52
   description: L2_UPLINK_P2P_VRFS_TESTS_L2LEAF1_Ethernet2
   shutdown: false
+  pim:
+    ipv4:
+      sparse_mode: true
   channel_group:
     id: 51
     mode: active

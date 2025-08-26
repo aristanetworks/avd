@@ -110,8 +110,7 @@ class PortChannelInterfacesMixin(Protocol):
                 self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_name)._deepmerge(
                     EosCliConfigGen.PortChannelInterfacesItem._from_dict(structured_config), list_merge=self.custom_structured_configs.list_merge_strategy
                 )
-
-            if link.port_channel_structured_config:
+            elif link.port_channel_structured_config:
                 self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_name)._deepmerge(
                     link.port_channel_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                 )

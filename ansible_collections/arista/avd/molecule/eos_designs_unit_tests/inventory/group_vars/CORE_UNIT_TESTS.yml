@@ -252,8 +252,10 @@ core_interfaces:
             channel_id: 12346
           - node: core-2-ospf-ldp
             interfaces: [ Ethernet20, Ethernet21 ]
+      # Structured config applied to generated port-channel.
       port_channel_structured_config:
         shutdown: true
+      # Structured config applied to member interfaces of the port-channel.
       ethernet_structured_config:
         speed: forced 100full
 

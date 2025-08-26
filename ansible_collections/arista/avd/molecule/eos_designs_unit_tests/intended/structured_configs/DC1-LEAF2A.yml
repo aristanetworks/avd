@@ -73,7 +73,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: l2leaf
 - name: Ethernet30
-  description: DC1.L2LEAF6A_Ethernet1
+  description: description through uplink_switch_ethernet_structured_config
   shutdown: false
   channel_group:
     id: 30
