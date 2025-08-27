@@ -16,7 +16,6 @@ ethernet_interfaces:
 hostname: digital-twin-default-interfaces-original-platform
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -29,6 +28,7 @@ management_interfaces:
   ip_address: 10.10.10.101/24
   type: oob
 metadata:
+  is_deployed: true
   platform: CUSTOM_PLATFORM
   fabric_name: DIGITAL_TWIN
 port_channel_interfaces:
