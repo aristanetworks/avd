@@ -130,14 +130,14 @@ anta_user: <str>
 ansible_user: <str>
 
 # The password to use for the connection.
-# Precedence: `anta_password` -> `ansible_password` -> `ansible_httpapi_pass` -> `ansible_httpapi_password`
+# Precedence: `anta_password` -> `ansible_password` -> `ansible_httpapi_pass` -> `ansible_httpapi_password`.
 anta_password: <str>
 ansible_password: <str>
 ansible_httpapi_pass: <str>
 ansible_httpapi_password: <str>
 
 # Some tests require elevated privileges to run (enable mode).
-# Precedence: `anta_enable` -> `ansible_become` -> false
+# Precedence: `anta_enable` -> `ansible_become` -> false.
 anta_enable: <bool>
 ansible_become: <bool; default=false>
 
@@ -147,12 +147,12 @@ anta_enable_password: <str>
 ansible_become_password: <str>
 
 # eAPI SSL verification.
-# Precedence: `anta_use_ssl` -> `ansible_httpapi_use_ssl` -> true
+# Precedence: `anta_use_ssl` -> `ansible_httpapi_use_ssl` -> true.
 anta_use_ssl: <bool>
 ansible_httpapi_use_ssl: <bool; default=true>
 
 # eAPI port.
-# Precedence: `anta_port` -> `ansible_httpapi_port` -> 80 or 443 depending on SSL
+# Precedence: `anta_port` -> `ansible_httpapi_port` -> 80 or 443 depending on SSL.
 anta_port: <int>
 ansible_httpapi_port: <int; default=80 or 443 depending on anta_use_ssl or ansible_httpapi_use_ssl>
 ```
