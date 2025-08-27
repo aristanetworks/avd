@@ -81,7 +81,6 @@ hostname: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -96,6 +95,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   platform: customplatform
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 prefix_lists:
