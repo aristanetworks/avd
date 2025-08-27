@@ -58,7 +58,10 @@ class Pool(Generic[T_ValueType]):
             existing_ids = {assignment.value for assignment in assignments.values()}
             # Create a filterfalse generator from a range starting from the min_value, excluding the values that are already assigned.
             # Nothing will be iterated at this point, but the next(iter()) below will ask the generator for the first item.
-            available_ids = filterfalse(existing_ids.__contains__, range(collection.min_value, collection.min_value + len(existing_ids) + 2))
+            available_ids = filterfalse(
+                existing_ids.__contains__,
+                range(collection.min_value, collection.min_value + len(existing_ids) + 2),
+            )
             next_available = next(iter(available_ids))
             if collection.max_value is not None and next_available > collection.max_value:
                 msg = (
@@ -123,7 +126,12 @@ class Pool(Generic[T_ValueType]):
         }
 
     @classmethod
-    def load(cls, pool_key: Any, pool_assignments: Any, collection: PoolCollection[T_ValueType]) -> Pool[T_ValueType]:
+    def load(
+        cls,
+        pool_key: Any,
+        pool_assignments: Any,
+        collection: PoolCollection[T_ValueType],
+    ) -> Pool[T_ValueType]:
         """Returns pool from file data."""
         if not isinstance(pool_key, str):
             msg = f"Invalid type for pool key '{type(pool_key)}'. Expected a str."
@@ -145,6 +153,56 @@ class Pool(Generic[T_ValueType]):
 
             assignment = collection.assignment_cls(assignment_key, value=assignment_value)
             assignments[assignment.key] = assignment
+
+        return cls(
+            collection=collection,
+            pool_key=pool_key,
+            assignments=assignments,
+        )
+
+    @classmethod
+    def load_old_format(
+        cls,
+        data: Any,
+        collection: PoolCollection[T_ValueType],
+    ) -> Pool[T_ValueType]:
+        """Returns one pool from file data using the older AVD <5.5.0 format."""
+        if not isinstance(data, dict):
+            msg = f"Invalid type for 'pool' '{type(data)}'. Expected a dict."
+            raise TypeError(msg)
+
+        if not isinstance(pool_key_dict := data["pool_key"], dict):
+            msg = f"Invalid type for 'pool_key' '{type(pool_key_dict)}'. Expected a dict."
+            raise TypeError(msg)
+
+        pool_key = collection._pool_key_from_dict(pool_key_dict)
+
+        if not isinstance(pool_assignments := data["assignments"], list):
+            msg = f"Invalid type for 'assignments' '{type(pool_assignments)}'. Expected a list."
+            raise TypeError(msg)
+
+        assignments = {}
+        for assignment_dict in pool_assignments:
+            if not isinstance(assignment_dict, dict):
+                msg = f"Invalid assignment type '{type(assignment_dict)}'. Expected a dict."
+                raise TypeError(msg)
+
+            if not isinstance(assignment_key_dict := assignment_dict["key"], dict):
+                msg = f"Invalid type for assignment 'key' '{type(assignment_key_dict)}'. Expected a dict."
+                raise TypeError(msg)
+
+            if not isinstance(assignment_value := assignment_dict["value"], collection.value_type):
+                msg = f"Invalid type for assignment 'value' '{type(assignment_value)}'. Expected a {collection.value_type.__name__}."
+                raise TypeError(msg)
+
+            assignment = collection.assignment_cls(
+                key=f"hostname={assignment_key_dict['hostname']}",
+                value=assignment_value,
+            )
+            assignments[assignment.key] = assignment
+
+        # Since we read the old format, we mark the collection as 'changed' to trigger a save with the new format, even though nothing really changed.
+        collection.changed = True
 
         return cls(
             collection=collection,
@@ -192,8 +250,13 @@ class PoolCollection(ABC, Generic[T_ValueType]):
     def load(self, data: Any) -> dict[str, Pool[T_ValueType]]:
         """Returns pools from file data."""
         if not isinstance(data, dict):
-            msg = f"Invalid type '{type(data)}'. Expected a dict."
-            raise TypeError(msg)
+            if not isinstance(data, list):
+                msg = f"Invalid type '{type(data)}'. Expected a dict."
+                raise TypeError(msg)
+
+            # This is possibly an older variant of the file from AVD <5.5.0. Try to read it as the old type.
+            return {pool.pool_key: pool for data_item in data if (pool := self.pool_cls.load_old_format(data_item, collection=self))}
+
         return {pool.pool_key: pool for pool_key, pool_assignments in data.items() if (pool := self.pool_cls.load(pool_key, pool_assignments, collection=self))}
 
     def get_pool(self, pool_key: str) -> Pool[T_ValueType]:
@@ -253,6 +316,18 @@ class PoolCollection(ABC, Generic[T_ValueType]):
     @abstractmethod
     def _pool_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> str:
         """Returns the pool key to use for this device."""
+
+    @staticmethod
+    @abstractmethod
+    def _pool_key_from_dict(pool_key_dict: dict) -> str:
+        """
+        Returns the formatted pool key generated from legacy pool key dict format.
+
+        Caveat: This will always use the default template string to generate the pool names.
+
+        Raises:
+            KeyError: If any of the legacy fields are missing. Caught by the caller.
+        """
 
     @staticmethod
     @abstractmethod
