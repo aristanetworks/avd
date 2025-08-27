@@ -53,7 +53,6 @@ ip_igmp_snooping:
 ip_name_servers:
 - ip_address: 192.168.1.1
   vrf: MGMT
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -76,6 +75,7 @@ management_interfaces:
   type: oob
   gateway: 172.16.1.1
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: FABRIC
 ntp:

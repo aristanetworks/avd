@@ -7,7 +7,6 @@ hostname: digital-twin-enforce-eapi-4
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-is_deployed: true
 management_api_http:
   enable_http: true
   enable_https: true
@@ -21,6 +20,7 @@ management_interfaces:
   ip_address: 192.168.0.4/32
   type: oob
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: DIGITAL_TWIN
   digital_twin:

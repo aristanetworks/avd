@@ -6955,9 +6955,10 @@ keys:
   ipv6_unicast_routing:
     type: bool
   is_deployed:
-    description: Key only used for documentation or validation purposes.
+    description: 'Key only used for documentation or validation purposes.
+
+      This key is deprecated and new key is metadata.is_deployed.'
     type: bool
-    default: true
   kernel:
     type: dict
     keys:
@@ -9013,6 +9014,9 @@ keys:
 
       It will not affect the generated EOS configuration.'
     keys:
+      is_deployed:
+        description: Key only used for documentation or validation purposes.
+        type: bool
       platform:
         type: str
       system_mac_address:

@@ -161,7 +161,6 @@ hostname: ptp-tests-leaf1
 ip_igmp_snooping:
   globally_enabled: false
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -184,6 +183,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.0.1
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: PTP_TESTS
 mlag_configuration:

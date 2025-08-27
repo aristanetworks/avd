@@ -58,10 +58,6 @@ class AvdStructuredConfigBaseProtocol(
         self.structured_config.hostname = self.shared_utils.hostname
 
     @structured_config_contributor
-    def is_deployed(self) -> None:
-        self.structured_config.is_deployed = self.inputs.is_deployed
-
-    @structured_config_contributor
     def serial_number(self) -> None:
         """serial_number variable set based on serial_number fact."""
         self.structured_config.serial_number = self.shared_utils.serial_number
