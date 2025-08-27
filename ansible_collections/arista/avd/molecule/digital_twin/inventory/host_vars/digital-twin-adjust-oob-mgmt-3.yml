@@ -4,7 +4,7 @@ type: l2leaf
 l2leaf:
   nodes:
     - name: digital-twin-adjust-oob-mgmt-3
-      id: 1
+      id: 3
       digital_twin:
         mgmt_ip: 192.168.1.3/32
       inband_mgmt_ip: 192.168.1.3/32
