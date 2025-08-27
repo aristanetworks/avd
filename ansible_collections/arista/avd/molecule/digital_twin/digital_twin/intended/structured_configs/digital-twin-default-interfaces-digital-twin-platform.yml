@@ -1,0 +1,59 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet3
+  description: L2_digital-twin-default-interfaces-original-platform_Ethernet2
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  peer: digital-twin-default-interfaces-original-platform
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+hostname: digital-twin-default-interfaces-digital-twin-platform
+ip_igmp_snooping:
+  globally_enabled: true
+is_deployed: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 10.10.10.100/24
+  type: oob
+metadata:
+  platform: vEOS-lab
+  fabric_name: DIGITAL_TWIN
+  digital_twin:
+    environment: act
+    node_type: veos
+    ip_addr: 10.10.10.100/24
+    version: 4.33.1.1F
+    username: cvpadmin
+    password: cvp123!
+port_channel_interfaces:
+- name: Port-Channel3
+  description: L2_digital-twin-default-interfaces-original-platform_Port-Channel2
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
