@@ -29,9 +29,20 @@
   hosts: DIGITAL_TWIN_SINGLE_SWITCH_FABRIC
   gather_facts: false
   connection: local
+  tasks:
+
+    - name: Generate device intended config and documentation
+      delegate_to: 127.0.0.1
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+
+- name: Converge
+  hosts: DIGITAL_TWIN_SINGLE_SWITCH_FABRIC
+  gather_facts: false
+  connection: local
   vars:
-    output_dir_name: "digital_twin/DIGITAL_TWIN_SINGLE_SWITCH_FABRIC/intended"
-    documentation_dir_name: "digital_twin/DIGITAL_TWIN_SINGLE_SWITCH_FABRIC/documentation"
+    output_dir_name: "digital_twin/intended"
+    documentation_dir_name: "digital_twin/documentation"
     avd_digital_twin_mode: true
   tasks:
 
