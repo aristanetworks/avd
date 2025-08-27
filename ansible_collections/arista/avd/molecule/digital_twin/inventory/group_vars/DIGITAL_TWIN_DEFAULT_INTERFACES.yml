@@ -1,5 +1,4 @@
 ---
-fabric_name: DIGITAL_TWIN
 
 l2spine:
   defaults:

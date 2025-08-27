@@ -1,5 +1,0 @@
----
-
-# Test override of the management api http-commands settings in ACT Digital Twin mode
-management_eapi:
-  enabled: false

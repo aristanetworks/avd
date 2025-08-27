@@ -80,7 +80,7 @@ loopback_interfaces:
 management_api_http:
   enable_https: true
   enable_vrfs:
-  - name: default
+  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT

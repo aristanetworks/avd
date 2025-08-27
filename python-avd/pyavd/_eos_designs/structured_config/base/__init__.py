@@ -537,9 +537,8 @@ class AvdStructuredConfigBaseProtocol(
         # Enforce eAPI management access in default VRF for ACT Digital Twin if required
         if self._act_ensure_eapi_access:
             self.structured_config.management_api_http.enable_https = True
-
-            if "default" not in self.structured_config.management_api_http.enable_vrfs:
-                self.structured_config.management_api_http.enable_vrfs.append_new(name="default")
+            # Create item for default VRF if not present. If present, remove IPv4 ACL.
+            self.structured_config.management_api_http.enable_vrfs.obtain("default").access_group = None
 
     @structured_config_contributor
     def link_tracking_groups(self) -> None:

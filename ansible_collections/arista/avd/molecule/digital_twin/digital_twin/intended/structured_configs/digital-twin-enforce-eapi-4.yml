@@ -1,0 +1,42 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: digital-twin-enforce-eapi-4
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+is_deployed: true
+management_api_http:
+  enable_http: true
+  enable_https: true
+  enable_vrfs:
+  - name: default
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.4/32
+  type: oob
+metadata:
+  platform: vEOS-lab
+  fabric_name: DIGITAL_TWIN
+  digital_twin:
+    environment: act
+    node_type: veos
+    ip_addr: 192.168.0.4/32
+    version: 4.33.1.1F
+    username: cvpadmin
+    password: cvp123!
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

@@ -19,6 +19,10 @@
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
 | DIGITAL_TWIN | l2spine | digital-twin-default-interfaces-digital-twin-platform | 10.10.10.100/24 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-default-interfaces-original-platform | 10.10.10.101/24 | vEOS-lab | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-1 | 192.168.0.1/32 | vEOS-lab | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-2 | 192.168.0.2/32 | vEOS-lab | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-3 | 192.168.0.3/32 | vEOS-lab | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-4 | 192.168.0.4/32 | vEOS-lab | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
