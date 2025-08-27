@@ -28,4 +28,4 @@ l3leaf:
 
 expected_error_message: >-
   'uplink_switch_interfaces' is not set on 'missing-downlink-interfaces-l3leaf' and 'uplink_switch' 'missing-downlink-interfaces-spine'
-  does not have 'downlink_interfaces[0]' set under 'default_interfaces' (only 0 allocated). This switch requires at least 1 downlink_interfaces.
+  does not have any 'downlink_interfaces' set under 'default_interfaces'. At least one or the other must be defined.
