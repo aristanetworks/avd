@@ -305,8 +305,6 @@ vlan 4094
 
 | Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
 | --------- | ----------- | ------- | -------------- | -------------------- |
-| Ethernet10.100 | - | - | 100 | - |
-| Ethernet10.101 | - | - | 101 | - |
 | Ethernet13.1025 | P2P_DC1-POD1-LEAF1B_Ethernet2.1025_VRF_Common_VRF | - | 1025 | - |
 | Ethernet13.1100 | P2P_DC1-POD1-LEAF1B_Ethernet2.1100_VRF_vrf_with_loopbacks_from_overlapping_pool | - | 1100 | - |
 | Ethernet13.1101 | P2P_DC1-POD1-LEAF1B_Ethernet2.1101_VRF_vrf_with_loopbacks_from_pod_pools | - | 1101 | - |
@@ -319,8 +317,6 @@ vlan 4094
 | Ethernet1 | P2P_DC1-POD1-SPINE1_Ethernet5 | - | 172.17.110.17/31 | default | - | False | - | - |
 | Ethernet2 | P2P_DC1-POD1-SPINE2_Ethernet5 | - | 172.17.110.19/31 | default | - | False | - | - |
 | Ethernet7 | P2P_DC2-POD1-LEAF1A_Ethernet7 | - | 11.1.0.38/31 | default | - | False | - | - |
-| Ethernet10.100 | - | - | 10.10.14.2/31 | Common_VRF | - | False | - | - |
-| Ethernet10.101 | - | - | 10.10.14.6/31 | Common_VRF | - | False | - | - |
 | Ethernet11 | P2P_DC1-POD1-SPINE1_Ethernet8 | - | 172.17.110.21/31 | default | - | False | - | - |
 | Ethernet12 | P2P_DC1-POD1-SPINE2_Ethernet8 | - | 172.17.110.23/31 | default | - | False | - | - |
 | Ethernet13 | P2P_DC1-POD1-LEAF1B_Ethernet2 | - | 172.17.110.14/31 | default | - | False | - | - |
@@ -377,22 +373,6 @@ interface Ethernet7
    no switchport
    ip address 11.1.0.38/31
    ptp enable
-!
-interface Ethernet10
-   no shutdown
-   no switchport
-!
-interface Ethernet10.100
-   no shutdown
-   encapsulation dot1q vlan 100
-   vrf Common_VRF
-   ip address 10.10.14.2/31
-!
-interface Ethernet10.101
-   no shutdown
-   encapsulation dot1q vlan 101
-   vrf Common_VRF
-   ip address 10.10.14.6/31
 !
 interface Ethernet11
    description P2P_DC1-POD1-SPINE1_Ethernet8

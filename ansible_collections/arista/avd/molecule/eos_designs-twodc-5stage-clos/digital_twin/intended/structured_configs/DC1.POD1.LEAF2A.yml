@@ -165,25 +165,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
-- name: Ethernet10.100
-  shutdown: false
-  vrf: Common_VRF
-  encapsulation_dot1q:
-    vlan: 100
-  ip_address: 10.10.14.0/31
-  peer_type: l3_interface
-- name: Ethernet10.101
-  shutdown: false
-  vrf: Common_VRF
-  encapsulation_dot1q:
-    vlan: 101
-  ip_address: 10.10.14.4/31
-  peer_type: l3_interface
-- name: Ethernet10
-  shutdown: false
-  peer_type: l3_interface
-  switchport:
-    enabled: false
 - name: Ethernet16
   description: SERVER_server-1_Eth1
   shutdown: false

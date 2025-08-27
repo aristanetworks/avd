@@ -14,8 +14,6 @@ nodes:
     - Ethernet2
     - Ethernet3
     - Ethernet4
-    - Ethernet5
-    - Ethernet6
 - DC1-POD1-L2LEAF2B:
     node_type: tools-server
     ip_addr: 192.168.1.12/24
@@ -48,7 +46,6 @@ nodes:
     - Ethernet5
     - Ethernet6
     - Ethernet7
-    - Ethernet10
     - Ethernet11
     - Ethernet12
     - Ethernet13
@@ -159,7 +156,6 @@ nodes:
     - Ethernet5
     - Ethernet6
     - Ethernet7
-    - Ethernet10
     - Ethernet11
     - Ethernet12
     - Ethernet13

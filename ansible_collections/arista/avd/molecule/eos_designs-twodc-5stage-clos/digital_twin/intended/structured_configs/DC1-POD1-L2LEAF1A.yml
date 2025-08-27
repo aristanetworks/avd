@@ -21,19 +21,6 @@ ethernet_interfaces:
   peer_type: server
   switchport:
     enabled: true
-- name: Ethernet5
-  description: FIREWALL_firewall-1_Eth1
-  shutdown: false
-  peer: firewall-1
-  peer_interface: Eth1
-  peer_type: firewall
-  switchport:
-    enabled: true
-- name: Ethernet6
-  shutdown: false
-  peer_type: network_port
-  switchport:
-    enabled: true
 hostname: DC1-POD1-L2LEAF1A
 ip_igmp_snooping:
   globally_enabled: true

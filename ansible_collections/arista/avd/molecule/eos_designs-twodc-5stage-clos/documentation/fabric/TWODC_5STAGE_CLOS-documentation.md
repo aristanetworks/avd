@@ -14,7 +14,6 @@
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 - [Connected Endpoints](#connected-endpoints)
   - [Connected Endpoint Keys](#connected-endpoint-keys)
-  - [Firewalls](#firewalls)
   - [Servers](#servers)
   - [Port Profiles](#port-profiles)
 
@@ -268,15 +267,7 @@
 
 | Key | Type | Description |
 | --- | ---- | ----------- |
-| firewalls | firewall | Firewall |
 | servers | server | Server |
-
-### Firewalls
-
-| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Mode | Access VLAN | Trunk Allowed VLANs | Profile |
-| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ----------- | ------------------- | ------- |
-| firewall-1 | Eth1 | DC1-POD1-L2LEAF1A | Ethernet5 | FIREWALL_firewall-1_Eth1 | False | - | - | - | - |
-| firewall-1 | Eth2 | DC1-POD1-L2LEAF2A | Ethernet5 | FIREWALL_firewall-1_Eth2 | False | - | - | - | - |
 
 ### Servers
 
