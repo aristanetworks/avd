@@ -34,7 +34,7 @@ class PortChannelInterfacesMixin(Protocol):
         - Silently ignore duplicate port-channels if they contain _exactly_ the same configuration
         - Raise a duplicate error for any other duplicate port-channel interface
         """
-        for connected_endpoint in self._filtered_connected_endpoints:
+        for connected_endpoint in self.shared_utils.filtered_connected_endpoints:
             for adapter in connected_endpoint.adapters:
                 if not adapter.port_channel or not adapter.port_channel.mode:
                     continue
@@ -70,7 +70,7 @@ class PortChannelInterfacesMixin(Protocol):
         # Notice this is keyed by the ethernet interface, so we get duplication check between the members.
         # Values are the real structured config and the custom structured config for this interface.
         network_ports_port_channel_interfaces: dict[str, tuple[EosCliConfigGen.PortChannelInterfacesItem, EosCliConfigGen.PortChannelInterfacesItem]] = {}
-        for network_port in self._filtered_network_ports:
+        for network_port in self.shared_utils.filtered_network_ports:
             if not network_port.port_channel.mode:
                 continue
 

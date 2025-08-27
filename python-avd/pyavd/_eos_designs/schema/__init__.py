@@ -23,6 +23,27 @@ class EosDesigns(EosDesignsRootModel):
     class AaaSettings(AvdModel):
         """Subclass of AvdModel."""
 
+        class EnablePassword(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"password": {"type": str}}
+            password: str | None
+            """SHA512 hashed password."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, password: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    EnablePassword.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        password: SHA512 hashed password.
+
+                    """
+
         class Tacacs(AvdModel):
             """Subclass of AvdModel."""
 
@@ -429,6 +450,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         _fields: ClassVar[dict] = {
+            "enable_password": {"type": EnablePassword},
             "tacacs": {"type": Tacacs},
             "radius": {"type": Radius},
             "authentication": {"type": EosCliConfigGen.AaaAuthentication},
@@ -437,6 +459,8 @@ class EosDesigns(EosDesignsRootModel):
             "root_login": {"type": RootLogin},
             "local_users": {"type": EosCliConfigGen.LocalUsers},
         }
+        enable_password: EnablePassword
+        """Subclass of AvdModel."""
         tacacs: Tacacs
         """Subclass of AvdModel."""
         radius: Radius
@@ -453,6 +477,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
+                enable_password: EnablePassword | UndefinedType = Undefined,
                 tacacs: Tacacs | UndefinedType = Undefined,
                 radius: Radius | UndefinedType = Undefined,
                 authentication: EosCliConfigGen.AaaAuthentication | UndefinedType = Undefined,
@@ -468,6 +493,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    enable_password: Subclass of AvdModel.
                     tacacs: Subclass of AvdModel.
                     radius: Subclass of AvdModel.
                     authentication: authentication
@@ -475,6 +501,149 @@ class EosDesigns(EosDesignsRootModel):
                     accounting: accounting
                     root_login: Subclass of AvdModel.
                     local_users: local_users
+
+                """
+
+    class AddressLockingSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class DhcpServersIpv4(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DhcpServersIpv4._item_type = str
+
+        class LeasesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"ip": {"type": str}, "mac": {"type": str}}
+            ip: str
+            """IP address."""
+            mac: str
+            """MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ip: str | UndefinedType = Undefined, mac: str | UndefinedType = Undefined) -> None:
+                    """
+                    LeasesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ip: IP address.
+                        mac: MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh).
+
+                    """
+
+        class Leases(AvdList[LeasesItem]):
+            """Subclass of AvdList with `LeasesItem` items."""
+
+        Leases._item_type = LeasesItem
+
+        class LockedAddress(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "expiration_mac_disabled": {"type": bool},
+                "ipv4_enforcement_disabled": {"type": bool},
+                "ipv6_enforcement_disabled": {"type": bool},
+            }
+            expiration_mac_disabled: bool | None
+            """Configure deauthorizing locked addresses upon MAC aging out."""
+            ipv4_enforcement_disabled: bool | None
+            """Configure enforcement for locked IPv4 addresses."""
+            ipv6_enforcement_disabled: bool | None
+            """Configure enforcement for locked IPv6 addresses."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    expiration_mac_disabled: bool | None | UndefinedType = Undefined,
+                    ipv4_enforcement_disabled: bool | None | UndefinedType = Undefined,
+                    ipv6_enforcement_disabled: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    LockedAddress.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        expiration_mac_disabled: Configure deauthorizing locked addresses upon MAC aging out.
+                        ipv4_enforcement_disabled: Configure enforcement for locked IPv4 addresses.
+                        ipv6_enforcement_disabled: Configure enforcement for locked IPv6 addresses.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
+            "local_users": {"type": EosCliConfigGen.LocalUsers},
+            "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "disabled": {"type": bool},
+            "leases": {"type": Leases},
+            "locked_address": {"type": LockedAddress},
+        }
+        local_interface: str
+        """
+        The value will be interpreted according to these rules:
+          - `use_mgmt_interface` will configure the
+        `mgmt_interface` as the local interface.
+          - `use_inband_mgmt_interface` will configure the
+        `inband_mgmt_interface` as the local interface.
+          - `use_default_mgmt_method_interface` will
+        configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
+        of `default_mgmt_method`.
+          - Any other string will be used directly as the local interface.
+
+        Default value: `"use_default_mgmt_method_interface"`
+        """
+        local_users: EosCliConfigGen.LocalUsers
+        dhcp_servers_ipv4: DhcpServersIpv4
+        """Subclass of AvdList with `str` items."""
+        disabled: bool | None
+        """Disable IP locking on configured ports."""
+        leases: Leases
+        """Subclass of AvdList with `LeasesItem` items."""
+        locked_address: LockedAddress
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                local_interface: str | UndefinedType = Undefined,
+                local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
+                dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                disabled: bool | None | UndefinedType = Undefined,
+                leases: Leases | UndefinedType = Undefined,
+                locked_address: LockedAddress | UndefinedType = Undefined,
+            ) -> None:
+                """
+                AddressLockingSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    local_interface:
+                       The value will be interpreted according to these rules:
+                         - `use_mgmt_interface` will configure the
+                       `mgmt_interface` as the local interface.
+                         - `use_inband_mgmt_interface` will configure the
+                       `inband_mgmt_interface` as the local interface.
+                         - `use_default_mgmt_method_interface` will
+                       configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
+                       of `default_mgmt_method`.
+                         - Any other string will be used directly as the local interface.
+                    local_users: local_users
+                    dhcp_servers_ipv4: Subclass of AvdList with `str` items.
+                    disabled: Disable IP locking on configured ports.
+                    leases: Subclass of AvdList with `LeasesItem` items.
+                    locked_address: Subclass of AvdModel.
 
                 """
 
@@ -4065,6 +4234,7 @@ class EosDesigns(EosDesignsRootModel):
                 "act_username": {"type": str, "default": "cvpadmin"},
                 "act_password": {"type": str, "default": "cvp123!"},
                 "act_internet_access": {"type": bool, "default": False},
+                "act_ensure_eapi_access": {"type": bool, "default": False},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -4090,6 +4260,20 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            act_ensure_eapi_access: bool
+            """
+            Ensures eAPI remains accessible for automation and testing via ACT.
+            Clients connecting to device
+            eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+            management VRF, this primary eAPI connectivity can be unintentionally broken.
+            Set this to `true` to
+            enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
+            default VRF and preserving this connectivity.
+            This setting is only applicable to ACT `veos` and
+            `cloudeos` node types.
+
+            Default value: `False`
+            """
 
             if TYPE_CHECKING:
 
@@ -4100,6 +4284,7 @@ class EosDesigns(EosDesignsRootModel):
                     act_username: str | UndefinedType = Undefined,
                     act_password: str | UndefinedType = Undefined,
                     act_internet_access: bool | UndefinedType = Undefined,
+                    act_ensure_eapi_access: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -4117,10 +4302,24 @@ class EosDesigns(EosDesignsRootModel):
                            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
                            types.
                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        act_ensure_eapi_access:
+                           Ensures eAPI remains accessible for automation and testing via ACT.
+                           Clients connecting to device
+                           eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+                           management VRF, this primary eAPI connectivity can be unintentionally broken.
+                           Set this to `true` to
+                           enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
+                           default VRF and preserving this connectivity.
+                           This setting is only applicable to ACT `veos` and
+                           `cloudeos` node types.
 
                     """
 
-        _fields: ClassVar[dict] = {"environment": {"type": str, "default": "act"}, "fabric": {"type": Fabric}}
+        _fields: ClassVar[dict] = {
+            "environment": {"type": str, "default": "act"},
+            "fabric": {"type": Fabric},
+            "use_default_interfaces_of_digital_twin_platform": {"type": bool, "default": False},
+        }
         environment: Literal["act"]
         """
         Targeted Digital Twin environment.
@@ -4133,10 +4332,23 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        use_default_interfaces_of_digital_twin_platform: bool
+        """
+        In Digital Twin mode, AVD can either use the default interfaces of the original or the digital twin
+        platform (as set in `platform_settings.[].digital_twin.platform`).
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, environment: Literal["act"] | UndefinedType = Undefined, fabric: Fabric | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                environment: Literal["act"] | UndefinedType = Undefined,
+                fabric: Fabric | UndefinedType = Undefined,
+                use_default_interfaces_of_digital_twin_platform: bool | UndefinedType = Undefined,
+            ) -> None:
                 """
                 DigitalTwin.
 
@@ -4149,6 +4361,9 @@ class EosDesigns(EosDesignsRootModel):
                        Settings for Digital Twin fabric devices.
 
                        Subclass of AvdModel.
+                    use_default_interfaces_of_digital_twin_platform:
+                       In Digital Twin mode, AVD can either use the default interfaces of the original or the digital twin
+                       platform (as set in `platform_settings.[].digital_twin.platform`).
 
                 """
 
@@ -10201,7 +10416,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         monitor_sessions: MonitorSessions
         """
-        Used to define switchports as source or destination for monitoring sessions.
+        Used to define interfaces as source or destination for monitoring sessions.
 
         Subclass of AvdList
         with `MonitorSessionsItem` items.
@@ -10422,7 +10637,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     monitor_sessions:
-                       Used to define switchports as source or destination for monitoring sessions.
+                       Used to define interfaces as source or destination for monitoring sessions.
 
                        Subclass of AvdList
                        with `MonitorSessionsItem` items.
@@ -14785,7 +15000,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         monitor_sessions: MonitorSessions
         """
-        Used to define switchports as source or destination for monitoring sessions.
+        Used to define interfaces as source or destination for monitoring sessions.
 
         Subclass of AvdList
         with `MonitorSessionsItem` items.
@@ -14965,7 +15180,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     monitor_sessions:
-                       Used to define switchports as source or destination for monitoring sessions.
+                       Used to define interfaces as source or destination for monitoring sessions.
 
                        Subclass of AvdList
                        with `MonitorSessionsItem` items.
@@ -15121,6 +15336,7 @@ class EosDesigns(EosDesignsRootModel):
             "profile": {"type": str, "default": "aes67-r16-2016"},
             "domain": {"type": int, "default": 127},
             "auto_clock_identity": {"type": bool, "default": True},
+            "forward_v1": {"type": bool, "default": False},
         }
         enabled: bool | None
         profile: str
@@ -15136,6 +15352,12 @@ class EosDesigns(EosDesignsRootModel):
         """Default value: `127`"""
         auto_clock_identity: bool
         """Default value: `True`"""
+        forward_v1: bool
+        """
+        Forward dataplane PTP V1 packets.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -15146,6 +15368,7 @@ class EosDesigns(EosDesignsRootModel):
                 profile: str | UndefinedType = Undefined,
                 domain: int | UndefinedType = Undefined,
                 auto_clock_identity: bool | UndefinedType = Undefined,
+                forward_v1: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 PtpSettings.
@@ -15162,6 +15385,7 @@ class EosDesigns(EosDesignsRootModel):
                          - "smpte2059-2"
                     domain: domain
                     auto_clock_identity: auto_clock_identity
+                    forward_v1: Forward dataplane PTP V1 packets.
 
                 """
 
@@ -22099,7 +22323,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     monitor_sessions: MonitorSessions
                     """
-                    Used to define switchports as source or destination for monitoring sessions.
+                    Used to define interfaces as source or destination for monitoring sessions.
 
                     Subclass of AvdList
                     with `MonitorSessionsItem` items.
@@ -22317,7 +22541,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 monitor_sessions:
-                                   Used to define switchports as source or destination for monitoring sessions.
+                                   Used to define interfaces as source or destination for monitoring sessions.
 
                                    Subclass of AvdList
                                    with `MonitorSessionsItem` items.
@@ -23723,7 +23947,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     monitor_sessions: MonitorSessions
                     """
-                    Used to define switchports as source or destination for monitoring sessions.
+                    Used to define interfaces as source or destination for monitoring sessions.
 
                     Subclass of AvdList
                     with `MonitorSessionsItem` items.
@@ -23941,7 +24165,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 monitor_sessions:
-                                   Used to define switchports as source or destination for monitoring sessions.
+                                   Used to define interfaces as source or destination for monitoring sessions.
 
                                    Subclass of AvdList
                                    with `MonitorSessionsItem` items.
@@ -25077,6 +25301,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -25139,6 +25364,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -25164,6 +25391,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -25208,6 +25436,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -27458,14 +27687,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -28222,14 +28448,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -29384,6 +29607,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "mode_one_step": {"type": bool, "default": False},
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
+                                "forward_v1": {"type": bool},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -29446,6 +29670,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            forward_v1: bool | None
+                            """Forward dataplane PTP V1 packets."""
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -29471,6 +29697,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: bool | UndefinedType = Undefined,
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
+                                    forward_v1: bool | None | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -29515,6 +29742,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode_one_step: mode_one_step
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
+                                        forward_v1: Forward dataplane PTP V1 packets.
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -31791,14 +32019,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         wan_ha: WanHa
                         """
-                        PREVIEW: This key is currently not supported
+                        The key is supported only if `wan_mode` == `cv-pathfinder`.
+                        AutoVPN support is still to be
+                        determined.
 
-                        The key is supported only if `wan_mode` == `cv-
-                        pathfinder`.
-                        AutoVPN support is still to be determined.
-
-                        Maximum 2 devices supported by group for
-                        HA.
+                        Maximum 2 devices supported by group for HA.
 
                         Subclass of AvdModel.
                         """
@@ -32564,14 +32789,11 @@ class EosDesigns(EosDesignsRootModel):
                                        For pathfinders without `cv_pathfinder_region` set,
                                        the site must be defined under `cv_pathfinder_global_sites`.
                                     wan_ha:
-                                       PREVIEW: This key is currently not supported
+                                       The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                       AutoVPN support is still to be
+                                       determined.
 
-                                       The key is supported only if `wan_mode` == `cv-
-                                       pathfinder`.
-                                       AutoVPN support is still to be determined.
-
-                                       Maximum 2 devices supported by group for
-                                       HA.
+                                       Maximum 2 devices supported by group for HA.
 
                                        Subclass of AvdModel.
                                     dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -33648,6 +33870,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -33710,6 +33933,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -33735,6 +33960,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -33779,6 +34005,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -36044,14 +36271,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -36819,14 +37043,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -37978,6 +38199,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -38040,6 +38262,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -38065,6 +38289,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -38109,6 +38334,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -40371,14 +40597,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -41144,14 +41367,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -44531,6 +44751,7 @@ class EosDesigns(EosDesignsRootModel):
                         _fields: ClassVar[dict] = {
                             "id": {"type": int},
                             "name": {"type": str},
+                            "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking.AddressFamily},
                             "profile": {"type": str},
                             "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                             "evpn_vlan_bundle": {"type": str},
@@ -44573,6 +44794,12 @@ class EosDesigns(EosDesignsRootModel):
                         """SVI interface id and VLAN id."""
                         name: str
                         """VLAN name."""
+                        address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
+                        """
+                        To configure `address_locking.ipv4/v6`, you must define either
+                        `address_locking_settings.dhcp_servers_ipv4` or
+                        `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
+                        """
                         profile: str | None
                         """
                         SVI profile name to apply.
@@ -44806,6 +45033,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 id: int | UndefinedType = Undefined,
                                 name: str | UndefinedType = Undefined,
+                                address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily | UndefinedType = Undefined,
                                 profile: str | None | UndefinedType = Undefined,
                                 tags: Tags | UndefinedType = Undefined,
                                 evpn_vlan_bundle: str | None | UndefinedType = Undefined,
@@ -44853,6 +45081,10 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     id: SVI interface id and VLAN id.
                                     name: VLAN name.
+                                    address_locking:
+                                       To configure `address_locking.ipv4/v6`, you must define either
+                                       `address_locking_settings.dhcp_servers_ipv4` or
+                                       `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
                                     profile:
                                        SVI profile name to apply.
                                        SVI can refer to one svi_profile which again can refer to another
@@ -45364,6 +45596,261 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class MonitorSessionsItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class SourceSettings(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class AccessGroup(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
+                                    type: Literal["ip", "ipv6", "mac"] | None
+                                    name: str | None
+                                    """ACL name."""
+                                    priority: int | None
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                                            name: str | None | UndefinedType = Undefined,
+                                            priority: int | None | UndefinedType = Undefined,
+                                        ) -> None:
+                                            """
+                                            AccessGroup.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                type: type
+                                                name: ACL name.
+                                                priority: priority
+
+                                            """
+
+                                _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
+                                direction: Literal["rx", "tx", "both"] | None
+                                access_group: AccessGroup
+                                """
+                                This can only be set when `session_settings.access_group` is not set.
+
+                                Subclass of AvdModel.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        direction: Literal["rx", "tx", "both"] | None | UndefinedType = Undefined,
+                                        access_group: AccessGroup | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        SourceSettings.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            direction: direction
+                                            access_group:
+                                               This can only be set when `session_settings.access_group` is not set.
+
+                                               Subclass of AvdModel.
+
+                                        """
+
+                            class SessionSettings(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class AccessGroup(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
+                                    type: Literal["ip", "ipv6", "mac"] | None
+                                    name: str | None
+                                    """ACL name."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                                            name: str | None | UndefinedType = Undefined,
+                                        ) -> None:
+                                            """
+                                            AccessGroup.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                type: type
+                                                name: ACL name.
+
+                                            """
+
+                                class Truncate(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "size": {"type": int}}
+                                    enabled: bool | None
+                                    size: int | None
+                                    """Size in bytes."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self, *, enabled: bool | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined
+                                        ) -> None:
+                                            """
+                                            Truncate.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                enabled: enabled
+                                                size: Size in bytes.
+
+                                            """
+
+                                _fields: ClassVar[dict] = {
+                                    "encapsulation_gre_metadata_tx": {"type": bool},
+                                    "header_remove_size": {"type": int},
+                                    "access_group": {"type": AccessGroup},
+                                    "rate_limit_per_ingress_chip": {"type": str},
+                                    "rate_limit_per_egress_chip": {"type": str},
+                                    "sample": {"type": int},
+                                    "truncate": {"type": Truncate},
+                                }
+                                encapsulation_gre_metadata_tx: bool | None
+                                header_remove_size: int | None
+                                """Number of bytes to remove from header."""
+                                access_group: AccessGroup
+                                """Subclass of AvdModel."""
+                                rate_limit_per_ingress_chip: str | None
+                                """
+                                Ratelimit and unit as string.
+                                Examples:
+                                  "100000 bps"
+                                  "100 kbps"
+                                  "10 mbps"
+                                """
+                                rate_limit_per_egress_chip: str | None
+                                """
+                                Ratelimit and unit as string.
+                                Examples:
+                                  "100000 bps"
+                                  "100 kbps"
+                                  "10 mbps"
+                                """
+                                sample: int | None
+                                truncate: Truncate
+                                """Subclass of AvdModel."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        encapsulation_gre_metadata_tx: bool | None | UndefinedType = Undefined,
+                                        header_remove_size: int | None | UndefinedType = Undefined,
+                                        access_group: AccessGroup | UndefinedType = Undefined,
+                                        rate_limit_per_ingress_chip: str | None | UndefinedType = Undefined,
+                                        rate_limit_per_egress_chip: str | None | UndefinedType = Undefined,
+                                        sample: int | None | UndefinedType = Undefined,
+                                        truncate: Truncate | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        SessionSettings.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            encapsulation_gre_metadata_tx: encapsulation_gre_metadata_tx
+                                            header_remove_size: Number of bytes to remove from header.
+                                            access_group: Subclass of AvdModel.
+                                            rate_limit_per_ingress_chip:
+                                               Ratelimit and unit as string.
+                                               Examples:  # fmt: skip
+                                                 "100000 bps"
+                                                 "100 kbps"
+                                                 "10 mbps"
+                                            rate_limit_per_egress_chip:
+                                               Ratelimit and unit as string.
+                                               Examples:  # fmt: skip
+                                                 "100000 bps"
+                                                 "100 kbps"
+                                                 "10 mbps"
+                                            sample: sample
+                                            truncate: Subclass of AvdModel.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "name": {"type": str},
+                                "role": {"type": str},
+                                "source_settings": {"type": SourceSettings},
+                                "session_settings": {"type": SessionSettings},
+                            }
+                            name: str
+                            """Session name."""
+                            role: Literal["source", "destination"] | None
+                            source_settings: SourceSettings
+                            """Subclass of AvdModel."""
+                            session_settings: SessionSettings
+                            """
+                            Session settings are defined per session name.
+                            Different session_settings for the same session name
+                            will be combined/merged.
+
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    name: str | UndefinedType = Undefined,
+                                    role: Literal["source", "destination"] | None | UndefinedType = Undefined,
+                                    source_settings: SourceSettings | UndefinedType = Undefined,
+                                    session_settings: SessionSettings | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    MonitorSessionsItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        name: Session name.
+                                        role: role
+                                        source_settings: Subclass of AvdModel.
+                                        session_settings:
+                                           Session settings are defined per session name.
+                                           Different session_settings for the same session name
+                                           will be combined/merged.
+
+
+                                           Subclass of AvdModel.
+
+                                    """
+
+                        class MonitorSessions(AvdList[MonitorSessionsItem]):
+                            """Subclass of AvdList with `MonitorSessionsItem` items."""
+
+                        MonitorSessions._item_type = MonitorSessionsItem
+
                         class CampusLinkType(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -45386,6 +45873,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ospf": {"type": Ospf},
                             "pim": {"type": Pim},
                             "flow_tracking": {"type": FlowTracking},
+                            "monitor_sessions": {"type": MonitorSessions},
                             "campus_link_type": {"type": CampusLinkType},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "raw_eos_cli": {"type": str},
@@ -45455,6 +45943,13 @@ class EosDesigns(EosDesignsRootModel):
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                         Subclass of AvdModel.
                         """
+                        monitor_sessions: MonitorSessions
+                        """
+                        Used to define interfaces as source or destination for monitoring sessions.
+
+                        Subclass of AvdList
+                        with `MonitorSessionsItem` items.
+                        """
                         campus_link_type: CampusLinkType
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -45495,6 +45990,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ospf: Ospf | UndefinedType = Undefined,
                                 pim: Pim | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
+                                monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                                 campus_link_type: CampusLinkType | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
@@ -45552,6 +46048,11 @@ class EosDesigns(EosDesignsRootModel):
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                                        Subclass of AvdModel.
+                                    monitor_sessions:
+                                       Used to define interfaces as source or destination for monitoring sessions.
+
+                                       Subclass of AvdList
+                                       with `MonitorSessionsItem` items.
                                     campus_link_type:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
@@ -48314,6 +48815,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
+                        "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking.AddressFamily},
                         "vni_override": {"type": int},
                         "rt_override": {"type": str},
                         "rd_override": {"type": str},
@@ -48333,6 +48835,7 @@ class EosDesigns(EosDesignsRootModel):
                     }
                     id: int
                     """VLAN ID."""
+                    address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
                     vni_override: int | None
                     """
                     By default the VNI will be derived from mac_vrf_vni_base.
@@ -48442,6 +48945,7 @@ class EosDesigns(EosDesignsRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
+                            address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily | UndefinedType = Undefined,
                             vni_override: int | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
                             rd_override: str | None | UndefinedType = Undefined,
@@ -48467,6 +48971,7 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 id: VLAN ID.
+                                address_locking: address_locking
                                 vni_override:
                                    By default the VNI will be derived from mac_vrf_vni_base.
                                    The vni_override, allows to override this
@@ -50268,6 +50773,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -50330,6 +50836,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -50355,6 +50863,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -50399,6 +50908,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -52649,14 +53159,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -53413,14 +53920,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -54575,6 +55079,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "mode_one_step": {"type": bool, "default": False},
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
+                                "forward_v1": {"type": bool},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -54637,6 +55142,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            forward_v1: bool | None
+                            """Forward dataplane PTP V1 packets."""
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -54662,6 +55169,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: bool | UndefinedType = Undefined,
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
+                                    forward_v1: bool | None | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -54706,6 +55214,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode_one_step: mode_one_step
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
+                                        forward_v1: Forward dataplane PTP V1 packets.
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -56982,14 +57491,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         wan_ha: WanHa
                         """
-                        PREVIEW: This key is currently not supported
+                        The key is supported only if `wan_mode` == `cv-pathfinder`.
+                        AutoVPN support is still to be
+                        determined.
 
-                        The key is supported only if `wan_mode` == `cv-
-                        pathfinder`.
-                        AutoVPN support is still to be determined.
-
-                        Maximum 2 devices supported by group for
-                        HA.
+                        Maximum 2 devices supported by group for HA.
 
                         Subclass of AvdModel.
                         """
@@ -57755,14 +58261,11 @@ class EosDesigns(EosDesignsRootModel):
                                        For pathfinders without `cv_pathfinder_region` set,
                                        the site must be defined under `cv_pathfinder_global_sites`.
                                     wan_ha:
-                                       PREVIEW: This key is currently not supported
+                                       The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                       AutoVPN support is still to be
+                                       determined.
 
-                                       The key is supported only if `wan_mode` == `cv-
-                                       pathfinder`.
-                                       AutoVPN support is still to be determined.
-
-                                       Maximum 2 devices supported by group for
-                                       HA.
+                                       Maximum 2 devices supported by group for HA.
 
                                        Subclass of AvdModel.
                                     dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -58839,6 +59342,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -58901,6 +59405,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -58926,6 +59432,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -58970,6 +59477,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -61235,14 +61743,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -62010,14 +62515,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -63169,6 +63671,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -63231,6 +63734,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -63256,6 +63761,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -63300,6 +63806,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -65562,14 +66069,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -66335,14 +66839,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -66534,6 +67035,7 @@ class EosDesigns(EosDesignsRootModel):
 
     _fields: ClassVar[dict] = {
         "aaa_settings": {"type": AaaSettings},
+        "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_6_behaviors": {"type": Avd6Behaviors},
         "avd_data_validation_mode": {"type": str, "default": "error"},
@@ -66968,6 +67470,8 @@ class EosDesigns(EosDesignsRootModel):
     }
     _allow_other_keys: ClassVar[bool] = True
     aaa_settings: AaaSettings
+    """Subclass of AvdModel."""
+    address_locking_settings: AddressLockingSettings
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
@@ -68843,11 +69347,7 @@ class EosDesigns(EosDesignsRootModel):
     Default value: `"path-selection"`
     """
     wan_ha: WanHa
-    """
-    PREVIEW: The `wan_ha` key is currently not supported.
-
-    Subclass of AvdModel.
-    """
+    """Subclass of AvdModel."""
     wan_ipsec_profiles: WanIpsecProfiles
     """
     Define IPsec profiles parameters for WAN configuration.
@@ -68960,6 +69460,7 @@ class EosDesigns(EosDesignsRootModel):
             self,
             *,
             aaa_settings: AaaSettings | UndefinedType = Undefined,
+            address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_6_behaviors: Avd6Behaviors | UndefinedType = Undefined,
             avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
@@ -69182,6 +69683,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Args:
                 aaa_settings: Subclass of AvdModel.
+                address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
                 avd_6_behaviors:
                    Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
@@ -70529,10 +71031,7 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of
                    AvdIndexedList with `WanCarriersItem` items. Primary key is `name` (`str`).
                 wan_encapsulation: Select the encapsulation to use for EVPN peerings for WAN BGP peers.
-                wan_ha:
-                   PREVIEW: The `wan_ha` key is currently not supported.
-
-                   Subclass of AvdModel.
+                wan_ha: Subclass of AvdModel.
                 wan_ipsec_profiles:
                    Define IPsec profiles parameters for WAN configuration.
 

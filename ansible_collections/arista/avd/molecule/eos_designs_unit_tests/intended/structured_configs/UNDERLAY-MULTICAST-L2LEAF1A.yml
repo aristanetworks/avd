@@ -16,7 +16,6 @@ ethernet_interfaces:
 hostname: UNDERLAY-MULTICAST-L2LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -30,6 +29,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:

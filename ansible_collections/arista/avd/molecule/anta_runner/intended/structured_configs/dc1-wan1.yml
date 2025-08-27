@@ -138,7 +138,6 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -177,6 +176,7 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
+  is_deployed: true
   dc_name: DC1
   fabric_name: FABRIC
   cv_tags:

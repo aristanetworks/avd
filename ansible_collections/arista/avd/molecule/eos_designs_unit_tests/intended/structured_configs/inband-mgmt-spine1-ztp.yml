@@ -68,7 +68,6 @@ ip_name_servers:
 - ip_address: 8.8.8.8
   vrf: MGMT
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -86,6 +85,7 @@ management_interfaces:
   ip_address: 192.168.100.1/24
   type: oob
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:
   local_interface:

@@ -189,3 +189,6 @@ keys:
           source_clock_hardware:
             type: bool
             description: When enabled, the hardware clock is used as the source for PTP time during free-running mode.
+      forward_v1:
+        type: bool
+        description: Forward dataplane PTP V1 packets.

@@ -1267,6 +1267,9 @@ $defs:
                 default: false
                 description: |
                   Enable PTP unicast forwarding.
+              forward_v1:
+                type: bool
+                description: Forward dataplane PTP V1 packets.
               dscp:
                 type: dict
                 keys:
@@ -1419,8 +1422,6 @@ $defs:
               table: node-type-wan-configuration
             type: dict
             description: |-
-              PREVIEW: This key is currently not supported
-
               The key is supported only if `wan_mode` == `cv-pathfinder`.
               AutoVPN support is still to be determined.
 

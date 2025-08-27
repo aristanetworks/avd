@@ -45,7 +45,6 @@ ethernet_interfaces:
 hostname: DC1-POD1-L2LEAF2A
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -57,6 +56,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   pod_name: DC1_POD1
   dc_name: DC1

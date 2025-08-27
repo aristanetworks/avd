@@ -70,3 +70,29 @@ class AntaTestInputFactory(ABC):
                 return intf.ip_address
         self.logger_adapter.debug(LogMessage.PEER_INTERFACE_NOT_FOUND, interface=interface, peer=peer, peer_interface=peer_interface)
         return None
+
+    def is_peer_interface_shutdown(self, peer: str, peer_interface: str, interface: str) -> bool | None:
+        """
+        Check if a peer's Ethernet interface is in a shutdown state.
+
+        Assumes the peer is available and its structured config has been loaded.
+
+        Args:
+            peer: The name of the peer device.
+            peer_interface: The name of the Ethernet interface on the peer device.
+            interface: The name of the Ethernet interface on the local device (for logging).
+
+        Returns:
+            The shutdown state (True or False) if the interface is found, otherwise None.
+        """
+        peer_intf = next((intf for intf in self.minimal_structured_configs[peer].ethernet_interfaces if intf.name == peer_interface), None)
+
+        if peer_intf is None:
+            self.logger_adapter.debug(LogMessage.PEER_INTERFACE_NOT_FOUND, interface=interface, peer=peer, peer_interface=peer_interface)
+            return None
+
+        shutdown_status = peer_intf.shutdown
+        if shutdown_status:
+            self.logger_adapter.debug(LogMessage.PEER_INTERFACE_SHUTDOWN, interface=interface, peer=peer, peer_interface=peer_interface)
+
+        return shutdown_status
