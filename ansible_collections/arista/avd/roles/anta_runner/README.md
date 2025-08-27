@@ -116,27 +116,45 @@ Devices with `is_deployed: false` set as part of `eos_designs` inputs will autom
 !!! note
     When devices are excluded from a run, whether by using `--limit` or `anta_devices`, tests that rely on the excluded devices will not be executed. For example, if a test requires information from a device that is not included, the test will be skipped. The same behavior applies to `is_deployed: false` devices.
 
-The role connects to EOS devices via eAPI using HTTP/HTTPS, so the devices must be accessible from the Ansible control node. Even though the role uses ANTA's HTTP client, the Ansible connection variables are used to build the connections and must be set accordingly:
+The role connects to EOS devices via eAPI using HTTP/HTTPS, so the devices must be accessible from the Ansible control node.
+The connection is managed by ANTA HTTP client. For flexibility, connection parameters can be defined using `anta_`
+prefixed variables, which take precedence over standard Ansible connection variables.
 
 ```yaml
 # The IP/name of the target host to use instead of inventory_hostname.
 ansible_host: <str>
 
-# The user Ansible logs in as.
+# The username to log in with.
+# Precedence: `anta_user` -> `ansible_user`.
+anta_user: <str>
 ansible_user: <str>
 
-# One of the following must be set for the authentication.
+# The password to use for the connection.
+# Precedence: `anta_password` -> `ansible_password` -> `ansible_httpapi_pass` -> `ansible_httpapi_password`.
+anta_password: <str>
 ansible_password: <str>
 ansible_httpapi_pass: <str>
 ansible_httpapi_password: <str>
 
 # Some tests require elevated privileges to run (enable mode).
+# Precedence: `anta_enable` -> `ansible_become` -> false.
+anta_enable: <bool>
 ansible_become: <bool; default=false>
+
+# The password for privileged (enable) mode.
+# Precdence: `anta_enable_password` -> `ansible_become_password`.
+anta_enable_password: <str>
 ansible_become_password: <str>
 
-# eAPI port and SSL verification.
-ansible_httpapi_port: <int; default=80 or 443 depending on ansible_httpapi_use_ssl>
+# eAPI SSL verification.
+# Precedence: `anta_use_ssl` -> `ansible_httpapi_use_ssl` -> true.
+anta_use_ssl: <bool>
 ansible_httpapi_use_ssl: <bool; default=true>
+
+# eAPI port.
+# Precedence: `anta_port` -> `ansible_httpapi_port` -> 80 or 443 depending on SSL.
+anta_port: <int>
+ansible_httpapi_port: <int; default=80 or 443 depending on anta_use_ssl or ansible_httpapi_use_ssl>
 ```
 
 ### Directory Configuration
