@@ -32,7 +32,6 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 2001:db8::2
   vrf: MGMT
-is_deployed: true
 local_users:
 - name: admin
   disabled: true
@@ -61,6 +60,7 @@ management_interfaces:
   type: oob
   gateway: 1.1.1.1
 metadata:
+  is_deployed: true
   platform: 7500R2
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:

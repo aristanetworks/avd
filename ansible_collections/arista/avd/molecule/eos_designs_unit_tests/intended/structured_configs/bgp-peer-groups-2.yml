@@ -17,7 +17,6 @@ hostname: bgp-peer-groups-2
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -32,6 +31,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:
   domain_id: mlag
