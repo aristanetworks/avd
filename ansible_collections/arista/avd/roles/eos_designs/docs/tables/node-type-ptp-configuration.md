@@ -26,7 +26,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_one_step</samp>](## "<node_type_keys.key>.defaults.ptp.mode_one_step") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "<node_type_keys.key>.defaults.ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "<node_type_keys.key>.defaults.ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.defaults.ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.defaults.ptp.forward_v1") | Boolean |  | `False` |  | Forward dataplane PTP V1 packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "<node_type_keys.key>.defaults.ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "<node_type_keys.key>.defaults.ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "<node_type_keys.key>.defaults.ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -70,7 +70,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_one_step</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.mode_one_step") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.forward_v1") | Boolean |  | `False` |  | Forward dataplane PTP V1 packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -110,7 +110,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_one_step</samp>](## "<node_type_keys.key>.node_groups.[].ptp.mode_one_step") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "<node_type_keys.key>.node_groups.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "<node_type_keys.key>.node_groups.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.node_groups.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.node_groups.[].ptp.forward_v1") | Boolean |  | `False` |  | Forward dataplane PTP V1 packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "<node_type_keys.key>.node_groups.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "<node_type_keys.key>.node_groups.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "<node_type_keys.key>.node_groups.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -152,7 +152,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode_one_step</samp>](## "<node_type_keys.key>.nodes.[].ptp.mode_one_step") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "<node_type_keys.key>.nodes.[].ptp.ttl") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "<node_type_keys.key>.nodes.[].ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.nodes.[].ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forward_v1</samp>](## "<node_type_keys.key>.nodes.[].ptp.forward_v1") | Boolean |  | `False` |  | Forward dataplane PTP V1 packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "<node_type_keys.key>.nodes.[].ptp.dscp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "<node_type_keys.key>.nodes.[].ptp.dscp.general_messages") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "<node_type_keys.key>.nodes.[].ptp.dscp.event_messages") | Integer |  |  |  |  |
@@ -230,7 +230,7 @@
           forward_unicast: <bool; default=False>
 
           # Forward dataplane PTP V1 packets.
-          forward_v1: <bool>
+          forward_v1: <bool; default=False>
           dscp:
             general_messages: <int>
             event_messages: <int>
@@ -313,7 +313,7 @@
                 forward_unicast: <bool; default=False>
 
                 # Forward dataplane PTP V1 packets.
-                forward_v1: <bool>
+                forward_v1: <bool; default=False>
                 dscp:
                   general_messages: <int>
                   event_messages: <int>
@@ -383,7 +383,7 @@
             forward_unicast: <bool; default=False>
 
             # Forward dataplane PTP V1 packets.
-            forward_v1: <bool>
+            forward_v1: <bool; default=False>
             dscp:
               general_messages: <int>
               event_messages: <int>
@@ -459,7 +459,7 @@
             forward_unicast: <bool; default=False>
 
             # Forward dataplane PTP V1 packets.
-            forward_v1: <bool>
+            forward_v1: <bool; default=False>
             dscp:
               general_messages: <int>
               event_messages: <int>

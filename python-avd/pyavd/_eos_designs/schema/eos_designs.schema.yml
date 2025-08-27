@@ -11359,6 +11359,7 @@ $defs:
                   '
               forward_v1:
                 type: bool
+                default: false
                 description: Forward dataplane PTP V1 packets.
               dscp:
                 type: dict
