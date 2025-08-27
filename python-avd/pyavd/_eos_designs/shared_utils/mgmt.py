@@ -33,7 +33,8 @@ class MgmtMixin(Protocol):
         Global var mgmt_interface ->
           Platform Settings management_interface ->
             Fabric Topology data model mgmt_interface.
-        If in Digital Twin mode, the returned value is modified to meet the requirements of the target environment.
+        If in Digital Twin mode, the returned value is modified to meet the requirements of the target environment:
+            ACT: Management1.
         """
         mgmt_interface = default(
             self.node_config.mgmt_interface,
@@ -45,21 +46,17 @@ class MgmtMixin(Protocol):
             "Management1",
         )
 
-        # Adjust selected OOB management interface if required by the target Digital Twin environment
-        if self.digital_twin:
-            match self.inputs.digital_twin.environment:
-                case "act":
-                    # Check if original mgmt_interface is already matching correct pattern
-                    mgmt_interface_matching = mgmt_interface.title().startswith("Management") and mgmt_interface.title()[len("Management") :].strip() == "1"
-                    # If not matching, adjust for the veos and cloudeos node types
-                    if not mgmt_interface_matching and self.platform_settings.digital_twin.act_node_type in ["veos", "cloudeos"]:
-                        LOGGER.info(
-                            "OOB management interface for node '%s' changed from '%s' to '%s' for its ACT Digital Twin copy.",
-                            self.hostname,
-                            mgmt_interface,
-                            "Management1",
-                        )
-                        return "Management1"
+        # Adjust OOB management interface for ACT Digital Twin "veos" and "cloudeos" node types
+        if self.digital_twin and self.inputs.digital_twin.environment == "act":
+            act_mgmt_interface = "Management1"
+            if mgmt_interface != act_mgmt_interface and self.platform_settings.digital_twin.act_node_type in ["veos", "cloudeos"]:
+                LOGGER.info(
+                    "OOB management interface for node '%s' changed from '%s' to '%s' for its ACT Digital Twin copy.",
+                    self.hostname,
+                    mgmt_interface,
+                    "Management1",
+                )
+                return "Management1"
 
         return mgmt_interface
 
