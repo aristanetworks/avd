@@ -443,11 +443,11 @@ interface Vlan350
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group | Multicast Group Encap Range | Overlay Multicast Group | Underlay Multicast Group (Encap) |
-| --- | --- | --------------- | --------------------------- | ----------------------- | -------------------------------- |
-| Tenant_A_WAN_Zone | 14 | - | - | - | - |
-| Tenant_B_WAN_Zone | 21 | - | - | - | - |
-| Tenant_C_WAN_Zone | 31 | - | - | - | - |
+| VRF | VNI | Multicast Group | Multicast Group Encap Range | Overlay to Underlay Multicast Group Mapping |
+| --- | --- | --------------- | --------------------------- | ------------------------------------------- |
+| Tenant_A_WAN_Zone | 14 | - | - | - |
+| Tenant_B_WAN_Zone | 21 | - | - | - |
+| Tenant_C_WAN_Zone | 31 | - | - | - |
 
 #### VXLAN Interface Device Configuration
 

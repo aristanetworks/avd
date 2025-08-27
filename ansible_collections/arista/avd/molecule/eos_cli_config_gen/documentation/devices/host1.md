@@ -7189,10 +7189,10 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group | Multicast Group Encap Range | Overlay Multicast Group | Underlay Multicast Group (Encap) |
-| --- | --- | --------------- | --------------------------- | ----------------------- | -------------------------------- |
-| Tenant_A_OP_Zone | 10 | 232.0.0.10 | 239.0.43.0/24 | 239.1.1.0, 239.1.1.1, 239.1.1.2 | 225.0.41.1, 225.0.41.1, 225.0.41.2 |
-| Tenant_A_WEB_Zone | 11 | - | - | - | - |
+| VRF | VNI | Multicast Group | Multicast Group Encap Range | Overlay to Underlay Multicast Group Mapping |
+| --- | --- | --------------- | --------------------------- | ------------------------------------------- |
+| Tenant_A_OP_Zone | 10 | 232.0.0.10 | 239.0.43.0/24 | 239.1.1.0 -> 225.0.41.1<br/>239.1.1.1 -> 225.0.41.1<br/>239.1.1.2 -> 225.0.41.2 |
+| Tenant_A_WEB_Zone | 11 | - | - | - |
 
 ##### Default Flood List
 

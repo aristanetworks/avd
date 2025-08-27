@@ -534,11 +534,11 @@ interface Loopback0
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group | Multicast Group Encap Range | Overlay Multicast Group | Underlay Multicast Group (Encap) |
-| --- | --- | --------------- | --------------------------- | ----------------------- | -------------------------------- |
-| BLUE | 100 | - | - | - | - |
-| default | 1 | - | - | - | - |
-| RED | 101 | - | - | - | - |
+| VRF | VNI | Multicast Group | Multicast Group Encap Range | Overlay to Underlay Multicast Group Mapping |
+| --- | --- | --------------- | --------------------------- | ------------------------------------------- |
+| BLUE | 100 | - | - | - |
+| default | 1 | - | - | - |
+| RED | 101 | - | - | - |
 
 #### VXLAN Interface Device Configuration
 
