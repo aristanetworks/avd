@@ -12514,6 +12514,7 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "sflow": {"type": bool, "default": True},
+                "sflow_subinterfaces": {"type": bool, "default": True},
                 "wan": {"type": bool, "default": True},
                 "ptp": {"type": bool, "default": True},
             }
@@ -12657,6 +12658,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            sflow_subinterfaces: bool
+            """
+            Support for sFlow on sub-interfaces.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             wan: bool
             """
             Support for Arista WAN features.
@@ -12696,6 +12704,7 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     sflow: bool | UndefinedType = Undefined,
+                    sflow_subinterfaces: bool | UndefinedType = Undefined,
                     wan: bool | UndefinedType = Undefined,
                     ptp: bool | UndefinedType = Undefined,
                 ) -> None:
@@ -12781,6 +12790,9 @@ class EosDesigns(EosDesignsRootModel):
                            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
                         sflow:
                            Support for sFlow.
+                           The feature will be ignored on platforms where this is false.
+                        sflow_subinterfaces:
+                           Support for sFlow on sub-interfaces.
                            The feature will be ignored on platforms where this is false.
                         wan:
                            Support for Arista WAN features.
@@ -13247,6 +13259,7 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "sflow": {"type": bool, "default": True},
+                "sflow_subinterfaces": {"type": bool, "default": True},
                 "wan": {"type": bool, "default": True},
                 "ptp": {"type": bool, "default": True},
             }
@@ -13390,6 +13403,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            sflow_subinterfaces: bool
+            """
+            Support for sFlow on sub-interfaces.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             wan: bool
             """
             Support for Arista WAN features.
@@ -13429,6 +13449,7 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     sflow: bool | UndefinedType = Undefined,
+                    sflow_subinterfaces: bool | UndefinedType = Undefined,
                     wan: bool | UndefinedType = Undefined,
                     ptp: bool | UndefinedType = Undefined,
                 ) -> None:
@@ -13514,6 +13535,9 @@ class EosDesigns(EosDesignsRootModel):
                            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
                         sflow:
                            Support for sFlow.
+                           The feature will be ignored on platforms where this is false.
+                        sflow_subinterfaces:
+                           Support for sFlow on sub-interfaces.
                            The feature will be ignored on platforms where this is false.
                         wan:
                            Support for Arista WAN features.
