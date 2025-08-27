@@ -62,6 +62,7 @@ def test_eos_designs_custom_structured_configuration(prefix: str | None, expecte
 
 # eos_cli_config_gen inputs are validated by `validate_structured_config` in another file.
 @pytest.mark.molecule_scenarios(
+    "digital_twin",
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
     "eos_designs-l2ls",
@@ -96,6 +97,7 @@ def test_eos_designs_initialize_kwargs_with_valid_data(molecule_host: MoleculeHo
 
 # eos_cli_config_gen inputs are validated by `validate_structured_config` in another file.
 @pytest.mark.molecule_scenarios(
+    "digital_twin",
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
     "eos_designs-l2ls",
