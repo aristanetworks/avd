@@ -1,0 +1,16 @@
+nodes:
+- digital-twin-default-interfaces-digital-twin-platform:
+    node_type: veos
+    ip_addr: 10.10.10.100/24
+    version: 4.33.1.1F
+- digital-twin-default-interfaces-original-platform:
+    node_type: veos
+    ip_addr: 10.10.10.101/24
+    version: 4.33.1.1F
+veos:
+  username: cvpadmin
+  password: cvp123!
+links:
+- connection:
+  - digital-twin-default-interfaces-digital-twin-platform:Ethernet3
+  - digital-twin-default-interfaces-original-platform:Ethernet2
