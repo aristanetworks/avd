@@ -490,7 +490,7 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
         msg = (
             f"Device '{device}' is missing required connection settings. "
             f"Please make sure all required connection variables are defined in the Ansible inventory, "
-            f"following the Ansible HTTPAPI connection plugin settings: {ANSIBLE_HTTPAPI_CONNECTION_DOC}"
+            "as specified in the role documentation."
         )
         raise ValueError(msg)
 
