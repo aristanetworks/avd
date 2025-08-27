@@ -15,7 +15,6 @@ ethernet_interfaces:
 hostname: string_set_as_play_var
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 link_tracking_groups:
 - name: LT_GROUP1
   recovery_delay: 300
@@ -24,6 +23,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   platform: 720XP
   fabric_name: ANSIBLE_ONLY
 port_channel_interfaces:

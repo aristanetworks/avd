@@ -349,7 +349,6 @@ ipv6_static_routes:
   next_hop: 2001:db8:310::1
   track_bfd: true
   name: Track-bfd-network-services
-is_deployed: true
 local_users:
 - name: admin
   disabled: true
@@ -405,6 +404,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: 7280R
   rack: rackC
   fabric_name: EOS_DESIGNS_UNIT_TESTS
