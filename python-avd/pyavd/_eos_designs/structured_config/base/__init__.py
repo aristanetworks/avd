@@ -598,7 +598,7 @@ class AvdStructuredConfigBaseProtocol(
             ttl=self.shared_utils.node_config.ptp.ttl,
             domain=default(self.shared_utils.node_config.ptp.domain, default_ptp_domain),
             monitor=self.get_ptp_monitor(),
-            forward_v1=default(self.shared_utils.node_config.ptp.forward_v1, self.inputs.ptp_settings.forward_v1),
+            forward_v1=default(self.shared_utils.node_config.ptp.forward_v1, self.inputs.ptp_settings.forward_v1) or None,
         )
 
         self.structured_config.ptp.source.ip = self.shared_utils.node_config.ptp.source_ip
