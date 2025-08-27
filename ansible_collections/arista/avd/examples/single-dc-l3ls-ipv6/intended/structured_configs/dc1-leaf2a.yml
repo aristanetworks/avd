@@ -94,7 +94,6 @@ ipv6_prefix_lists:
   - sequence: 10
     action: permit 2001:db8:4:2::/64
 ipv6_unicast_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -141,6 +140,7 @@ management_interfaces:
   type: oob
   gateway: 172.16.1.1
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: FABRIC
 mlag_configuration:

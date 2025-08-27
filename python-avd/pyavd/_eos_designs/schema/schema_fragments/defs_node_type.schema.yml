@@ -1267,6 +1267,9 @@ $defs:
                 default: false
                 description: |
                   Enable PTP unicast forwarding.
+              forward_v1:
+                type: bool
+                description: Forward dataplane PTP V1 packets.
               dscp:
                 type: dict
                 keys:

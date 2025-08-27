@@ -7,6 +7,22 @@ nodes:
     node_type: veos
     ip_addr: 10.10.10.101/24
     version: 4.33.1.1F
+- digital-twin-enforce-eapi-1:
+    node_type: veos
+    ip_addr: 192.168.0.1/32
+    version: 4.33.1.1F
+- digital-twin-enforce-eapi-2:
+    node_type: veos
+    ip_addr: 192.168.0.2/32
+    version: 4.33.1.1F
+- digital-twin-enforce-eapi-3:
+    node_type: veos
+    ip_addr: 192.168.0.3/32
+    version: 4.33.1.1F
+- digital-twin-enforce-eapi-4:
+    node_type: veos
+    ip_addr: 192.168.0.4/32
+    version: 4.33.1.1F
 veos:
   username: cvpadmin
   password: cvp123!

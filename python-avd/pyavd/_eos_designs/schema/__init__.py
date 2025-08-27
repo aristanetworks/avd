@@ -4234,6 +4234,7 @@ class EosDesigns(EosDesignsRootModel):
                 "act_username": {"type": str, "default": "cvpadmin"},
                 "act_password": {"type": str, "default": "cvp123!"},
                 "act_internet_access": {"type": bool, "default": False},
+                "act_ensure_eapi_access": {"type": bool, "default": False},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -4259,6 +4260,20 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            act_ensure_eapi_access: bool
+            """
+            Ensures eAPI remains accessible for automation and testing via ACT.
+            Clients connecting to device
+            eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+            management VRF, this primary eAPI connectivity can be unintentionally broken.
+            Set this to `true` to
+            enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
+            default VRF and preserving this connectivity.
+            This setting is only applicable to ACT `veos` and
+            `cloudeos` node types.
+
+            Default value: `False`
+            """
 
             if TYPE_CHECKING:
 
@@ -4269,6 +4284,7 @@ class EosDesigns(EosDesignsRootModel):
                     act_username: str | UndefinedType = Undefined,
                     act_password: str | UndefinedType = Undefined,
                     act_internet_access: bool | UndefinedType = Undefined,
+                    act_ensure_eapi_access: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -4286,6 +4302,16 @@ class EosDesigns(EosDesignsRootModel):
                            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
                            types.
                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        act_ensure_eapi_access:
+                           Ensures eAPI remains accessible for automation and testing via ACT.
+                           Clients connecting to device
+                           eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+                           management VRF, this primary eAPI connectivity can be unintentionally broken.
+                           Set this to `true` to
+                           enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
+                           default VRF and preserving this connectivity.
+                           This setting is only applicable to ACT `veos` and
+                           `cloudeos` node types.
 
                     """
 
@@ -12488,6 +12514,7 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "sflow": {"type": bool, "default": True},
+                "sflow_subinterfaces": {"type": bool, "default": True},
                 "wan": {"type": bool, "default": True},
                 "ptp": {"type": bool, "default": True},
             }
@@ -12631,6 +12658,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            sflow_subinterfaces: bool
+            """
+            Support for sFlow on sub-interfaces.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             wan: bool
             """
             Support for Arista WAN features.
@@ -12670,6 +12704,7 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     sflow: bool | UndefinedType = Undefined,
+                    sflow_subinterfaces: bool | UndefinedType = Undefined,
                     wan: bool | UndefinedType = Undefined,
                     ptp: bool | UndefinedType = Undefined,
                 ) -> None:
@@ -12755,6 +12790,9 @@ class EosDesigns(EosDesignsRootModel):
                            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
                         sflow:
                            Support for sFlow.
+                           The feature will be ignored on platforms where this is false.
+                        sflow_subinterfaces:
+                           Support for sFlow on sub-interfaces.
                            The feature will be ignored on platforms where this is false.
                         wan:
                            Support for Arista WAN features.
@@ -13221,6 +13259,7 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "sflow": {"type": bool, "default": True},
+                "sflow_subinterfaces": {"type": bool, "default": True},
                 "wan": {"type": bool, "default": True},
                 "ptp": {"type": bool, "default": True},
             }
@@ -13364,6 +13403,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            sflow_subinterfaces: bool
+            """
+            Support for sFlow on sub-interfaces.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             wan: bool
             """
             Support for Arista WAN features.
@@ -13403,6 +13449,7 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     sflow: bool | UndefinedType = Undefined,
+                    sflow_subinterfaces: bool | UndefinedType = Undefined,
                     wan: bool | UndefinedType = Undefined,
                     ptp: bool | UndefinedType = Undefined,
                 ) -> None:
@@ -13488,6 +13535,9 @@ class EosDesigns(EosDesignsRootModel):
                            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
                         sflow:
                            Support for sFlow.
+                           The feature will be ignored on platforms where this is false.
+                        sflow_subinterfaces:
+                           Support for sFlow on sub-interfaces.
                            The feature will be ignored on platforms where this is false.
                         wan:
                            Support for Arista WAN features.
@@ -15310,6 +15360,7 @@ class EosDesigns(EosDesignsRootModel):
             "profile": {"type": str, "default": "aes67-r16-2016"},
             "domain": {"type": int, "default": 127},
             "auto_clock_identity": {"type": bool, "default": True},
+            "forward_v1": {"type": bool, "default": False},
         }
         enabled: bool | None
         profile: str
@@ -15325,6 +15376,12 @@ class EosDesigns(EosDesignsRootModel):
         """Default value: `127`"""
         auto_clock_identity: bool
         """Default value: `True`"""
+        forward_v1: bool
+        """
+        Forward dataplane PTP V1 packets.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -15335,6 +15392,7 @@ class EosDesigns(EosDesignsRootModel):
                 profile: str | UndefinedType = Undefined,
                 domain: int | UndefinedType = Undefined,
                 auto_clock_identity: bool | UndefinedType = Undefined,
+                forward_v1: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 PtpSettings.
@@ -15351,6 +15409,7 @@ class EosDesigns(EosDesignsRootModel):
                          - "smpte2059-2"
                     domain: domain
                     auto_clock_identity: auto_clock_identity
+                    forward_v1: Forward dataplane PTP V1 packets.
 
                 """
 
@@ -25266,6 +25325,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -25328,6 +25388,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -25353,6 +25415,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -25397,6 +25460,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -29567,6 +29631,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "mode_one_step": {"type": bool, "default": False},
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
+                                "forward_v1": {"type": bool},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -29629,6 +29694,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            forward_v1: bool | None
+                            """Forward dataplane PTP V1 packets."""
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -29654,6 +29721,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: bool | UndefinedType = Undefined,
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
+                                    forward_v1: bool | None | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -29698,6 +29766,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode_one_step: mode_one_step
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
+                                        forward_v1: Forward dataplane PTP V1 packets.
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -33825,6 +33894,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -33887,6 +33957,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -33912,6 +33984,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -33956,6 +34029,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -38149,6 +38223,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -38211,6 +38286,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -38236,6 +38313,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -38280,6 +38358,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -50718,6 +50797,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -50780,6 +50860,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -50805,6 +50887,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -50849,6 +50932,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -55019,6 +55103,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "mode_one_step": {"type": bool, "default": False},
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
+                                "forward_v1": {"type": bool},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -55081,6 +55166,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            forward_v1: bool | None
+                            """Forward dataplane PTP V1 packets."""
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -55106,6 +55193,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: bool | UndefinedType = Undefined,
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
+                                    forward_v1: bool | None | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -55150,6 +55238,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode_one_step: mode_one_step
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
+                                        forward_v1: Forward dataplane PTP V1 packets.
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -59277,6 +59366,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -59339,6 +59429,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -59364,6 +59456,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -59408,6 +59501,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -63601,6 +63695,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -63663,6 +63758,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -63688,6 +63785,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -63732,6 +63830,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 

@@ -50,7 +50,6 @@ ethernet_interfaces:
     enabled: false
 hostname: DC1-SPINE1
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -68,6 +67,7 @@ management_interfaces:
   ip_address: 192.168.200.101/24
   type: oob
 metadata:
+  is_deployed: true
   platform: 7050SX3
   fabric_name: ANSIBLE_ONLY
 prefix_lists:
