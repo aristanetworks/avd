@@ -17,6 +17,9 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
+| DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-1 | 192.168.1.1/32 | vEOS-lab | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-2 | 192.168.1.2/32 | vEOS-lab | Provisioned | - |
+| DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-3 | - | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2spine | digital-twin-default-interfaces-digital-twin-platform | 10.10.10.100/24 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-default-interfaces-original-platform | 10.10.10.101/24 | vEOS-lab | Provisioned | - |
 | DIGITAL_TWIN | l2leaf | digital-twin-enforce-eapi-1 | 192.168.0.1/32 | vEOS-lab | Provisioned | - |
@@ -30,6 +33,7 @@
 
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
+| DIGITAL_TWIN | l2leaf | digital-twin-adjust-oob-mgmt-3 | 192.168.1.3/32 | Vlan4092 |
 
 ## Fabric Topology
 
