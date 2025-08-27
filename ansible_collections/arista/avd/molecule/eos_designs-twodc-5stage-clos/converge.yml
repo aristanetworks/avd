@@ -18,8 +18,6 @@
     output_dir_name: "digital_twin/intended"
     documentation_dir_name: "digital_twin/documentation"
     avd_digital_twin_mode: true
-    # Test automatic adjustment of the OOB mgmt interface for the ACT Digital Twin
-    mgmt_interface: "Management0"
   tasks:
 
     - name: Generate intended variables in ACT Digital Twin mode
