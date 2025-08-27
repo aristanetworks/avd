@@ -48,19 +48,19 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | OOB_MANAGEMENT | oob | MGMT | 192.168.1.12/24 | 192.168.1.254 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.1.12/24 | 192.168.1.254 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
-interface Management0
+interface Management1
    description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
