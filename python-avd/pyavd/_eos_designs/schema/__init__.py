@@ -4289,7 +4289,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"environment": {"type": str, "default": "act"}, "fabric": {"type": Fabric}}
+        _fields: ClassVar[dict] = {
+            "environment": {"type": str, "default": "act"},
+            "fabric": {"type": Fabric},
+            "use_default_interfaces_of_digital_twin_platform": {"type": bool, "default": False},
+        }
         environment: Literal["act"]
         """
         Targeted Digital Twin environment.
@@ -4302,10 +4306,23 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        use_default_interfaces_of_digital_twin_platform: bool
+        """
+        In Digital Twin mode, AVD can either use the default interfaces of the original or the digital twin
+        platform (as set in `platform_settings.[].digital_twin.platform`).
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, environment: Literal["act"] | UndefinedType = Undefined, fabric: Fabric | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                environment: Literal["act"] | UndefinedType = Undefined,
+                fabric: Fabric | UndefinedType = Undefined,
+                use_default_interfaces_of_digital_twin_platform: bool | UndefinedType = Undefined,
+            ) -> None:
                 """
                 DigitalTwin.
 
@@ -4318,6 +4335,9 @@ class EosDesigns(EosDesignsRootModel):
                        Settings for Digital Twin fabric devices.
 
                        Subclass of AvdModel.
+                    use_default_interfaces_of_digital_twin_platform:
+                       In Digital Twin mode, AVD can either use the default interfaces of the original or the digital twin
+                       platform (as set in `platform_settings.[].digital_twin.platform`).
 
                 """
 
