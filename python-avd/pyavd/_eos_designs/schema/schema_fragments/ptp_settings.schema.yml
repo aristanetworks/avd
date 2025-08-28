@@ -29,3 +29,7 @@ keys:
       auto_clock_identity:
         type: bool
         default: true
+      forward_v1:
+        type: bool
+        default: false
+        $ref: "eos_cli_config_gen#/keys/ptp/keys/forward_v1"

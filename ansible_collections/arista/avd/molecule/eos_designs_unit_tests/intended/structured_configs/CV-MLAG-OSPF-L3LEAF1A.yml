@@ -47,7 +47,6 @@ hostname: CV-MLAG-OSPF-L3LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -71,6 +70,7 @@ management_interfaces:
   ip_address: 192.168.201.114/24
   type: oob
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:

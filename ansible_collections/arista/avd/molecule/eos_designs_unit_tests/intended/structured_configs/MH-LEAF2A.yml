@@ -67,7 +67,6 @@ ip_name_servers:
   vrf: MGMT
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-is_deployed: true
 lacp:
   port_id:
     range:
@@ -125,6 +124,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   pod_name: TENANT_NETWORKS_POD
   fabric_name: EOS_DESIGNS_UNIT_TESTS

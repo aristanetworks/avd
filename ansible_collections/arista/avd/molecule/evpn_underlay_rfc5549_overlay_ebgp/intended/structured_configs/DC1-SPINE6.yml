@@ -47,7 +47,6 @@ ipv6_prefix_lists:
   - sequence: 10
     action: permit 2001:1::/64 eq 128
 ipv6_unicast_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -76,6 +75,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: 7050X3
   fabric_name: DC1_FABRIC
 ntp:

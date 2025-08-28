@@ -289,6 +289,12 @@ keys:
                 Support for sFlow.
                 The feature will be ignored on platforms where this is false.
               default: true
+            sflow_subinterfaces:
+              type: bool
+              description: |-
+                Support for sFlow on sub-interfaces.
+                The feature will be ignored on platforms where this is false.
+              default: true
             wan:
               type: bool
               description: |-
