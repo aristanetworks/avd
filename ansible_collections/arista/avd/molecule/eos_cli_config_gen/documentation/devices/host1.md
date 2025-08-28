@@ -663,9 +663,9 @@ PTP Profile: g8275.1
 
 #### PTP Summary
 
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running Enabled |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------------- |
-| 11:11:11:11:11:11 | 1.1.2.3 | 101 | 102 | 12 | 17 | boundary | True | True (Hardware) |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward V1 | Forward Unicast | Free Running Enabled |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | ---------- | --------------- | -------------------- |
+| 11:11:11:11:11:11 | 1.1.2.3 | 101 | 102 | 12 | 17 | boundary | True | True | True (Hardware) |
 
 #### PTP Device Configuration
 
@@ -674,6 +674,7 @@ PTP Profile: g8275.1
 ptp clock-identity 11:11:11:11:11:11
 ptp domain 17
 ptp free-running source clock hardware
+ptp hold-ptp-time 43200
 ptp message-type event dscp 46 default
 ptp message-type general dscp 36 default
 ptp mode boundary one-step
@@ -682,6 +683,7 @@ ptp priority2 102
 ptp profile g8275.1
 ptp source ip 1.1.2.3
 ptp ttl 12
+ptp forward-v1
 ptp forward-unicast
 ptp monitor threshold offset-from-master 11
 ptp monitor threshold mean-path-delay 12
@@ -2591,6 +2593,8 @@ tap aggregation
 
 sFlow Sample Rate: 1000
 
+sFlow Sample Truncation Size: 256 bytes.
+
 sFlow Sample Input Subinterface is enabled.
 
 sFlow Sample Output Subinterface is enabled.
@@ -2643,6 +2647,7 @@ sFlow hardware accelerated Sample Rate: 1024
 ```eos
 !
 sflow sample dangerous 1000
+sflow sample truncate size 256
 sflow polling-interval 10
 sflow vrf AAA destination 10.6.75.62 123
 sflow vrf AAA destination 10.6.75.63 333

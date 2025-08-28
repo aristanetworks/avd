@@ -47,6 +47,7 @@ class FilteredTenantsMixin(Protocol):
                 if original_tenant.name not in filter_tenants and "all" not in filter_tenants:
                     continue
                 tenant = original_tenant._deepcopy()
+                tenant._internal_data.context = f"{network_services_key.key}"
                 tenant.l2vlans = self.filtered_l2vlans(tenant)
                 tenant.vrfs = self.filtered_vrfs(tenant)
                 filtered_tenants.append(tenant)
@@ -90,11 +91,13 @@ class FilteredTenantsMixin(Protocol):
         if not self.network_services_l2 or not tenant.l2vlans:
             EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
 
-        filtered_l2vlans = tenant.l2vlans._filtered(
-            lambda l2vlan: self.is_accepted_vlan(l2vlan) and bool("all" in self.filter_tags or set(l2vlan.tags).intersection(self.filter_tags))
+        merged_l2vlans = [self.get_merged_l2vlan_config(l2vlan) for l2vlan in tenant.l2vlans]
+
+        filtered_l2vlans = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans(merged_l2vlans)._filtered(
+            lambda l2vlan: self.is_accepted_vlan(l2vlan) and ("all" in (self.filter_tags or []) or bool(set(l2vlan.tags).intersection(self.filter_tags or [])))
         )
-        for index, l2vlan in enumerate(filtered_l2vlans):
-            filtered_l2vlans[index] = self.get_merged_l2vlan_config(l2vlan)
+
+        for l2vlan in filtered_l2vlans:
             if tenant.evpn_vlan_bundle:
                 l2vlan.evpn_vlan_bundle = l2vlan.evpn_vlan_bundle or tenant.evpn_vlan_bundle
 

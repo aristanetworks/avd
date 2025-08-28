@@ -9,10 +9,13 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>&lt;network_services_keys.name&gt;</samp>](## "<network_services_keys.name>") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].name") | String | Required, Unique |  |  | Specify a tenant name.<br>Tenant provide a construct to group L3 VRFs and L2 VLANs.<br>Networks services can be filtered by tenant name.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2vlans</samp>](## "<network_services_keys.name>.[].l2vlans") | List, items: Dictionary |  |  |  | Define L2 network services organized by vlan id. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2vlans</samp>](## "<network_services_keys.name>.[].l2vlans") | List, items: Dictionary |  |  |  | Define L2 network services organized by VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].l2vlans.[].id") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<network_services_keys.name>.[].l2vlans.[].name") | String | Required |  |  | VLAN name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].l2vlans.[].profile") | String |  |  |  | L2VLAN profile name. Profile defined under `l2vlan_profiles`.<br>L2VLAN can refer to one l2vlan_profile which again can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "<network_services_keys.name>.[].l2vlans.[].address_locking") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "<network_services_keys.name>.[].l2vlans.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "<network_services_keys.name>.[].l2vlans.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_override</samp>](## "<network_services_keys.name>.[].l2vlans.[].vni_override") | Integer |  |  | Min: 1<br>Max: 16777215 | By default the VNI will be derived from mac_vrf_vni_base.<br>The vni_override, allows to override this value and statically define it.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_override</samp>](## "<network_services_keys.name>.[].l2vlans.[].rt_override") | String |  |  |  | By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.<br>The rt_override allows us to override this value and statically define it.<br>rt_override will default to vni_override if set.<br>rt_override supports two formats:<br>  - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).<br>  - A full RT string with colon separator which will override the full RT.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd_override</samp>](## "<network_services_keys.name>.[].l2vlans.[].rd_override") | String |  |  |  | By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.<br>The rt_override allows us to override this value and statically define it.<br>rd_override will default to rt_override or vni_override if set.<br>rd_override supports two formats:<br>  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).<br>  - A full RD string with colon separator which will override the full RD.<br> |
@@ -31,8 +34,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "<network_services_keys.name>.[].l2vlans.[].private_vlan.type") | String | Required |  | Valid Values:<br>- <code>community</code><br>- <code>isolated</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_vlan</samp>](## "<network_services_keys.name>.[].l2vlans.[].private_vlan.primary_vlan") | Integer | Required |  |  | Primary VLAN ID. |
     | [<samp>l2vlan_profiles</samp>](## "l2vlan_profiles") | List, items: Dictionary |  |  |  | Profiles to inherit common settings for l2vlans defined under the network_services key. |
-    | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "l2vlan_profiles.[].profile") | String | Required, Unique |  |  | L2VLAN profile name. Any variable supported under `l2vlans` can be inherited from a profile. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "l2vlan_profiles.[].profile") | String | Required, Unique |  |  | Profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "l2vlan_profiles.[].parent_profile") | String |  |  |  | Parent L2VLAN profile name to apply.<br>l2vlan_profiles can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "l2vlan_profiles.[].address_locking") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "l2vlan_profiles.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "l2vlan_profiles.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vni_override</samp>](## "l2vlan_profiles.[].vni_override") | Integer |  |  | Min: 1<br>Max: 16777215 | By default the VNI will be derived from mac_vrf_vni_base.<br>The vni_override, allows to override this value and statically define it.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rt_override</samp>](## "l2vlan_profiles.[].rt_override") | String |  |  |  | By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.<br>The rt_override allows us to override this value and statically define it.<br>rt_override will default to vni_override if set.<br>rt_override supports two formats:<br>  - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).<br>  - A full RT string with colon separator which will override the full RT.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rd_override</samp>](## "l2vlan_profiles.[].rd_override") | String |  |  |  | By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.<br>The rt_override allows us to override this value and statically define it.<br>rd_override will default to rt_override or vni_override if set.<br>rd_override supports two formats:<br>  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).<br>  - A full RD string with colon separator which will override the full RD.<br> |
@@ -61,7 +67,7 @@
         # Networks services can be filtered by tenant name.
       - name: <str; required; unique>
 
-        # Define L2 network services organized by vlan id.
+        # Define L2 network services organized by VLAN ID.
         l2vlans:
 
             # VLAN ID.
@@ -73,6 +79,13 @@
             # L2VLAN profile name. Profile defined under `l2vlan_profiles`.
             # L2VLAN can refer to one l2vlan_profile which again can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
             profile: <str>
+            address_locking:
+
+              # Enable address locking for IPv4.
+              ipv4: <bool>
+
+              # Enable address locking for IPv6.
+              ipv6: <bool>
 
             # By default the VNI will be derived from mac_vrf_vni_base.
             # The vni_override, allows to override this value and statically define it.
@@ -138,12 +151,19 @@
     # Profiles to inherit common settings for l2vlans defined under the network_services key.
     l2vlan_profiles:
 
-        # L2VLAN profile name. Any variable supported under `l2vlans` can be inherited from a profile.
+        # Profile name.
       - profile: <str; required; unique>
 
         # Parent L2VLAN profile name to apply.
         # l2vlan_profiles can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
         parent_profile: <str>
+        address_locking:
+
+          # Enable address locking for IPv4.
+          ipv4: <bool>
+
+          # Enable address locking for IPv6.
+          ipv6: <bool>
 
         # By default the VNI will be derived from mac_vrf_vni_base.
         # The vni_override, allows to override this value and statically define it.

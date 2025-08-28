@@ -11,6 +11,9 @@ $defs:
     items:
       type: dict
       keys:
+        address_locking:
+          type: dict
+          $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family"
         vni_override:
           type: int
           convert_types:

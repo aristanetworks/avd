@@ -6,12 +6,15 @@ l2vlan_profiles:
     private_vlan:
       type: isolated
       primary_vlan: 120
+    tags: [research, profile_tag]
   - profile: parent_profile
     private_vlan:
       type: community
       primary_vlan: 120
   - profile: child_profile
     parent_profile: parent_profile
+  - profile: profile_with_tags
+    tags: ["profile_tag"]
 
 l3leaf:
   defaults:
@@ -24,7 +27,7 @@ l3leaf:
       id: 3
       bgp_as: 65101
       filter:
-        tags: [research]
+        tags: [research, profile_tag]
 
 tenants:
   - name: research
@@ -49,3 +52,7 @@ tenants:
         tags: ['research']
         # Test to apply the parent profile parameters to l2vlan
         profile: child_profile
+      - id: 140
+        name: research4
+        # Test to apply the profile tags to l2vlan
+        profile: profile_with_tags

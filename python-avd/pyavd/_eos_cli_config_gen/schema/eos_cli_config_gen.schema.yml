@@ -6955,9 +6955,10 @@ keys:
   ipv6_unicast_routing:
     type: bool
   is_deployed:
-    description: Key only used for documentation or validation purposes.
+    description: 'Key only used for documentation or validation purposes.
+
+      This key is deprecated and new key is metadata.is_deployed.'
     type: bool
-    default: true
   kernel:
     type: dict
     keys:
@@ -9013,6 +9014,9 @@ keys:
 
       It will not affect the generated EOS configuration.'
     keys:
+      is_deployed:
+        description: Key only used for documentation or validation purposes.
+        type: bool
       platform:
         type: str
       system_mac_address:
@@ -13107,6 +13111,20 @@ keys:
         max: 255
         convert_types:
         - str
+      hold_ptp_time:
+        type: int
+        min: 0
+        max: 172000
+        description: 'The length of time that PTP will remain in hold-down on the
+          internal oscillator if the connection to the GM is lost.
+
+          If a new GM is not elected before the expiry of the hold-down time, the
+          clock will revert to free-running.
+
+          Some platforms support larger maximum values, however 172000 seconds was
+          the max for 7150 series, and was widely used.'
+        convert_types:
+        - str
       message_type:
         type: dict
         keys:
@@ -13230,6 +13248,9 @@ keys:
             type: bool
             description: When enabled, the hardware clock is used as the source for
               PTP time during free-running mode.
+      forward_v1:
+        type: bool
+        description: Forward dataplane PTP V1 packets.
   qos:
     type: dict
     keys:
@@ -22530,6 +22551,13 @@ keys:
         type: int
         convert_types:
         - str
+      sample_truncate_size:
+        type: int
+        min: 128
+        max: 512
+        convert_types:
+        - str
+        description: Maximum sample size, in bytes.
       sample_input_subinterface:
         type: bool
       sample_output_subinterface:
