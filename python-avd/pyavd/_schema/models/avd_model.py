@@ -138,6 +138,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
         This method is typically overridden when TYPE_CHECKING is True, to provide proper suggestions and type hints for the arguments.
         """
         self._custom_data = {}
+        self._skipped_keys = set()
         [setattr(self, arg, arg_value) for arg, arg_value in kwargs.items() if arg_value is not Undefined]
 
         super().__init__()
