@@ -19,6 +19,9 @@
 {%     if switchport_default.phone.cos is arista.avd.defined %}
 - Default Switchport Phone COS: {{ switchport_default.phone.cos }}
 {%     endif %}
+{%     if switchport_default.phone.qos is arista.avd.defined %}
+- Default Switchport Phone QOS trust: {{ switchport_default.phone.qos }}
+{%     endif %}
 {%     if switchport_default.phone.trunk is arista.avd.defined %}
 - Default Switchport Phone Trunk: {{ switchport_default.phone.trunk }}
 {%     endif %}

@@ -23305,6 +23305,8 @@ keys:
             valid_values:
             - tagged
             - untagged
+            - tagged phone
+            - untagged phone
           vlan:
             type: int
             description: VLAN ID.
@@ -23315,6 +23317,13 @@ keys:
           access_list_bypass:
             description: Bypass phone traffic from configured access-list.
             type: bool
+          qos:
+            type: str
+            description: Phone Quality of Service (QoS) trust. Outgoing traffic class
+              being derived from the ingress COS/DSCP value.
+            valid_values:
+            - cos
+            - dscp
   switchport_port_security:
     type: dict
     keys:
