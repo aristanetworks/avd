@@ -3666,7 +3666,9 @@ keys:
                   description: Transceiver type.
             application_override:
               type: str
-              description: Set CMIS transceiver application.
+              description: 'Set CMIS transceiver application.
+
+                ''100gbase-srbd'' should not be used in conjuction with `application_override_lanes`.'
               valid_values:
               - '0'
               - '1'
