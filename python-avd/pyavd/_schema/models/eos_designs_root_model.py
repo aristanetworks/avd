@@ -66,9 +66,13 @@ class EosDesignsRootModel(AvdModel):
             # TODO: revisit once logging is present.
             quoted_keys = ", ".join([f"'{key}'" for key in eos_cli_config_gen_keys])
             warnings.warn(
-                "The direct usage of `eos_cli_config_gen` keys when running `eos_designs` is deprecated and will be disabled by default "
-                "in AVD 6.0.0. Use the custom structured configuration feature of eos_designs instead. "
-                f"The following keys have been detected in your inputs: {quoted_keys}.",
+                (
+                    "The direct usage of `eos_cli_config_gen` keys when running `eos_designs` is deprecated and will be disabled by default "
+                    "in AVD 6.0.0. Priorize using `eos_designs` model if they address your usecase, new models are frequently added. "
+                    "Alternatively, use the custom structured configuration feature of eos_designs instead. "
+                    f"The following keys have been detected in your inputs: {quoted_keys}."
+                    "Read https://avd.arista.com/stable/docs/warn-eos-cli-config-keys-usage-in-eos-designs.html for more information."
+                ),
                 AristaAvdModelDeprecationWarning,
                 stacklevel=2,
             )
