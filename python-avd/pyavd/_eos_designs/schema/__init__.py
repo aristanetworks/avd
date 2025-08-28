@@ -67068,7 +67068,6 @@ class EosDesigns(EosDesignsRootModel):
         "avd_eos_designs_enforce_duplication_checks_across_all_models": {"type": bool, "default": False},
         "avd_eos_designs_structured_config": {"type": bool, "default": True},
         "avd_eos_designs_unset_facts": {"type": bool, "default": True},
-        "avd_eos_designs_warn_eos_cli_config_gen_keys": {"type": bool, "default": True},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
         "bgp_default_ipv4_unicast": {"type": bool, "default": False},
@@ -67569,15 +67568,6 @@ class EosDesigns(EosDesignsRootModel):
     """
     Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
     variables.
-
-    Default value: `True`
-    """
-    avd_eos_designs_warn_eos_cli_config_gen_keys: bool
-    """
-    Emit a deprecation warning when `eos_cli_config_gen` keys are given as input
-    when running
-    `eos_designs`.
-    Visit <TODO> for more information.
 
     Default value: `True`
     """
@@ -69503,7 +69493,6 @@ class EosDesigns(EosDesignsRootModel):
             avd_eos_designs_enforce_duplication_checks_across_all_models: bool | UndefinedType = Undefined,
             avd_eos_designs_structured_config: bool | UndefinedType = Undefined,
             avd_eos_designs_unset_facts: bool | UndefinedType = Undefined,
-            avd_eos_designs_warn_eos_cli_config_gen_keys: bool | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             bgp_default_ipv4_unicast: bool | UndefinedType = Undefined,
@@ -69764,11 +69753,6 @@ class EosDesigns(EosDesignsRootModel):
                 avd_eos_designs_unset_facts:
                    Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer
                    variables.
-                avd_eos_designs_warn_eos_cli_config_gen_keys:
-                   Emit a deprecation warning when `eos_cli_config_gen` keys are given as input
-                   when running
-                   `eos_designs`.
-                   Visit <TODO> for more information.
                 bfd_multihop:
                    BFD Multihop tuning.
 
