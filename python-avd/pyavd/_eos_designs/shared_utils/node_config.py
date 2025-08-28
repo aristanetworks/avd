@@ -103,8 +103,13 @@ class NodeConfigMixin(Protocol):
         return index == 0, nodes[peer_index]
 
     def check_for_new_keys(self: SharedUtilsProtocol, node_config) -> None:
-        """Raises an exception when node type setting 'uplink_structured_config' is used with new keys. """
-        new_keys = ["uplink_ethernet_structured_config", "uplink_switch_ethernet_structured_config", "uplink_port_channel_structured_config",  "uplink_switch_port_channel_structured_config"]
+        """Raises an exception when node type setting 'uplink_structured_config' is used with new keys."""
+        new_keys = [
+            "uplink_ethernet_structured_config",
+            "uplink_switch_ethernet_structured_config",
+            "uplink_port_channel_structured_config",
+            "uplink_switch_port_channel_structured_config",
+        ]
         for key in new_keys:
             if node_config._get(key) is not None:
                 msg = (
@@ -112,4 +117,3 @@ class NodeConfigMixin(Protocol):
                     f" in conjunction with the new keys. Check the 'defaults/node_group/nodes' settings for '{self.hostname}'."
                 )
                 raise AristaAvdInvalidInputsError(msg)
- 
