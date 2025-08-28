@@ -144,21 +144,21 @@ class ActionModule(ActionBase):
 
             # Load input vars into the EosDesigns data class.
             with warnings.catch_warnings(record=True) as w:
-                # Cause all warnings to always be triggered.
+                # Configure AristaAvdModelDeprecationWarning to be always captured
                 warnings.simplefilter("always", category=AristaAvdModelDeprecationWarning)
                 host_inputs = EosDesigns._from_dict(host_hostvars)
-            # handle warnings
-            for warning in w:
-                # warning is undocumented type WarningMessage.
-                if isinstance(warning.message, DeprecationWarning):
-                    # Deprecation warnings are displayed using Ansible's deprecation notices.
-                    display.deprecated(
-                        msg=warning.message.args[0],
-                        version="6.0.0",
-                        date=None,
-                        collection_name="arista.avd",
-                        removed=False,
-                    )
+                # handle warnings
+                for warning in w:
+                    # warning is undocumented type WarningMessage.
+                    if isinstance(warning.message, DeprecationWarning):
+                        # Deprecation warnings are displayed using Ansible's deprecation notices.
+                        display.deprecated(
+                            msg=warning.message.args[0],
+                            version="6.0.0",
+                            date=None,
+                            collection_name="arista.avd",
+                            removed=False,
+                        )
 
             all_inputs[host] = host_inputs
             all_hostvars[host] = host_hostvars
