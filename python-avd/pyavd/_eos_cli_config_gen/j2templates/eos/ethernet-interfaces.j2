@@ -1259,6 +1259,16 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.transceiver.media.override is arista.avd.defined %}
    transceiver media override {{ ethernet_interface.transceiver.media.override }}
 {%     endif %}
+{%     if ethernet_interface.transceiver.application_override is arista.avd.defined %}
+   transceiver application override {{ ethernet_interface.transceiver.application_override }}
+{%     endif %}
+{%     for application_override in ethernet_interface.transceiver.application_override_lanes | arista.avd.default([]) %}
+{%         set application_override_cli = "transceiver application override " ~ application_override.override ~ " lanes start " ~ application_override.first_lane %}
+{%         if application_override.last_lane is arista.avd.defined %}
+{%             set application_override_cli = application_override_cli ~ " end " ~ application_override.last_lane %}
+{%         endif %}
+   {{ application_override_cli }}
+{%     endfor %}
 {%     if ethernet_interface.transceiver.frequency is arista.avd.defined %}
 {%         set frequency_cli = 'transceiver frequency ' ~ "%.3f" | format(ethernet_interface.transceiver.frequency | float) %}
 {%         if ethernet_interface.transceiver.frequency_unit is arista.avd.defined %}
