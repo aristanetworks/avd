@@ -74,7 +74,7 @@ async def deploy_tags_to_cv(
             continue
         if not device.serial_number:
             # TODO: Check if logic below to raise exception is fine
-            # We expect device.serial_number to be already populated (i.e. fetched from CV Inventory) when we get here
+            # We expect device.serial_number to be already populated (i.e. fetched from CV Inventory) when we get here.
             # Bail out here else we would need to repeat such checks for rest of the wrappers.
             LOGGER.info("deploy_tags_to_cv: device %s in CV inventory, but no serial number found to be assigned in CV!", device.avd_device.hostname)
             deploy_tags_err_msg = "deploy_tags_to_cv(): Detected device in CV Inventory, but unable to fetch serial number!"

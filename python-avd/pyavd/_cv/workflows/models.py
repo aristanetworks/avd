@@ -307,8 +307,11 @@ class InternalDevice:
     Device's streaming status retrieved from CV."""
 
     def get_cv_device(self) -> CVDevice:
-        # CVDevice object populated with hostname from AVD input and serial number, system mac address derived from CV Inventory
-        return CVDevice(hostname=self.avd_device.hostname, serial_number=self.serial_number, system_mac_address=self.system_mac_address)
+        # CVDevice object populated with hostname from AVD input and serial number,
+        # system mac address derived from CV Inventory
+        return CVDevice(
+            hostname=self.avd_device.hostname, serial_number=self.serial_number, system_mac_address=self.system_mac_address, _exists_on_cv=self.in_cv_inventory
+        )
 
     def get_cv_eos_config(self) -> CVEosConfig:
         # avd_device.config is always set
