@@ -1,11 +1,19 @@
 aaa_root:
   disabled: true
 config_end: true
+dns_domain: this.should.warn.test
 enable_password:
   disabled: true
 hostname: host3
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
+ip_name_servers:
+- ip_address: 8.8.8.8
+  vrf: MGMT
 management_api_http:
   enable_https: true
   enable_vrfs:
