@@ -40,8 +40,7 @@ class UtilsMixin(Protocol):
         underlay_links = self.facts.uplinks._deepcopy()
 
         for uplink in underlay_links:
-            if self.shared_utils.platform_settings.feature_support.sflow:
-                uplink.sflow_enabled = self.inputs.fabric_sflow.uplinks
+            uplink.sflow_enabled = self.shared_utils.get_interface_sflow(uplink.interface, self.inputs.fabric_sflow.uplinks)
             uplink.flow_tracking = self.inputs.fabric_flow_tracking.uplinks
             if not self.shared_utils.platform_settings.feature_support.ptp:
                 uplink.ptp.enable = False
@@ -82,7 +81,7 @@ class UtilsMixin(Protocol):
                     mlag=uplink.peer_mlag,
                     underlay_multicast=uplink.underlay_multicast,
                     ipv6_enable=uplink.ipv6_enable,
-                    sflow_enabled=self.inputs.fabric_sflow.downlinks if self.shared_utils.platform_settings.feature_support.sflow else None,
+                    sflow_enabled=self.shared_utils.get_interface_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
                     structured_config=uplink.structured_config,

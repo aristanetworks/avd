@@ -56,6 +56,16 @@ ANSIBLE_CONNECTION_VARS = [
     "ansible_httpapi_use_ssl",
 ]
 
+ANTA_VARS = [
+    "anta_user",
+    "anta_password",
+    "anta_enable",
+    "anta_enable_password",
+    "anta_port",
+    "anta_use_ssl",
+    "anta_tags",
+]
+
 ARGUMENT_SPEC = {
     "device_list": {"type": "list", "elements": "str", "required": True},
     "avd_catalogs": {
@@ -362,11 +372,7 @@ def get_ansible_vars(device_list: list[str], action_plugin_vars: ActionPluginVar
             LOGGER.info("<%s> Device marked as not deployed - Skipping all tests", device)
             continue
 
-        # Adding the Ansible connection variables following the HTTPAPI connection plugin settings
-        ansible_vars[device] = {key: get(device_vars, key) for key in ANSIBLE_CONNECTION_VARS}
-
-        # Same as above, we also honor the `anta_tags` variable if provided in the hostvars
-        ansible_vars[device]["anta_tags"] = get(device_vars, "anta_tags")
+        ansible_vars[device] = {key: get(device_vars, key) for key in ANSIBLE_CONNECTION_VARS + ANTA_VARS}
 
     return ansible_vars
 
@@ -454,23 +460,27 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
     required_settings = ["host", "username", "password"]
 
     device_vars = ANSIBLE_VARS[device]
+    username = default(get(device_vars, "anta_user"), get(device_vars, "ansible_user"))
+    password = default(
+        get(device_vars, "anta_password"),
+        get(device_vars, "ansible_password"),
+        get(device_vars, "ansible_httpapi_pass"),
+        get(device_vars, "ansible_httpapi_password"),
+    )
+    port = default(get(device_vars, "anta_port"), get(device_vars, "ansible_httpapi_port"))
+    enable_mode = default(get(device_vars, "anta_enable"), get(device_vars, "ansible_become", default=False))
+    enable_password = default(get(device_vars, "anta_enable_password"), get(device_vars, "ansible_become_password"))
+    proto = "https" if default(get(device_vars, "anta_use_ssl"), get(device_vars, "ansible_httpapi_use_ssl", default=True)) else "http"
 
     device_settings = {
         "name": device,
         "host": get(device_vars, "ansible_host", default=get(device_vars, "inventory_hostname")),
-        "username": get(device_vars, "ansible_user"),
-        "password": default(
-            get(device_vars, "ansible_password"),
-            get(device_vars, "ansible_httpapi_pass"),
-            get(device_vars, "ansible_httpapi_password"),
-        ),
-        "enable": get(device_vars, "ansible_become", default=False),
-        "enable_password": get(device_vars, "ansible_become_password"),
-        "port": get(
-            device_vars,
-            "ansible_httpapi_port",
-            default=(80 if get(device_vars, "ansible_httpapi_use_ssl", default=True) is False else 443),
-        ),
+        "username": username,
+        "password": password,
+        "enable": enable_mode,
+        "enable_password": enable_password,
+        "port": port,
+        "proto": proto,
         "timeout": get(PLUGIN_ARGS, "runner.timeout"),
         "tags": set(get(device_vars, "anta_tags", default=[])),
     }
@@ -480,7 +490,7 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
         msg = (
             f"Device '{device}' is missing required connection settings. "
             f"Please make sure all required connection variables are defined in the Ansible inventory, "
-            f"following the Ansible HTTPAPI connection plugin settings: {ANSIBLE_HTTPAPI_CONNECTION_DOC}"
+            "as specified in the role documentation."
         )
         raise ValueError(msg)
 
