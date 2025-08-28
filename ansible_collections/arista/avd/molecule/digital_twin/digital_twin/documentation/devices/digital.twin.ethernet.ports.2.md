@@ -397,8 +397,8 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
 | TENANT_A_VRF_A | 1025 | - |
 
 #### VXLAN Interface Device Configuration
