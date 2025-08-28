@@ -710,14 +710,14 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group | Overlay Multicast Group to Encap Mappings |
-| --- | --- | --------------- | ----------------------------------------- |
-| Tenant_A_APP_Zone | 12 | - | - |
-| Tenant_A_DB_Zone | 13 | - | - |
-| Tenant_A_OP_Zone | 10 | - | - |
-| Tenant_A_WEB_Zone | 11 | - | - |
-| Tenant_B_OP_Zone | 20 | - | - |
-| Tenant_C_OP_Zone | 30 | - | - |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
+| Tenant_A_APP_Zone | 12 | - |
+| Tenant_A_DB_Zone | 13 | - |
+| Tenant_A_OP_Zone | 10 | - |
+| Tenant_A_WEB_Zone | 11 | - |
+| Tenant_B_OP_Zone | 20 | - |
+| Tenant_C_OP_Zone | 30 | - |
 
 #### VXLAN Interface Device Configuration
 
