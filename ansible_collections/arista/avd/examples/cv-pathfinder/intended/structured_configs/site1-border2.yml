@@ -122,8 +122,8 @@ flow_tracking:
       name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
     shutdown: false
 hostname: site1-border2
