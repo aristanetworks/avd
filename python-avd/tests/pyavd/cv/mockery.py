@@ -75,6 +75,7 @@ async def recording_unary_stream(
             messages_as_json.append(message.to_json(indent=4))
             yield message
     finally:
+        # TODO: Investigate whether it can lead to incomplete data
         if recording_file and messages_as_json:
             result = f"[{', '.join(messages_as_json)}]"
             recording_file.write_text(result)
