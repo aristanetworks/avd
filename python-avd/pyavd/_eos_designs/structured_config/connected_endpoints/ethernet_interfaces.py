@@ -221,6 +221,24 @@ class EthernetInterfacesMixin(Protocol):
                 )._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem)
                 self._update_ethernet_interface_cfg(profile, ethernet_interface, connected_endpoint)
 
+                if adapter.port_channel.lacp_fallback.individual.mode is not None:
+                    ethernet_interface.switchport.mode = adapter.port_channel.lacp_fallback.individual.mode
+                if adapter.port_channel.lacp_fallback.individual.vlans is not None:
+                    if ethernet_interface.switchport.mode in ["access", "dot1q-tunnel"]:
+                        try:
+                            ethernet_interface.switchport.access_vlan = int(adapter.port_channel.lacp_fallback.individual.vlans)
+                        except ValueError as e:
+                            msg = (
+                                "Adapter 'vlans' value must be a single vlan ID when mode is 'access' or 'dot1q-tunnel'. "
+                                f"Got {adapter.port_channel.lacp_fallback.individual.vlans} for interface {ethernet_interface.name}."
+                            )
+                            raise AristaAvdInvalidInputsError(msg) from e
+                    elif ethernet_interface.switchport.mode in ["trunk", "trunk phone"]:
+                        if adapter.port_channel.lacp_fallback.individual.vlans is not None:
+                            ethernet_interface.switchport.trunk.allowed_vlan = adapter.port_channel.lacp_fallback.individual.vlans
+                        if adapter.port_channel.lacp_fallback.individual.native_vlan is not None:
+                            ethernet_interface.switchport.trunk.native_vlan = adapter.port_channel.lacp_fallback.individual.native_vlan
+
             if adapter.port_channel.mode != "on" and adapter.port_channel.lacp_timer.mode is not None:
                 ethernet_interface.lacp_timer.mode = adapter.port_channel.lacp_timer.mode
                 ethernet_interface.lacp_timer.multiplier = adapter.port_channel.lacp_timer.multiplier
