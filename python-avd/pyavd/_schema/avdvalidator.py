@@ -123,7 +123,6 @@ class AvdValidator:
             all_keys = keys
 
         # Validation of "allow_other_keys"
-        # TODO: or should it be done here instead?
         if not schema.get("allow_other_keys", False):
             # Check that instance only contains the schema keys
 
