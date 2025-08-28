@@ -4236,12 +4236,12 @@ interface Dps1
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override |
-| --------- | --------------------- | -------------- |
-| Ethernet7 | - | 100gbase-ar4 |
-| Ethernet67 | 190050.000 | - |
-| Ethernet68 | 190080.000 ghz | 100gbase-ar4 |
-| Ethernet73 | - | 100gbase-ar4 |
+| Interface | Transceiver Frequency | Media Override | Application Override |
+| --------- | --------------------- | -------------- | -------------------- |
+| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 |
+| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 |
+| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
+| Ethernet73 | - | 100gbase-ar4 | 5 |
 
 ##### Link Tracking Groups
 
@@ -4743,6 +4743,9 @@ interface Ethernet7
    spanning-tree bpdufilter enable
    vmtracer vmware-esx
    transceiver media override 100gbase-ar4
+   transceiver application override 2
+   transceiver application override 10 lanes start 1 end 1
+   transceiver application override 5 lanes start 2
 !
 interface Ethernet8
    description to WAN-ISP1-01 Ethernet2
@@ -5296,6 +5299,9 @@ interface Ethernet67
    no shutdown
    switchport
    mac timestamp before-fcs
+   transceiver application override 5
+   transceiver application override 5 lanes start 1 end 1
+   transceiver application override 5 lanes start 2 end 3
    transceiver frequency 190050.000
 !
 interface Ethernet67.1
@@ -5307,6 +5313,7 @@ interface Ethernet68
    no shutdown
    switchport
    transceiver media override 100gbase-ar4
+   transceiver application override 100gbase-srbd
    transceiver frequency 190080.000 ghz
 !
 interface Ethernet68.1
@@ -5391,6 +5398,7 @@ interface Ethernet73
    description DC1-AGG01_Ethernet1
    channel-group 5 mode active
    transceiver media override 100gbase-ar4
+   transceiver application override 5
 !
 interface Ethernet74
    description MLAG_PEER_DC1-LEAF1B_Ethernet3

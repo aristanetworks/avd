@@ -9057,13 +9057,69 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"frequency": {"type": str}, "frequency_unit": {"type": str}, "media": {"type": Media}}
+            class ApplicationOverrideLanesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"override": {"type": int}, "first_lane": {"type": int}, "last_lane": {"type": int}}
+                override: int
+                first_lane: int
+                """Set the start value of host lanes for which overrides should be applied."""
+                last_lane: int | None
+                """Set the last value of host lanes for which overrides should be applied."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        override: int | UndefinedType = Undefined,
+                        first_lane: int | UndefinedType = Undefined,
+                        last_lane: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ApplicationOverrideLanesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            override: override
+                            first_lane: Set the start value of host lanes for which overrides should be applied.
+                            last_lane: Set the last value of host lanes for which overrides should be applied.
+
+                        """
+
+            class ApplicationOverrideLanes(AvdList[ApplicationOverrideLanesItem]):
+                """Subclass of AvdList with `ApplicationOverrideLanesItem` items."""
+
+            ApplicationOverrideLanes._item_type = ApplicationOverrideLanesItem
+
+            _fields: ClassVar[dict] = {
+                "frequency": {"type": str},
+                "frequency_unit": {"type": str},
+                "media": {"type": Media},
+                "application_override": {"type": str},
+                "application_override_lanes": {"type": ApplicationOverrideLanes},
+            }
             frequency: str | None
             """Transceiver Laser Frequency in GHz (min 190000, max 200000)."""
             frequency_unit: Literal["ghz"] | None
             """Unit of Transceiver Laser Frequency."""
             media: Media
             """Subclass of AvdModel."""
+            application_override: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"] | None
+            """
+            Set CMIS transceiver application.
+            '100gbase-srbd' should not be used in conjunction with
+            `application_override_lanes`.
+            """
+            application_override_lanes: ApplicationOverrideLanes
+            """
+            Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
+
+            Subclass of
+            AvdList with `ApplicationOverrideLanesItem` items.
+            """
 
             if TYPE_CHECKING:
 
@@ -9073,6 +9129,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     frequency: str | None | UndefinedType = Undefined,
                     frequency_unit: Literal["ghz"] | None | UndefinedType = Undefined,
                     media: Media | UndefinedType = Undefined,
+                    application_override: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"]
+                    | None
+                    | UndefinedType = Undefined,
+                    application_override_lanes: ApplicationOverrideLanes | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Transceiver.
@@ -9084,6 +9144,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         frequency: Transceiver Laser Frequency in GHz (min 190000, max 200000).
                         frequency_unit: Unit of Transceiver Laser Frequency.
                         media: Subclass of AvdModel.
+                        application_override:
+                           Set CMIS transceiver application.
+                           '100gbase-srbd' should not be used in conjunction with
+                           `application_override_lanes`.
+                        application_override_lanes:
+                           Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
+
+                           Subclass of
+                           AvdList with `ApplicationOverrideLanesItem` items.
 
                     """
 
