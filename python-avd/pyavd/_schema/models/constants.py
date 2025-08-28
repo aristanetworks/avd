@@ -12,11 +12,11 @@ EOS_CLI_CONFIG_GEN_ROLE_KEYS = {
     "generate_default_config",
 }
 """
-List of eos_cli_config_gen role keys.
+Set of eos_cli_config_gen role keys.
 Note that for now this is manually maintained but this shall change.
 TODO: separate role inputs in their own schema.
 TODO: some keys above (generate_device_documentation, generate_default_config) are deprecated in 6.0.0
       so should be removed from this sadly manually maintained set.
 """
 EOS_CLI_CONFIG_GEN_INPUT_KEYS = set(EosCliConfigGen._fields.keys()) - EOS_CLI_CONFIG_GEN_ROLE_KEYS
-"""List of eos_cli_config_gen which are not role keys."""
+"""Set of eos_cli_config_gen which are not role keys."""
