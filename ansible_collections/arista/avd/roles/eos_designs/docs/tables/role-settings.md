@@ -15,6 +15,7 @@
     | [<samp>avd_eos_designs_enforce_duplication_checks_across_all_models</samp>](## "avd_eos_designs_enforce_duplication_checks_across_all_models") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described behavior.<br>When this is enabled, the generation of Structured Config in `eos_designs` will prevent duplicate objects generated<br>by different input models. This will also improve performance since `eos_designs` will not maintain separate copied of the Structured Configuration.<br>As an example, if you define an Ethernet interface under `l3_edge` and use the same interface for connectivity under `servers`:<br>- With this option disabled (default), AVD will merge these configurations together for the interface and not raise an error.<br>- With this option enabled, AVD will raise an error about duplicate interface definitions. |
     | [<samp>avd_eos_designs_structured_config</samp>](## "avd_eos_designs_structured_config") | Boolean |  | `True` |  | Generate structured configuration per device. |
     | [<samp>avd_eos_designs_unset_facts</samp>](## "avd_eos_designs_unset_facts") | Boolean |  | `True` |  | Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer variables. |
+    | [<samp>avd_eos_designs_warn_eos_cli_config_gen_keys</samp>](## "avd_eos_designs_warn_eos_cli_config_gen_keys") | Boolean |  | `True` |  | Emit a deprecation warning when `eos_cli_config_gen` keys are given as input<br>when running `eos_designs`.<br>Visit <TODO> for more information. |
     | [<samp>eos_designs_documentation</samp>](## "eos_designs_documentation") | Dictionary |  |  |  | Control fabric documentation generation.<br> |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "eos_designs_documentation.enable") | Boolean |  | `True` |  | Generate fabric-wide documentation. |
     | [<samp>&nbsp;&nbsp;connected_endpoints</samp>](## "eos_designs_documentation.connected_endpoints") | Boolean |  | `False` |  | Include connected endpoints in the fabric-wide documentation.<br>This is `false` by default to avoid cluttering documentation for projects with thousands of endpoints. |
@@ -63,6 +64,11 @@
 
     # Unset `avd_switch_facts` to gain a small performance improvement since Ansible needs to handle fewer variables.
     avd_eos_designs_unset_facts: <bool; default=True>
+
+    # Emit a deprecation warning when `eos_cli_config_gen` keys are given as input
+    # when running `eos_designs`.
+    # Visit <TODO> for more information.
+    avd_eos_designs_warn_eos_cli_config_gen_keys: <bool; default=True>
 
     # Control fabric documentation generation.
     eos_designs_documentation:

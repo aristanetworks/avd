@@ -9,6 +9,7 @@ from collections.abc import Iterator, Mapping
 from typing import TYPE_CHECKING, TypeVar
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._errors import AristaAvdModelDeprecationWarning
 from pyavd._schema.models.constants import EOS_CLI_CONFIG_GEN_INPUT_KEYS
 from pyavd._schema.store import create_store
 from pyavd._schema.utils import get_instance_with_defaults
@@ -68,7 +69,7 @@ class EosDesignsRootModel(AvdModel):
                 "The direct usage of `eos_cli_config_gen` keys when running `eos_designs` is deprecated and will be disabled by default "
                 "in AVD 6.0.0. Use the custom structured configuration feature of eos_designs instead. "
                 f"The following keys have been detected in your inputs: {quoted_keys}.",
-                DeprecationWarning,
+                AristaAvdModelDeprecationWarning,
                 stacklevel=2,
             )
 

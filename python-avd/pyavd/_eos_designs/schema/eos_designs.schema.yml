@@ -329,6 +329,17 @@ keys:
     default: true
     description: Unset `avd_switch_facts` to gain a small performance improvement
       since Ansible needs to handle fewer variables.
+  avd_eos_designs_warn_eos_cli_config_gen_keys:
+    documentation_options:
+      table: role-settings
+    type: bool
+    default: true
+    description: 'Emit a deprecation warning when `eos_cli_config_gen` keys are given
+      as input
+
+      when running `eos_designs`.
+
+      Visit <TODO> for more information.'
   bfd_multihop:
     documentation_options:
       table: bfd-settings

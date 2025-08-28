@@ -27,7 +27,7 @@ if TYPE_CHECKING:
 try:
     from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
     from pyavd._eos_designs.schema import EosDesigns
-    from pyavd._errors import AristaAvdError
+    from pyavd._errors import AristaAvdError, AristaAvdModelDeprecationWarning
     from pyavd.api.pool_manager import PoolManager
 except ImportError as e:
     get_facts = EosDesigns = SharedUtils = PoolManager = RaiseOnUse(
@@ -145,7 +145,7 @@ class ActionModule(ActionBase):
             # Load input vars into the EosDesigns data class.
             with warnings.catch_warnings(record=True) as w:
                 # Cause all warnings to always be triggered.
-                warnings.simplefilter("always")
+                warnings.simplefilter("always", category=AristaAvdModelDeprecationWarning)
                 host_inputs = EosDesigns._from_dict(host_hostvars)
             # handle warnings
             for warning in w:

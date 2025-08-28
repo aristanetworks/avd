@@ -1,7 +1,0 @@
----
-# Test the deprecation message for direct usage of `eos_cli_config_gen` keys
-# when using `eos_designs`
-dns_domain: this.should.warn
-# below should warn as well
-enable_password:
-  disabled: true

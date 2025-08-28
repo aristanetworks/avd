@@ -8,6 +8,7 @@ import pytest
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
+from pyavd._errors import AristaAvdModelDeprecationWarning
 from pyavd._schema.store import create_store
 from tests.models import MoleculeHost
 
@@ -91,6 +92,7 @@ def test_eos_designs_initialize_kwargs_with_valid_data(molecule_host: MoleculeHo
 
     # If nothing raises, the model is accepted.
     with warnings.catch_warnings():
+        warnings.simplefilter("always", category=AristaAvdModelDeprecationWarning)
         warnings.simplefilter("error")
         EosDesigns(**inputs)
 
