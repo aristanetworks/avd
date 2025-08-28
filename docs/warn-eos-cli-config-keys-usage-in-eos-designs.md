@@ -7,7 +7,7 @@
 
 ## Context
 
-For several AVD major versions, it has been possible to use variables from `eos_cli_config_gen` schema in conjunction with variables of `eos_designs`. When `eos_designs`
+For several AVD major versions, it has been possible to use variables from the `eos_cli_config_gen` data model in conjunction with variables from the `eos_designs` data model. When the `eos_designs`
 role is run, the `eos_cli_config_gen` keys are ignored and they are injected at `eos_cli_config_gen` role runtime.
 
 While a good escape hatch, this has led to confusion among users. Especially when new features introduced in `eos_designs` ended up shadowing `eos_cli_config_gen`
