@@ -23988,6 +23988,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         _fields: ClassVar[dict] = {
+            "is_deployed": {"type": bool},
             "platform": {"type": str},
             "system_mac_address": {"type": str},
             "rack": {"type": str},
@@ -23998,6 +23999,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
         }
+        is_deployed: bool | None
+        """Key only used for documentation or validation purposes."""
         platform: str | None
         system_mac_address: str | None
         rack: str | None
@@ -24024,6 +24027,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
+                is_deployed: bool | None | UndefinedType = Undefined,
                 platform: str | None | UndefinedType = Undefined,
                 system_mac_address: str | None | UndefinedType = Undefined,
                 rack: str | None | UndefinedType = Undefined,
@@ -24041,6 +24045,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    is_deployed: Key only used for documentation or validation purposes.
                     platform: platform
                     system_mac_address: system_mac_address
                     rack: rack
@@ -34284,6 +34289,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "message_type": {"type": MessageType},
             "monitor": {"type": Monitor},
             "free_running": {"type": FreeRunning},
+            "forward_v1": {"type": bool},
         }
         mode: Literal["boundary", "disabled", "e2etransparent", "gptp", "ordinarymaster", "p2ptransparent"] | None
         profile: Literal["g8275.1", "g8275.2"] | None
@@ -34312,6 +34318,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         free_running: FreeRunning
         """Subclass of AvdModel."""
+        forward_v1: bool | None
+        """Forward dataplane PTP V1 packets."""
 
         if TYPE_CHECKING:
 
@@ -34332,6 +34340,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 message_type: MessageType | UndefinedType = Undefined,
                 monitor: Monitor | UndefinedType = Undefined,
                 free_running: FreeRunning | UndefinedType = Undefined,
+                forward_v1: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Ptp.
@@ -34360,6 +34369,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     message_type: Subclass of AvdModel.
                     monitor: Subclass of AvdModel.
                     free_running: Subclass of AvdModel.
+                    forward_v1: Forward dataplane PTP V1 packets.
 
                 """
 
@@ -67978,7 +67988,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ipv6_standard_access_lists": {"type": Ipv6StandardAccessLists},
         "ipv6_static_routes": {"type": Ipv6StaticRoutes},
         "ipv6_unicast_routing": {"type": bool},
-        "is_deployed": {"type": bool, "default": True},
+        "is_deployed": {"type": bool},
         "kernel": {"type": Kernel},
         "l2_protocol": {"type": L2Protocol},
         "lacp": {"type": Lacp},
@@ -68380,11 +68390,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ipv6_static_routes: Ipv6StaticRoutes
     """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
     ipv6_unicast_routing: bool | None
-    is_deployed: bool
+    is_deployed: bool | None
     """
     Key only used for documentation or validation purposes.
-
-    Default value: `True`
+    This key is deprecated and new key is
+    metadata.is_deployed.
     """
     kernel: Kernel
     """Subclass of AvdModel."""
@@ -68760,7 +68770,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ipv6_standard_access_lists: Ipv6StandardAccessLists | UndefinedType = Undefined,
             ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
             ipv6_unicast_routing: bool | None | UndefinedType = Undefined,
-            is_deployed: bool | UndefinedType = Undefined,
+            is_deployed: bool | None | UndefinedType = Undefined,
             kernel: Kernel | UndefinedType = Undefined,
             l2_protocol: L2Protocol | UndefinedType = Undefined,
             lacp: Lacp | UndefinedType = Undefined,
@@ -69065,7 +69075,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_standard_access_lists: Subclass of AvdIndexedList with `Ipv6StandardAccessListsItem` items. Primary key is `name` (`str`).
                 ipv6_static_routes: Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                 ipv6_unicast_routing: ipv6_unicast_routing
-                is_deployed: Key only used for documentation or validation purposes.
+                is_deployed:
+                   Key only used for documentation or validation purposes.
+                   This key is deprecated and new key is
+                   metadata.is_deployed.
                 kernel: Subclass of AvdModel.
                 l2_protocol: Subclass of AvdModel.
                 lacp:

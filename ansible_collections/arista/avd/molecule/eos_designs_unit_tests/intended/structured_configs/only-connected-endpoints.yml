@@ -156,9 +156,9 @@ ethernet_interfaces:
       allowed_vlan: 1-100
       native_vlan: 1000
 hostname: only-connected-endpoints
-is_deployed: null
 management_api_http: null
 metadata:
+  is_deployed: null
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:
 - name: Port-Channel1

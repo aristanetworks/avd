@@ -6,7 +6,6 @@ enable_password:
 hostname: host3
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -20,6 +19,7 @@ management_interfaces:
   type: oob
   gateway: 10.10.10.1
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 service_routing_protocols_model: multi-agent
 snmp_server:

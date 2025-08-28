@@ -355,6 +355,23 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
+  hosts: FABRIC_DOWNLINK_INTERFACES_TOO_SMALL
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts'
   hosts: FAILURE_CONNECTED_ENDPOINT_PORT_PROFILE_DOES_NOT_EXIST_IN_FACTS
   connection: local
   tasks:

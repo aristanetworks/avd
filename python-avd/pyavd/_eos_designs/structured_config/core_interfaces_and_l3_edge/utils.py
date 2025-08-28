@@ -308,11 +308,10 @@ class UtilsMixin(Protocol):
         if p2p_link.macsec_profile:
             interface.mac_security.profile = p2p_link.macsec_profile
 
-        if self.shared_utils.platform_settings.feature_support.sflow:
-            if p2p_link.sflow is not None:
-                interface.sflow.enable = p2p_link.sflow
-            elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
-                interface.sflow.enable = p2p_link_sflow
+        interface.sflow.enable = self.shared_utils.get_interface_sflow(
+            interface.name,
+            default(p2p_link.sflow, self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge),
+        )
 
         # Adding type check to avoid confusing the type checker.
         if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR, this is for the type checker
