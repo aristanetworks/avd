@@ -124,4 +124,3 @@ l3_edge:
             input: TEST_POLICY
       ethernet_structured_config:
         mtu: 1111
-

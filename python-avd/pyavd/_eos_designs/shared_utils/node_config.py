@@ -79,7 +79,7 @@ class NodeConfigMixin(Protocol):
             self.node_type_config.defaults._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)
         )
         # Remove this check in 6.0 when uplink_structured_config is removed from schema.
-        if node_config.uplink_structured_config is not None:
+        if node_config.uplink_structured_config:
             # if new key for uplink_structured_config is used, raises an Exception.
             self.check_for_new_keys(node_config)
 
@@ -102,7 +102,7 @@ class NodeConfigMixin(Protocol):
         peer_index = not index  # (0->1 and 1>0)
         return index == 0, nodes[peer_index]
 
-    def check_for_new_keys(self: SharedUtilsProtocol, node_config) -> None:
+    def check_for_new_keys(self: SharedUtilsProtocol, node_config: EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem) -> None:
         """Raises an exception when node type setting 'uplink_structured_config' is used with new keys."""
         new_keys = [
             "uplink_ethernet_structured_config",
