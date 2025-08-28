@@ -426,7 +426,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frequency_unit</samp>](## "ethernet_interfaces.[].transceiver.frequency_unit") | String |  |  | Valid Values:<br>- <code>ghz</code> | Unit of Transceiver Laser Frequency. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "ethernet_interfaces.[].transceiver.media") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.media.override") | String |  |  |  | Transceiver type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override</samp>](## "ethernet_interfaces.[].transceiver.application_override") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>1</code><br>- <code>2</code><br>- <code>3</code><br>- <code>4</code><br>- <code>5</code><br>- <code>6</code><br>- <code>7</code><br>- <code>8</code><br>- <code>9</code><br>- <code>10</code><br>- <code>11</code><br>- <code>12</code><br>- <code>13</code><br>- <code>14</code><br>- <code>15</code><br>- <code>100gbase-srbd</code> | Set CMIS transceiver application.<br>'100gbase-srbd' should not be used in conjuction with `application_override_lanes`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override</samp>](## "ethernet_interfaces.[].transceiver.application_override") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>1</code><br>- <code>2</code><br>- <code>3</code><br>- <code>4</code><br>- <code>5</code><br>- <code>6</code><br>- <code>7</code><br>- <code>8</code><br>- <code>9</code><br>- <code>10</code><br>- <code>11</code><br>- <code>12</code><br>- <code>13</code><br>- <code>14</code><br>- <code>15</code><br>- <code>100gbase-srbd</code> | Set CMIS transceiver application.<br>'100gbase-srbd' should not be used in conjunction with `application_override_lanes`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override_lanes</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes") | List, items: Dictionary |  |  |  | Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes.[].override") | Integer | Required |  | Min: 0<br>Max: 15 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_lane</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes.[].first_lane") | Integer | Required |  | Min: 1<br>Max: 8 | Set the start value of host lanes for which overrides should be applied. |
@@ -1535,7 +1535,7 @@
             override: <str>
 
           # Set CMIS transceiver application.
-          # '100gbase-srbd' should not be used in conjuction with `application_override_lanes`.
+          # '100gbase-srbd' should not be used in conjunction with `application_override_lanes`.
           application_override: <str; "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12" | "13" | "14" | "15" | "100gbase-srbd">
 
           # Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.

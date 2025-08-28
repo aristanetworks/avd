@@ -9110,7 +9110,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             application_override: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"] | None
             """
             Set CMIS transceiver application.
-            '100gbase-srbd' should not be used in conjuction with
+            '100gbase-srbd' should not be used in conjunction with
             `application_override_lanes`.
             """
             application_override_lanes: ApplicationOverrideLanes
@@ -9146,7 +9146,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         media: Subclass of AvdModel.
                         application_override:
                            Set CMIS transceiver application.
-                           '100gbase-srbd' should not be used in conjuction with
+                           '100gbase-srbd' should not be used in conjunction with
                            `application_override_lanes`.
                         application_override_lanes:
                            Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
