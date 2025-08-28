@@ -110,3 +110,12 @@ class AristaAvdDuplicateDataError(AristaAvdError):
             f"Found duplicate objects with conflicting data while generating configuration for {context}. {context_item_a} conflicts with {context_item_b}."
         )
         super().__init__(self.message, host=host)
+
+
+class AristaAvdModelDeprecationWarning(DeprecationWarning):
+    """
+    Inherit Python DeprecationWarning class for AVD.
+
+    TODO: Not ideal with AvdDeprecationWarning already inheriting from AristaAvdError
+          but this is our legacy we have to live with for now.
+    """

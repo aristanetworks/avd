@@ -27,7 +27,7 @@ LOGGER = getLogger(__name__)
 class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
     """Base class used for schema-based data classes holding dictionaries loaded from AVD inputs."""
 
-    __slots__ = ("_custom_data",)
+    __slots__ = ("_custom_data", "_skipped_keys")
 
     _allow_other_keys: ClassVar[bool] = False
     """Attribute telling if this class should fail or ignore unknown keys found during loading in _from_dict()."""
@@ -45,6 +45,11 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
     """
     Dictionary holding extra keys given in _from_dict.
     These keys are either keys starting with underscore or any non-schema key if _from_dict was called with 'keep_extra_keys'.
+    """
+    _skipped_keys: set[str]
+    """
+    Set holding the skipped keys given in _from_dict.
+    These are useful to detect ignored eos_cli_config_gen keys.
     """
 
     @classmethod
@@ -65,6 +70,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
         cls_args = {}
         custom_data = {}
+        skipped_keys = set()
 
         for key in data:
             if not (field := cls._get_field_name(key)):
@@ -74,6 +80,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
                 if cls._allow_other_keys:
                     # Ignore unknown keys.
+                    skipped_keys.add(key)
                     continue
 
                 msg = f"Invalid key '{key}'. Not available on '{cls.__name__}'."
@@ -83,6 +90,8 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
         if custom_data:
             cls_args["_custom_data"] = custom_data
+        if skipped_keys:
+            cls_args["_skipped_keys"] = skipped_keys
 
         return cls(**cls_args)
 
@@ -129,6 +138,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
         This method is typically overridden when TYPE_CHECKING is True, to provide proper suggestions and type hints for the arguments.
         """
         self._custom_data = {}
+        self._skipped_keys = set()
         [setattr(self, arg, arg_value) for arg, arg_value in kwargs.items() if arg_value is not Undefined]
 
         super().__init__()
