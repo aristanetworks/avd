@@ -1618,6 +1618,11 @@ ethernet_interfaces:
       media:
         override: 100gbase-ar4
       application_override: 100gbase-srbd
+      # Tests application_override_lanes does not configured when application_override is 100gb-srbd.
+      application_override_lanes:
+        - override: 10
+          first_lane: 1
+          last_lane: 1
 
   - name: Ethernet68.1
     description: Test_encapsulation_vlan1

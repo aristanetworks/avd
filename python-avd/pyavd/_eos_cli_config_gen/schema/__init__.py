@@ -9065,11 +9065,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 first_lane: int
                 """Set the start value of host lanes for which overrides should be applied."""
                 last_lane: int | None
-                """
-                Set the last value of host lanes for which overrides should be applied.
-                The ranges of `lanes` should
-                not overlap.
-                """
+                """Set the last value of host lanes for which overrides should be applied."""
 
                 if TYPE_CHECKING:
 
@@ -9089,10 +9085,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             override: override
                             first_lane: Set the start value of host lanes for which overrides should be applied.
-                            last_lane:
-                               Set the last value of host lanes for which overrides should be applied.
-                               The ranges of `lanes` should
-                               not overlap.
+                            last_lane: Set the last value of host lanes for which overrides should be applied.
 
                         """
 
