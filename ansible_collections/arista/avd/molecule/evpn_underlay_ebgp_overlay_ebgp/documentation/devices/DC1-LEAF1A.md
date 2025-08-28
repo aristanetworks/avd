@@ -487,10 +487,10 @@ interface Vlan131
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group | Multicast Group Encap Range | Overlay to Underlay Multicast Group Mapping |
-| --- | --- | --------------- | --------------------------- | ------------------------------------------- |
-| Tenant_A_APP_Zone | 12 | - | - | - |
-| Tenant_A_WEB_Zone | 11 | - | - | - |
+| VRF | VNI | Multicast Group | Overlay Multicast Group to Encap Mappings |
+| --- | --- | --------------- | ----------------------------------------- |
+| Tenant_A_APP_Zone | 12 | - | - |
+| Tenant_A_WEB_Zone | 11 | - | - |
 
 #### VXLAN Interface Device Configuration
 

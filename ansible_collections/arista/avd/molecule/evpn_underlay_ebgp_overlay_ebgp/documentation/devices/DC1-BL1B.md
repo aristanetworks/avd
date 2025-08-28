@@ -483,13 +483,13 @@ interface Vlan350
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group | Multicast Group Encap Range | Overlay to Underlay Multicast Group Mapping |
-| --- | --- | --------------- | --------------------------- | ------------------------------------------- |
-| Tenant_A_WAN_Zone | 14 | - | - | - |
-| Tenant_B_OP_Zone | 20 | - | - | - |
-| Tenant_B_WAN_Zone | 21 | - | - | - |
-| Tenant_C_WAN_Zone | 31 | - | - | - |
-| Tenant_L3_VRF_Zone | 15 | - | - | - |
+| VRF | VNI | Multicast Group | Overlay Multicast Group to Encap Mappings |
+| --- | --- | --------------- | ----------------------------------------- |
+| Tenant_A_WAN_Zone | 14 | - | - |
+| Tenant_B_OP_Zone | 20 | - | - |
+| Tenant_B_WAN_Zone | 21 | - | - |
+| Tenant_C_WAN_Zone | 31 | - | - |
+| Tenant_L3_VRF_Zone | 15 | - | - |
 
 #### VXLAN Interface Device Configuration
 
