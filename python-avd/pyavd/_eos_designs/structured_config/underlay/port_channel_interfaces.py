@@ -27,7 +27,7 @@ class PortChannelInterfacesMixin(Protocol):
     """
 
     @cached_property
-    def _l3_port_channels_with_subinterfaces(self: AvdStructuredConfigUnderlayProtocol) -> set:
+    def _l3_port_channels_with_subinterfaces(self: AvdStructuredConfigUnderlayProtocol) -> set[str]:
         """Return a set of L3 Port-Channel names that have sub-interfaces."""
         return {pc.name.split(".", maxsplit=1)[0] for pc in self.shared_utils.node_config.l3_port_channels if "." in pc.name}
 
