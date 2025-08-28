@@ -316,13 +316,16 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             # This child device does not support VLANs, so we tell the peer to enable portfast
             uplink.peer_spanning_tree_portfast = "edge"
 
-        if (ethernet_struct_config := self.shared_utils.node_config.uplink_ethernet_structured_config):
+        if ethernet_struct_config := self.shared_utils.node_config.uplink_ethernet_structured_config:
             uplink.ethernet_structured_config = ethernet_struct_config
-        if (port_channel_struct_config := self.shared_utils.node_config.uplink_port_channel_structured_config):
+        if port_channel_struct_config := self.shared_utils.node_config.uplink_port_channel_structured_config:
             uplink.port_channel_structured_config = port_channel_struct_config
-        if (peer_port_channel_struct_config := self.shared_utils.node_config.uplink_switch_port_channel_structured_config):
+        if peer_port_channel_struct_config := self.shared_utils.node_config.uplink_switch_port_channel_structured_config:
             uplink.uplink_peer_port_channel_structured_config = peer_port_channel_struct_config
-        if not(ethernet_struct_config or port_channel_struct_config or peer_port_channel_struct_config) and self.shared_utils.node_config.uplink_structured_config:
+        if (
+            not (ethernet_struct_config or port_channel_struct_config or peer_port_channel_struct_config)
+            and self.shared_utils.node_config.uplink_structured_config
+        ):
             uplink.structured_config = self.shared_utils.node_config.uplink_structured_config
 
         return uplink
