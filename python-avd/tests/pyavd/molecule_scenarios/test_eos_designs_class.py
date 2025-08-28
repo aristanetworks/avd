@@ -123,5 +123,9 @@ def test_eos_designs_initialize_dict_with_valid_data(molecule_host: MoleculeHost
 
     # If nothing raises, the model is accepted.
     with warnings.catch_warnings():
+        # simplefilter is prepended to the list
         warnings.simplefilter("error")
+        # ignore the AristaAvdModelDeprecationWarning - cf pyavd._schema.models.eos_designs_root_model.py
+        # this is being tested in eos_designs_deprecated_vars.
+        warnings.simplefilter("ignore", category=AristaAvdModelDeprecationWarning)
         EosDesigns._from_dict(inputs)
