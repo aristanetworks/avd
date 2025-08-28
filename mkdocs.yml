@@ -226,3 +226,4 @@ nav:
 not_in_nav: |
   /ansible_collections/arista/avd/examples/single-dc-l3ls/documentation/*
   /docs/contribution/eos_designs_facts_internal/tables/eos_designs_facts.md
+  /docs/warn-eos-cli-config-keys-usage-in-eos-designs.md
