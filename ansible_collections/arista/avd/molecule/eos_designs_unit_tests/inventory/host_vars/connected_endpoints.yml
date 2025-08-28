@@ -143,6 +143,7 @@ servers:
             mode: individual
             individual:
               profile: INDIVIDUAL_TRUNK # Notice that poe and dot1x are _not_ inherited from the fallback profile.
+
   - name: DOT1X_UNAUTHORIZED
     adapters:
       - switches: [connected_endpoints]
@@ -165,6 +166,35 @@ servers:
         profile: INDIVIDUAL_TRUNK # Notice that poe and dot1x _are_ inherited from the main profile and applied to the member interfaces.
         port_channel:
           mode: active
+
+  # port-channel with lacp fallback individual and profile for member interfaces
+  - name: INDIVIDUAL_3
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet26, Ethernet27]
+        port_channel:
+          mode: "active"
+          endpoint_port_channel: "INDIVIDUAL_3"
+          lacp_fallback:
+            mode: individual
+            individual:
+              profile: INDIVIDUAL_TRUNK 
+              mode: access # note that we are over-riding the mode coming from the profile
+              vlans: "5" # Setting a single access VLAN
+  - name: INDIVIDUAL_4
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet28, Ethernet29]
+        port_channel:
+          mode: "active"
+          endpoint_port_channel: "INDIVIDUAL_4"
+          lacp_fallback:
+            mode: individual
+            individual:
+              profile: INDIVIDUAL_TRUNK 
+              vlans: 1,2,3,4 # Modifying the VLAN list
+              native_vlan: 5 # Setting a native VLAN
+
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
