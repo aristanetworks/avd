@@ -10,6 +10,12 @@
       ansible.builtin.import_role:
         name: arista.avd.eos_designs
 
+- name: Clear facts between plays
+  hosts: all
+  gather_facts: false
+  tasks:
+    - meta: clear_facts
+
 - name: Converge
   hosts: TWODC_5STAGE_CLOS
   gather_facts: false
