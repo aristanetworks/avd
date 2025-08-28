@@ -178,7 +178,7 @@ servers:
           lacp_fallback:
             mode: individual
             individual:
-              profile: INDIVIDUAL_TRUNK 
+              profile: INDIVIDUAL_TRUNK
               mode: access # note that we are over-riding the mode coming from the profile
               vlans: "5" # Setting a single access VLAN
   - name: INDIVIDUAL_4
@@ -191,7 +191,7 @@ servers:
           lacp_fallback:
             mode: individual
             individual:
-              profile: INDIVIDUAL_TRUNK 
+              profile: INDIVIDUAL_TRUNK
               vlans: 1,2,3,4 # Modifying the VLAN list
               native_vlan: 5 # Setting a native VLAN
 
