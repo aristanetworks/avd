@@ -7189,9 +7189,9 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
-| Tenant_A_OP_Zone | 10 | 232.0.0.10 |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
+| Tenant_A_OP_Zone | 10 | default -> 232.0.0.10<br/>dynamic -> 239.0.43.0/24<br/>239.1.1.0 -> 225.0.41.1<br/>239.1.1.1 -> 225.0.41.1<br/>239.1.1.2 -> 225.0.41.2 |
 | Tenant_A_WEB_Zone | 11 | - |
 
 ##### Default Flood List
@@ -7227,6 +7227,10 @@ interface Vxlan1
    vxlan vlan 110 multicast group 239.9.1.4
    vxlan vlan 112 multicast group 239.9.1.6
    vxlan vrf Tenant_A_OP_Zone multicast group 232.0.0.10
+   vxlan vrf Tenant_A_OP_Zone multicast group encap range 239.0.43.0/24 delayed
+   vxlan vrf Tenant_A_OP_Zone multicast group overlay 239.1.1.0 encap 225.0.41.1 immediate
+   vxlan vrf Tenant_A_OP_Zone multicast group overlay 239.1.1.1 encap 225.0.41.1 immediate
+   vxlan vrf Tenant_A_OP_Zone multicast group overlay 239.1.1.2 encap 225.0.41.2 immediate
    vxlan multicast headend-replication
    vxlan qos ecn propagation
    vxlan qos dscp ecn rewrite bridged enabled
