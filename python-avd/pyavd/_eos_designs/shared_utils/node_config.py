@@ -79,7 +79,7 @@ class NodeConfigMixin(Protocol):
             self.node_type_config.defaults._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)
         )
         # Remove this check in 6.0 when uplink_structured_config is removed from schema.
-        if node_config.uplink_structured_config:
+        if node_config.uplink_structured_config is not None:
             # if new key for uplink_structured_config is used, raises an Exception.
             self.check_for_new_keys(node_config)
 
