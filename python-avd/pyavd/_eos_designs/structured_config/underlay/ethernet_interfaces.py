@@ -181,11 +181,6 @@ class EthernetInterfacesMixin(Protocol):
                             direction=link_tracking_group.direction,
                         )
 
-                # if link.ethernet_structured_config:
-                #     self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
-                #         link.ethernet_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-                #     )
-
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
             # Adding subinterfaces for each VRF after the main interface.
