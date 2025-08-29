@@ -47,7 +47,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].vni") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group") | String |  |  |  | IP Multicast Group Address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group") | String |  |  |  | Default IP Multicast Group Address for the VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group_encap_range</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group_encap_range") | String |  |  |  | N:M mapping, the overlay groups in the VRF are mapped to one of<br>the underlay groups defined within the encap range.<br>The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and 32).<br>Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for this feature to work.<br>See the TOI at https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_groups</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_groups") | List, items: Dictionary |  |  |  | List of 1:1 mappings where each configured overlay multicast group is mapped<br>directly to the specified underlay multicast group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;overlay_group</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_groups.[].overlay_group") | String | Required, Unique |  |  | Overlay multicast group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encap</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_groups.[].encap") | String | Required |  |  | Underlay multicast group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vteps</samp>](## "vxlan_interface.vxlan1.vxlan.flood_vteps") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vxlan_interface.vxlan1.vxlan.flood_vteps.[]") | String |  |  |  | Remote VTEP IP Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vtep_learned_data_plane</samp>](## "vxlan_interface.vxlan1.vxlan.flood_vtep_learned_data_plane") | Boolean |  |  |  |  |
@@ -91,7 +95,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].vni") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_group") | String |  |  |  | IP Multicast Group Address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_group") | String |  |  |  | Default IP Multicast Group Address for the VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group_encap_range</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_group_encap_range") | String |  |  |  | N:M mapping, the overlay groups in the VRF are mapped to one of<br>the underlay groups defined within the encap range.<br>The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and 32).<br>Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for this feature to work.<br>See the TOI at https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_groups</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_groups") | List, items: Dictionary |  |  |  | List of 1:1 mappings where each configured overlay multicast group is mapped<br>directly to the specified underlay multicast group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;overlay_group</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_groups.[].overlay_group") | String | Required, Unique |  |  | Overlay multicast group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encap</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_groups.[].encap") | String | Required |  |  | Underlay multicast group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vteps</samp>](## "vxlan_interface.Vxlan1.vxlan.flood_vteps") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vxlan_interface.Vxlan1.vxlan.flood_vteps.[]") | String |  |  |  | Remote VTEP IP Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vtep_learned_data_plane</samp>](## "vxlan_interface.Vxlan1.vxlan.flood_vtep_learned_data_plane") | Boolean |  |  |  |  |
@@ -181,8 +189,25 @@
             - name: <str; required; unique>
               vni: <int>
 
-              # IP Multicast Group Address.
+              # Default IP Multicast Group Address for the VRF.
               multicast_group: <str>
+
+              # N:M mapping, the overlay groups in the VRF are mapped to one of
+              # the underlay groups defined within the encap range.
+              # The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and 32).
+              # Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for this feature to work.
+              # See the TOI at https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
+              multicast_group_encap_range: <str>
+
+              # List of 1:1 mappings where each configured overlay multicast group is mapped
+              # directly to the specified underlay multicast group.
+              multicast_groups:
+
+                  # Overlay multicast group.
+                - overlay_group: <str; required; unique>
+
+                  # Underlay multicast group.
+                  encap: <str; required>
           flood_vteps:
 
               # Remote VTEP IP Address.
@@ -274,8 +299,25 @@
             - name: <str; required; unique>
               vni: <int>
 
-              # IP Multicast Group Address.
+              # Default IP Multicast Group Address for the VRF.
               multicast_group: <str>
+
+              # N:M mapping, the overlay groups in the VRF are mapped to one of
+              # the underlay groups defined within the encap range.
+              # The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and 32).
+              # Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for this feature to work.
+              # See the TOI at https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
+              multicast_group_encap_range: <str>
+
+              # List of 1:1 mappings where each configured overlay multicast group is mapped
+              # directly to the specified underlay multicast group.
+              multicast_groups:
+
+                  # Overlay multicast group.
+                - overlay_group: <str; required; unique>
+
+                  # Underlay multicast group.
+                  encap: <str; required>
           flood_vteps:
 
               # Remote VTEP IP Address.
