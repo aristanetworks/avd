@@ -4,11 +4,23 @@
 # This tests the SNMP hosts ignoring inband management VRF.
 type: l2leaf
 
-l2leaf:
+l2leaf: # dynamic_key: node_type
+  defaults:
+    # Testing uplink_structured_config on l2leaf
+    uplink_switches: [host1]
+    uplink_switch_interfaces: [Ethernet4]
+    uplink_structured_config:
+      description: uplink_structured_config on port-channel uplink
+      storm_control:
+        broadcast:
+          level: 25
+        unknown_unicast:
+          level: 25
   nodes:
     - name: host3
       id: 43
       mgmt_ip: 10.10.10.43/26
+      uplink_interfaces: [Ethernet4]
 
 mgmt_interface_vrf: MGMT
 mgmt_gateway: 10.10.10.1
@@ -25,7 +37,7 @@ snmp_settings:
   hosts:
     - host: 10.6.75.124
       version: 3
-      vrf: default  # VRF must be set to "default" since the default changes.
+      vrf: default # VRF must be set to "default" since the default changes.
       users:
         - username: USER-WRITE
           authentication_level: auth
@@ -40,11 +52,11 @@ snmp_settings:
     - name: acl-for-vrf-MGMT
       # Notice no VRF here. With the AVD 6 behavior this means "use_default_mgmt_method_vrf"
     - name: acl-for-vrf-default
-      vrf: default  # VRF must be set to "default" since the default changes.
+      vrf: default # VRF must be set to "default" since the default changes.
 
   # Deprecated. To be removed in 6.0.0
   ipv6_acls:
     - name: acl-for-vrf-MGMT
       # Notice no VRF here. With the AVD 6 behavior this means "use_default_mgmt_method_vrf"
     - name: acl-for-vrf-default
-      vrf: default  # VRF must be set to "default" since the default changes.
+      vrf: default # VRF must be set to "default" since the default changes.

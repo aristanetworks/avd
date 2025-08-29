@@ -15,6 +15,20 @@ daemon_terminattr:
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet4
+  description: uplink_structured_config on port-channel uplink
+  shutdown: false
+  channel_group:
+    id: 4
+    mode: active
+  storm_control:
+    broadcast:
+      level: '25'
+    unknown_unicast:
+      level: '25'
+  peer: host3
+  peer_interface: Ethernet4
+  peer_type: l2leaf
 - name: Ethernet42
   description: P2P_host2_Ethernet42
   shutdown: false
@@ -27,9 +41,36 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha512
     key: cJ25Oy2bNyqRwTqh1A2FXmcCqBSvRAvV
+  storm_control:
+    broadcast:
+      level: '25'
+    unknown_unicast:
+      level: '25'
   peer: host2
   peer_interface: Ethernet42
   peer_type: pe
+  switchport:
+    enabled: false
+    trunk:
+      native_vlan_tag: true
+- name: Ethernet43
+  description: P2P_host4_Ethernet43
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.42.42.204/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha512
+    key: cJ25Oy2bNyqRwTqh1A2FXmcCqBSvRAvV
+  pim:
+    ipv4:
+      sparse_mode: true
+  peer: host4
+  peer_interface: Ethernet43
+  peer_type: l3leaf
   switchport:
     enabled: false
 - name: Ethernet47
@@ -133,6 +174,19 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 port_channel_interfaces:
+- name: Port-Channel4
+  description: uplink_structured_config on port-channel uplink
+  shutdown: false
+  storm_control:
+    broadcast:
+      level: '25'
+    unknown_unicast:
+      level: '25'
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
 - name: Port-Channel11
   shutdown: false
   flow_tracker:
@@ -197,6 +251,7 @@ router_ospf:
     bfd_enable: false
     no_passive_interfaces:
     - Ethernet42
+    - Ethernet43
     max_lsa: 12000
 service_routing_protocols_model: multi-agent
 snmp_server:
