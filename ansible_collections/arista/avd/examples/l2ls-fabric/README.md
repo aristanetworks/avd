@@ -143,7 +143,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1"
-    At the site level (DC1), the following variables are defined in **group_vars/DC1.yml**. In addition, the management settings and uplink MTU are defined at this level.
+    At the site level (DC1), the following variables are defined in **group_vars/DC1.yml**. Management settings and uplink MTU are defined at this level.
 
     ``` yaml
     --8<--
