@@ -183,6 +183,7 @@ tenants:
         tags: ['test_l2']
         igmp_snooping_querier:
           enabled: true
+          source_address: vrf_router_id
       # Expected results:
       # igmp querier disabled, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
       - id: 123
