@@ -4012,7 +4012,6 @@ ip security
 - Default Switchport Mode: access
 - Default Switchport Phone Access-list Bypass: True
 - Default Switchport Phone COS: 0
-- Default Switchport Phone QOS trust: cos
 - Default Switchport Phone Trunk: tagged
 - Default Switchport Phone VLAN: 69
 

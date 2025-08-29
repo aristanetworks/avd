@@ -2,5 +2,5 @@
 switchport_default:
   mode: routed
   phone:
-    qos: dscp
+    qos_trust: dscp
     trunk: tagged phone

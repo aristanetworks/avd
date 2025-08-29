@@ -20,9 +20,9 @@ switchport default phone access-list bypass
 !
 switchport default phone cos {{ switchport_default.phone.cos }}
 {% endif %}
-{% if switchport_default.phone.qos is arista.avd.defined %}
+{% if switchport_default.phone.qos_trust is arista.avd.defined %}
 !
-switchport default phone qos trust {{ switchport_default.phone.qos }}
+switchport default phone qos trust {{ switchport_default.phone.qos_trust }}
 {% endif %}
 {% if switchport_default.phone.trunk is arista.avd.defined %}
 !

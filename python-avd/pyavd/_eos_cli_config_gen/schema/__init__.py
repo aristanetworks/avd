@@ -62204,7 +62204,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "trunk": {"type": str},
                 "vlan": {"type": int},
                 "access_list_bypass": {"type": bool},
-                "qos": {"type": str},
+                "qos_trust": {"type": str},
             }
             cos: int | None
             trunk: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None
@@ -62212,9 +62212,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """VLAN ID."""
             access_list_bypass: bool | None
             """Bypass phone traffic from configured access-list."""
-            qos: Literal["cos", "dscp"] | None
+            qos_trust: Literal["cos", "dscp"] | None
             """
-            Phone Quality of Service (QoS) trust. Outgoing traffic class being derived from the ingress COS/DSCP
+            Quality of Service (QoS) trust mode. Outgoing traffic class being derived from the ingress COS/DSCP
             value.
             """
 
@@ -62227,7 +62227,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     trunk: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None | UndefinedType = Undefined,
                     vlan: int | None | UndefinedType = Undefined,
                     access_list_bypass: bool | None | UndefinedType = Undefined,
-                    qos: Literal["cos", "dscp"] | None | UndefinedType = Undefined,
+                    qos_trust: Literal["cos", "dscp"] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Phone.
@@ -62240,8 +62240,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         trunk: trunk
                         vlan: VLAN ID.
                         access_list_bypass: Bypass phone traffic from configured access-list.
-                        qos:
-                           Phone Quality of Service (QoS) trust. Outgoing traffic class being derived from the ingress COS/DSCP
+                        qos_trust:
+                           Quality of Service (QoS) trust mode. Outgoing traffic class being derived from the ingress COS/DSCP
                            value.
 
                     """

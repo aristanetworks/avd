@@ -23373,9 +23373,9 @@ keys:
           access_list_bypass:
             description: Bypass phone traffic from configured access-list.
             type: bool
-          qos:
+          qos_trust:
             type: str
-            description: Phone Quality of Service (QoS) trust. Outgoing traffic class
+            description: Quality of Service (QoS) trust mode. Outgoing traffic class
               being derived from the ingress COS/DSCP value.
             valid_values:
             - cos
