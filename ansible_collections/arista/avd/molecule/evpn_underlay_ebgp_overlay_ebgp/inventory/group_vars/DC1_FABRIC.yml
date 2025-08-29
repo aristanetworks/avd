@@ -145,7 +145,7 @@ l3leaf:
           uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
           vtep_loopback: Loopback0
           structured_config:
-            tags: no-monitor
+            _tags: no-monitor
     - group: DC1_LEAF2
       bgp_as: 65102
       rack: "rackD"

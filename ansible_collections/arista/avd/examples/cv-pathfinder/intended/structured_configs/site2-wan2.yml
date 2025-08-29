@@ -154,8 +154,8 @@ flow_tracking:
         on_interval: 5000
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
     shutdown: false
 hostname: site2-wan2

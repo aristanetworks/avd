@@ -118,6 +118,24 @@ ethernet_interfaces:
   peer: peer7
   peer_interface: Ethernet10
   peer_type: other
+- name: Ethernet11
+  description: Description set via ethernet_structured_config(l3_edge)
+  shutdown: false
+  channel_group:
+    id: 11
+    mode: active
+  peer: peer7
+  peer_interface: Ethernet11
+  peer_type: other
+- name: Ethernet12
+  description: Description set via ethernet_structured_config(l3_edge)
+  shutdown: false
+  channel_group:
+    id: 11
+    mode: active
+  peer: peer7
+  peer_interface: Ethernet12
+  peer_type: other
 hostname: l3_edge_bgp
 ip_routing: true
 loopback_interfaces:
@@ -160,6 +178,16 @@ port_channel_interfaces:
   ip_address: 192.168.0.12/31
   peer: peer7
   peer_interface: Port-Channel9
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Port-Channel11
+  description: Description set via port_channel_structured_config(l3_edge)
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.14/31
+  peer: peer7
+  peer_interface: Port-Channel11
   peer_type: other
   switchport:
     enabled: false
@@ -236,6 +264,11 @@ router_bgp:
     peer: peer6
     description: peer6
   - ip_address: 192.168.0.13
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65006'
+    peer: peer7
+    description: peer7
+  - ip_address: 192.168.0.15
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65006'
     peer: peer7
