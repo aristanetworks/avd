@@ -424,7 +424,7 @@ class UtilsMixin(Protocol):
                 msg = (
                     f"Invalid configuration on VRF '{vrf.name}' in Tenant '{tenant.name}'. "
                     "'vtep_diagnostic.loopback' along with either 'vtep_diagnostic.loopback_ip_pools' or 'vtep_diagnostic.loopback_ip_range' must be defined "
-                    f"when '{context}'."
+                    f"when {context}."
                 )
                 raise AristaAvdInvalidInputsError(msg)
             # Resolve router ID from loopback interface
