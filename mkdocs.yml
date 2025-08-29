@@ -105,7 +105,6 @@ plugins:
         - 'ansible_collections\/arista\/avd\/examples\/((?!single-dc-l3ls).*)\/documentation\/.*'
         # Previous regex matches the ipv6 scenario
         - 'ansible_collections\/arista\/avd\/examples\/single-dc-l3ls-ipv6/documentation\/.*'
-        # TODO: Not sure why this example is not present in our doc - discuss with other maintainers.
         - 'ansible_collections\/arista\/avd\/examples\/single-dc-l3ls-ipv6/README.md'
         # Exclude all single-dc-l3ls files not referenced in getting getting-started
         - 'ansible_collections\/arista\/avd\/examples\/single-dc-l3ls\/documentation\/fabric\/((?!FABRIC-documentation.md).*)'
