@@ -249,8 +249,8 @@ class UtilsMixin(Protocol):
             eos_cli=p2p_link.raw_eos_cli,
         )
         interface.switchport.enabled = False
-
-        if p2p_link.structured_config:
+        # Remove this block after removing p2p_links[].structured_config from schema.
+        if not (p2p_link.ethernet_structured_config or p2p_link.port_channel_structured_config) and p2p_link.structured_config:
             if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
                 # Port-channel
                 self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
