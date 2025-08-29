@@ -135,11 +135,16 @@ async def deploy_to_cv(
             # Create workspace
             await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 
-            # Form the list of targeted CVDevices (list may contain duplicated items)
-            devices = (
-                [tag.device for tag in device_tags if tag.device is not None]
-                + [tag.device for tag in interface_tags if tag.device is not None]
-                + [config.device for config in configs if config.device is not None]
+            # Form deduplicated list of targeted CVDevices
+            devices = list(
+                {
+                    id(device): device
+                    for device in (
+                        [tag.device for tag in device_tags if tag.device is not None]
+                        + [tag.device for tag in interface_tags if tag.device is not None]
+                        + [config.device for config in configs if config.device is not None]
+                    )
+                }.values()
             )
             # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
             verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)

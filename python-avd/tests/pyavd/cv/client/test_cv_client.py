@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import inspect
 import re
 from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
@@ -127,6 +128,9 @@ async def _deploy_to_cv_core_logic(
         assert result.workspace.state == (expected["workspace_state"] or workspace["requested_state"])
 
 
+_DEPLOY_TO_CV_CORE_LOGIC_PARAMS = inspect.signature(_deploy_to_cv_core_logic).parameters.keys()
+
+
 @pytest.mark.asyncio
 async def test_get_inventory_devices(cv_client: CVClient) -> None:
     result = await cv_client.get_inventory_devices()
@@ -163,6 +167,13 @@ async def test_verify_devices_on_cv_no_devices(cv_client: CVClient) -> None:
 async def test_create_existing_workspace_on_cv(
     caplog: pytest.LogCaptureFixture, cv_client: CVClient, workspace_id: str, workspace_state: str | None, expected_exception: ExpectedExceptionContext
 ) -> None:
+    """
+    Test simple creation of the Workspace.
+
+    Specific use cases:
+        1. Attempt to create a Workspace which already exists and is in a WorkspaceState.PENDING state.
+        2. Attempt to create a Workspace which already exists and is not in a WorkspaceState.PENDING state. This raises CVResourceInvalidState.
+    """
     with caplog.at_level(INFO), expected_exception:
         result = DeployToCvResult(
             workspace=CVWorkspace(
@@ -194,7 +205,7 @@ async def test_finalize_workspace_on_cv_built_state(caplog: pytest.LogCaptureFix
     Build request:
         WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
         request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))
-    Recodred build response:
+    Recorded build response:
         tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
         1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json
     """
@@ -219,7 +230,7 @@ async def test_finalize_workspace_on_cv_abandoned_state(caplog: pytest.LogCaptur
     Build request:
         WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
         request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))
-    Recodred build response:
+    Recorded build response:
         tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
         1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json
     Abandon request:
@@ -233,7 +244,7 @@ async def test_finalize_workspace_on_cv_abandoned_state(caplog: pytest.LogCaptur
     workspace_build_id: str = MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS["id"]
     workspace_abandon_id: str = MOCKED_WORKSPACE_REQUEST_ID_ABANDON["id"]
     workspace_requested_state: str = "abandoned"
-    workspace_state: str = "abandoned"
+    expected_workspace_state: str = "abandoned"
 
     with (
         caplog.at_level(INFO),
@@ -242,7 +253,7 @@ async def test_finalize_workspace_on_cv_abandoned_state(caplog: pytest.LogCaptur
         workspace = CVWorkspace(id=workspace_id, requested_state=workspace_requested_state)
         await finalize_workspace_on_cv(workspace, cv_client, _mocked_cvdevices(hostnames=["avd-ci-leaf1"]), [])
 
-    assert workspace.state == workspace_state
+    assert workspace.state == expected_workspace_state
 
 
 @pytest.mark.asyncio
@@ -254,7 +265,7 @@ async def test_finalize_workspace_on_cv_deleted_state(caplog: pytest.LogCaptureF
     Build request:
         WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
         request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))
-    Recodred build response:
+    Recorded build response:
         tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
         1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json
     Delete request:
@@ -312,7 +323,7 @@ async def test_finalize_workspace_on_cv_build_failure(
     Build request:
         WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
         request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78b0000000')))
-    Recodred build response:
+    Recorded build response:
         tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
         094fa72d5437063770b645129730633334c7e4ed.json
     Abandon request:
@@ -473,7 +484,7 @@ async def test_deploy_to_cv_streaming_devices(
     Build request:
         WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
         request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))
-    Recodred build response:
+    Recorded build response:
         tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
         1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json
     Submit request:
@@ -487,7 +498,7 @@ async def test_deploy_to_cv_streaming_devices(
         "pyavd._cv.client.workspace.uuid4",
         side_effect=[workspace["build_request_id"]["id"].removeprefix("req-"), workspace["submit_request_id"]["id"].removeprefix("req-")],
     ):
-        await _deploy_to_cv_core_logic(**locals())
+        await _deploy_to_cv_core_logic(**{param: value for param, value in locals().items() if param in _DEPLOY_TO_CV_CORE_LOGIC_PARAMS})
 
 
 # Targeting non-streaming device(s) (or those that become non-streaming right before Workspace submission) without forcing
@@ -523,22 +534,15 @@ async def test_deploy_to_cv_streaming_devices(
             _mocked_cvdevices(hostnames=["avd-ci-leaf1"]),
             {
                 "result_warnings_qty": 1,
-                "result_warnings_patterns": [
-                    "Inactive devices present: \\["
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
-                ],
+                "result_warnings_patterns": ["Inactive devices present: \\['avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)'\\]"],
                 "result_errors_qty": 0,
                 "result_errors_patterns": [],
-                "logs_patterns": [
-                    "Failed to submit CloudVision Workspace due to the presence of inactive devices.*Inactive devices: "
-                    "\\[CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
-                ],
+                "logs_patterns": [],
                 "exception_patterns": [
-                    "Failed to submit CloudVision Workspace due to the presence of inactive devices.*Inactive devices: "
-                    "\\[CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
+                    "Failed to submit CloudVision Workspace due to the presence of inactive devices: "
+                    "\\["
+                    "'avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)'"
+                    "\\]"
                 ],
                 "exception": pytest.raises(CVWorkspaceSubmitFailedInactiveDevices),
                 "execution_failed": False,
@@ -553,36 +557,22 @@ async def test_deploy_to_cv_streaming_devices(
             {
                 "result_warnings_qty": 1,
                 "result_warnings_patterns": [
-                    "Inactive devices present: \\["
-                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
+                    "Inactive devices present: "
+                    "\\["
+                    "'avd-ci-core1 \\(20C292B489214DF32F9506C242A722FF\\)', "
+                    "'avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)', "
+                    "'avd-ci-spine1 \\(DCC816CEAC4BBD6319385043AD318362\\)'"
+                    "\\]"
                 ],
                 "result_errors_qty": 0,
                 "result_errors_patterns": [],
-                "logs_patterns": [
-                    "Failed to submit CloudVision Workspace due to the presence of inactive devices.*Inactive devices: "
-                    "\\["
-                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
-                    "_exists_on_cv=True, _streaming=False\\)"
-                    "\\]"
-                ],
+                "logs_patterns": [],
                 "exception_patterns": [
-                    "Failed to submit CloudVision Workspace due to the presence of inactive devices.*Inactive devices: "
+                    "Failed to submit CloudVision Workspace due to the presence of inactive devices: "
                     "\\["
-                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
-                    "_exists_on_cv=True, _streaming=False\\)"
+                    "'avd-ci-core1 \\(20C292B489214DF32F9506C242A722FF\\)', "
+                    "'avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)', "
+                    "'avd-ci-spine1 \\(DCC816CEAC4BBD6319385043AD318362\\)'"
                     "\\]"
                 ],
                 "exception": pytest.raises(CVWorkspaceSubmitFailedInactiveDevices),
@@ -604,9 +594,7 @@ async def test_deploy_to_cv_streaming_devices(
                 "result_errors_qty": 0,
                 "result_errors_patterns": [],
                 "logs_patterns": [],
-                "exception_patterns": [
-                    "Failed to submit CloudVision Workspace due to the presence of inactive devices\\..*Exact list of inactive devices is unknown\\."
-                ],
+                "exception_patterns": ["Failed to submit CloudVision Workspace due to the presence of inactive devices\\."],
                 "exception": pytest.raises(CVWorkspaceSubmitFailedInactiveDevices),
                 "execution_failed": False,
                 "workspace_state": "submit failed",
@@ -629,7 +617,7 @@ async def test_deploy_to_cv_non_streaming_devices_unforced(
     Build request:
         WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
         request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))
-    Recodred build response:
+    Recorded build response:
         tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
         1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json
     Submit request:
@@ -643,7 +631,7 @@ async def test_deploy_to_cv_non_streaming_devices_unforced(
         "pyavd._cv.client.workspace.uuid4",
         side_effect=[workspace["build_request_id"]["id"].removeprefix("req-"), workspace["submit_request_id"]["id"].removeprefix("req-")],
     ):
-        await _deploy_to_cv_core_logic(**locals())
+        await _deploy_to_cv_core_logic(**{param: value for param, value in locals().items() if param in _DEPLOY_TO_CV_CORE_LOGIC_PARAMS})
 
 
 # Targeting non-streaming device(s) with forcing
@@ -681,11 +669,7 @@ async def test_deploy_to_cv_non_streaming_devices_unforced(
             _mocked_cvdevices(hostnames=["avd-ci-leaf1"]),
             {
                 "result_warnings_qty": 1,
-                "result_warnings_patterns": [
-                    "Inactive devices present: \\["
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
-                ],
+                "result_warnings_patterns": ["Inactive devices present: \\['avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)'\\]"],
                 "result_errors_qty": 0,
                 "result_errors_patterns": [],
                 "logs_patterns": [],
@@ -703,13 +687,12 @@ async def test_deploy_to_cv_non_streaming_devices_unforced(
             {
                 "result_warnings_qty": 1,
                 "result_warnings_patterns": [
-                    "Inactive devices present: \\["
-                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
+                    "Inactive devices present: "
+                    "\\["
+                    "'avd-ci-core1 \\(20C292B489214DF32F9506C242A722FF\\)', "
+                    "'avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)', "
+                    "'avd-ci-spine1 \\(DCC816CEAC4BBD6319385043AD318362\\)'"
+                    "\\]"
                 ],
                 "result_errors_qty": 0,
                 "result_errors_patterns": [],
@@ -737,7 +720,7 @@ async def test_deploy_to_cv_non_streaming_devices_forced(
     Build request:
         WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
         request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))
-    Recodred build response:
+    Recorded build response:
         tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
         1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json
     Submit request:
@@ -751,7 +734,7 @@ async def test_deploy_to_cv_non_streaming_devices_forced(
         "pyavd._cv.client.workspace.uuid4",
         side_effect=[workspace["build_request_id"]["id"].removeprefix("req-"), workspace["submit_request_id"]["id"].removeprefix("req-")],
     ):
-        await _deploy_to_cv_core_logic(**locals())
+        await _deploy_to_cv_core_logic(**{param: value for param, value in locals().items() if param in _DEPLOY_TO_CV_CORE_LOGIC_PARAMS})
 
 
 # Targeting mixed (streaming and non-streaming) devices without and with forcing
@@ -784,25 +767,23 @@ async def test_deploy_to_cv_non_streaming_devices_forced(
             {
                 "result_warnings_qty": 1,
                 "result_warnings_patterns": [
-                    "Inactive devices present: \\["
-                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
+                    "Inactive devices present: "
+                    "\\["
+                    "'avd-ci-core1 \\(20C292B489214DF32F9506C242A722FF\\)', "
+                    "'avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)', "
+                    "'avd-ci-spine1 \\(DCC816CEAC4BBD6319385043AD318362\\)'"
+                    "\\]"
                 ],
                 "result_errors_qty": 0,
                 "result_errors_patterns": [],
                 "logs_patterns": [],
                 "exception_patterns": [
-                    "Failed to submit CloudVision Workspace due to the presence of inactive devices\\..*Inactive devices: \\["
-                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
+                    "Failed to submit CloudVision Workspace due to the presence of inactive devices: "
+                    "\\["
+                    "'avd-ci-core1 \\(20C292B489214DF32F9506C242A722FF\\)', "
+                    "'avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)', "
+                    "'avd-ci-spine1 \\(DCC816CEAC4BBD6319385043AD318362\\)'"
+                    "\\]"
                 ],
                 "exception": pytest.raises(CVWorkspaceSubmitFailedInactiveDevices),
                 "execution_failed": False,
@@ -819,13 +800,12 @@ async def test_deploy_to_cv_non_streaming_devices_forced(
             {
                 "result_warnings_qty": 1,
                 "result_warnings_patterns": [
-                    "Inactive devices present: \\["
-                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
+                    "Inactive devices present: "
+                    "\\["
+                    "'avd-ci-core1 \\(20C292B489214DF32F9506C242A722FF\\)', "
+                    "'avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)', "
+                    "'avd-ci-spine1 \\(DCC816CEAC4BBD6319385043AD318362\\)'"
+                    "\\]"
                 ],
                 "result_errors_qty": 0,
                 "result_errors_patterns": [],
@@ -846,25 +826,16 @@ async def test_deploy_to_cv_non_streaming_devices_forced(
             {
                 "result_warnings_qty": 1,
                 "result_warnings_patterns": [
-                    "Inactive devices present: \\["
-                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
+                    "Inactive devices present: "
+                    "\\["
+                    "'avd-ci-core1 \\(20C292B489214DF32F9506C242A722FF\\)', "
+                    "'avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)', "
+                    "'avd-ci-spine1 \\(DCC816CEAC4BBD6319385043AD318362\\)'"
+                    "\\]"
                 ],
                 "result_errors_qty": 0,
                 "result_errors_patterns": [],
-                "logs_patterns": [
-                    "Inactive devices present: \\["
-                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
-                ],
+                "logs_patterns": [],
                 "exception_patterns": [
                     "Failed to submit workspace ws-cbf7c7ea-a57c-481d-b96b-97c12856395e: Response\\(status=ResponseStatus.FAIL, "
                     "message='Unknown exception faced', code=ResponseCode.UNSPECIFIED\\)"
@@ -884,25 +855,16 @@ async def test_deploy_to_cv_non_streaming_devices_forced(
             {
                 "result_warnings_qty": 1,
                 "result_warnings_patterns": [
-                    "Inactive devices present: \\["
-                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
+                    "Inactive devices present: "
+                    "\\["
+                    "'avd-ci-core1 \\(20C292B489214DF32F9506C242A722FF\\)', "
+                    "'avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)', "
+                    "'avd-ci-spine1 \\(DCC816CEAC4BBD6319385043AD318362\\)'"
+                    "\\]"
                 ],
                 "result_errors_qty": 0,
                 "result_errors_patterns": [],
-                "logs_patterns": [
-                    "Inactive devices present: \\["
-                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
-                    "_exists_on_cv=True, _streaming=False\\), "
-                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
-                    "_exists_on_cv=True, _streaming=False\\)\\]"
-                ],
+                "logs_patterns": [],
                 "exception_patterns": [
                     "Failed to submit workspace ws-cbf7c7ea-a57c-481d-b96b-97c12856395e: Response\\(status=ResponseStatus.FAIL, "
                     "message='Unknown exception faced', code=ResponseCode.UNSPECIFIED\\)"
@@ -929,7 +891,7 @@ async def test_deploy_to_cv_mixed_devices(
     Build request:
         WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
         request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))
-    Recodred build response:
+    Recorded build response:
         tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
         1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json
     """
@@ -946,4 +908,4 @@ async def test_deploy_to_cv_mixed_devices(
         "pyavd._cv.client.workspace.uuid4",
         side_effect=[workspace["build_request_id"]["id"].removeprefix("req-"), workspace["submit_request_id"]["id"].removeprefix("req-")],
     ):
-        await _deploy_to_cv_core_logic(**locals())
+        await _deploy_to_cv_core_logic(**{param: value for param, value in locals().items() if param in _DEPLOY_TO_CV_CORE_LOGIC_PARAMS})

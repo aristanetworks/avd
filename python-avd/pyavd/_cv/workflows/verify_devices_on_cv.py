@@ -61,7 +61,6 @@ async def verify_devices_in_cloudvision_inventory(
 
     Returns deduplicated list of CVDevice objects found on CloudVision.
     """
-    # Using set to only include a device once.
     device_tuples = [
         (device.serial_number, device.system_mac_address, device.hostname if not any([device.serial_number, device.system_mac_address]) else None)
         for device in devices

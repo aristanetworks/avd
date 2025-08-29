@@ -51,7 +51,6 @@ async def cv_client(request: pytest.FixtureRequest) -> AsyncGenerator[CVClient, 
 
     Otherwise this will return an instance of CVClient where API calls are mocked using previously recorded API messages.
     """
-    static_recording = get_v2(request, "param.static_recording")
     if CV_SERVER and CV_TOKEN:
         LOGGER.info("Running in online mode connecting to %s.", CV_SERVER)
         if RECORDING:
@@ -74,7 +73,7 @@ async def cv_client(request: pytest.FixtureRequest) -> AsyncGenerator[CVClient, 
         LOGGER.info("Mocking ServiceStub to MockedServiceStub")
         aristaproto.grpc.grpclib_client.ServiceStub._org_unary_unary = aristaproto.grpc.grpclib_client.ServiceStub._unary_unary
         aristaproto.grpc.grpclib_client.ServiceStub._org_unary_stream = aristaproto.grpc.grpclib_client.ServiceStub._unary_stream
-        if static_recording:
+        if get_v2(request, "param.static_recording"):
             aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = playback_static_recording_unary_unary
             aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = playback_static_recording_unary_stream
         else:
