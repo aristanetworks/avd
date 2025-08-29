@@ -113,6 +113,10 @@ async def playback_unary_stream(
         yield response_type().from_pydict(message_as_dict)
 
 
+# General recordings are those that are natively received from CV and dumped as is.
+# Static recordings are the same recordings but wrapped into 'payload' and 'raise'
+# that are used during the tests like in mockery.py::playback_static_recording_unary_stream.
+# These static recordings are not updated/impacted by RECORDING env var and must be changed manually (if ever needed).
 async def playback_static_recording_unary_unary(
     self: ServiceStub,
     route: str,
