@@ -12,7 +12,8 @@ device:
   defaults:
     structured_config:
       # hostname: null # Hostname is kept to avoid pyavd tests from failing. Uncomment this if you are trying to build connected-endpoints only configs.
-      is_deployed: null
+      metadata:
+        is_deployed: null
       service_routing_protocols_model: null
       vlan_internal_order: null
       aaa_root: null

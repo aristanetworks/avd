@@ -40,8 +40,7 @@ class UtilsMixin(Protocol):
         underlay_links = self.facts.uplinks._deepcopy()
 
         for uplink in underlay_links:
-            if self.shared_utils.platform_settings.feature_support.sflow:
-                uplink.sflow_enabled = self.inputs.fabric_sflow.uplinks
+            uplink.sflow_enabled = self.shared_utils.get_interface_sflow(uplink.interface, self.inputs.fabric_sflow.uplinks)
             uplink.flow_tracking = self.inputs.fabric_flow_tracking.uplinks
             if not self.shared_utils.platform_settings.feature_support.ptp:
                 uplink.ptp.enable = False
@@ -82,7 +81,7 @@ class UtilsMixin(Protocol):
                     mlag=uplink.peer_mlag,
                     underlay_multicast=uplink.underlay_multicast,
                     ipv6_enable=uplink.ipv6_enable,
-                    sflow_enabled=self.inputs.fabric_sflow.downlinks if self.shared_utils.platform_settings.feature_support.sflow else None,
+                    sflow_enabled=self.shared_utils.get_interface_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
                     structured_config=uplink.structured_config,
@@ -144,8 +143,11 @@ class UtilsMixin(Protocol):
 
         # logic below is common to l3_interface and l3_port_channel interface types
 
+        # Check if the interface is a parent L3 Port-Channel with subinterfaces.
+        is_parent_l3_port_channel = schema_key == "l3_port_channels" and l3_generic_interface.name in self._l3_port_channels_with_subinterfaces
+
         # TODO: catch if ip_address is not valid or not dhcp
-        if not l3_generic_interface.ip_address:
+        if not l3_generic_interface.ip_address and not is_parent_l3_port_channel:
             msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}"
             msg += f"[name={l3_generic_interface.name}].ip_address"
             raise AristaAvdMissingVariableError(msg)

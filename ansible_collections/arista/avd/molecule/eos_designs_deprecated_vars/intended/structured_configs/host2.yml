@@ -37,7 +37,6 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: MY_OVERLAY_LOOPBACK
@@ -59,6 +58,7 @@ management_interfaces:
   ip_address: 192.168.100.123/24
   type: oob
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 mpls:
   ip: true

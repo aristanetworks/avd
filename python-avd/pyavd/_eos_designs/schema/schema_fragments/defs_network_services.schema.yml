@@ -751,6 +751,11 @@ $defs:
                       type: str
                       description: VLAN name.
                       required: true
+                    address_locking:
+                      type: dict
+                      $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family"
+                      description: |-
+                        To configure `address_locking.ipv4/v6`, you must define either `address_locking_settings.dhcp_servers_ipv4` or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
                     profile:
                       type: str
                       description: |
@@ -1590,6 +1595,9 @@ $defs:
                 min: 1
                 max: 4094
                 description: VLAN ID.
+              address_locking:
+                type: dict
+                $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family"
               vni_override:
                 type: int
                 convert_types:

@@ -12,6 +12,9 @@ keys:
       The data under `metadata` is used for documentation, validation or integration purposes.
       It will not affect the generated EOS configuration.
     keys:
+      is_deployed:
+        description: Key only used for documentation or validation purposes.
+        type: bool
       platform:
         type: str
       system_mac_address:

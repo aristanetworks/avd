@@ -11,6 +11,9 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "<network_services_keys.name>.[].name") | String | Required, Unique |  |  | Specify a tenant name.<br>Tenant provide a construct to group L3 VRFs and L2 VLANs.<br>Networks services can be filtered by tenant name.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2vlans</samp>](## "<network_services_keys.name>.[].l2vlans") | List, items: Dictionary |  |  |  | Define L2 network services organized by vlan id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].l2vlans.[].id") | Integer | Required |  | Min: 1<br>Max: 4094 | VLAN ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_locking</samp>](## "<network_services_keys.name>.[].l2vlans.[].address_locking") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "<network_services_keys.name>.[].l2vlans.[].address_locking.ipv4") | Boolean |  |  |  | Enable address locking for IPv4. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "<network_services_keys.name>.[].l2vlans.[].address_locking.ipv6") | Boolean |  |  |  | Enable address locking for IPv6. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_override</samp>](## "<network_services_keys.name>.[].l2vlans.[].vni_override") | Integer |  |  | Min: 1<br>Max: 16777215 | By default the VNI will be derived from mac_vrf_vni_base.<br>The vni_override, allows to override this value and statically define it.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_override</samp>](## "<network_services_keys.name>.[].l2vlans.[].rt_override") | String |  |  |  | By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.<br>The rt_override allows us to override this value and statically define it.<br>rt_override will default to vni_override if set.<br><br>rt_override supports two formats:<br>  - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).<br>  - A full RT string with colon separator which will override the full RT.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd_override</samp>](## "<network_services_keys.name>.[].l2vlans.[].rd_override") | String |  |  |  | By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.<br>The rt_override allows us to override this value and statically define it.<br>rd_override will default to rt_override or vni_override if set.<br><br>rd_override supports two formats:<br>  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).<br>  - A full RD string with colon separator which will override the full RD.<br> |
@@ -45,6 +48,13 @@
 
             # VLAN ID.
           - id: <int; 1-4094; required>
+            address_locking:
+
+              # Enable address locking for IPv4.
+              ipv4: <bool>
+
+              # Enable address locking for IPv6.
+              ipv6: <bool>
 
             # By default the VNI will be derived from mac_vrf_vni_base.
             # The vni_override, allows to override this value and statically define it.
