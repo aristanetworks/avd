@@ -10,6 +10,7 @@
       ansible.builtin.import_role:
         name: arista.avd.eos_designs
 
+# Clear facts to avoid mixing deprecated 'local_users' with new 'aaa_settings.local_users' between runs.
 - name: Clear facts between plays
   hosts: all
   gather_facts: false
