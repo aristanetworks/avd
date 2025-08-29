@@ -8,21 +8,7 @@ fabric_name: DC1
 eos_designs_documentation:
   connected_endpoints: true
 
-# local users
-local_users:
-  # Username with no password configured
-  - name: admin
-    privilege: 15
-    role: network-admin
-    no_password: true
-
-  # Username with a password
-  - name: arista
-    privilege: 15
-    role: network-admin
-    sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
-
-# dns servers.
+# DNS servers
 dns_settings:
   servers:
     - ip_address: 8.8.4.4
@@ -35,8 +21,22 @@ ntp_settings:
     - name: time.google.com
     - name: pool.ntp.org
 
-# Establish exec/enable role when logging in to switch
+# AAA settings
 aaa_settings:
+  local_users:
+    # Username with no password configured
+    - name: admin
+      privilege: 15
+      role: network-admin
+      no_password: true
+
+    # Username with a password
+    - name: arista
+      privilege: 15
+      role: network-admin
+      sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
+
+  # Establish exec/enable role when logging in to switch
   authorization:
     exec:
       default: local
