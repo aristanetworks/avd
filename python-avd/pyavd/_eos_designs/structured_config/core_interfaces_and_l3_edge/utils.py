@@ -325,25 +325,6 @@ class UtilsMixin(Protocol):
                 interface.mpls.ldp.interface = True
                 interface.mpls.ldp.igp_sync = True
 
-        if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
-            if p2p_link.ethernet_structured_config:
-                for member in p2p_link_data["port_channel_members"]:
-                    self.custom_structured_configs.nested.ethernet_interfaces.obtain(member["interface"])._deepmerge(
-                        p2p_link.ethernet_structured_config,
-                        list_merge=self.custom_structured_configs.list_merge_strategy,
-                    )
-            if p2p_link.port_channel_structured_config:
-                self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
-                    p2p_link.port_channel_structured_config,
-                    list_merge=self.custom_structured_configs.list_merge_strategy,
-                )
-        else:
-            # Ethernet
-            self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface.name)._deepmerge(
-                p2p_link.ethernet_structured_config,
-                list_merge=self.custom_structured_configs.list_merge_strategy,
-            )
-
     def _get_channel_id(
         self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,
         p2p_link: T_P2pLinksItem,
