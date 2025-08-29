@@ -17,3 +17,6 @@ l3_edge:
       id: 1
       profile: profile1
       include_in_underlay_protocol: false
+      # Testing merging of structured_config between profiles and links
+      structured_config:
+        description: I come from p2p_links
