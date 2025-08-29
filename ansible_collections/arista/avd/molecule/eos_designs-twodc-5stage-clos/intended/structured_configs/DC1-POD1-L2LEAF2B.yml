@@ -44,7 +44,6 @@ ethernet_interfaces:
 hostname: DC1-POD1-L2LEAF2B
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -64,6 +63,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.1.254
 metadata:
+  is_deployed: true
   platform: TOOLS-SERVER
   pod_name: DC1_POD1
   dc_name: DC1

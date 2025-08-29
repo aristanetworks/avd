@@ -485,8 +485,8 @@ interface Vlan350
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
 | Tenant_A_WAN_Zone | 14 | - |
 | Tenant_B_OP_Zone | 20 | - |
 | Tenant_B_WAN_Zone | 21 | - |

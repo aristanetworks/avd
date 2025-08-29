@@ -37,7 +37,6 @@ ipv6_prefix_lists:
   - sequence: 20
     action: permit 2001:db8:5::/48 eq 64
 ipv6_unicast_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -83,6 +82,7 @@ management_interfaces:
   ip_address: 172.16.1.33/24
   type: oob
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:
