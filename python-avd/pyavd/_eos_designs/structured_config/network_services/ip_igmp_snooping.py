@@ -36,15 +36,16 @@ class IpIgmpSnoopingMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 for svi in vrf.svis:
-                    self._set_ip_igmp_snooping_vlan(svi, tenant)
+                    self._set_ip_igmp_snooping_vlan(svi, tenant, vrf)
             for l2vlan in tenant.l2vlans:
-                self._set_ip_igmp_snooping_vlan(l2vlan, tenant)
+                self._set_ip_igmp_snooping_vlan(l2vlan, tenant, vrf=None)
 
     def _set_ip_igmp_snooping_vlan(
         self: AvdStructuredConfigNetworkServicesProtocol,
         vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem | None,
     ) -> None:
         """
         Set ip_igmp_snooping structured_config for one vlan.
@@ -74,9 +75,7 @@ class IpIgmpSnoopingMixin(Protocol):
         if igmp_snooping_querier_enabled is not None:
             vlan_item.querier.enabled = igmp_snooping_querier_enabled
             if igmp_snooping_querier_enabled:
-                vlan_item.querier.address = default(
-                    vlan.igmp_snooping_querier.source_address, tenant.igmp_snooping_querier.source_address, self.shared_utils.router_id
-                )
+                vlan_item.querier.address = self._get_igmp_snooping_querier_source_address(vlan, tenant, vrf)
                 vlan_item.querier.version = default(vlan.igmp_snooping_querier.version, tenant.igmp_snooping_querier.version)
 
         if evpn_l2_multicast_enabled:
@@ -85,3 +84,33 @@ class IpIgmpSnoopingMixin(Protocol):
         if vlan_item:
             vlan_item.id = vlan.id
             self.structured_config.ip_igmp_snooping.vlans.append(vlan_item)
+
+    def _get_igmp_snooping_querier_source_address(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem | None,
+    ) -> str | None:
+        """
+        Return the IGMP snooping querier source address for a given VLAN.
+
+        If the source address is not set, the router ID is returned.
+        For an SVI attached to a VRF, if the source address is 'vrf_router_id', the VRF router ID is returned.
+        For an L2VLAN, 'vrf_router_id' and 'diagnostic_loopback' are treated as 'main_router_id'.
+        """
+        source_address_key = default(vlan.igmp_snooping_querier.source_address, tenant.igmp_snooping_querier.source_address)
+        if source_address_key is None:
+            return self.shared_utils.router_id
+
+        if vrf is not None:
+            # SVI is attached to a VRF
+            if source_address_key == "vrf_router_id":
+                return self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
+            return self.get_vrf_router_id(vrf, tenant, source_address_key, context="'vrf_router_id' is set to 'diagnostic_loopback' on the SVI")
+
+        # For L2VLANs, 'vrf_router_id' and 'diagnostic_loopback' are treated as 'main_router_id'.
+        if source_address_key in {"main_router_id", "diagnostic_loopback", "vrf_router_id"}:
+            return self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None
+
+        return source_address_key

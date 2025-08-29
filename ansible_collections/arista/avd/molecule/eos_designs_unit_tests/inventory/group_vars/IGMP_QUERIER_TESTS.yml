@@ -27,6 +27,11 @@ tenants:
       - name: IGMP_QUERIER_TEST_1
         description: "IGMP_QUERIER_TEST_1"
         vrf_vni: 11
+        vtep_diagnostic:
+          loopback: 111
+          loopback_ip_range: 10.1.1.0/24
+        bgp:
+          router_id: diagnostic_loopback
         svis:
         # Expected results:
         # igmp querier enable, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
@@ -44,6 +49,7 @@ tenants:
             ip_address_virtual: 10.0.2.1/24
             igmp_snooping_querier:
               version: 3
+              source_address: vrf_router_id
         # Expected results:
         # igmp querier disabled, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
           - id: 3

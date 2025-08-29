@@ -17278,8 +17278,15 @@ class EosDesigns(EosDesignsRootModel):
                 """Will be enabled automatically if evpn_l2_multicast is enabled."""
                 source_address: str | None
                 """
-                IPv4_address
-                If not set, IP address of "Loopback0" will be used.
+                The value of `source_address` will be interpreted according to these rules:
+                - `vrf_router_id` will
+                configure the vrf Loopback address.
+                - 'diagnostic_loopback' will configure the vtep loopback.
+                -
+                `main_router_id` will configure the Loopback0 IP address.
+                - Any other IPv4 address will be used
+                directly as the source address.
+                - Default IP address of Loopback0
                 """
                 version: Literal[1, 2, 3] | None
                 """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -17305,8 +17312,15 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
                             source_address:
-                               IPv4_address
-                               If not set, IP address of "Loopback0" will be used.
+                               The value of `source_address` will be interpreted according to these rules:
+                               - `vrf_router_id` will
+                               configure the vrf Loopback address.
+                               - 'diagnostic_loopback' will configure the vtep loopback.
+                               -
+                               `main_router_id` will configure the Loopback0 IP address.
+                               - Any other IPv4 address will be used
+                               directly as the source address.
+                               - Default IP address of Loopback0
                             version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                             fast_leave: Enable IGMP snooping fast-leave feature.
 
@@ -18203,8 +18217,15 @@ class EosDesigns(EosDesignsRootModel):
             """Will be enabled automatically if evpn_l2_multicast is enabled."""
             source_address: str | None
             """
-            IPv4_address
-            If not set, IP address of "Loopback0" will be used.
+            The value of `source_address` will be interpreted according to these rules:
+            - `vrf_router_id` will
+            configure the vrf Loopback address.
+            - 'diagnostic_loopback' will configure the vtep loopback.
+            -
+            `main_router_id` will configure the Loopback0 IP address.
+            - Any other IPv4 address will be used
+            directly as the source address.
+            - Default IP address of Loopback0
             """
             version: Literal[1, 2, 3] | None
             """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -18230,8 +18251,15 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
                         source_address:
-                           IPv4_address
-                           If not set, IP address of "Loopback0" will be used.
+                           The value of `source_address` will be interpreted according to these rules:
+                           - `vrf_router_id` will
+                           configure the vrf Loopback address.
+                           - 'diagnostic_loopback' will configure the vtep loopback.
+                           -
+                           `main_router_id` will configure the Loopback0 IP address.
+                           - Any other IPv4 address will be used
+                           directly as the source address.
+                           - Default IP address of Loopback0
                         version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                         fast_leave: Enable IGMP snooping fast-leave feature.
 
@@ -42647,7 +42675,17 @@ class EosDesigns(EosDesignsRootModel):
                     enabled: bool | None
                     """Will be enabled automatically if "evpn_l2_multicast" is enabled."""
                     source_address: str | None
-                    """Default IP address of Loopback0."""
+                    """
+                    The value of `source_address` will be interpreted according to these rules:
+                    - `vrf_router_id` will
+                    configure the vrf Loopback address.
+                    - 'diagnostic_loopback' will configure the vtep loopback.
+                    -
+                    `main_router_id` will configure the Loopback0 IP address.
+                    - Any other IPv4 address will be used
+                    directly as the source address.
+                    - Default IP address of Loopback0
+                    """
                     version: Literal[1, 2, 3] | None
                     """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
 
@@ -42668,7 +42706,16 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 enabled: Will be enabled automatically if "evpn_l2_multicast" is enabled.
-                                source_address: Default IP address of Loopback0.
+                                source_address:
+                                   The value of `source_address` will be interpreted according to these rules:
+                                   - `vrf_router_id` will
+                                   configure the vrf Loopback address.
+                                   - 'diagnostic_loopback' will configure the vtep loopback.
+                                   -
+                                   `main_router_id` will configure the Loopback0 IP address.
+                                   - Any other IPv4 address will be used
+                                   directly as the source address.
+                                   - Default IP address of Loopback0
                                 version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
 
                             """
@@ -43618,8 +43665,15 @@ class EosDesigns(EosDesignsRootModel):
                                 """Will be enabled automatically if evpn_l2_multicast is enabled."""
                                 source_address: str | None
                                 """
-                                IPv4_address
-                                If not set, IP address of "Loopback0" will be used.
+                                The value of `source_address` will be interpreted according to these rules:
+                                - `vrf_router_id` will
+                                configure the vrf Loopback address.
+                                - 'diagnostic_loopback' will configure the vtep loopback.
+                                -
+                                `main_router_id` will configure the Loopback0 IP address.
+                                - Any other IPv4 address will be used
+                                directly as the source address.
+                                - Default IP address of Loopback0
                                 """
                                 version: Literal[1, 2, 3] | None
                                 """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -43645,8 +43699,15 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
                                             source_address:
-                                               IPv4_address
-                                               If not set, IP address of "Loopback0" will be used.
+                                               The value of `source_address` will be interpreted according to these rules:
+                                               - `vrf_router_id` will
+                                               configure the vrf Loopback address.
+                                               - 'diagnostic_loopback' will configure the vtep loopback.
+                                               -
+                                               `main_router_id` will configure the Loopback0 IP address.
+                                               - Any other IPv4 address will be used
+                                               directly as the source address.
+                                               - Default IP address of Loopback0
                                             version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                                             fast_leave: Enable IGMP snooping fast-leave feature.
 
@@ -44566,8 +44627,15 @@ class EosDesigns(EosDesignsRootModel):
                             """Will be enabled automatically if evpn_l2_multicast is enabled."""
                             source_address: str | None
                             """
-                            IPv4_address
-                            If not set, IP address of "Loopback0" will be used.
+                            The value of `source_address` will be interpreted according to these rules:
+                            - `vrf_router_id` will
+                            configure the vrf Loopback address.
+                            - 'diagnostic_loopback' will configure the vtep loopback.
+                            -
+                            `main_router_id` will configure the Loopback0 IP address.
+                            - Any other IPv4 address will be used
+                            directly as the source address.
+                            - Default IP address of Loopback0
                             """
                             version: Literal[1, 2, 3] | None
                             """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -44593,8 +44661,15 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
                                         source_address:
-                                           IPv4_address
-                                           If not set, IP address of "Loopback0" will be used.
+                                           The value of `source_address` will be interpreted according to these rules:
+                                           - `vrf_router_id` will
+                                           configure the vrf Loopback address.
+                                           - 'diagnostic_loopback' will configure the vtep loopback.
+                                           -
+                                           `main_router_id` will configure the Loopback0 IP address.
+                                           - Any other IPv4 address will be used
+                                           directly as the source address.
+                                           - Default IP address of Loopback0
                                         version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                                         fast_leave: Enable IGMP snooping fast-leave feature.
 
@@ -48735,8 +48810,15 @@ class EosDesigns(EosDesignsRootModel):
                         """Will be enabled automatically if evpn_l2_multicast is enabled."""
                         source_address: str | None
                         """
-                        IPv4_address
-                        If not set, IP address of "Loopback0" will be used.
+                        The value of `source_address` will be interpreted according to these rules:
+                        - `vrf_router_id` ->
+                        same as `main_router_id`.
+                        - `diagnostic_loopback` -> same as `Loopback0`.
+                        - `main_router_id` will
+                        configure the Loopback0 IP address.
+                        - Any other IPv4 address will be used directly as the source
+                        address.
+                        - Default IP address of Loopback0
                         """
                         version: Literal[1, 2, 3] | None
                         """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
@@ -48762,8 +48844,15 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
                                     source_address:
-                                       IPv4_address
-                                       If not set, IP address of "Loopback0" will be used.
+                                       The value of `source_address` will be interpreted according to these rules:
+                                       - `vrf_router_id` ->
+                                       same as `main_router_id`.
+                                       - `diagnostic_loopback` -> same as `Loopback0`.
+                                       - `main_router_id` will
+                                       configure the Loopback0 IP address.
+                                       - Any other IPv4 address will be used directly as the source
+                                       address.
+                                       - Default IP address of Loopback0
                                     version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                                     fast_leave: Enable IGMP snooping fast-leave feature.
 
