@@ -397,6 +397,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ip_proxy_arp is arista.avd.defined(true) %}
    ip proxy-arp
 {%     endif %}
+{%     if ethernet_interface.arp_gratuitous_accept is arista.avd.defined(true) %}
+   arp gratuitous accept
+{%     endif %}
 {%     if ethernet_interface.ip_address is arista.avd.defined %}
    ip address {{ ethernet_interface.ip_address }}
 {%         for ip_address_secondary in ethernet_interface.ip_address_secondaries | arista.avd.natural_sort %}
@@ -1188,69 +1191,84 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.vmtracer is arista.avd.defined(true) %}
    vmtracer vmware-esx
 {%     endif %}
-{%     if ethernet_interface.vrrp_ids is arista.avd.defined %}
-{%         for vrid in ethernet_interface.vrrp_ids | arista.avd.natural_sort('id') if vrid.id is arista.avd.defined %}
-{%             if vrid.priority_level is arista.avd.defined %}
+{%     for vrid in ethernet_interface.vrrp_ids | arista.avd.natural_sort('id') %}
+{%         if vrid.priority_level is arista.avd.defined %}
    vrrp {{ vrid.id }} priority-level {{ vrid.priority_level }}
-{%             endif %}
-{%             if vrid.advertisement.interval is arista.avd.defined %}
+{%         endif %}
+{%         if vrid.advertisement.interval is arista.avd.defined %}
    vrrp {{ vrid.id }} advertisement interval {{ vrid.advertisement.interval }}
+{%         endif %}
+{%         if vrid.preempt.enabled is arista.avd.defined(true) and (
+            vrid.preempt.delay.minimum is arista.avd.defined or
+            vrid.preempt.delay.reload is arista.avd.defined) %}
+{%             set delay_cli = 'vrrp ' ~ vrid.id ~ ' preempt delay' %}
+{%             if vrid.preempt.delay.minimum is arista.avd.defined %}
+{%                 set delay_cli = delay_cli ~ ' minimum ' ~ vrid.preempt.delay.minimum %}
 {%             endif %}
-{%             if vrid.preempt.enabled is arista.avd.defined(true) and (
-                  vrid.preempt.delay.minimum is arista.avd.defined or
-                  vrid.preempt.delay.reload is arista.avd.defined) %}
-{%                 set delay_cli = 'vrrp ' ~ vrid.id ~ ' preempt delay' %}
-{%                 if vrid.preempt.delay.minimum is arista.avd.defined %}
-{%                     set delay_cli = delay_cli ~ ' minimum ' ~ vrid.preempt.delay.minimum %}
-{%                 endif %}
-{%                 if vrid.preempt.delay.reload is arista.avd.defined %}
-{%                     set delay_cli = delay_cli ~ ' reload ' ~ vrid.preempt.delay.reload %}
-{%                 endif %}
+{%             if vrid.preempt.delay.reload is arista.avd.defined %}
+{%                 set delay_cli = delay_cli ~ ' reload ' ~ vrid.preempt.delay.reload %}
+{%             endif %}
    {{ delay_cli }}
-{%             elif vrid.preempt.enabled is arista.avd.defined(false) %}
+{%         elif vrid.preempt.enabled is arista.avd.defined(false) %}
    no vrrp {{ vrid.id }} preempt
-{%             endif %}
-{%             if vrid.timers.delay.reload is arista.avd.defined %}
+{%         endif %}
+{%         if vrid.timers.delay.reload is arista.avd.defined %}
    vrrp {{ vrid.id }} timers delay reload {{ vrid.timers.delay.reload }}
+{%         endif %}
+{%         if vrid.peer_authentication is arista.avd.defined %}
+{%             set peer_auth_cli = "vrrp " ~ vrid.id ~ " peer authentication" %}
+{%             if vrid.peer_authentication.mode == "ietf-md5" %}
+{%                 set peer_auth_cli = peer_auth_cli ~ " ietf-md5 key-string" %}
+{%             else %}
+{%                 set peer_auth_cli = peer_auth_cli ~ " text" %}
 {%             endif %}
-{%             if vrid.peer_authentication is arista.avd.defined %}
-{%                 set peer_auth_cli = "vrrp " ~ vrid.id ~ " peer authentication" %}
-{%                 if vrid.peer_authentication.mode == "ietf-md5" %}
-{%                     set peer_auth_cli = peer_auth_cli ~ " ietf-md5 key-string" %}
-{%                 else %}
-{%                     set peer_auth_cli = peer_auth_cli ~ " text" %}
-{%                 endif %}
-{%                 if vrid.peer_authentication.key_type is arista.avd.defined %}
-{%                     set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key_type %}
-{%                 endif %}
-{%                 set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key | arista.avd.hide_passwords(hide_passwords) %}
+{%             if vrid.peer_authentication.key_type is arista.avd.defined %}
+{%                 set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key_type %}
+{%             endif %}
+{%             set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key | arista.avd.hide_passwords(hide_passwords) %}
    {{ peer_auth_cli }}
-{%             endif %}
-{%             if vrid.ipv4.address is arista.avd.defined %}
+{%         endif %}
+{%         if vrid.ipv4.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv4 {{ vrid.ipv4.address }}
-{%             endif %}
-{%             if vrid.ipv4.version is arista.avd.defined %}
-   vrrp {{ vrid.id }} ipv4 version {{ vrid.ipv4.version }}
-{%             endif %}
-{%             if vrid.ipv6.address is arista.avd.defined %}
-   vrrp {{ vrid.id }} ipv6 {{ vrid.ipv6.address }}
-{%             endif %}
-{%             for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}
-{%                 if tracked_obj.name is arista.avd.defined %}
-{%                     set tracked_obj_cli = "vrrp " ~ vrid.id ~ " tracked-object " ~ tracked_obj.name %}
-{%                     if tracked_obj.decrement is arista.avd.defined %}
-{%                         set tracked_obj_cli = tracked_obj_cli ~ " decrement " ~ tracked_obj.decrement %}
-{%                     elif tracked_obj.shutdown is arista.avd.defined(true) %}
-{%                         set tracked_obj_cli = tracked_obj_cli ~ " shutdown" %}
-{%                     endif %}
-   {{ tracked_obj_cli }}
-{%                 endif %}
-{%             endfor %}
+{%         endif %}
+{%         for secondary_ip in vrid.ipv4.secondary_addresses | arista.avd.natural_sort %}
+   vrrp {{ vrid.id }} ipv4 {{ secondary_ip }} secondary
 {%         endfor %}
-{%     endif %}
+{%         if vrid.ipv4.version is arista.avd.defined %}
+   vrrp {{ vrid.id }} ipv4 version {{ vrid.ipv4.version }}
+{%         endif %}
+{%         if vrid.ipv6.addresses is arista.avd.defined %}
+{%             for ipv6_address in vrid.ipv6.addresses | arista.avd.natural_sort %}
+   vrrp {{ vrid.id }} ipv6 {{ ipv6_address }}
+{%             endfor %}
+{%         elif vrid.ipv6.address is arista.avd.defined %}
+   vrrp {{ vrid.id }} ipv6 {{ vrid.ipv6.address }}
+{%         endif %}
+{%         for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}
+{%             if tracked_obj.name is arista.avd.defined %}
+{%                 set tracked_obj_cli = "vrrp " ~ vrid.id ~ " tracked-object " ~ tracked_obj.name %}
+{%                 if tracked_obj.decrement is arista.avd.defined %}
+{%                     set tracked_obj_cli = tracked_obj_cli ~ " decrement " ~ tracked_obj.decrement %}
+{%                 elif tracked_obj.shutdown is arista.avd.defined(true) %}
+{%                     set tracked_obj_cli = tracked_obj_cli ~ " shutdown" %}
+{%                 endif %}
+   {{ tracked_obj_cli }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
 {%     if ethernet_interface.transceiver.media.override is arista.avd.defined %}
    transceiver media override {{ ethernet_interface.transceiver.media.override }}
 {%     endif %}
+{%     if ethernet_interface.transceiver.application_override is arista.avd.defined %}
+   transceiver application override {{ ethernet_interface.transceiver.application_override }}
+{%     endif %}
+{%     for application_override in ethernet_interface.transceiver.application_override_lanes | arista.avd.default([]) %}
+{%         set application_override_cli = "transceiver application override " ~ application_override.override ~ " lanes start " ~ application_override.first_lane %}
+{%         if application_override.last_lane is arista.avd.defined %}
+{%             set application_override_cli = application_override_cli ~ " end " ~ application_override.last_lane %}
+{%         endif %}
+   {{ application_override_cli }}
+{%     endfor %}
 {%     if ethernet_interface.transceiver.frequency is arista.avd.defined %}
 {%         set frequency_cli = 'transceiver frequency ' ~ "%.3f" | format(ethernet_interface.transceiver.frequency | float) %}
 {%         if ethernet_interface.transceiver.frequency_unit is arista.avd.defined %}

@@ -663,9 +663,9 @@ PTP Profile: g8275.1
 
 #### PTP Summary
 
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running Enabled |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------------- |
-| 11:11:11:11:11:11 | 1.1.2.3 | 101 | 102 | 12 | 17 | boundary | True | True (Hardware) |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward V1 | Forward Unicast | Free Running Enabled |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | ---------- | --------------- | -------------------- |
+| 11:11:11:11:11:11 | 1.1.2.3 | 101 | 102 | 12 | 17 | boundary | True | True | True (Hardware) |
 
 #### PTP Device Configuration
 
@@ -674,6 +674,7 @@ PTP Profile: g8275.1
 ptp clock-identity 11:11:11:11:11:11
 ptp domain 17
 ptp free-running source clock hardware
+ptp hold-ptp-time 43200
 ptp message-type event dscp 46 default
 ptp message-type general dscp 36 default
 ptp mode boundary one-step
@@ -682,6 +683,7 @@ ptp priority2 102
 ptp profile g8275.1
 ptp source ip 1.1.2.3
 ptp ttl 12
+ptp forward-v1
 ptp forward-unicast
 ptp monitor threshold offset-from-master 11
 ptp monitor threshold mean-path-delay 12
@@ -2591,6 +2593,8 @@ tap aggregation
 
 sFlow Sample Rate: 1000
 
+sFlow Sample Truncation Size: 256 bytes.
+
 sFlow Sample Input Subinterface is enabled.
 
 sFlow Sample Output Subinterface is enabled.
@@ -2643,6 +2647,7 @@ sFlow hardware accelerated Sample Rate: 1024
 ```eos
 !
 sflow sample dangerous 1000
+sflow sample truncate size 256
 sflow polling-interval 10
 sflow vrf AAA destination 10.6.75.62 123
 sflow vrf AAA destination 10.6.75.63 333
@@ -4231,12 +4236,12 @@ interface Dps1
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override |
-| --------- | --------------------- | -------------- |
-| Ethernet7 | - | 100gbase-ar4 |
-| Ethernet67 | 190050.000 | - |
-| Ethernet68 | 190080.000 ghz | 100gbase-ar4 |
-| Ethernet73 | - | 100gbase-ar4 |
+| Interface | Transceiver Frequency | Media Override | Application Override |
+| --------- | --------------------- | -------------- | -------------------- |
+| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 |
+| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 |
+| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
+| Ethernet73 | - | 100gbase-ar4 | 5 |
 
 ##### Link Tracking Groups
 
@@ -4363,12 +4368,12 @@ interface Dps1
 
 ##### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- | ------------------------ |
-| Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - | ietf-md5 |
-| Ethernet65 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 | text |
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Ethernet65 | 2 | - | - | Enabled | - | - |  | 2 | 2001:db8::1, 2002:db8::2 | text |
 | Ethernet66 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - | ietf-md5 |
-| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 | text |
+| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown |  | 2 | 2001:db8::1 | text |
 | Ethernet66 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
 
 ##### ISIS
@@ -4548,6 +4553,7 @@ interface Ethernet2
    switchport mode trunk
    switchport
    address locking ipv4 ipv6
+   arp gratuitous accept
    ip address 10.1.255.3/24
    ip address 1.1.1.3/24 secondary
    ip address 1.1.1.4/24 secondary
@@ -4737,6 +4743,9 @@ interface Ethernet7
    spanning-tree bpdufilter enable
    vmtracer vmware-esx
    transceiver media override 100gbase-ar4
+   transceiver application override 2
+   transceiver application override 10 lanes start 1 end 1
+   transceiver application override 5 lanes start 2
 !
 interface Ethernet8
    description to WAN-ISP1-01 Ethernet2
@@ -5255,8 +5264,11 @@ interface Ethernet65
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
    vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
    vrrp 2 peer authentication text <removed>
    vrrp 2 ipv6 2001:db8::1
+   vrrp 2 ipv6 2002:db8::2
 !
 interface Ethernet66
    description Multiple VRIDs and tracking
@@ -5287,6 +5299,9 @@ interface Ethernet67
    no shutdown
    switchport
    mac timestamp before-fcs
+   transceiver application override 5
+   transceiver application override 5 lanes start 1 end 1
+   transceiver application override 5 lanes start 2 end 3
    transceiver frequency 190050.000
 !
 interface Ethernet67.1
@@ -5298,6 +5313,7 @@ interface Ethernet68
    no shutdown
    switchport
    transceiver media override 100gbase-ar4
+   transceiver application override 100gbase-srbd
    transceiver frequency 190080.000 ghz
 !
 interface Ethernet68.1
@@ -5382,6 +5398,7 @@ interface Ethernet73
    description DC1-AGG01_Ethernet1
    channel-group 5 mode active
    transceiver media override 100gbase-ar4
+   transceiver application override 5
 !
 interface Ethernet74
    description MLAG_PEER_DC1-LEAF1B_Ethernet3
@@ -5707,6 +5724,16 @@ interface Ethernet84
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | - | True | - | - |
 
+##### VRRP Details
+
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| Port-Channel333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Port-Channel333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown |  | 2 | 2001:db8:333::1, 2002:db8:333::2 | text |
+| Port-Channel333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
+| Port-Channel667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Port-Channel667 | 2 | - | - | Enabled | - | - |  | 2 | 2001:db8:667::1 | text |
+
 ##### ISIS
 
 | Interface | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
@@ -5881,6 +5908,7 @@ interface Port-Channel15
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    switchport
+   arp gratuitous accept
    mlag 15
    no ntp serve
    service-policy type qos input pmap_test1
@@ -6367,6 +6395,36 @@ interface Port-Channel137
    traffic-engineering srlg TEST
    traffic-engineering metric 2
    traffic-engineering min-delay static 2 milliseconds
+!
+interface Port-Channel333
+   description Multiple VRIDs and tracking
+   no shutdown
+   vrrp 1 priority-level 105
+   vrrp 1 advertisement interval 2
+   vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
+   vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
+   vrrp 2 peer authentication text <removed>
+   vrrp 2 ipv6 2001:db8:333::1
+   vrrp 2 ipv6 2002:db8:333::2
+   no vrrp 3 preempt
+   vrrp 3 timers delay reload 900
+   vrrp 3 ipv4 100.64.0.1
+   vrrp 3 ipv4 version 3
+!
+interface Port-Channel667
+   description Multiple VRIDs
+   vrrp 1 priority-level 105
+   vrrp 1 advertisement interval 2
+   vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 peer authentication ietf-md5 key-string <removed>
+   vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
+   vrrp 2 peer authentication text 0 <removed>
+   vrrp 2 ipv6 2001:db8:667::1
 ```
 
 ### Loopback Interfaces
@@ -6672,13 +6730,13 @@ interface Tunnel4
 
 ##### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- | ------------------------ |
-| Vlan333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - | ietf-md5 |
-| Vlan333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8:333::1 | text |
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| Vlan333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Vlan333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown |  | 2 | 2001:db8:333::1, 2002:db8:333::2 | text |
 | Vlan333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
-| Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - | ietf-md5 |
-| Vlan667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8:667::1 | text |
+| Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Vlan667 | 2 | - | - | Enabled | - | - |  | 2 | 2001:db8:667::1 | text |
 
 ##### ISIS
 
@@ -6957,10 +7015,13 @@ interface Vlan333
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
    vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
    vrrp 1 tracked-object ID1TrackedObjectDecrement decrement 5
    vrrp 1 tracked-object ID1TrackedObjectShutdown shutdown
    vrrp 2 peer authentication text <removed>
    vrrp 2 ipv6 2001:db8:333::1
+   vrrp 2 ipv6 2002:db8:333::2
    vrrp 2 tracked-object ID2TrackedObjectDecrement decrement 10
    vrrp 2 tracked-object ID2TrackedObjectShutdown shutdown
    no vrrp 3 preempt
@@ -7025,6 +7086,8 @@ interface Vlan667
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string <removed>
    vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
    vrrp 2 peer authentication text 0 <removed>
    vrrp 2 ipv6 2001:db8:667::1
 !
@@ -7134,9 +7197,9 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
-| Tenant_A_OP_Zone | 10 | 232.0.0.10 |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
+| Tenant_A_OP_Zone | 10 | default -> 232.0.0.10<br/>dynamic -> 239.0.43.0/24<br/>239.1.1.0 -> 225.0.41.1<br/>239.1.1.1 -> 225.0.41.1<br/>239.1.1.2 -> 225.0.41.2 |
 | Tenant_A_WEB_Zone | 11 | - |
 
 ##### Default Flood List
@@ -7172,6 +7235,10 @@ interface Vxlan1
    vxlan vlan 110 multicast group 239.9.1.4
    vxlan vlan 112 multicast group 239.9.1.6
    vxlan vrf Tenant_A_OP_Zone multicast group 232.0.0.10
+   vxlan vrf Tenant_A_OP_Zone multicast group encap range 239.0.43.0/24 delayed
+   vxlan vrf Tenant_A_OP_Zone multicast group overlay 239.1.1.0 encap 225.0.41.1 immediate
+   vxlan vrf Tenant_A_OP_Zone multicast group overlay 239.1.1.1 encap 225.0.41.1 immediate
+   vxlan vrf Tenant_A_OP_Zone multicast group overlay 239.1.1.2 encap 225.0.41.2 immediate
    vxlan multicast headend-replication
    vxlan qos ecn propagation
    vxlan qos dscp ecn rewrite bridged enabled
@@ -7916,6 +7983,8 @@ router ospf 600
    area 0.0.20.25 nssa default-information-originate metric-type 1
    area 0.0.20.26 nssa no-summary
    area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
+!
+ip ospf router-id output-format hostnames
 ```
 
 ### IPv6 Router OSPF

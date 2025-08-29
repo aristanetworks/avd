@@ -40,7 +40,6 @@ flow_tracking:
 hostname: flow-tracking-tests-l2-leaf2
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -54,6 +53,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.0.1
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: FLOW_TRACKING_TESTS
 port_channel_interfaces:
