@@ -119,8 +119,6 @@ l3_edge:
           - node: peer7
             interfaces: [Ethernet11, Ethernet12]
       port_channel_structured_config:
-        service_policy:
-          qos:
-            input: TEST_POLICY
+        description: Description set via port_channel_structured_config(l3_edge)
       ethernet_structured_config:
-        mtu: 1111
+        description: Description set via ethernet_structured_config(l3_edge)

@@ -254,10 +254,10 @@ core_interfaces:
             interfaces: [ Ethernet20, Ethernet21 ]
       # Structured config applied to generated port-channel.
       port_channel_structured_config:
-        shutdown: true
+        description: Description set via port_channel_structured_config(core_interfaces)
       # Structured config applied to member interfaces of the port-channel.
       ethernet_structured_config:
-        speed: forced 100full
+        description: Description set via ethernet_structured_config(core_interfaces)
 
 l3_edge:
   p2p_links_ip_pools:

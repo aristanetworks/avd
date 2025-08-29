@@ -263,13 +263,11 @@ $defs:
           type: dict
           $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
           description: Custom structured config for ethernet interfaces.
-          relaxed_validation: true
           documentation_options:
             hide_keys: true
         port_channel_structured_config:
           type: dict
           $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
           description: Custom structured config for port-channel links.
-          relaxed_validation: true
           documentation_options:
             hide_keys: true

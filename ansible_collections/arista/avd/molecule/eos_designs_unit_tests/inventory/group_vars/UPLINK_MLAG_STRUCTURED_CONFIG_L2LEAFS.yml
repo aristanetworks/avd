@@ -29,7 +29,7 @@ l2leaf:
     - group: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1
       # Testing the inheritance works correctly when nullifying a dict in the group and then applying a new one per node.
       mlag_port_channel_structured_config: null
-      # Testing merging of uplink_structured_config which is a dict type with no schema.
+      # Testing merging of uplink_structured_config.
       uplink_port_channel_structured_config:
         switchport:
           trunk:

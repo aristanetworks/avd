@@ -221,9 +221,8 @@ ethernet_interfaces:
   peer_interface: Ethernet19
   peer_type: core_router
 - name: Ethernet20
-  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet20
+  description: Description set via ethernet_structured_config(core_interfaces)
   shutdown: false
-  speed: forced 100full
   channel_group:
     id: 20
     mode: active
@@ -231,9 +230,8 @@ ethernet_interfaces:
   peer_interface: Ethernet20
   peer_type: core_router
 - name: Ethernet21
-  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet21
+  description: Description set via ethernet_structured_config(core_interfaces)
   shutdown: false
-  speed: forced 100full
   channel_group:
     id: 20
     mode: active
@@ -349,8 +347,8 @@ port_channel_interfaces:
   switchport:
     enabled: false
 - name: Port-Channel20
-  description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12346
-  shutdown: true
+  description: Description set via port_channel_structured_config(core_interfaces)
+  shutdown: false
   mtu: 1600
   mpls:
     ip: true

@@ -114,6 +114,6 @@ class NodeConfigMixin(Protocol):
             if node_config._get(key) is not None:
                 msg = (
                     f"The input data model 'uplink_structured_config' in node_type settings is deprecated and cannot be used"
-                    f" in conjunction with the new keys. Check the 'defaults/node_group/nodes' settings for '{self.hostname}'."
+                    f" in conjunction with the new '{key}'. Check the settings for '{self.hostname}'."
                 )
                 raise AristaAvdInvalidInputsError(msg)

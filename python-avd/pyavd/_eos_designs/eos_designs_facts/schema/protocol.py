@@ -339,7 +339,7 @@ class EosDesignsFactsProtocol(Protocol):
             by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
             ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
-            """Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p"."""
+            """Custom structured config applied to `uplink_interfaces`."""
 
             if TYPE_CHECKING:
 
@@ -390,7 +390,7 @@ class EosDesignsFactsProtocol(Protocol):
                            "structured_config" defined on node-level.
                            Note! The content of this dictionary is _not_ validated
                            by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                        ethernet_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p".
+                        ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
 
                     """
 
@@ -442,10 +442,8 @@ class EosDesignsFactsProtocol(Protocol):
             "structured_config": {"type": dict},
             "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-            "uplink_peer_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
-            "uplink_peer_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
-            "downlink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
-            "downlink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            "peer_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "peer_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "subinterfaces": {"type": Subinterfaces},
         }
         interface: str
@@ -510,17 +508,13 @@ class EosDesignsFactsProtocol(Protocol):
         by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
         """
         ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
-        """Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p"."""
+        """Custom structured config applied to `uplink_interfaces`."""
         port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-        """Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel"."""
-        uplink_peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
-        """Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p"."""
-        uplink_peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-        """Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel"."""
-        downlink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
-        """Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p"."""
-        downlink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
-        """Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel"."""
+        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+        peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """Custom structured config applied to `uplink_interfaces`."""
+        peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
         subinterfaces: Subinterfaces
         """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`)."""
 
@@ -569,10 +563,8 @@ class EosDesignsFactsProtocol(Protocol):
                 structured_config: dict | UndefinedType = Undefined,
                 ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                uplink_peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
-                uplink_peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
-                downlink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
-                downlink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 subinterfaces: Subinterfaces | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -634,12 +626,10 @@ class EosDesignsFactsProtocol(Protocol):
                        "structured_config" defined on node-level.
                        Note! The content of this dictionary is _not_ validated
                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-                    ethernet_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p".
-                    port_channel_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel".
-                    uplink_peer_ethernet_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p".
-                    uplink_peer_port_channel_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel".
-                    downlink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "p2p".
-                    downlink_port_channel_structured_config: Custom structured config applied to `uplink_interfaces` for uplink_type == "port-channel".
+                    ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                    port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                    peer_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                    peer_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                     subinterfaces: Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`).
 
                 """

@@ -10240,8 +10240,7 @@ $defs:
               table: node-type-uplink-configuration
               hide_keys: true
             relaxed_validation: true
-            description: Custom structured config applied to `uplink_interfaces` for
-              uplink_type == "p2p".
+            description: Custom structured config applied to `uplink_interfaces`.
           uplink_port_channel_structured_config:
             type: dict
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
@@ -10249,8 +10248,8 @@ $defs:
               table: node-type-uplink-configuration
               hide_keys: true
             relaxed_validation: true
-            description: Custom structured config applied to `uplink_interfaces` for
-              uplink_type == "port-channel".
+            description: Custom structured config applied to the uplink Port-Channel
+              when using port-channel uplinks.
           uplink_switch_ethernet_structured_config:
             type: dict
             $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
@@ -10259,7 +10258,7 @@ $defs:
               hide_keys: true
             relaxed_validation: true
             description: Custom structured config applied to `uplink_switch_interfaces`
-              for ethernet interface uplinks.
+              on the `uplink_switches`.
           uplink_switch_port_channel_structured_config:
             type: dict
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
@@ -10267,8 +10266,8 @@ $defs:
               table: node-type-uplink-configuration
               hide_keys: true
             relaxed_validation: true
-            description: Custom structured config applied to `uplink_switch_interfaces`
-              for port-channel uplinks.
+            description: Custom structured config applied to the Port-Channel on the
+              `uplink_switches` when using port-channel uplinks.
           mlag_port_channel_structured_config:
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
             documentation_options:
@@ -12566,14 +12565,12 @@ $defs:
           type: dict
           $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
           description: Custom structured config for ethernet interfaces.
-          relaxed_validation: true
           documentation_options:
             hide_keys: true
         port_channel_structured_config:
           type: dict
           $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
           description: Custom structured config for port-channel links.
-          relaxed_validation: true
           documentation_options:
             hide_keys: true
   rx_queue_settings:
