@@ -12,7 +12,7 @@ spine:
     bgp_as: 65001
     loopback_ipv4_pool: 192.168.4.0/24
   nodes:
-    - name:  uplink-structured-config-with-new-keys-spine
+    - name: uplink-structured-config-with-new-keys-spine
       id: 10
 
 l3leaf:
@@ -34,5 +34,5 @@ l3leaf:
 
 expected_error_message:
   The input data model 'uplink_structured_config' in node_type settings is deprecated and
-  cannot be used in conjunction with the new keys.
-  Check the 'defaults/node_group/nodes' settings for 'uplink-structured-config-with-new-keys-l3leaf'.
+  cannot be used in conjunction with the new 'uplink_ethernet_structured_config'.
+  Check the settings for 'uplink-structured-config-with-new-keys-l3leaf'.
