@@ -431,12 +431,21 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             # For max_parallel_uplinks: 2 this would assign downlink interfaces like this:
             # spine1 downlink-interface mapping: [ leaf-id1, leaf-id1, leaf-id2, leaf-id2, leaf-id3, leaf-id3, ... ]
             downlink_index = (self.id - 1) * self.shared_utils.node_config.max_parallel_uplinks + index_of_parallel_uplinks
-            if len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
+            uplink_switch_downlink_interfaces_length = len(uplink_switch_facts._default_downlink_interfaces)
+            if uplink_switch_downlink_interfaces_length > downlink_index:
                 uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
+            elif uplink_switch_downlink_interfaces_length == 0:
+                msg = (
+                    f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
+                    f"does not have any 'downlink_interfaces' set under 'default_interfaces'. At least one or the other must be defined."
+                )
+                raise AristaAvdError(msg)
             else:
                 msg = (
                     f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
-                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'."
+                    f"does not have enough 'downlink_interfaces' defined under 'default_interfaces'. "
+                    f"The uplink switch requires at least {downlink_index + 1} downlink_interfaces, but "
+                    f"only {uplink_switch_downlink_interfaces_length} are configured."
                 )
                 raise AristaAvdError(msg)
 

@@ -181,7 +181,8 @@ aaa_server_groups:
     vrf: MGMT
 config_end: true
 enable_password:
-  disabled: true
+  hash_algorithm: sha512
+  key: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.
 hostname: aaa-settings-1
 ip_igmp_snooping:
   globally_enabled: true
@@ -197,7 +198,6 @@ ip_tacacs_source_interfaces:
   vrf: MGMT
 - name: Vlan125
   vrf: MGMT1
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -210,6 +210,7 @@ management_interfaces:
   ip_address: 192.168.0.2/24
   type: oob
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 radius_server:
   hosts:

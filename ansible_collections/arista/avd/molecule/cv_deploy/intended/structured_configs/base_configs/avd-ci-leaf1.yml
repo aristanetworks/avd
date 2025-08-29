@@ -1,6 +1,6 @@
 hostname: avd-ci-leaf1
-is_deployed: true
 metadata:
+  is_deployed: true
   cv_tags:
     device_tags:
     - name: dummy_name

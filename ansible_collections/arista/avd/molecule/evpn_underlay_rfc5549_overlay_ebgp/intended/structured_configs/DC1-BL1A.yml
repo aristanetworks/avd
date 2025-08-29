@@ -105,7 +105,6 @@ ip_name_servers:
 ip_routing_ipv6_interfaces: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 ipv6_unicast_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -137,6 +136,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: 7280R
   fabric_name: DC1_FABRIC
 ntp:

@@ -67,7 +67,6 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -106,6 +105,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.1.254
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   pod_name: DC2_POD1
   dc_name: DC2

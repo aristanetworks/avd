@@ -17,12 +17,13 @@ fabric_numbering:
     # Testing with a custom file for storing id pool data
     pools_file: "intended/data/test-ids.yml"
 
-local_users:
-  - name: admin
-    privilege: 15
-    role: network-admin
-    no_password: true
-    sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+aaa_settings:
+  local_users:
+    - name: admin
+      privilege: 15
+      role: network-admin
+      no_password: true
+      sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
 
 snmp_settings:
   location: true
