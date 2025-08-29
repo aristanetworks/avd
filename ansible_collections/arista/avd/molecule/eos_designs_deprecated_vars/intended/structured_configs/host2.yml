@@ -25,6 +25,11 @@ ethernet_interfaces:
   isis_metric: 50
   isis_network_point_to_point: true
   isis_circuit_type: level-2
+  storm_control:
+    broadcast:
+      level: '25'
+    unknown_unicast:
+      level: '25'
   mpls:
     ip: true
   peer: host1
@@ -32,6 +37,8 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
+    trunk:
+      native_vlan_tag: true
 hostname: host2
 ip_igmp_snooping:
   globally_enabled: true

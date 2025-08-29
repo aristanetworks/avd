@@ -81,6 +81,15 @@ ethernet_interfaces:
   peer: DC1.L2LEAF6A
   peer_interface: Ethernet1
   peer_type: l2leaf
+- name: Ethernet32
+  description: description through uplink_switch_ethernet_structured_config(DC1.L2LEAF7A)
+  shutdown: false
+  channel_group:
+    id: 32
+    mode: active
+  peer: DC1.L2LEAF7A
+  peer_interface: Ethernet1
+  peer_type: l2leaf
 - name: Ethernet49/1
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet3/1
   shutdown: false
@@ -509,6 +518,14 @@ port_channel_interfaces:
     identifier: 0000:0000:a8be:743c:0a1a
     route_target: a8:be:74:3c:0a:1a
   lacp_id: a8be.743c.0a1a
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452
+- name: Port-Channel32
+  description: description through uplink_switch_port_channel_structured_config(DC1.L2LEAF7A)
+  shutdown: false
   switchport:
     enabled: true
     mode: trunk
