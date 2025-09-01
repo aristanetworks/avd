@@ -119,6 +119,14 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+  address_family_ipv6:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
 router_multicast:
   ipv4:
     routing: true

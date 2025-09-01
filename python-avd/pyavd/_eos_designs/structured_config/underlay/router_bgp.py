@@ -48,19 +48,11 @@ class RouterBgpMixin(Protocol):
 
             # Address Families
             # TODO: - see if it makes sense to extract logic in method
-            if not self.shared_utils.underlay_ipv6_numbered:
-                address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
-                    name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-                )
-                if self.inputs.underlay_rfc5549 is True:
-                    address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
+            if self.shared_utils.underlay_ipv4_address_family:
+                self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(self.shared_utils.underlay_ipv4_address_family)
 
-                self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
-
-            if self.shared_utils.underlay_ipv6:
-                self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(
-                    name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-                )
+            if self.shared_utils.underlay_ipv6_address_family:
+                self.structured_config.router_bgp.address_family_ipv6.peer_groups.append(self.shared_utils.underlay_ipv6_address_family)
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
         if self.inputs.underlay_rfc5549 is True:

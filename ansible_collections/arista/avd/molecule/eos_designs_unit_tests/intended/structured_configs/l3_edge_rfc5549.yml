@@ -109,6 +109,13 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
   address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
     neighbors:
     - ip_address: 192.168.0.7
       next_hop:
