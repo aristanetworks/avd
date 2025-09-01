@@ -5440,33 +5440,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class EthernetInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
-        class Phone(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"trunk": {"type": str}, "vlan": {"type": int}}
-            trunk: Literal["tagged", "tagged phone", "untagged", "untagged phone"] | None
-            vlan: int | None
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    trunk: Literal["tagged", "tagged phone", "untagged", "untagged phone"] | None | UndefinedType = Undefined,
-                    vlan: int | None | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    Phone.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        trunk: trunk
-                        vlan: vlan
-
-                    """
-
         class L2Protocol(AvdModel):
             """Subclass of AvdModel."""
 
@@ -5492,11 +5465,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         forwarding_profile: L2 protocol forwarding profile.
 
                     """
-
-        class TrunkGroups(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
-
-        TrunkGroups._item_type = str
 
         class AddressLocking(AvdModel):
             """Subclass of AvdModel."""
@@ -5887,52 +5855,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Client(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Dot1q(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"vlan": {"type": int}, "outer": {"type": int}, "inner": {"type": int}}
-                    vlan: int | None
-                    """Client VLAN ID."""
-                    outer: int | None
-                    """Client Outer VLAN ID."""
-                    inner: int | None
-                    """Client Inner VLAN ID."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            vlan: int | None | UndefinedType = Undefined,
-                            outer: int | None | UndefinedType = Undefined,
-                            inner: int | None | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            Dot1q.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                vlan: Client VLAN ID.
-                                outer: Client Outer VLAN ID.
-                                inner: Client Inner VLAN ID.
-
-                            """
-
                 _fields: ClassVar[dict] = {
-                    "dot1q": {"type": Dot1q},
-                    "unmatched": {"type": bool},
                     "encapsulation": {"type": str},
                     "vlan": {"type": int},
                     "outer_vlan": {"type": int},
                     "inner_vlan": {"type": int},
                     "inner_encapsulation": {"type": str},
                 }
-                dot1q: Dot1q
-                """Subclass of AvdModel."""
-                unmatched: bool | None
-                encapsulation: Literal["dot1q", "dot1ad", "unmatched", "untagged"] | None
+                encapsulation: Literal["dot1q", "dot1ad", "unmatched", "untagged"]
                 vlan: int | None
                 """Client VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`."""
                 outer_vlan: int | None
@@ -5946,9 +5876,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        dot1q: Dot1q | UndefinedType = Undefined,
-                        unmatched: bool | None | UndefinedType = Undefined,
-                        encapsulation: Literal["dot1q", "dot1ad", "unmatched", "untagged"] | None | UndefinedType = Undefined,
+                        encapsulation: Literal["dot1q", "dot1ad", "unmatched", "untagged"] | UndefinedType = Undefined,
                         vlan: int | None | UndefinedType = Undefined,
                         outer_vlan: int | None | UndefinedType = Undefined,
                         inner_vlan: int | None | UndefinedType = Undefined,
@@ -5961,8 +5889,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            dot1q: Subclass of AvdModel.
-                            unmatched: unmatched
                             encapsulation: encapsulation
                             vlan: Client VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`.
                             outer_vlan: Client Outer VLAN ID. Not applicable for `encapsulation: untagged` or `encapsulation: unmatched`.
@@ -5974,52 +5900,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Network(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Dot1q(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"vlan": {"type": int}, "outer": {"type": int}, "inner": {"type": int}}
-                    vlan: int | None
-                    """Network VLAN ID."""
-                    outer: int | None
-                    """Network outer VLAN ID."""
-                    inner: int | None
-                    """Network inner VLAN ID."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            vlan: int | None | UndefinedType = Undefined,
-                            outer: int | None | UndefinedType = Undefined,
-                            inner: int | None | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            Dot1q.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                vlan: Network VLAN ID.
-                                outer: Network outer VLAN ID.
-                                inner: Network inner VLAN ID.
-
-                            """
-
                 _fields: ClassVar[dict] = {
-                    "dot1q": {"type": Dot1q},
-                    "client": {"type": bool},
                     "encapsulation": {"type": str},
                     "vlan": {"type": int},
                     "outer_vlan": {"type": int},
                     "inner_vlan": {"type": int},
                     "inner_encapsulation": {"type": str},
                 }
-                dot1q: Dot1q
-                """Subclass of AvdModel."""
-                client: bool | None
-                encapsulation: Literal["dot1q", "dot1ad", "client", "client inner", "untagged"] | None
+                encapsulation: Literal["dot1q", "dot1ad", "client", "client inner", "untagged"]
                 """
                 `untagged` (no encapsulation) is applicable for `untagged` client only.
                 `client` and `client inner`
@@ -6038,9 +5926,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        dot1q: Dot1q | UndefinedType = Undefined,
-                        client: bool | None | UndefinedType = Undefined,
-                        encapsulation: Literal["dot1q", "dot1ad", "client", "client inner", "untagged"] | None | UndefinedType = Undefined,
+                        encapsulation: Literal["dot1q", "dot1ad", "client", "client inner", "untagged"] | UndefinedType = Undefined,
                         vlan: int | None | UndefinedType = Undefined,
                         outer_vlan: int | None | UndefinedType = Undefined,
                         inner_vlan: int | None | UndefinedType = Undefined,
@@ -6053,8 +5939,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            dot1q: Subclass of AvdModel.
-                            client: client
                             encapsulation:
                                `untagged` (no encapsulation) is applicable for `untagged` client only.
                                `client` and `client inner`
@@ -6871,16 +6755,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "ipv4_segment_size": {"type": int},
-                "ipv4": {"type": int},
-                "ipv6_segment_size": {"type": int},
-                "ipv6": {"type": int},
-                "direction": {"type": str},
-            }
-            ipv4_segment_size: int | None
+            _fields: ClassVar[dict] = {"ipv4": {"type": int}, "ipv6": {"type": int}, "direction": {"type": str}}
             ipv4: int | None
-            ipv6_segment_size: int | None
             ipv6: int | None
             direction: Literal["egress", "ingress"] | None
 
@@ -6889,9 +6765,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    ipv4_segment_size: int | None | UndefinedType = Undefined,
                     ipv4: int | None | UndefinedType = Undefined,
-                    ipv6_segment_size: int | None | UndefinedType = Undefined,
                     ipv6: int | None | UndefinedType = Undefined,
                     direction: Literal["egress", "ingress"] | None | UndefinedType = Undefined,
                 ) -> None:
@@ -6902,9 +6776,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        ipv4_segment_size: ipv4_segment_size
                         ipv4: ipv4
-                        ipv6_segment_size: ipv6_segment_size
                         ipv6: ipv6
                         direction: direction
 
@@ -8101,46 +7973,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         ztp_vlan: ZTP vlan number.
 
                     """
-
-        class VlanTranslationsItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"field_from": {"type": str}, "to": {"type": int}, "direction": {"type": str, "default": "both"}}
-            _field_to_key_map: ClassVar[dict] = {"field_from": "from"}
-            _key_to_field_map: ClassVar[dict] = {"from": "field_from"}
-            field_from: str | None
-            """List of vlans as string (only one vlan if direction is "both")."""
-            to: int | None
-            """VLAN ID."""
-            direction: Literal["in", "out", "both"]
-            """Default value: `"both"`"""
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    field_from: str | None | UndefinedType = Undefined,
-                    to: int | None | UndefinedType = Undefined,
-                    direction: Literal["in", "out", "both"] | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    VlanTranslationsItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        field_from: List of vlans as string (only one vlan if direction is "both").
-                        to: VLAN ID.
-                        direction: direction
-
-                    """
-
-        class VlanTranslations(AvdList[VlanTranslationsItem]):
-            """Subclass of AvdList with `VlanTranslationsItem` items."""
-
-        VlanTranslations._item_type = VlanTranslationsItem
 
         class Dot1x(AvdModel):
             """Subclass of AvdModel."""
@@ -9941,9 +9773,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Addresses._item_type = str
 
-                _fields: ClassVar[dict] = {"address": {"type": str}, "addresses": {"type": Addresses}}
-                address: str | None
-                """Virtual IPv6 address."""
+                _fields: ClassVar[dict] = {"addresses": {"type": Addresses}}
                 addresses: Addresses
                 """
                 Virtual IPv6 addresses.
@@ -9953,7 +9783,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, address: str | None | UndefinedType = Undefined, addresses: Addresses | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, addresses: Addresses | UndefinedType = Undefined) -> None:
                         """
                         Ipv6.
 
@@ -9961,7 +9791,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            address: Virtual IPv6 address.
                             addresses:
                                Virtual IPv6 addresses.
 
@@ -11596,7 +11425,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "enabled": {"type": bool},
                 "administrative_groups": {"type": AdministrativeGroups},
                 "srlgs": {"type": Srlgs},
-                "srlg": {"type": str},
                 "metric": {"type": int},
                 "bandwidth": {"type": Bandwidth},
                 "min_delay_static": {"type": MinDelayStatic},
@@ -11617,8 +11445,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdList with `str` items.
             """
-            srlg: str | None
-            """SRLG name or number."""
             metric: int | None
             bandwidth: Bandwidth
             """
@@ -11645,7 +11471,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enabled: bool | None | UndefinedType = Undefined,
                     administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
                     srlgs: Srlgs | UndefinedType = Undefined,
-                    srlg: str | None | UndefinedType = Undefined,
                     metric: int | None | UndefinedType = Undefined,
                     bandwidth: Bandwidth | UndefinedType = Undefined,
                     min_delay_static: MinDelayStatic | UndefinedType = Undefined,
@@ -11668,7 +11493,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            List of SRLGs.
 
                            Subclass of AvdList with `str` items.
-                        srlg: SRLG name or number.
                         metric: metric
                         bandwidth:
                            Interface maximum reservable bandwidth.
@@ -11693,16 +11517,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "mtu": {"type": int},
             "l2_mtu": {"type": int},
             "l2_mru": {"type": int},
-            "vlans": {"type": str},
-            "native_vlan": {"type": int},
-            "native_vlan_tag": {"type": bool},
-            "mode": {"type": str},
-            "phone": {"type": Phone},
             "arp_gratuitous_accept": {"type": bool},
             "l2_protocol": {"type": L2Protocol},
             "mac_timestamp": {"type": str},
-            "trunk_groups": {"type": TrunkGroups},
-            "type": {"type": str},
             "snmp_trap_link_change": {"type": bool},
             "address_locking": {"type": AddressLocking},
             "flowcontrol": {"type": Flowcontrol},
@@ -11712,7 +11529,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "link_tracking_groups": {"type": LinkTrackingGroups},
             "link_tracking": {"type": LinkTracking},
             "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
-            "encapsulation_dot1q_vlan": {"type": int},
             "encapsulation_dot1q": {"type": EncapsulationDot1q},
             "encapsulation_vlan": {"type": EncapsulationVlan},
             "vlan_id": {"type": int},
@@ -11756,8 +11572,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "isis_network_point_to_point": {"type": bool},
             "isis_circuit_type": {"type": str},
             "isis_hello_padding": {"type": bool},
-            "isis_authentication_mode": {"type": str},
-            "isis_authentication_key": {"type": str},
             "isis_authentication": {"type": IsisAuthentication},
             "poe": {"type": Poe},
             "ptp": {"type": Ptp},
@@ -11765,9 +11579,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "storm_control": {"type": StormControl},
             "logging": {"type": Logging},
             "lldp": {"type": Lldp},
-            "trunk_private_vlan_secondary": {"type": bool},
-            "pvlan_mapping": {"type": str},
-            "vlan_translations": {"type": VlanTranslations},
             "dot1x": {"type": Dot1x},
             "service_profile": {"type": str},
             "shape": {"type": Shape},
@@ -11821,19 +11632,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
         l2_mru: int | None
         """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
-        vlans: str | None
-        """
-        List of switchport vlans as string.
-        For a trunk port this would be a range like "1-200,300".
-        For an
-        access port this would be a single vlan "123".
-        """
-        native_vlan: int | None
-        native_vlan_tag: bool | None
-        """If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence."""
-        mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
-        phone: Phone
-        """Subclass of AvdModel."""
         arp_gratuitous_accept: bool | None
         """Accept gratuitous ARP."""
         l2_protocol: L2Protocol
@@ -11844,13 +11642,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         before-fcs: Insert timestamp before fcs field. Supported on platforms like 7150.
         replace-fcs:
         Replace fcs field with timestamp.
-        """
-        trunk_groups: TrunkGroups
-        """Subclass of AvdList with `str` items."""
-        type: Literal["routed", "switched", "l3dot1q", "l2dot1q", "port-channel-member"] | None
-        """
-        l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
-        The `type = switched/routed` should not be combined with `switchport`.
         """
         snmp_trap_link_change: bool | None
         address_locking: AddressLocking
@@ -11869,28 +11660,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         evpn_ethernet_segment: EvpnEthernetSegment
         """Subclass of AvdModel."""
-        encapsulation_dot1q_vlan: int | None
-        """VLAN tag to configure on sub-interface."""
         encapsulation_dot1q: EncapsulationDot1q
-        """
-        Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type: l3dot1q` or
-        `ethernet_interfaces[].type: l2dot1q`.
-
-        Subclass of AvdModel.
-        """
+        """Subclass of AvdModel."""
         encapsulation_vlan: EncapsulationVlan
         """
         This setting can only be applied to sub-interfaces on EOS.
-        Warning: `encapsulation_vlan` should not
-        be combined with `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.
+
         Subclass of AvdModel.
         """
         vlan_id: int | None
-        """
-        This setting can only be applied to sub-interfaces on EOS.
-        Warning: `vlan_id` should not be combined
-        with `ethernet_interfaces[].type == l2dot1q`.
-        """
+        """This setting can only be applied to sub-interfaces on EOS."""
         ip_address: str | None
         """IPv4 address/mask or "dhcp"."""
         ip_address_secondaries: IpAddressSecondaries
@@ -11972,16 +11751,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         isis_network_point_to_point: bool | None
         isis_circuit_type: Literal["level-1-2", "level-1", "level-2"] | None
         isis_hello_padding: bool | None
-        isis_authentication_mode: Literal["text", "md5"] | None
-        isis_authentication_key: str | None
-        """Type-7 encrypted password."""
         isis_authentication: IsisAuthentication
-        """
-        This key should not be mixed with ethernet_interfaces[].isis_authentication_mode or
-        ethernet_interfaces[].isis_authentication_key.
-
-        Subclass of AvdModel.
-        """
+        """Subclass of AvdModel."""
         poe: Poe
         """Subclass of AvdModel."""
         ptp: Ptp
@@ -11994,11 +11765,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         lldp: Lldp
         """Subclass of AvdModel."""
-        trunk_private_vlan_secondary: bool | None
-        pvlan_mapping: str | None
-        """List of vlans as string."""
-        vlan_translations: VlanTranslations
-        """Subclass of AvdList with `VlanTranslationsItem` items."""
         dot1x: Dot1x
         """
         802.1x
@@ -12093,16 +11859,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 mtu: int | None | UndefinedType = Undefined,
                 l2_mtu: int | None | UndefinedType = Undefined,
                 l2_mru: int | None | UndefinedType = Undefined,
-                vlans: str | None | UndefinedType = Undefined,
-                native_vlan: int | None | UndefinedType = Undefined,
-                native_vlan_tag: bool | None | UndefinedType = Undefined,
-                mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
-                phone: Phone | UndefinedType = Undefined,
                 arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 l2_protocol: L2Protocol | UndefinedType = Undefined,
                 mac_timestamp: Literal["before-fcs", "replace-fcs", "header"] | None | UndefinedType = Undefined,
-                trunk_groups: TrunkGroups | UndefinedType = Undefined,
-                type: Literal["routed", "switched", "l3dot1q", "l2dot1q", "port-channel-member"] | None | UndefinedType = Undefined,
                 snmp_trap_link_change: bool | None | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 flowcontrol: Flowcontrol | UndefinedType = Undefined,
@@ -12112,7 +11871,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 link_tracking_groups: LinkTrackingGroups | UndefinedType = Undefined,
                 link_tracking: LinkTracking | UndefinedType = Undefined,
                 evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
-                encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
                 encapsulation_dot1q: EncapsulationDot1q | UndefinedType = Undefined,
                 encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
                 vlan_id: int | None | UndefinedType = Undefined,
@@ -12156,8 +11914,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 isis_network_point_to_point: bool | None | UndefinedType = Undefined,
                 isis_circuit_type: Literal["level-1-2", "level-1", "level-2"] | None | UndefinedType = Undefined,
                 isis_hello_padding: bool | None | UndefinedType = Undefined,
-                isis_authentication_mode: Literal["text", "md5"] | None | UndefinedType = Undefined,
-                isis_authentication_key: str | None | UndefinedType = Undefined,
                 isis_authentication: IsisAuthentication | UndefinedType = Undefined,
                 poe: Poe | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
@@ -12165,9 +11921,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 storm_control: StormControl | UndefinedType = Undefined,
                 logging: Logging | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
-                trunk_private_vlan_secondary: bool | None | UndefinedType = Undefined,
-                pvlan_mapping: str | None | UndefinedType = Undefined,
-                vlan_translations: VlanTranslations | UndefinedType = Undefined,
                 dot1x: Dot1x | UndefinedType = Undefined,
                 service_profile: str | None | UndefinedType = Undefined,
                 shape: Shape | UndefinedType = Undefined,
@@ -12222,15 +11975,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     mtu: mtu
                     l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
-                    vlans:
-                       List of switchport vlans as string.
-                       For a trunk port this would be a range like "1-200,300".
-                       For an
-                       access port this would be a single vlan "123".
-                    native_vlan: native_vlan
-                    native_vlan_tag: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
-                    mode: mode
-                    phone: Subclass of AvdModel.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     l2_protocol: Subclass of AvdModel.
                     mac_timestamp:
@@ -12238,10 +11982,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        before-fcs: Insert timestamp before fcs field. Supported on platforms like 7150.
                        replace-fcs:
                        Replace fcs field with timestamp.
-                    trunk_groups: Subclass of AvdList with `str` items.
-                    type:
-                       l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
-                       The `type = switched/routed` should not be combined with `switchport`.
                     snmp_trap_link_change: snmp_trap_link_change
                     address_locking: Subclass of AvdModel.
                     flowcontrol: Subclass of AvdModel.
@@ -12251,21 +11991,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     link_tracking_groups: Subclass of AvdIndexedList with `LinkTrackingGroupsItem` items. Primary key is `name` (`str`).
                     link_tracking: Subclass of AvdModel.
                     evpn_ethernet_segment: Subclass of AvdModel.
-                    encapsulation_dot1q_vlan: VLAN tag to configure on sub-interface.
-                    encapsulation_dot1q:
-                       Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type: l3dot1q` or
-                       `ethernet_interfaces[].type: l2dot1q`.
-
-                       Subclass of AvdModel.
+                    encapsulation_dot1q: Subclass of AvdModel.
                     encapsulation_vlan:
                        This setting can only be applied to sub-interfaces on EOS.
-                       Warning: `encapsulation_vlan` should not
-                       be combined with `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.
+
                        Subclass of AvdModel.
-                    vlan_id:
-                       This setting can only be applied to sub-interfaces on EOS.
-                       Warning: `vlan_id` should not be combined
-                       with `ethernet_interfaces[].type == l2dot1q`.
+                    vlan_id: This setting can only be applied to sub-interfaces on EOS.
                     ip_address: IPv4 address/mask or "dhcp".
                     ip_address_secondaries: Subclass of AvdList with `str` items.
                     ip_verify_unicast_source_reachable_via: ip_verify_unicast_source_reachable_via
@@ -12318,22 +12049,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     isis_network_point_to_point: isis_network_point_to_point
                     isis_circuit_type: isis_circuit_type
                     isis_hello_padding: isis_hello_padding
-                    isis_authentication_mode: isis_authentication_mode
-                    isis_authentication_key: Type-7 encrypted password.
-                    isis_authentication:
-                       This key should not be mixed with ethernet_interfaces[].isis_authentication_mode or
-                       ethernet_interfaces[].isis_authentication_key.
-
-                       Subclass of AvdModel.
+                    isis_authentication: Subclass of AvdModel.
                     poe: Subclass of AvdModel.
                     ptp: Subclass of AvdModel.
                     profile: Interface profile.
                     storm_control: Subclass of AvdModel.
                     logging: Subclass of AvdModel.
                     lldp: Subclass of AvdModel.
-                    trunk_private_vlan_secondary: trunk_private_vlan_secondary
-                    pvlan_mapping: List of vlans as string.
-                    vlan_translations: Subclass of AvdList with `VlanTranslationsItem` items.
                     dot1x:
                        802.1x
 
@@ -31567,9 +31289,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Addresses._item_type = str
 
-                _fields: ClassVar[dict] = {"address": {"type": str}, "addresses": {"type": Addresses}}
-                address: str | None
-                """Virtual IPv6 address."""
+                _fields: ClassVar[dict] = {"addresses": {"type": Addresses}}
                 addresses: Addresses
                 """
                 Virtual IPv6 addresses.
@@ -31579,7 +31299,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, address: str | None | UndefinedType = Undefined, addresses: Addresses | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, addresses: Addresses | UndefinedType = Undefined) -> None:
                         """
                         Ipv6.
 
@@ -31587,7 +31307,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            address: Virtual IPv6 address.
                             addresses:
                                Virtual IPv6 addresses.
 
