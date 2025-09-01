@@ -134,7 +134,8 @@ class UnderlayMixin(Protocol):
             key=cast("str", self.isis_instance_name),
         )
 
-    def get_underlay_bgp_peer_group(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.PeerGroupsItem:
+    @cached_property
+    def underlay_bgp_peer_group(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.PeerGroupsItem:
         af_type = "ipv4" if not self.underlay_ipv6_numbered else "ipv6"
         return EosCliConfigGen.RouterBgp.PeerGroupsItem(
             name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,

@@ -28,13 +28,23 @@ class RouterBgpMixin(Protocol):
         if not self.shared_utils.underlay_bgp:
             return
 
+        # Set BGP peer group only when underlay link is present.
         if self.underlay_p2p_links:
-            peer_group = self.shared_utils.get_underlay_bgp_peer_group()
-            self.structured_config.router_bgp.peer_groups.append(peer_group)
+            peer_group = self.shared_utils.underlay_bgp_peer_group
             if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
                 self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
                     self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                 )
+
+            if self.shared_utils.is_cv_pathfinder_router:
+                peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
+                if self.shared_utils.wan_ha:
+                    peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
+                    if self.shared_utils.use_uplinks_for_wan_ha:
+                        # For HA need to add allowas_in 1
+                        peer_group.allowas_in._update(enabled=True, times=1)
+
+            self.structured_config.router_bgp.peer_groups.append(peer_group)
 
             # Address Families
             # TODO: - see if it makes sense to extract logic in method
@@ -51,14 +61,6 @@ class RouterBgpMixin(Protocol):
                 self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(
                     name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
                 )
-
-            if self.shared_utils.is_cv_pathfinder_router:
-                peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
-                if self.shared_utils.wan_ha:
-                    peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
-                    if self.shared_utils.use_uplinks_for_wan_ha:
-                        # For HA need to add allowas_in 1
-                        peer_group.allowas_in._update(enabled=True, times=1)
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
         if self.inputs.underlay_rfc5549 is True:
@@ -129,5 +131,5 @@ class RouterBgpMixin(Protocol):
 
     @cached_property
     def underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
-        """Return Underlay a list of P2P underlay links."""
+        """Return a list of P2P underlay links."""
         return [link for link in self._underlay_links if link.type == "underlay_p2p"]
