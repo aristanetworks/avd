@@ -6781,11 +6781,6 @@ class EosDesigns(EosDesignsRootModel):
     class L2vlanProfilesItem(AvdModel):
         """Subclass of AvdModel."""
 
-        class Tags(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
-
-        Tags._item_type = str
-
         class TrunkGroups(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
@@ -6959,7 +6954,6 @@ class EosDesigns(EosDesignsRootModel):
             "vni_override": {"type": int},
             "rt_override": {"type": str},
             "rd_override": {"type": str},
-            "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
             "vxlan": {"type": bool, "default": True},
             "spanning_tree_priority": {"type": int},
             "evpn_vlan_bundle": {"type": str},
@@ -6976,9 +6970,9 @@ class EosDesigns(EosDesignsRootModel):
         """Profile name."""
         parent_profile: str | None
         """
-        Parent L2VLAN profile name to apply.
-        l2vlan_profiles can refer to another l2vlan_profile to inherit
-        settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+        Name of parent L2VLAN profile to apply.
+        l2vlan_profiles can refer to another l2vlan_profile to
+        inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
         """
         address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
         vni_override: int | None
@@ -7011,16 +7005,6 @@ class EosDesigns(EosDesignsRootModel):
         RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
           -
         A full RD string with colon separator which will override the full RD.
-        """
-        tags: Tags
-        """
-        Tags leveraged for networks services filtering.
-        Tags are matched against filter.tags defined under
-        node type settings.
-        Tags are also matched against the node_group name under node type settings.
-        Subclass of AvdList with `str` items.
-
-        Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
         """
         vxlan: bool
         """
@@ -7093,7 +7077,6 @@ class EosDesigns(EosDesignsRootModel):
                 vni_override: int | None | UndefinedType = Undefined,
                 rt_override: str | None | UndefinedType = Undefined,
                 rd_override: str | None | UndefinedType = Undefined,
-                tags: Tags | UndefinedType = Undefined,
                 vxlan: bool | UndefinedType = Undefined,
                 spanning_tree_priority: int | None | UndefinedType = Undefined,
                 evpn_vlan_bundle: str | None | UndefinedType = Undefined,
@@ -7115,9 +7098,9 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     profile: Profile name.
                     parent_profile:
-                       Parent L2VLAN profile name to apply.
-                       l2vlan_profiles can refer to another l2vlan_profile to inherit
-                       settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+                       Name of parent L2VLAN profile to apply.
+                       l2vlan_profiles can refer to another l2vlan_profile to
+                       inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
                     address_locking: address_locking
                     vni_override:
                        By default the VNI will be derived from mac_vrf_vni_base.
@@ -7144,12 +7127,6 @@ class EosDesigns(EosDesignsRootModel):
                        RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
                          -
                        A full RD string with colon separator which will override the full RD.
-                    tags:
-                       Tags leveraged for networks services filtering.
-                       Tags are matched against filter.tags defined under
-                       node type settings.
-                       Tags are also matched against the node_group name under node type settings.
-                       Subclass of AvdList with `str` items.
                     vxlan: Extend this L2VLAN over VXLAN.
                     spanning_tree_priority:
                        Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst`
@@ -49262,11 +49239,11 @@ class EosDesigns(EosDesignsRootModel):
                         "id": {"type": int},
                         "name": {"type": str},
                         "profile": {"type": str},
+                        "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                         "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking.AddressFamily},
                         "vni_override": {"type": int},
                         "rt_override": {"type": str},
                         "rd_override": {"type": str},
-                        "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                         "vxlan": {"type": bool, "default": True},
                         "spanning_tree_priority": {"type": int},
                         "evpn_vlan_bundle": {"type": str},
@@ -49285,10 +49262,20 @@ class EosDesigns(EosDesignsRootModel):
                     """VLAN name."""
                     profile: str | None
                     """
-                    L2VLAN profile name. Profile defined under `l2vlan_profiles`.
-                    L2VLAN can refer to one l2vlan_profile
-                    which again can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan ->
+                    L2VLAN profile name.
+                    The profile must be defined under `l2vlan_profiles`. The profile may refer to
+                    another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
                     l2vlan_profile -> l2vlan_parent_profile).
+                    """
+                    tags: Tags
+                    """
+                    Tags leveraged for networks services filtering.
+                    Tags are matched against filter.tags defined under
+                    node type settings.
+                    Tags are also matched against the node_group name under node type settings.
+                    Subclass of AvdList with `str` items.
+
+                    Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
                     """
                     address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
                     vni_override: int | None
@@ -49321,16 +49308,6 @@ class EosDesigns(EosDesignsRootModel):
                     RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
                       -
                     A full RD string with colon separator which will override the full RD.
-                    """
-                    tags: Tags
-                    """
-                    Tags leveraged for networks services filtering.
-                    Tags are matched against filter.tags defined under
-                    node type settings.
-                    Tags are also matched against the node_group name under node type settings.
-                    Subclass of AvdList with `str` items.
-
-                    Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
                     """
                     vxlan: bool
                     """
@@ -49400,11 +49377,11 @@ class EosDesigns(EosDesignsRootModel):
                             id: int | UndefinedType = Undefined,
                             name: str | UndefinedType = Undefined,
                             profile: str | None | UndefinedType = Undefined,
+                            tags: Tags | UndefinedType = Undefined,
                             address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily | UndefinedType = Undefined,
                             vni_override: int | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
                             rd_override: str | None | UndefinedType = Undefined,
-                            tags: Tags | UndefinedType = Undefined,
                             vxlan: bool | UndefinedType = Undefined,
                             spanning_tree_priority: int | None | UndefinedType = Undefined,
                             evpn_vlan_bundle: str | None | UndefinedType = Undefined,
@@ -49427,10 +49404,16 @@ class EosDesigns(EosDesignsRootModel):
                                 id: VLAN ID.
                                 name: VLAN name.
                                 profile:
-                                   L2VLAN profile name. Profile defined under `l2vlan_profiles`.
-                                   L2VLAN can refer to one l2vlan_profile
-                                   which again can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan ->
+                                   L2VLAN profile name.
+                                   The profile must be defined under `l2vlan_profiles`. The profile may refer to
+                                   another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
                                    l2vlan_profile -> l2vlan_parent_profile).
+                                tags:
+                                   Tags leveraged for networks services filtering.
+                                   Tags are matched against filter.tags defined under
+                                   node type settings.
+                                   Tags are also matched against the node_group name under node type settings.
+                                   Subclass of AvdList with `str` items.
                                 address_locking: address_locking
                                 vni_override:
                                    By default the VNI will be derived from mac_vrf_vni_base.
@@ -49457,12 +49440,6 @@ class EosDesigns(EosDesignsRootModel):
                                    RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
                                      -
                                    A full RD string with colon separator which will override the full RD.
-                                tags:
-                                   Tags leveraged for networks services filtering.
-                                   Tags are matched against filter.tags defined under
-                                   node type settings.
-                                   Tags are also matched against the node_group name under node type settings.
-                                   Subclass of AvdList with `str` items.
                                 vxlan: Extend this L2VLAN over VXLAN.
                                 spanning_tree_priority:
                                    Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst`

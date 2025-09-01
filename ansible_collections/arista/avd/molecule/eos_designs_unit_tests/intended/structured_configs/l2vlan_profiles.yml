@@ -94,14 +94,6 @@ router_bgp:
       - 10130:10130
     redistribute_routes:
     - learned
-  - id: 140
-    tenant: research
-    rd: 10.10.0.3:10140
-    route_targets:
-      both:
-      - 10140:10140
-    redistribute_routes:
-    - learned
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -138,9 +130,6 @@ vlans:
     type: community
     primary_vlan: 120
   tenant: research
-- id: 140
-  name: research4
-  tenant: research
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -157,5 +146,3 @@ vxlan_interface:
         vni: 10120
       - id: 130
         vni: 10130
-      - id: 140
-        vni: 10140

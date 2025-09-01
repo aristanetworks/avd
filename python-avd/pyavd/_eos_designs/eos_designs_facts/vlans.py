@@ -8,11 +8,12 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._utils import remove_cached_property_type
 from pyavd.j2filters import list_compress, natural_sort, range_expand
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import EosDesignsFactsGeneratorProtocol
 
 
@@ -262,12 +263,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
     ) -> bool:
-        if isinstance(vlan, EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem):
-            merged_vlan = self.shared_utils.get_merged_svi_config(vlan)
-        else:
-            merged_vlan = self.shared_utils.get_merged_l2vlan_config(vlan)
-
-        if "all" not in self.shared_utils.filter_tags and not set(merged_vlan.tags).intersection(self.shared_utils.filter_tags):
+        if "all" not in self.shared_utils.filter_tags and not set(vlan.tags).intersection(self.shared_utils.filter_tags):
             return False
 
         if not self.shared_utils.node_config.filter.only_vlans_in_use:

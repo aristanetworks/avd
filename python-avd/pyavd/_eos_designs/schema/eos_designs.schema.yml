@@ -2953,7 +2953,7 @@ keys:
           description: Profile name.
         parent_profile:
           type: str
-          description: 'Parent L2VLAN profile name to apply.
+          description: 'Name of parent L2VLAN profile to apply.
 
             l2vlan_profiles can refer to another l2vlan_profile to inherit settings
             in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
@@ -7448,20 +7448,6 @@ $defs:
             be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni
             (see 'overlay_rd_type' for details).\n  - A full RD string with colon
             separator which will override the full RD.\n"
-        tags:
-          type: list
-          description: 'Tags leveraged for networks services filtering.
-
-            Tags are matched against filter.tags defined under node type settings.
-
-            Tags are also matched against the node_group name under node type settings.
-
-            '
-          default:
-          - all
-          items:
-            type: str
-            default: all
         vxlan:
           type: bool
           default: true
@@ -9695,11 +9681,27 @@ $defs:
                 description: VLAN name.
               profile:
                 type: str
-                description: 'L2VLAN profile name. Profile defined under `l2vlan_profiles`.
+                description: 'L2VLAN profile name.
 
-                  L2VLAN can refer to one l2vlan_profile which again can refer to
-                  another l2vlan_profile to inherit settings in up to two levels (l2vlan
-                  -> l2vlan_profile -> l2vlan_parent_profile).'
+                  The profile must be defined under `l2vlan_profiles`. The profile
+                  may refer to another l2vlan_profile as it''s `parent_profile` to
+                  inherit settings in up to two levels (l2vlan -> l2vlan_profile ->
+                  l2vlan_parent_profile).'
+              tags:
+                type: list
+                description: 'Tags leveraged for networks services filtering.
+
+                  Tags are matched against filter.tags defined under node type settings.
+
+                  Tags are also matched against the node_group name under node type
+                  settings.
+
+                  '
+                default:
+                - all
+                items:
+                  type: str
+                  default: all
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings

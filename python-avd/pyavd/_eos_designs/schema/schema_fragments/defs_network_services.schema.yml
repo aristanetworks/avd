@@ -1603,8 +1603,18 @@ $defs:
               profile:
                 type: str
                 description: |-
-                  L2VLAN profile name. Profile defined under `l2vlan_profiles`.
-                  L2VLAN can refer to one l2vlan_profile which again can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+                  L2VLAN profile name.
+                  The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+              tags:
+                type: list
+                description: |
+                  Tags leveraged for networks services filtering.
+                  Tags are matched against filter.tags defined under node type settings.
+                  Tags are also matched against the node_group name under node type settings.
+                default: ["all"]
+                items:
+                  type: str
+                  default: all
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings

@@ -23,5 +23,5 @@ keys:
         parent_profile:
           type: str
           description: |
-            Parent L2VLAN profile name to apply.
+            Name of parent L2VLAN profile to apply.
             l2vlan_profiles can refer to another l2vlan_profile to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
