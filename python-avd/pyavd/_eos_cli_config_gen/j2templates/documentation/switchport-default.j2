@@ -19,11 +19,11 @@
 {%     if switchport_default.phone.cos is arista.avd.defined %}
 - Default Switchport Phone COS: {{ switchport_default.phone.cos }}
 {%     endif %}
-{%     if switchport_default.phone.qos_trust is arista.avd.defined %}
-- Default Switchport Phone QOS trust mode: {{ switchport_default.phone.qos_trust }}
-{%     endif %}
 {%     if switchport_default.phone.trunk is arista.avd.defined %}
 - Default Switchport Phone Trunk: {{ switchport_default.phone.trunk }}
+{%     endif %}
+{%     if switchport_default.phone.qos_trust is arista.avd.defined %}
+- Default Switchport Phone QOS trust mode: {{ switchport_default.phone.qos_trust }}
 {%     endif %}
 {%     if switchport_default.phone.vlan is arista.avd.defined %}
 - Default Switchport Phone VLAN: {{ switchport_default.phone.vlan }}
