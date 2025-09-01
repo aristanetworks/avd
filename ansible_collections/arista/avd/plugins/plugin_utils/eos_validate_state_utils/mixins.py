@@ -71,7 +71,7 @@ class DeviceUtilsMixin:
             log_msg = f"Peer '{peer}' is not configured by AVD. {self.__class__.__name__} is skipped."
             LOGGER.info(log_msg)
             return False
-        if not get(self.hostvars[peer], "is_deployed", True):
+        if not default(get(self.hostvars[peer], "metadata.is_deployed"), get(self.hostvars[peer], "is_deployed", True)):
             log_msg = f"Peer '{peer}' is marked as not deployed. {self.__class__.__name__} is skipped."
             LOGGER.info(log_msg)
             return False

@@ -5,7 +5,6 @@ enable_password:
   disabled: true
 hostname: ptp-tests-spine3
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -24,6 +23,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.0.1
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   fabric_name: PTP_TESTS
 prefix_lists:

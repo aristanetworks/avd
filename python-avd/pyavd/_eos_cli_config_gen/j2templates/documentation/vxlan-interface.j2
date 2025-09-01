@@ -112,12 +112,24 @@
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
 {%         for vrf in vxlan_config.vxlan.vrfs | arista.avd.natural_sort('name') %}
 {%             set vrf_vni = vrf.vni | arista.avd.default('-') %}
-{%             set multicast_group = vrf.multicast_group | arista.avd.default('-') %}
-| {{ vrf.name }} | {{ vrf_vni }} | {{ multicast_group }} |
+{%             set multicast_groups_mappings = [] %}
+{%             if vrf.multicast_group is arista.avd.defined %}
+{%                 do multicast_groups_mappings.append('default -> ' ~ vrf.multicast_group) %}
+{%             endif %}
+{%             if vrf.multicast_group_encap_range is arista.avd.defined %}
+{%                 do multicast_groups_mappings.append('dynamic -> ' ~ vrf.multicast_group_encap_range) %}
+{%             endif %}
+{%             for multicast_group in vrf.multicast_groups | arista.avd.natural_sort('overlay_group') %}
+{%                 do multicast_groups_mappings.append(multicast_group.overlay_group ~ ' -> ' ~ multicast_group.encap) %}
+{%             endfor %}
+{%             if not multicast_groups_mappings %}
+{%                 do multicast_groups_mappings.append('-') %}
+{%             endif %}
+| {{ vrf.name }} | {{ vrf_vni }} | {{ multicast_groups_mappings | join('<br/>') }} |
 {%         endfor %}
 {%     endif %}
 {%     if vxlan_config.vxlan.flood_vteps is arista.avd.defined %}

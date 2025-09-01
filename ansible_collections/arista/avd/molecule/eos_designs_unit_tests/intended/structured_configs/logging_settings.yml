@@ -5,7 +5,6 @@ enable_password:
   disabled: true
 hostname: logging_settings
 ip_routing: true
-is_deployed: true
 logging:
   console: errors
   monitor: disabled
@@ -97,6 +96,7 @@ management_interfaces:
   ip_address: 192.168.66.22/24
   type: oob
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
