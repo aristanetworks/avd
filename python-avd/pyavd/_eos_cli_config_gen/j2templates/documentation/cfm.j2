@@ -35,10 +35,10 @@
 {%         endif %}
 {%         if cfm_domain_end_points %}
 
-##### CFM Domain End Points
+##### CFM Domain Endpoints
 
-| Domain | Association ID | End Point ID | Remote End Point | Interface |
-| ------ | -------------- | ------------ | ---------------- | --------- |
+| Domain | Association ID | Endpoint ID | Remote Endpoint ID | Interface |
+| ------ | -------------- | ----------- | ------------------ | --------- |
 {%             for domain in cfm_domain_associations %}
 {%                 for association in domain.associations | arista.avd.natural_sort('id') %}
 {%                     for endpoint in association.end_points | arista.avd.natural_sort('id') %}
@@ -49,10 +49,10 @@
 {%         endif %}
 {%         if cfm_domain_remote_end_points %}
 
-##### CFM Domain Remote End Points
+##### CFM Domain Remote Endpoints
 
-| Domain | Association ID | Remote End Point ID | MAC Address |
-| ------ | -------------- | ------------------- | ----------- |
+| Domain | Association ID | Remote Endpoint ID | MAC Address |
+| ------ | -------------- | ------------------ | ----------- |
 {%             for domain in cfm_domain_associations %}
 {%                 for association in domain.associations | arista.avd.natural_sort('id') %}
 {%                     for remote_endpoint in association.remote_end_points | arista.avd.natural_sort('id') %}

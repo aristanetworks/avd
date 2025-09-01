@@ -2548,17 +2548,17 @@ monitor session default encapsulation gre payload inner-packet
 | PROVIDER_B | 201 | - | profile_simple | 201 |
 | PROVIDER_B | 202 | - | profile_simple | 202 |
 
-##### CFM Domain End Points
+##### CFM Domain Endpoints
 
-| Domain | Association ID | End Point ID | Remote End Point | Interface |
-| ------ | -------------- | ------------ | ---------------- | --------- |
+| Domain | Association ID | Endpoint ID | Remote Endpoint ID | Interface |
+| ------ | -------------- | ----------- | ------------------ | --------- |
 | CUSTOMER_A | 101 | 2001 | 1001 | Ethernet1/2 |
 | CUSTOMER_A | 101 | 2002 | 1002 | - |
 
-##### CFM Domain Remote End Points
+##### CFM Domain Remote Endpoints
 
-| Domain | Association ID | Remote End Point ID | MAC Address |
-| ------ | -------------- | ------------------- | ----------- |
+| Domain | Association ID | Remote Endpoint ID | MAC Address |
+| ------ | -------------- | ------------------ | ----------- |
 | CUSTOMER_A | 101 | 1001 | 001c.7300.000a |
 | CUSTOMER_A | 101 | 1002 | 001c.7300.000b |
 
