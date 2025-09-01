@@ -7,7 +7,6 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Protocol, overload
 
-from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import template_var
@@ -145,4 +144,3 @@ class UtilsMixin(Protocol):
         Regex must match the full value to pass.
         """
         return any(re.fullmatch(regex, value) for regex in regexes)
-
