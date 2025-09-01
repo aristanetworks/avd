@@ -1572,6 +1572,7 @@ $defs:
                     nodes:
                       type: list
                       description: Nodes is required to restrict configuration of aggregate_addresses to certain nodes in the network.
+                      required: true
                       items:
                         type: str
                         description: Node name or regex pattern.

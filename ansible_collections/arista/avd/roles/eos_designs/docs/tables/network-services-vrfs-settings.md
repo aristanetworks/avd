@@ -80,7 +80,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].additional_route_targets.[].nodes") | List, items: String |  |  |  | Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].additional_route_targets.[].nodes.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aggregate_addresses</samp>](## "<network_services_keys.name>.[].vrfs.[].aggregate_addresses") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].aggregate_addresses.[].nodes") | List, items: String |  |  |  | Nodes is required to restrict configuration of aggregate_addresses to certain nodes in the network. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].aggregate_addresses.[].nodes") | List, items: String | Required |  |  | Nodes is required to restrict configuration of aggregate_addresses to certain nodes in the network. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].aggregate_addresses.[].nodes.[]") | String |  |  |  | Node name or regex pattern. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix</samp>](## "<network_services_keys.name>.[].vrfs.[].aggregate_addresses.[].prefix") | String |  |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advertise_only</samp>](## "<network_services_keys.name>.[].vrfs.[].aggregate_addresses.[].advertise_only") | Boolean |  |  |  |  |
@@ -342,7 +342,7 @@
             aggregate_addresses:
 
                 # Nodes is required to restrict configuration of aggregate_addresses to certain nodes in the network.
-              - nodes:
+              - nodes: # required
 
                     # Node name or regex pattern.
                   - <str>
