@@ -173,6 +173,7 @@
   - [IPv6 Router OSPF](#ipv6-router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
+  - [Router RIP](#router-rip)
   - [PBR Policy Maps](#pbr-policy-maps)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
@@ -9986,6 +9987,49 @@ router bgp 65101
          route-target import 00:01:00:01:00:01
             !
             layer-2 fec in-place update
+```
+
+### Router RIP
+
+#### Router RIP Summary
+
+##### VRF: VRF1
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+| True | 10 | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
+
+##### VRF: default
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+| True | - | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
+
+##### VRF: vrf2
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+| False | - | - |
+
+#### Router RIP Device Configuration
+
+```eos
+!
+router rip vrf VRF1
+   metric default 10
+   network 10.0.0.0/8
+   network 192.168.1.0/24
+   network 192.168.2.0/24
+   no shutdown
+!
+router rip
+   network 10.0.0.0/8
+   network 192.168.1.0/24
+   network 192.168.2.0/24
+   no shutdown
+!
+router rip vrf vrf2
+   shutdown
 ```
 
 ### PBR Policy Maps

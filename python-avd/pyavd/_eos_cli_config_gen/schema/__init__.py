@@ -59546,6 +59546,74 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class RouterRip(AvdModel):
+        """Subclass of AvdModel."""
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Networks(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Networks._item_type = str
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str}, "metric_default": {"type": int}, "networks": {"type": Networks}}
+            enabled: bool | None
+            vrf: str
+            metric_default: int | None
+            """Set default metric for the routes."""
+            networks: Networks
+            """Subclass of AvdList with `str` items."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    vrf: str | UndefinedType = Undefined,
+                    metric_default: int | None | UndefinedType = Undefined,
+                    networks: Networks | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        vrf: vrf
+                        metric_default: Set default metric for the routes.
+                        networks: Subclass of AvdList with `str` items.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `vrf` (`str`)."""
+
+            _primary_key: ClassVar[str] = "vrf"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}}
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `vrf` (`str`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                """
+                RouterRip.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `vrf` (`str`).
+
+                """
+
     class RouterSegmentSecurity(AvdModel):
         """Subclass of AvdModel."""
 
@@ -68286,6 +68354,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "router_ospf": {"type": RouterOspf},
         "router_path_selection": {"type": RouterPathSelection},
         "router_pim_sparse_mode": {"type": RouterPimSparseMode},
+        "router_rip": {"type": RouterRip},
         "router_segment_security": {"type": RouterSegmentSecurity},
         "router_service_insertion": {"type": RouterServiceInsertion},
         "router_traffic_engineering": {"type": RouterTrafficEngineering},
@@ -68820,6 +68889,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     router_pim_sparse_mode: RouterPimSparseMode
     """Subclass of AvdModel."""
+    router_rip: RouterRip
+    """
+    Routing Information Protocol settings.
+
+    Subclass of AvdModel.
+    """
     router_segment_security: RouterSegmentSecurity
     """Subclass of AvdModel."""
     router_service_insertion: RouterServiceInsertion
@@ -69081,6 +69156,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             router_ospf: RouterOspf | UndefinedType = Undefined,
             router_path_selection: RouterPathSelection | UndefinedType = Undefined,
             router_pim_sparse_mode: RouterPimSparseMode | UndefinedType = Undefined,
+            router_rip: RouterRip | UndefinedType = Undefined,
             router_segment_security: RouterSegmentSecurity | UndefinedType = Undefined,
             router_service_insertion: RouterServiceInsertion | UndefinedType = Undefined,
             router_traffic_engineering: RouterTrafficEngineering | UndefinedType = Undefined,
@@ -69431,6 +69507,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 router_pim_sparse_mode: Subclass of AvdModel.
+                router_rip:
+                   Routing Information Protocol settings.
+
+                   Subclass of AvdModel.
                 router_segment_security: Subclass of AvdModel.
                 router_service_insertion:
                    Configure network services inserted to data forwarding.

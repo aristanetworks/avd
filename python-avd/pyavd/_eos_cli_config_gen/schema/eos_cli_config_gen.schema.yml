@@ -22235,6 +22235,35 @@ keys:
                         max: 32
                       override:
                         type: bool
+  router_rip:
+    type: dict
+    description: Routing Information Protocol settings.
+    keys:
+      vrfs:
+        type: list
+        primary_key: vrf
+        items:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            vrf:
+              type: str
+              convert_types:
+              - int
+            metric_default:
+              type: int
+              description: Set default metric for the routes.
+              min: 0
+              max: 16
+              convert_types:
+              - str
+            networks:
+              type: list
+              min_length: 1
+              items:
+                type: str
+                description: Subnet/Mask. e.g. 192.168.10.0/24.
   router_segment_security:
     type: dict
     keys:
