@@ -66,7 +66,7 @@ class RouterBgpMixin(Protocol):
             if self.shared_utils.underlay_ipv6:
                 self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(
                     name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-            )
+                )
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
         if self.inputs.underlay_rfc5549 is True:
@@ -134,7 +134,7 @@ class RouterBgpMixin(Protocol):
                             description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
                             bfd=link.bfd,
                         )
-    
+
     @cached_property
     def underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
         """Return Underlay a list of P2P underlay links."""
