@@ -113,7 +113,6 @@ ip_security:
   key_controller:
     profile: DP-PROFILE
   connection_tx_interface_match_source_ip: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -134,6 +133,7 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
   cv_tags:
     device_tags:

@@ -295,8 +295,8 @@
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override |
-| --------- | --------------------- | -------------- |
+| Interface | Transceiver Frequency | Media Override | Application Override |
+| --------- | --------------------- | -------------- | -------------------- |
 {%         for transceiver_setting in transceiver_settings | arista.avd.natural_sort('name') %}
 {%             set interface = transceiver_setting.name %}
 {%             if transceiver_setting.transceiver.frequency is arista.avd.defined %}
@@ -307,8 +307,22 @@
 {%             else %}
 {%                 set frequency = '-' %}
 {%             endif %}
+{%             set applications = [] %}
+{%             if transceiver_setting.transceiver.application_override is arista.avd.defined %}
+{%                 do applications.append(transceiver_setting.transceiver.application_override) %}
+{%             endif %}
+{%             for application_override in transceiver_setting.transceiver.application_override_lanes | arista.avd.default([]) %}
+{%                 set application_override_var = application_override.override ~ " lanes start " ~ application_override.first_lane %}
+{%                 if application_override.last_lane is arista.avd.defined %}
+{%                     set application_override_var = application_override_var ~ " end " ~ application_override.last_lane %}
+{%                 endif %}
+{%                 do applications.append(application_override_var) %}
+{%             endfor %}
+{%             if applications == [] %}
+{%                 do applications.append("-") %}
+{%             endif %}
 {%             set m_override = transceiver_setting.transceiver.media.override | arista.avd.default('-') %}
-| {{ interface }} | {{ frequency }} | {{ m_override }} |
+| {{ interface }} | {{ frequency }} | {{ m_override }} | {{ applications | join("</br>") }} |
 {%         endfor %}
 {%     endif %}
 {# Link Tracking Groups #}

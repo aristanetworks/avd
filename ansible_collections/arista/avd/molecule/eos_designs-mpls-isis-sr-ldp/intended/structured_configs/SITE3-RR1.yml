@@ -7,7 +7,6 @@ eos_cli: "management security\n   password encryption-key common\n"
 hostname: SITE3-RR1
 ip_routing: true
 ipv6_unicast_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -35,6 +34,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: 7280SR3
   fabric_name: MPLS_CORE
 mpls:
