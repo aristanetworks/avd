@@ -686,6 +686,15 @@ phones:
         port_channel:
           mode: active
           description: "{endpoint} Port-Channel to {endpoint_type}"
+        monitor_sessions:
+          - name: MonitoringSessionServer18
+            role: source
+            source_settings:
+              direction: tx
+              access_group:
+                type: ip
+                name: myIpAVL
+                priority: 5
 
 firewalls:
   - name: FIREWALL01
@@ -698,7 +707,15 @@ firewalls:
         port_channel:
           endpoint_port_channel: PortChanne1
           mode: active
-
+        monitor_sessions:
+          - name: MonitoringSessionServer19
+            role: source
+            source_settings:
+              direction: tx
+              access_group:
+                type: ip
+                name: myIpAVL
+                priority: 5
 routers:
   - name: ROUTER01
     rack: RackB

@@ -83,8 +83,16 @@ interface Vxlan1
 {%     for vlan in vxlan_config.vxlan.vlans | arista.avd.natural_sort('id') if vlan.multicast_group is arista.avd.defined %}
    vxlan vlan {{ vlan.id }} multicast group {{ vlan.multicast_group }}
 {%     endfor %}
-{%     for vrf in vxlan_config.vxlan.vrfs | arista.avd.natural_sort('name') if vrf.multicast_group is arista.avd.defined %}
+{%     for vrf in vxlan_config.vxlan.vrfs | arista.avd.natural_sort('name') %}
+{%         if vrf.multicast_group is arista.avd.defined %}
    vxlan vrf {{ vrf.name }} multicast group {{ vrf.multicast_group }}
+{%         endif %}
+{%         if vrf.multicast_group_encap_range is arista.avd.defined %}
+   vxlan vrf {{ vrf.name }} multicast group encap range {{ vrf.multicast_group_encap_range }} delayed
+{%         endif %}
+{%         for multicast_group in vrf.multicast_groups | arista.avd.natural_sort('overlay_group') %}
+   vxlan vrf {{ vrf.name }} multicast group overlay {{ multicast_group.overlay_group }} encap {{ multicast_group.encap }} immediate
+{%         endfor %}
 {%     endfor %}
 {%     if vxlan_config.vxlan.multicast.headend_replication is arista.avd.defined(true) %}
    vxlan multicast headend-replication

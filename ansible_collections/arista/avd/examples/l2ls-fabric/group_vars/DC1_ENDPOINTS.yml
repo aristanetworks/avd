@@ -1,5 +1,5 @@
 ---
-### group_vars/DC1_NETWORK_PORTS.yml
+### group_vars/DC1_ENDPOINTS.yml
 
 connected_endpoints_keys:
   - key: servers

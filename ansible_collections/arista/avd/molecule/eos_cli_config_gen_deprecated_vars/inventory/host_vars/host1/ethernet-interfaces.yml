@@ -6,7 +6,7 @@
 #     - mode, vlans, native_vlan, native_vlan_tag, trunk_groups, phone, vlan_translations, trunk_private_vlan_secondary, pvlan_mapping
 #     - vlan_id, encapsulation_dot1q_vlan, encapsulation_vlan.client.dot1q, encapsulation_vlan.client.unmatched
 #     - encapsulation_vlan.network.dot1q, encapsulation_vlan.network.client
-#     - type
+#     - type, vrrp_ids[].ipv6.address
 ethernet_interfaces:
   - name: Ethernet1
     description: Test_mode_and_vlans
@@ -18,6 +18,10 @@ ethernet_interfaces:
     tcp_mss_ceiling:
       ipv4_segment_size: 200
       ipv6_segment_size: 201
+    vrrp_ids:
+      - id: 3
+        ipv6:
+          address: 2001:db8::1
 
   - name: Ethernet2
     description: Test_trunk_groups_and_native_vlan

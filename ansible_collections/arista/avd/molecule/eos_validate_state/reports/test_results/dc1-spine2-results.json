@@ -479,6 +479,15 @@
       "interfaces"
     ],
     "description": "Verifies the operational states of specified interfaces to ensure they match expected configurations.",
+    "custom_field": "Interface Ethernet42 - P2P_dc1-leaf3a_Ethernet2 = 'up'"
+  },
+  {
+    "name": "dc1-spine2",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "interfaces"
+    ],
+    "description": "Verifies the operational states of specified interfaces to ensure they match expected configurations.",
     "custom_field": "Interface Ethernet5 - P2P_dc1-svc-leaf1a_Ethernet2 = 'up'"
   },
   {
