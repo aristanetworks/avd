@@ -480,6 +480,13 @@ ethernet_interfaces:
     transceiver:
       media:
         override: 100gbase-ar4
+      application_override: 2
+      application_override_lanes:
+        - override: 10
+          first_lane: 1
+          last_lane: 1
+        - override: 5
+          first_lane: 2
 
   - name: Ethernet8
     description: to WAN-ISP1-01 Ethernet2
@@ -1584,6 +1591,14 @@ ethernet_interfaces:
     shutdown: false
     transceiver:
       frequency: 190050
+      application_override: 5
+      application_override_lanes:
+        - override: 5
+          first_lane: 1
+          last_lane: 1
+        - override: 5
+          first_lane: 2
+          last_lane: 3
     mac_timestamp: before-fcs
 
   - name: Ethernet67.1
@@ -1602,6 +1617,7 @@ ethernet_interfaces:
       frequency_unit: ghz
       media:
         override: 100gbase-ar4
+      application_override: 100gbase-srbd
 
   - name: Ethernet68.1
     description: Test_encapsulation_vlan1
@@ -1771,6 +1787,7 @@ ethernet_interfaces:
     transceiver:
       media:
         override: 100gbase-ar4
+      application_override: 5
 
   - name: Ethernet74
     peer: DC1-LEAF1B

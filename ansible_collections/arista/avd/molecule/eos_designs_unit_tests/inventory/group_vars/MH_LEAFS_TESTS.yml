@@ -26,6 +26,8 @@ l3leaf:
           bgp_as: 65151
           mgmt_ip: 192.168.201.104/24
           uplink_switch_interfaces: [Ethernet19]
+          uplink_switch_ethernet_structured_config:
+            description: description through uplink_switch_ethernet_structured_config(MH-LEAF1A)
         - name: MH-LEAF1B
           id: 2
           bgp_as: 65152

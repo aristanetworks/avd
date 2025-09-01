@@ -1800,6 +1800,26 @@ keys:
 
               ACT does not provide direct Internet access to cloudeos or veos devices
               by default.'
+          act_ensure_eapi_access:
+            type: bool
+            description: 'Ensures eAPI remains accessible for automation and testing
+              via ACT.
+
+              Clients connecting to device eAPI though ACT rely on access in the default
+              VRF. If eAPI is reconfigured for a dedicated management VRF, this primary
+              eAPI connectivity can be unintentionally broken.
+
+              Set this to `true` to enforce the required EOS configuration, guaranteeing
+              eAPI over HTTPS is always enabled in the default VRF and preserving
+              this connectivity.
+
+              This setting is only applicable to ACT `veos` and `cloudeos` node types.'
+            default: false
+      use_default_interfaces_of_digital_twin_platform:
+        type: bool
+        default: false
+        description: In Digital Twin mode, AVD can either use the default interfaces
+          of the original or the digital twin platform (as set in `platform_settings.[].digital_twin.platform`).
   dns_settings:
     documentation_options:
       table: management-settings
@@ -4518,6 +4538,12 @@ keys:
 
                 The feature will be ignored on platforms where this is false.'
               default: true
+            sflow_subinterfaces:
+              type: bool
+              description: 'Support for sFlow on sub-interfaces.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
             wan:
               type: bool
               description: 'Support for Arista WAN features.
@@ -4987,6 +5013,10 @@ keys:
       auto_clock_identity:
         type: bool
         default: true
+      forward_v1:
+        type: bool
+        default: false
+        $ref: eos_cli_config_gen#/keys/ptp/keys/forward_v1
   queue_monitor_length:
     documentation_options:
       table: system-settings
@@ -10198,6 +10228,46 @@ $defs:
               since it can be either ethernet_interfaces or port_channel_interfaces.
 
               '
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config
+                or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
+          uplink_ethernet_structured_config:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: Custom structured config applied to `uplink_interfaces`.
+          uplink_port_channel_structured_config:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: Custom structured config applied to the uplink Port-Channel
+              when using port-channel uplinks.
+          uplink_switch_ethernet_structured_config:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: Custom structured config applied to `uplink_switch_interfaces`
+              on the `uplink_switches`.
+          uplink_switch_port_channel_structured_config:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: Custom structured config applied to the Port-Channel on the
+              `uplink_switches` when using port-channel uplinks.
           mlag_port_channel_structured_config:
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
             documentation_options:
@@ -11349,6 +11419,9 @@ $defs:
                 description: 'Enable PTP unicast forwarding.
 
                   '
+              forward_v1:
+                type: bool
+                description: Forward dataplane PTP V1 packets.
               dscp:
                 type: dict
                 keys:
@@ -12484,6 +12557,24 @@ $defs:
 
             Note! The content of this dictionary is _not_ validated by the schema,
             since it can be either ethernet_interfaces or port_channel_interfaces.'
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: ethernet_structured_config or port_channel_structured_config
+        ethernet_structured_config:
+          type: dict
+          relaxed_validation: true
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+          description: Custom structured config for ethernet interfaces.
+          documentation_options:
+            hide_keys: true
+        port_channel_structured_config:
+          type: dict
+          relaxed_validation: true
+          $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+          description: Custom structured config for port-channel links.
+          documentation_options:
+            hide_keys: true
   rx_queue_settings:
     type: dict
     description: 'Receive queue parameters for platform SFE interface profile.

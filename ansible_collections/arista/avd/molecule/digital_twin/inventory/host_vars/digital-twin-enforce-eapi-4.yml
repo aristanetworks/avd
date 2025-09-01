@@ -1,0 +1,25 @@
+---
+type: l2leaf
+
+l2leaf:
+  defaults:
+    always_configure_ip_routing: true
+  nodes:
+    - name: digital-twin-enforce-eapi-4
+      id: 1
+      mgmt_ip: 192.168.0.4/32
+
+# Test enforcement of the ACT Digital Twin eAPI in default VRF
+digital_twin:
+  environment: act
+  fabric:
+    act_ensure_eapi_access: true
+
+# Test override of the management api http-commands settings in ACT Digital Twin mode
+management_eapi:
+  enable_http: true
+  vrfs:
+    - name: default
+      enabled: false
+      ipv4_acl: eapi_ipv4_acl_in
+      ipv6_acl: eapi_ipv6_acl_in
