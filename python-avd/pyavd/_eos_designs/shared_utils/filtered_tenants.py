@@ -90,9 +90,11 @@ class FilteredTenantsMixin(Protocol):
         """
         if not self.network_services_l2 or not tenant.l2vlans:
             EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
+
         filtered_l2vlans = tenant.l2vlans._filtered(
             lambda l2vlan: self.is_accepted_vlan(l2vlan) and bool("all" in self.filter_tags or set(l2vlan.tags).intersection(self.filter_tags))
         )
+
         for index, l2vlan in enumerate(filtered_l2vlans):
             filtered_l2vlans[index] = self.get_merged_l2vlan_config(l2vlan)
             if tenant.evpn_vlan_bundle:

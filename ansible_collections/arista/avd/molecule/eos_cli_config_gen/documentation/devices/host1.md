@@ -173,6 +173,7 @@
   - [IPv6 Router OSPF](#ipv6-router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
+  - [Router RIP](#router-rip)
   - [PBR Policy Maps](#pbr-policy-maps)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
@@ -4236,12 +4237,12 @@ interface Dps1
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override |
-| --------- | --------------------- | -------------- |
-| Ethernet7 | - | 100gbase-ar4 |
-| Ethernet67 | 190050.000 | - |
-| Ethernet68 | 190080.000 ghz | 100gbase-ar4 |
-| Ethernet73 | - | 100gbase-ar4 |
+| Interface | Transceiver Frequency | Media Override | Application Override |
+| --------- | --------------------- | -------------- | -------------------- |
+| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 |
+| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 |
+| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
+| Ethernet73 | - | 100gbase-ar4 | 5 |
 
 ##### Link Tracking Groups
 
@@ -4743,6 +4744,9 @@ interface Ethernet7
    spanning-tree bpdufilter enable
    vmtracer vmware-esx
    transceiver media override 100gbase-ar4
+   transceiver application override 2
+   transceiver application override 10 lanes start 1 end 1
+   transceiver application override 5 lanes start 2
 !
 interface Ethernet8
    description to WAN-ISP1-01 Ethernet2
@@ -5296,6 +5300,9 @@ interface Ethernet67
    no shutdown
    switchport
    mac timestamp before-fcs
+   transceiver application override 5
+   transceiver application override 5 lanes start 1 end 1
+   transceiver application override 5 lanes start 2 end 3
    transceiver frequency 190050.000
 !
 interface Ethernet67.1
@@ -5307,6 +5314,7 @@ interface Ethernet68
    no shutdown
    switchport
    transceiver media override 100gbase-ar4
+   transceiver application override 100gbase-srbd
    transceiver frequency 190080.000 ghz
 !
 interface Ethernet68.1
@@ -5391,6 +5399,7 @@ interface Ethernet73
    description DC1-AGG01_Ethernet1
    channel-group 5 mode active
    transceiver media override 100gbase-ar4
+   transceiver application override 5
 !
 interface Ethernet74
    description MLAG_PEER_DC1-LEAF1B_Ethernet3
@@ -7189,9 +7198,9 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
-| Tenant_A_OP_Zone | 10 | 232.0.0.10 |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
+| Tenant_A_OP_Zone | 10 | default -> 232.0.0.10<br/>dynamic -> 239.0.43.0/24<br/>239.1.1.0 -> 225.0.41.1<br/>239.1.1.1 -> 225.0.41.1<br/>239.1.1.2 -> 225.0.41.2 |
 | Tenant_A_WEB_Zone | 11 | - |
 
 ##### Default Flood List
@@ -7227,6 +7236,10 @@ interface Vxlan1
    vxlan vlan 110 multicast group 239.9.1.4
    vxlan vlan 112 multicast group 239.9.1.6
    vxlan vrf Tenant_A_OP_Zone multicast group 232.0.0.10
+   vxlan vrf Tenant_A_OP_Zone multicast group encap range 239.0.43.0/24 delayed
+   vxlan vrf Tenant_A_OP_Zone multicast group overlay 239.1.1.0 encap 225.0.41.1 immediate
+   vxlan vrf Tenant_A_OP_Zone multicast group overlay 239.1.1.1 encap 225.0.41.1 immediate
+   vxlan vrf Tenant_A_OP_Zone multicast group overlay 239.1.1.2 encap 225.0.41.2 immediate
    vxlan multicast headend-replication
    vxlan qos ecn propagation
    vxlan qos dscp ecn rewrite bridged enabled
@@ -9974,6 +9987,49 @@ router bgp 65101
          route-target import 00:01:00:01:00:01
             !
             layer-2 fec in-place update
+```
+
+### Router RIP
+
+#### Router RIP Summary
+
+##### VRF: VRF1
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+| True | 10 | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
+
+##### VRF: default
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+| True | - | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
+
+##### VRF: vrf2
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+| False | - | - |
+
+#### Router RIP Device Configuration
+
+```eos
+!
+router rip vrf VRF1
+   metric default 10
+   network 10.0.0.0/8
+   network 192.168.1.0/24
+   network 192.168.2.0/24
+   no shutdown
+!
+router rip
+   network 10.0.0.0/8
+   network 192.168.1.0/24
+   network 192.168.2.0/24
+   no shutdown
+!
+router rip vrf vrf2
+   shutdown
 ```
 
 ### PBR Policy Maps

@@ -85,7 +85,10 @@ class UtilsMixin(Protocol):
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
                     structured_config=uplink.structured_config,
+                    ethernet_structured_config=uplink.peer_ethernet_structured_config,
+                    port_channel_structured_config=uplink.peer_port_channel_structured_config,
                 )
+
                 if peer_facts.inband_ztp:
                     # l2 inband ztp
                     downlink.inband_ztp_vlan = peer_facts.inband_ztp_vlan
@@ -143,8 +146,11 @@ class UtilsMixin(Protocol):
 
         # logic below is common to l3_interface and l3_port_channel interface types
 
+        # Check if the interface is a parent L3 Port-Channel with subinterfaces.
+        is_parent_l3_port_channel = schema_key == "l3_port_channels" and l3_generic_interface.name in self._l3_port_channels_with_subinterfaces
+
         # TODO: catch if ip_address is not valid or not dhcp
-        if not l3_generic_interface.ip_address:
+        if not l3_generic_interface.ip_address and not is_parent_l3_port_channel:
             msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}"
             msg += f"[name={l3_generic_interface.name}].ip_address"
             raise AristaAvdMissingVariableError(msg)

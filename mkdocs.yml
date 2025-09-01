@@ -96,17 +96,22 @@ plugins:
         - development/*
         - galaxy-importer/*
         - python-avd/*
+        - python/*
+        - rust/*
       regex:
         # Exclude examples common md snippets
         - 'ansible_collections\/arista\/avd\/examples\/common/.*'
         # Exclude all examples but single-dc-l3ls which is referenced in getting getting-started
         - 'ansible_collections\/arista\/avd\/examples\/((?!single-dc-l3ls).*)\/documentation\/.*'
+        # Previous regex matches the ipv6 scenario
+        - 'ansible_collections\/arista\/avd\/examples\/single-dc-l3ls-ipv6/documentation\/.*'
+        - 'ansible_collections\/arista\/avd\/examples\/single-dc-l3ls-ipv6/README.md'
         # Exclude all single-dc-l3ls files not referenced in getting getting-started
         - 'ansible_collections\/arista\/avd\/examples\/single-dc-l3ls\/documentation\/fabric\/((?!FABRIC-documentation.md).*)'
         - 'ansible_collections\/arista\/avd\/examples\/single-dc-l3ls\/documentation\/devices\/((?!dc1-leaf1a.md).*)'
-        - '.*.py$'
-        - '.*.pyc$'
-        - '.*.j2$'
+        - ".*.py$"
+        - ".*.pyc$"
+        - ".*.j2$"
   - include_dir_to_nav
   - git-revision-date-localized:
       type: date
@@ -139,7 +144,7 @@ markdown_extensions:
       fractions: false
   - pymdownx.snippets:
       base_path:
-        - './'
+        - "./"
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -216,3 +221,8 @@ nav:
   - AVD Dev Containers:
       - Overview: docs/containers/overview.md
   - Support: docs/support/support_overview.md
+# Indicates which files should be added to the build site but not present in nav.
+not_in_nav: |
+  /ansible_collections/arista/avd/examples/single-dc-l3ls/documentation/*
+  /docs/contribution/eos_designs_facts_internal/tables/eos_designs_facts.md
+  /docs/warn-eos-cli-config-keys-usage-in-eos-designs.md

@@ -9057,13 +9057,69 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"frequency": {"type": str}, "frequency_unit": {"type": str}, "media": {"type": Media}}
+            class ApplicationOverrideLanesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"override": {"type": int}, "first_lane": {"type": int}, "last_lane": {"type": int}}
+                override: int
+                first_lane: int
+                """Set the start value of host lanes for which overrides should be applied."""
+                last_lane: int | None
+                """Set the last value of host lanes for which overrides should be applied."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        override: int | UndefinedType = Undefined,
+                        first_lane: int | UndefinedType = Undefined,
+                        last_lane: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ApplicationOverrideLanesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            override: override
+                            first_lane: Set the start value of host lanes for which overrides should be applied.
+                            last_lane: Set the last value of host lanes for which overrides should be applied.
+
+                        """
+
+            class ApplicationOverrideLanes(AvdList[ApplicationOverrideLanesItem]):
+                """Subclass of AvdList with `ApplicationOverrideLanesItem` items."""
+
+            ApplicationOverrideLanes._item_type = ApplicationOverrideLanesItem
+
+            _fields: ClassVar[dict] = {
+                "frequency": {"type": str},
+                "frequency_unit": {"type": str},
+                "media": {"type": Media},
+                "application_override": {"type": str},
+                "application_override_lanes": {"type": ApplicationOverrideLanes},
+            }
             frequency: str | None
             """Transceiver Laser Frequency in GHz (min 190000, max 200000)."""
             frequency_unit: Literal["ghz"] | None
             """Unit of Transceiver Laser Frequency."""
             media: Media
             """Subclass of AvdModel."""
+            application_override: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"] | None
+            """
+            Set CMIS transceiver application.
+            '100gbase-srbd' should not be used in conjunction with
+            `application_override_lanes`.
+            """
+            application_override_lanes: ApplicationOverrideLanes
+            """
+            Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
+
+            Subclass of
+            AvdList with `ApplicationOverrideLanesItem` items.
+            """
 
             if TYPE_CHECKING:
 
@@ -9073,6 +9129,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     frequency: str | None | UndefinedType = Undefined,
                     frequency_unit: Literal["ghz"] | None | UndefinedType = Undefined,
                     media: Media | UndefinedType = Undefined,
+                    application_override: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"]
+                    | None
+                    | UndefinedType = Undefined,
+                    application_override_lanes: ApplicationOverrideLanes | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Transceiver.
@@ -9084,6 +9144,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         frequency: Transceiver Laser Frequency in GHz (min 190000, max 200000).
                         frequency_unit: Unit of Transceiver Laser Frequency.
                         media: Subclass of AvdModel.
+                        application_override:
+                           Set CMIS transceiver application.
+                           '100gbase-srbd' should not be used in conjunction with
+                           `application_override_lanes`.
+                        application_override_lanes:
+                           Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
+
+                           Subclass of
+                           AvdList with `ApplicationOverrideLanesItem` items.
 
                     """
 
@@ -59477,6 +59546,74 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class RouterRip(AvdModel):
+        """Subclass of AvdModel."""
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Networks(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Networks._item_type = str
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str}, "metric_default": {"type": int}, "networks": {"type": Networks}}
+            enabled: bool | None
+            vrf: str
+            metric_default: int | None
+            """Set default metric for the routes."""
+            networks: Networks
+            """Subclass of AvdList with `str` items."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    vrf: str | UndefinedType = Undefined,
+                    metric_default: int | None | UndefinedType = Undefined,
+                    networks: Networks | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        vrf: vrf
+                        metric_default: Set default metric for the routes.
+                        networks: Subclass of AvdList with `str` items.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `vrf` (`str`)."""
+
+            _primary_key: ClassVar[str] = "vrf"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}}
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `vrf` (`str`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                """
+                RouterRip.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `vrf` (`str`).
+
+                """
+
     class RouterSegmentSecurity(AvdModel):
         """Subclass of AvdModel."""
 
@@ -67203,12 +67340,70 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class VrfsItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"name": {"type": str}, "vni": {"type": int}, "multicast_group": {"type": str}}
+                    class MulticastGroupsItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"overlay_group": {"type": str}, "encap": {"type": str}}
+                        overlay_group: str
+                        """Overlay multicast group."""
+                        encap: str
+                        """Underlay multicast group."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, overlay_group: str | UndefinedType = Undefined, encap: str | UndefinedType = Undefined) -> None:
+                                """
+                                MulticastGroupsItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    overlay_group: Overlay multicast group.
+                                    encap: Underlay multicast group.
+
+                                """
+
+                    class MulticastGroups(AvdIndexedList[str, MulticastGroupsItem]):
+                        """Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is `overlay_group` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "overlay_group"
+
+                    MulticastGroups._item_type = MulticastGroupsItem
+
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "vni": {"type": int},
+                        "multicast_group": {"type": str},
+                        "multicast_group_encap_range": {"type": str},
+                        "multicast_groups": {"type": MulticastGroups},
+                    }
                     name: str
                     """VRF Name."""
                     vni: int | None
                     multicast_group: str | None
-                    """IP Multicast Group Address."""
+                    """Default IP Multicast Group Address for the VRF."""
+                    multicast_group_encap_range: str | None
+                    """
+                    N:M mapping, the overlay groups in the VRF are mapped to one of
+                    the underlay groups defined within
+                    the encap range.
+                    The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and
+                    32).
+                    Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for
+                    this feature to work.
+                    See the TOI at
+                    https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
+                    """
+                    multicast_groups: MulticastGroups
+                    """
+                    List of 1:1 mappings where each configured overlay multicast group is mapped
+                    directly to the
+                    specified underlay multicast group.
+
+                    Subclass of AvdIndexedList with `MulticastGroupsItem` items.
+                    Primary key is `overlay_group` (`str`).
+                    """
 
                     if TYPE_CHECKING:
 
@@ -67218,6 +67413,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             name: str | UndefinedType = Undefined,
                             vni: int | None | UndefinedType = Undefined,
                             multicast_group: str | None | UndefinedType = Undefined,
+                            multicast_group_encap_range: str | None | UndefinedType = Undefined,
+                            multicast_groups: MulticastGroups | UndefinedType = Undefined,
                         ) -> None:
                             """
                             VrfsItem.
@@ -67228,7 +67425,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 name: VRF Name.
                                 vni: vni
-                                multicast_group: IP Multicast Group Address.
+                                multicast_group: Default IP Multicast Group Address for the VRF.
+                                multicast_group_encap_range:
+                                   N:M mapping, the overlay groups in the VRF are mapped to one of
+                                   the underlay groups defined within
+                                   the encap range.
+                                   The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and
+                                   32).
+                                   Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for
+                                   this feature to work.
+                                   See the TOI at
+                                   https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
+                                multicast_groups:
+                                   List of 1:1 mappings where each configured overlay multicast group is mapped
+                                   directly to the
+                                   specified underlay multicast group.
+
+                                   Subclass of AvdIndexedList with `MulticastGroupsItem` items.
+                                   Primary key is `overlay_group` (`str`).
 
                             """
 
@@ -67667,12 +67881,70 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class VrfsItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"name": {"type": str}, "vni": {"type": int}, "multicast_group": {"type": str}}
+                    class MulticastGroupsItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"overlay_group": {"type": str}, "encap": {"type": str}}
+                        overlay_group: str
+                        """Overlay multicast group."""
+                        encap: str
+                        """Underlay multicast group."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, overlay_group: str | UndefinedType = Undefined, encap: str | UndefinedType = Undefined) -> None:
+                                """
+                                MulticastGroupsItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    overlay_group: Overlay multicast group.
+                                    encap: Underlay multicast group.
+
+                                """
+
+                    class MulticastGroups(AvdIndexedList[str, MulticastGroupsItem]):
+                        """Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is `overlay_group` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "overlay_group"
+
+                    MulticastGroups._item_type = MulticastGroupsItem
+
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "vni": {"type": int},
+                        "multicast_group": {"type": str},
+                        "multicast_group_encap_range": {"type": str},
+                        "multicast_groups": {"type": MulticastGroups},
+                    }
                     name: str
                     """VRF Name."""
                     vni: int | None
                     multicast_group: str | None
-                    """IP Multicast Group Address."""
+                    """Default IP Multicast Group Address for the VRF."""
+                    multicast_group_encap_range: str | None
+                    """
+                    N:M mapping, the overlay groups in the VRF are mapped to one of
+                    the underlay groups defined within
+                    the encap range.
+                    The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and
+                    32).
+                    Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for
+                    this feature to work.
+                    See the TOI at
+                    https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
+                    """
+                    multicast_groups: MulticastGroups
+                    """
+                    List of 1:1 mappings where each configured overlay multicast group is mapped
+                    directly to the
+                    specified underlay multicast group.
+
+                    Subclass of AvdIndexedList with `MulticastGroupsItem` items.
+                    Primary key is `overlay_group` (`str`).
+                    """
 
                     if TYPE_CHECKING:
 
@@ -67682,6 +67954,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             name: str | UndefinedType = Undefined,
                             vni: int | None | UndefinedType = Undefined,
                             multicast_group: str | None | UndefinedType = Undefined,
+                            multicast_group_encap_range: str | None | UndefinedType = Undefined,
+                            multicast_groups: MulticastGroups | UndefinedType = Undefined,
                         ) -> None:
                             """
                             VrfsItem.
@@ -67692,7 +67966,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 name: VRF Name.
                                 vni: vni
-                                multicast_group: IP Multicast Group Address.
+                                multicast_group: Default IP Multicast Group Address for the VRF.
+                                multicast_group_encap_range:
+                                   N:M mapping, the overlay groups in the VRF are mapped to one of
+                                   the underlay groups defined within
+                                   the encap range.
+                                   The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and
+                                   32).
+                                   Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for
+                                   this feature to work.
+                                   See the TOI at
+                                   https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
+                                multicast_groups:
+                                   List of 1:1 mappings where each configured overlay multicast group is mapped
+                                   directly to the
+                                   specified underlay multicast group.
+
+                                   Subclass of AvdIndexedList with `MulticastGroupsItem` items.
+                                   Primary key is `overlay_group` (`str`).
 
                             """
 
@@ -68061,6 +68352,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "router_ospf": {"type": RouterOspf},
         "router_path_selection": {"type": RouterPathSelection},
         "router_pim_sparse_mode": {"type": RouterPimSparseMode},
+        "router_rip": {"type": RouterRip},
         "router_segment_security": {"type": RouterSegmentSecurity},
         "router_service_insertion": {"type": RouterServiceInsertion},
         "router_traffic_engineering": {"type": RouterTrafficEngineering},
@@ -68584,6 +68876,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     router_pim_sparse_mode: RouterPimSparseMode
     """Subclass of AvdModel."""
+    router_rip: RouterRip
+    """
+    Routing Information Protocol settings.
+
+    Subclass of AvdModel.
+    """
     router_segment_security: RouterSegmentSecurity
     """Subclass of AvdModel."""
     router_service_insertion: RouterServiceInsertion
@@ -68843,6 +69141,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             router_ospf: RouterOspf | UndefinedType = Undefined,
             router_path_selection: RouterPathSelection | UndefinedType = Undefined,
             router_pim_sparse_mode: RouterPimSparseMode | UndefinedType = Undefined,
+            router_rip: RouterRip | UndefinedType = Undefined,
             router_segment_security: RouterSegmentSecurity | UndefinedType = Undefined,
             router_service_insertion: RouterServiceInsertion | UndefinedType = Undefined,
             router_traffic_engineering: RouterTrafficEngineering | UndefinedType = Undefined,
@@ -69186,6 +69485,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 router_pim_sparse_mode: Subclass of AvdModel.
+                router_rip:
+                   Routing Information Protocol settings.
+
+                   Subclass of AvdModel.
                 router_segment_security: Subclass of AvdModel.
                 router_service_insertion:
                    Configure network services inserted to data forwarding.
