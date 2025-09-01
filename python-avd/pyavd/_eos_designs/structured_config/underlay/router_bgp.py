@@ -135,4 +135,3 @@ class RouterBgpMixin(Protocol):
             if link.type == "underlay_p2p":
                 underlay_p2p_links.append(link)
         return underlay_p2p_links
-
