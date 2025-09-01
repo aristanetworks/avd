@@ -38258,6 +38258,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "rib_in_pre_policy_retain": {"type": RibInPrePolicyRetain},
                 "route_map_in": {"type": str},
                 "route_map_out": {"type": str},
+                "peer_tag_in": {"type": str},
+                "peer_tag_out_discard": {"type": str},
                 "session_tracker": {"type": str},
                 "shared_secret": {"type": SharedSecret},
                 "ttl_maximum_hops": {"type": int},
@@ -38346,6 +38348,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Inbound route-map name."""
             route_map_out: str | None
             """Outbound route-map name."""
+            peer_tag_in: str | None
+            """Inbound peer tag name."""
+            peer_tag_out_discard: str | None
+            """Outbound discard peer tag name."""
             session_tracker: str | None
             shared_secret: SharedSecret
             """Subclass of AvdModel."""
@@ -38389,6 +38395,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     rib_in_pre_policy_retain: RibInPrePolicyRetain | UndefinedType = Undefined,
                     route_map_in: str | None | UndefinedType = Undefined,
                     route_map_out: str | None | UndefinedType = Undefined,
+                    peer_tag_in: str | None | UndefinedType = Undefined,
+                    peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     session_tracker: str | None | UndefinedType = Undefined,
                     shared_secret: SharedSecret | UndefinedType = Undefined,
                     ttl_maximum_hops: int | None | UndefinedType = Undefined,
@@ -38455,6 +38463,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         rib_in_pre_policy_retain: Subclass of AvdModel.
                         route_map_in: Inbound route-map name.
                         route_map_out: Outbound route-map name.
+                        peer_tag_in: Inbound peer tag name.
+                        peer_tag_out_discard: Outbound discard peer tag name.
                         session_tracker: session_tracker
                         shared_secret: Subclass of AvdModel.
                         ttl_maximum_hops: Maximum number of hops.
@@ -38847,6 +38857,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "timers": {"type": str},
                 "route_map_in": {"type": str},
                 "route_map_out": {"type": str},
+                "peer_tag_in": {"type": str},
+                "peer_tag_out_discard": {"type": str},
                 "default_originate": {"type": DefaultOriginate},
                 "send_community": {"type": str},
                 "maximum_routes": {"type": int},
@@ -38911,6 +38923,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Inbound route-map name."""
             route_map_out: str | None
             """Outbound route-map name."""
+            peer_tag_in: str | None
+            """Inbound peer tag name."""
+            peer_tag_out_discard: str | None
+            """Outbound discard peer tag name."""
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
             send_community: str | None
@@ -38977,6 +38993,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     timers: str | None | UndefinedType = Undefined,
                     route_map_in: str | None | UndefinedType = Undefined,
                     route_map_out: str | None | UndefinedType = Undefined,
+                    peer_tag_in: str | None | UndefinedType = Undefined,
+                    peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
                     send_community: str | None | UndefinedType = Undefined,
                     maximum_routes: int | None | UndefinedType = Undefined,
@@ -39034,6 +39052,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         timers: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>".
                         route_map_in: Inbound route-map name.
                         route_map_out: Outbound route-map name.
+                        peer_tag_in: Inbound peer tag name.
+                        peer_tag_out_discard: Outbound discard peer tag name.
                         default_originate: Subclass of AvdModel.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                         maximum_routes: Maximum number of routes (0 means unlimited).
@@ -40819,6 +40839,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_route": {"type": DefaultRoute},
@@ -40832,6 +40854,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -40860,6 +40886,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
@@ -40878,6 +40906,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -40997,6 +41027,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_route": {"type": DefaultRoute},
@@ -41012,6 +41044,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -41041,6 +41077,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
@@ -41060,6 +41098,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -41846,6 +41886,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_originate": {"type": DefaultOriginate},
@@ -41861,6 +41903,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -41891,6 +41937,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
@@ -41910,6 +41958,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -42064,6 +42114,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "prefix_list_in": {"type": str},
@@ -42078,6 +42130,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -42108,6 +42164,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         prefix_list_in: str | None | UndefinedType = Undefined,
@@ -42127,6 +42185,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -43473,6 +43533,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "rcf_out": {"type": str},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                 }
                 name: str
                 """Peer-group name."""
@@ -43518,6 +43580,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
 
                 if TYPE_CHECKING:
 
@@ -43542,6 +43608,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         rcf_out: str | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -43578,6 +43646,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Example: MyFunction(myarg).
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
 
                         """
 
@@ -43809,6 +43879,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "rcf_out": {"type": str},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                 }
                 ip_address: str
                 activate: bool | None
@@ -43853,6 +43925,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
 
                 if TYPE_CHECKING:
 
@@ -43877,6 +43953,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         rcf_out: str | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -43913,6 +43991,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Example: MyFunction(myarg).
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
 
                         """
 
@@ -44227,6 +44307,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
                 }
                 name: str
@@ -44236,6 +44318,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
 
@@ -44248,6 +44334,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -44261,6 +44349,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             additional_paths: Subclass of AvdModel.
 
                         """
@@ -44300,6 +44390,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
                 }
                 ip_address: str
@@ -44308,6 +44400,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
 
@@ -44320,6 +44416,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -44333,6 +44431,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             additional_paths: Subclass of AvdModel.
 
                         """
@@ -44932,6 +45032,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                 }
                 ip_address: str
                 activate: bool | None
@@ -44939,6 +45041,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
 
                 if TYPE_CHECKING:
 
@@ -44949,6 +45055,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -44961,6 +45069,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
 
                         """
 
@@ -44974,7 +45084,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class PeerGroupsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "activate": {"type": bool}, "route_map_in": {"type": str}, "route_map_out": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "activate": {"type": bool},
+                    "route_map_in": {"type": str},
+                    "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
+                }
                 name: str
                 """Peer-group name."""
                 activate: bool | None
@@ -44982,6 +45099,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
 
                 if TYPE_CHECKING:
 
@@ -44992,6 +45113,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -45004,6 +45127,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
 
                         """
 
@@ -45231,6 +45356,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "prefix_list_in": {"type": str},
@@ -45244,6 +45371,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -45270,6 +45401,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         prefix_list_in: str | None | UndefinedType = Undefined,
@@ -45287,6 +45420,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -45373,6 +45508,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "prefix_list_in": {"type": str},
@@ -45385,6 +45522,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -45411,6 +45552,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         prefix_list_in: str | None | UndefinedType = Undefined,
@@ -45428,6 +45571,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -46197,6 +46342,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
                 }
                 ip_address: str
@@ -46205,6 +46352,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
 
@@ -46217,6 +46368,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -46230,6 +46383,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             additional_paths: Subclass of AvdModel.
 
                         """
@@ -46896,6 +47051,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                 }
                 ip_address: str
                 activate: bool | None
@@ -46903,6 +47060,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
 
                 if TYPE_CHECKING:
 
@@ -46913,6 +47074,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -46925,6 +47088,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
 
                         """
 
@@ -46938,7 +47103,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class PeerGroupsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "activate": {"type": bool}, "route_map_in": {"type": str}, "route_map_out": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "activate": {"type": bool},
+                    "route_map_in": {"type": str},
+                    "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
+                }
                 name: str
                 """Peer-group name."""
                 activate: bool | None
@@ -46946,6 +47118,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
 
                 if TYPE_CHECKING:
 
@@ -46956,6 +47132,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -46968,6 +47146,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
 
                         """
 
@@ -47894,6 +48074,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_route": {"type": DefaultRoute},
@@ -47905,6 +48087,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -47927,6 +48113,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
@@ -47942,6 +48130,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -48023,6 +48213,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_route": {"type": DefaultRoute},
@@ -48033,6 +48225,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -48055,6 +48251,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
@@ -48070,6 +48268,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -48197,6 +48397,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_route": {"type": DefaultRoute},
@@ -48208,6 +48410,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -48230,6 +48436,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
@@ -48245,6 +48453,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -48326,6 +48536,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_route": {"type": DefaultRoute},
@@ -48336,6 +48548,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -48358,6 +48574,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
@@ -48373,6 +48591,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -49332,6 +49552,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "update_source": {"type": str},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
                 }
                 ip_address: str
@@ -49406,6 +49628,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
 
@@ -49443,6 +49669,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         update_source: str | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -49501,6 +49729,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             update_source: update_source
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             additional_paths: Subclass of AvdModel.
 
                         """
@@ -50641,6 +50871,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "activate": {"type": bool},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
+                        "peer_tag_in": {"type": str},
+                        "peer_tag_out_discard": {"type": str},
                         "rcf_in": {"type": str},
                         "rcf_out": {"type": str},
                         "prefix_list_in": {"type": str},
@@ -50654,6 +50886,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Inbound route-map name."""
                     route_map_out: str | None
                     """Outbound route-map name."""
+                    peer_tag_in: str | None
+                    """Inbound peer tag name."""
+                    peer_tag_out_discard: str | None
+                    """Outbound discard peer tag name."""
                     rcf_in: str | None
                     """
                     Inbound RCF function name with parenthesis.
@@ -50682,6 +50918,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: bool | None | UndefinedType = Undefined,
                             route_map_in: str | None | UndefinedType = Undefined,
                             route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             rcf_in: str | None | UndefinedType = Undefined,
                             rcf_out: str | None | UndefinedType = Undefined,
                             prefix_list_in: str | None | UndefinedType = Undefined,
@@ -50700,6 +50938,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 activate: activate
                                 route_map_in: Inbound route-map name.
                                 route_map_out: Outbound route-map name.
+                                peer_tag_in: Inbound peer tag name.
+                                peer_tag_out_discard: Outbound discard peer tag name.
                                 rcf_in:
                                    Inbound RCF function name with parenthesis.
                                    Example: MyFunction(myarg).
@@ -51782,6 +52022,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "activate": {"type": bool},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
+                        "peer_tag_in": {"type": str},
+                        "peer_tag_out_discard": {"type": str},
                         "rcf_in": {"type": str},
                         "rcf_out": {"type": str},
                         "prefix_list_in": {"type": str},
@@ -51794,6 +52036,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Inbound route-map name."""
                     route_map_out: str | None
                     """Outbound route-map name."""
+                    peer_tag_in: str | None
+                    """Inbound peer tag name."""
+                    peer_tag_out_discard: str | None
+                    """Outbound discard peer tag name."""
                     rcf_in: str | None
                     """
                     Inbound RCF function name with parenthesis.
@@ -51820,6 +52066,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: bool | None | UndefinedType = Undefined,
                             route_map_in: str | None | UndefinedType = Undefined,
                             route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             rcf_in: str | None | UndefinedType = Undefined,
                             rcf_out: str | None | UndefinedType = Undefined,
                             prefix_list_in: str | None | UndefinedType = Undefined,
@@ -51837,6 +52085,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 activate: activate
                                 route_map_in: Inbound route-map name.
                                 route_map_out: Outbound route-map name.
+                                peer_tag_in: Inbound peer tag name.
+                                peer_tag_out_discard: Outbound discard peer tag name.
                                 rcf_in:
                                    Inbound RCF function name with parenthesis.
                                    Example: MyFunction(myarg).
@@ -52642,6 +52892,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "activate": {"type": bool},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
+                        "peer_tag_in": {"type": str},
+                        "peer_tag_out_discard": {"type": str},
                         "additional_paths": {"type": AdditionalPaths},
                     }
                     ip_address: str
@@ -52650,6 +52902,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Inbound route-map name."""
                     route_map_out: str | None
                     """Outbound route-map name."""
+                    peer_tag_in: str | None
+                    """Inbound peer tag name."""
+                    peer_tag_out_discard: str | None
+                    """Outbound discard peer tag name."""
                     additional_paths: AdditionalPaths
                     """Subclass of AvdModel."""
 
@@ -52662,6 +52918,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: bool | None | UndefinedType = Undefined,
                             route_map_in: str | None | UndefinedType = Undefined,
                             route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -52675,6 +52933,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 activate: activate
                                 route_map_in: Inbound route-map name.
                                 route_map_out: Outbound route-map name.
+                                peer_tag_in: Inbound peer tag name.
+                                peer_tag_out_discard: Outbound discard peer tag name.
                                 additional_paths: Subclass of AvdModel.
 
                             """
@@ -53429,6 +53689,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "activate": {"type": bool},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
+                        "peer_tag_in": {"type": str},
+                        "peer_tag_out_discard": {"type": str},
                         "additional_paths": {"type": AdditionalPaths},
                     }
                     ip_address: str
@@ -53437,6 +53699,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Inbound route-map name."""
                     route_map_out: str | None
                     """Outbound route-map name."""
+                    peer_tag_in: str | None
+                    """Inbound peer tag name."""
+                    peer_tag_out_discard: str | None
+                    """Outbound discard peer tag name."""
                     additional_paths: AdditionalPaths
                     """Subclass of AvdModel."""
 
@@ -53449,6 +53715,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: bool | None | UndefinedType = Undefined,
                             route_map_in: str | None | UndefinedType = Undefined,
                             route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -53462,6 +53730,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 activate: activate
                                 route_map_in: Inbound route-map name.
                                 route_map_out: Outbound route-map name.
+                                peer_tag_in: Inbound peer tag name.
+                                peer_tag_out_discard: Outbound discard peer tag name.
                                 additional_paths: Subclass of AvdModel.
 
                             """

@@ -15048,6 +15048,12 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            peer_tag_in:
+              type: str
+              description: Inbound peer tag name.
+            peer_tag_out_discard:
+              type: str
+              description: Outbound discard peer tag name.
             session_tracker:
               type: str
             shared_secret:
@@ -15186,6 +15192,12 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            peer_tag_in:
+              type: str
+              description: Inbound peer tag name.
+            peer_tag_out_discard:
+              type: str
+              description: Outbound discard peer tag name.
             default_originate:
               type: dict
               keys:
@@ -15982,6 +15994,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16035,6 +16053,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16266,6 +16290,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16332,6 +16362,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16883,6 +16919,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           neighbors:
             type: list
             primary_key: ip_address
@@ -17011,6 +17053,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           networks:
             type: list
             primary_key: prefix
@@ -17106,6 +17154,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -17127,6 +17181,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -17337,6 +17397,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           peer_groups:
             type: list
             primary_key: name
@@ -17354,6 +17420,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
       address_family_ipv6:
         type: dict
         keys:
@@ -17403,6 +17475,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17443,6 +17521,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17730,6 +17814,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -17965,6 +18055,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           peer_groups:
             type: list
             primary_key: name
@@ -17982,6 +18078,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
       address_family_link_state:
         type: dict
         keys:
@@ -18208,6 +18310,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18253,6 +18361,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18302,6 +18416,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18347,6 +18467,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18813,6 +18939,12 @@ keys:
                   route_map_out:
                     type: str
                     description: Outbound route-map name.
+                  peer_tag_in:
+                    type: str
+                    description: Inbound peer tag name.
+                  peer_tag_out_discard:
+                    type: str
+                    description: Outbound discard peer tag name.
                   additional_paths:
                     type: dict
                     $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
@@ -19210,6 +19342,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       rcf_in:
                         type: str
                         description: 'Inbound RCF function name with parenthesis.
@@ -19593,6 +19731,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       rcf_in:
                         type: str
                         description: 'Inbound RCF function name with parenthesis.
@@ -19896,6 +20040,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       additional_paths:
                         type: dict
                         keys:
@@ -20161,6 +20311,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       additional_paths:
                         type: dict
                         keys:
