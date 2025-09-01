@@ -20,7 +20,7 @@ router rip vrf {{ rip_vrf.vrf }}
 {%         endfor %}
 {%         if rip_vrf.enabled is arista.avd.defined(true) %}
    no shutdown
-{%         else %}
+{%         elif rip_vrf.enabled is arista.avd.defined(false) %}
    shutdown
 {%         endif %}
 {%     endfor %}
