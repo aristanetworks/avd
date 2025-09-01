@@ -161,6 +161,10 @@ router_bgp:
   redistribute:
     connected:
       enabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none

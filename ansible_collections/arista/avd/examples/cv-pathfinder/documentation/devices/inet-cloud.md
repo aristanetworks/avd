@@ -530,6 +530,9 @@ router bgp 65666
    neighbor 100.64.21.2 remote-as 65000
    neighbor 100.64.21.2 default-originate always
    redistribute connected
+   !
+   address-family ipv4
+      neighbor IPv4-UNDERLAY-PEERS activate
 ```
 
 ## VRF Instances

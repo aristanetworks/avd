@@ -52,14 +52,13 @@ class RouterBgpMixin(Protocol):
                     name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
                 )
 
-        if self.shared_utils.is_cv_pathfinder_router:
-            peer_group = self.structured_config.router_bgp.peer_groups["IPv4-UNDERLAY-PEERS"]
-            peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
-            if self.shared_utils.wan_ha:
-                peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
-                if self.shared_utils.use_uplinks_for_wan_ha:
-                    # For HA need to add allowas_in 1
-                    peer_group.allowas_in._update(enabled=True, times=1)
+            if self.shared_utils.is_cv_pathfinder_router:
+                peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
+                if self.shared_utils.wan_ha:
+                    peer_group.route_map_out = "RM-BGP-UNDERLAY-PEERS-OUT"
+                    if self.shared_utils.use_uplinks_for_wan_ha:
+                        # For HA need to add allowas_in 1
+                        peer_group.allowas_in._update(enabled=True, times=1)
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
         if self.inputs.underlay_rfc5549 is True:
