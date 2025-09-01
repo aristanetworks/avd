@@ -118,6 +118,11 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
   neighbors:
   - ip_address: 192.168.4.2
     peer_group: IPv4-UNDERLAY-PEERS
