@@ -13,6 +13,7 @@ from tests.models import MoleculeHost
 
 
 @pytest.mark.molecule_scenarios(
+    "digital_twin",
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
     "eos_designs-l2ls",
@@ -32,6 +33,7 @@ from tests.models import MoleculeHost
 )
 # TODO: Remove inline jinja
 # @pytest.mark.digital_twin_molecule_scenarios("eos_designs-twodc-5stage-clos")
+@pytest.mark.digital_twin_molecule_scenarios("digital_twin")
 def test_get_device_structured_config(molecule_host: MoleculeHost) -> None:
     """Test get_device_structured_config."""
     inputs = deepcopy(molecule_host.hostvars)

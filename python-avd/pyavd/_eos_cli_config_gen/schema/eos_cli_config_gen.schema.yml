@@ -3664,6 +3664,62 @@ keys:
                 override:
                   type: str
                   description: Transceiver type.
+            application_override:
+              type: str
+              description: 'Set CMIS transceiver application.
+
+                ''100gbase-srbd'' should not be used in conjunction with `application_override_lanes`.'
+              valid_values:
+              - '0'
+              - '1'
+              - '2'
+              - '3'
+              - '4'
+              - '5'
+              - '6'
+              - '7'
+              - '8'
+              - '9'
+              - '10'
+              - '11'
+              - '12'
+              - '13'
+              - '14'
+              - '15'
+              - 100gbase-srbd
+              convert_types:
+              - int
+            application_override_lanes:
+              type: list
+              description: Set CMIS transceiver applications with lanes. The ranges
+                of `lanes` should not overlap.
+              items:
+                type: dict
+                keys:
+                  override:
+                    min: 0
+                    max: 15
+                    type: int
+                    required: true
+                    convert_types:
+                    - str
+                  first_lane:
+                    type: int
+                    description: Set the start value of host lanes for which overrides
+                      should be applied.
+                    required: true
+                    min: 1
+                    max: 8
+                    convert_types:
+                    - str
+                  last_lane:
+                    type: int
+                    description: Set the last value of host lanes for which overrides
+                      should be applied.
+                    min: 1
+                    max: 8
+                    convert_types:
+                    - str
         ip_proxy_arp:
           type: bool
         traffic_policy:
@@ -4000,6 +4056,11 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv4 address.
+                  secondary_addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
                     convert_types:
@@ -4012,8 +4073,16 @@ keys:
                 keys:
                   address:
                     type: str
-                    required: true
                     description: Virtual IPv6 address.
+                    deprecation:
+                      warning: true
+                      remove_in_version: 6.0.0
+                      new_key: addresses
+                  addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Virtual IPv6 addresses.
               peer_authentication:
                 type: dict
                 keys:
@@ -6942,9 +7011,10 @@ keys:
   ipv6_unicast_routing:
     type: bool
   is_deployed:
-    description: Key only used for documentation or validation purposes.
+    description: 'Key only used for documentation or validation purposes.
+
+      This key is deprecated and new key is metadata.is_deployed.'
     type: bool
-    default: true
   kernel:
     type: dict
     keys:
@@ -9000,6 +9070,9 @@ keys:
 
       It will not affect the generated EOS configuration.'
     keys:
+      is_deployed:
+        description: Key only used for documentation or validation purposes.
+        type: bool
       platform:
         type: str
       system_mac_address:
@@ -12456,6 +12529,9 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        vrrp_ids:
+          type: list
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids
         switchport:
           type: dict
           keys:
@@ -13091,6 +13167,20 @@ keys:
         max: 255
         convert_types:
         - str
+      hold_ptp_time:
+        type: int
+        min: 0
+        max: 172000
+        description: 'The length of time that PTP will remain in hold-down on the
+          internal oscillator if the connection to the GM is lost.
+
+          If a new GM is not elected before the expiry of the hold-down time, the
+          clock will revert to free-running.
+
+          Some platforms support larger maximum values, however 172000 seconds was
+          the max for 7150 series, and was widely used.'
+        convert_types:
+        - str
       message_type:
         type: dict
         keys:
@@ -13214,6 +13304,9 @@ keys:
             type: bool
             description: When enabled, the hardware clock is used as the source for
               PTP time during free-running mode.
+      forward_v1:
+        type: bool
+        description: Forward dataplane PTP V1 packets.
   qos:
     type: dict
     keys:
@@ -22514,6 +22607,13 @@ keys:
         type: int
         convert_types:
         - str
+      sample_truncate_size:
+        type: int
+        min: 128
+        max: 512
+        convert_types:
+        - str
+        description: Maximum sample size, in bytes.
       sample_input_subinterface:
         type: bool
       sample_output_subinterface:
@@ -24570,6 +24670,11 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv4 address.
+                  secondary_addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
                     convert_types:
@@ -24582,8 +24687,16 @@ keys:
                 keys:
                   address:
                     type: str
-                    required: true
                     description: Virtual IPv6 address.
+                    deprecation:
+                      warning: true
+                      remove_in_version: 6.0.0
+                      new_key: addresses
+                  addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Virtual IPv6 addresses.
               peer_authentication:
                 type: dict
                 $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids/items/keys/peer_authentication
@@ -24997,7 +25110,38 @@ keys:
                       - str
                     multicast_group:
                       type: str
-                      description: IP Multicast Group Address.
+                      description: Default IP Multicast Group Address for the VRF.
+                    multicast_group_encap_range:
+                      type: str
+                      description: 'N:M mapping, the overlay groups in the VRF are
+                        mapped to one of
+
+                        the underlay groups defined within the encap range.
+
+                        The format is X.X.X.X/YY (IPv4 multicast group with prefix
+                        length between 19 and 32).
+
+                        Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group`
+                        is required for this feature to work.
+
+                        See the TOI at https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups'
+                    multicast_groups:
+                      type: list
+                      primary_key: overlay_group
+                      description: 'List of 1:1 mappings where each configured overlay
+                        multicast group is mapped
+
+                        directly to the specified underlay multicast group.'
+                      items:
+                        type: dict
+                        keys:
+                          overlay_group:
+                            type: str
+                            description: Overlay multicast group.
+                          encap:
+                            type: str
+                            required: true
+                            description: Underlay multicast group.
               flood_vteps:
                 type: list
                 items:

@@ -896,6 +896,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/overlay-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/evpn-settings.md
 --8<--
 
+## Address locking settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/address-locking-settings.md
+--8<--
+
 ## WAN Settings
 
 ### WAN generic settings
@@ -961,6 +967,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-pathfinder-inter
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/zscaler-endpoints.md
 --8<--
 
+### WAN Zscaler Integration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-cv-pathfinder-zscaler-integration.md
+--8<--
+
 ## Management settings
 
 --8<--
@@ -1023,6 +1035,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/system-settings.md
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/cloudvision-settings.md
+--8<--
+
+## CloudVision Tags Settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/cloudvision-tags.md
 --8<--
 
 ## Endpoint connectivity
