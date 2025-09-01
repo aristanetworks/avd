@@ -99,3 +99,25 @@ def test_generated_schema(
     else:
         # No errors expected.
         assert not validation_errors
+
+
+def test_relaxed_validation() -> None:
+    schema = {
+        "type": "dict",
+        "relaxed_validation": True,
+        "keys": {
+            "required_key": {"type": "int", "required": True},
+        },
+    }
+    avdschema = AvdSchema(schema)
+    data = {}
+    validation_errors = list(avdschema.validate(data))
+    assert len(validation_errors) == 0
+
+
+def test_ref_not_resolved() -> None:
+    schema = {"type": "int", "$ref": "somewhere"}
+    avdschema = AvdSchema(schema)
+    data = 123
+    with pytest.raises(NotImplementedError, match="\\$ref must be resolved before using AvdValidator"):
+        list(avdschema.validate(data))
