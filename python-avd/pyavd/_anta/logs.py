@@ -80,6 +80,7 @@ class LogMessage(Enum):
     PEER_INTERFACE_NOT_FOUND = "{interface} skipped - peer {peer} interface {peer_interface} not found"
     PEER_INTERFACE_USING_DHCP = "{interface} skipped - peer {peer} interface {peer_interface} using DHCP"
     PEER_INTERFACE_UNNUMBERED = "{interface} skipped - peer {peer} interface {peer_interface} using IP unnumbered"
+    PEER_INTERFACE_SHUTDOWN = "{interface} skipped - peer {peer} interface {peer_interface} is shutdown"
 
     # Interface state messages
     INTERFACE_SHUTDOWN = "{interface} skipped - Interface is shutdown"

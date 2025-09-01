@@ -200,9 +200,9 @@ ntp authenticate
 
 #### PTP Summary
 
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running Enabled |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------------- |
-| - | - | - | - | - | - | - | - | True |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward V1 | Forward Unicast | Free Running Enabled |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | ---------- | --------------- | -------------------- |
+| - | - | - | - | - | - | - | False | - | True |
 
 #### PTP Device Configuration
 

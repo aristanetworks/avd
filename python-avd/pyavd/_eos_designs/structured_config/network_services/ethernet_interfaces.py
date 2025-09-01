@@ -145,8 +145,7 @@ class EthernetInterfacesMixin(Protocol):
                         l3_interface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                     )
 
-                if self.shared_utils.platform_settings.feature_support.sflow and self.inputs.fabric_sflow.l3_interfaces is not None:
-                    interface.sflow.enable = self.inputs.fabric_sflow.l3_interfaces
+                interface.sflow.enable = self.shared_utils.get_interface_sflow(interface.name, self.inputs.fabric_sflow.l3_interfaces)
 
                 if l3_interface.ipv4_acl_in:
                     acl = self.shared_utils.get_ipv4_acl(

@@ -15,6 +15,7 @@ ptp:
       dscp: 46
   mode: boundary
   mode_one_step: true
+  forward_v1: true
   hold_ptp_time: 43200
   forward_unicast: true
   profile: "g8275.1"
