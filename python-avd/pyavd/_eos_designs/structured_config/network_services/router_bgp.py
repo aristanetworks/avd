@@ -56,7 +56,6 @@ class RouterBgpMixin(Protocol):
         self._router_bgp_vlan_aware_bundles(tenant_svis_l2vlans_dict)
         self._router_bgp_redistribute_routes()
         self._router_bgp_vpws()
-        self._router_bgp_aggregate_addresses()
 
         # Configure MLAG iBGP peer-group if needed. The function updates structured config directly.
         # Catches cases where underlay is not BGP but we still need MLAG iBGP peering.
@@ -187,6 +186,11 @@ class RouterBgpMixin(Protocol):
                     if self.shared_utils.underlay_routing_protocol == "none":
                         # We need to add redistribute connected for the default VRF when underlay_routing_protocol is "none"
                         bgp_vrf.redistribute.connected.enabled = True
+
+                for address in vrf.aggregate_addresses:
+                    self.structured_config.router_bgp.aggregate_addresses.append(
+                        address._cast_as(EosCliConfigGen.RouterBgp.AggregateAddressesItem, ignore_extra_keys=True)
+                    )
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
@@ -717,12 +721,3 @@ class RouterBgpMixin(Protocol):
                     route_targets=EosCliConfigGen.RouterBgp.VpwsItem.RouteTargets(import_export=rt),
                     pseudowires=pseudowires,
                 )
-
-    def _router_bgp_aggregate_addresses(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
-        """Set structured config for bgp aggregate addresses."""
-        for tenant in self.shared_utils.filtered_tenants:
-            for vrf in tenant.vrfs:
-                for address in vrf.aggregate_addresses:
-                    self.structured_config.router_bgp.aggregate_addresses.append(
-                        address._cast_as(EosCliConfigGen.RouterBgp.AggregateAddressesItem, ignore_extra_keys=True)
-                    )
