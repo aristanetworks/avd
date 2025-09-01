@@ -1354,6 +1354,44 @@ keys:
                 override:
                   type: str
                   description: Transceiver type.
+            application_override:
+              type: str
+              description: |-
+                Set CMIS transceiver application.
+                '100gbase-srbd' should not be used in conjunction with `application_override_lanes`.
+              valid_values: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"]
+              convert_types:
+                - int
+            application_override_lanes:
+              type: list
+              description: Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
+              items:
+                type: dict
+                keys:
+                  override:
+                    min: 0
+                    max: 15
+                    type: int
+                    required: true
+                    convert_types:
+                      - str
+                  first_lane:
+                    type: int
+                    description: |-
+                      Set the start value of host lanes for which overrides should be applied.
+                    required: true
+                    min: 1
+                    max: 8
+                    convert_types:
+                      - str
+                  last_lane:
+                    type: int
+                    description: |-
+                      Set the last value of host lanes for which overrides should be applied.
+                    min: 1
+                    max: 8
+                    convert_types:
+                      - str
         ip_proxy_arp:
           type: bool
         traffic_policy:

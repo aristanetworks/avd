@@ -1,0 +1,42 @@
+---
+fabric_name: FABRIC_DOWNLINK_INTERFACES_TOO_SMALL
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - downlink-interfaces-too-small-spine
+  - node_type: l3leaf
+    match_hostnames:
+      - downlink-interfaces-too-small-l3leaf
+
+default_interfaces:
+  - types: [spine]
+    platforms: [default]
+    downlink_interfaces: [Ethernet1-8]
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+    bgp_as: 65000
+  nodes:
+    - name: downlink-interfaces-too-small-spine
+      id: 10
+      downlink_pools:
+        - ipv4_pool: 10.0.0.0/24
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.1.0/24
+    vtep_loopback_ipv4_pool: 192.168.2.0/24
+    bgp_as: 65000-65100
+    uplink_switches: [downlink-interfaces-too-small-spine]
+    uplink_interfaces: [Ethernet1]
+  nodes:
+    - name: downlink-interfaces-too-small-l3leaf
+      # id is bigger than 8, the length of the range defined under default_interfaces for spine.
+      id: 10
+
+expected_error_message: >-
+  'uplink_switch_interfaces' is not set on 'downlink-interfaces-too-small-l3leaf' and 'uplink_switch' 'downlink-interfaces-too-small-spine'
+  does not have enough 'downlink_interfaces' defined under 'default_interfaces'. The uplink switch requires at least 10 downlink_interfaces,
+  but only 8 are configured.

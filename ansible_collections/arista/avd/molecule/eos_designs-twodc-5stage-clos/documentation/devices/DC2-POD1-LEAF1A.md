@@ -374,8 +374,8 @@ interface Vlan4092
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
 | Common_VRF | 1025 | - |
 | vrf_with_loopbacks_dc1_pod1_only | 1102 | - |
 | vrf_with_loopbacks_from_overlapping_pool | 1100 | - |

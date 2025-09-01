@@ -198,7 +198,6 @@ ip_tacacs_source_interfaces:
   vrf: MGMT
 - name: Vlan125
   vrf: MGMT1
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -211,6 +210,7 @@ management_interfaces:
   ip_address: 192.168.0.2/24
   type: oob
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 radius_server:
   hosts:

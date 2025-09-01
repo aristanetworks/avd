@@ -1,2 +1,3 @@
 hostname: ci-s1-spine2
-is_deployed: true
+metadata:
+  is_deployed: true
