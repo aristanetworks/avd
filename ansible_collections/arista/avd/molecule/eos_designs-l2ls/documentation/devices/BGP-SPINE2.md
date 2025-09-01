@@ -584,14 +584,6 @@ ASN Notation: asplain
 
 #### Router BGP Peer Groups
 
-##### IPv4-UNDERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv4 |
-| Send community | all |
-| Maximum routes | 12000 |
-
 ##### MLAG-IPv4-UNDERLAY-PEER
 
 | Settings | Value |
@@ -606,10 +598,10 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 192.168.253.7 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 192.168.253.11 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 192.168.253.15 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 192.168.253.19 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 192.168.253.7 | 65000 | default | - | - | - | - | - | - | - | - | - |
+| 192.168.253.11 | 65000 | default | - | - | - | - | - | - | - | - | - |
+| 192.168.253.15 | 65000 | default | - | - | - | - | - | - | - | - | - |
+| 192.168.253.19 | 65000 | default | - | - | - | - | - | - | - | - | - |
 | 192.168.254.0 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 
 #### Router BGP Device Configuration
@@ -621,9 +613,6 @@ router bgp 65001
    update wait-install
    no bgp default ipv4-unicast
    maximum-paths 4 ecmp 4
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65001
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
@@ -650,7 +639,6 @@ router bgp 65001
    redistribute attached-host
    !
    address-family ipv4
-      neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
 ```
 

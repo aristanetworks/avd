@@ -499,21 +499,11 @@ ASN Notation: asplain
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
-#### Router BGP Peer Groups
-
-##### IPv4-UNDERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv4 |
-| Send community | all |
-| Maximum routes | 12000 |
-
 #### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 100.64.21.2 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 100.64.21.2 | 65000 | default | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP Device Configuration
 
@@ -523,16 +513,10 @@ router bgp 65666
    router-id 172.31.255.23
    no bgp default ipv4-unicast
    maximum-paths 4 ecmp 4
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 100.64.21.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 100.64.21.2 remote-as 65000
    neighbor 100.64.21.2 default-originate always
    redistribute connected
-   !
-   address-family ipv4
-      neighbor IPv4-UNDERLAY-PEERS activate
 ```
 
 ## VRF Instances
