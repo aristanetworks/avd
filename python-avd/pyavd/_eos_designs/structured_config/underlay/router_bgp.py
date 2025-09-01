@@ -7,11 +7,11 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
+    from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 
 
 class RouterBgpMixin(Protocol):
@@ -27,7 +27,7 @@ class RouterBgpMixin(Protocol):
         if not self.shared_utils.underlay_bgp:
             return
 
-        if self.underlay_p2p_links or self.shared_utils.is_cv_pathfinder_router:
+        if self.underlay_p2p_links:
             peer_group = self.shared_utils.get_underlay_bgp_peer_group()
             self.structured_config.router_bgp.peer_groups.append(peer_group)
             if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
@@ -130,8 +130,4 @@ class RouterBgpMixin(Protocol):
     @cached_property
     def underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
         """Return Underlay a list of P2P underlay links."""
-        underlay_p2p_links = []
-        for link in self._underlay_links:
-            if link.type == "underlay_p2p":
-                underlay_p2p_links.append(link)
-        return underlay_p2p_links
+        return [link for link in self._underlay_links if link.type == "underlay_p2p"]

@@ -76,3 +76,9 @@ spine:
               default_originate:
                 enabled: true
                 always: true
+          # Adding peer group.
+          peer_groups:
+            - name: IPv4-UNDERLAY-PEERS
+              type: ipv4
+              send_community: all
+              maximum_routes: 12000
