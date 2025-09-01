@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from logging import getLogger
+from typing import TYPE_CHECKING
 
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException
@@ -27,8 +28,12 @@ from .models import (
     CVWorkspace,
     DeployToCvResult,
 )
+from .sync_config_hierarchy_to_cv import sync_config_hierarchy_to_cv
 from .verify_devices_on_cv import verify_devices_on_cv
 from .verify_inputs import verify_device_inputs
+
+if TYPE_CHECKING:
+    from .schemas import StaticConfigurationHierarchy
 
 LOGGER = getLogger(__name__)
 
@@ -38,6 +43,7 @@ async def deploy_to_cv(
     workspace: CVWorkspace | None = None,
     change_control: CVChangeControl | None = None,
     configs: list[CVEosConfig] | None = None,
+    config_hierarchy: StaticConfigurationHierarchy | None = None,
     device_tags: list[CVDeviceTag] | None = None,
     interface_tags: list[CVInterfaceTag] | None = None,
     studio_inputs: list[CVStudioInputs] | None = None,
@@ -130,6 +136,12 @@ async def deploy_to_cv(
         studio_inputs = []
     if cv_pathfinder_metadata is None:
         cv_pathfinder_metadata = []
+
+    # TODO: For now they are mutually exclusive to keep the code simple and avoid side effects while implementation
+    #       the config_hierarchy feature.
+    if configs and config_hierarchy:
+        msg = "Parameters 'configs' and 'config_hierarchy' are mutually exclusive."
+        raise ValueError(msg)
     try:
         async with CVClient(servers=cloudvision.servers, token=cloudvision.token, verify_certs=cloudvision.verify_certs) as cv_client:
             # Create workspace
@@ -180,11 +192,22 @@ async def deploy_to_cv(
                 )
 
                 # Deploy configs
-                await deploy_configs_to_cv(
-                    configs=configs,
-                    result=result,
-                    cv_client=cv_client,
-                )
+                # TODO: Check if we want to consolidate and use the new sync_config_hierarchy_to_cv
+                #       by building a hierarchy from the CVEosConfig objects.
+                if configs:
+                    await deploy_configs_to_cv(
+                        configs=configs,
+                        result=result,
+                        cv_client=cv_client,
+                    )
+                # Deploy config hierarchy instead
+                # TODO: Update function docstring workflow to reflect this
+                elif config_hierarchy:
+                    await sync_config_hierarchy_to_cv(
+                        desired_hierarchy=config_hierarchy,
+                        result=result,
+                        cv_client=cv_client,
+                    )
 
                 # Deploy Studio Inputs
                 await deploy_studio_inputs_to_cv(

@@ -5,8 +5,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 from uuid import uuid4
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 @dataclass
@@ -116,11 +119,14 @@ class DeployToCvResult:
     workspace: CVWorkspace | None = field(default_factory=CVWorkspace)
     change_control: CVChangeControl | None = None
     deployed_configs: list[CVEosConfig] = field(default_factory=list)
+    deployed_static_config_containers: list[CVContainer] = field(default_factory=list)
+    deployed_static_config_configlets: list[CVConfiglet] = field(default_factory=list)
     deployed_device_tags: list[CVDeviceTag] = field(default_factory=list)
     deployed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
     deployed_studio_inputs: list[CVStudioInputs] = field(default_factory=list)
     deployed_cv_pathfinder_metadata: list[CVPathfinderMetadata] = field(default_factory=list)
     skipped_configs: list[CVEosConfig] = field(default_factory=list)
+    skipped_static_config_containers: list[CVContainer] = field(default_factory=list)
     skipped_device_tags: list[CVDeviceTag] = field(default_factory=list)
     skipped_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
     skipped_cv_pathfinder_metadata: list[CVPathfinderMetadata] = field(default_factory=list)
@@ -177,3 +183,36 @@ class DuplicatedDevices:
 
     def detected(self) -> bool:
         return any([self.serial_number, self.system_mac_address.unset_or_mixed_serial_number, self.system_mac_address.set_serial_number])
+
+
+@dataclass(frozen=True)
+class CVConfiglet:
+    """
+    Internal representation of a configlet desired state.
+
+    TODO: Add attributes like checksum or digest to support existing state.
+    """
+
+    id: str
+    name: str
+    file: Path
+    description: str
+
+
+@dataclass(frozen=True)
+class CVContainer:
+    """
+    Internal representation of a container desired or existing state.
+
+    Used in the config hierarchy synchronization for reliable state comparison
+    between the desired and existing containers.
+    """
+
+    id: str
+    name: str
+    description: str
+    hierarchy_path: str
+    query: str
+    match_policy: Literal["match_all", "match_first", "unspecified"] = "match_all"
+    configlet_ids: tuple[str, ...] = field(default_factory=tuple)
+    child_ids: tuple[str, ...] = field(default_factory=tuple)

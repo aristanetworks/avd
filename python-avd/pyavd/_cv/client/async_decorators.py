@@ -264,7 +264,7 @@ class GRPCRequestHandler:
         bound_arguments = self.func_signature.bind(*original_call_args, **original_call_kwargs)
         current_arguments_dict = bound_arguments.arguments
 
-        list_value: list = current_arguments_dict[self.list_field]
+        list_value: list = current_arguments_dict.get(self.list_field, [])
         if not isinstance(list_value, list):
             msg = (
                 f"{self.__class__.__name__} decorator expected the value of the list_field '{self.list_field}' for function '{func_name}' "
