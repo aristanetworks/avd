@@ -40,9 +40,10 @@ class UtilsMixin(Protocol):
         underlay_links = self.facts.uplinks._deepcopy()
 
         for uplink in underlay_links:
-            if self.shared_utils.platform_settings.feature_support.sflow:
-                uplink.sflow_enabled = self.inputs.fabric_sflow.uplinks
+            uplink.sflow_enabled = self.shared_utils.get_interface_sflow(uplink.interface, self.inputs.fabric_sflow.uplinks)
             uplink.flow_tracking = self.inputs.fabric_flow_tracking.uplinks
+            if not self.shared_utils.platform_settings.feature_support.ptp:
+                uplink.ptp.enable = False
 
         downlinks_flow_tracking = (
             # Cast as uplink model since that is used in the facts' uplink which we reuse below model
@@ -74,18 +75,21 @@ class UtilsMixin(Protocol):
                     native_vlan=uplink.native_vlan,
                     trunk_groups=uplink.peer_trunk_groups._cast_as(EosDesignsFacts.UplinksItem.TrunkGroups),
                     bfd=uplink.bfd,
-                    ptp=uplink.ptp,
+                    ptp=uplink.ptp if self.shared_utils.platform_settings.feature_support.ptp else Undefined,
                     mac_security=uplink.mac_security,
                     short_esi=uplink.peer_short_esi,
                     mlag=uplink.peer_mlag,
                     underlay_multicast_static=uplink.underlay_multicast_static,
                     underlay_multicast_pim_sm=uplink.underlay_multicast_pim_sm,
                     ipv6_enable=uplink.ipv6_enable,
-                    sflow_enabled=self.inputs.fabric_sflow.downlinks if self.shared_utils.platform_settings.feature_support.sflow else None,
+                    sflow_enabled=self.shared_utils.get_interface_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
                     structured_config=uplink.structured_config,
+                    ethernet_structured_config=uplink.peer_ethernet_structured_config,
+                    port_channel_structured_config=uplink.peer_port_channel_structured_config,
                 )
+
                 if peer_facts.inband_ztp:
                     # l2 inband ztp
                     downlink.inband_ztp_vlan = peer_facts.inband_ztp_vlan
@@ -143,8 +147,11 @@ class UtilsMixin(Protocol):
 
         # logic below is common to l3_interface and l3_port_channel interface types
 
+        # Check if the interface is a parent L3 Port-Channel with subinterfaces.
+        is_parent_l3_port_channel = schema_key == "l3_port_channels" and l3_generic_interface.name in self._l3_port_channels_with_subinterfaces
+
         # TODO: catch if ip_address is not valid or not dhcp
-        if not l3_generic_interface.ip_address:
+        if not l3_generic_interface.ip_address and not is_parent_l3_port_channel:
             msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}"
             msg += f"[name={l3_generic_interface.name}].ip_address"
             raise AristaAvdMissingVariableError(msg)

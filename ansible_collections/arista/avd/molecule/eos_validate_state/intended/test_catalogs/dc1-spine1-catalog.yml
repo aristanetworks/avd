@@ -233,6 +233,12 @@ anta.tests.interfaces:
       custom_field: Interface Ethernet6 - P2P_dc1-svc-leaf1b_Ethernet1 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
+    - name: Ethernet42
+      status: up
+    result_overwrite:
+      custom_field: Interface Ethernet42 - P2P_dc1-leaf3a_Ethernet1 = 'up'
+- VerifyInterfacesStatus:
+    interfaces:
     - name: Loopback0
       status: up
     result_overwrite:

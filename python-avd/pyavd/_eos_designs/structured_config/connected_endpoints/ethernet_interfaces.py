@@ -35,7 +35,7 @@ class EthernetInterfacesMixin(Protocol):
         - Silently overwrite duplicate network_ports with connected_endpoints.
         - Do NOT overwrite connected_endpoints with other connected_endpoints. Instead we raise a duplicate error.
         """
-        for connected_endpoint in self._filtered_connected_endpoints:
+        for connected_endpoint in self.shared_utils.filtered_connected_endpoints:
             for adapter in connected_endpoint.adapters:
                 for node_index, node_name in enumerate(adapter.switches):
                     if node_name != self.shared_utils.hostname:
@@ -52,7 +52,7 @@ class EthernetInterfacesMixin(Protocol):
         # We need this since network ports can override each other, so the last one "wins"
         # Values are the real structured config and the custom structured config for this interface.
         network_ports_ethernet_interfaces: dict[str, tuple[EosCliConfigGen.EthernetInterfacesItem, EosCliConfigGen.EthernetInterfacesItem]] = {}
-        for network_port in self._filtered_network_ports:
+        for network_port in self.shared_utils.filtered_network_ports:
             connected_endpoint = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem(name=network_port.endpoint or Undefined)
             connected_endpoint._internal_data.type = "network_port"
             network_port_as_adapter = network_port._cast_as(
@@ -103,8 +103,9 @@ class EthernetInterfacesMixin(Protocol):
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.LinkTrackingGroups),
         )
-        if self.shared_utils.platform_settings.feature_support.sflow:
-            ethernet_interface.sflow.enable = default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
+        ethernet_interface.sflow.enable = self.shared_utils.get_interface_sflow(
+            ethernet_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
+        )
         ethernet_interface.switchport._update(
             enabled=True,
             mode=adapter.mode,

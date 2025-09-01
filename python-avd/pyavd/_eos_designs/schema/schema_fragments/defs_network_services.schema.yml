@@ -751,6 +751,11 @@ $defs:
                       type: str
                       description: VLAN name.
                       required: true
+                    address_locking:
+                      type: dict
+                      $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family"
+                      description: |-
+                        To configure `address_locking.ipv4/v6`, you must define either `address_locking_settings.dhcp_servers_ipv4` or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
                     profile:
                       type: str
                       description: |
@@ -827,12 +832,20 @@ $defs:
                     static_routes:
                       type: list
                       $ref: "eos_designs#/$defs/static_routes"
-                      description: Static routes to be configured on every device when this interface is configured.
+                      description: Static routes to be configured on every device where this interface is configured.
+                    ipv6_static_routes:
+                      type: list
+                      # Reusing the schema from `static_routes` since IPv4 and IPv6 static routes share the same keys.
+                      $ref: "eos_designs#/$defs/static_routes"
+                      description: IPv6 static routes to be configured on every device where this interface is configured.
                     nodes:
                       type: list
                       items:
                         type: str
                         description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                     descriptions:
@@ -942,6 +955,9 @@ $defs:
                       $ref: "eos_designs#/$defs/flow_tracking_link"
                       description: |-
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+                    monitor_sessions:
+                      type: list
+                      $ref: "eos_designs#/$defs/monitor_sessions"
                     campus_link_type:
                       type: list
                       $ref: "eos_designs#/$defs/campus_link_type"
@@ -977,6 +993,9 @@ $defs:
                       type: str
                       required: true
                       description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                       description: |-
@@ -1075,8 +1094,13 @@ $defs:
                         - int
                     static_routes:
                       type: list
-                      description: Static routes to be configured on the device when this Port-channel is configured.
+                      description: Static routes to be configured on the device where this Port-channel interface is configured.
                       $ref: "eos_designs#/$defs/static_routes"
+                    ipv6_static_routes:
+                      type: list
+                      # Reusing the schema from `static_routes` since IPv4 and IPv6 static routes share the same keys.
+                      $ref: "eos_designs#/$defs/static_routes"
+                      description: IPv6 static routes to be configured on the device where this Port-channel interface is configured.
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
@@ -1571,6 +1595,9 @@ $defs:
                 min: 1
                 max: 4094
                 description: VLAN ID.
+              address_locking:
+                type: dict
+                $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family"
               vni_override:
                 type: int
                 convert_types:

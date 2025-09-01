@@ -1,8 +1,16 @@
 type: dict
 keys:
   aaa_settings:
+    documentation_options:
+      table: management-settings
     type: dict
     keys:
+      enable_password:
+        type: dict
+        keys:
+          password:
+            type: str
+            description: SHA512 hashed password.
       tacacs:
         type: dict
         keys:
@@ -155,3 +163,6 @@ keys:
             default: false
           sha512_password:
             type: str
+      local_users:
+        $ref: "eos_cli_config_gen#/keys/local_users"
+        type: list

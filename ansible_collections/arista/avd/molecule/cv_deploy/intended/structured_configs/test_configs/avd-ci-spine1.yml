@@ -1,2 +1,3 @@
 hostname: avd-ci-spine1
-is_deployed: true
+metadata:
+  is_deployed: true

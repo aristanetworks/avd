@@ -199,7 +199,7 @@ class UtilsMixin(Protocol):
         ptp_config = output_type()
 
         # Early return if PTP is not enabled
-        if not p2p_link.ptp.enabled:
+        if not (p2p_link.ptp.enabled and self.shared_utils.platform_settings.feature_support.ptp):
             return ptp_config
 
         if self.shared_utils.ptp_enabled:
@@ -249,8 +249,8 @@ class UtilsMixin(Protocol):
             eos_cli=p2p_link.raw_eos_cli,
         )
         interface.switchport.enabled = False
-
-        if p2p_link.structured_config:
+        # Remove this block after removing p2p_links[].structured_config from schema.
+        if not (p2p_link.ethernet_structured_config or p2p_link.port_channel_structured_config) and p2p_link.structured_config:
             if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
                 # Port-channel
                 self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
@@ -332,11 +332,10 @@ class UtilsMixin(Protocol):
         if p2p_link.macsec_profile:
             interface.mac_security.profile = p2p_link.macsec_profile
 
-        if self.shared_utils.platform_settings.feature_support.sflow:
-            if p2p_link.sflow is not None:
-                interface.sflow.enable = p2p_link.sflow
-            elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
-                interface.sflow.enable = p2p_link_sflow
+        interface.sflow.enable = self.shared_utils.get_interface_sflow(
+            interface.name,
+            default(p2p_link.sflow, self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge),
+        )
 
         # Adding type check to avoid confusing the type checker.
         if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR, this is for the type checker

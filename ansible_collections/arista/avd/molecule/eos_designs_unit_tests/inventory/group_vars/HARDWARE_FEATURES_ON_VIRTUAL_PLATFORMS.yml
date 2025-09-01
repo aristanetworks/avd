@@ -144,10 +144,13 @@ custom_platform_settings:
       hardware_speed_group: false
       per_interface_l2_mru: false
       sflow: false
+      ptp: false
     p2p_uplinks_mtu: 9194
   - platforms:
       - customplatform
     feature_support:
+      # Test for disable sflow on subinterfaces
+      sflow_subinterfaces: false
       # Test with all features explicitly disabled
       hardware_counter_features:
         acl: false
@@ -197,6 +200,11 @@ l3leaf:
     mlag_peer_ipv4_pool: 10.10.30.0/24
     mlag_peer_l3_ipv4_pool: 10.10.40.0/24
     uplink_ipv4_pool: 10.10.50.0/24
+    # Test PTP
+    ptp:
+      enabled: true
+    uplink_ptp:
+      enable: true
   node_groups:
     - group: group_1
       nodes:
@@ -230,8 +238,30 @@ l3leaf:
         - name: HARDWARE_FEATURES_CUSTOM_PLATFORM
           id: 6
           platform: customplatform
+          uplink_type: port-channel
           uplink_switches:
-            - HARDWARE_FEATURES_720XP
+            - HARDWARE_FEATURES_CLOUDEOS_2
+    - group: group_4
+      nodes:
+        # Testing PTP on CloudEOS over PO uplink and downlink
+        - name: HARDWARE_FEATURES_CLOUDEOS_2
+          id: 7
+          platform: cloudEOS
+          uplink_type: port-channel
+          uplink_switches:
+            - HARDWARE_FEATURES_7280R
+    - group: group_5
+      nodes:
+        # Testing platform_settings.feature_support.sflow_subinterfaces
+        - name: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+          id: 8
+          platform: customplatform
+          uplink_switches:
+            - HARDWARE_FEATURES_VEOS_LAB
+          uplink_interfaces:
+            - Ethernet1.1
+          uplink_switch_interfaces:
+            - Ethernet2.2
 
 # Test `queue-monitor`
 queue_monitor_length:
@@ -250,24 +280,30 @@ servers:
           - Ethernet7
           - Ethernet7
           - Ethernet7
+          - Ethernet7.7
         switches:
           - HARDWARE_FEATURES_VEOS_LAB
           - HARDWARE_FEATURES_CEOS_LAB
           - HARDWARE_FEATURES_CLOUDEOS
           - HARDWARE_FEATURES_720XP
           - HARDWARE_FEATURES_7280R
+          - HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
         endpoint_ports:
           - ETH1_NO_POE
           - ETH2_NO_POE
           - ETH3_NO_POE
           - ETH4_WITH_POE
           - ETH5_NO_POE
+          - ETH7_NO_POE
         poe:
           reboot:
             action: maintain
         l2_mtu: 1001
         l2_mru: 1002
         sflow: true
+        # Test PTP
+        ptp:
+          enabled: true
   - name: TEST_MTU_MRU
     adapters:
       - switch_ports:
@@ -357,18 +393,21 @@ tenants:
               - Ethernet5
               - Ethernet5
               - Ethernet5
+              - Ethernet5.5
             ip_addresses:
               - 10.10.40.1/24
               - 10.10.40.2/24
               - 10.10.40.3/24
               - 10.10.40.4/24
               - 10.10.40.5/24
+              - 10.10.40.6/24
             nodes:
               - HARDWARE_FEATURES_VEOS_LAB
               - HARDWARE_FEATURES_CEOS_LAB
               - HARDWARE_FEATURES_CLOUDEOS
               - HARDWARE_FEATURES_720XP
               - HARDWARE_FEATURES_7280R
+              - HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
         bgp_peers:
           - ip_address: 10.10.40.100
             remote_as: 65002
@@ -378,6 +417,7 @@ tenants:
               - HARDWARE_FEATURES_CLOUDEOS
               - HARDWARE_FEATURES_720XP
               - HARDWARE_FEATURES_7280R
+              - HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
 
 # Test `hardware speed-group`
 platform_speed_groups:
@@ -522,6 +562,18 @@ l3_edge:
         - 65100
         - 65100
       sflow: true
+    - nodes:
+        - HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+        - HARDWARE_FEATURES_CUSTOM_PLATFORM
+      id: 3
+      interfaces:
+        - Ethernet9.9
+        - Ethernet9.9
+      ip_pool: default_l3_edge_pool
+      as:
+        - 65100
+        - 65100
+      sflow: true
 
 # Test sFlow feature
 fabric_sflow:
@@ -542,3 +594,21 @@ sflow_settings:
   vrfs:
     - name: default
       source_interface: Vlan10
+
+core_interfaces:
+  p2p_links:
+    - nodes: [HARDWARE_FEATURES_VEOS_LAB, HARDWARE_FEATURES_CLOUDEOS]
+      interfaces: [Ethernet4, Ethernet4]
+      as: ["65000", "65001"]
+      ip: ["10.10.30.0/31", "10.10.30.1/31"]
+      # Test PTP
+      ptp:
+        enabled: true
+    - nodes: [HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1, HARDWARE_FEATURES_CLOUDEOS]
+      interfaces: [Ethernet4.4, Ethernet4.4]
+      as: ["65000", "65001"]
+      ip: ["10.10.30.40/31", "10.10.30.41/31"]
+
+# Test PTP
+uplink_ptp:
+  enable: true
