@@ -722,8 +722,6 @@ class RouterBgpMixin(Protocol):
         """Set structured config for bgp aggregate addresses."""
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
-                if not vrf.aggregate_addresses:
-                    continue
                 for address in vrf.aggregate_addresses:
                     self.structured_config.router_bgp.aggregate_addresses.append(
                         address._cast_as(EosCliConfigGen.RouterBgp.AggregateAddressesItem, ignore_extra_keys=True)
