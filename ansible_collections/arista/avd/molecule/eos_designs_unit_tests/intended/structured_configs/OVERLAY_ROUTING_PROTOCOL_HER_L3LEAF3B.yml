@@ -113,10 +113,6 @@ router_bgp:
     send_community: all
     maximum_routes: 12000
     route_map_in: RM-MLAG-PEER-IN
-  - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
-    send_community: all
-    maximum_routes: 12000
   neighbors:
   - ip_address: 192.168.253.4
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -129,8 +125,6 @@ router_bgp:
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
-      activate: true
-    - name: IPv4-UNDERLAY-PEERS
       activate: true
 service_routing_protocols_model: multi-agent
 spanning_tree:

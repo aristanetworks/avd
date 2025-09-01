@@ -431,11 +431,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
-    send_community: all
-    maximum_routes: 12000
-    route_map_in: RM-BGP-UNDERLAY-PEERS-IN
   - name: WAN-OVERLAY-PEERS
     type: wan
     remote_as: '65000'
@@ -467,8 +462,6 @@ router_bgp:
       encapsulation: path-selection
   address_family_ipv4:
     peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     - name: WAN-OVERLAY-PEERS
       activate: false
   address_family_ipv4_sr_te:

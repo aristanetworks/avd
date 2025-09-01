@@ -60,11 +60,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
-    send_community: all
-    maximum_routes: 12000
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
@@ -72,6 +67,9 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   redistribute:
     connected:
       enabled: true
@@ -90,8 +88,6 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   vrfs:

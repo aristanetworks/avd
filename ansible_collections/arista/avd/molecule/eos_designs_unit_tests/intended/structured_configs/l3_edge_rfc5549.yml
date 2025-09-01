@@ -83,11 +83,6 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
-    send_community: all
-    maximum_routes: 12000
   neighbors:
   - ip_address: 192.168.0.5
     remote_as: '65003'
@@ -109,13 +104,6 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
   address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-      next_hop:
-        address_family_ipv6:
-          enabled: true
-          originate: true
     neighbors:
     - ip_address: 192.168.0.7
       next_hop:
