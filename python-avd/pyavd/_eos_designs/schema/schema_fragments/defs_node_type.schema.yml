@@ -1584,6 +1584,73 @@ $defs:
               new_key: inband_mgmt_vlan
               remove_in_version: 5.0.0
             type: int
+          underlay_multicast:
+            type: dict
+            documentation_options:
+              table: node-type-multicast
+            keys:
+              pim_sm:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: |-
+                      Override global `underlay_multicast_pim_sm`.
+                      When true, configure
+                          router multicast
+                            ipv4 routing
+                      By default, configure PIM sparse-mode in the underlay on all:
+                        - P2P uplink interfaces if enabled on uplink peer
+                        - MLAG L3 peer interface if also enabled on MLAG peer
+                        - l3_edge and core interfaces
+                  uplinks:
+                    type: bool
+                    default: true
+                    description: |-
+                      Enable/Disable PIM sparse-mode on uplinks.
+                      Requires node setting `underlay_multicast.pim_sm: true` or, if unset, global `underlay_multicast_pim_sm: true
+                  uplink_interfaces:
+                    description: |-
+                      Uplink interface names to enable for PIM sparse-mode.
+                      Effective only when node settings `underlay_multicast.uplinks: true`.
+                    type: list
+                    items:
+                      type: str
+                  mlag:
+                    description: |-
+                      Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                    type: bool
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: |-
+                      Override `underlay_multicast_static`.
+                      When true, configure
+                          router multicast
+                            ipv4 routing
+                      Configure static multicast in the underlay on:
+                        - P2P uplink interfaces if enabled on uplink peer
+                        - MLAG L3 peer interface if also enabled on MLAG peer
+                        - l3_edge and core_interfaces
+                  uplinks:
+                    type: bool
+                    default: true
+                    description: |-
+                      Enable/Disable static multicast on uplinks.
+                      Requires node setting `underlay_multicast.static: true` or, if unset, global `underlay_multicast_static: true
+                  uplink_interfaces:
+                    description: |-
+                      Uplink interface names to enable for static multicast.
+                      Effective only when node settings `underlay_multicast.uplinks: true`.
+                    type: list
+                    items:
+                      type: str
+                  mlag:
+                    description: |-
+                      Configure static multicast in the underlay on MLAG L3 peer interfacee.
+                    type: bool
           campus:
             documentation_options:
               table: node-type-common-configuration

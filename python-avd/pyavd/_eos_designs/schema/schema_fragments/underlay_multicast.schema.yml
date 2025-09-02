@@ -16,3 +16,30 @@ keys:
       No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM).
       The configuration is intended to be used as multicast underlay for EVPN OISM overlay.
     default: false
+    deprecation:
+      removed: false
+      warning: true
+      new_key: underlay_multicast_pim_sm
+      remove_in_version: 6.0.0
+  underlay_multicast_pim_sm:
+    documentation_options:
+      table: fabric-settings
+    # TODO: AVD 6.0 - Add a default value false once underlay_multicast is deprecated
+    type: bool
+    description: |-
+      Enable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and l3_edge / core interfaces.
+      Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
+      When true, configure
+          router multicast
+            ipv4 routing
+  underlay_multicast_static:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    default: false
+    description: |-
+      Enable static multicast in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces.
+      Specifically 'multicast ipv4 static' will be configured on all routed underlay interfaces.
+      When true, configure
+          router multicast
+            ipv4 routing
