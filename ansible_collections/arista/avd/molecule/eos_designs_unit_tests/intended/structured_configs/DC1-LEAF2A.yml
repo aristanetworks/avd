@@ -699,7 +699,7 @@ router_bgp:
     peer: DC1-SPINE4
     description: DC1-SPINE4
   aggregate_addresses:
-  - prefix: 1.12.1.0/24
+  - prefix: 10.12.1.0/8
     advertise_only: true
     as_set: true
     summary_only: true

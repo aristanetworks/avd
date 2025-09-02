@@ -99,7 +99,7 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   aggregate_addresses:
-  - prefix: 1.1.1.0/24
+  - prefix: 10.1.1.0/8
     advertise_only: true
   redistribute:
     connected:
