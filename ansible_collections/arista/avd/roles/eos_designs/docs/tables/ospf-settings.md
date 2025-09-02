@@ -18,6 +18,7 @@
     | [<samp>underlay_ospf_bfd_enable</samp>](## "underlay_ospf_bfd_enable") | Boolean |  | `False` |  |  |
     | [<samp>underlay_ospf_graceful_restart</samp>](## "underlay_ospf_graceful_restart") | Boolean |  | `False` |  | Enable graceful restart for OSPF underlay. |
     | [<samp>underlay_ospf_max_lsa</samp>](## "underlay_ospf_max_lsa") | Integer |  | `12000` |  |  |
+    | [<samp>underlay_ospf_maximum_paths</samp>](## "underlay_ospf_maximum_paths") | Integer |  |  | Min: 1<br>Max: 128 | Maximum number of next-hops in an ECMP route. |
     | [<samp>underlay_ospf_process_id</samp>](## "underlay_ospf_process_id") | Integer |  | `100` |  |  |
 
 === "YAML"
@@ -45,5 +46,8 @@
     # Enable graceful restart for OSPF underlay.
     underlay_ospf_graceful_restart: <bool; default=False>
     underlay_ospf_max_lsa: <int; default=12000>
+
+    # Maximum number of next-hops in an ECMP route.
+    underlay_ospf_maximum_paths: <int; 1-128>
     underlay_ospf_process_id: <int; default=100>
     ```

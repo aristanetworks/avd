@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: 'Start docker compose stack'
         run: |
           docker compose -f development/docker-compose.yml up -d webdoc_avd
