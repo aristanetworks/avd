@@ -9,10 +9,10 @@
 ### Connectivity Fault Management (CFM)
 {%     if cfm.domains is arista.avd.defined %}
 {%         set domains = cfm.domains | arista.avd.natural_sort('name') %}
-{%         set cfm_domain_associations = domains | selectattr('associations', 'defined') | list %}
+{%         set cfm_domain_associations = domains | selectattr('associations', 'arista.avd.defined') | list %}
 {%         set associations = cfm_domain_associations | map(attribute='associations') | sum(start=[]) %}
-{%         set cfm_domain_end_points = associations | selectattr('end_points', 'defined') | list %}
-{%         set cfm_domain_remote_end_points = associations | selectattr('remote_end_points', 'defined') | list %}
+{%         set cfm_domain_end_points = associations | selectattr('end_points', 'arista.avd.defined') | list %}
+{%         set cfm_domain_remote_end_points = associations | selectattr('remote_end_points', 'arista.avd.defined') | list %}
 
 #### CFM Domains Summary
 
@@ -64,11 +64,11 @@
 {%     endif %}
 {%     if cfm.profiles is arista.avd.defined %}
 {%         set profiles = cfm.profiles | arista.avd.natural_sort('name') %}
-{%         set cfm_profile_continuity_check = profiles | selectattr('continuity_check', 'defined') | list %}
-{%         set cfm_profile_alarm_indication = profiles | selectattr('alarm_indication', 'defined') | list %}
-{%         set cfm_profile_delay_measurement = profiles | selectattr('measurement.delay', 'defined') | list %}
-{%         set cfm_profile_loss_measurement = profiles | selectattr('measurement.loss', 'defined') | list %}
-{%         set cfm_profile_synthetic_loss_measurement = profiles | selectattr('measurement.loss.synthetic', 'defined') | list %}
+{%         set cfm_profile_continuity_check = profiles | selectattr('continuity_check', 'arista.avd.defined') | list %}
+{%         set cfm_profile_alarm_indication = profiles | selectattr('alarm_indication', 'arista.avd.defined') | list %}
+{%         set cfm_profile_delay_measurement = profiles | selectattr('measurement.delay', 'arista.avd.defined') | list %}
+{%         set cfm_profile_loss_measurement = profiles | selectattr('measurement.loss', 'arista.avd.defined') | list %}
+{%         set cfm_profile_synthetic_loss_measurement = profiles | selectattr('measurement.loss.synthetic', 'arista.avd.defined') | list %}
 
 #### CFM Profiles Summary
 {%         if cfm_profile_continuity_check %}
