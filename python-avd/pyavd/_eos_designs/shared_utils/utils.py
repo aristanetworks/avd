@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Sequence
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Protocol, overload
 
@@ -13,7 +12,7 @@ from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import template_var
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Iterable, Sequence
     from typing import TypeVar
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
@@ -152,6 +151,6 @@ class UtilsMixin(Protocol):
 
         Otherwise returns self.match_regexes.
         """
-        if len(nodes) == 0:
+        if not nodes:
             return True
         return self.match_regexes(nodes, self.hostname)
