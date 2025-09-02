@@ -143,7 +143,7 @@ class FilteredTenantsMixin(Protocol):
     def resolve_l2vlan_profile(self: SharedUtilsProtocol, profile_name: str, context: str) -> EosDesigns.L2vlanProfilesItem:
         """Resolve one l2vlan profile and return it."""
         if profile_name not in self.inputs.l2vlan_profiles:
-            msg = f"Profile `{profile_name}` applied under l2vlan `{context}` does not exist in `l2vlan_profiles`."
+            msg = f"Profile '{profile_name}' applied under l2vlan '{context}' does not exist in 'l2vlan_profiles'."
             raise AristaAvdInvalidInputsError(msg)
 
         l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]
