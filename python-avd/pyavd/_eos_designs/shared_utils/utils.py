@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import re
 from functools import cached_property
-from typing import TYPE_CHECKING, Literal, Protocol, overload
+from typing import TYPE_CHECKING, Literal, Protocol, Sequence, overload
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
@@ -144,3 +144,13 @@ class UtilsMixin(Protocol):
         Regex must match the full value to pass.
         """
         return any(re.fullmatch(regex, value) for regex in regexes)
+
+    def match_nodes(self: SharedUtilsProtocol, nodes: Sequence[str]) -> bool:
+        """
+        Returns True when nodes is empty.
+
+        Otherwise returns self.match_regexes.
+        """
+        if not nodes:
+            return True
+        return self.match_regexes(nodes, self.hostname)
