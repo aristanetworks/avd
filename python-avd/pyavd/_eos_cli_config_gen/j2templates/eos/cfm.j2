@@ -1,0 +1,113 @@
+{#
+ Copyright (c) 2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - cfm #}
+{% if cfm is arista.avd.defined %}
+!
+cfm
+{%     if cfm.measurement_loss.inband is arista.avd.defined(true) %}
+   measurement loss inband
+{%     endif %}
+{%     if cfm.measurement_loss.synthetic is arista.avd.defined(true) %}
+   measurement loss synthetic
+{%     endif %}
+{%     if cfm.continuity_check_loc_state_action_disable_interface_routing is arista.avd.defined(true) %}
+   continuity-check loc-state action disable interface routing
+{%     endif %}
+{%     for profile in cfm.profiles | arista.avd.natural_sort('name') %}
+   !
+   profile {{ profile.name }}
+{%         if profile.continuity_check.enabled is arista.avd.defined(true) %}
+      continuity-check
+{%         endif %}
+{%         if profile.continuity_check.tx_interval is arista.avd.defined %}
+      continuity-check tx-interval {{ profile.continuity_check.tx_interval }}
+{%         endif %}
+{%         if profile.continuity_check.qos_cos is arista.avd.defined %}
+      continuity-check qos cos {{ profile.continuity_check.qos_cos }}
+{%         endif %}
+{%         if profile.continuity_check.alarm_defects is arista.avd.defined %}
+      continuity-check alarm defect {{ profile.continuity_check.alarm_defects | sort(reverse=true) | join(' ') }}
+{%         endif %}
+{%         if profile.alarm_indication.enabled is arista.avd.defined(true) %}
+      alarm indication
+{%         endif %}
+{%         if profile.alarm_indication.client_domain_level is arista.avd.defined %}
+{%             set alarm_indication_cli = "alarm indication client domain level " ~ profile.alarm_indication.client_domain_level %}
+{%             if profile.alarm_indication.tx_interval is arista.avd.defined %}
+{%                 set alarm_indication_cli = alarm_indication_cli ~ " tx-interval " ~ profile.alarm_indication.tx_interval %}
+{%             endif %}
+      {{ alarm_indication_cli }}
+{%         endif %}
+{%         if profile.measurement.delay.single_ended is arista.avd.defined(true) %}
+      measurement delay single-ended
+{%         endif %}
+{%         if profile.measurement.delay.tx_interval is arista.avd.defined %}
+      measurement delay tx-interval {{ profile.measurement.delay.tx_interval }} milliseconds
+{%         endif %}
+{%         if profile.measurement.delay.qos_cos is arista.avd.defined %}
+      measurement delay qos cos {{ profile.measurement.delay.qos_cos }}
+{%         endif %}
+{%         if profile.measurement.loss.single_ended is arista.avd.defined(true) %}
+      measurement loss single-ended
+{%         endif %}
+{%         if profile.measurement.loss.tx_interval is arista.avd.defined %}
+      measurement loss tx-interval {{ profile.measurement.loss.tx_interval }} milliseconds
+{%         endif %}
+{%         if profile.measurement.loss.qos_cos is arista.avd.defined %}
+      measurement loss qos cos {{ profile.measurement.loss.qos_cos }}
+{%         endif %}
+{%         if profile.measurement.loss.synthetic.single_ended is arista.avd.defined(true) %}
+      measurement loss synthetic single-ended
+{%         endif %}
+{%         if profile.measurement.loss.synthetic.tx_interval.interval is arista.avd.defined %}
+{%             set tx_interval_cli = "measurement loss synthetic tx-interval " ~ profile.measurement.loss.synthetic.tx_interval.interval ~ " milliseconds" %}
+{%             if profile.measurement.loss.synthetic.tx_interval.period_frames is arista.avd.defined %}
+{%                 set tx_interval_cli = tx_interval_cli ~ " period " ~ profile.measurement.loss.synthetic.tx_interval.period_frames ~ " frames" %}
+{%             endif %}
+      {{ tx_interval_cli }}
+{%         endif %}
+{%         if profile.measurement.loss.synthetic.qos_cos is arista.avd.defined %}
+      measurement loss synthetic qos cos {{ profile.measurement.loss.synthetic.qos_cos }}
+{%         endif %}
+{%     endfor %}
+{%     for domain in cfm.domains | arista.avd.natural_sort('name') %}
+   !
+   domain {{ domain.name }} level {{ domain.level }}
+{%         if domain.intermediate_point is arista.avd.defined(true) %}
+      intermediate-point
+{%         endif %}
+{%         for association in domain.associations | arista.avd.natural_sort('id') %}
+      !
+      association {{ association.id }}
+{%             if association.direction is arista.avd.defined %}
+         direction {{ association.direction }}
+{%             endif %}
+{%             if association.profile is arista.avd.defined %}
+         profile {{ association.profile }}
+{%             endif %}
+{%             if association.vlan is arista.avd.defined %}
+         vlan {{ association.vlan }}
+{%             endif %}
+{%             for remote_end_point in association.remote_end_points | arista.avd.natural_sort('id') %}
+         !
+         remote end-point {{ remote_end_point.id }}
+{%                 if remote_end_point.mac_address is arista.avd.defined %}
+            mac address {{ remote_end_point.mac_address }}
+{%                 endif %}
+{%             endfor %}
+{%             for end_point in association.end_points | arista.avd.natural_sort('id') %}
+         !
+         end-point {{ end_point.id }}
+{%                 if end_point.interface is arista.avd.defined %}
+            interface {{ end_point.interface }}
+{%                 endif %}
+{%                 if end_point.remote_end_point is arista.avd.defined %}
+            remote end-point {{ end_point.remote_end_point }}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}
