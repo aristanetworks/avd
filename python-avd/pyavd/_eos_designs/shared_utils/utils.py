@@ -152,6 +152,7 @@ class UtilsMixin(Protocol):
 
         Otherwise returns self.match_regexes.
         """
-        if not nodes:
+
+        if len(nodes) == 0:
             return True
         return self.match_regexes(nodes, self.hostname)
