@@ -79,6 +79,7 @@
   - [MCS Client Summary](#mcs-client-summary)
   - [SNMP](#snmp)
   - [Monitor Sessions](#monitor-sessions)
+  - [Connectivity Fault Management (CFM)](#connectivity-fault-management-cfm)
   - [Tap Aggregation](#tap-aggregation)
   - [SFlow](#sflow)
   - [Hardware](#hardware)
@@ -2530,6 +2531,143 @@ monitor session myMonitoringSession4 destination Ethernet50
 monitor session myMonitoringSession4 encapsulation gre metadata tx
 !
 monitor session default encapsulation gre payload inner-packet
+```
+
+### Connectivity Fault Management (CFM)
+
+#### CFM Domains Summary
+
+| Name | Level | Intermediate Point |
+| ---- | ----- | ------------------ |
+| CUSTOMER_A | 5 | True |
+| PROVIDER_B | 3 | - |
+
+##### CFM Domain Associations
+
+| Domain | Association ID | Direction | Profile | VLAN |
+| ------ | -------------- | --------- | ------- | ---- |
+| CUSTOMER_A | 101 | down | profile_10G | 101 |
+| CUSTOMER_A | 102 | up | profile_10G | 102 |
+| PROVIDER_B | 201 | - | profile_simple | 201 |
+| PROVIDER_B | 202 | - | profile_simple | 202 |
+
+##### CFM Domain Endpoints
+
+| Domain | Association ID | Endpoint ID | Remote Endpoint ID | Interface |
+| ------ | -------------- | ----------- | ------------------ | --------- |
+| CUSTOMER_A | 101 | 2001 | 1001 | Ethernet1/2 |
+| CUSTOMER_A | 101 | 2002 | 1002 | - |
+
+##### CFM Domain Remote Endpoints
+
+| Domain | Association ID | Remote Endpoint ID | MAC Address |
+| ------ | -------------- | ------------------ | ----------- |
+| CUSTOMER_A | 101 | 1001 | 001c.7300.000a |
+| CUSTOMER_A | 101 | 1002 | 001c.7300.000b |
+
+#### CFM Profiles Summary
+
+##### CFM Profile Continuity Check
+
+| Profile | Enabled | QoS COS | TX Interval | Alarm Defects |
+| ------- | ------- | ------- | ----------- | ------------- |
+| profile_10G | True | 6 | 100 milliseconds | rdi-ccm, cross-connection, loc-state |
+| profile_simple | True | - | 10 seconds | - |
+
+##### CFM Profile Alarm Indication
+
+| Profile | Enabled | Client Domain Level | TX Interval |
+| ------- | ------- | ------------------- | ----------- |
+| profile_10G | True | 5 | 1 seconds |
+
+##### CFM Profile Delay Measurement
+
+| Profile | Single Ended | QoS COS | TX Interval |
+| ------- | ------------ | ------- | ----------- |
+| profile_10G | True | 5 | 44 |
+
+##### CFM Profile Loss Measurement
+
+| Profile | Enabled | Single Ended | QoS COS | TX Interval |
+| ------- | ------- | ------------ | ------- | ----------- |
+| profile_10G | - | True | 3 | 445.445 |
+| profile_20G | - | - | - | - |
+
+##### CFM Profile Synthetic Loss Measurement
+
+| Profile | Enabled | Single Ended | QoS COS | TX Interval | Period Frames |
+| ------- | ------- | ------------ | ------- | ----------- | ------------- |
+| profile_10G | - | True | 5-6 | 10 | 10 |
+| profile_20G | - | - | - | 10 | - |
+
+#### CFM Device Configuration
+
+```eos
+!
+cfm
+   measurement loss inband
+   measurement loss synthetic
+   continuity-check loc-state action disable interface routing
+   !
+   profile profile_10G
+      continuity-check
+      continuity-check tx-interval 100 milliseconds
+      continuity-check qos cos 6
+      continuity-check alarm defect rdi-ccm loc-state cross-connection
+      alarm indication
+      alarm indication client domain level 5 tx-interval 1 seconds
+      measurement delay single-ended
+      measurement delay tx-interval 44 milliseconds
+      measurement delay qos cos 5
+      measurement loss single-ended
+      measurement loss tx-interval 445.445 milliseconds
+      measurement loss qos cos 3
+      measurement loss synthetic single-ended
+      measurement loss synthetic tx-interval 10 milliseconds period 10 frames
+      measurement loss synthetic qos cos 5-6
+   !
+   profile profile_20G
+      measurement loss synthetic tx-interval 10 milliseconds
+   !
+   profile profile_simple
+      continuity-check
+      continuity-check tx-interval 10 seconds
+   !
+   domain CUSTOMER_A level 5
+      intermediate-point
+      !
+      association 101
+         direction down
+         profile profile_10G
+         vlan 101
+         !
+         remote end-point 1001
+            mac address 001c.7300.000a
+         !
+         remote end-point 1002
+            mac address 001c.7300.000b
+         !
+         end-point 2001
+            interface Ethernet1/2
+            remote end-point 1001
+         !
+         end-point 2002
+            remote end-point 1002
+      !
+      association 102
+         direction up
+         profile profile_10G
+         vlan 102
+   !
+   domain PROVIDER_B level 3
+      !
+      association 201
+         profile profile_simple
+         vlan 201
+      !
+      association 202
+         profile profile_simple
+         vlan 202
 ```
 
 ### Tap Aggregation
