@@ -4,8 +4,9 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Sequence
 from functools import cached_property
-from typing import TYPE_CHECKING, Literal, Protocol, Sequence, overload
+from typing import TYPE_CHECKING, Literal, Protocol, overload
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
