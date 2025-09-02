@@ -335,7 +335,7 @@
                 "enabled": false
             },
             "spanning_tree_guard": "root",
-            "tcp_mss_ceiling": {	
+            "tcp_mss_ceiling": {
                 "ipv6": 65
             },
             "switchport": {
@@ -390,7 +390,7 @@
                 "enabled": true
             },
             "spanning_tree_guard": "disabled",
-            "tcp_mss_ceiling": {	
+            "tcp_mss_ceiling": {
                 "ipv4": 65
             },
             "multicast": {
