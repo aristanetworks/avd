@@ -89,16 +89,22 @@ class FilteredTenantsMixin(Protocol):
         Filtering based on l2vlan tags.
         """
         if not self.network_services_l2 or not tenant.l2vlans:
-            EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
+            return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
 
-        filtered_l2vlans = tenant.l2vlans._filtered(
-            lambda l2vlan: self.is_accepted_vlan(l2vlan) and bool("all" in self.filter_tags or set(l2vlan.tags).intersection(self.filter_tags))
-        )
+        filtered_l2vlans = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
+        for l2vlan in tenant.l2vlans:
+            if not self.is_accepted_vlan(l2vlan):
+                continue
 
-        for index, l2vlan in enumerate(filtered_l2vlans):
-            filtered_l2vlans[index] = self.get_merged_l2vlan_config(l2vlan)
+            # Perform filtering on tags before merge of profiles, to avoid spending cycles on merging something that will be filtered away.
+            if not ("all" in self.filter_tags or bool(set(l2vlan.tags).intersection(self.filter_tags))):
+                continue
+
+            merged_l2vlan = self.get_merged_l2vlan_config(l2vlan)
             if tenant.evpn_vlan_bundle:
-                l2vlan.evpn_vlan_bundle = l2vlan.evpn_vlan_bundle or tenant.evpn_vlan_bundle
+                merged_l2vlan.evpn_vlan_bundle = merged_l2vlan.evpn_vlan_bundle or tenant.evpn_vlan_bundle
+
+            filtered_l2vlans.append(merged_l2vlan)
 
         return filtered_l2vlans._natural_sorted(sort_key="id")
 
@@ -374,6 +380,7 @@ class FilteredTenantsMixin(Protocol):
         for svi in vrf.svis:
             if not self.is_accepted_vlan(svi):
                 continue
+            # TODO: Tags exist only on the SVI itself, not in svi_profiles. Avoid duplicating this logic here—check tags before merging.
             # Handle svi_profile inheritance
             merged_svi = self.get_merged_svi_config(svi)
             # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
