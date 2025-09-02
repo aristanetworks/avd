@@ -480,7 +480,7 @@
       "interfaces"
     ],
     "description": "Verifies the operational states of specified interfaces to ensure they match expected configurations.",
-    "custom_field": "Interface Ethernet12 - Test_mode_and_vlans = 'up'"
+    "custom_field": "Interface Ethernet12 - Test_switchport_access_vlan = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",
@@ -507,7 +507,7 @@
       "interfaces"
     ],
     "description": "Verifies the operational states of specified interfaces to ensure they match expected configurations.",
-    "custom_field": "Interface Ethernet15 - Test_type_routed = 'up'"
+    "custom_field": "Interface Ethernet15 - Test_switchport_disabled = 'up'"
   },
   {
     "name": "dc2-leaf3a.arista.com",

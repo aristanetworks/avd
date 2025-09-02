@@ -331,7 +331,7 @@ anta.tests.interfaces:
     - name: Ethernet12
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet12 - Test_mode_and_vlans = 'up'
+      custom_field: Interface Ethernet12 - Test_switchport_access_vlan = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Ethernet13
@@ -349,7 +349,7 @@ anta.tests.interfaces:
     - name: Ethernet15
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet15 - Test_type_routed = 'up'
+      custom_field: Interface Ethernet15 - Test_switchport_disabled = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Ethernet16
