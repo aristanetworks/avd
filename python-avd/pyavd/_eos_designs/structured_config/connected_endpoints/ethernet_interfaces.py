@@ -208,36 +208,23 @@ class EthernetInterfacesMixin(Protocol):
                 ethernet_interface.lacp_port_priority = 8192 if node_index == 0 else 32768
 
             elif lacp_fallback_mode == "individual":
-                # if fallback is set to individual a profile has to be defined
-                if (profile_name := adapter.port_channel.lacp_fallback.individual.profile) is None:
+                # if fallback is set to individual a profile _or_ mode+vlans have to be defined
+                if not (
+                    adapter.port_channel.lacp_fallback.individual.profile
+                    or not (adapter.port_channel.lacp_fallback.individual.mode and adapter.port_channel.lacp_fallback.individual.vlans)
+                ):
                     msg = (
-                        "A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined. Profile definition is missing for"
-                        f" the connected endpoint with the name '{connected_endpoint.name}'."
+                        "A Port-channel which is set to LACP fallback mode 'individual' must have either 'profile' or ('mode' and 'vlans') set under "
+                        f"'individual'. This is missing for the connected endpoint with the name '{connected_endpoint.name}'."
                     )
                     raise AristaAvdInvalidInputsError(msg)
 
-                profile = self.shared_utils.get_merged_port_profile(
-                    profile_name, context=f"{adapter._internal_data.context}.port_channel.lacp_fallback.individual"
-                )._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem)
-                self._update_ethernet_interface_cfg(profile, ethernet_interface, connected_endpoint)
-
-                if adapter.port_channel.lacp_fallback.individual.mode is not None:
-                    ethernet_interface.switchport.mode = adapter.port_channel.lacp_fallback.individual.mode
-                if adapter.port_channel.lacp_fallback.individual.vlans is not None:
-                    if ethernet_interface.switchport.mode in ["access", "dot1q-tunnel"]:
-                        try:
-                            ethernet_interface.switchport.access_vlan = int(adapter.port_channel.lacp_fallback.individual.vlans)
-                        except ValueError as e:
-                            msg = (
-                                "Adapter 'vlans' value must be a single vlan ID when mode is 'access' or 'dot1q-tunnel'. "
-                                f"Got {adapter.port_channel.lacp_fallback.individual.vlans} for interface {ethernet_interface.name}."
-                            )
-                            raise AristaAvdInvalidInputsError(msg) from e
-                    elif ethernet_interface.switchport.mode in ["trunk", "trunk phone"]:
-                        if adapter.port_channel.lacp_fallback.individual.vlans is not None:
-                            ethernet_interface.switchport.trunk.allowed_vlan = adapter.port_channel.lacp_fallback.individual.vlans
-                        if adapter.port_channel.lacp_fallback.individual.native_vlan is not None:
-                            ethernet_interface.switchport.trunk.native_vlan = adapter.port_channel.lacp_fallback.individual.native_vlan
+                individual_adapter = adapter.port_channel.lacp_fallback.individual._cast_as(
+                    EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem
+                )
+                individual_adapter._internal_data.context = f"{adapter._internal_data.context}.port_channel.lacp_fallback.individual"
+                individual_adapter_settings = self.shared_utils.get_merged_adapter_settings(individual_adapter)
+                self._update_ethernet_interface_cfg(individual_adapter_settings, ethernet_interface, connected_endpoint)
 
             if adapter.port_channel.mode != "on" and adapter.port_channel.lacp_timer.mode is not None:
                 ethernet_interface.lacp_timer.mode = adapter.port_channel.lacp_timer.mode

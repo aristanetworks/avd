@@ -318,10 +318,6 @@ ethernet_interfaces:
     enabled: true
     mode: access
     access_vlan: 5
-    trunk:
-      allowed_vlan: 1,2,3,4,5,6,7,123,234
-      native_vlan: 123
-      native_vlan_tag: false
 - name: Ethernet27
   description: CUSTOM_SERVER_INDIVIDUAL_3
   shutdown: false
@@ -349,10 +345,6 @@ ethernet_interfaces:
     enabled: true
     mode: access
     access_vlan: 5
-    trunk:
-      allowed_vlan: 1,2,3,4,5,6,7,123,234
-      native_vlan: 123
-      native_vlan_tag: false
 - name: Ethernet28
   description: CUSTOM_SERVER_INDIVIDUAL_4
   shutdown: false
