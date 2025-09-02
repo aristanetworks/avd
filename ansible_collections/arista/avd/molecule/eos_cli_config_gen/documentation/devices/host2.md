@@ -860,12 +860,18 @@ no mac address-table notification host-flap logging
 #### Switchport Defaults Summary
 
 - Default Switchport Mode: routed
+- Default Switchport Phone Trunk: tagged phone
+- Default Switchport Phone QOS trust mode: dscp
 
 #### Switchport Default Device Configuration
 
 ```eos
 !
 switchport default mode routed
+!
+switchport default phone trunk tagged phone
+!
+switchport default phone qos trust dscp
 ```
 
 ### Interface Defaults
