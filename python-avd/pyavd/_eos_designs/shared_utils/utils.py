@@ -144,13 +144,3 @@ class UtilsMixin(Protocol):
         Regex must match the full value to pass.
         """
         return any(re.fullmatch(regex, value) for regex in regexes)
-
-    def match_nodes(self: SharedUtilsProtocol, nodes: Sequence[str]) -> bool:
-        """
-        Returns True when nodes is empty.
-
-        Otherwise returns self.match_regexes.
-        """
-        if not nodes:
-            return True
-        return self.match_regexes(nodes, self.hostname)
