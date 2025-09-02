@@ -149,7 +149,7 @@ class FilteredTenantsMixin(Protocol):
         l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]
         if l2vlan_profile.parent_profile:
             if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
-                msg = f"Profile `{l2vlan_profile.parent_profile}` applied under L2VLAN Profile `{profile_name}` does not exist in `l2vlan_profiles`."
+                msg = f"Profile '{l2vlan_profile.parent_profile}' applied under L2VLAN Profile '{profile_name}' does not exist in 'l2vlan_profiles'."
                 raise AristaAvdInvalidInputsError(msg)
 
             parent_profile = self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile]
