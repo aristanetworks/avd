@@ -12,7 +12,7 @@ from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import template_var
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Sequence
+    from collections.abc import Iterable
     from typing import TypeVar
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
