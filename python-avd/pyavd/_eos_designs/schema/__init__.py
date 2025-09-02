@@ -48285,7 +48285,9 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         nodes: Nodes
                         """
-                        Nodes is required to restrict configuration of aggregate_addresses to certain nodes in the network.
+                        Nodes where the aggregate should be configured. By default the aggregate will be configured all on
+                        all devices where the VRF is configured.
+
                         Subclass of AvdList with `str` items.
                         """
                         prefix: str | None
@@ -48319,7 +48321,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     nodes:
-                                       Nodes is required to restrict configuration of aggregate_addresses to certain nodes in the network.
+                                       Nodes where the aggregate should be configured. By default the aggregate will be configured all on
+                                       all devices where the VRF is configured.
+
                                        Subclass of AvdList with `str` items.
                                     prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
                                     advertise_only: advertise_only

@@ -204,7 +204,7 @@ class FilteredTenantsMixin(Protocol):
             vrf.l3_port_channels = self.filtered_l3_port_channels(vrf)
             vrf.loopbacks = vrf.loopbacks._filtered(lambda loopback: loopback.node == self.hostname)
             vrf.aggregate_addresses = vrf.aggregate_addresses._filtered(
-                lambda aggregate_address: self.match_regexes(aggregate_address.nodes, self.hostname)
+                lambda aggregate_address: not aggregate_address.nodes or self.match_regexes(aggregate_address.nodes, self.hostname)
             )._natural_sorted(sort_key="prefix")
 
             if self.vtep is True:
