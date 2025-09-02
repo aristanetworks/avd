@@ -55,8 +55,6 @@
             },
             "ip_verify_unicast_source_reachable_via": "rx",
             "tcp_mss_ceiling": {
-                "ipv4_segment_size": 70,
-                "ipv6_segment_size": 75,
                 "direction": "egress"
             },
             "switchport": {
