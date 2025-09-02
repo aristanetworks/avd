@@ -211,11 +211,11 @@ class EthernetInterfacesMixin(Protocol):
                 # if fallback is set to individual a profile _or_ mode+vlans have to be defined
                 if not (
                     adapter.port_channel.lacp_fallback.individual.profile
-                    or not (adapter.port_channel.lacp_fallback.individual.mode and adapter.port_channel.lacp_fallback.individual.vlans)
+                    or (adapter.port_channel.lacp_fallback.individual.mode and adapter.port_channel.lacp_fallback.individual.vlans)
                 ):
                     msg = (
                         "A Port-channel which is set to LACP fallback mode 'individual' must have either 'profile' or ('mode' and 'vlans') set under "
-                        f"'individual'. This is missing for the connected endpoint with the name '{connected_endpoint.name}'."
+                        f"'port_channel.lacp_fallback.individual'. This is missing for the connected endpoint with the name '{connected_endpoint.name}'."
                     )
                     raise AristaAvdInvalidInputsError(msg)
 
