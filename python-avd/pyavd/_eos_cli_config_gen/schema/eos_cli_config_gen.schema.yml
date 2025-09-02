@@ -2506,6 +2506,18 @@ keys:
                   valid_values:
                   - dot1q
                   - dot1ad
+                dot1q:
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 6.0.0
+                  type: dict
+                client:
+                  type: bool
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 6.0.0
         vlan_id:
           description: This setting can only be applied to sub-interfaces on EOS.
           type: int
@@ -2782,6 +2794,28 @@ keys:
               valid_values:
               - egress
               - ingress
+            ipv4_segment_size:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: ipv4
+            ipv6_segment_size:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: ipv6
         channel_group:
           type: dict
           keys:
@@ -3820,6 +3854,14 @@ keys:
                     items:
                       type: str
                     description: Virtual IPv6 addresses.
+                  address:
+                    type: str
+                    description: Virtual IPv6 address.
+                    deprecation:
+                      warning: true
+                      removed: true
+                      remove_in_version: 6.0.0
+                      new_key: addresses
               peer_authentication:
                 type: dict
                 keys:
@@ -4542,6 +4584,151 @@ keys:
                       valid_values:
                       - microseconds
                       - milliseconds
+            srlg:
+              description: SRLG name or number.
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: srlgs
+              convert_types:
+              - int
+        vlans:
+          type: str
+          convert_types:
+          - int
+          description: 'List of switchport vlans as string.
+
+            For a trunk port this would be a range like "1-200,300".
+
+            For an access port this would be a single vlan "123".
+
+            '
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.access_vlan or switchport.trunk.allowed_vlan
+        native_vlan:
+          type: int
+          convert_types:
+          - str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.trunk.native_vlan
+        native_vlan_tag:
+          type: bool
+          description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
+            takes precedence.
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.trunk.native_vlan_tag
+        mode:
+          type: str
+          valid_values:
+          - access
+          - dot1q-tunnel
+          - trunk
+          - trunk phone
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.mode
+        phone:
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.phone
+          type: dict
+        trunk_groups:
+          type: list
+          items:
+            type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.trunk.groups
+        type:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
+          valid_values:
+          - routed
+          - switched
+          - l3dot1q
+          - l2dot1q
+          - port-channel-member
+          description: 'l3dot1q and l2dot1q are used for sub-interfaces. The parent
+            interface should be defined as routed.
+
+            The `type = switched/routed` should not be combined with `switchport`.
+
+            '
+        encapsulation_dot1q_vlan:
+          type: int
+          convert_types:
+          - str
+          description: VLAN tag to configure on sub-interface.
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: encapsulation_dot1q.vlan
+        isis_authentication_mode:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: v6.0.0
+            new_key: isis_authentication.both.mode or isis_authentication.level_1.mode
+              or isis_authentication.level_2.mode
+          valid_values:
+          - text
+          - md5
+        isis_authentication_key:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: v6.0.0
+            new_key: isis_authentication.both.key or isis_authentication.level_1.key
+              or isis_authentication.level_2.key
+          description: Type-7 encrypted password.
+        trunk_private_vlan_secondary:
+          type: bool
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.trunk.private_vlan_secondary
+        pvlan_mapping:
+          type: str
+          convert_types:
+          - int
+          description: List of vlans as string.
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.pvlan_mapping
+        vlan_translations:
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.vlan_translations
+          type: list
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
