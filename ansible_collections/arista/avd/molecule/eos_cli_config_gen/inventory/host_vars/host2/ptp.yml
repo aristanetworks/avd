@@ -8,3 +8,4 @@ ptp:
         enabled: false
   free_running:
     enabled: true
+  forward_v1: false

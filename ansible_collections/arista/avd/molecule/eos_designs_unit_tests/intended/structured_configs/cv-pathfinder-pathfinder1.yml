@@ -133,7 +133,6 @@ ip_security:
       time: 50
       action: clear
     mode: transport
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -154,6 +153,7 @@ management_security:
       file: profileB.crt
       key: profileB.key
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
   cv_tags:
     device_tags:

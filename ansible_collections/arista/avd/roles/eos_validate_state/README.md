@@ -10,12 +10,10 @@ title: Ansible Collection Role eos_validate_state
 
 # eos_validate_state
 
-!!! warning
-    Deprecation Warning!
-    The role 'arista.avd.eos_validate_state' has been deprecated."
-    Update your playbook to leverage the new 'arista.avd.anta_runner' role instead."
+!!! warning "Deprecation Warning"
+    The role `arista.avd.eos_validate_state` has been deprecated and will be removed in AVD version 6.0.0.<br/>
+    Update your playbook to leverage the new `arista.avd.anta_runner` role instead.<br/>
     See [arista.avd.anta_runner](../anta_runner/README.md) documentation for more details."
-    This role will be removed in AVD version 6.0.0.
 
 ## Overview
 

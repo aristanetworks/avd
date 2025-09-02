@@ -10,8 +10,16 @@ type: dict
 allow_other_keys: true
 keys:
   aaa_settings:
+    documentation_options:
+      table: management-settings
     type: dict
     keys:
+      enable_password:
+        type: dict
+        keys:
+          password:
+            type: str
+            description: SHA512 hashed password.
       tacacs:
         type: dict
         keys:
@@ -182,6 +190,26 @@ keys:
             default: false
           sha512_password:
             type: str
+      local_users:
+        $ref: eos_cli_config_gen#/keys/local_users
+        type: list
+  address_locking_settings:
+    type: dict
+    $ref: eos_cli_config_gen#/keys/address_locking
+    keys:
+      local_interface:
+        type: str
+        default: use_default_mgmt_method_interface
+        description: "The value will be interpreted according to these rules:\n  -
+          `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.\n
+          \ - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface`
+          as the local interface.\n  - `use_default_mgmt_method_interface` will configure
+          `mgmt_interface` or `inband_mgmt_interface` as the local interface depending
+          on the value of `default_mgmt_method`.\n  - Any other string will be used
+          directly as the local interface."
+      local_users:
+        $ref: eos_cli_config_gen#/keys/local_users
+        type: list
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
@@ -1772,6 +1800,26 @@ keys:
 
               ACT does not provide direct Internet access to cloudeos or veos devices
               by default.'
+          act_ensure_eapi_access:
+            type: bool
+            description: 'Ensures eAPI remains accessible for automation and testing
+              via ACT.
+
+              Clients connecting to device eAPI though ACT rely on access in the default
+              VRF. If eAPI is reconfigured for a dedicated management VRF, this primary
+              eAPI connectivity can be unintentionally broken.
+
+              Set this to `true` to enforce the required EOS configuration, guaranteeing
+              eAPI over HTTPS is always enabled in the default VRF and preserving
+              this connectivity.
+
+              This setting is only applicable to ACT `veos` and `cloudeos` node types.'
+            default: false
+      use_default_interfaces_of_digital_twin_platform:
+        type: bool
+        default: false
+        description: In Digital Twin mode, AVD can either use the default interfaces
+          of the original or the digital twin platform (as set in `platform_settings.[].digital_twin.platform`).
   dns_settings:
     documentation_options:
       table: management-settings
@@ -2915,6 +2963,11 @@ keys:
   local_users:
     documentation_options:
       table: management-settings
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 6.0.0
+      new_key: aaa_settings.local_users
     $ref: eos_cli_config_gen#/keys/local_users
     type: list
   logging_settings:
@@ -4485,6 +4538,12 @@ keys:
 
                 The feature will be ignored on platforms where this is false.'
               default: true
+            sflow_subinterfaces:
+              type: bool
+              description: 'Support for sFlow on sub-interfaces.
+
+                The feature will be ignored on platforms where this is false.'
+              default: true
             wan:
               type: bool
               description: 'Support for Arista WAN features.
@@ -4954,6 +5013,10 @@ keys:
       auto_clock_identity:
         type: bool
         default: true
+      forward_v1:
+        type: bool
+        default: false
+        $ref: eos_cli_config_gen#/keys/ptp/keys/forward_v1
   queue_monitor_length:
     documentation_options:
       table: system-settings
@@ -6028,6 +6091,15 @@ keys:
     convert_types:
     - str
     default: 12000
+  underlay_ospf_maximum_paths:
+    description: Maximum number of next-hops in an ECMP route.
+    documentation_options:
+      table: ospf-settings
+    type: int
+    min: 1
+    max: 128
+    convert_types:
+    - str
   underlay_ospf_process_id:
     documentation_options:
       table: ospf-settings
@@ -6146,7 +6218,6 @@ keys:
   wan_ha:
     documentation_options:
       table: wan-settings
-    description: 'PREVIEW: The `wan_ha` key is currently not supported.'
     type: dict
     keys:
       lan_ha_path_group_name:
@@ -6915,96 +6986,7 @@ $defs:
             $ref: eos_designs#/$defs/adapter_config/keys/storm_control/keys/all
       monitor_sessions:
         type: list
-        description: Used to define switchports as source or destination for monitoring
-          sessions.
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              required: true
-              description: Session name.
-            role:
-              type: str
-              valid_values:
-              - source
-              - destination
-            source_settings:
-              type: dict
-              keys:
-                direction:
-                  type: str
-                  valid_values:
-                  - rx
-                  - tx
-                  - both
-                access_group:
-                  type: dict
-                  description: This can only be set when `session_settings.access_group`
-                    is not set.
-                  keys:
-                    type:
-                      type: str
-                      valid_values:
-                      - ip
-                      - ipv6
-                      - mac
-                    name:
-                      description: ACL name.
-                      type: str
-                    priority:
-                      type: int
-                      convert_types:
-                      - str
-            session_settings:
-              type: dict
-              description: 'Session settings are defined per session name.
-
-                Different session_settings for the same session name will be combined/merged.
-
-                '
-              keys:
-                encapsulation_gre_metadata_tx:
-                  type: bool
-                header_remove_size:
-                  type: int
-                  description: Number of bytes to remove from header.
-                  convert_types:
-                  - str
-                access_group:
-                  type: dict
-                  keys:
-                    type:
-                      type: str
-                      valid_values:
-                      - ip
-                      - ipv6
-                      - mac
-                    name:
-                      description: ACL name.
-                      type: str
-                rate_limit_per_ingress_chip:
-                  type: str
-                  description: "Ratelimit and unit as string.\nExamples:\n  \"100000
-                    bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n"
-                rate_limit_per_egress_chip:
-                  type: str
-                  description: "Ratelimit and unit as string.\nExamples:\n  \"100000
-                    bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n"
-                sample:
-                  type: int
-                  convert_types:
-                  - str
-                truncate:
-                  type: dict
-                  keys:
-                    enabled:
-                      type: bool
-                    size:
-                      type: int
-                      description: Size in bytes.
-                      convert_types:
-                      - str
+        $ref: eos_designs#/$defs/monitor_sessions
       ethernet_segment:
         type: dict
         description: Settings for all or single-active EVPN multihoming.
@@ -7450,6 +7432,98 @@ $defs:
             profile:
               type: str
               description: P2P profile name. Profile defined under p2p_profiles.
+  monitor_sessions:
+    type: list
+    description: Used to define interfaces as source or destination for monitoring
+      sessions.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Session name.
+        role:
+          type: str
+          valid_values:
+          - source
+          - destination
+        source_settings:
+          type: dict
+          keys:
+            direction:
+              type: str
+              valid_values:
+              - rx
+              - tx
+              - both
+            access_group:
+              type: dict
+              description: This can only be set when `session_settings.access_group`
+                is not set.
+              keys:
+                type:
+                  type: str
+                  valid_values:
+                  - ip
+                  - ipv6
+                  - mac
+                name:
+                  description: ACL name.
+                  type: str
+                priority:
+                  type: int
+                  convert_types:
+                  - str
+        session_settings:
+          type: dict
+          description: 'Session settings are defined per session name.
+
+            Different session_settings for the same session name will be combined/merged.
+
+            '
+          keys:
+            encapsulation_gre_metadata_tx:
+              type: bool
+            header_remove_size:
+              type: int
+              description: Number of bytes to remove from header.
+              convert_types:
+              - str
+            access_group:
+              type: dict
+              keys:
+                type:
+                  type: str
+                  valid_values:
+                  - ip
+                  - ipv6
+                  - mac
+                name:
+                  description: ACL name.
+                  type: str
+            rate_limit_per_ingress_chip:
+              type: str
+              description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n
+                \ \"100 kbps\"\n  \"10 mbps\"\n"
+            rate_limit_per_egress_chip:
+              type: str
+              description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n
+                \ \"100 kbps\"\n  \"10 mbps\"\n"
+            sample:
+              type: int
+              convert_types:
+              - str
+            truncate:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                size:
+                  type: int
+                  description: Size in bytes.
+                  convert_types:
+                  - str
   network_services:
     documentation_options:
       table: network-services-common-settings
@@ -8399,6 +8473,12 @@ $defs:
                       type: str
                       description: VLAN name.
                       required: true
+                    address_locking:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family
+                      description: To configure `address_locking.ipv4/v6`, you must
+                        define either `address_locking_settings.dhcp_servers_ipv4`
+                        or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
                     profile:
                       type: str
                       description: 'SVI profile name to apply.
@@ -8643,6 +8723,9 @@ $defs:
                       $ref: eos_designs#/$defs/flow_tracking_link
                       description: Configures flow-tracking on the interface. Overrides
                         `fabric_flow_tracking.l3_interfaces` setting.
+                    monitor_sessions:
+                      type: list
+                      $ref: eos_designs#/$defs/monitor_sessions
                     campus_link_type:
                       type: list
                       $ref: eos_designs#/$defs/campus_link_type
@@ -9386,6 +9469,9 @@ $defs:
                 min: 1
                 max: 4094
                 description: VLAN ID.
+              address_locking:
+                type: dict
+                $ref: eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family
               vni_override:
                 type: int
                 convert_types:
@@ -10142,6 +10228,46 @@ $defs:
               since it can be either ethernet_interfaces or port_channel_interfaces.
 
               '
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config
+                or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
+          uplink_ethernet_structured_config:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: Custom structured config applied to `uplink_interfaces`.
+          uplink_port_channel_structured_config:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: Custom structured config applied to the uplink Port-Channel
+              when using port-channel uplinks.
+          uplink_switch_ethernet_structured_config:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: Custom structured config applied to `uplink_switch_interfaces`
+              on the `uplink_switches`.
+          uplink_switch_port_channel_structured_config:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: Custom structured config applied to the Port-Channel on the
+              `uplink_switches` when using port-channel uplinks.
           mlag_port_channel_structured_config:
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
             documentation_options:
@@ -10938,7 +11064,7 @@ $defs:
 
               l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
 
-              l2leafs       : <subnet> + 3 + <l2leaf id>
+              l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
 
               GW on l2leafs : <subnet> + 1
 
@@ -10954,6 +11080,18 @@ $defs:
               '
             type: str
             format: ipv4_cidr
+          inband_mgmt_subnet_offset:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            type: int
+            convert_types:
+            - str
+            default: 0
+            description: 'Offset value to adjust the calculated inband management
+              IP address within the subnet.
+
+              The assigned IP will be computed by adding this offset to the device
+              ID.'
           inband_mgmt_ip:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -11281,6 +11419,9 @@ $defs:
                 description: 'Enable PTP unicast forwarding.
 
                   '
+              forward_v1:
+                type: bool
+                description: Forward dataplane PTP V1 packets.
               dscp:
                 type: dict
                 keys:
@@ -11441,10 +11582,7 @@ $defs:
             documentation_options:
               table: node-type-wan-configuration
             type: dict
-            description: 'PREVIEW: This key is currently not supported
-
-
-              The key is supported only if `wan_mode` == `cv-pathfinder`.
+            description: 'The key is supported only if `wan_mode` == `cv-pathfinder`.
 
               AutoVPN support is still to be determined.
 
@@ -12419,6 +12557,24 @@ $defs:
 
             Note! The content of this dictionary is _not_ validated by the schema,
             since it can be either ethernet_interfaces or port_channel_interfaces.'
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: ethernet_structured_config or port_channel_structured_config
+        ethernet_structured_config:
+          type: dict
+          relaxed_validation: true
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+          description: Custom structured config for ethernet interfaces.
+          documentation_options:
+            hide_keys: true
+        port_channel_structured_config:
+          type: dict
+          relaxed_validation: true
+          $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+          description: Custom structured config for port-channel links.
+          documentation_options:
+            hide_keys: true
   rx_queue_settings:
     type: dict
     description: 'Receive queue parameters for platform SFE interface profile.

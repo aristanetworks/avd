@@ -20,7 +20,7 @@ l3_edge:
         enabled: true
       qos_profile: TEST-QOS-PROFILE
       macsec_profile: TEST-MACSEC-PROFILE
-      structured_config:
+      ethernet_structured_config:
         service_policy:
           qos:
             input: TEST_POLICY
@@ -105,3 +105,20 @@ l3_edge:
             interfaces: [Ethernet9, Ethernet10]
           - node: peer7
             interfaces: [Ethernet9, Ethernet10]
+
+    # P2P link port-channel and ethernet structured config.
+    - nodes: [l3_edge_bgp, peer7]
+      id: 8
+      ip_pool: pool1
+      as: [65000, 65006]
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          - node: l3_edge_bgp
+            interfaces: [Ethernet11, Ethernet12]
+          - node: peer7
+            interfaces: [Ethernet11, Ethernet12]
+      port_channel_structured_config:
+        description: Description set via port_channel_structured_config(l3_edge)
+      ethernet_structured_config:
+        description: Description set via ethernet_structured_config(l3_edge)

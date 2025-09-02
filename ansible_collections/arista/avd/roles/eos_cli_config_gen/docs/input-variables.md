@@ -979,6 +979,18 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-l2-vp
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-ospf.md
 --8<--
 
+### Router RIP
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-rip.md
+--8<--
+
+### IP OSPF router-id output-format hostnames
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-ospf-router-id-output-format-hostnames.md
+--8<--
+
 ### IPV6 Router OSPF
 
 --8<--
