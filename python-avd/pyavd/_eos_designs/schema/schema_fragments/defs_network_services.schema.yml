@@ -1576,7 +1576,7 @@ $defs:
                   keys:
                     nodes:
                       type: list
-                      description: Nodes is required to restrict configuration of aggregate_addresses to certain nodes in the network.
+                      description: Nodes where the aggregate should be configured. By default the aggregate will be configured all on all devices where the VRF is configured.
                       items:
                         type: str
                         description: Node name or regex pattern.
