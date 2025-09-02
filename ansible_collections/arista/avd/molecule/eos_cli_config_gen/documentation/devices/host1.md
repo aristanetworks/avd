@@ -4152,6 +4152,7 @@ ip security
 - Default Switchport Phone Access-list Bypass: True
 - Default Switchport Phone COS: 0
 - Default Switchport Phone Trunk: tagged
+- Default Switchport Phone QOS trust mode: cos
 - Default Switchport Phone VLAN: 69
 
 #### Switchport Default Device Configuration
@@ -4163,6 +4164,10 @@ switchport default mode access
 switchport default phone access-list bypass
 !
 switchport default phone cos 0
+!
+switchport default phone trunk tagged
+!
+switchport default phone qos trust cos
 !
 switchport default phone vlan 69
 ```
