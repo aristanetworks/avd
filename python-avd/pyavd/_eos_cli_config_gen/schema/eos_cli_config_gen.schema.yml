@@ -1273,22 +1273,9 @@ keys:
     display_name: Community Lists (legacy model)
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
       new_key: ip_community_lists
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          description: Community-list Name.
-        action:
-          type: str
-          required: true
-          description: 'Action as string.
-
-            Example: "permit GSHUT 65123:123"
-
-            '
   config_comment:
     type: str
     description: 'Add a comment to provide information about the configuration.
@@ -1641,18 +1628,6 @@ keys:
         type: bool
         description: 'Subscribe to dynamic device configuration from CloudVision (TerminAttr
           default is false).
-
-          '
-      cvcompression:
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: v5.0.0
-        type: str
-        description: 'The default compression scheme when streaming to CloudVision
-          is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
-
-          There is no need to change the compression scheme.
 
           '
   daemons:
@@ -25625,25 +25600,6 @@ $defs:
                   name:
                     type: str
                     description: Exporter Name.
-                  collector:
-                    type: dict
-                    keys:
-                      host:
-                        type: str
-                        description: Collector IPv4 address or IPv6 address or fully
-                          qualified domain name.
-                      port:
-                        type: int
-                        description: Collector Port Number.
-                        min: 1
-                        max: 65535
-                        convert_types:
-                        - str
-                    deprecation:
-                      warning: true
-                      removed: false
-                      remove_in_version: 6.0.0
-                      new_key: collectors
                   collectors:
                     type: list
                     primary_key: host
@@ -25680,6 +25636,13 @@ $defs:
                     min: 5000
                     max: 3600000
                     description: Template interval in milliseconds.
+                  collector:
+                    type: dict
+                    deprecation:
+                      warning: true
+                      removed: true
+                      remove_in_version: 6.0.0
+                      new_key: collectors
       shutdown:
         type: bool
   interface_ip_nat:

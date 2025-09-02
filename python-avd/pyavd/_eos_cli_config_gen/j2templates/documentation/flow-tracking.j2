@@ -73,9 +73,6 @@
 {%                     if exporter.collectors is arista.avd.defined %}
 {%                         set host = exporter.collectors | arista.avd.natural_sort | map(attribute='host') | list | join('<br>') %}
 {%                         set port = exporter.collectors | arista.avd.natural_sort | map(attribute='port') | map('arista.avd.default', '-') | list | join('<br>') %}
-{%                     elif exporter.collector.host is arista.avd.defined %}
-{%                         set host = exporter.collector.host %}
-{%                         set port = exporter.collector.port | arista.avd.default("-") %}
 {%                     endif %}
 {%                     set local_interface = exporter.local_interface | arista.avd.default("No local interface") %}
 | {{ tracker.name }} | {{ exporter.name }} | {{ host | arista.avd.default("-") }} | {{ port | arista.avd.default("-") }} | {{ local_interface }} |
@@ -128,9 +125,6 @@ Software export of IPFIX data records enabled.
 {%                     if exporter.collectors is arista.avd.defined %}
 {%                         set host = exporter.collectors | arista.avd.natural_sort | map(attribute='host') | list | join('<br>') %}
 {%                         set port = exporter.collectors | arista.avd.natural_sort | map(attribute='port') | map('arista.avd.default', '-') | list | join('<br>') %}
-{%                     elif exporter.collector.host is arista.avd.defined %}
-{%                         set host = exporter.collector.host %}
-{%                         set port = exporter.collector.port | arista.avd.default("-") %}
 {%                     endif %}
 {%                     set local_interface = exporter.local_interface | arista.avd.default("No local interface") %}
 | {{ tracker.name }} | {{ exporter.name }} | {{ host | arista.avd.default("-") }} | {{ port | arista.avd.default("-") }} | {{ local_interface }} |

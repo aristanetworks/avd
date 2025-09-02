@@ -113,24 +113,6 @@ keys:
                   name:
                     type: str
                     description: Exporter Name
-                  collector:
-                    type: dict
-                    keys:
-                      host:
-                        type: str
-                        description: Collector IPv4 address or IPv6 address or fully qualified domain name
-                      port:
-                        type: int
-                        description: Collector Port Number
-                        min: 1
-                        max: 65535
-                        convert_types:
-                          - str
-                    deprecation:
-                      warning: true
-                      removed: false
-                      remove_in_version: 6.0.0
-                      new_key: collectors
                   collectors:
                     type: list
                     primary_key: host
@@ -152,6 +134,13 @@ keys:
                     min: 5000
                     max: 3600000
                     description: Template interval in milliseconds
+                  collector:
+                    type: dict
+                    deprecation:
+                      warning: true
+                      removed: true
+                      remove_in_version: 6.0.0
+                      new_key: collectors
         default:
           - name: FLOW-TRACKER
             record_export:

@@ -21,9 +21,3 @@ tenants:
             gateway: 2001:db8:311::4
             name: IPv6-test-2
             nodes: [ host1 ]
-        l3_port_channels:
-          - name: Port-Channel11
-            node: host1
-            flow_tracking:
-              enabled: true
-              name: FT_Test
