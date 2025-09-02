@@ -2458,6 +2458,18 @@ keys:
                   valid_values:
                   - dot1q
                   - dot1ad
+                dot1q:
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 6.0.0
+                  type: dict
+                unmatched:
+                  type: bool
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 6.0.0
             network:
               type: dict
               description: Network encapsulations are all optional and skipped if
