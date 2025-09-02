@@ -48,7 +48,15 @@ class EthernetInterfacesMixin(Protocol):
                 speed=link.speed,
                 shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
             )
-
+            # Structured Config
+            if link.ethernet_structured_config:
+                self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
+                    link.ethernet_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                )
+            elif structured_config := link.structured_config:
+                self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
+                    EosCliConfigGen.EthernetInterfacesItem._from_dict(structured_config), list_merge=self.custom_structured_configs.list_merge_strategy
+                )
             # L3 interface
             # Used for p2p uplinks as well as main interface for p2p-vrfs.
             if link.type == "underlay_p2p":
@@ -67,8 +75,7 @@ class EthernetInterfacesMixin(Protocol):
                         name=link_tracking_group.name,
                         direction=link_tracking_group.direction,
                     )
-                if self.shared_utils.platform_settings.feature_support.sflow:
-                    ethernet_interface.sflow.enable = link.sflow_enabled
+                ethernet_interface.sflow.enable = self.shared_utils.get_interface_sflow(ethernet_interface.name, link.sflow_enabled)
 
                 # PTP
                 if link.ptp.enable:
@@ -139,12 +146,6 @@ class EthernetInterfacesMixin(Protocol):
                 if link.ip_address and "unnumbered" not in link.ip_address.lower() and link.dhcp_server:
                     ethernet_interface.dhcp_server_ipv4 = True
 
-                # Structured Config
-                if structured_config := link.structured_config:
-                    self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
-                        EosCliConfigGen.EthernetInterfacesItem._from_dict(structured_config), list_merge=self.custom_structured_configs.list_merge_strategy
-                    )
-
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
             # L2 interface
@@ -210,8 +211,7 @@ class EthernetInterfacesMixin(Protocol):
                     )
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
 
-                    if self.shared_utils.platform_settings.feature_support.sflow:
-                        ethernet_subinterface.sflow.enable = link.sflow_enabled
+                    ethernet_subinterface.sflow.enable = self.shared_utils.get_interface_sflow(ethernet_subinterface.name, link.sflow_enabled)
 
                     if subinterface.ip_address:
                         ethernet_subinterface.ip_address = f"{subinterface.ip_address}/{subinterface.prefix_length}"
@@ -297,8 +297,7 @@ class EthernetInterfacesMixin(Protocol):
             self.custom_structured_configs.nested.ethernet_interfaces.obtain(l3_interface.name)._deepmerge(
                 l3_interface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
-        if self.shared_utils.platform_settings.feature_support.sflow and self.inputs.fabric_sflow.l3_interfaces is not None:
-            interface.sflow.enable = self.inputs.fabric_sflow.l3_interfaces
+        interface.sflow.enable = self.shared_utils.get_interface_sflow(interface.name, self.inputs.fabric_sflow.l3_interfaces)
 
         if (
             self.shared_utils.is_wan_router

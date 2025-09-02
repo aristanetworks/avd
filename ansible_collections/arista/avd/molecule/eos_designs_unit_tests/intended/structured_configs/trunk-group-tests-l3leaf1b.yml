@@ -63,7 +63,6 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -78,6 +77,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   pod_name: TRUNK_GROUP_TESTS
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:

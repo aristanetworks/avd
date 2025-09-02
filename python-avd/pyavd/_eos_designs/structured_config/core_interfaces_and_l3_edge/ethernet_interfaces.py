@@ -34,6 +34,13 @@ class EthernetInterfacesMixin(Protocol):
                 # Propagate campus_link_type for campus devices
                 if self.shared_utils.is_campus_device and p2p_link.campus_link_type:
                     ethernet_interface._internal_data.campus_link_type = list(p2p_link.campus_link_type)
+
+                if p2p_link.ethernet_structured_config:
+                    self.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
+                        p2p_link.ethernet_structured_config,
+                        list_merge=self.custom_structured_configs.list_merge_strategy,
+                    )
+
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
             # Port-Channel members
@@ -52,6 +59,13 @@ class EthernetInterfacesMixin(Protocol):
                 # Propagate campus_link_type for campus devices
                 if self.shared_utils.is_campus_device and p2p_link.campus_link_type:
                     ethernet_interface._internal_data.campus_link_type = list(p2p_link.campus_link_type)
+
+                if p2p_link.ethernet_structured_config:
+                    self.custom_structured_configs.nested.ethernet_interfaces.obtain(ethernet_interface.name)._deepmerge(
+                        p2p_link.ethernet_structured_config,
+                        list_merge=self.custom_structured_configs.list_merge_strategy,
+                    )
+
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
     def _p2p_link_ethernet_description(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link_data: dict) -> str:
