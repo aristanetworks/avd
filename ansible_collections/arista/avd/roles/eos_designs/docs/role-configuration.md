@@ -46,7 +46,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-input-validati
 ## Input Variables File/Dir Mode
 
 --8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/role-file-permission-mode.md
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-file-permission-mode.md
 --8<--
 
 ## Generation of facts, structured configuration and documentation
