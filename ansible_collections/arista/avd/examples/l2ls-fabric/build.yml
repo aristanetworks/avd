@@ -2,7 +2,7 @@
 # build.yml
 
 - name: Build Configs
-  hosts: DC1_FABRIC
+  hosts: FABRIC
   gather_facts: false
   tasks:
 

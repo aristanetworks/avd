@@ -255,3 +255,21 @@ $defs:
             Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
           # Schema ref not implemented since we do not know which of the schemas to look at.
           # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: ethernet_structured_config or port_channel_structured_config
+        ethernet_structured_config:
+          type: dict
+          relaxed_validation: true
+          $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
+          description: Custom structured config for ethernet interfaces.
+          documentation_options:
+            hide_keys: true
+        port_channel_structured_config:
+          type: dict
+          relaxed_validation: true
+          $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
+          description: Custom structured config for port-channel links.
+          documentation_options:
+            hide_keys: true
