@@ -42249,13 +42249,10 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     nodes: Nodes
                     """
-                    List of node names or fully matching regex to configure the peer group.
-                    The peer-group is also
-                    created on devices which have a bgp_peer mapped to the corresponding peer_group.
-
-
-                    Subclass of
-                    AvdList with `str` items.
+                    List of node names or fully matching regex to configure the peer group, e.g. 'DC1-BL[12]B'.
+                    The
+                    peer-group is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                    Subclass of AvdList with `str` items.
                     """
                     address_family_ipv4: AddressFamilyIpv4
                     """Subclass of AvdModel."""
@@ -42409,13 +42406,10 @@ class EosDesigns(EosDesignsRootModel):
                                    To protect the password at rest it is strongly recommended to
                                    make use of a vault or similar.
                                 nodes:
-                                   List of node names or fully matching regex to configure the peer group.
-                                   The peer-group is also
-                                   created on devices which have a bgp_peer mapped to the corresponding peer_group.
-
-
-                                   Subclass of
-                                   AvdList with `str` items.
+                                   List of node names or fully matching regex to configure the peer group, e.g. 'DC1-BL[12]B'.
+                                   The
+                                   peer-group is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                                   Subclass of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
                                 type: Key only used for documentation or validation purposes.
@@ -47174,11 +47168,12 @@ class EosDesigns(EosDesignsRootModel):
                         """Time-to-live in range of hops."""
                         nodes: Nodes
                         """
-                        List of node names or fully matching regexes.
-                        Nodes is required to restrict configuration of BGP
-                        neighbors to certain nodes in the network.
+                        List of node names or fully matching regexes, e.g DC1-BL[12]A.
+                        Nodes is required to restrict
+                        configuration of BGP neighbors to certain nodes in the network.
 
-                        Subclass of AvdList with `str` items.
+                        Subclass of AvdList with `str`
+                        items.
                         """
                         set_ipv4_next_hop: str | None
                         """
@@ -47286,11 +47281,12 @@ class EosDesigns(EosDesignsRootModel):
                                     update_source: update_source
                                     ebgp_multihop: Time-to-live in range of hops.
                                     nodes:
-                                       List of node names or fully matching regexes.
-                                       Nodes is required to restrict configuration of BGP
-                                       neighbors to certain nodes in the network.
+                                       List of node names or fully matching regexes, e.g DC1-BL[12]A.
+                                       Nodes is required to restrict
+                                       configuration of BGP neighbors to certain nodes in the network.
 
-                                       Subclass of AvdList with `str` items.
+                                       Subclass of AvdList with `str`
+                                       items.
                                     set_ipv4_next_hop:
                                        IPv4_address
                                        Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by
@@ -47972,12 +47968,9 @@ class EosDesigns(EosDesignsRootModel):
                         """BGP peer group name."""
                         nodes: Nodes
                         """
-                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                        If not
-                        set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                        peer_group.
-
-
+                        List of node names or fully matching regex to configure the peer group, e.g. 'DC1-BL[12]B'.
+                        The
+                        peer-group is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
                         Subclass of AvdList with `str` items.
                         """
                         password: str | None
@@ -48136,12 +48129,9 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     name: BGP peer group name.
                                     nodes:
-                                       Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                                       If not
-                                       set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                                       peer_group.
-
-
+                                       List of node names or fully matching regex to configure the peer group, e.g. 'DC1-BL[12]B'.
+                                       The
+                                       peer-group is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
                                        Subclass of AvdList with `str` items.
                                     password:
                                        Type 7 encrypted password.
