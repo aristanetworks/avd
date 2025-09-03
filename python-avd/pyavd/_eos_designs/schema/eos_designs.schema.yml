@@ -7127,6 +7127,8 @@ $defs:
                     type: str
                     description: Allowed VLANs on the port-channel member interfaces
                       when in fallback individual.
+                    convert_types:
+                    - int
                   native_vlan:
                     type: int
                     convert_types:
