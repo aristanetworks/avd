@@ -1632,18 +1632,6 @@ keys:
           default is false).
 
           '
-      cvcompression:
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: v5.0.0
-        type: str
-        description: 'The default compression scheme when streaming to CloudVision
-          is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
-
-          There is no need to change the compression scheme.
-
-          '
   daemons:
     type: list
     primary_key: name
@@ -8360,20 +8348,6 @@ keys:
                         '
                       items:
                         type: str
-      enable_vrfs:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: transport.grpc
-          remove_in_version: 5.0.0
-      octa:
-        type: dict
-        deprecation:
-          warning: true
-          removed: true
-          new_key: provider
-          remove_in_version: 5.0.0
   management_api_http:
     type: dict
     keys:
@@ -8945,13 +8919,6 @@ keys:
                     type: bool
                     description: Configuring secret using the local timezone from
                       system clock. Default is UTC.
-      entropy_source:
-        type: str
-        deprecation:
-          warning: true
-          removed: true
-          remove_in_version: v5.0.0
-          new_key: entropy_sources
   management_ssh:
     type: dict
     keys:
@@ -10633,15 +10600,6 @@ keys:
                     valid_values:
                     - pipe
                     - uniform
-  name_server:
-    documentation_options:
-      table: ip-name-servers
-    deprecation:
-      removed: true
-      warning: true
-      new_key: ip_name_servers
-      remove_in_version: v5.0.0
-    type: dict
   ntp:
     type: dict
     keys:
@@ -13163,26 +13121,6 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface
             in the final EOS configuration.
-        esi:
-          type: str
-          description: 'EVPN Ethernet Segment Identifier (Type 1 format).
-
-            '
-          deprecation:
-            removed: true
-            warning: true
-            new_key: evpn_ethernet_segment.identifier
-            remove_in_version: 5.0.0
-        rt:
-          type: str
-          description: 'EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
-
-            '
-          deprecation:
-            removed: true
-            warning: true
-            new_key: evpn_ethernet_segment.route_target
-            remove_in_version: 5.0.0
   prefix_lists:
     type: list
     primary_key: name
@@ -14342,15 +14280,6 @@ keys:
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.
-  radius_servers:
-    documentation_options:
-      table: radius-server
-    deprecation:
-      warning: true
-      removed: true
-      new_key: radius_server.hosts
-      remove_in_version: v5.0.0
-    type: list
   redundancy:
     type: dict
     keys:
@@ -21370,20 +21299,6 @@ keys:
         type: str
         description: Multiline EOS CLI rendered directly on the router isis in the
           final EOS configuration.
-      address_family:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: address_family_ipv4.enabled or address_family_ipv6.enabled
-          remove_in_version: 5.0.0
-      isis_af_defaults:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: address_family_ipv4/address_family_ipv6
-          remove_in_version: 5.0.0
   router_l2_vpn:
     type: dict
     keys:
@@ -23623,13 +23538,6 @@ keys:
             max: 65535
             convert_types:
             - str
-          local_interface:
-            type: str
-            deprecation:
-              removed: true
-              warning: true
-              new_key: local_interfaces
-              remove_in_version: v5.0.0
   switchport_default:
     type: dict
     keys:
@@ -25083,16 +24991,6 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in
             the final EOS configuration.
-        ipv6_address_virtual:
-          type: str
-          description: 'IPv6_address/Mask.
-
-            '
-          deprecation:
-            removed: true
-            warning: true
-            new_key: ipv6_address_virtuals
-            remove_in_version: 5.0.0
   vlan_internal_order:
     type: dict
     keys:
