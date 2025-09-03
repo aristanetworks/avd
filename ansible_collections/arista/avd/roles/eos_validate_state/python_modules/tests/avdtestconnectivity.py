@@ -8,7 +8,7 @@ from functools import cached_property
 from ipaddress import ip_interface
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 LOGGER = logging.getLogger(__name__)
 
