@@ -29,7 +29,7 @@ class RouterBgpMixin(Protocol):
             return
 
         # Set BGP peer group only when underlay link is present.
-        if self.underlay_p2p_links:
+        if self._underlay_p2p_links:
             peer_group = self.shared_utils.underlay_bgp_peer_group
             if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
                 self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
@@ -56,7 +56,7 @@ class RouterBgpMixin(Protocol):
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
         if self.inputs.underlay_rfc5549 is True:
-            for link in self.underlay_p2p_links:
+            for link in self._underlay_p2p_links:
                 self.structured_config.router_bgp.neighbor_interfaces.append_new(
                     name=link.interface,
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
@@ -80,7 +80,7 @@ class RouterBgpMixin(Protocol):
 
         # Neighbors and VRF Neighbors
         else:
-            for link in self.underlay_p2p_links:
+            for link in self._underlay_p2p_links:
                 neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
                     ip_address=cast("str", link.peer_ip_address),
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
@@ -120,8 +120,3 @@ class RouterBgpMixin(Protocol):
                             description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
                             bfd=link.bfd,
                         )
-
-    @cached_property
-    def underlay_p2p_links(self: AvdStructuredConfigUnderlayProtocol) -> list[EosDesignsFacts.UplinksItem]:
-        """Return a list of P2P underlay links."""
-        return [link for link in self._underlay_links if link.type == "underlay_p2p"]
