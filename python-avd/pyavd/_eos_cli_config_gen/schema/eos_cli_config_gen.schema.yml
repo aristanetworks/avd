@@ -912,6 +912,280 @@ keys:
           key:
             description: Hashed Password.
             type: str
+  cfm:
+    description: 'Configure connectivity fault management (CFM).
+
+      CFM is a network protocol for monitoring and troubleshooting Ethernet networks.'
+    type: dict
+    keys:
+      continuity_check_loc_state_action_disable_interface_routing:
+        type: bool
+        description: 'Disable routing on interfaces where a loss of connectivity (LOC)
+          defect is detected.
+
+          This prevents traffic from being routed to a faulty link.'
+      domains:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: CFM domain name.
+            level:
+              type: int
+              convert_types:
+              - str
+              required: true
+              min: 0
+              max: 7
+              description: Maintenance domain level.
+            associations:
+              type: list
+              primary_key: id
+              description: List of maintenance associations.
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
+                    description: Maintenance association ID.
+                  direction:
+                    type: str
+                    valid_values:
+                    - up
+                    - down
+                    description: Local maintenance endpoint direction.
+                  end_points:
+                    type: list
+                    primary_key: id
+                    description: Configure the maintenance endpoint(MEP).
+                    items:
+                      type: dict
+                      keys:
+                        id:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 8191
+                          description: Local maintenance endpoint ID.
+                        remote_end_point:
+                          type: str
+                          description: 'Remote maintenance endpoint ID(s) or range(s)
+                            of remote maintenance endpoint ID(s).
+
+                            The range is from 1 to 8191.'
+                          convert_types:
+                          - int
+                        interface:
+                          type: str
+                          description: 'Specifies the interface on which to configure
+                            the local maintenance endpoint.
+
+                            Supported types include Ethernet sub-interfaces, InternalRecirc,
+                            and Port-Channel link aggregation groups (LAGs).'
+                  profile:
+                    type: str
+                    description: Apply connectivity fault management profile.
+                  remote_end_points:
+                    type: list
+                    primary_key: id
+                    description: Configure the remote maintenance endpoint(RMEP).
+                    items:
+                      type: dict
+                      keys:
+                        id:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 8191
+                          description: Configure remote maintenance endpoint ID.
+                        mac_address:
+                          type: str
+                          description: MAC address of the RMEP.
+                  vlan:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Set VLAN in the maintenance association.
+                    min: 1
+                    max: 4094
+            intermediate_point:
+              type: bool
+              description: Configure the device as a maintenance intermediate point.
+      measurement_loss:
+        type: dict
+        description: Configure Ethernet OAM loss measurement functions.
+        keys:
+          inband:
+            type: bool
+            description: Enable hardware-assisted support for OAM loss measurement.
+          synthetic:
+            type: bool
+            description: Enable hardware-assisted support for OAM synthetic loss measurement.
+      profiles:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: CFM profile name.
+            alarm_indication:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable sending of alarm indication signal (AIS) packets.
+                client_domain_level:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 7
+                  description: Client maintenance domain level for which to send AIS
+                    packets.
+                tx_interval:
+                  type: str
+                  description: Transmission interval for AIS packets.
+                  valid_values:
+                  - 1 seconds
+                  - 1 minutes
+            continuity_check:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable the continuity check protocol to monitor connectivity.
+                qos_cos:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Set the class of service (CoS) value for CFM frames.
+                  min: 0
+                  max: 7
+                tx_interval:
+                  type: str
+                  description: Set the transmission interval for continuity check
+                    messages (CCMs).
+                  valid_values:
+                  - 3.33 milliseconds
+                  - 10 milliseconds
+                  - 100 milliseconds
+                  - 1 seconds
+                  - 10 seconds
+                  - 1 minutes
+                  - 10 minutes
+                alarm_defects:
+                  type: list
+                  min_length: 1
+                  description: 'Defines alarm indication signal protocol parameters.
+                    Supported options:
+
+                    - rdi-ccm: Raise alarms on continuity check messages (CCMs) with
+                    the remote defect indication (RDI) bit set.
+
+                    - loc-state: Raise alarms on loss of connectivity (LOC).
+
+                    - error-ccm: Raise alarms on invalid continuity check messages
+                    (CCMs).
+
+                    - cross-connection: Raise alarms on cross-connection defects.'
+                  items:
+                    type: str
+                    valid_values:
+                    - rdi-ccm
+                    - loc-state
+                    - error-ccm
+                    - cross-connection
+            measurement:
+              type: dict
+              keys:
+                delay:
+                  type: dict
+                  keys:
+                    single_ended:
+                      type: bool
+                      description: Enable single-ended delay measurement.
+                    qos_cos:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Set the class of service (CoS) value for CFM frames.
+                      min: 0
+                      max: 7
+                    tx_interval:
+                      type: str
+                      convert_types:
+                      - int
+                      - float
+                      description: 'Interval in milliseconds between successive measurement
+                        frames.
+
+                        The range is from 3.33 to 600000.'
+                loss:
+                  type: dict
+                  keys:
+                    single_ended:
+                      type: bool
+                      description: Enable single-ended loss measurement.
+                    qos_cos:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 7
+                      description: Set the class of service (CoS) value for CFM frames.
+                    tx_interval:
+                      type: str
+                      convert_types:
+                      - int
+                      - float
+                      description: 'Interval in milliseconds between successive measurement
+                        frames.
+
+                        The range is from 3.33 to 600000.'
+                    synthetic:
+                      type: dict
+                      keys:
+                        single_ended:
+                          type: bool
+                          description: Enable single-ended synthetic loss measurement.
+                        qos_cos:
+                          type: str
+                          description: Set the class of service (CoS) value or a range
+                            of values (0-7) for synthetic loss measurement.
+                          convert_types:
+                          - int
+                        tx_interval:
+                          type: dict
+                          keys:
+                            interval:
+                              type: str
+                              required: true
+                              convert_types:
+                              - int
+                              - float
+                              description: 'Interval in milliseconds between successive
+                                measurement frames.
+
+                                The range is from 3.33 to 600000.'
+                            period_frames:
+                              type: int
+                              convert_types:
+                              - str
+                              description: Synthetic loss measurement transmission
+                                frames.
+                              min: 1
+                              max: 65535
   class_maps:
     type: dict
     display_name: QOS Class-maps
@@ -15049,6 +15323,12 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            peer_tag_in:
+              type: str
+              description: Inbound peer tag name.
+            peer_tag_out_discard:
+              type: str
+              description: Outbound discard peer tag name.
             session_tracker:
               type: str
             shared_secret:
@@ -15187,6 +15467,12 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            peer_tag_in:
+              type: str
+              description: Inbound peer tag name.
+            peer_tag_out_discard:
+              type: str
+              description: Outbound discard peer tag name.
             default_originate:
               type: dict
               keys:
@@ -15983,6 +16269,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16036,6 +16328,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16267,6 +16565,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16333,6 +16637,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16884,6 +17194,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           neighbors:
             type: list
             primary_key: ip_address
@@ -17012,6 +17328,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           networks:
             type: list
             primary_key: prefix
@@ -17107,6 +17429,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -17128,6 +17456,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -17338,6 +17672,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           peer_groups:
             type: list
             primary_key: name
@@ -17355,6 +17695,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
       address_family_ipv6:
         type: dict
         keys:
@@ -17404,6 +17750,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17444,6 +17796,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17731,6 +18089,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -17966,6 +18330,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           peer_groups:
             type: list
             primary_key: name
@@ -17983,6 +18353,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
       address_family_link_state:
         type: dict
         keys:
@@ -18209,6 +18585,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18254,6 +18636,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18303,6 +18691,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18348,6 +18742,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18814,6 +19214,12 @@ keys:
                   route_map_out:
                     type: str
                     description: Outbound route-map name.
+                  peer_tag_in:
+                    type: str
+                    description: Inbound peer tag name.
+                  peer_tag_out_discard:
+                    type: str
+                    description: Outbound discard peer tag name.
                   additional_paths:
                     type: dict
                     $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
@@ -19211,6 +19617,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       rcf_in:
                         type: str
                         description: 'Inbound RCF function name with parenthesis.
@@ -19594,6 +20006,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       rcf_in:
                         type: str
                         description: 'Inbound RCF function name with parenthesis.
@@ -19897,6 +20315,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       additional_paths:
                         type: dict
                         keys:
@@ -20162,6 +20586,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       additional_paths:
                         type: dict
                         keys:
@@ -23391,6 +23821,8 @@ keys:
             valid_values:
             - tagged
             - untagged
+            - tagged phone
+            - untagged phone
           vlan:
             type: int
             description: VLAN ID.
@@ -23401,6 +23833,13 @@ keys:
           access_list_bypass:
             description: Bypass phone traffic from configured access-list.
             type: bool
+          qos_trust:
+            type: str
+            description: Quality of Service (QoS) trust mode. Outgoing traffic class
+              being derived from the ingress COS/DSCP value.
+            valid_values:
+            - cos
+            - dscp
   switchport_port_security:
     type: dict
     keys:
