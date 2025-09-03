@@ -1452,21 +1452,6 @@ keys:
     deprecation:
       warning: true
       remove_in_version: 6.0.0
-  cvp_instance_ip:
-    documentation_options:
-      table: cloudvision-settings
-    deprecation:
-      warning: true
-      new_key: cv_settings
-      remove_in_version: 5.0.0
-      removed: true
-    type: str
-    description: 'IPv4 address or DNS name for CloudVision.
-
-      This variable only supports an on-premise single-node cluster or the DNS name
-      of a CloudVision as a Service instance.
-
-      '
   cvp_instance_ips:
     documentation_options:
       table: cloudvision-settings
@@ -4910,15 +4895,6 @@ keys:
             up to two levels (adapter->profile->parent_profile).
 
             '
-  ptp:
-    deprecation:
-      warning: true
-      removed: true
-      new_key: ptp_settings
-      remove_in_version: v5.0.0
-    documentation_options:
-      table: ptp_settings
-    type: dict
   ptp_profiles:
     documentation_options:
       table: ptp_settings
@@ -7267,14 +7243,6 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
-          short_esi:
-            type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
-            deprecation:
-              removed: true
-              warning: true
-              remove_in_version: 5.0.0
-              new_key: ethernet_segment.short_esi
       validate_state:
         type: bool
         description: Set to false to disable interface state and LLDP topology validation
