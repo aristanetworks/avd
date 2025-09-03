@@ -8762,34 +8762,34 @@ ASN Notation: asdot
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| ADDITIONAL-PATH-PG-1 | True |  - | - | default | - |
-| ADDITIONAL-PATH-PG-2 | True |  - | - | default | - |
-| ADDITIONAL-PATH-PG-3 | True |  - | - | default | - |
-| ADDITIONAL-PATH-PG-4 | True |  - | - | default | - |
-| ADDITIONAL-PATH-PG-5 | True |  - | - | default | - |
-| ADDITIONAL-PATH-PG-6 | True |  - | - | default | - |
-| EVPN-OVERLAY | True |  RM-HIDE-AS-PATH | RM-HIDE-AS-PATH | default | - |
-| EVPN-OVERLAY-PEERS | True |  - | - | vxlan | - |
-| IPv4-UNDERLAY-PEERS | False |  - | - | default | - |
-| MLAG-IPv4-UNDERLAY-PEER | False |  - | - | default | - |
-| RCF_TEST | False |  - | - | default | - |
-| TEST-ENCAPSULATION | True |  - | - | mpls | - |
-| TEST-ENCAPSULATION-2 | True |  - | - | path-selection | - |
-| TEST-ENCAPSULATION-SRC-INTERFACE | True |  - | - | mpls | Loopback3 |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| ADDITIONAL-PATH-PG-1 | True | - | - | - | - | default | - |
+| ADDITIONAL-PATH-PG-2 | True | - | - | - | - | default | - |
+| ADDITIONAL-PATH-PG-3 | True | - | - | - | - | default | - |
+| ADDITIONAL-PATH-PG-4 | True | - | - | - | - | default | - |
+| ADDITIONAL-PATH-PG-5 | True | - | - | - | - | default | - |
+| ADDITIONAL-PATH-PG-6 | True | - | - | - | - | default | - |
+| EVPN-OVERLAY | True | RM-HIDE-AS-PATH | RM-HIDE-AS-PATH | PEER_TAG_IN_EVPN | PEER_TAG_DISCARD_OUT_EVPN | default | - |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - | vxlan | - |
+| IPv4-UNDERLAY-PEERS | False | - | - | - | - | default | - |
+| MLAG-IPv4-UNDERLAY-PEER | False | - | - | - | - | default | - |
+| RCF_TEST | False | - | - | - | - | default | - |
+| TEST-ENCAPSULATION | True | - | - | - | - | mpls | - |
+| TEST-ENCAPSULATION-2 | True | - | - | - | - | path-selection | - |
+| TEST-ENCAPSULATION-SRC-INTERFACE | True | - | - | - | - | mpls | Loopback3 |
 
 ##### EVPN Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| -------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| 10.100.100.1 | True | - | - | default | - |
-| 10.100.100.2 | True | - | - | default | - |
-| 10.100.100.3 | True | - | - | default | - |
-| 10.100.100.4 | True | RM1 | RM2 | path-selection | - |
-| 10.100.100.5 | True | - | - | mpls | - |
-| 192.168.255.3 | False | - | - | default | - |
-| 192.168.255.4 | False | - | - | mpls | Ethernet1 |
+| Neighbor | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| -------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| 10.100.100.1 | True | - | - | - | - | default | - |
+| 10.100.100.2 | True | - | - | - | - | default | - |
+| 10.100.100.3 | True | - | - | - | - | default | - |
+| 10.100.100.4 | True | RM1 | RM2 | PEER_TAG_IN_EVPN | PEER_TAG_DISCARD_OUT_EVPN | path-selection | - |
+| 10.100.100.5 | True | - | - | - | - | mpls | - |
+| 192.168.255.3 | False | - | - | - | - | default | - |
+| 192.168.255.4 | False | - | - | - | - | mpls | Ethernet1 |
 
 ##### EVPN Neighbor Default Encapsulation
 
@@ -8829,54 +8829,54 @@ ASN Notation: asdot
 
 ##### IPv4 BGP-LU Peer-groups
 
-| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| PG-BGP-LU | True | RM_BGP_LU_IN | RM_BGP_LU_OUT | - | - |
-| PG-BGP-LU1 | False | - | - | RCF_BGP_LU_IN() | RCF_BGP_LU_OUT() |
-| PG-BGP-LU2 | False | - | - | - | - |
-| PG-BGP-LU3 | False | - | - | - | - |
-| PG-BGP-LU4 | False | - | - | - | - |
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| PG-BGP-LU | True | RM_BGP_LU_IN | RM_BGP_LU_OUT | - | - | PEER_TAG_IN_IPV4_LABELED | PEER_TAG_DISCARD_OUT_IPV4_LABELED |
+| PG-BGP-LU1 | False | - | - | RCF_BGP_LU_IN() | RCF_BGP_LU_OUT() | - | - |
+| PG-BGP-LU2 | False | - | - | - | - | - | - |
+| PG-BGP-LU3 | False | - | - | - | - | - | - |
+| PG-BGP-LU4 | False | - | - | - | - | - | - |
 
 ##### IPv4 BGP-LU Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| -------- | -------- | ------------ | ------------- | ------ | ------- |
-| 192.168.66.21 | False | - | - | - | - |
-| 192.168.66.22 | False | - | - | - | - |
-| 198.51.100.1 | True | - | - | RCF_TEST() | RCF_TEST_OUT() |
-| 198.51.100.2 | False | RM_IN_TEST | RM_OUT_TEST | - | - |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| 192.168.66.21 | False | - | - | - | - | - | - |
+| 192.168.66.22 | False | - | - | - | - | - | - |
+| 198.51.100.1 | True | - | - | RCF_TEST() | RCF_TEST_OUT() | - | - |
+| 198.51.100.2 | False | RM_IN_TEST | RM_OUT_TEST | - | - | PEER_TAG_IN_IPV4_LABELED | PEER_TAG_DISCARD_OUT_IPV4_LABELED |
 
 #### Router BGP IPv4 SR-TE Address Family
 
 ##### IPv4 SR-TE Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
-| 192.168.42.42 | True | RM-SR-TE-PEER-IN4 | RM-SR-TE-PEER-OUT4 |
-| 192.168.42.43 | False | - | - |
+| Neighbor | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ----------- | ------------ |
+| 192.168.42.42 | True | RM-SR-TE-PEER-IN4 | RM-SR-TE-PEER-OUT4 | PEER_TAG_IN_IPV4_SR_TE | PEER_TAG_DISCARD_OUT_IPV4_SR_TE |
+| 192.168.42.43 | False | - | - | - | - |
 
 ##### IPv4 SR-TE Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| SR-TE-PG-1 | True | RM-SR-TE-PEER-IN4 | RM-SR-TE-PEER-OUT4 |
-| SR-TE-PG-2 | False | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ |
+| SR-TE-PG-1 | True | RM-SR-TE-PEER-IN4 | RM-SR-TE-PEER-OUT4 | PEER_TAG_IN_IPV4_SR_TE | PEER_TAG_DISCARD_OUT_IPV4_SR_TE |
+| SR-TE-PG-2 | False | - | - | - | - |
 
 #### Router BGP IPv6 SR-TE Address Family
 
 ##### IPv6 SR-TE Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
-| 2001:db8::dead:beef:cafe | True | RM-SR-TE-PEER-IN6 | RM-SR-TE-PEER-OUT6 |
-| 2002:db8::dead:beef:cafe | False | - | - |
+| Neighbor | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ----------- | ------------ |
+| 2001:db8::dead:beef:cafe | True | RM-SR-TE-PEER-IN6 | RM-SR-TE-PEER-OUT6 | PEER_TAG_IN_IPV6_SR_TE | PEER_TAG_DISCARD_OUT_IPV6_SR_TE |
+| 2002:db8::dead:beef:cafe | False | - | - | - | - |
 
 ##### IPv6 SR-TE Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| SR-TE-PG-2 | True | RM-SR-TE-PEER-IN6 | RM-SR-TE-PEER-OUT6 |
-| SR-TE-PG-3 | False | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ |
+| SR-TE-PG-2 | True | RM-SR-TE-PEER-IN6 | RM-SR-TE-PEER-OUT6 | PEER_TAG_IN_IPV6_SR_TE | PEER_TAG_DISCARD_OUT_IPV6_SR_TE |
+| SR-TE-PG-3 | False | - | - | - | - |
 
 #### Router BGP Link-State Address Family
 
@@ -8906,17 +8906,17 @@ ASN Notation: asdot
 
 ##### VPN-IPv4 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| -------- | -------- | ------------ | ------------- | ------ | ------- |
-| 192.168.255.4 | True | RM-NEIGHBOR-PEER-IN4 | RM-NEIGHBOR-PEER-OUT4 | - | - |
-| 192.168.255.5 | False | - | - | Address_Family_VPN_IPV4_In() | Address_Family_VPN_IPV4_Out() |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| 192.168.255.4 | True | RM-NEIGHBOR-PEER-IN4 | RM-NEIGHBOR-PEER-OUT4 | - | - | PEER_TAG_IN_IPV4_VPN | PEER_TAG_DISCARD_OUT_IPV4_VPN |
+| 192.168.255.5 | False | - | - | Address_Family_VPN_IPV4_In() | Address_Family_VPN_IPV4_Out() | - | - |
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN4 | RM-IBGP-PEER-OUT4 | - | - |
-| Test_RCF | False | - | - | Address_Family_VPN_IPV4_In() | Address_Family_VPN_IPV4_Out() |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN4 | RM-IBGP-PEER-OUT4 | - | - | PEER_TAG_IN_IPV4_VPN | PEER_TAG_DISCARD_OUT_IPV4_VPN |
+| Test_RCF | False | - | - | Address_Family_VPN_IPV4_In() | Address_Family_VPN_IPV4_Out() | - | - |
 
 #### Router BGP VPN-IPv6 Address Family
 
@@ -8924,17 +8924,17 @@ ASN Notation: asdot
 
 ##### VPN-IPv6 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| -------- | -------- | ------------ | ------------- | ------ | ------- |
-| 2001:cafe:192:168::4 | True | RM-NEIGHBOR-PEER-IN6 | RM-NEIGHBOR-PEER-OUT6 | - | - |
-| 2001:cafe:192:168::5 | False | - | - | Address_Family_VPN_IPV6_In() | Address_Family_VPN_IPV6_Out() |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| 2001:cafe:192:168::4 | True | RM-NEIGHBOR-PEER-IN6 | RM-NEIGHBOR-PEER-OUT6 | - | - | PEER_TAG_IN_IPV6_VPN | PEER_TAG_DISCARD_OUT_IPV6_VPN |
+| 2001:cafe:192:168::5 | False | - | - | Address_Family_VPN_IPV6_In() | Address_Family_VPN_IPV6_Out() | - | - |
 
 ##### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN6 | RM-IBGP-PEER-OUT6 | - | - |
-| Test_RCF | False | - | - | Address_Family_VPN_IPV6_In() | Address_Family_VPN_IPV6_Out() |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN6 | RM-IBGP-PEER-OUT6 | - | - | PEER_TAG_IN_IPV6_VPN | PEER_TAG_DISCARD_OUT_IPV6_VPN |
+| Test_RCF | False | - | - | Address_Family_VPN_IPV6_In() | Address_Family_VPN_IPV6_Out() | - | - |
 
 #### Router BGP Path-Selection Address Family
 
@@ -9064,6 +9064,8 @@ router bgp 65101
    neighbor EVPN-OVERLAY-RS-PEERS password 7 <removed>
    neighbor EVPN-OVERLAY-RS-PEERS send-community
    neighbor EVPN-OVERLAY-RS-PEERS maximum-routes 0
+   neighbor EVPN-OVERLAY-RS-PEERS peer-tag in PEER_TAG_IN
+   neighbor EVPN-OVERLAY-RS-PEERS peer-tag out discard PEER_TAG_DISCARD_OUT
    neighbor EXTENDED-COMMUNITY peer group
    neighbor EXTENDED-COMMUNITY send-community extended
    neighbor IPv4-UNDERLAY-PEERS peer group
@@ -9100,6 +9102,8 @@ router bgp 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000 warning-limit 80 percent warning-only
    neighbor MLAG-IPv4-UNDERLAY-PEER missing-policy address-family all direction in action deny
+   neighbor MLAG-IPv4-UNDERLAY-PEER peer-tag in PEER_TAG_IN
+   neighbor MLAG-IPv4-UNDERLAY-PEER peer-tag out discard PEER_TAG_DISCARD_OUT
    neighbor MLAG-IPv4-UNDERLAY-PEER remove-private-as ingress replace-as
    neighbor MPLS-IBGP-PEERS peer group
    neighbor MPLS-IBGP-PEERS remote-as 65000
@@ -9253,6 +9257,8 @@ router bgp 65101
    neighbor 192.168.255.21 peer group EVPN-OVERLAY-PEERS
    no neighbor 192.168.255.21 rib-in pre-policy retain
    neighbor 192.168.255.21 missing-policy address-family all direction out action deny-in-out
+   neighbor 192.168.255.21 peer-tag in PEER_TAG_IN
+   neighbor 192.168.255.21 peer-tag out discard PEER_TAG_DISCARD_OUT
    neighbor 192.168.255.101 peer group MPLS-IBGP-PEERS
    neighbor 192.168.255.201 peer group MPLS-IBGP-PEERS
    neighbor 2001:cafe:192:168::4 remote-as 65004
@@ -9396,6 +9402,8 @@ router bgp 65101
       neighbor EVPN-OVERLAY activate
       neighbor EVPN-OVERLAY route-map RM-HIDE-AS-PATH in
       neighbor EVPN-OVERLAY route-map RM-HIDE-AS-PATH out
+      neighbor EVPN-OVERLAY peer-tag in PEER_TAG_IN_EVPN
+      neighbor EVPN-OVERLAY peer-tag out discard PEER_TAG_DISCARD_OUT_EVPN
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS default-route
       neighbor EVPN-OVERLAY-PEERS encapsulation vxlan
@@ -9424,6 +9432,8 @@ router bgp 65101
       neighbor 10.100.100.4 route-map RM1 in
       neighbor 10.100.100.4 route-map RM2 out
       neighbor 10.100.100.4 additional-paths send limit 9
+      neighbor 10.100.100.4 peer-tag in PEER_TAG_IN_EVPN
+      neighbor 10.100.100.4 peer-tag out discard PEER_TAG_DISCARD_OUT_EVPN
       neighbor 10.100.100.4 encapsulation path-selection
       neighbor 10.100.100.5 activate
       neighbor 10.100.100.5 encapsulation mpls
@@ -9477,6 +9487,8 @@ router bgp 65101
       neighbor IPV4-UNDERLAY route-map RM-HIDE-AS-PATH in
       neighbor IPV4-UNDERLAY route-map RM-HIDE-AS-PATH out
       no neighbor IPV4-UNDERLAY additional-paths send
+      neighbor IPV4-UNDERLAY peer-tag in PEER_TAG_IN_IPV4
+      neighbor IPV4-UNDERLAY peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
       neighbor NHP activate
@@ -9506,6 +9518,8 @@ router bgp 65101
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out
       neighbor 192.0.2.1 additional-paths send limit 20 prefix-list PL1
       neighbor 192.0.2.1 next-hop address-family ipv6 originate
+      neighbor 192.0.2.1 peer-tag in PEER_TAG_IN_IPV4
+      neighbor 192.0.2.1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4
       no neighbor 192.168.66.21 activate
       neighbor 192.168.66.21 additional-paths send any
       network 10.0.0.0/8
@@ -9543,6 +9557,8 @@ router bgp 65101
       neighbor PG-BGP-LU next-hop-unchanged
       neighbor PG-BGP-LU maximum-advertised-routes 120000 warning-limit 1000
       neighbor PG-BGP-LU missing-policy include community-list prefix-list sub-route-map direction in action deny
+      neighbor PG-BGP-LU peer-tag in PEER_TAG_IN_IPV4_LABELED
+      neighbor PG-BGP-LU peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_LABELED
       neighbor PG-BGP-LU aigp-session
       neighbor PG-BGP-LU multi-path
       no neighbor PG-BGP-LU1 activate
@@ -9580,6 +9596,8 @@ router bgp 65101
       neighbor 198.51.100.2 next-hop-unchanged
       neighbor 198.51.100.2 next-hop-self source-interface Ethernet2
       neighbor 198.51.100.2 missing-policy  include community-list prefix-list sub-route-map direction in action deny
+      neighbor 198.51.100.2 peer-tag in PEER_TAG_IN_IPV4_LABELED
+      neighbor 198.51.100.2 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_LABELED
       neighbor 198.51.100.2 aigp-session
       neighbor 198.51.100.2 multi-path
       network 203.0.113.0/25 route-map RM-TEST
@@ -9600,11 +9618,15 @@ router bgp 65101
       neighbor IPV4-UNDERLAY activate
       neighbor IPV4-UNDERLAY route-map IPV4-MULTICAST-RM-IN in
       neighbor IPV4-UNDERLAY route-map IPV4-MULTICAST-RM-OUT out
+      neighbor IPV4-UNDERLAY peer-tag in PEER_TAG_IN_IPV4_MULTICAST
+      neighbor IPV4-UNDERLAY peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_MULTICAST
       neighbor IPV4-UNDERLAY-MLAG activate
       neighbor 10.1.1.1 activate
       neighbor 10.1.1.1 additional-paths receive
       neighbor 10.1.1.1 route-map IPV4-MULTICAST-RM-IN in
       neighbor 10.1.1.1 route-map IPV4-MULTICAST-RM-OUT out
+      neighbor 10.1.1.1 peer-tag in PEER_TAG_IN_IPV4_MULTICAST
+      neighbor 10.1.1.1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_MULTICAST
       no neighbor 10.1.1.2 activate
       redistribute attached-host route-map AFIPV4M_ATTACHED_HOST
       redistribute connected route-map AFIPV4M_CONNECTED
@@ -9620,10 +9642,14 @@ router bgp 65101
       neighbor SR-TE-PG-1 activate
       neighbor SR-TE-PG-1 route-map RM-SR-TE-PEER-IN4 in
       neighbor SR-TE-PG-1 route-map RM-SR-TE-PEER-OUT4 out
+      neighbor SR-TE-PG-1 peer-tag in PEER_TAG_IN_IPV4_SR_TE
+      neighbor SR-TE-PG-1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_SR_TE
       no neighbor SR-TE-PG-2 activate
       neighbor 192.168.42.42 activate
       neighbor 192.168.42.42 route-map RM-SR-TE-PEER-IN4 in
       neighbor 192.168.42.42 route-map RM-SR-TE-PEER-OUT4 out
+      neighbor 192.168.42.42 peer-tag in PEER_TAG_IN_IPV4_SR_TE
+      neighbor 192.168.42.42 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_SR_TE
       no neighbor 192.168.42.43 activate
    !
    address-family ipv6
@@ -9639,6 +9665,8 @@ router bgp 65101
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH in
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH out
       neighbor IPV6-UNDERLAY additional-paths send any
+      neighbor IPV6-UNDERLAY peer-tag in PEER_TAG_IN_IPV6
+      neighbor IPV6-UNDERLAY peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6
       neighbor IPV6-UNDERLAY-MLAG activate
       no neighbor IPV6-UNDERLAY-MLAG additional-paths send
       neighbor TEST_RCF rcf in Address_Family_IPV6_In()
@@ -9650,6 +9678,8 @@ router bgp 65101
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-IN in
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-OUT out
       neighbor 2001:db8::1 additional-paths send ecmp limit 20
+      neighbor 2001:db8::1 peer-tag in PEER_TAG_IN_IPV6
+      neighbor 2001:db8::1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6
       neighbor 2001:db8::2 activate
       neighbor 2001:db8::2 rcf in Address_Family_IPV6_In()
       neighbor 2001:db8::2 rcf out Address_Family_IPV6_Out()
@@ -9683,6 +9713,8 @@ router bgp 65101
       neighbor aa::1 additional-paths receive
       neighbor aa::1 route-map IPv6_MULTICAST_RM_IN in
       neighbor aa::1 route-map IPv6_MULTICAST_RM_OUT out
+      neighbor aa::1 peer-tag in PEER_TAG_IN_IPV6_MULTICAST
+      neighbor aa::1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6_MULTICAST
       network aa::1/126 route-map IPv6_MULTICAST_RM
       redistribute connected route-map RM-address_family_ipv6_multicast-Connected
       redistribute isis level-1 include leaked route-map RM-address_family_ipv6_multicast-ISIS
@@ -9698,10 +9730,14 @@ router bgp 65101
       neighbor SR-TE-PG-2 activate
       neighbor SR-TE-PG-2 route-map RM-SR-TE-PEER-IN6 in
       neighbor SR-TE-PG-2 route-map RM-SR-TE-PEER-OUT6 out
+      neighbor SR-TE-PG-2 peer-tag in PEER_TAG_IN_IPV6_SR_TE
+      neighbor SR-TE-PG-2 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6_SR_TE
       no neighbor SR-TE-PG-3 activate
       neighbor 2001:db8::dead:beef:cafe activate
       neighbor 2001:db8::dead:beef:cafe route-map RM-SR-TE-PEER-IN6 in
       neighbor 2001:db8::dead:beef:cafe route-map RM-SR-TE-PEER-OUT6 out
+      neighbor 2001:db8::dead:beef:cafe peer-tag in PEER_TAG_IN_IPV6_SR_TE
+      neighbor 2001:db8::dead:beef:cafe peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6_SR_TE
       no neighbor 2002:db8::dead:beef:cafe activate
    !
    address-family link-state
@@ -9757,6 +9793,8 @@ router bgp 65101
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-IN4 in
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-OUT4 out
       neighbor MPLS-IBGP-PEERS default-route route-map RM-IBGP-PEER-IN4
+      neighbor MPLS-IBGP-PEERS peer-tag in PEER_TAG_IN_IPV4_VPN
+      neighbor MPLS-IBGP-PEERS peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_VPN
       no neighbor Test_RCF activate
       neighbor Test_RCF rcf in Address_Family_VPN_IPV4_In()
       neighbor Test_RCF rcf out Address_Family_VPN_IPV4_Out()
@@ -9765,6 +9803,8 @@ router bgp 65101
       neighbor 192.168.255.4 route-map RM-NEIGHBOR-PEER-IN4 in
       neighbor 192.168.255.4 route-map RM-NEIGHBOR-PEER-OUT4 out
       neighbor 192.168.255.4 default-route route-map RM-NEIGHBOR-PEER-IN4
+      neighbor 192.168.255.4 peer-tag in PEER_TAG_IN_IPV4_VPN
+      neighbor 192.168.255.4 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_VPN
       no neighbor 192.168.255.5 activate
       neighbor 192.168.255.5 rcf in Address_Family_VPN_IPV4_In()
       neighbor 192.168.255.5 rcf out Address_Family_VPN_IPV4_Out()
@@ -9778,6 +9818,8 @@ router bgp 65101
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-IN6 in
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-OUT6 out
       neighbor MPLS-IBGP-PEERS default-route route-map RM-IBGP-PEER-OUT6
+      neighbor MPLS-IBGP-PEERS peer-tag in PEER_TAG_IN_IPV6_VPN
+      neighbor MPLS-IBGP-PEERS peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6_VPN
       no neighbor Test_RCF activate
       neighbor Test_RCF rcf in Address_Family_VPN_IPV6_In()
       neighbor Test_RCF rcf out Address_Family_VPN_IPV6_Out()
@@ -9786,6 +9828,8 @@ router bgp 65101
       neighbor 2001:cafe:192:168::4 route-map RM-NEIGHBOR-PEER-IN6 in
       neighbor 2001:cafe:192:168::4 route-map RM-NEIGHBOR-PEER-OUT6 out
       neighbor 2001:cafe:192:168::4 default-route route-map RM-NEIGHBOR-PEER-IN6
+      neighbor 2001:cafe:192:168::4 peer-tag in PEER_TAG_IN_IPV6_VPN
+      neighbor 2001:cafe:192:168::4 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6_VPN
       no neighbor 2001:cafe:192:168::5 activate
       neighbor 2001:cafe:192:168::5 rcf in Address_Family_VPN_IPV6_In()
       neighbor 2001:cafe:192:168::5 rcf out Address_Family_VPN_IPV6_Out()
@@ -9902,6 +9946,8 @@ router bgp 65101
          neighbor 10.2.3.4 activate
          neighbor 10.2.3.5 activate
          neighbor 10.2.3.5 route-map RM-10.2.3.5-SET-NEXT-HOP-IN in
+         neighbor 10.2.3.5 peer-tag in PEER_TAG_IN_IPV4_VRF
+         neighbor 10.2.3.5 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_VRF
          neighbor 10.2.3.6 next-hop address-family ipv6
          neighbor 10.2.3.7 next-hop address-family ipv6 originate
          no neighbor 10.2.3.8 next-hop address-family ipv6
@@ -10005,6 +10051,8 @@ router bgp 65101
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
          neighbor 1.2.3.4 additional-paths send any
+         neighbor 1.2.3.4 peer-tag in PEER_TAG_IN_IPV4_VRF
+         neighbor 1.2.3.4 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_VRF
          network 2.3.4.0/24 route-map BARFOO
          redistribute attached-host route-map VRF_AFIPV4_RM_HOST
          redistribute bgp leaked route-map VRF_AFIPV4_RM_BGP
@@ -10028,6 +10076,8 @@ router bgp 65101
          neighbor 1.2.3.4 additional-paths receive
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
+         neighbor 1.2.3.4 peer-tag in PEER_TAG_IN_IPV4_MULTICAST_VRF
+         neighbor 1.2.3.4 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_MULTICAST_VRF
          network 239.0.0.0/24 route-map BARFOO
          redistribute attached-host route-map VRF_AFIPV4MULTI_RM_HOST
          redistribute connected route-map VRF_AFIPV4MULTI_RM_CONNECTED
@@ -10051,6 +10101,8 @@ router bgp 65101
          neighbor aa::1 route-map FOO in
          neighbor aa::1 route-map BAR out
          neighbor aa::1 additional-paths send any
+         neighbor aa::1 peer-tag in PEER_TAG_IN_IPV6_VRF
+         neighbor aa::1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6_VRF
          neighbor aa::2 activate
          neighbor aa::2 rcf in VRF_AFIPV6_RCF_IN()
          neighbor aa::2 rcf out VRF_AFIPV6_RCF_OUT()

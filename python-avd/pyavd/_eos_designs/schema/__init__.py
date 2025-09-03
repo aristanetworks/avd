@@ -42304,6 +42304,8 @@ class EosDesigns(EosDesignsRootModel):
                         "rib_in_pre_policy_retain": {"type": RibInPrePolicyRetain},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
+                        "peer_tag_in": {"type": str},
+                        "peer_tag_out_discard": {"type": str},
                         "session_tracker": {"type": str},
                         "shared_secret": {"type": SharedSecret},
                         "ttl_maximum_hops": {"type": int},
@@ -42416,6 +42418,10 @@ class EosDesigns(EosDesignsRootModel):
                     """Inbound route-map name."""
                     route_map_out: str | None
                     """Outbound route-map name."""
+                    peer_tag_in: str | None
+                    """Inbound peer tag name."""
+                    peer_tag_out_discard: str | None
+                    """Outbound discard peer tag name."""
                     session_tracker: str | None
                     shared_secret: SharedSecret
                     """Subclass of AvdModel."""
@@ -42463,6 +42469,8 @@ class EosDesigns(EosDesignsRootModel):
                             rib_in_pre_policy_retain: RibInPrePolicyRetain | UndefinedType = Undefined,
                             route_map_in: str | None | UndefinedType = Undefined,
                             route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             session_tracker: str | None | UndefinedType = Undefined,
                             shared_secret: SharedSecret | UndefinedType = Undefined,
                             ttl_maximum_hops: int | None | UndefinedType = Undefined,
@@ -42545,6 +42553,8 @@ class EosDesigns(EosDesignsRootModel):
                                 rib_in_pre_policy_retain: Subclass of AvdModel.
                                 route_map_in: Inbound route-map name.
                                 route_map_out: Outbound route-map name.
+                                peer_tag_in: Inbound peer tag name.
+                                peer_tag_out_discard: Outbound discard peer tag name.
                                 session_tracker: session_tracker
                                 shared_secret: Subclass of AvdModel.
                                 ttl_maximum_hops: Maximum number of hops.
@@ -48032,6 +48042,8 @@ class EosDesigns(EosDesignsRootModel):
                             "rib_in_pre_policy_retain": {"type": RibInPrePolicyRetain},
                             "route_map_in": {"type": str},
                             "route_map_out": {"type": str},
+                            "peer_tag_in": {"type": str},
+                            "peer_tag_out_discard": {"type": str},
                             "session_tracker": {"type": str},
                             "shared_secret": {"type": SharedSecret},
                             "ttl_maximum_hops": {"type": int},
@@ -48144,6 +48156,10 @@ class EosDesigns(EosDesignsRootModel):
                         """Inbound route-map name."""
                         route_map_out: str | None
                         """Outbound route-map name."""
+                        peer_tag_in: str | None
+                        """Inbound peer tag name."""
+                        peer_tag_out_discard: str | None
+                        """Outbound discard peer tag name."""
                         session_tracker: str | None
                         shared_secret: SharedSecret
                         """Subclass of AvdModel."""
@@ -48191,6 +48207,8 @@ class EosDesigns(EosDesignsRootModel):
                                 rib_in_pre_policy_retain: RibInPrePolicyRetain | UndefinedType = Undefined,
                                 route_map_in: str | None | UndefinedType = Undefined,
                                 route_map_out: str | None | UndefinedType = Undefined,
+                                peer_tag_in: str | None | UndefinedType = Undefined,
+                                peer_tag_out_discard: str | None | UndefinedType = Undefined,
                                 session_tracker: str | None | UndefinedType = Undefined,
                                 shared_secret: SharedSecret | UndefinedType = Undefined,
                                 ttl_maximum_hops: int | None | UndefinedType = Undefined,
@@ -48273,6 +48291,8 @@ class EosDesigns(EosDesignsRootModel):
                                     rib_in_pre_policy_retain: Subclass of AvdModel.
                                     route_map_in: Inbound route-map name.
                                     route_map_out: Outbound route-map name.
+                                    peer_tag_in: Inbound peer tag name.
+                                    peer_tag_out_discard: Outbound discard peer tag name.
                                     session_tracker: session_tracker
                                     shared_secret: Subclass of AvdModel.
                                     ttl_maximum_hops: Maximum number of hops.
