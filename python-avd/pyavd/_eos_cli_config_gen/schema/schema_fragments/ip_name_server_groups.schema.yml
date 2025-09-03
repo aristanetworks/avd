@@ -39,15 +39,16 @@ keys:
                 max: 15
         dns_domain:
           type: str
-        ip_domain_list:
-          type: str
-          description: Set domain names to complete unqualified host names.
-          deprecation:
-            warning: true
-            new_key: ip_domain_lists
-            remove_in_version: 6.0.0
         ip_domain_lists:
           type: list
           description: Set domain names to complete unqualified host names.
           items:
             type: str
+        ip_domain_list:
+          type: str
+          description: Set domain names to complete unqualified host names.
+          deprecation:
+            removed: true
+            warning: true
+            new_key: ip_domain_lists
+            remove_in_version: 6.0.0

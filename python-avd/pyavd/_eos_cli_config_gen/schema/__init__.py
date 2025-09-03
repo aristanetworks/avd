@@ -15896,15 +15896,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "name": {"type": str},
             "name_servers": {"type": NameServers},
             "dns_domain": {"type": str},
-            "ip_domain_list": {"type": str},
             "ip_domain_lists": {"type": IpDomainLists},
         }
         name: str
         name_servers: NameServers
         """Subclass of AvdList with `NameServersItem` items."""
         dns_domain: str | None
-        ip_domain_list: str | None
-        """Set domain names to complete unqualified host names."""
         ip_domain_lists: IpDomainLists
         """
         Set domain names to complete unqualified host names.
@@ -15920,7 +15917,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name: str | UndefinedType = Undefined,
                 name_servers: NameServers | UndefinedType = Undefined,
                 dns_domain: str | None | UndefinedType = Undefined,
-                ip_domain_list: str | None | UndefinedType = Undefined,
                 ip_domain_lists: IpDomainLists | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -15933,7 +15929,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: name
                     name_servers: Subclass of AvdList with `NameServersItem` items.
                     dns_domain: dns_domain
-                    ip_domain_list: Set domain names to complete unqualified host names.
                     ip_domain_lists:
                        Set domain names to complete unqualified host names.
 
