@@ -111,17 +111,6 @@ ethernet_interfaces:
     mode: active
   peer: OLD_SW-1/9
   peer_type: custom_server
-- name: Ethernet24
-  description: CUSTOM_SERVER_OLD_SW-1/11_Endpoint_port5
-  shutdown: false
-  peer: OLD_SW-1/11
-  peer_interface: Endpoint_port5
-  peer_type: custom_server
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: 1-4096
 - name: Ethernet25
   description: CUSTOM_SERVER_OLD_SW-1/12_Endpoint_port6
   shutdown: false
@@ -405,6 +394,17 @@ ethernet_interfaces:
       allowed_vlan: 1,2,3,4
       native_vlan: 5
       native_vlan_tag: false
+- name: Ethernet24
+  description: CUSTOM_SERVER_OLD_SW-1/11_Endpoint_port5
+  shutdown: false
+  peer: OLD_SW-1/11
+  peer_interface: Endpoint_port5
+  peer_type: custom_server
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4096
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false

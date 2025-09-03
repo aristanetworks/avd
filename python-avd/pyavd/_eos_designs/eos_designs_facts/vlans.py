@@ -115,6 +115,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
                         individual_vlans, individual_trunk_groups = self._parse_adapter_settings(individual_adapter_settings)
                         vlans.update(individual_vlans)
                         trunk_groups.update(individual_trunk_groups)
+
                     if len(vlans) >= 4094:
                         # No need to check further, since the set is now containing all vlans.
                         # The trunk group list may not be complete, but it will not matter, since we will
