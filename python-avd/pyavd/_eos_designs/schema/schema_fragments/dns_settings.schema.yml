@@ -20,10 +20,13 @@ keys:
         type: list
         required: true
         min_length: 1
-        $ref: eos_cli_config_gen#/keys/ip_name_servers
         items:
           type: dict
           keys:
+            ip_address:
+              type: str
+              required: true
+              description: IPv4 or IPv6 address for DNS server.
             vrf:
               type: str
               default: use_default_mgmt_method_vrf
@@ -37,6 +40,13 @@ keys:
                 - Any other string will be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
               convert_types:
                 - int
+            priority:
+              description: Priority value (lower is first).
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 4
       vrfs:
         type: list
         primary_key: name
