@@ -1,0 +1,84 @@
+cfm:
+  continuity_check_loc_state_action_disable_interface_routing: true
+  measurement_loss:
+    inband: true
+    synthetic: true
+  domains:
+    - name: CUSTOMER_A
+      level: 5
+      intermediate_point: true
+      associations:
+        - id: 102
+          direction: up
+          profile: profile_10G
+          vlan: 102
+        - id: 101
+          direction: down
+          profile: profile_10G
+          vlan: 101
+          remote_end_points:
+            - id: 1001
+              mac_address: 001c.7300.000a
+            - id: 1002
+              mac_address: 001c.7300.000b
+          end_points:
+            - id: 2001
+              remote_end_point: "1001"
+              interface: Ethernet1/2
+            - id: 2002
+              remote_end_point: "1002"
+    - name: PROVIDER_B
+      level: 3
+      associations:
+        - id: 202
+          profile: profile_simple
+          vlan: 202
+        - id: 201
+          profile: profile_simple
+          vlan: 201
+  profiles:
+    # A full-featured profile demonstrating most options.
+    - name: profile_10G
+      alarm_indication:
+        enabled: true
+        client_domain_level: 5
+        tx_interval: "1 seconds"
+
+      continuity_check:
+        enabled: true
+        qos_cos: 6
+        tx_interval: "100 milliseconds"
+        alarm_defects:
+          - rdi-ccm
+          - cross-connection
+          - loc-state
+
+      measurement:
+        delay:
+          single_ended: true
+          qos_cos: 5
+          tx_interval: 44
+        loss:
+          single_ended: true
+          qos_cos: 3
+          tx_interval: 445.445
+          synthetic:
+            single_ended: true
+            qos_cos: "5-6"
+            tx_interval:
+              interval: 10
+              period_frames: 10
+
+    # Test for tx_interval without period
+    - name: profile_20G
+      measurement:
+        loss:
+          synthetic:
+            tx_interval:
+              interval: 10
+
+    # A minimal profile demonstrating that most keys are optional.
+    - name: profile_simple
+      continuity_check:
+        enabled: true
+        tx_interval: "10 seconds"

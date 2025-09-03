@@ -42,7 +42,7 @@ pytest = [
     "referencing>=0.35.0",
 ]
 coverage = [
-    "coverage[toml]==7.10.5",
+    "coverage[toml]==7.10.6",
 ]
 
 [project.optional-dependencies]
@@ -74,7 +74,7 @@ requires = [
     "pydantic>=2.3.0",
     "cryptography>=38.0.4",
     "aristaproto>=0.1.1",
-    "ruff==0.12.10",
+    "ruff==0.12.11",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]

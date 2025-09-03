@@ -34,6 +34,12 @@ class PortChannelInterfacesMixin(Protocol):
             port_channel_interface.ptp = self._get_ptp_config_interface(p2p_link, output_type=EosCliConfigGen.PortChannelInterfacesItem.Ptp)
             port_channel_interface.description = self._p2p_link_port_channel_description(p2p_link_data)
 
+            if p2p_link.port_channel_structured_config:
+                self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_interface.name)._deepmerge(
+                    p2p_link.port_channel_structured_config,
+                    list_merge=self.custom_structured_configs.list_merge_strategy,
+                )
+
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
 
     def _p2p_link_port_channel_description(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link_data: dict) -> str:

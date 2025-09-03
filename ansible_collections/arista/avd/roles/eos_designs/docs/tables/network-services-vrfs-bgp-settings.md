@@ -98,6 +98,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].rib_in_pre_policy_retain.all") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session_tracker</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].session_tracker") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].shared_secret") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].bgp_peer_groups.[].shared_secret.profile") | String | Required |  |  | Name of profile defined under `management_security`. |
@@ -228,6 +230,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].rib_in_pre_policy_retain.all") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_in</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].peer_tag_in") | String |  |  |  | Inbound peer tag name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_tag_out_discard</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].peer_tag_out_discard") | String |  |  |  | Outbound discard peer tag name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session_tracker</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].session_tracker") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shared_secret</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].shared_secret") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peer_groups.[].shared_secret.profile") | String | Required |  |  | Name of profile defined under `management_security`. |
@@ -448,6 +452,12 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+
+            # Inbound peer tag name.
+            peer_tag_in: <str>
+
+            # Outbound discard peer tag name.
+            peer_tag_out_discard: <str>
             session_tracker: <str>
             shared_secret:
 
@@ -761,6 +771,12 @@
 
                 # Outbound route-map name.
                 route_map_out: <str>
+
+                # Inbound peer tag name.
+                peer_tag_in: <str>
+
+                # Outbound discard peer tag name.
+                peer_tag_out_discard: <str>
                 session_tracker: <str>
                 shared_secret:
 
