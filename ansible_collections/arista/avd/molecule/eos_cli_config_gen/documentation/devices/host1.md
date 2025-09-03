@@ -79,6 +79,7 @@
   - [MCS Client Summary](#mcs-client-summary)
   - [SNMP](#snmp)
   - [Monitor Sessions](#monitor-sessions)
+  - [Connectivity Fault Management (CFM)](#connectivity-fault-management-cfm)
   - [Tap Aggregation](#tap-aggregation)
   - [SFlow](#sflow)
   - [Hardware](#hardware)
@@ -173,6 +174,7 @@
   - [IPv6 Router OSPF](#ipv6-router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
+  - [Router RIP](#router-rip)
   - [PBR Policy Maps](#pbr-policy-maps)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
@@ -663,9 +665,9 @@ PTP Profile: g8275.1
 
 #### PTP Summary
 
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast | Free Running Enabled |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- | -------------------- |
-| 11:11:11:11:11:11 | 1.1.2.3 | 101 | 102 | 12 | 17 | boundary | True | True (Hardware) |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward V1 | Forward Unicast | Free Running Enabled |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | ---------- | --------------- | -------------------- |
+| 11:11:11:11:11:11 | 1.1.2.3 | 101 | 102 | 12 | 17 | boundary | True | True | True (Hardware) |
 
 #### PTP Device Configuration
 
@@ -674,6 +676,7 @@ PTP Profile: g8275.1
 ptp clock-identity 11:11:11:11:11:11
 ptp domain 17
 ptp free-running source clock hardware
+ptp hold-ptp-time 43200
 ptp message-type event dscp 46 default
 ptp message-type general dscp 36 default
 ptp mode boundary one-step
@@ -682,6 +685,7 @@ ptp priority2 102
 ptp profile g8275.1
 ptp source ip 1.1.2.3
 ptp ttl 12
+ptp forward-v1
 ptp forward-unicast
 ptp monitor threshold offset-from-master 11
 ptp monitor threshold mean-path-delay 12
@@ -2529,6 +2533,143 @@ monitor session myMonitoringSession4 encapsulation gre metadata tx
 monitor session default encapsulation gre payload inner-packet
 ```
 
+### Connectivity Fault Management (CFM)
+
+#### CFM Domains Summary
+
+| Name | Level | Intermediate Point |
+| ---- | ----- | ------------------ |
+| CUSTOMER_A | 5 | True |
+| PROVIDER_B | 3 | - |
+
+##### CFM Domain Associations
+
+| Domain | Association ID | Direction | Profile | VLAN |
+| ------ | -------------- | --------- | ------- | ---- |
+| CUSTOMER_A | 101 | down | profile_10G | 101 |
+| CUSTOMER_A | 102 | up | profile_10G | 102 |
+| PROVIDER_B | 201 | - | profile_simple | 201 |
+| PROVIDER_B | 202 | - | profile_simple | 202 |
+
+##### CFM Domain Endpoints
+
+| Domain | Association ID | Endpoint ID | Remote Endpoint ID | Interface |
+| ------ | -------------- | ----------- | ------------------ | --------- |
+| CUSTOMER_A | 101 | 2001 | 1001 | Ethernet1/2 |
+| CUSTOMER_A | 101 | 2002 | 1002 | - |
+
+##### CFM Domain Remote Endpoints
+
+| Domain | Association ID | Remote Endpoint ID | MAC Address |
+| ------ | -------------- | ------------------ | ----------- |
+| CUSTOMER_A | 101 | 1001 | 001c.7300.000a |
+| CUSTOMER_A | 101 | 1002 | 001c.7300.000b |
+
+#### CFM Profiles Summary
+
+##### CFM Profile Continuity Check
+
+| Profile | Enabled | QoS COS | TX Interval | Alarm Defects |
+| ------- | ------- | ------- | ----------- | ------------- |
+| profile_10G | True | 6 | 100 milliseconds | rdi-ccm, cross-connection, loc-state |
+| profile_simple | True | - | 10 seconds | - |
+
+##### CFM Profile Alarm Indication
+
+| Profile | Enabled | Client Domain Level | TX Interval |
+| ------- | ------- | ------------------- | ----------- |
+| profile_10G | True | 5 | 1 seconds |
+
+##### CFM Profile Delay Measurement
+
+| Profile | Single Ended | QoS COS | TX Interval |
+| ------- | ------------ | ------- | ----------- |
+| profile_10G | True | 5 | 44 |
+
+##### CFM Profile Loss Measurement
+
+| Profile | Enabled | Single Ended | QoS COS | TX Interval |
+| ------- | ------- | ------------ | ------- | ----------- |
+| profile_10G | - | True | 3 | 445.445 |
+| profile_20G | - | - | - | - |
+
+##### CFM Profile Synthetic Loss Measurement
+
+| Profile | Enabled | Single Ended | QoS COS | TX Interval | Period Frames |
+| ------- | ------- | ------------ | ------- | ----------- | ------------- |
+| profile_10G | - | True | 5-6 | 10 | 10 |
+| profile_20G | - | - | - | 10 | - |
+
+#### CFM Device Configuration
+
+```eos
+!
+cfm
+   measurement loss inband
+   measurement loss synthetic
+   continuity-check loc-state action disable interface routing
+   !
+   profile profile_10G
+      continuity-check
+      continuity-check tx-interval 100 milliseconds
+      continuity-check qos cos 6
+      continuity-check alarm defect rdi-ccm loc-state cross-connection
+      alarm indication
+      alarm indication client domain level 5 tx-interval 1 seconds
+      measurement delay single-ended
+      measurement delay tx-interval 44 milliseconds
+      measurement delay qos cos 5
+      measurement loss single-ended
+      measurement loss tx-interval 445.445 milliseconds
+      measurement loss qos cos 3
+      measurement loss synthetic single-ended
+      measurement loss synthetic tx-interval 10 milliseconds period 10 frames
+      measurement loss synthetic qos cos 5-6
+   !
+   profile profile_20G
+      measurement loss synthetic tx-interval 10 milliseconds
+   !
+   profile profile_simple
+      continuity-check
+      continuity-check tx-interval 10 seconds
+   !
+   domain CUSTOMER_A level 5
+      intermediate-point
+      !
+      association 101
+         direction down
+         profile profile_10G
+         vlan 101
+         !
+         remote end-point 1001
+            mac address 001c.7300.000a
+         !
+         remote end-point 1002
+            mac address 001c.7300.000b
+         !
+         end-point 2001
+            interface Ethernet1/2
+            remote end-point 1001
+         !
+         end-point 2002
+            remote end-point 1002
+      !
+      association 102
+         direction up
+         profile profile_10G
+         vlan 102
+   !
+   domain PROVIDER_B level 3
+      !
+      association 201
+         profile profile_simple
+         vlan 201
+      !
+      association 202
+         profile profile_simple
+         vlan 202
+```
+
 ### Tap Aggregation
 
 #### Tap Aggregation Summary
@@ -2591,6 +2732,8 @@ tap aggregation
 
 sFlow Sample Rate: 1000
 
+sFlow Sample Truncation Size: 256 bytes.
+
 sFlow Sample Input Subinterface is enabled.
 
 sFlow Sample Output Subinterface is enabled.
@@ -2643,6 +2786,7 @@ sFlow hardware accelerated Sample Rate: 1024
 ```eos
 !
 sflow sample dangerous 1000
+sflow sample truncate size 256
 sflow polling-interval 10
 sflow vrf AAA destination 10.6.75.62 123
 sflow vrf AAA destination 10.6.75.63 333
@@ -4008,6 +4152,7 @@ ip security
 - Default Switchport Phone Access-list Bypass: True
 - Default Switchport Phone COS: 0
 - Default Switchport Phone Trunk: tagged
+- Default Switchport Phone QOS trust mode: cos
 - Default Switchport Phone VLAN: 69
 
 #### Switchport Default Device Configuration
@@ -4019,6 +4164,10 @@ switchport default mode access
 switchport default phone access-list bypass
 !
 switchport default phone cos 0
+!
+switchport default phone trunk tagged
+!
+switchport default phone qos trust cos
 !
 switchport default phone vlan 69
 ```
@@ -4231,12 +4380,12 @@ interface Dps1
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override |
-| --------- | --------------------- | -------------- |
-| Ethernet7 | - | 100gbase-ar4 |
-| Ethernet67 | 190050.000 | - |
-| Ethernet68 | 190080.000 ghz | 100gbase-ar4 |
-| Ethernet73 | - | 100gbase-ar4 |
+| Interface | Transceiver Frequency | Media Override | Application Override |
+| --------- | --------------------- | -------------- | -------------------- |
+| Ethernet7 | - | 100gbase-ar4 | 2</br>10 lanes start 1 end 1</br>5 lanes start 2 |
+| Ethernet67 | 190050.000 | - | 5</br>5 lanes start 1 end 1</br>5 lanes start 2 end 3 |
+| Ethernet68 | 190080.000 ghz | 100gbase-ar4 | 100gbase-srbd |
+| Ethernet73 | - | 100gbase-ar4 | 5 |
 
 ##### Link Tracking Groups
 
@@ -4363,12 +4512,12 @@ interface Dps1
 
 ##### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- | ------------------------ |
-| Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - | ietf-md5 |
-| Ethernet65 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 | text |
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Ethernet65 | 2 | - | - | Enabled | - | - |  | 2 | 2001:db8::1, 2002:db8::2 | text |
 | Ethernet66 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - | ietf-md5 |
-| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 | text |
+| Ethernet66 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown |  | 2 | 2001:db8::1 | text |
 | Ethernet66 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
 
 ##### ISIS
@@ -4738,6 +4887,9 @@ interface Ethernet7
    spanning-tree bpdufilter enable
    vmtracer vmware-esx
    transceiver media override 100gbase-ar4
+   transceiver application override 2
+   transceiver application override 10 lanes start 1 end 1
+   transceiver application override 5 lanes start 2
 !
 interface Ethernet8
    description to WAN-ISP1-01 Ethernet2
@@ -5256,8 +5408,11 @@ interface Ethernet65
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
    vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
    vrrp 2 peer authentication text <removed>
    vrrp 2 ipv6 2001:db8::1
+   vrrp 2 ipv6 2002:db8::2
 !
 interface Ethernet66
    description Multiple VRIDs and tracking
@@ -5288,6 +5443,9 @@ interface Ethernet67
    no shutdown
    switchport
    mac timestamp before-fcs
+   transceiver application override 5
+   transceiver application override 5 lanes start 1 end 1
+   transceiver application override 5 lanes start 2 end 3
    transceiver frequency 190050.000
 !
 interface Ethernet67.1
@@ -5299,6 +5457,7 @@ interface Ethernet68
    no shutdown
    switchport
    transceiver media override 100gbase-ar4
+   transceiver application override 100gbase-srbd
    transceiver frequency 190080.000 ghz
 !
 interface Ethernet68.1
@@ -5383,6 +5542,7 @@ interface Ethernet73
    description DC1-AGG01_Ethernet1
    channel-group 5 mode active
    transceiver media override 100gbase-ar4
+   transceiver application override 5
 !
 interface Ethernet74
    description MLAG_PEER_DC1-LEAF1B_Ethernet3
@@ -5707,6 +5867,16 @@ interface Ethernet84
 | --------- | ----------- | ------- | -------------| --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | cafe::b4 | default | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | - | cafe::b4 | default | 1500 | - | - | True | - | - |
+
+##### VRRP Details
+
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| Port-Channel333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Port-Channel333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown |  | 2 | 2001:db8:333::1, 2002:db8:333::2 | text |
+| Port-Channel333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
+| Port-Channel667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Port-Channel667 | 2 | - | - | Enabled | - | - |  | 2 | 2001:db8:667::1 | text |
 
 ##### ISIS
 
@@ -6369,6 +6539,36 @@ interface Port-Channel137
    traffic-engineering srlg TEST
    traffic-engineering metric 2
    traffic-engineering min-delay static 2 milliseconds
+!
+interface Port-Channel333
+   description Multiple VRIDs and tracking
+   no shutdown
+   vrrp 1 priority-level 105
+   vrrp 1 advertisement interval 2
+   vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
+   vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
+   vrrp 2 peer authentication text <removed>
+   vrrp 2 ipv6 2001:db8:333::1
+   vrrp 2 ipv6 2002:db8:333::2
+   no vrrp 3 preempt
+   vrrp 3 timers delay reload 900
+   vrrp 3 ipv4 100.64.0.1
+   vrrp 3 ipv4 version 3
+!
+interface Port-Channel667
+   description Multiple VRIDs
+   vrrp 1 priority-level 105
+   vrrp 1 advertisement interval 2
+   vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 peer authentication ietf-md5 key-string <removed>
+   vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
+   vrrp 2 peer authentication text 0 <removed>
+   vrrp 2 ipv6 2001:db8:667::1
 ```
 
 ### Loopback Interfaces
@@ -6674,13 +6874,13 @@ interface Tunnel4
 
 ##### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- | ------------------------ |
-| Vlan333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - | ietf-md5 |
-| Vlan333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8:333::1 | text |
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
+| Vlan333 | 1 | 105 | 2 | Enabled | ID1TrackedObjectDecrement, ID1TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Vlan333 | 2 | - | - | Enabled | ID2TrackedObjectDecrement, ID2TrackedObjectShutdown | Decrement 10, Shutdown |  | 2 | 2001:db8:333::1, 2002:db8:333::2 | text |
 | Vlan333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - | - |
-| Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - | ietf-md5 |
-| Vlan667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8:667::1 | text |
+| Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1, 192.0.3.3, 192.0.4.4 | 2 | - | ietf-md5 |
+| Vlan667 | 2 | - | - | Enabled | - | - |  | 2 | 2001:db8:667::1 | text |
 
 ##### ISIS
 
@@ -6959,10 +7159,13 @@ interface Vlan333
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
    vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
    vrrp 1 tracked-object ID1TrackedObjectDecrement decrement 5
    vrrp 1 tracked-object ID1TrackedObjectShutdown shutdown
    vrrp 2 peer authentication text <removed>
    vrrp 2 ipv6 2001:db8:333::1
+   vrrp 2 ipv6 2002:db8:333::2
    vrrp 2 tracked-object ID2TrackedObjectDecrement decrement 10
    vrrp 2 tracked-object ID2TrackedObjectShutdown shutdown
    no vrrp 3 preempt
@@ -7027,6 +7230,8 @@ interface Vlan667
    vrrp 1 preempt delay minimum 30 reload 800
    vrrp 1 peer authentication ietf-md5 key-string <removed>
    vrrp 1 ipv4 192.0.2.1
+   vrrp 1 ipv4 192.0.3.3 secondary
+   vrrp 1 ipv4 192.0.4.4 secondary
    vrrp 2 peer authentication text 0 <removed>
    vrrp 2 ipv6 2001:db8:667::1
 !
@@ -7136,9 +7341,9 @@ interface Vlan4094
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
-| Tenant_A_OP_Zone | 10 | 232.0.0.10 |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
+| Tenant_A_OP_Zone | 10 | default -> 232.0.0.10<br/>dynamic -> 239.0.43.0/24<br/>239.1.1.0 -> 225.0.41.1<br/>239.1.1.1 -> 225.0.41.1<br/>239.1.1.2 -> 225.0.41.2 |
 | Tenant_A_WEB_Zone | 11 | - |
 
 ##### Default Flood List
@@ -7174,6 +7379,10 @@ interface Vxlan1
    vxlan vlan 110 multicast group 239.9.1.4
    vxlan vlan 112 multicast group 239.9.1.6
    vxlan vrf Tenant_A_OP_Zone multicast group 232.0.0.10
+   vxlan vrf Tenant_A_OP_Zone multicast group encap range 239.0.43.0/24 delayed
+   vxlan vrf Tenant_A_OP_Zone multicast group overlay 239.1.1.0 encap 225.0.41.1 immediate
+   vxlan vrf Tenant_A_OP_Zone multicast group overlay 239.1.1.1 encap 225.0.41.1 immediate
+   vxlan vrf Tenant_A_OP_Zone multicast group overlay 239.1.1.2 encap 225.0.41.2 immediate
    vxlan multicast headend-replication
    vxlan qos ecn propagation
    vxlan qos dscp ecn rewrite bridged enabled
@@ -7918,6 +8127,8 @@ router ospf 600
    area 0.0.20.25 nssa default-information-originate metric-type 1
    area 0.0.20.26 nssa no-summary
    area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
+!
+ip ospf router-id output-format hostnames
 ```
 
 ### IPv6 Router OSPF
@@ -8551,34 +8762,34 @@ ASN Notation: asdot
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| ADDITIONAL-PATH-PG-1 | True |  - | - | default | - |
-| ADDITIONAL-PATH-PG-2 | True |  - | - | default | - |
-| ADDITIONAL-PATH-PG-3 | True |  - | - | default | - |
-| ADDITIONAL-PATH-PG-4 | True |  - | - | default | - |
-| ADDITIONAL-PATH-PG-5 | True |  - | - | default | - |
-| ADDITIONAL-PATH-PG-6 | True |  - | - | default | - |
-| EVPN-OVERLAY | True |  RM-HIDE-AS-PATH | RM-HIDE-AS-PATH | default | - |
-| EVPN-OVERLAY-PEERS | True |  - | - | vxlan | - |
-| IPv4-UNDERLAY-PEERS | False |  - | - | default | - |
-| MLAG-IPv4-UNDERLAY-PEER | False |  - | - | default | - |
-| RCF_TEST | False |  - | - | default | - |
-| TEST-ENCAPSULATION | True |  - | - | mpls | - |
-| TEST-ENCAPSULATION-2 | True |  - | - | path-selection | - |
-| TEST-ENCAPSULATION-SRC-INTERFACE | True |  - | - | mpls | Loopback3 |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| ADDITIONAL-PATH-PG-1 | True | - | - | - | - | default | - |
+| ADDITIONAL-PATH-PG-2 | True | - | - | - | - | default | - |
+| ADDITIONAL-PATH-PG-3 | True | - | - | - | - | default | - |
+| ADDITIONAL-PATH-PG-4 | True | - | - | - | - | default | - |
+| ADDITIONAL-PATH-PG-5 | True | - | - | - | - | default | - |
+| ADDITIONAL-PATH-PG-6 | True | - | - | - | - | default | - |
+| EVPN-OVERLAY | True | RM-HIDE-AS-PATH | RM-HIDE-AS-PATH | PEER_TAG_IN_EVPN | PEER_TAG_DISCARD_OUT_EVPN | default | - |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - | vxlan | - |
+| IPv4-UNDERLAY-PEERS | False | - | - | - | - | default | - |
+| MLAG-IPv4-UNDERLAY-PEER | False | - | - | - | - | default | - |
+| RCF_TEST | False | - | - | - | - | default | - |
+| TEST-ENCAPSULATION | True | - | - | - | - | mpls | - |
+| TEST-ENCAPSULATION-2 | True | - | - | - | - | path-selection | - |
+| TEST-ENCAPSULATION-SRC-INTERFACE | True | - | - | - | - | mpls | Loopback3 |
 
 ##### EVPN Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| -------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| 10.100.100.1 | True | - | - | default | - |
-| 10.100.100.2 | True | - | - | default | - |
-| 10.100.100.3 | True | - | - | default | - |
-| 10.100.100.4 | True | RM1 | RM2 | path-selection | - |
-| 10.100.100.5 | True | - | - | mpls | - |
-| 192.168.255.3 | False | - | - | default | - |
-| 192.168.255.4 | False | - | - | mpls | Ethernet1 |
+| Neighbor | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| -------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| 10.100.100.1 | True | - | - | - | - | default | - |
+| 10.100.100.2 | True | - | - | - | - | default | - |
+| 10.100.100.3 | True | - | - | - | - | default | - |
+| 10.100.100.4 | True | RM1 | RM2 | PEER_TAG_IN_EVPN | PEER_TAG_DISCARD_OUT_EVPN | path-selection | - |
+| 10.100.100.5 | True | - | - | - | - | mpls | - |
+| 192.168.255.3 | False | - | - | - | - | default | - |
+| 192.168.255.4 | False | - | - | - | - | mpls | Ethernet1 |
 
 ##### EVPN Neighbor Default Encapsulation
 
@@ -8618,54 +8829,54 @@ ASN Notation: asdot
 
 ##### IPv4 BGP-LU Peer-groups
 
-| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| PG-BGP-LU | True | RM_BGP_LU_IN | RM_BGP_LU_OUT | - | - |
-| PG-BGP-LU1 | False | - | - | RCF_BGP_LU_IN() | RCF_BGP_LU_OUT() |
-| PG-BGP-LU2 | False | - | - | - | - |
-| PG-BGP-LU3 | False | - | - | - | - |
-| PG-BGP-LU4 | False | - | - | - | - |
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| PG-BGP-LU | True | RM_BGP_LU_IN | RM_BGP_LU_OUT | - | - | PEER_TAG_IN_IPV4_LABELED | PEER_TAG_DISCARD_OUT_IPV4_LABELED |
+| PG-BGP-LU1 | False | - | - | RCF_BGP_LU_IN() | RCF_BGP_LU_OUT() | - | - |
+| PG-BGP-LU2 | False | - | - | - | - | - | - |
+| PG-BGP-LU3 | False | - | - | - | - | - | - |
+| PG-BGP-LU4 | False | - | - | - | - | - | - |
 
 ##### IPv4 BGP-LU Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| -------- | -------- | ------------ | ------------- | ------ | ------- |
-| 192.168.66.21 | False | - | - | - | - |
-| 192.168.66.22 | False | - | - | - | - |
-| 198.51.100.1 | True | - | - | RCF_TEST() | RCF_TEST_OUT() |
-| 198.51.100.2 | False | RM_IN_TEST | RM_OUT_TEST | - | - |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| 192.168.66.21 | False | - | - | - | - | - | - |
+| 192.168.66.22 | False | - | - | - | - | - | - |
+| 198.51.100.1 | True | - | - | RCF_TEST() | RCF_TEST_OUT() | - | - |
+| 198.51.100.2 | False | RM_IN_TEST | RM_OUT_TEST | - | - | PEER_TAG_IN_IPV4_LABELED | PEER_TAG_DISCARD_OUT_IPV4_LABELED |
 
 #### Router BGP IPv4 SR-TE Address Family
 
 ##### IPv4 SR-TE Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
-| 192.168.42.42 | True | RM-SR-TE-PEER-IN4 | RM-SR-TE-PEER-OUT4 |
-| 192.168.42.43 | False | - | - |
+| Neighbor | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ----------- | ------------ |
+| 192.168.42.42 | True | RM-SR-TE-PEER-IN4 | RM-SR-TE-PEER-OUT4 | PEER_TAG_IN_IPV4_SR_TE | PEER_TAG_DISCARD_OUT_IPV4_SR_TE |
+| 192.168.42.43 | False | - | - | - | - |
 
 ##### IPv4 SR-TE Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| SR-TE-PG-1 | True | RM-SR-TE-PEER-IN4 | RM-SR-TE-PEER-OUT4 |
-| SR-TE-PG-2 | False | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ |
+| SR-TE-PG-1 | True | RM-SR-TE-PEER-IN4 | RM-SR-TE-PEER-OUT4 | PEER_TAG_IN_IPV4_SR_TE | PEER_TAG_DISCARD_OUT_IPV4_SR_TE |
+| SR-TE-PG-2 | False | - | - | - | - |
 
 #### Router BGP IPv6 SR-TE Address Family
 
 ##### IPv6 SR-TE Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
-| 2001:db8::dead:beef:cafe | True | RM-SR-TE-PEER-IN6 | RM-SR-TE-PEER-OUT6 |
-| 2002:db8::dead:beef:cafe | False | - | - |
+| Neighbor | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ----------- | ------------ |
+| 2001:db8::dead:beef:cafe | True | RM-SR-TE-PEER-IN6 | RM-SR-TE-PEER-OUT6 | PEER_TAG_IN_IPV6_SR_TE | PEER_TAG_DISCARD_OUT_IPV6_SR_TE |
+| 2002:db8::dead:beef:cafe | False | - | - | - | - |
 
 ##### IPv6 SR-TE Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| SR-TE-PG-2 | True | RM-SR-TE-PEER-IN6 | RM-SR-TE-PEER-OUT6 |
-| SR-TE-PG-3 | False | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ |
+| SR-TE-PG-2 | True | RM-SR-TE-PEER-IN6 | RM-SR-TE-PEER-OUT6 | PEER_TAG_IN_IPV6_SR_TE | PEER_TAG_DISCARD_OUT_IPV6_SR_TE |
+| SR-TE-PG-3 | False | - | - | - | - |
 
 #### Router BGP Link-State Address Family
 
@@ -8695,17 +8906,17 @@ ASN Notation: asdot
 
 ##### VPN-IPv4 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| -------- | -------- | ------------ | ------------- | ------ | ------- |
-| 192.168.255.4 | True | RM-NEIGHBOR-PEER-IN4 | RM-NEIGHBOR-PEER-OUT4 | - | - |
-| 192.168.255.5 | False | - | - | Address_Family_VPN_IPV4_In() | Address_Family_VPN_IPV4_Out() |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| 192.168.255.4 | True | RM-NEIGHBOR-PEER-IN4 | RM-NEIGHBOR-PEER-OUT4 | - | - | PEER_TAG_IN_IPV4_VPN | PEER_TAG_DISCARD_OUT_IPV4_VPN |
+| 192.168.255.5 | False | - | - | Address_Family_VPN_IPV4_In() | Address_Family_VPN_IPV4_Out() | - | - |
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN4 | RM-IBGP-PEER-OUT4 | - | - |
-| Test_RCF | False | - | - | Address_Family_VPN_IPV4_In() | Address_Family_VPN_IPV4_Out() |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN4 | RM-IBGP-PEER-OUT4 | - | - | PEER_TAG_IN_IPV4_VPN | PEER_TAG_DISCARD_OUT_IPV4_VPN |
+| Test_RCF | False | - | - | Address_Family_VPN_IPV4_In() | Address_Family_VPN_IPV4_Out() | - | - |
 
 #### Router BGP VPN-IPv6 Address Family
 
@@ -8713,17 +8924,17 @@ ASN Notation: asdot
 
 ##### VPN-IPv6 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| -------- | -------- | ------------ | ------------- | ------ | ------- |
-| 2001:cafe:192:168::4 | True | RM-NEIGHBOR-PEER-IN6 | RM-NEIGHBOR-PEER-OUT6 | - | - |
-| 2001:cafe:192:168::5 | False | - | - | Address_Family_VPN_IPV6_In() | Address_Family_VPN_IPV6_Out() |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| 2001:cafe:192:168::4 | True | RM-NEIGHBOR-PEER-IN6 | RM-NEIGHBOR-PEER-OUT6 | - | - | PEER_TAG_IN_IPV6_VPN | PEER_TAG_DISCARD_OUT_IPV6_VPN |
+| 2001:cafe:192:168::5 | False | - | - | Address_Family_VPN_IPV6_In() | Address_Family_VPN_IPV6_Out() | - | - |
 
 ##### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN6 | RM-IBGP-PEER-OUT6 | - | - |
-| Test_RCF | False | - | - | Address_Family_VPN_IPV6_In() | Address_Family_VPN_IPV6_Out() |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN6 | RM-IBGP-PEER-OUT6 | - | - | PEER_TAG_IN_IPV6_VPN | PEER_TAG_DISCARD_OUT_IPV6_VPN |
+| Test_RCF | False | - | - | Address_Family_VPN_IPV6_In() | Address_Family_VPN_IPV6_Out() | - | - |
 
 #### Router BGP Path-Selection Address Family
 
@@ -8853,6 +9064,8 @@ router bgp 65101
    neighbor EVPN-OVERLAY-RS-PEERS password 7 <removed>
    neighbor EVPN-OVERLAY-RS-PEERS send-community
    neighbor EVPN-OVERLAY-RS-PEERS maximum-routes 0
+   neighbor EVPN-OVERLAY-RS-PEERS peer-tag in PEER_TAG_IN
+   neighbor EVPN-OVERLAY-RS-PEERS peer-tag out discard PEER_TAG_DISCARD_OUT
    neighbor EXTENDED-COMMUNITY peer group
    neighbor EXTENDED-COMMUNITY send-community extended
    neighbor IPv4-UNDERLAY-PEERS peer group
@@ -8889,6 +9102,8 @@ router bgp 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000 warning-limit 80 percent warning-only
    neighbor MLAG-IPv4-UNDERLAY-PEER missing-policy address-family all direction in action deny
+   neighbor MLAG-IPv4-UNDERLAY-PEER peer-tag in PEER_TAG_IN
+   neighbor MLAG-IPv4-UNDERLAY-PEER peer-tag out discard PEER_TAG_DISCARD_OUT
    neighbor MLAG-IPv4-UNDERLAY-PEER remove-private-as ingress replace-as
    neighbor MPLS-IBGP-PEERS peer group
    neighbor MPLS-IBGP-PEERS remote-as 65000
@@ -9042,6 +9257,8 @@ router bgp 65101
    neighbor 192.168.255.21 peer group EVPN-OVERLAY-PEERS
    no neighbor 192.168.255.21 rib-in pre-policy retain
    neighbor 192.168.255.21 missing-policy address-family all direction out action deny-in-out
+   neighbor 192.168.255.21 peer-tag in PEER_TAG_IN
+   neighbor 192.168.255.21 peer-tag out discard PEER_TAG_DISCARD_OUT
    neighbor 192.168.255.101 peer group MPLS-IBGP-PEERS
    neighbor 192.168.255.201 peer group MPLS-IBGP-PEERS
    neighbor 2001:cafe:192:168::4 remote-as 65004
@@ -9185,6 +9402,8 @@ router bgp 65101
       neighbor EVPN-OVERLAY activate
       neighbor EVPN-OVERLAY route-map RM-HIDE-AS-PATH in
       neighbor EVPN-OVERLAY route-map RM-HIDE-AS-PATH out
+      neighbor EVPN-OVERLAY peer-tag in PEER_TAG_IN_EVPN
+      neighbor EVPN-OVERLAY peer-tag out discard PEER_TAG_DISCARD_OUT_EVPN
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS default-route
       neighbor EVPN-OVERLAY-PEERS encapsulation vxlan
@@ -9213,6 +9432,8 @@ router bgp 65101
       neighbor 10.100.100.4 route-map RM1 in
       neighbor 10.100.100.4 route-map RM2 out
       neighbor 10.100.100.4 additional-paths send limit 9
+      neighbor 10.100.100.4 peer-tag in PEER_TAG_IN_EVPN
+      neighbor 10.100.100.4 peer-tag out discard PEER_TAG_DISCARD_OUT_EVPN
       neighbor 10.100.100.4 encapsulation path-selection
       neighbor 10.100.100.5 activate
       neighbor 10.100.100.5 encapsulation mpls
@@ -9266,6 +9487,8 @@ router bgp 65101
       neighbor IPV4-UNDERLAY route-map RM-HIDE-AS-PATH in
       neighbor IPV4-UNDERLAY route-map RM-HIDE-AS-PATH out
       no neighbor IPV4-UNDERLAY additional-paths send
+      neighbor IPV4-UNDERLAY peer-tag in PEER_TAG_IN_IPV4
+      neighbor IPV4-UNDERLAY peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
       neighbor NHP activate
@@ -9295,6 +9518,8 @@ router bgp 65101
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out
       neighbor 192.0.2.1 additional-paths send limit 20 prefix-list PL1
       neighbor 192.0.2.1 next-hop address-family ipv6 originate
+      neighbor 192.0.2.1 peer-tag in PEER_TAG_IN_IPV4
+      neighbor 192.0.2.1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4
       no neighbor 192.168.66.21 activate
       neighbor 192.168.66.21 additional-paths send any
       network 10.0.0.0/8
@@ -9332,6 +9557,8 @@ router bgp 65101
       neighbor PG-BGP-LU next-hop-unchanged
       neighbor PG-BGP-LU maximum-advertised-routes 120000 warning-limit 1000
       neighbor PG-BGP-LU missing-policy include community-list prefix-list sub-route-map direction in action deny
+      neighbor PG-BGP-LU peer-tag in PEER_TAG_IN_IPV4_LABELED
+      neighbor PG-BGP-LU peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_LABELED
       neighbor PG-BGP-LU aigp-session
       neighbor PG-BGP-LU multi-path
       no neighbor PG-BGP-LU1 activate
@@ -9369,6 +9596,8 @@ router bgp 65101
       neighbor 198.51.100.2 next-hop-unchanged
       neighbor 198.51.100.2 next-hop-self source-interface Ethernet2
       neighbor 198.51.100.2 missing-policy  include community-list prefix-list sub-route-map direction in action deny
+      neighbor 198.51.100.2 peer-tag in PEER_TAG_IN_IPV4_LABELED
+      neighbor 198.51.100.2 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_LABELED
       neighbor 198.51.100.2 aigp-session
       neighbor 198.51.100.2 multi-path
       network 203.0.113.0/25 route-map RM-TEST
@@ -9389,11 +9618,15 @@ router bgp 65101
       neighbor IPV4-UNDERLAY activate
       neighbor IPV4-UNDERLAY route-map IPV4-MULTICAST-RM-IN in
       neighbor IPV4-UNDERLAY route-map IPV4-MULTICAST-RM-OUT out
+      neighbor IPV4-UNDERLAY peer-tag in PEER_TAG_IN_IPV4_MULTICAST
+      neighbor IPV4-UNDERLAY peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_MULTICAST
       neighbor IPV4-UNDERLAY-MLAG activate
       neighbor 10.1.1.1 activate
       neighbor 10.1.1.1 additional-paths receive
       neighbor 10.1.1.1 route-map IPV4-MULTICAST-RM-IN in
       neighbor 10.1.1.1 route-map IPV4-MULTICAST-RM-OUT out
+      neighbor 10.1.1.1 peer-tag in PEER_TAG_IN_IPV4_MULTICAST
+      neighbor 10.1.1.1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_MULTICAST
       no neighbor 10.1.1.2 activate
       redistribute attached-host route-map AFIPV4M_ATTACHED_HOST
       redistribute connected route-map AFIPV4M_CONNECTED
@@ -9409,10 +9642,14 @@ router bgp 65101
       neighbor SR-TE-PG-1 activate
       neighbor SR-TE-PG-1 route-map RM-SR-TE-PEER-IN4 in
       neighbor SR-TE-PG-1 route-map RM-SR-TE-PEER-OUT4 out
+      neighbor SR-TE-PG-1 peer-tag in PEER_TAG_IN_IPV4_SR_TE
+      neighbor SR-TE-PG-1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_SR_TE
       no neighbor SR-TE-PG-2 activate
       neighbor 192.168.42.42 activate
       neighbor 192.168.42.42 route-map RM-SR-TE-PEER-IN4 in
       neighbor 192.168.42.42 route-map RM-SR-TE-PEER-OUT4 out
+      neighbor 192.168.42.42 peer-tag in PEER_TAG_IN_IPV4_SR_TE
+      neighbor 192.168.42.42 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_SR_TE
       no neighbor 192.168.42.43 activate
    !
    address-family ipv6
@@ -9428,6 +9665,8 @@ router bgp 65101
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH in
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH out
       neighbor IPV6-UNDERLAY additional-paths send any
+      neighbor IPV6-UNDERLAY peer-tag in PEER_TAG_IN_IPV6
+      neighbor IPV6-UNDERLAY peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6
       neighbor IPV6-UNDERLAY-MLAG activate
       no neighbor IPV6-UNDERLAY-MLAG additional-paths send
       neighbor TEST_RCF rcf in Address_Family_IPV6_In()
@@ -9439,6 +9678,8 @@ router bgp 65101
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-IN in
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-OUT out
       neighbor 2001:db8::1 additional-paths send ecmp limit 20
+      neighbor 2001:db8::1 peer-tag in PEER_TAG_IN_IPV6
+      neighbor 2001:db8::1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6
       neighbor 2001:db8::2 activate
       neighbor 2001:db8::2 rcf in Address_Family_IPV6_In()
       neighbor 2001:db8::2 rcf out Address_Family_IPV6_Out()
@@ -9472,6 +9713,8 @@ router bgp 65101
       neighbor aa::1 additional-paths receive
       neighbor aa::1 route-map IPv6_MULTICAST_RM_IN in
       neighbor aa::1 route-map IPv6_MULTICAST_RM_OUT out
+      neighbor aa::1 peer-tag in PEER_TAG_IN_IPV6_MULTICAST
+      neighbor aa::1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6_MULTICAST
       network aa::1/126 route-map IPv6_MULTICAST_RM
       redistribute connected route-map RM-address_family_ipv6_multicast-Connected
       redistribute isis level-1 include leaked route-map RM-address_family_ipv6_multicast-ISIS
@@ -9487,10 +9730,14 @@ router bgp 65101
       neighbor SR-TE-PG-2 activate
       neighbor SR-TE-PG-2 route-map RM-SR-TE-PEER-IN6 in
       neighbor SR-TE-PG-2 route-map RM-SR-TE-PEER-OUT6 out
+      neighbor SR-TE-PG-2 peer-tag in PEER_TAG_IN_IPV6_SR_TE
+      neighbor SR-TE-PG-2 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6_SR_TE
       no neighbor SR-TE-PG-3 activate
       neighbor 2001:db8::dead:beef:cafe activate
       neighbor 2001:db8::dead:beef:cafe route-map RM-SR-TE-PEER-IN6 in
       neighbor 2001:db8::dead:beef:cafe route-map RM-SR-TE-PEER-OUT6 out
+      neighbor 2001:db8::dead:beef:cafe peer-tag in PEER_TAG_IN_IPV6_SR_TE
+      neighbor 2001:db8::dead:beef:cafe peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6_SR_TE
       no neighbor 2002:db8::dead:beef:cafe activate
    !
    address-family link-state
@@ -9546,6 +9793,8 @@ router bgp 65101
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-IN4 in
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-OUT4 out
       neighbor MPLS-IBGP-PEERS default-route route-map RM-IBGP-PEER-IN4
+      neighbor MPLS-IBGP-PEERS peer-tag in PEER_TAG_IN_IPV4_VPN
+      neighbor MPLS-IBGP-PEERS peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_VPN
       no neighbor Test_RCF activate
       neighbor Test_RCF rcf in Address_Family_VPN_IPV4_In()
       neighbor Test_RCF rcf out Address_Family_VPN_IPV4_Out()
@@ -9554,6 +9803,8 @@ router bgp 65101
       neighbor 192.168.255.4 route-map RM-NEIGHBOR-PEER-IN4 in
       neighbor 192.168.255.4 route-map RM-NEIGHBOR-PEER-OUT4 out
       neighbor 192.168.255.4 default-route route-map RM-NEIGHBOR-PEER-IN4
+      neighbor 192.168.255.4 peer-tag in PEER_TAG_IN_IPV4_VPN
+      neighbor 192.168.255.4 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_VPN
       no neighbor 192.168.255.5 activate
       neighbor 192.168.255.5 rcf in Address_Family_VPN_IPV4_In()
       neighbor 192.168.255.5 rcf out Address_Family_VPN_IPV4_Out()
@@ -9567,6 +9818,8 @@ router bgp 65101
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-IN6 in
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-OUT6 out
       neighbor MPLS-IBGP-PEERS default-route route-map RM-IBGP-PEER-OUT6
+      neighbor MPLS-IBGP-PEERS peer-tag in PEER_TAG_IN_IPV6_VPN
+      neighbor MPLS-IBGP-PEERS peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6_VPN
       no neighbor Test_RCF activate
       neighbor Test_RCF rcf in Address_Family_VPN_IPV6_In()
       neighbor Test_RCF rcf out Address_Family_VPN_IPV6_Out()
@@ -9575,6 +9828,8 @@ router bgp 65101
       neighbor 2001:cafe:192:168::4 route-map RM-NEIGHBOR-PEER-IN6 in
       neighbor 2001:cafe:192:168::4 route-map RM-NEIGHBOR-PEER-OUT6 out
       neighbor 2001:cafe:192:168::4 default-route route-map RM-NEIGHBOR-PEER-IN6
+      neighbor 2001:cafe:192:168::4 peer-tag in PEER_TAG_IN_IPV6_VPN
+      neighbor 2001:cafe:192:168::4 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6_VPN
       no neighbor 2001:cafe:192:168::5 activate
       neighbor 2001:cafe:192:168::5 rcf in Address_Family_VPN_IPV6_In()
       neighbor 2001:cafe:192:168::5 rcf out Address_Family_VPN_IPV6_Out()
@@ -9691,6 +9946,8 @@ router bgp 65101
          neighbor 10.2.3.4 activate
          neighbor 10.2.3.5 activate
          neighbor 10.2.3.5 route-map RM-10.2.3.5-SET-NEXT-HOP-IN in
+         neighbor 10.2.3.5 peer-tag in PEER_TAG_IN_IPV4_VRF
+         neighbor 10.2.3.5 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_VRF
          neighbor 10.2.3.6 next-hop address-family ipv6
          neighbor 10.2.3.7 next-hop address-family ipv6 originate
          no neighbor 10.2.3.8 next-hop address-family ipv6
@@ -9794,6 +10051,8 @@ router bgp 65101
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
          neighbor 1.2.3.4 additional-paths send any
+         neighbor 1.2.3.4 peer-tag in PEER_TAG_IN_IPV4_VRF
+         neighbor 1.2.3.4 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_VRF
          network 2.3.4.0/24 route-map BARFOO
          redistribute attached-host route-map VRF_AFIPV4_RM_HOST
          redistribute bgp leaked route-map VRF_AFIPV4_RM_BGP
@@ -9817,6 +10076,8 @@ router bgp 65101
          neighbor 1.2.3.4 additional-paths receive
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
+         neighbor 1.2.3.4 peer-tag in PEER_TAG_IN_IPV4_MULTICAST_VRF
+         neighbor 1.2.3.4 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV4_MULTICAST_VRF
          network 239.0.0.0/24 route-map BARFOO
          redistribute attached-host route-map VRF_AFIPV4MULTI_RM_HOST
          redistribute connected route-map VRF_AFIPV4MULTI_RM_CONNECTED
@@ -9840,6 +10101,8 @@ router bgp 65101
          neighbor aa::1 route-map FOO in
          neighbor aa::1 route-map BAR out
          neighbor aa::1 additional-paths send any
+         neighbor aa::1 peer-tag in PEER_TAG_IN_IPV6_VRF
+         neighbor aa::1 peer-tag out discard PEER_TAG_DISCARD_OUT_IPV6_VRF
          neighbor aa::2 activate
          neighbor aa::2 rcf in VRF_AFIPV6_RCF_IN()
          neighbor aa::2 rcf out VRF_AFIPV6_RCF_OUT()
@@ -9919,6 +10182,49 @@ router bgp 65101
          route-target import 00:01:00:01:00:01
             !
             layer-2 fec in-place update
+```
+
+### Router RIP
+
+#### Router RIP Summary
+
+##### VRF: VRF1
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+| True | 10 | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
+
+##### VRF: default
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+| True | - | 192.168.1.0/24, 192.168.2.0/24, 10.0.0.0/8 |
+
+##### VRF: vrf2
+
+| Enabled | Default Metric | Networks |
+| ------- | -------------- | -------- |
+| False | - | - |
+
+#### Router RIP Device Configuration
+
+```eos
+!
+router rip vrf VRF1
+   metric default 10
+   network 10.0.0.0/8
+   network 192.168.1.0/24
+   network 192.168.2.0/24
+   no shutdown
+!
+router rip
+   network 10.0.0.0/8
+   network 192.168.1.0/24
+   network 192.168.2.0/24
+   no shutdown
+!
+router rip vrf vrf2
+   shutdown
 ```
 
 ### PBR Policy Maps

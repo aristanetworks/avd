@@ -2658,6 +2658,631 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class Cfm(AvdModel):
+        """Subclass of AvdModel."""
+
+        class DomainsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AssociationsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class EndPointsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"id": {"type": int}, "remote_end_point": {"type": str}, "interface": {"type": str}}
+                    id: int
+                    """Local maintenance endpoint ID."""
+                    remote_end_point: str | None
+                    """
+                    Remote maintenance endpoint ID(s) or range(s) of remote maintenance endpoint ID(s).
+                    The range is
+                    from 1 to 8191.
+                    """
+                    interface: str | None
+                    """
+                    Specifies the interface on which to configure the local maintenance endpoint.
+                    Supported types
+                    include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs).
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            id: int | UndefinedType = Undefined,
+                            remote_end_point: str | None | UndefinedType = Undefined,
+                            interface: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            EndPointsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                id: Local maintenance endpoint ID.
+                                remote_end_point:
+                                   Remote maintenance endpoint ID(s) or range(s) of remote maintenance endpoint ID(s).
+                                   The range is
+                                   from 1 to 8191.
+                                interface:
+                                   Specifies the interface on which to configure the local maintenance endpoint.
+                                   Supported types
+                                   include Ethernet sub-interfaces, InternalRecirc, and Port-Channel link aggregation groups (LAGs).
+
+                            """
+
+                class EndPoints(AvdIndexedList[int, EndPointsItem]):
+                    """Subclass of AvdIndexedList with `EndPointsItem` items. Primary key is `id` (`int`)."""
+
+                    _primary_key: ClassVar[str] = "id"
+
+                EndPoints._item_type = EndPointsItem
+
+                class RemoteEndPointsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"id": {"type": int}, "mac_address": {"type": str}}
+                    id: int
+                    """Configure remote maintenance endpoint ID."""
+                    mac_address: str | None
+                    """MAC address of the RMEP."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, id: int | UndefinedType = Undefined, mac_address: str | None | UndefinedType = Undefined) -> None:
+                            """
+                            RemoteEndPointsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                id: Configure remote maintenance endpoint ID.
+                                mac_address: MAC address of the RMEP.
+
+                            """
+
+                class RemoteEndPoints(AvdIndexedList[int, RemoteEndPointsItem]):
+                    """Subclass of AvdIndexedList with `RemoteEndPointsItem` items. Primary key is `id` (`int`)."""
+
+                    _primary_key: ClassVar[str] = "id"
+
+                RemoteEndPoints._item_type = RemoteEndPointsItem
+
+                _fields: ClassVar[dict] = {
+                    "id": {"type": int},
+                    "direction": {"type": str},
+                    "end_points": {"type": EndPoints},
+                    "profile": {"type": str},
+                    "remote_end_points": {"type": RemoteEndPoints},
+                    "vlan": {"type": int},
+                }
+                id: int
+                """Maintenance association ID."""
+                direction: Literal["up", "down"] | None
+                """Local maintenance endpoint direction."""
+                end_points: EndPoints
+                """
+                Configure the maintenance endpoint(MEP).
+
+                Subclass of AvdIndexedList with `EndPointsItem` items.
+                Primary key is `id` (`int`).
+                """
+                profile: str | None
+                """Apply connectivity fault management profile."""
+                remote_end_points: RemoteEndPoints
+                """
+                Configure the remote maintenance endpoint(RMEP).
+
+                Subclass of AvdIndexedList with
+                `RemoteEndPointsItem` items. Primary key is `id` (`int`).
+                """
+                vlan: int | None
+                """Set VLAN in the maintenance association."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        id: int | UndefinedType = Undefined,
+                        direction: Literal["up", "down"] | None | UndefinedType = Undefined,
+                        end_points: EndPoints | UndefinedType = Undefined,
+                        profile: str | None | UndefinedType = Undefined,
+                        remote_end_points: RemoteEndPoints | UndefinedType = Undefined,
+                        vlan: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        AssociationsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            id: Maintenance association ID.
+                            direction: Local maintenance endpoint direction.
+                            end_points:
+                               Configure the maintenance endpoint(MEP).
+
+                               Subclass of AvdIndexedList with `EndPointsItem` items.
+                               Primary key is `id` (`int`).
+                            profile: Apply connectivity fault management profile.
+                            remote_end_points:
+                               Configure the remote maintenance endpoint(RMEP).
+
+                               Subclass of AvdIndexedList with
+                               `RemoteEndPointsItem` items. Primary key is `id` (`int`).
+                            vlan: Set VLAN in the maintenance association.
+
+                        """
+
+            class Associations(AvdIndexedList[int, AssociationsItem]):
+                """Subclass of AvdIndexedList with `AssociationsItem` items. Primary key is `id` (`int`)."""
+
+                _primary_key: ClassVar[str] = "id"
+
+            Associations._item_type = AssociationsItem
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "level": {"type": int},
+                "associations": {"type": Associations},
+                "intermediate_point": {"type": bool},
+            }
+            name: str
+            """CFM domain name."""
+            level: int
+            """Maintenance domain level."""
+            associations: Associations
+            """
+            List of maintenance associations.
+
+            Subclass of AvdIndexedList with `AssociationsItem` items. Primary
+            key is `id` (`int`).
+            """
+            intermediate_point: bool | None
+            """Configure the device as a maintenance intermediate point."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    level: int | UndefinedType = Undefined,
+                    associations: Associations | UndefinedType = Undefined,
+                    intermediate_point: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    DomainsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: CFM domain name.
+                        level: Maintenance domain level.
+                        associations:
+                           List of maintenance associations.
+
+                           Subclass of AvdIndexedList with `AssociationsItem` items. Primary
+                           key is `id` (`int`).
+                        intermediate_point: Configure the device as a maintenance intermediate point.
+
+                    """
+
+        class Domains(AvdIndexedList[str, DomainsItem]):
+            """Subclass of AvdIndexedList with `DomainsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Domains._item_type = DomainsItem
+
+        class MeasurementLoss(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"inband": {"type": bool}, "synthetic": {"type": bool}}
+            inband: bool | None
+            """Enable hardware-assisted support for OAM loss measurement."""
+            synthetic: bool | None
+            """Enable hardware-assisted support for OAM synthetic loss measurement."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, inband: bool | None | UndefinedType = Undefined, synthetic: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    MeasurementLoss.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        inband: Enable hardware-assisted support for OAM loss measurement.
+                        synthetic: Enable hardware-assisted support for OAM synthetic loss measurement.
+
+                    """
+
+        class ProfilesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class AlarmIndication(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "client_domain_level": {"type": int}, "tx_interval": {"type": str}}
+                enabled: bool | None
+                """Enable sending of alarm indication signal (AIS) packets."""
+                client_domain_level: int | None
+                """Client maintenance domain level for which to send AIS packets."""
+                tx_interval: Literal["1 seconds", "1 minutes"] | None
+                """Transmission interval for AIS packets."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        client_domain_level: int | None | UndefinedType = Undefined,
+                        tx_interval: Literal["1 seconds", "1 minutes"] | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        AlarmIndication.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable sending of alarm indication signal (AIS) packets.
+                            client_domain_level: Client maintenance domain level for which to send AIS packets.
+                            tx_interval: Transmission interval for AIS packets.
+
+                        """
+
+            class ContinuityCheck(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AlarmDefects(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                AlarmDefects._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool},
+                    "qos_cos": {"type": int},
+                    "tx_interval": {"type": str},
+                    "alarm_defects": {"type": AlarmDefects},
+                }
+                enabled: bool | None
+                """Enable the continuity check protocol to monitor connectivity."""
+                qos_cos: int | None
+                """Set the class of service (CoS) value for CFM frames."""
+                tx_interval: Literal["3.33 milliseconds", "10 milliseconds", "100 milliseconds", "1 seconds", "10 seconds", "1 minutes", "10 minutes"] | None
+                """Set the transmission interval for continuity check messages (CCMs)."""
+                alarm_defects: AlarmDefects
+                """
+                Defines alarm indication signal protocol parameters. Supported options:
+                - rdi-ccm: Raise alarms on
+                continuity check messages (CCMs) with the remote defect indication (RDI) bit set.
+                - loc-state: Raise
+                alarms on loss of connectivity (LOC).
+                - error-ccm: Raise alarms on invalid continuity check messages
+                (CCMs).
+                - cross-connection: Raise alarms on cross-connection defects.
+
+                Subclass of AvdList with
+                `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | None | UndefinedType = Undefined,
+                        qos_cos: int | None | UndefinedType = Undefined,
+                        tx_interval: Literal["3.33 milliseconds", "10 milliseconds", "100 milliseconds", "1 seconds", "10 seconds", "1 minutes", "10 minutes"]
+                        | None
+                        | UndefinedType = Undefined,
+                        alarm_defects: AlarmDefects | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ContinuityCheck.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: Enable the continuity check protocol to monitor connectivity.
+                            qos_cos: Set the class of service (CoS) value for CFM frames.
+                            tx_interval: Set the transmission interval for continuity check messages (CCMs).
+                            alarm_defects:
+                               Defines alarm indication signal protocol parameters. Supported options:
+                               - rdi-ccm: Raise alarms on
+                               continuity check messages (CCMs) with the remote defect indication (RDI) bit set.
+                               - loc-state: Raise
+                               alarms on loss of connectivity (LOC).
+                               - error-ccm: Raise alarms on invalid continuity check messages
+                               (CCMs).
+                               - cross-connection: Raise alarms on cross-connection defects.
+
+                               Subclass of AvdList with
+                               `str` items.
+
+                        """
+
+            class Measurement(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Delay(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"single_ended": {"type": bool}, "qos_cos": {"type": int}, "tx_interval": {"type": str}}
+                    single_ended: bool | None
+                    """Enable single-ended delay measurement."""
+                    qos_cos: int | None
+                    """Set the class of service (CoS) value for CFM frames."""
+                    tx_interval: str | None
+                    """
+                    Interval in milliseconds between successive measurement frames.
+                    The range is from 3.33 to 600000.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            single_ended: bool | None | UndefinedType = Undefined,
+                            qos_cos: int | None | UndefinedType = Undefined,
+                            tx_interval: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Delay.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                single_ended: Enable single-ended delay measurement.
+                                qos_cos: Set the class of service (CoS) value for CFM frames.
+                                tx_interval:
+                                   Interval in milliseconds between successive measurement frames.
+                                   The range is from 3.33 to 600000.
+
+                            """
+
+                class Loss(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Synthetic(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class TxInterval(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"interval": {"type": str}, "period_frames": {"type": int}}
+                            interval: str
+                            """
+                            Interval in milliseconds between successive measurement frames.
+                            The range is from 3.33 to 600000.
+                            """
+                            period_frames: int | None
+                            """Synthetic loss measurement transmission frames."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, interval: str | UndefinedType = Undefined, period_frames: int | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    TxInterval.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        interval:
+                                           Interval in milliseconds between successive measurement frames.
+                                           The range is from 3.33 to 600000.
+                                        period_frames: Synthetic loss measurement transmission frames.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"single_ended": {"type": bool}, "qos_cos": {"type": str}, "tx_interval": {"type": TxInterval}}
+                        single_ended: bool | None
+                        """Enable single-ended synthetic loss measurement."""
+                        qos_cos: str | None
+                        """Set the class of service (CoS) value or a range of values (0-7) for synthetic loss measurement."""
+                        tx_interval: TxInterval
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                single_ended: bool | None | UndefinedType = Undefined,
+                                qos_cos: str | None | UndefinedType = Undefined,
+                                tx_interval: TxInterval | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Synthetic.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    single_ended: Enable single-ended synthetic loss measurement.
+                                    qos_cos: Set the class of service (CoS) value or a range of values (0-7) for synthetic loss measurement.
+                                    tx_interval: Subclass of AvdModel.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "single_ended": {"type": bool},
+                        "qos_cos": {"type": int},
+                        "tx_interval": {"type": str},
+                        "synthetic": {"type": Synthetic},
+                    }
+                    single_ended: bool | None
+                    """Enable single-ended loss measurement."""
+                    qos_cos: int | None
+                    """Set the class of service (CoS) value for CFM frames."""
+                    tx_interval: str | None
+                    """
+                    Interval in milliseconds between successive measurement frames.
+                    The range is from 3.33 to 600000.
+                    """
+                    synthetic: Synthetic
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            single_ended: bool | None | UndefinedType = Undefined,
+                            qos_cos: int | None | UndefinedType = Undefined,
+                            tx_interval: str | None | UndefinedType = Undefined,
+                            synthetic: Synthetic | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Loss.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                single_ended: Enable single-ended loss measurement.
+                                qos_cos: Set the class of service (CoS) value for CFM frames.
+                                tx_interval:
+                                   Interval in milliseconds between successive measurement frames.
+                                   The range is from 3.33 to 600000.
+                                synthetic: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"delay": {"type": Delay}, "loss": {"type": Loss}}
+                delay: Delay
+                """Subclass of AvdModel."""
+                loss: Loss
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, delay: Delay | UndefinedType = Undefined, loss: Loss | UndefinedType = Undefined) -> None:
+                        """
+                        Measurement.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            delay: Subclass of AvdModel.
+                            loss: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "alarm_indication": {"type": AlarmIndication},
+                "continuity_check": {"type": ContinuityCheck},
+                "measurement": {"type": Measurement},
+            }
+            name: str
+            """CFM profile name."""
+            alarm_indication: AlarmIndication
+            """Subclass of AvdModel."""
+            continuity_check: ContinuityCheck
+            """Subclass of AvdModel."""
+            measurement: Measurement
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    alarm_indication: AlarmIndication | UndefinedType = Undefined,
+                    continuity_check: ContinuityCheck | UndefinedType = Undefined,
+                    measurement: Measurement | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    ProfilesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: CFM profile name.
+                        alarm_indication: Subclass of AvdModel.
+                        continuity_check: Subclass of AvdModel.
+                        measurement: Subclass of AvdModel.
+
+                    """
+
+        class Profiles(AvdIndexedList[str, ProfilesItem]):
+            """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Profiles._item_type = ProfilesItem
+
+        _fields: ClassVar[dict] = {
+            "continuity_check_loc_state_action_disable_interface_routing": {"type": bool},
+            "domains": {"type": Domains},
+            "measurement_loss": {"type": MeasurementLoss},
+            "profiles": {"type": Profiles},
+        }
+        continuity_check_loc_state_action_disable_interface_routing: bool | None
+        """
+        Disable routing on interfaces where a loss of connectivity (LOC) defect is detected.
+        This prevents
+        traffic from being routed to a faulty link.
+        """
+        domains: Domains
+        """Subclass of AvdIndexedList with `DomainsItem` items. Primary key is `name` (`str`)."""
+        measurement_loss: MeasurementLoss
+        """
+        Configure Ethernet OAM loss measurement functions.
+
+        Subclass of AvdModel.
+        """
+        profiles: Profiles
+        """Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                continuity_check_loc_state_action_disable_interface_routing: bool | None | UndefinedType = Undefined,
+                domains: Domains | UndefinedType = Undefined,
+                measurement_loss: MeasurementLoss | UndefinedType = Undefined,
+                profiles: Profiles | UndefinedType = Undefined,
+            ) -> None:
+                """
+                Cfm.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    continuity_check_loc_state_action_disable_interface_routing:
+                       Disable routing on interfaces where a loss of connectivity (LOC) defect is detected.
+                       This prevents
+                       traffic from being routed to a faulty link.
+                    domains: Subclass of AvdIndexedList with `DomainsItem` items. Primary key is `name` (`str`).
+                    measurement_loss:
+                       Configure Ethernet OAM loss measurement functions.
+
+                       Subclass of AvdModel.
+                    profiles: Subclass of AvdIndexedList with `ProfilesItem` items. Primary key is `name` (`str`).
+
+                """
+
     class ClassMaps(AvdModel):
         """Subclass of AvdModel."""
 
@@ -9057,13 +9682,69 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"frequency": {"type": str}, "frequency_unit": {"type": str}, "media": {"type": Media}}
+            class ApplicationOverrideLanesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"override": {"type": int}, "first_lane": {"type": int}, "last_lane": {"type": int}}
+                override: int
+                first_lane: int
+                """Set the start value of host lanes for which overrides should be applied."""
+                last_lane: int | None
+                """Set the last value of host lanes for which overrides should be applied."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        override: int | UndefinedType = Undefined,
+                        first_lane: int | UndefinedType = Undefined,
+                        last_lane: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ApplicationOverrideLanesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            override: override
+                            first_lane: Set the start value of host lanes for which overrides should be applied.
+                            last_lane: Set the last value of host lanes for which overrides should be applied.
+
+                        """
+
+            class ApplicationOverrideLanes(AvdList[ApplicationOverrideLanesItem]):
+                """Subclass of AvdList with `ApplicationOverrideLanesItem` items."""
+
+            ApplicationOverrideLanes._item_type = ApplicationOverrideLanesItem
+
+            _fields: ClassVar[dict] = {
+                "frequency": {"type": str},
+                "frequency_unit": {"type": str},
+                "media": {"type": Media},
+                "application_override": {"type": str},
+                "application_override_lanes": {"type": ApplicationOverrideLanes},
+            }
             frequency: str | None
             """Transceiver Laser Frequency in GHz (min 190000, max 200000)."""
             frequency_unit: Literal["ghz"] | None
             """Unit of Transceiver Laser Frequency."""
             media: Media
             """Subclass of AvdModel."""
+            application_override: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"] | None
+            """
+            Set CMIS transceiver application.
+            '100gbase-srbd' should not be used in conjunction with
+            `application_override_lanes`.
+            """
+            application_override_lanes: ApplicationOverrideLanes
+            """
+            Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
+
+            Subclass of
+            AvdList with `ApplicationOverrideLanesItem` items.
+            """
 
             if TYPE_CHECKING:
 
@@ -9073,6 +9754,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     frequency: str | None | UndefinedType = Undefined,
                     frequency_unit: Literal["ghz"] | None | UndefinedType = Undefined,
                     media: Media | UndefinedType = Undefined,
+                    application_override: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "100gbase-srbd"]
+                    | None
+                    | UndefinedType = Undefined,
+                    application_override_lanes: ApplicationOverrideLanes | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Transceiver.
@@ -9084,6 +9769,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         frequency: Transceiver Laser Frequency in GHz (min 190000, max 200000).
                         frequency_unit: Unit of Transceiver Laser Frequency.
                         media: Subclass of AvdModel.
+                        application_override:
+                           Set CMIS transceiver application.
+                           '100gbase-srbd' should not be used in conjunction with
+                           `application_override_lanes`.
+                        application_override_lanes:
+                           Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
+
+                           Subclass of
+                           AvdList with `ApplicationOverrideLanesItem` items.
 
                     """
 
@@ -9823,14 +10517,31 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv4(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"address": {"type": str}, "version": {"type": int}}
+                class SecondaryAddresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SecondaryAddresses._item_type = str
+
+                _fields: ClassVar[dict] = {"address": {"type": str}, "secondary_addresses": {"type": SecondaryAddresses}, "version": {"type": int}}
                 address: str
                 """Virtual IPv4 address."""
+                secondary_addresses: SecondaryAddresses
+                """
+                Additional VRRP IPv4 addresses.
+
+                Subclass of AvdList with `str` items.
+                """
                 version: Literal[2, 3] | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, address: str | UndefinedType = Undefined, version: Literal[2, 3] | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        address: str | UndefinedType = Undefined,
+                        secondary_addresses: SecondaryAddresses | UndefinedType = Undefined,
+                        version: Literal[2, 3] | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Ipv4.
 
@@ -9839,6 +10550,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             address: Virtual IPv4 address.
+                            secondary_addresses:
+                               Additional VRRP IPv4 addresses.
+
+                               Subclass of AvdList with `str` items.
                             version: version
 
                         """
@@ -9846,13 +10561,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv6(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"address": {"type": str}}
-                address: str
+                class Addresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Addresses._item_type = str
+
+                _fields: ClassVar[dict] = {"address": {"type": str}, "addresses": {"type": Addresses}}
+                address: str | None
                 """Virtual IPv6 address."""
+                addresses: Addresses
+                """
+                Virtual IPv6 addresses.
+
+                Subclass of AvdList with `str` items.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, address: str | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, address: str | None | UndefinedType = Undefined, addresses: Addresses | UndefinedType = Undefined) -> None:
                         """
                         Ipv6.
 
@@ -9861,6 +10587,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             address: Virtual IPv6 address.
+                            addresses:
+                               Virtual IPv6 addresses.
+
+                               Subclass of AvdList with `str` items.
 
                         """
 
@@ -23952,6 +24682,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """
 
         _fields: ClassVar[dict] = {
+            "is_deployed": {"type": bool},
             "platform": {"type": str},
             "system_mac_address": {"type": str},
             "rack": {"type": str},
@@ -23962,6 +24693,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "cv_pathfinder": {"type": CvPathfinder},
             "digital_twin": {"type": DigitalTwin},
         }
+        is_deployed: bool | None
+        """Key only used for documentation or validation purposes."""
         platform: str | None
         system_mac_address: str | None
         rack: str | None
@@ -23988,6 +24721,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             def __init__(
                 self,
                 *,
+                is_deployed: bool | None | UndefinedType = Undefined,
                 platform: str | None | UndefinedType = Undefined,
                 system_mac_address: str | None | UndefinedType = Undefined,
                 rack: str | None | UndefinedType = Undefined,
@@ -24005,6 +24739,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    is_deployed: Key only used for documentation or validation purposes.
                     platform: platform
                     system_mac_address: system_mac_address
                     rack: rack
@@ -31253,6 +31988,342 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class VrrpIdsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Advertisement(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"interval": {"type": int}}
+                interval: int | None
+                """Interval in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, interval: int | None | UndefinedType = Undefined) -> None:
+                        """
+                        Advertisement.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            interval: Interval in seconds.
+
+                        """
+
+            class Preempt(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Delay(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"minimum": {"type": int}, "reload": {"type": int}}
+                    minimum: int | None
+                    """Minimum preempt delay in seconds."""
+                    reload: int | None
+                    """Reload preempt delay in seconds."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, minimum: int | None | UndefinedType = Undefined, reload: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            Delay.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                minimum: Minimum preempt delay in seconds.
+                                reload: Reload preempt delay in seconds.
+
+                            """
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "delay": {"type": Delay}}
+                enabled: bool
+                delay: Delay
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, delay: Delay | UndefinedType = Undefined) -> None:
+                        """
+                        Preempt.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            delay: Subclass of AvdModel.
+
+                        """
+
+            class Timers(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Delay(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"reload": {"type": int}}
+                    reload: int | None
+                    """Delay after reload in seconds."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, reload: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            Delay.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                reload: Delay after reload in seconds.
+
+                            """
+
+                _fields: ClassVar[dict] = {"delay": {"type": Delay}}
+                delay: Delay
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, delay: Delay | UndefinedType = Undefined) -> None:
+                        """
+                        Timers.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            delay: Subclass of AvdModel.
+
+                        """
+
+            class TrackedObjectItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "decrement": {"type": int}, "shutdown": {"type": bool}}
+                name: str
+                """Tracked object name."""
+                decrement: int | None
+                """Decrement VRRP priority by 1-254."""
+                shutdown: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        decrement: int | None | UndefinedType = Undefined,
+                        shutdown: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        TrackedObjectItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Tracked object name.
+                            decrement: Decrement VRRP priority by 1-254.
+                            shutdown: shutdown
+
+                        """
+
+            class TrackedObject(AvdIndexedList[str, TrackedObjectItem]):
+                """Subclass of AvdIndexedList with `TrackedObjectItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            TrackedObject._item_type = TrackedObjectItem
+
+            class Ipv4(AvdModel):
+                """Subclass of AvdModel."""
+
+                class SecondaryAddresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SecondaryAddresses._item_type = str
+
+                _fields: ClassVar[dict] = {"address": {"type": str}, "secondary_addresses": {"type": SecondaryAddresses}, "version": {"type": int}}
+                address: str
+                """Virtual IPv4 address."""
+                secondary_addresses: SecondaryAddresses
+                """
+                Additional VRRP IPv4 addresses.
+
+                Subclass of AvdList with `str` items.
+                """
+                version: Literal[2, 3] | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        address: str | UndefinedType = Undefined,
+                        secondary_addresses: SecondaryAddresses | UndefinedType = Undefined,
+                        version: Literal[2, 3] | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ipv4.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            address: Virtual IPv4 address.
+                            secondary_addresses:
+                               Additional VRRP IPv4 addresses.
+
+                               Subclass of AvdList with `str` items.
+                            version: version
+
+                        """
+
+            class Ipv6(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Addresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Addresses._item_type = str
+
+                _fields: ClassVar[dict] = {"address": {"type": str}, "addresses": {"type": Addresses}}
+                address: str | None
+                """Virtual IPv6 address."""
+                addresses: Addresses
+                """
+                Virtual IPv6 addresses.
+
+                Subclass of AvdList with `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, address: str | None | UndefinedType = Undefined, addresses: Addresses | UndefinedType = Undefined) -> None:
+                        """
+                        Ipv6.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            address: Virtual IPv6 address.
+                            addresses:
+                               Virtual IPv6 addresses.
+
+                               Subclass of AvdList with `str` items.
+
+                        """
+
+            class PeerAuthentication(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "key": {"type": str}, "key_type": {"type": str}}
+                mode: Literal["text", "ietf-md5"]
+                """Authentication mode."""
+                key: str
+                """Authentication key."""
+                key_type: Literal["0", "7", "8a"] | None
+                """Authentication key type."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        mode: Literal["text", "ietf-md5"] | UndefinedType = Undefined,
+                        key: str | UndefinedType = Undefined,
+                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PeerAuthentication.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: Authentication mode.
+                            key: Authentication key.
+                            key_type: Authentication key type.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "id": {"type": int},
+                "priority_level": {"type": int},
+                "advertisement": {"type": Advertisement},
+                "preempt": {"type": Preempt},
+                "timers": {"type": Timers},
+                "tracked_object": {"type": TrackedObject},
+                "ipv4": {"type": Ipv4},
+                "ipv6": {"type": Ipv6},
+                "peer_authentication": {"type": PeerAuthentication},
+            }
+            id: int
+            """VRID."""
+            priority_level: int | None
+            """Instance priority."""
+            advertisement: Advertisement
+            """Subclass of AvdModel."""
+            preempt: Preempt
+            """Subclass of AvdModel."""
+            timers: Timers
+            """Subclass of AvdModel."""
+            tracked_object: TrackedObject
+            """Subclass of AvdIndexedList with `TrackedObjectItem` items. Primary key is `name` (`str`)."""
+            ipv4: Ipv4
+            """Subclass of AvdModel."""
+            ipv6: Ipv6
+            """Subclass of AvdModel."""
+            peer_authentication: PeerAuthentication
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    id: int | UndefinedType = Undefined,
+                    priority_level: int | None | UndefinedType = Undefined,
+                    advertisement: Advertisement | UndefinedType = Undefined,
+                    preempt: Preempt | UndefinedType = Undefined,
+                    timers: Timers | UndefinedType = Undefined,
+                    tracked_object: TrackedObject | UndefinedType = Undefined,
+                    ipv4: Ipv4 | UndefinedType = Undefined,
+                    ipv6: Ipv6 | UndefinedType = Undefined,
+                    peer_authentication: PeerAuthentication | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    VrrpIdsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        id: VRID.
+                        priority_level: Instance priority.
+                        advertisement: Subclass of AvdModel.
+                        preempt: Subclass of AvdModel.
+                        timers: Subclass of AvdModel.
+                        tracked_object: Subclass of AvdIndexedList with `TrackedObjectItem` items. Primary key is `name` (`str`).
+                        ipv4: Subclass of AvdModel.
+                        ipv6: Subclass of AvdModel.
+                        peer_authentication: Subclass of AvdModel.
+
+                    """
+
+        class VrrpIds(AvdIndexedList[int, VrrpIdsItem]):
+            """Subclass of AvdIndexedList with `VrrpIdsItem` items. Primary key is `id` (`int`)."""
+
+            _primary_key: ClassVar[str] = "id"
+
+        VrrpIds._item_type = VrrpIdsItem
+
         class Switchport(AvdModel):
             """Subclass of AvdModel."""
 
@@ -32951,6 +34022,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "peer_interface": {"type": str},
             "peer_type": {"type": str},
             "sflow": {"type": Sflow},
+            "vrrp_ids": {"type": VrrpIds},
             "switchport": {"type": Switchport},
             "traffic_engineering": {"type": TrafficEngineering},
             "validate_state": {"type": bool},
@@ -33146,6 +34218,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Key only used for documentation or validation purposes."""
         sflow: Sflow
         """Subclass of AvdModel."""
+        vrrp_ids: VrrpIds
+        """
+        VRRP model.
+
+        Subclass of AvdIndexedList with `VrrpIdsItem` items. Primary key is `id` (`int`).
+        """
         switchport: Switchport
         """Subclass of AvdModel."""
         traffic_engineering: TrafficEngineering
@@ -33258,6 +34336,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 peer_interface: str | None | UndefinedType = Undefined,
                 peer_type: str | None | UndefinedType = Undefined,
                 sflow: Sflow | UndefinedType = Undefined,
+                vrrp_ids: VrrpIds | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
                 traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
@@ -33388,6 +34467,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_interface: Key only used for documentation or validation purposes.
                     peer_type: Key only used for documentation or validation purposes.
                     sflow: Subclass of AvdModel.
+                    vrrp_ids:
+                       VRRP model.
+
+                       Subclass of AvdIndexedList with `VrrpIdsItem` items. Primary key is `id` (`int`).
                     switchport: Subclass of AvdModel.
                     traffic_engineering: Subclass of AvdModel.
                     validate_state:
@@ -33896,9 +34979,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "priority2": {"type": int},
             "ttl": {"type": int},
             "domain": {"type": int},
+            "hold_ptp_time": {"type": int},
             "message_type": {"type": MessageType},
             "monitor": {"type": Monitor},
             "free_running": {"type": FreeRunning},
+            "forward_v1": {"type": bool},
         }
         mode: Literal["boundary", "disabled", "e2etransparent", "gptp", "ordinarymaster", "p2ptransparent"] | None
         profile: Literal["g8275.1", "g8275.2"] | None
@@ -33912,12 +34997,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         priority2: int | None
         ttl: int | None
         domain: int | None
+        hold_ptp_time: int | None
+        """
+        The length of time that PTP will remain in hold-down on the internal oscillator if the connection to
+        the GM is lost.
+        If a new GM is not elected before the expiry of the hold-down time, the clock will
+        revert to free-running.
+        Some platforms support larger maximum values, however 172000 seconds was the
+        max for 7150 series, and was widely used.
+        """
         message_type: MessageType
         """Subclass of AvdModel."""
         monitor: Monitor
         """Subclass of AvdModel."""
         free_running: FreeRunning
         """Subclass of AvdModel."""
+        forward_v1: bool | None
+        """Forward dataplane PTP V1 packets."""
 
         if TYPE_CHECKING:
 
@@ -33934,9 +35030,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 priority2: int | None | UndefinedType = Undefined,
                 ttl: int | None | UndefinedType = Undefined,
                 domain: int | None | UndefinedType = Undefined,
+                hold_ptp_time: int | None | UndefinedType = Undefined,
                 message_type: MessageType | UndefinedType = Undefined,
                 monitor: Monitor | UndefinedType = Undefined,
                 free_running: FreeRunning | UndefinedType = Undefined,
+                forward_v1: bool | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 Ptp.
@@ -33955,9 +35053,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     priority2: priority2
                     ttl: ttl
                     domain: domain
+                    hold_ptp_time:
+                       The length of time that PTP will remain in hold-down on the internal oscillator if the connection to
+                       the GM is lost.
+                       If a new GM is not elected before the expiry of the hold-down time, the clock will
+                       revert to free-running.
+                       Some platforms support larger maximum values, however 172000 seconds was the
+                       max for 7150 series, and was widely used.
                     message_type: Subclass of AvdModel.
                     monitor: Subclass of AvdModel.
                     free_running: Subclass of AvdModel.
+                    forward_v1: Forward dataplane PTP V1 packets.
 
                 """
 
@@ -37777,6 +38883,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "rib_in_pre_policy_retain": {"type": RibInPrePolicyRetain},
                 "route_map_in": {"type": str},
                 "route_map_out": {"type": str},
+                "peer_tag_in": {"type": str},
+                "peer_tag_out_discard": {"type": str},
                 "session_tracker": {"type": str},
                 "shared_secret": {"type": SharedSecret},
                 "ttl_maximum_hops": {"type": int},
@@ -37865,6 +38973,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Inbound route-map name."""
             route_map_out: str | None
             """Outbound route-map name."""
+            peer_tag_in: str | None
+            """Inbound peer tag name."""
+            peer_tag_out_discard: str | None
+            """Outbound discard peer tag name."""
             session_tracker: str | None
             shared_secret: SharedSecret
             """Subclass of AvdModel."""
@@ -37908,6 +39020,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     rib_in_pre_policy_retain: RibInPrePolicyRetain | UndefinedType = Undefined,
                     route_map_in: str | None | UndefinedType = Undefined,
                     route_map_out: str | None | UndefinedType = Undefined,
+                    peer_tag_in: str | None | UndefinedType = Undefined,
+                    peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     session_tracker: str | None | UndefinedType = Undefined,
                     shared_secret: SharedSecret | UndefinedType = Undefined,
                     ttl_maximum_hops: int | None | UndefinedType = Undefined,
@@ -37974,6 +39088,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         rib_in_pre_policy_retain: Subclass of AvdModel.
                         route_map_in: Inbound route-map name.
                         route_map_out: Outbound route-map name.
+                        peer_tag_in: Inbound peer tag name.
+                        peer_tag_out_discard: Outbound discard peer tag name.
                         session_tracker: session_tracker
                         shared_secret: Subclass of AvdModel.
                         ttl_maximum_hops: Maximum number of hops.
@@ -38366,6 +39482,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "timers": {"type": str},
                 "route_map_in": {"type": str},
                 "route_map_out": {"type": str},
+                "peer_tag_in": {"type": str},
+                "peer_tag_out_discard": {"type": str},
                 "default_originate": {"type": DefaultOriginate},
                 "send_community": {"type": str},
                 "maximum_routes": {"type": int},
@@ -38430,6 +39548,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Inbound route-map name."""
             route_map_out: str | None
             """Outbound route-map name."""
+            peer_tag_in: str | None
+            """Inbound peer tag name."""
+            peer_tag_out_discard: str | None
+            """Outbound discard peer tag name."""
             default_originate: DefaultOriginate
             """Subclass of AvdModel."""
             send_community: str | None
@@ -38496,6 +39618,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     timers: str | None | UndefinedType = Undefined,
                     route_map_in: str | None | UndefinedType = Undefined,
                     route_map_out: str | None | UndefinedType = Undefined,
+                    peer_tag_in: str | None | UndefinedType = Undefined,
+                    peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     default_originate: DefaultOriginate | UndefinedType = Undefined,
                     send_community: str | None | UndefinedType = Undefined,
                     maximum_routes: int | None | UndefinedType = Undefined,
@@ -38553,6 +39677,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         timers: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>".
                         route_map_in: Inbound route-map name.
                         route_map_out: Outbound route-map name.
+                        peer_tag_in: Inbound peer tag name.
+                        peer_tag_out_discard: Outbound discard peer tag name.
                         default_originate: Subclass of AvdModel.
                         send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                         maximum_routes: Maximum number of routes (0 means unlimited).
@@ -40338,6 +41464,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_route": {"type": DefaultRoute},
@@ -40351,6 +41479,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -40379,6 +41511,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
@@ -40397,6 +41531,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -40516,6 +41652,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_route": {"type": DefaultRoute},
@@ -40531,6 +41669,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -40560,6 +41702,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
@@ -40579,6 +41723,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -41365,6 +42511,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_originate": {"type": DefaultOriginate},
@@ -41380,6 +42528,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -41410,6 +42562,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
@@ -41429,6 +42583,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -41583,6 +42739,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "prefix_list_in": {"type": str},
@@ -41597,6 +42755,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -41627,6 +42789,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         prefix_list_in: str | None | UndefinedType = Undefined,
@@ -41646,6 +42810,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -42992,6 +44158,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "rcf_out": {"type": str},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                 }
                 name: str
                 """Peer-group name."""
@@ -43037,6 +44205,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
 
                 if TYPE_CHECKING:
 
@@ -43061,6 +44233,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         rcf_out: str | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -43097,6 +44271,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Example: MyFunction(myarg).
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
 
                         """
 
@@ -43328,6 +44504,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "rcf_out": {"type": str},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                 }
                 ip_address: str
                 activate: bool | None
@@ -43372,6 +44550,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
 
                 if TYPE_CHECKING:
 
@@ -43396,6 +44578,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         rcf_out: str | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -43432,6 +44616,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Example: MyFunction(myarg).
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
 
                         """
 
@@ -43746,6 +44932,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
                 }
                 name: str
@@ -43755,6 +44943,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
 
@@ -43767,6 +44959,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -43780,6 +44974,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             additional_paths: Subclass of AvdModel.
 
                         """
@@ -43819,6 +45015,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
                 }
                 ip_address: str
@@ -43827,6 +45025,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
 
@@ -43839,6 +45041,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -43852,6 +45056,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             additional_paths: Subclass of AvdModel.
 
                         """
@@ -44451,6 +45657,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                 }
                 ip_address: str
                 activate: bool | None
@@ -44458,6 +45666,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
 
                 if TYPE_CHECKING:
 
@@ -44468,6 +45680,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -44480,6 +45694,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
 
                         """
 
@@ -44493,7 +45709,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class PeerGroupsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "activate": {"type": bool}, "route_map_in": {"type": str}, "route_map_out": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "activate": {"type": bool},
+                    "route_map_in": {"type": str},
+                    "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
+                }
                 name: str
                 """Peer-group name."""
                 activate: bool | None
@@ -44501,6 +45724,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
 
                 if TYPE_CHECKING:
 
@@ -44511,6 +45738,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -44523,6 +45752,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
 
                         """
 
@@ -44750,6 +45981,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "prefix_list_in": {"type": str},
@@ -44763,6 +45996,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -44789,6 +46026,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         prefix_list_in: str | None | UndefinedType = Undefined,
@@ -44806,6 +46045,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -44892,6 +46133,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "prefix_list_in": {"type": str},
@@ -44904,6 +46147,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -44930,6 +46177,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         prefix_list_in: str | None | UndefinedType = Undefined,
@@ -44947,6 +46196,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -45716,6 +46967,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
                 }
                 ip_address: str
@@ -45724,6 +46977,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
 
@@ -45736,6 +46993,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -45749,6 +47008,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             additional_paths: Subclass of AvdModel.
 
                         """
@@ -46415,6 +47676,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                 }
                 ip_address: str
                 activate: bool | None
@@ -46422,6 +47685,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
 
                 if TYPE_CHECKING:
 
@@ -46432,6 +47699,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -46444,6 +47713,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
 
                         """
 
@@ -46457,7 +47728,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class PeerGroupsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "activate": {"type": bool}, "route_map_in": {"type": str}, "route_map_out": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "activate": {"type": bool},
+                    "route_map_in": {"type": str},
+                    "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
+                }
                 name: str
                 """Peer-group name."""
                 activate: bool | None
@@ -46465,6 +47743,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
 
                 if TYPE_CHECKING:
 
@@ -46475,6 +47757,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         PeerGroupsItem.
@@ -46487,6 +47771,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
 
                         """
 
@@ -47413,6 +48699,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_route": {"type": DefaultRoute},
@@ -47424,6 +48712,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -47446,6 +48738,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
@@ -47461,6 +48755,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -47542,6 +48838,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_route": {"type": DefaultRoute},
@@ -47552,6 +48850,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -47574,6 +48876,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
@@ -47589,6 +48893,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -47716,6 +49022,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_route": {"type": DefaultRoute},
@@ -47727,6 +49035,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -47749,6 +49061,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
@@ -47764,6 +49078,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -47845,6 +49161,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "activate": {"type": bool},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "rcf_in": {"type": str},
                     "rcf_out": {"type": str},
                     "default_route": {"type": DefaultRoute},
@@ -47855,6 +49173,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 rcf_in: str | None
                 """
                 Inbound RCF function name with parenthesis.
@@ -47877,6 +49199,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         activate: bool | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         rcf_in: str | None | UndefinedType = Undefined,
                         rcf_out: str | None | UndefinedType = Undefined,
                         default_route: DefaultRoute | UndefinedType = Undefined,
@@ -47892,6 +49216,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: activate
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             rcf_in:
                                Inbound RCF function name with parenthesis.
                                Example: MyFunction(myarg).
@@ -48851,6 +50177,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "update_source": {"type": str},
                     "route_map_in": {"type": str},
                     "route_map_out": {"type": str},
+                    "peer_tag_in": {"type": str},
+                    "peer_tag_out_discard": {"type": str},
                     "additional_paths": {"type": AdditionalPaths},
                 }
                 ip_address: str
@@ -48925,6 +50253,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Inbound route-map name."""
                 route_map_out: str | None
                 """Outbound route-map name."""
+                peer_tag_in: str | None
+                """Inbound peer tag name."""
+                peer_tag_out_discard: str | None
+                """Outbound discard peer tag name."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
 
@@ -48962,6 +50294,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         update_source: str | None | UndefinedType = Undefined,
                         route_map_in: str | None | UndefinedType = Undefined,
                         route_map_out: str | None | UndefinedType = Undefined,
+                        peer_tag_in: str | None | UndefinedType = Undefined,
+                        peer_tag_out_discard: str | None | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -49020,6 +50354,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             update_source: update_source
                             route_map_in: Inbound route-map name.
                             route_map_out: Outbound route-map name.
+                            peer_tag_in: Inbound peer tag name.
+                            peer_tag_out_discard: Outbound discard peer tag name.
                             additional_paths: Subclass of AvdModel.
 
                         """
@@ -50160,6 +51496,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "activate": {"type": bool},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
+                        "peer_tag_in": {"type": str},
+                        "peer_tag_out_discard": {"type": str},
                         "rcf_in": {"type": str},
                         "rcf_out": {"type": str},
                         "prefix_list_in": {"type": str},
@@ -50173,6 +51511,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Inbound route-map name."""
                     route_map_out: str | None
                     """Outbound route-map name."""
+                    peer_tag_in: str | None
+                    """Inbound peer tag name."""
+                    peer_tag_out_discard: str | None
+                    """Outbound discard peer tag name."""
                     rcf_in: str | None
                     """
                     Inbound RCF function name with parenthesis.
@@ -50201,6 +51543,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: bool | None | UndefinedType = Undefined,
                             route_map_in: str | None | UndefinedType = Undefined,
                             route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             rcf_in: str | None | UndefinedType = Undefined,
                             rcf_out: str | None | UndefinedType = Undefined,
                             prefix_list_in: str | None | UndefinedType = Undefined,
@@ -50219,6 +51563,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 activate: activate
                                 route_map_in: Inbound route-map name.
                                 route_map_out: Outbound route-map name.
+                                peer_tag_in: Inbound peer tag name.
+                                peer_tag_out_discard: Outbound discard peer tag name.
                                 rcf_in:
                                    Inbound RCF function name with parenthesis.
                                    Example: MyFunction(myarg).
@@ -51301,6 +52647,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "activate": {"type": bool},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
+                        "peer_tag_in": {"type": str},
+                        "peer_tag_out_discard": {"type": str},
                         "rcf_in": {"type": str},
                         "rcf_out": {"type": str},
                         "prefix_list_in": {"type": str},
@@ -51313,6 +52661,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Inbound route-map name."""
                     route_map_out: str | None
                     """Outbound route-map name."""
+                    peer_tag_in: str | None
+                    """Inbound peer tag name."""
+                    peer_tag_out_discard: str | None
+                    """Outbound discard peer tag name."""
                     rcf_in: str | None
                     """
                     Inbound RCF function name with parenthesis.
@@ -51339,6 +52691,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: bool | None | UndefinedType = Undefined,
                             route_map_in: str | None | UndefinedType = Undefined,
                             route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             rcf_in: str | None | UndefinedType = Undefined,
                             rcf_out: str | None | UndefinedType = Undefined,
                             prefix_list_in: str | None | UndefinedType = Undefined,
@@ -51356,6 +52710,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 activate: activate
                                 route_map_in: Inbound route-map name.
                                 route_map_out: Outbound route-map name.
+                                peer_tag_in: Inbound peer tag name.
+                                peer_tag_out_discard: Outbound discard peer tag name.
                                 rcf_in:
                                    Inbound RCF function name with parenthesis.
                                    Example: MyFunction(myarg).
@@ -52161,6 +53517,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "activate": {"type": bool},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
+                        "peer_tag_in": {"type": str},
+                        "peer_tag_out_discard": {"type": str},
                         "additional_paths": {"type": AdditionalPaths},
                     }
                     ip_address: str
@@ -52169,6 +53527,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Inbound route-map name."""
                     route_map_out: str | None
                     """Outbound route-map name."""
+                    peer_tag_in: str | None
+                    """Inbound peer tag name."""
+                    peer_tag_out_discard: str | None
+                    """Outbound discard peer tag name."""
                     additional_paths: AdditionalPaths
                     """Subclass of AvdModel."""
 
@@ -52181,6 +53543,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: bool | None | UndefinedType = Undefined,
                             route_map_in: str | None | UndefinedType = Undefined,
                             route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -52194,6 +53558,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 activate: activate
                                 route_map_in: Inbound route-map name.
                                 route_map_out: Outbound route-map name.
+                                peer_tag_in: Inbound peer tag name.
+                                peer_tag_out_discard: Outbound discard peer tag name.
                                 additional_paths: Subclass of AvdModel.
 
                             """
@@ -52948,6 +54314,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "activate": {"type": bool},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
+                        "peer_tag_in": {"type": str},
+                        "peer_tag_out_discard": {"type": str},
                         "additional_paths": {"type": AdditionalPaths},
                     }
                     ip_address: str
@@ -52956,6 +54324,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Inbound route-map name."""
                     route_map_out: str | None
                     """Outbound route-map name."""
+                    peer_tag_in: str | None
+                    """Inbound peer tag name."""
+                    peer_tag_out_discard: str | None
+                    """Outbound discard peer tag name."""
                     additional_paths: AdditionalPaths
                     """Subclass of AvdModel."""
 
@@ -52968,6 +54340,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             activate: bool | None | UndefinedType = Undefined,
                             route_map_in: str | None | UndefinedType = Undefined,
                             route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             additional_paths: AdditionalPaths | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -52981,6 +54355,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 activate: activate
                                 route_map_in: Inbound route-map name.
                                 route_map_out: Outbound route-map name.
+                                peer_tag_in: Inbound peer tag name.
+                                peer_tag_out_discard: Outbound discard peer tag name.
                                 additional_paths: Subclass of AvdModel.
 
                             """
@@ -59065,6 +60441,74 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class RouterRip(AvdModel):
+        """Subclass of AvdModel."""
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Networks(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Networks._item_type = str
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "vrf": {"type": str}, "metric_default": {"type": int}, "networks": {"type": Networks}}
+            enabled: bool | None
+            vrf: str
+            metric_default: int | None
+            """Set default metric for the routes."""
+            networks: Networks
+            """Subclass of AvdList with `str` items."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    vrf: str | UndefinedType = Undefined,
+                    metric_default: int | None | UndefinedType = Undefined,
+                    networks: Networks | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        vrf: vrf
+                        metric_default: Set default metric for the routes.
+                        networks: Subclass of AvdList with `str` items.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `vrf` (`str`)."""
+
+            _primary_key: ClassVar[str] = "vrf"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}}
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `vrf` (`str`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                """
+                RouterRip.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `vrf` (`str`).
+
+                """
+
     class RouterSegmentSecurity(AvdModel):
         """Subclass of AvdModel."""
 
@@ -60286,6 +61730,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "sample": {"type": int},
+            "sample_truncate_size": {"type": int},
             "sample_input_subinterface": {"type": bool},
             "sample_output_subinterface": {"type": bool},
             "dangerous": {"type": bool},
@@ -60300,6 +61745,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "hardware_acceleration": {"type": HardwareAcceleration},
         }
         sample: int | None
+        sample_truncate_size: int | None
+        """Maximum sample size, in bytes."""
         sample_input_subinterface: bool | None
         sample_output_subinterface: bool | None
         dangerous: bool | None
@@ -60331,6 +61778,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 sample: int | None | UndefinedType = Undefined,
+                sample_truncate_size: int | None | UndefinedType = Undefined,
                 sample_input_subinterface: bool | None | UndefinedType = Undefined,
                 sample_output_subinterface: bool | None | UndefinedType = Undefined,
                 dangerous: bool | None | UndefinedType = Undefined,
@@ -60352,6 +61800,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     sample: sample
+                    sample_truncate_size: Maximum sample size, in bytes.
                     sample_input_subinterface: sample_input_subinterface
                     sample_output_subinterface: sample_output_subinterface
                     dangerous: dangerous
@@ -61713,13 +63162,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Phone(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"cos": {"type": int}, "trunk": {"type": str}, "vlan": {"type": int}, "access_list_bypass": {"type": bool}}
+            _fields: ClassVar[dict] = {
+                "cos": {"type": int},
+                "trunk": {"type": str},
+                "vlan": {"type": int},
+                "access_list_bypass": {"type": bool},
+                "qos_trust": {"type": str},
+            }
             cos: int | None
-            trunk: Literal["tagged", "untagged"] | None
+            trunk: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None
             vlan: int | None
             """VLAN ID."""
             access_list_bypass: bool | None
             """Bypass phone traffic from configured access-list."""
+            qos_trust: Literal["cos", "dscp"] | None
+            """
+            Quality of Service (QoS) trust mode. Outgoing traffic class being derived from the ingress COS/DSCP
+            value.
+            """
 
             if TYPE_CHECKING:
 
@@ -61727,9 +63187,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     cos: int | None | UndefinedType = Undefined,
-                    trunk: Literal["tagged", "untagged"] | None | UndefinedType = Undefined,
+                    trunk: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None | UndefinedType = Undefined,
                     vlan: int | None | UndefinedType = Undefined,
                     access_list_bypass: bool | None | UndefinedType = Undefined,
+                    qos_trust: Literal["cos", "dscp"] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Phone.
@@ -61742,6 +63203,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         trunk: trunk
                         vlan: VLAN ID.
                         access_list_bypass: Bypass phone traffic from configured access-list.
+                        qos_trust:
+                           Quality of Service (QoS) trust mode. Outgoing traffic class being derived from the ingress COS/DSCP
+                           value.
 
                     """
 
@@ -65452,14 +66916,31 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv4(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"address": {"type": str}, "version": {"type": int}}
+                class SecondaryAddresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                SecondaryAddresses._item_type = str
+
+                _fields: ClassVar[dict] = {"address": {"type": str}, "secondary_addresses": {"type": SecondaryAddresses}, "version": {"type": int}}
                 address: str
                 """Virtual IPv4 address."""
+                secondary_addresses: SecondaryAddresses
+                """
+                Additional VRRP IPv4 addresses.
+
+                Subclass of AvdList with `str` items.
+                """
                 version: Literal[2, 3] | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, address: str | UndefinedType = Undefined, version: Literal[2, 3] | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        address: str | UndefinedType = Undefined,
+                        secondary_addresses: SecondaryAddresses | UndefinedType = Undefined,
+                        version: Literal[2, 3] | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Ipv4.
 
@@ -65468,6 +66949,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             address: Virtual IPv4 address.
+                            secondary_addresses:
+                               Additional VRRP IPv4 addresses.
+
+                               Subclass of AvdList with `str` items.
                             version: version
 
                         """
@@ -65475,13 +66960,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Ipv6(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"address": {"type": str}}
-                address: str
+                class Addresses(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Addresses._item_type = str
+
+                _fields: ClassVar[dict] = {"address": {"type": str}, "addresses": {"type": Addresses}}
+                address: str | None
                 """Virtual IPv6 address."""
+                addresses: Addresses
+                """
+                Virtual IPv6 addresses.
+
+                Subclass of AvdList with `str` items.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, address: str | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, address: str | None | UndefinedType = Undefined, addresses: Addresses | UndefinedType = Undefined) -> None:
                         """
                         Ipv6.
 
@@ -65490,6 +66986,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             address: Virtual IPv6 address.
+                            addresses:
+                               Virtual IPv6 addresses.
+
+                               Subclass of AvdList with `str` items.
 
                         """
 
@@ -66750,12 +68250,70 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class VrfsItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"name": {"type": str}, "vni": {"type": int}, "multicast_group": {"type": str}}
+                    class MulticastGroupsItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"overlay_group": {"type": str}, "encap": {"type": str}}
+                        overlay_group: str
+                        """Overlay multicast group."""
+                        encap: str
+                        """Underlay multicast group."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, overlay_group: str | UndefinedType = Undefined, encap: str | UndefinedType = Undefined) -> None:
+                                """
+                                MulticastGroupsItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    overlay_group: Overlay multicast group.
+                                    encap: Underlay multicast group.
+
+                                """
+
+                    class MulticastGroups(AvdIndexedList[str, MulticastGroupsItem]):
+                        """Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is `overlay_group` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "overlay_group"
+
+                    MulticastGroups._item_type = MulticastGroupsItem
+
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "vni": {"type": int},
+                        "multicast_group": {"type": str},
+                        "multicast_group_encap_range": {"type": str},
+                        "multicast_groups": {"type": MulticastGroups},
+                    }
                     name: str
                     """VRF Name."""
                     vni: int | None
                     multicast_group: str | None
-                    """IP Multicast Group Address."""
+                    """Default IP Multicast Group Address for the VRF."""
+                    multicast_group_encap_range: str | None
+                    """
+                    N:M mapping, the overlay groups in the VRF are mapped to one of
+                    the underlay groups defined within
+                    the encap range.
+                    The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and
+                    32).
+                    Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for
+                    this feature to work.
+                    See the TOI at
+                    https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
+                    """
+                    multicast_groups: MulticastGroups
+                    """
+                    List of 1:1 mappings where each configured overlay multicast group is mapped
+                    directly to the
+                    specified underlay multicast group.
+
+                    Subclass of AvdIndexedList with `MulticastGroupsItem` items.
+                    Primary key is `overlay_group` (`str`).
+                    """
 
                     if TYPE_CHECKING:
 
@@ -66765,6 +68323,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             name: str | UndefinedType = Undefined,
                             vni: int | None | UndefinedType = Undefined,
                             multicast_group: str | None | UndefinedType = Undefined,
+                            multicast_group_encap_range: str | None | UndefinedType = Undefined,
+                            multicast_groups: MulticastGroups | UndefinedType = Undefined,
                         ) -> None:
                             """
                             VrfsItem.
@@ -66775,7 +68335,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 name: VRF Name.
                                 vni: vni
-                                multicast_group: IP Multicast Group Address.
+                                multicast_group: Default IP Multicast Group Address for the VRF.
+                                multicast_group_encap_range:
+                                   N:M mapping, the overlay groups in the VRF are mapped to one of
+                                   the underlay groups defined within
+                                   the encap range.
+                                   The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and
+                                   32).
+                                   Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for
+                                   this feature to work.
+                                   See the TOI at
+                                   https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
+                                multicast_groups:
+                                   List of 1:1 mappings where each configured overlay multicast group is mapped
+                                   directly to the
+                                   specified underlay multicast group.
+
+                                   Subclass of AvdIndexedList with `MulticastGroupsItem` items.
+                                   Primary key is `overlay_group` (`str`).
 
                             """
 
@@ -67214,12 +68791,70 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class VrfsItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"name": {"type": str}, "vni": {"type": int}, "multicast_group": {"type": str}}
+                    class MulticastGroupsItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"overlay_group": {"type": str}, "encap": {"type": str}}
+                        overlay_group: str
+                        """Overlay multicast group."""
+                        encap: str
+                        """Underlay multicast group."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, overlay_group: str | UndefinedType = Undefined, encap: str | UndefinedType = Undefined) -> None:
+                                """
+                                MulticastGroupsItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    overlay_group: Overlay multicast group.
+                                    encap: Underlay multicast group.
+
+                                """
+
+                    class MulticastGroups(AvdIndexedList[str, MulticastGroupsItem]):
+                        """Subclass of AvdIndexedList with `MulticastGroupsItem` items. Primary key is `overlay_group` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "overlay_group"
+
+                    MulticastGroups._item_type = MulticastGroupsItem
+
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "vni": {"type": int},
+                        "multicast_group": {"type": str},
+                        "multicast_group_encap_range": {"type": str},
+                        "multicast_groups": {"type": MulticastGroups},
+                    }
                     name: str
                     """VRF Name."""
                     vni: int | None
                     multicast_group: str | None
-                    """IP Multicast Group Address."""
+                    """Default IP Multicast Group Address for the VRF."""
+                    multicast_group_encap_range: str | None
+                    """
+                    N:M mapping, the overlay groups in the VRF are mapped to one of
+                    the underlay groups defined within
+                    the encap range.
+                    The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and
+                    32).
+                    Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for
+                    this feature to work.
+                    See the TOI at
+                    https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
+                    """
+                    multicast_groups: MulticastGroups
+                    """
+                    List of 1:1 mappings where each configured overlay multicast group is mapped
+                    directly to the
+                    specified underlay multicast group.
+
+                    Subclass of AvdIndexedList with `MulticastGroupsItem` items.
+                    Primary key is `overlay_group` (`str`).
+                    """
 
                     if TYPE_CHECKING:
 
@@ -67229,6 +68864,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             name: str | UndefinedType = Undefined,
                             vni: int | None | UndefinedType = Undefined,
                             multicast_group: str | None | UndefinedType = Undefined,
+                            multicast_group_encap_range: str | None | UndefinedType = Undefined,
+                            multicast_groups: MulticastGroups | UndefinedType = Undefined,
                         ) -> None:
                             """
                             VrfsItem.
@@ -67239,7 +68876,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 name: VRF Name.
                                 vni: vni
-                                multicast_group: IP Multicast Group Address.
+                                multicast_group: Default IP Multicast Group Address for the VRF.
+                                multicast_group_encap_range:
+                                   N:M mapping, the overlay groups in the VRF are mapped to one of
+                                   the underlay groups defined within
+                                   the encap range.
+                                   The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and
+                                   32).
+                                   Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for
+                                   this feature to work.
+                                   See the TOI at
+                                   https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
+                                multicast_groups:
+                                   List of 1:1 mappings where each configured overlay multicast group is mapped
+                                   directly to the
+                                   specified underlay multicast group.
+
+                                   Subclass of AvdIndexedList with `MulticastGroupsItem` items.
+                                   Primary key is `overlay_group` (`str`).
 
                             """
 
@@ -67464,6 +69118,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "banners": {"type": Banners},
         "bgp_groups": {"type": BgpGroups},
         "boot": {"type": Boot},
+        "cfm": {"type": Cfm},
         "class_maps": {"type": ClassMaps},
         "clock": {"type": Clock},
         "community_lists": {"type": CommunityLists},
@@ -67513,6 +69168,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_name_server_groups": {"type": IpNameServerGroups},
         "ip_name_servers": {"type": IpNameServers},
         "ip_nat": {"type": IpNat},
+        "ip_ospf_router_id_output_format_hostnames": {"type": bool},
         "ip_radius_source_interfaces": {"type": IpRadiusSourceInterfaces},
         "ip_routing": {"type": bool},
         "ip_routing_ipv6_interfaces": {"type": bool},
@@ -67534,7 +69190,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ipv6_standard_access_lists": {"type": Ipv6StandardAccessLists},
         "ipv6_static_routes": {"type": Ipv6StaticRoutes},
         "ipv6_unicast_routing": {"type": bool},
-        "is_deployed": {"type": bool, "default": True},
+        "is_deployed": {"type": bool},
         "kernel": {"type": Kernel},
         "l2_protocol": {"type": L2Protocol},
         "lacp": {"type": Lacp},
@@ -67607,6 +69263,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "router_ospf": {"type": RouterOspf},
         "router_path_selection": {"type": RouterPathSelection},
         "router_pim_sparse_mode": {"type": RouterPimSparseMode},
+        "router_rip": {"type": RouterRip},
         "router_segment_security": {"type": RouterSegmentSecurity},
         "router_service_insertion": {"type": RouterServiceInsertion},
         "router_traffic_engineering": {"type": RouterTrafficEngineering},
@@ -67702,6 +69359,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     Set the Aboot password.
 
+
+    Subclass of AvdModel.
+    """
+    cfm: Cfm
+    """
+    Configure connectivity fault management (CFM).
+    CFM is a network protocol for monitoring and
+    troubleshooting Ethernet networks.
 
     Subclass of AvdModel.
     """
@@ -67896,6 +69561,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdList with `IpNameServersItem` items."""
     ip_nat: IpNat
     """Subclass of AvdModel."""
+    ip_ospf_router_id_output_format_hostnames: bool | None
+    """Display DNS-resolved router names for OSPF router IDs."""
     ip_radius_source_interfaces: IpRadiusSourceInterfaces
     """Subclass of AvdList with `IpRadiusSourceInterfacesItem` items."""
     ip_routing: bool | None
@@ -67934,11 +69601,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ipv6_static_routes: Ipv6StaticRoutes
     """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
     ipv6_unicast_routing: bool | None
-    is_deployed: bool
+    is_deployed: bool | None
     """
     Key only used for documentation or validation purposes.
-
-    Default value: `True`
+    This key is deprecated and new key is
+    metadata.is_deployed.
     """
     kernel: Kernel
     """Subclass of AvdModel."""
@@ -68128,6 +69795,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     router_pim_sparse_mode: RouterPimSparseMode
     """Subclass of AvdModel."""
+    router_rip: RouterRip
+    """
+    Routing Information Protocol settings.
+
+    Subclass of AvdModel.
+    """
     router_segment_security: RouterSegmentSecurity
     """Subclass of AvdModel."""
     router_service_insertion: RouterServiceInsertion
@@ -68243,6 +69916,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             banners: Banners | UndefinedType = Undefined,
             bgp_groups: BgpGroups | UndefinedType = Undefined,
             boot: Boot | UndefinedType = Undefined,
+            cfm: Cfm | UndefinedType = Undefined,
             class_maps: ClassMaps | UndefinedType = Undefined,
             clock: Clock | UndefinedType = Undefined,
             community_lists: CommunityLists | UndefinedType = Undefined,
@@ -68292,6 +69966,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_name_server_groups: IpNameServerGroups | UndefinedType = Undefined,
             ip_name_servers: IpNameServers | UndefinedType = Undefined,
             ip_nat: IpNat | UndefinedType = Undefined,
+            ip_ospf_router_id_output_format_hostnames: bool | None | UndefinedType = Undefined,
             ip_radius_source_interfaces: IpRadiusSourceInterfaces | UndefinedType = Undefined,
             ip_routing: bool | None | UndefinedType = Undefined,
             ip_routing_ipv6_interfaces: bool | None | UndefinedType = Undefined,
@@ -68313,7 +69988,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ipv6_standard_access_lists: Ipv6StandardAccessLists | UndefinedType = Undefined,
             ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
             ipv6_unicast_routing: bool | None | UndefinedType = Undefined,
-            is_deployed: bool | UndefinedType = Undefined,
+            is_deployed: bool | None | UndefinedType = Undefined,
             kernel: Kernel | UndefinedType = Undefined,
             l2_protocol: L2Protocol | UndefinedType = Undefined,
             lacp: Lacp | UndefinedType = Undefined,
@@ -68386,6 +70061,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             router_ospf: RouterOspf | UndefinedType = Undefined,
             router_path_selection: RouterPathSelection | UndefinedType = Undefined,
             router_pim_sparse_mode: RouterPimSparseMode | UndefinedType = Undefined,
+            router_rip: RouterRip | UndefinedType = Undefined,
             router_segment_security: RouterSegmentSecurity | UndefinedType = Undefined,
             router_service_insertion: RouterServiceInsertion | UndefinedType = Undefined,
             router_traffic_engineering: RouterTrafficEngineering | UndefinedType = Undefined,
@@ -68466,6 +70142,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 boot:
                    Set the Aboot password.
 
+
+                   Subclass of AvdModel.
+                cfm:
+                   Configure connectivity fault management (CFM).
+                   CFM is a network protocol for monitoring and
+                   troubleshooting Ethernet networks.
 
                    Subclass of AvdModel.
                 class_maps: Subclass of AvdModel.
@@ -68596,6 +70278,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_name_server_groups: Subclass of AvdIndexedList with `IpNameServerGroupsItem` items. Primary key is `name` (`str`).
                 ip_name_servers: Subclass of AvdList with `IpNameServersItem` items.
                 ip_nat: Subclass of AvdModel.
+                ip_ospf_router_id_output_format_hostnames: Display DNS-resolved router names for OSPF router IDs.
                 ip_radius_source_interfaces: Subclass of AvdList with `IpRadiusSourceInterfacesItem` items.
                 ip_routing: ip_routing
                 ip_routing_ipv6_interfaces: ip_routing_ipv6_interfaces
@@ -68617,7 +70300,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_standard_access_lists: Subclass of AvdIndexedList with `Ipv6StandardAccessListsItem` items. Primary key is `name` (`str`).
                 ipv6_static_routes: Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                 ipv6_unicast_routing: ipv6_unicast_routing
-                is_deployed: Key only used for documentation or validation purposes.
+                is_deployed:
+                   Key only used for documentation or validation purposes.
+                   This key is deprecated and new key is
+                   metadata.is_deployed.
                 kernel: Subclass of AvdModel.
                 l2_protocol: Subclass of AvdModel.
                 lacp:
@@ -68725,6 +70411,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                    Subclass of AvdModel.
                 router_pim_sparse_mode: Subclass of AvdModel.
+                router_rip:
+                   Routing Information Protocol settings.
+
+                   Subclass of AvdModel.
                 router_segment_security: Subclass of AvdModel.
                 router_service_insertion:
                    Configure network services inserted to data forwarding.

@@ -116,27 +116,45 @@ Devices with `is_deployed: false` set as part of `eos_designs` inputs will autom
 !!! note
     When devices are excluded from a run, whether by using `--limit` or `anta_devices`, tests that rely on the excluded devices will not be executed. For example, if a test requires information from a device that is not included, the test will be skipped. The same behavior applies to `is_deployed: false` devices.
 
-The role connects to EOS devices via eAPI using HTTP/HTTPS, so the devices must be accessible from the Ansible control node. Even though the role uses ANTA's HTTP client, the Ansible connection variables are used to build the connections and must be set accordingly:
+The role connects to EOS devices via eAPI using HTTP/HTTPS, so the devices must be accessible from the Ansible control node.
+The connection is managed by ANTA HTTP client. For flexibility, connection parameters can be defined using `anta_`
+prefixed variables, which take precedence over standard Ansible connection variables.
 
 ```yaml
 # The IP/name of the target host to use instead of inventory_hostname.
 ansible_host: <str>
 
-# The user Ansible logs in as.
+# The username to log in with.
+# Precedence: `anta_user` -> `ansible_user`.
+anta_user: <str>
 ansible_user: <str>
 
-# One of the following must be set for the authentication.
+# The password to use for the connection.
+# Precedence: `anta_password` -> `ansible_password` -> `ansible_httpapi_pass` -> `ansible_httpapi_password`.
+anta_password: <str>
 ansible_password: <str>
 ansible_httpapi_pass: <str>
 ansible_httpapi_password: <str>
 
 # Some tests require elevated privileges to run (enable mode).
+# Precedence: `anta_enable` -> `ansible_become` -> false.
+anta_enable: <bool>
 ansible_become: <bool; default=false>
+
+# The password for privileged (enable) mode.
+# Precdence: `anta_enable_password` -> `ansible_become_password`.
+anta_enable_password: <str>
 ansible_become_password: <str>
 
-# eAPI port and SSL verification.
-ansible_httpapi_port: <int; default=80 or 443 depending on ansible_httpapi_use_ssl>
+# eAPI SSL verification.
+# Precedence: `anta_use_ssl` -> `ansible_httpapi_use_ssl` -> true.
+anta_use_ssl: <bool>
 ansible_httpapi_use_ssl: <bool; default=true>
+
+# eAPI port.
+# Precedence: `anta_port` -> `ansible_httpapi_port` -> 80 or 443 depending on SSL.
+anta_port: <int>
+ansible_httpapi_port: <int; default=80 or 443 depending on anta_use_ssl or ansible_httpapi_use_ssl>
 ```
 
 ### Directory Configuration
@@ -329,7 +347,7 @@ The table below shows which parts of the AVD structured configuration are used t
 | [**VerifyInterfaceErrors**](https://anta.arista.com/stable/api/tests/interfaces/#anta.tests.interfaces.VerifyInterfaceErrors){:target="_blank"} | Verifies that interface error counters are not increasing. | *None* |
 | [**VerifyInterfaceUtilization**](https://anta.arista.com/stable/api/tests/interfaces/#anta.tests.interfaces.VerifyInterfaceUtilization){:target="_blank"} | Verifies that interface utilization is below a defined threshold. | *None* |
 | [**VerifyInterfacesStatus**](https://anta.arista.com/stable/api/tests/interfaces/#anta.tests.interfaces.VerifyInterfacesStatus){:target="_blank"} | Verifies the operational status of enabled network interfaces. | <ul><li>`ethernet_interfaces`</li><li>`port_channel_interfaces`</li><li>`vlan_interfaces`</li><li>`loopback_interfaces`</li><li>`dps_interfaces`</li><li>VXLAN interface, if the device is a VTEP</li></ul> |
-| [**VerifyLLDPNeighbors**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyLLDPNeighbors){:target="_blank"} | Verifies that LLDP neighbors are discovered correctly on specified interfaces. | `ethernet_interfaces` (specifically peer information) |
+| [**VerifyLLDPNeighbors**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyLLDPNeighbors){:target="_blank"} | Verifies LLDP neighbors for Ethernet interfaces.<br>A test is generated when all are true:<ul><li>peer and peer_interface are defined.</li><li>The peer device is deployed (is_deployed: true).</li><li>The interface is not a subinterface.</li><li>The interface is not shut down on either the local or peer side.</li><li>The test is not disabled by validate_state or validate_lldp.</li></ul> | `ethernet_interfaces` (specifically peer information) |
 | [**VerifyLoggingErrors**](https://anta.arista.com/stable/api/tests/logging/#anta.tests.logging.VerifyLoggingErrors){:target="_blank"} | Verifies that there are no new 'error' or higher severity syslog messages. | *None* |
 | [**VerifyMaintenance**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyMaintenance){:target="_blank"} | Verifies that the device is not currently under or entering maintenance. | *None* |
 | [**VerifyMemoryUtilization**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyMemoryUtilization){:target="_blank"} | Verifies whether the memory utilization is below 75%. | *None* |
@@ -338,7 +356,7 @@ The table below shows which parts of the AVD structured configuration are used t
 | [**VerifyMlagStatus**](https://anta.arista.com/stable/api/tests/mlag/#anta.tests.mlag.VerifyMlagStatus){:target="_blank"} | Verifies the global MLAG state is 'active' and other parameters are consistent. | `mlag_configuration` |
 | [**VerifyNTP**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyNTP){:target="_blank"} | Verifies that the device's NTP service is synchronized with a time source. | *None* |
 | [**VerifyPortChannels**](https://anta.arista.com/stable/api/tests/interfaces/#anta.tests.interfaces.VerifyPortChannels){:target="_blank"} | Verifies the status of Port-Channel interfaces and their members. | `port_channel_interfaces` |
-| [**VerifyReachability**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyReachability){:target="_blank"} | Point-to-point ethernet links when:<br><ul><li>`peer`, `peer_interface` and `ip_address` are defined</li><li>`ip_address` is static - *not* 'dhcp' and *not* 'unnumbered'</li><li>Interface is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`</li><li>`peer` device is deployed - `is_deployed=True`</li><li>`peer_interface` on the `peer` device has a defined static `ip_address` - *not* 'dhcp' and *not* 'unnumbered'</li></ul><br>BGP neighbors when: <br><ul><li>`update_source` IP address is defined</li></ul> | See description |
+| [**VerifyReachability**](https://anta.arista.com/stable/api/tests/connectivity/#anta.tests.connectivity.VerifyReachability){:target="_blank"} | Point-to-point ethernet links when:<br><ul><li>`peer`, `peer_interface` and `ip_address` are defined</li><li>`ip_address` is static - *not* 'dhcp' and *not* 'unnumbered'</li><li>Interface is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`</li><li>`peer` device is deployed - `is_deployed=True`</li><li>`peer_interface` on the `peer` device has a defined static `ip_address` - *not* 'dhcp' and *not* 'unnumbered'</li><li>`peer_interface` is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`</li></ul><br>BGP neighbors when: <br><ul><li>`update_source` IP address is defined</li></ul> | See description |
 | [**VerifyReloadCause**](https://anta.arista.com/stable/api/tests/system/#anta.tests.system.VerifyReloadCause){:target="_blank"} | Verifies that the last reload cause was expected. | allowed_causes=["USER", "FPGA", "ZTP"] |
 | [**VerifyRoutingProtocolModel**](https://anta.arista.com/stable/api/tests/routing.generic/#anta.tests.routing.generic.VerifyRoutingProtocolModel){:target="_blank"} | Verifies the configured routing protocol model. | `service_routing_protocols_model` |
 | [**VerifyRunningConfigDiffs**](https://anta.arista.com/stable/api/tests/configuration/#anta.tests.configuration.VerifyRunningConfigDiffs){:target="_blank"} | Verifies there are no differences between the running and startup configs. | *None* |

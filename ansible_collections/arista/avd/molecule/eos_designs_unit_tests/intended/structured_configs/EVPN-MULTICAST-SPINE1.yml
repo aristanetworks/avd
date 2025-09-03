@@ -84,7 +84,6 @@ ethernet_interfaces:
     enabled: false
 hostname: EVPN-MULTICAST-SPINE1
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -103,6 +102,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.1
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 prefix_lists:

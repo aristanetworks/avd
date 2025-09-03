@@ -13,7 +13,6 @@ ipv6_static_routes:
 - vrf: MGMT
   prefix: 0200:2::/64
   next_hop: 0200::1
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -30,6 +29,7 @@ management_interfaces:
   gateway: 192.168.200.5
   ipv6_gateway: 0200::1
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 static_routes:
