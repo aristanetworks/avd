@@ -9883,8 +9883,8 @@ class EosDesigns(EosDesignsRootModel):
                 mode: Literal["static", "individual"] | None
                 """
                 Either static or individual mode is supported.
-                If the mode is set to "individual" the
-                "individual.profile" setting must be defined.
+                If the mode is set to "individual" either 'profile'
+                or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                 """
                 individual: Individual
                 """
@@ -9918,8 +9918,8 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             mode:
                                Either static or individual mode is supported.
-                               If the mode is set to "individual" the
-                               "individual.profile" setting must be defined.
+                               If the mode is set to "individual" either 'profile'
+                               or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                             individual:
                                Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
                                "individual".
@@ -14553,8 +14553,8 @@ class EosDesigns(EosDesignsRootModel):
                 mode: Literal["static", "individual"] | None
                 """
                 Either static or individual mode is supported.
-                If the mode is set to "individual" the
-                "individual.profile" setting must be defined.
+                If the mode is set to "individual" either 'profile'
+                or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                 """
                 individual: Individual
                 """
@@ -14588,8 +14588,8 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             mode:
                                Either static or individual mode is supported.
-                               If the mode is set to "individual" the
-                               "individual.profile" setting must be defined.
+                               If the mode is set to "individual" either 'profile'
+                               or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                             individual:
                                Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
                                "individual".
@@ -21850,8 +21850,8 @@ class EosDesigns(EosDesignsRootModel):
                             mode: Literal["static", "individual"] | None
                             """
                             Either static or individual mode is supported.
-                            If the mode is set to "individual" the
-                            "individual.profile" setting must be defined.
+                            If the mode is set to "individual" either 'profile'
+                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                             """
                             individual: Individual
                             """
@@ -21885,8 +21885,8 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         mode:
                                            Either static or individual mode is supported.
-                                           If the mode is set to "individual" the
-                                           "individual.profile" setting must be defined.
+                                           If the mode is set to "individual" either 'profile'
+                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                                         individual:
                                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
                                            "individual".
@@ -23495,8 +23495,8 @@ class EosDesigns(EosDesignsRootModel):
                             mode: Literal["static", "individual"] | None
                             """
                             Either static or individual mode is supported.
-                            If the mode is set to "individual" the
-                            "individual.profile" setting must be defined.
+                            If the mode is set to "individual" either 'profile'
+                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                             """
                             individual: Individual
                             """
@@ -23530,8 +23530,8 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         mode:
                                            Either static or individual mode is supported.
-                                           If the mode is set to "individual" the
-                                           "individual.profile" setting must be defined.
+                                           If the mode is set to "individual" either 'profile'
+                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                                         individual:
                                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
                                            "individual".
