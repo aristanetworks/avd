@@ -48,11 +48,11 @@ class RouterBgpMixin(Protocol):
 
             # Address Families
             # TODO: - see if it makes sense to extract logic in method
-            if self.shared_utils.underlay_ipv4_address_family:
-                self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(self.shared_utils.underlay_ipv4_address_family)
+            if self.shared_utils.address_family_ipv4_peer_group:
+                self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(self.shared_utils.address_family_ipv4_peer_group)
 
-            if self.shared_utils.underlay_ipv6_address_family:
-                self.structured_config.router_bgp.address_family_ipv6.peer_groups.append(self.shared_utils.underlay_ipv6_address_family)
+            if self.shared_utils.address_family_ipv6_peer_group:
+                self.structured_config.router_bgp.address_family_ipv6.peer_groups.append(self.shared_utils.address_family_ipv6_peer_group)
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
         if self.inputs.underlay_rfc5549 is True:

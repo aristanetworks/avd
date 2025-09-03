@@ -53,11 +53,11 @@ class RouterBgpMixin(Protocol):
 
             # Set Underlay BGP peer group first.
             self.structured_config.router_bgp.peer_groups.append(self.shared_utils.underlay_bgp_peer_group)
-            if self.shared_utils.underlay_ipv4_address_family:
-                self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(self.shared_utils.underlay_ipv4_address_family)
+            if self.shared_utils.address_family_ipv4_peer_group:
+                self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(self.shared_utils.address_family_ipv4_peer_group)
 
-            if self.shared_utils.underlay_ipv6_address_family:
-                self.structured_config.router_bgp.address_family_ipv6.peer_groups.append(self.shared_utils.underlay_ipv6_address_family)
+            if self.shared_utils.address_family_ipv6_peer_group:
+                self.structured_config.router_bgp.address_family_ipv6.peer_groups.append(self.shared_utils.address_family_ipv6_peer_group)
 
             self.structured_config.router_bgp.neighbors.append_new(
                 ip_address=get_ip_from_ip_prefix(p2p_link_data["peer_ip"]),

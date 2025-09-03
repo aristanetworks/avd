@@ -147,7 +147,7 @@ class UnderlayMixin(Protocol):
         )
 
     @cached_property
-    def underlay_ipv4_address_family(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem | None:
+    def address_family_ipv4_peer_group(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem | None:
         if not self.underlay_ipv6_numbered:
             address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
                 name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
@@ -159,7 +159,7 @@ class UnderlayMixin(Protocol):
         return None
 
     @cached_property
-    def underlay_ipv6_address_family(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.AddressFamilyIpv6.PeerGroupsItem | None:
+    def address_family_ipv6_peer_group(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.AddressFamilyIpv6.PeerGroupsItem | None:
         if self.underlay_ipv6:
             return EosCliConfigGen.RouterBgp.AddressFamilyIpv6.PeerGroupsItem(name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True)
         return None
