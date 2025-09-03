@@ -27,15 +27,13 @@ flow tracking hardware
       !
 {%             endif %}
       exporter {{ exporter.name }}
-{%             if exporter.collectors is arista.avd.defined %}
-{%                 for collector in exporter.collectors | arista.avd.natural_sort %}
-{%                     set collector_cli = "collector " ~ collector.host %}
-{%                     if collector.port is arista.avd.defined %}
-{%                         set collector_cli =  collector_cli ~ " port " ~ collector.port %}
-{%                     endif %}
+{%             for collector in exporter.collectors | arista.avd.natural_sort %}
+{%                 set collector_cli = "collector " ~ collector.host %}
+{%                 if collector.port is arista.avd.defined %}
+{%                     set collector_cli =  collector_cli ~ " port " ~ collector.port %}
+{%                 endif %}
          {{ collector_cli }}
-{%                 endfor %}
-{%             endif %}
+{%             endfor %}
 {%             if exporter.format.ipfix_version is arista.avd.defined %}
          format ipfix version {{ exporter.format.ipfix_version }}
 {%             endif %}
