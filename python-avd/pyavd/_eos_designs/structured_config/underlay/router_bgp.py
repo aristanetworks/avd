@@ -10,8 +10,6 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
-
     from . import AvdStructuredConfigUnderlayProtocol
 
 
