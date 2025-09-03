@@ -69,8 +69,7 @@ class AvdTestInterfacesState(AvdTestBase):
                 )
 
         # Add Vxlan1 interface state test if it exists
-        # TODO: Remove the support of Vxlan1 in AVD 6.0.0 version
-        if default(get(self.structured_config, "vxlan_interface.vxlan1"), get(self.structured_config, "vxlan_interface.Vxlan1")) is not None:
+        if get(self.structured_config, "vxlan_interface.vxlan1") is not None:
             anta_tests.append(
                 {
                     "VerifyInterfacesStatus": {

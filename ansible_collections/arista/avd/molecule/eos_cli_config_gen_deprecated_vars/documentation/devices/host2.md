@@ -4,8 +4,6 @@
 
 - [Authentication](#authentication)
   - [AAA Accounting](#aaa-accounting)
-- [Interfaces](#interfaces)
-  - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
   - [Router BGP](#router-bgp)
 
@@ -45,29 +43,6 @@ aaa accounting dot1x default start-stop group group1
 aaa accounting commands all default start-stop group TACACS logging
 aaa accounting commands 0 default start-stop logging
 aaa accounting commands 1 default start-stop group TACACS
-```
-
-## Interfaces
-
-### VXLAN Interface
-
-#### VXLAN Interface Summary
-
-| Setting | Value |
-| ------- | ----- |
-| UDP port | 4789 |
-| Qos dscp propagation encapsulation | Disabled |
-| Qos ECN propagation | Disabled |
-| Qos map dscp to traffic-class decapsulation | Disabled |
-
-#### VXLAN Interface Device Configuration
-
-```eos
-!
-interface Vxlan1
-   no vxlan qos ecn propagation
-   no vxlan qos dscp propagation encapsulation
-   no vxlan qos map dscp to traffic-class decapsulation
 ```
 
 ## Routing

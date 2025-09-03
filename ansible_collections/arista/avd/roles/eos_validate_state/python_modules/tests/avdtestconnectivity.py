@@ -185,11 +185,7 @@ class AvdTestDpsReachability(AvdTestBase):
             LOGGER.info("Host is not a WAN VTEP. %s is skipped.", self.__class__.__name__)
             return None
 
-        # TODO: Remove the support of Vxlan1 in AVD 6.0.0 version
-        dps_source_interface = default(
-            get(self.structured_config, "vxlan_interface.vxlan1.vxlan.source_interface"),
-            get(self.structured_config, "vxlan_interface.Vxlan1.vxlan.source_interface"),
-        )
+        dps_source_interface = get(self.structured_config, "vxlan_interface.vxlan1.vxlan.source_interface")
         dps_ip = self.get_interface_ip("dps_interfaces", dps_source_interface)
         if not dps_ip:
             return None
