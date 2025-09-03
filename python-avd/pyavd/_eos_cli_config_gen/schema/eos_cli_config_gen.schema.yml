@@ -4188,8 +4188,6 @@ keys:
           keys:
             enabled:
               type: bool
-              description: 'Warning: This should not be combined with `ethernet_interfaces[].type
-                = routed`.'
             mode:
               type: str
               valid_values:
@@ -4200,17 +4198,13 @@ keys:
               - tap
               - tool
               - tap-tool
-              description: 'Warning: This should not be combined with `ethernet_interfaces[].mode`.'
             access_vlan:
               type: int
               convert_types:
               - str
               min: 1
               max: 4094
-              description: 'Set VLAN when interface is in access mode.
-
-                Warning: This should not be combined with `ethernet_interfaces[].mode
-                = access/dot1q-tunnel` and `ethernet_interface[].vlans`.'
+              description: Set VLAN when interface is in access mode.
             trunk:
               type: dict
               keys:
@@ -4218,34 +4212,22 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'VLAN ID or range(s) of VLAN IDs.
-
-                    Warning: This should not be combined with `ethernet_interfaces[].mode
-                    = trunk` and `ethernet_interface[].vlans`.'
+                  description: VLAN ID or range(s) of VLAN IDs.
                 native_vlan:
                   type: int
                   convert_types:
                   - str
-                  description: 'Set native VLAN when interface is in trunking mode.
-
-                    Warning: This should not be combined with `ethernet_interfaces[].native_vlan`.'
+                  description: Set native VLAN when interface is in trunking mode.
                   min: 1
                   max: 4094
                 native_vlan_tag:
                   type: bool
-                  description: 'If setting both native_vlan and native_vlan_tag, native_vlan_tag
+                  description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
                     takes precedence.
-
-                    Warning: This should not be combined with `ethernet_interfaces[].native_vlan_tag`.'
                 private_vlan_secondary:
                   type: bool
-                  description: 'Enable secondary VLAN mapping for a private vlan.
-
-                    Warning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`.'
+                  description: Enable secondary VLAN mapping for a private vlan.
                 groups:
-                  description: 'Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.
-
-                    '
                   type: list
                   items:
                     type: str
@@ -4254,7 +4236,6 @@ keys:
                     description: Trunk group name.
             phone:
               type: dict
-              description: 'Warning: This should not be combined with `ethernet_interfaces[].phone`.'
               keys:
                 vlan:
                   type: int
@@ -4262,10 +4243,8 @@ keys:
                   max: 4094
                   convert_types:
                   - str
-                  description: 'Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`.'
                 trunk:
                   type: str
-                  description: 'Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`.'
                   valid_values:
                   - tagged
                   - tagged phone
@@ -4275,9 +4254,7 @@ keys:
               type: str
               convert_types:
               - int
-              description: 'Secondary VLAN IDs of the private VLAN mapping.
-
-                Warning: This should not be combined with `ethernet_interfaces[].pvlan_mapping`.'
+              description: Secondary VLAN IDs of the private VLAN mapping.
             dot1q:
               type: dict
               keys:
@@ -4305,9 +4282,7 @@ keys:
               - tx
               - tx multicast
             vlan_translations:
-              description: 'VLAN Translation mappings.
-
-                Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.'
+              description: VLAN Translation mappings.
               type: dict
               keys:
                 in_required:
