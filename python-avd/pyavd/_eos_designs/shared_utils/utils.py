@@ -12,7 +12,7 @@ from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import template_var
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Iterable, Sequence
     from typing import TypeVar
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
@@ -156,3 +156,13 @@ class UtilsMixin(Protocol):
         Regex must match the full value to pass.
         """
         return any(re.fullmatch(regex, value) for regex in regexes)
+
+    def match_nodes(self: SharedUtilsProtocol, nodes: Sequence[str]) -> bool:
+        """
+        Returns True when nodes is empty.
+
+        Otherwise returns self.match_regexes.
+        """
+        if not nodes:
+            return True
+        return self.match_regexes(nodes, self.hostname)
