@@ -6798,6 +6798,404 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class L2vlanProfilesItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class TrunkGroups(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        TrunkGroups._item_type = str
+
+        class EvpnL2Multicast(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+            enabled: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    EvpnL2Multicast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+
+                    """
+
+        class VxlanFloodMulticast(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
+            enabled: bool | None
+            """
+            Explicitly enable or disable vxlan_flood_multicast to override setting of
+            `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+            """
+            underlay_multicast_group: str | None
+            """Specific multicast group to use for this VLAN."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    VxlanFloodMulticast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Explicitly enable or disable vxlan_flood_multicast to override setting of
+                           `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                        underlay_multicast_group: Specific multicast group to use for this VLAN.
+
+                    """
+
+        class IgmpSnoopingQuerier(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}, "fast_leave": {"type": bool}}
+            enabled: bool | None
+            """Will be enabled automatically if evpn_l2_multicast is enabled."""
+            source_address: str | None
+            """
+            IPv4_address
+            If not set, IP address of "Loopback0" will be used.
+            """
+            version: Literal[1, 2, 3] | None
+            """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+            fast_leave: bool | None
+            """Enable IGMP snooping fast-leave feature."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    source_address: str | None | UndefinedType = Undefined,
+                    version: Literal[1, 2, 3] | None | UndefinedType = Undefined,
+                    fast_leave: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    IgmpSnoopingQuerier.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
+                        source_address:
+                           IPv4_address
+                           If not set, IP address of "Loopback0" will be used.
+                        version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                        fast_leave: Enable IGMP snooping fast-leave feature.
+
+                    """
+
+        class Bgp(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"structured_config": {"type": EosCliConfigGen.RouterBgp.VlansItem}, "raw_eos_cli": {"type": str}}
+            structured_config: EosCliConfigGen.RouterBgp.VlansItem
+            """
+            Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+            This
+            configuration will not be applied to vlan aware bundles.
+            """
+            raw_eos_cli: str | None
+            """
+            EOS cli commands rendered on router_bgp.vlans.
+            This configuration will not be applied to vlan aware
+            bundles.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    structured_config: EosCliConfigGen.RouterBgp.VlansItem | UndefinedType = Undefined,
+                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Bgp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        structured_config:
+                           Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+                           This
+                           configuration will not be applied to vlan aware bundles.
+                        raw_eos_cli:
+                           EOS cli commands rendered on router_bgp.vlans.
+                           This configuration will not be applied to vlan aware
+                           bundles.
+
+                    """
+
+        class PrivateVlan(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"type": {"type": str}, "primary_vlan": {"type": int}}
+            type: Literal["community", "isolated"]
+            primary_vlan: int
+            """Primary VLAN ID."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, type: Literal["community", "isolated"] | UndefinedType = Undefined, primary_vlan: int | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    PrivateVlan.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        type: type
+                        primary_vlan: Primary VLAN ID.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "profile": {"type": str},
+            "parent_profile": {"type": str},
+            "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking.AddressFamily},
+            "vni_override": {"type": int},
+            "rt_override": {"type": str},
+            "rd_override": {"type": str},
+            "vxlan": {"type": bool, "default": True},
+            "spanning_tree_priority": {"type": int},
+            "evpn_vlan_bundle": {"type": str},
+            "trunk_groups": {"type": TrunkGroups},
+            "evpn_l2_multi_domain": {"type": bool},
+            "evpn_l2_multicast": {"type": EvpnL2Multicast},
+            "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
+            "igmp_snooping_enabled": {"type": bool},
+            "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
+            "bgp": {"type": Bgp},
+            "private_vlan": {"type": PrivateVlan},
+        }
+        profile: str
+        """Profile name."""
+        parent_profile: str | None
+        """
+        Name of parent L2VLAN profile to apply.
+        l2vlan_profiles can refer to another l2vlan_profile to
+        inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+        """
+        address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
+        vni_override: int | None
+        """
+        By default the VNI will be derived from mac_vrf_vni_base.
+        The vni_override, allows to override this
+        value and statically define it.
+        """
+        rt_override: str | None
+        """
+        By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
+        The rt_override allows us
+        to override this value and statically define it.
+        rt_override will default to vni_override if set.
+        rt_override supports two formats:
+          - A single number which will be used in the RT fields instead of
+        mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
+          - A full RT string with colon
+        separator which will override the full RT.
+        """
+        rd_override: str | None
+        """
+        By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
+        The rt_override allows us
+        to override this value and statically define it.
+        rd_override will default to rt_override or
+        vni_override if set.
+        rd_override supports two formats:
+          - A single number which will be used in the
+        RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+          -
+        A full RD string with colon separator which will override the full RD.
+        """
+        vxlan: bool
+        """
+        Extend this L2VLAN over VXLAN.
+
+        Default value: `True`
+        """
+        spanning_tree_priority: int | None
+        """
+        Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst`
+        under node type settings.
+        The default priority for rapid-PVST is set under the node type settings
+        with `spanning_tree_priority` (default=32768).
+        """
+        evpn_vlan_bundle: str | None
+        """
+        Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
+        This setting overrides
+        "evpn_vlan_bundle" set at tenant level.
+        The common option "evpn_vlan_aware_bundles" is disregarded
+        for this option.
+        """
+        trunk_groups: TrunkGroups
+        """Subclass of AvdList with `str` items."""
+        evpn_l2_multi_domain: bool | None
+        """
+        Explicitly extend this VLAN to remote EVPN domains.
+        Overrides
+        `<network_services_key>[].evpn_l2_multi_domain`.
+        """
+        evpn_l2_multicast: EvpnL2Multicast
+        """
+        Explicitly enable or disable evpn_l2_multicast to override setting of
+        `<network_services_key>.[].evpn_l2_multicast.enabled`.
+        When evpn_l2_multicast.enabled is set to true
+        for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding
+        those individual settings.
+        Requires `evpn_multicast` to also be set to `true`.
+
+
+        Subclass of
+        AvdModel.
+        """
+        vxlan_flood_multicast: VxlanFloodMulticast
+        """Subclass of AvdModel."""
+        igmp_snooping_enabled: bool | None
+        """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+        igmp_snooping_querier: IgmpSnoopingQuerier
+        """
+        Enable igmp snooping querier, by default using IP address of Loopback 0.
+        When enabled, igmp snooping
+        querier will only be configured on l3 devices, i.e., uplink_type: p2p.
+
+
+        Subclass of AvdModel.
+        """
+        bgp: Bgp
+        """Subclass of AvdModel."""
+        private_vlan: PrivateVlan
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                profile: str | UndefinedType = Undefined,
+                parent_profile: str | None | UndefinedType = Undefined,
+                address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily | UndefinedType = Undefined,
+                vni_override: int | None | UndefinedType = Undefined,
+                rt_override: str | None | UndefinedType = Undefined,
+                rd_override: str | None | UndefinedType = Undefined,
+                vxlan: bool | UndefinedType = Undefined,
+                spanning_tree_priority: int | None | UndefinedType = Undefined,
+                evpn_vlan_bundle: str | None | UndefinedType = Undefined,
+                trunk_groups: TrunkGroups | UndefinedType = Undefined,
+                evpn_l2_multi_domain: bool | None | UndefinedType = Undefined,
+                evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
+                igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
+                igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
+                bgp: Bgp | UndefinedType = Undefined,
+                private_vlan: PrivateVlan | UndefinedType = Undefined,
+            ) -> None:
+                """
+                L2vlanProfilesItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    profile: Profile name.
+                    parent_profile:
+                       Name of parent L2VLAN profile to apply.
+                       l2vlan_profiles can refer to another l2vlan_profile to
+                       inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+                    address_locking: address_locking
+                    vni_override:
+                       By default the VNI will be derived from mac_vrf_vni_base.
+                       The vni_override, allows to override this
+                       value and statically define it.
+                    rt_override:
+                       By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
+                       The rt_override allows us
+                       to override this value and statically define it.
+                       rt_override will default to vni_override if set.
+                       rt_override supports two formats:
+                         - A single number which will be used in the RT fields instead of
+                       mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
+                         - A full RT string with colon
+                       separator which will override the full RT.
+                    rd_override:
+                       By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
+                       The rt_override allows us
+                       to override this value and statically define it.
+                       rd_override will default to rt_override or
+                       vni_override if set.
+                       rd_override supports two formats:
+                         - A single number which will be used in the
+                       RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+                         -
+                       A full RD string with colon separator which will override the full RD.
+                    vxlan: Extend this L2VLAN over VXLAN.
+                    spanning_tree_priority:
+                       Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst`
+                       under node type settings.
+                       The default priority for rapid-PVST is set under the node type settings
+                       with `spanning_tree_priority` (default=32768).
+                    evpn_vlan_bundle:
+                       Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
+                       This setting overrides
+                       "evpn_vlan_bundle" set at tenant level.
+                       The common option "evpn_vlan_aware_bundles" is disregarded
+                       for this option.
+                    trunk_groups: Subclass of AvdList with `str` items.
+                    evpn_l2_multi_domain:
+                       Explicitly extend this VLAN to remote EVPN domains.
+                       Overrides
+                       `<network_services_key>[].evpn_l2_multi_domain`.
+                    evpn_l2_multicast:
+                       Explicitly enable or disable evpn_l2_multicast to override setting of
+                       `<network_services_key>.[].evpn_l2_multicast.enabled`.
+                       When evpn_l2_multicast.enabled is set to true
+                       for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding
+                       those individual settings.
+                       Requires `evpn_multicast` to also be set to `true`.
+
+
+                       Subclass of
+                       AvdModel.
+                    vxlan_flood_multicast: Subclass of AvdModel.
+                    igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                    igmp_snooping_querier:
+                       Enable igmp snooping querier, by default using IP address of Loopback 0.
+                       When enabled, igmp snooping
+                       querier will only be configured on l3 devices, i.e., uplink_type: p2p.
+
+
+                       Subclass of AvdModel.
+                    bgp: Subclass of AvdModel.
+                    private_vlan: Subclass of AvdModel.
+
+                """
+
+    class L2vlanProfiles(AvdIndexedList[str, L2vlanProfilesItem]):
+        """Subclass of AvdIndexedList with `L2vlanProfilesItem` items. Primary key is `profile` (`str`)."""
+
+        _primary_key: ClassVar[str] = "profile"
+
+    L2vlanProfiles._item_type = L2vlanProfilesItem
+
     class L3Edge(AvdModel):
         """Subclass of AvdModel."""
 
@@ -48999,12 +49397,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
+                        "name": {"type": str},
+                        "profile": {"type": str},
+                        "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                         "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking.AddressFamily},
                         "vni_override": {"type": int},
                         "rt_override": {"type": str},
                         "rd_override": {"type": str},
-                        "name": {"type": str},
-                        "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                         "vxlan": {"type": bool, "default": True},
                         "spanning_tree_priority": {"type": int},
                         "evpn_vlan_bundle": {"type": str},
@@ -49019,6 +49418,25 @@ class EosDesigns(EosDesignsRootModel):
                     }
                     id: int
                     """VLAN ID."""
+                    name: str
+                    """VLAN name."""
+                    profile: str | None
+                    """
+                    L2VLAN profile name.
+                    The profile must be defined under `l2vlan_profiles`. The profile may refer to
+                    another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
+                    l2vlan_profile -> l2vlan_parent_profile).
+                    """
+                    tags: Tags
+                    """
+                    Tags leveraged for networks services filtering.
+                    Tags are matched against filter.tags defined under
+                    node type settings.
+                    Tags are also matched against the node_group name under node type settings.
+                    Subclass of AvdList with `str` items.
+
+                    Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+                    """
                     address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
                     vni_override: int | None
                     """
@@ -49045,23 +49463,11 @@ class EosDesigns(EosDesignsRootModel):
                     to override this value and statically define it.
                     rd_override will default to rt_override or
                     vni_override if set.
-
                     rd_override supports two formats:
-                      - A single number which will be used in
-                    the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
-                    - A full RD string with colon separator which will override the full RD.
-                    """
-                    name: str
-                    """VLAN name."""
-                    tags: Tags
-                    """
-                    Tags leveraged for networks services filtering.
-                    Tags are matched against filter.tags defined under
-                    node type settings.
-                    Tags are also matched against the node_group name under node type settings.
-                    Subclass of AvdList with `str` items.
-
-                    Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+                      - A single number which will be used in the
+                    RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+                      -
+                    A full RD string with colon separator which will override the full RD.
                     """
                     vxlan: bool
                     """
@@ -49129,12 +49535,13 @@ class EosDesigns(EosDesignsRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
+                            name: str | UndefinedType = Undefined,
+                            profile: str | None | UndefinedType = Undefined,
+                            tags: Tags | UndefinedType = Undefined,
                             address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily | UndefinedType = Undefined,
                             vni_override: int | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
                             rd_override: str | None | UndefinedType = Undefined,
-                            name: str | UndefinedType = Undefined,
-                            tags: Tags | UndefinedType = Undefined,
                             vxlan: bool | UndefinedType = Undefined,
                             spanning_tree_priority: int | None | UndefinedType = Undefined,
                             evpn_vlan_bundle: str | None | UndefinedType = Undefined,
@@ -49155,6 +49562,18 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 id: VLAN ID.
+                                name: VLAN name.
+                                profile:
+                                   L2VLAN profile name.
+                                   The profile must be defined under `l2vlan_profiles`. The profile may refer to
+                                   another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
+                                   l2vlan_profile -> l2vlan_parent_profile).
+                                tags:
+                                   Tags leveraged for networks services filtering.
+                                   Tags are matched against filter.tags defined under
+                                   node type settings.
+                                   Tags are also matched against the node_group name under node type settings.
+                                   Subclass of AvdList with `str` items.
                                 address_locking: address_locking
                                 vni_override:
                                    By default the VNI will be derived from mac_vrf_vni_base.
@@ -49176,18 +49595,11 @@ class EosDesigns(EosDesignsRootModel):
                                    to override this value and statically define it.
                                    rd_override will default to rt_override or
                                    vni_override if set.
-
                                    rd_override supports two formats:
-                                     - A single number which will be used in
-                                   the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
-                                   - A full RD string with colon separator which will override the full RD.
-                                name: VLAN name.
-                                tags:
-                                   Tags leveraged for networks services filtering.
-                                   Tags are matched against filter.tags defined under
-                                   node type settings.
-                                   Tags are also matched against the node_group name under node type settings.
-                                   Subclass of AvdList with `str` items.
+                                     - A single number which will be used in the
+                                   RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+                                     -
+                                   A full RD string with colon separator which will override the full RD.
                                 vxlan: Extend this L2VLAN over VXLAN.
                                 spanning_tree_priority:
                                    Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst`
@@ -49697,7 +50109,7 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 l2vlans: L2vlans
                 """
-                Define L2 network services organized by vlan id.
+                Define L2 network services organized by VLAN ID.
 
                 Subclass of AvdList with `L2vlansItem` items.
                 """
@@ -49883,7 +50295,7 @@ class EosDesigns(EosDesignsRootModel):
                                Subclass of AvdIndexedList with `VrfsItem` items.
                                Primary key is `name` (`str`).
                             l2vlans:
-                               Define L2 network services organized by vlan id.
+                               Define L2 network services organized by VLAN ID.
 
                                Subclass of AvdList with `L2vlansItem` items.
                             point_to_point_services:
@@ -67441,6 +67853,7 @@ class EosDesigns(EosDesignsRootModel):
         "isis_maximum_paths": {"type": int, "default": 4},
         "isis_system_id_format": {"type": str, "default": "underlay_loopback"},
         "isis_ti_lfa": {"type": IsisTiLfa},
+        "l2vlan_profiles": {"type": L2vlanProfiles},
         "l3_edge": {"type": L3Edge},
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
@@ -68686,6 +69099,13 @@ class EosDesigns(EosDesignsRootModel):
     """
     isis_ti_lfa: IsisTiLfa
     """Subclass of AvdModel."""
+    l2vlan_profiles: L2vlanProfiles
+    """
+    Profiles to inherit common settings for l2vlans defined under the network_services key.
+
+    Subclass of
+    AvdIndexedList with `L2vlanProfilesItem` items. Primary key is `profile` (`str`).
+    """
     l3_edge: L3Edge
     """Subclass of AvdModel."""
     l3_interface_profiles: L3InterfaceProfiles
@@ -69841,6 +70261,7 @@ class EosDesigns(EosDesignsRootModel):
             isis_maximum_paths: int | UndefinedType = Undefined,
             isis_system_id_format: Literal["node_id", "underlay_loopback"] | UndefinedType = Undefined,
             isis_ti_lfa: IsisTiLfa | UndefinedType = Undefined,
+            l2vlan_profiles: L2vlanProfiles | UndefinedType = Undefined,
             l3_edge: L3Edge | UndefinedType = Undefined,
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
@@ -70641,6 +71062,11 @@ class EosDesigns(EosDesignsRootModel):
                    If `underlay_loopback` is selected then all node `isis_system_id_prefix` settings
                    will be ignored and the loopback address will be used to generate the system-id.
                 isis_ti_lfa: Subclass of AvdModel.
+                l2vlan_profiles:
+                   Profiles to inherit common settings for l2vlans defined under the network_services key.
+
+                   Subclass of
+                   AvdIndexedList with `L2vlanProfilesItem` items. Primary key is `profile` (`str`).
                 l3_edge: Subclass of AvdModel.
                 l3_interface_profiles:
                    Profiles to inherit common settings for l3_interfaces defined under the node type key.
