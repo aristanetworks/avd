@@ -48703,7 +48703,8 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         nodes: Nodes
                         """
-                        Nodes where the aggregate should be configured. By default the aggregate will be configured all on
+                        Nodes where the aggregate should be configured.
+                        By default the aggregate will be configured all on
                         all devices where the VRF is configured.
 
                         Subclass of AvdList with `str` items.
@@ -48739,7 +48740,8 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     nodes:
-                                       Nodes where the aggregate should be configured. By default the aggregate will be configured all on
+                                       Nodes where the aggregate should be configured.
+                                       By default the aggregate will be configured all on
                                        all devices where the VRF is configured.
 
                                        Subclass of AvdList with `str` items.

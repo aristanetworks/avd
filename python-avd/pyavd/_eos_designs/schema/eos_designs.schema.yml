@@ -9654,9 +9654,10 @@ $defs:
                   keys:
                     nodes:
                       type: list
-                      description: Nodes where the aggregate should be configured.
+                      description: 'Nodes where the aggregate should be configured.
+
                         By default the aggregate will be configured all on all devices
-                        where the VRF is configured.
+                        where the VRF is configured.'
                       items:
                         type: str
                         description: Node name or regex pattern matching the full
