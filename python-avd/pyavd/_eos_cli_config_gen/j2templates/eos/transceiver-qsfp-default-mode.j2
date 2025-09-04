@@ -4,8 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - transceiver qsfp default mode #}
-{% if transceiver_qsfp_default_mode_4x10 is arista.avd.defined(true)
-   or (generate_default_config is arista.avd.defined(true) and transceiver_qsfp_default_mode_4x10 is not arista.avd.defined(false)) %}
+{% if transceiver_qsfp_default_mode_4x10 is arista.avd.defined(true) %}
 !
 transceiver qsfp default-mode 4x10G
 {% endif %}
