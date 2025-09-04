@@ -199,8 +199,9 @@ class AvdConfiglet:
 
     def __post_init__(self) -> None:
         """Check if the provided configlet file path exists."""
-        if not Path(self.file).is_file():
-            msg = f"Configlet {self.file.resolve()} not found."
+        path = Path(self.file)
+        if not path.is_file():
+            msg = f"Configlet {path.resolve()} not found."
             raise ValueError(msg)
 
 
@@ -245,7 +246,7 @@ class CVManifest:
 
     @classmethod
     def from_avd_manifest(cls, avd_manifest: AvdManifest) -> CVManifest:
-        """Build the planned CVManifest from the AVD input manifest."""
+        """Build the desired CVManifest from the AVD input manifest."""
         cv_configlet_map: dict[str, CVConfiglet] = {}
         cv_container_map: dict[str, CVContainer] = {}
 

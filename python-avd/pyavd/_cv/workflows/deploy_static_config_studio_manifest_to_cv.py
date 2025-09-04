@@ -103,7 +103,7 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
     """Synchronize configlets. Create/update new ones and delete unused AVD-managed ones."""
     workspace_id = deployment_result.workspace.id
 
-    # Create or update configlets
+    # Create or update configlets.
     if cv_manifest.configlets:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Applying changes for %d configlets (create/update)...", len(cv_manifest.configlets))
         deployment_result.deployed_static_config_configlets.extend(configlet.avd_configlet for configlet in cv_manifest.configlets)
@@ -112,7 +112,7 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No configlet creations or updates are needed.")
 
-    # Delete unused AVD-managed configlets
+    # Delete unused AVD-managed configlets.
     existing_configlets = await cv_client.get_configlets(workspace_id=workspace_id)
     existing_configlet_ids = {configlet.key.configlet_id for configlet in existing_configlets if configlet.key.configlet_id.startswith(AVD_ENTITY_PREFIX)}
     desired_configlet_ids = {configlet.id for configlet in cv_manifest.configlets}
@@ -125,7 +125,7 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
 
 
 async def _sync_studio_roots(cv_manifest: CVManifest, workspace_id: str, cv_client: CVClient) -> None:
-    """Synchronize "Static Config" Studio root containers. Update root container assignments and delete unused AVD-managed ones."""
+    """Synchronize Studio root containers. Update root container assignments and delete unused AVD-managed ones."""
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Syncing Static Config Studio root container assignments...")
 
     # Get the existing list of root container IDs from the Studio inputs.
