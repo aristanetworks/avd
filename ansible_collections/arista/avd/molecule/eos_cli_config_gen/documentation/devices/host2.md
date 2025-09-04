@@ -860,12 +860,18 @@ no mac address-table notification host-flap logging
 #### Switchport Defaults Summary
 
 - Default Switchport Mode: routed
+- Default Switchport Phone Trunk: tagged phone
+- Default Switchport Phone QOS trust mode: dscp
 
 #### Switchport Default Device Configuration
 
 ```eos
 !
 switchport default mode routed
+!
+switchport default phone trunk tagged phone
+!
+switchport default phone qos trust dscp
 ```
 
 ### Interface Defaults
@@ -1108,10 +1114,10 @@ ASN Notation: asplain
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| EVPN-OVERLAY-PEERS | True |  - | - | default | - |
-| MLAG-IPv4-UNDERLAY-PEER | False |  - | - | default | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - | default | - |
+| MLAG-IPv4-UNDERLAY-PEER | False | - | - | - | - | default | - |
 
 ##### EVPN Neighbor Default Encapsulation
 

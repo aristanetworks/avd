@@ -204,22 +204,23 @@ class EthernetInterfacesMixin(Protocol):
             ethernet_interface.channel_group.id = channel_group_id
             ethernet_interface.channel_group.mode = adapter.port_channel.mode
 
-            if (lacp_fallback_mode := adapter.port_channel.lacp_fallback.mode) == "static":
+            if adapter.port_channel.lacp_fallback.mode == "static":
                 ethernet_interface.lacp_port_priority = 8192 if node_index == 0 else 32768
 
-            elif lacp_fallback_mode == "individual":
-                # if fallback is set to individual a profile has to be defined
-                if (profile_name := adapter.port_channel.lacp_fallback.individual.profile) is None:
+            elif individual_adapter_settings := self.shared_utils.get_merged_individual_adapter_settings(adapter):
+                # if fallback is set to individual a profile _or_ mode+vlans have to be defined
+                # Enforced here and not in facts or shared_utils to fail on the proper device.
+                if not (
+                    adapter.port_channel.lacp_fallback.individual.profile
+                    or (adapter.port_channel.lacp_fallback.individual.mode and adapter.port_channel.lacp_fallback.individual.vlans)
+                ):
                     msg = (
-                        "A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined. Profile definition is missing for"
-                        f" the connected endpoint with the name '{connected_endpoint.name}'."
+                        "A Port-channel which is set to LACP fallback mode 'individual' must have either 'profile' or ('mode' and 'vlans') set under "
+                        f"'port_channel.lacp_fallback.individual'. This is missing for the connected endpoint with the name '{connected_endpoint.name}'."
                     )
                     raise AristaAvdInvalidInputsError(msg)
 
-                profile = self.shared_utils.get_merged_port_profile(
-                    profile_name, context=f"{adapter._internal_data.context}.port_channel.lacp_fallback.individual"
-                )._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem)
-                self._update_ethernet_interface_cfg(profile, ethernet_interface, connected_endpoint)
+                self._update_ethernet_interface_cfg(individual_adapter_settings, ethernet_interface, connected_endpoint)
 
             if adapter.port_channel.mode != "on" and adapter.port_channel.lacp_timer.mode is not None:
                 ethernet_interface.lacp_timer.mode = adapter.port_channel.lacp_timer.mode
