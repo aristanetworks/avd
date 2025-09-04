@@ -282,6 +282,12 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
+{%         if peer_group.peer_tag_in is arista.avd.defined %}
+   neighbor {{ peer_group.name }} peer-tag in {{ peer_group.peer_tag_in }}
+{%         endif %}
+{%         if peer_group.peer_tag_out_discard is arista.avd.defined %}
+   neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
+{%         endif %}
 {%         if peer_group.link_bandwidth.enabled is arista.avd.defined(true) %}
 {%             set link_bandwidth_cli = "neighbor " ~ peer_group.name ~ " link-bandwidth" %}
 {%             if peer_group.link_bandwidth.default is arista.avd.defined %}
@@ -451,6 +457,12 @@ router bgp {{ router_bgp.as }}
    {{ missing_policy_cli }}
 {%                 endif %}
 {%             endfor %}
+{%         endif %}
+{%         if neighbor.peer_tag_in is arista.avd.defined %}
+   neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%         endif %}
+{%         if neighbor.peer_tag_out_discard is arista.avd.defined %}
+   neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%         endif %}
 {%         if neighbor.link_bandwidth.enabled is arista.avd.defined(true) %}
 {%             set link_bandwidth_cli = "neighbor " ~ neighbor.ip_address ~ " link-bandwidth" %}
@@ -904,6 +916,12 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} additional-paths send {{ peer_group.additional_paths.send }}
 {%                 endif %}
 {%             endif %}
+{%             if peer_group.peer_tag_in is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag in {{ peer_group.peer_tag_in }}
+{%             endif %}
+{%             if peer_group.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
+{%             endif %}
 {%             if peer_group.encapsulation is arista.avd.defined %}
 {%                 set encapsulation_cli = "neighbor " ~ peer_group.name ~ " encapsulation " ~ peer_group.encapsulation %}
 {%                 if peer_group.encapsulation == "mpls" and peer_group.next_hop_self_source_interface is arista.avd.defined %}
@@ -957,6 +975,12 @@ router bgp {{ router_bgp.as }}
 {%                 else %}
       neighbor {{ neighbor.ip_address }} additional-paths send {{ neighbor.additional_paths.send }}
 {%                 endif %}
+{%             endif %}
+{%             if neighbor.peer_tag_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%             endif %}
+{%             if neighbor.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%             endif %}
 {%             if neighbor.encapsulation is arista.avd.defined  %}
 {%                 set encapsulation_cli =  "neighbor " ~ neighbor.ip_address ~ " encapsulation " ~ neighbor.encapsulation %}
@@ -1159,6 +1183,12 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
       {{ nexthop_v6_cli }}
 {%             endif %}
+{%             if peer_group.peer_tag_in is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag in {{ peer_group.peer_tag_in }}
+{%             endif %}
+{%             if peer_group.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
+{%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_ipv4.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
@@ -1228,6 +1258,12 @@ router bgp {{ router_bgp.as }}
 {%                 else %}
       no neighbor {{ neighbor.ip_address }} next-hop address-family ipv6
 {%                 endif %}
+{%             endif %}
+{%             if neighbor.peer_tag_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%             endif %}
+{%             if neighbor.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
 {%         for network in router_bgp.address_family_ipv4.networks | arista.avd.natural_sort('prefix') %}
@@ -1578,6 +1614,12 @@ router bgp {{ router_bgp.as }}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
+{%             if peer.peer_tag_in is arista.avd.defined %}
+      neighbor {{ peer.name }} peer-tag in {{ peer.peer_tag_in }}
+{%             endif %}
+{%             if peer.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ peer.name }} peer-tag out discard {{ peer.peer_tag_out_discard }}
+{%             endif %}
 {%             if peer.aigp_session is arista.avd.defined(true) %}
       neighbor {{ peer.name }} aigp-session
 {%             endif %}
@@ -1666,6 +1708,12 @@ router bgp {{ router_bgp.as }}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
+{%             if neighbor.peer_tag_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%             endif %}
+{%             if neighbor.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
+{%             endif %}
 {%             if neighbor.aigp_session is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} aigp-session
 {%             endif %}
@@ -1739,6 +1787,12 @@ router bgp {{ router_bgp.as }}
 {%             if peer_group.route_map_out is arista.avd.defined %}
       neighbor {{ peer_group.name }} route-map {{ peer_group.route_map_out }} out
 {%             endif %}
+{%             if peer_group.peer_tag_in is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag in {{ peer_group.peer_tag_in }}
+{%             endif %}
+{%             if peer_group.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
+{%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_ipv4_multicast.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
@@ -1754,6 +1808,12 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.route_map_out is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} route-map {{ neighbor.route_map_out }} out
+{%             endif %}
+{%             if neighbor.peer_tag_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%             endif %}
+{%             if neighbor.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_ipv4_multicast.redistribute is arista.avd.defined %}
@@ -1890,6 +1950,12 @@ router bgp {{ router_bgp.as }}
 {%             if peer_group.route_map_out is arista.avd.defined %}
       neighbor {{ peer_group.name }} route-map {{ peer_group.route_map_out }} out
 {%             endif %}
+{%             if peer_group.peer_tag_in is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag in {{ peer_group.peer_tag_in }}
+{%             endif %}
+{%             if peer_group.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
+{%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_ipv4_sr_te.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
@@ -1902,6 +1968,12 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.route_map_out is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} route-map {{ neighbor.route_map_out }} out
+{%             endif %}
+{%             if neighbor.peer_tag_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%             endif %}
+{%             if neighbor.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
@@ -1978,6 +2050,12 @@ router bgp {{ router_bgp.as }}
 {%                     endif %}
 {%                 endif %}
 {%             endif %}
+{%             if peer_group.peer_tag_in is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag in {{ peer_group.peer_tag_in }}
+{%             endif %}
+{%             if peer_group.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
+{%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_ipv6.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
@@ -2026,6 +2104,12 @@ router bgp {{ router_bgp.as }}
       {{ add_path_cli }}
 {%                     endif %}
 {%                 endif %}
+{%             endif %}
+{%             if neighbor.peer_tag_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%             endif %}
+{%             if neighbor.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
 {%         for network in router_bgp.address_family_ipv6.networks | arista.avd.natural_sort('prefix') %}
@@ -2220,6 +2304,12 @@ router bgp {{ router_bgp.as }}
 {%             if neighbor.route_map_out is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} route-map {{ neighbor.route_map_out }} out
 {%             endif %}
+{%             if neighbor.peer_tag_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%             endif %}
+{%             if neighbor.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
+{%             endif %}
 {%         endfor %}
 {%         for network in router_bgp.address_family_ipv6_multicast.networks | arista.avd.natural_sort('prefix') %}
 {%             set network_cli = "network " ~ network.prefix %}
@@ -2355,6 +2445,12 @@ router bgp {{ router_bgp.as }}
 {%             if peer_group.route_map_out is arista.avd.defined %}
       neighbor {{ peer_group.name }} route-map {{ peer_group.route_map_out }} out
 {%             endif %}
+{%             if peer_group.peer_tag_in is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag in {{ peer_group.peer_tag_in }}
+{%             endif %}
+{%             if peer_group.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
+{%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_ipv6_sr_te.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
@@ -2367,6 +2463,12 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.route_map_out is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} route-map {{ neighbor.route_map_out }} out
+{%             endif %}
+{%             if neighbor.peer_tag_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%             endif %}
+{%             if neighbor.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
@@ -2540,6 +2642,12 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
       {{ peer_group_default_route_cli }}
 {%             endif %}
+{%             if peer_group.peer_tag_in is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag in {{ peer_group.peer_tag_in }}
+{%             endif %}
+{%             if peer_group.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
+{%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_vpn_ipv4.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
@@ -2567,6 +2675,12 @@ router bgp {{ router_bgp.as }}
 {%                     set neighbor_default_route_cli = neighbor_default_route_cli ~ " route-map " ~ neighbor.default_route.route_map %}
 {%                 endif %}
       {{ neighbor_default_route_cli }}
+{%             endif %}
+{%             if neighbor.peer_tag_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%             endif %}
+{%             if neighbor.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_vpn_ipv4.neighbor_default_encapsulation_mpls_next_hop_self.source_interface is arista.avd.defined %}
@@ -2610,6 +2724,12 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
       {{ peer_group_default_route_cli }}
 {%             endif %}
+{%             if peer_group.peer_tag_in is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag in {{ peer_group.peer_tag_in }}
+{%             endif %}
+{%             if peer_group.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ peer_group.name }} peer-tag out discard {{ peer_group.peer_tag_out_discard }}
+{%             endif %}
 {%         endfor %}
 {%         for neighbor in router_bgp.address_family_vpn_ipv6.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.activate is arista.avd.defined(true) %}
@@ -2637,6 +2757,12 @@ router bgp {{ router_bgp.as }}
 {%                     set neighbor_default_route_cli = neighbor_default_route_cli ~ " route-map " ~ neighbor.default_route.route_map %}
 {%                 endif %}
       {{ neighbor_default_route_cli }}
+{%             endif %}
+{%             if neighbor.peer_tag_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%             endif %}
+{%             if neighbor.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_vpn_ipv6.neighbor_default_encapsulation_mpls_next_hop_self.source_interface is arista.avd.defined %}
@@ -2913,6 +3039,12 @@ router bgp {{ router_bgp.as }}
 {%                     set maximum_routes_cli = maximum_routes_cli ~ " warning-only" %}
 {%                 endif %}
       {{ maximum_routes_cli }}
+{%             endif %}
+{%             if neighbor.peer_tag_in is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%             endif %}
+{%             if neighbor.peer_tag_out_discard is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%             endif %}
 {%             if neighbor.remove_private_as_ingress.enabled is arista.avd.defined(true) %}
 {%                 set remove_private_as_ingress_cli = "neighbor " ~ neighbor.ip_address ~ " remove-private-as ingress" %}
@@ -3256,6 +3388,12 @@ router bgp {{ router_bgp.as }}
          no neighbor {{ neighbor.ip_address }} next-hop address-family ipv6
 {%                     endif %}
 {%                 endif %}
+{%                 if neighbor.peer_tag_in is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%                 endif %}
+{%                 if neighbor.peer_tag_out_discard is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
+{%                 endif %}
 {%             endfor %}
 {%             for network in vrf.address_family_ipv4.networks | arista.avd.natural_sort('prefix') %}
 {%                 set network_cli = "network " ~ network.prefix %}
@@ -3480,6 +3618,12 @@ router bgp {{ router_bgp.as }}
 {%                 if neighbor.route_map_out is arista.avd.defined %}
          neighbor {{ neighbor.ip_address }} route-map {{ neighbor.route_map_out }} out
 {%                 endif %}
+{%                 if neighbor.peer_tag_in is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%                 endif %}
+{%                 if neighbor.peer_tag_out_discard is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
+{%                 endif %}
 {%             endfor %}
 {%             for network in vrf.address_family_ipv4_multicast.networks | arista.avd.natural_sort('prefix') %}
 {%                 set network_cli = "network " ~ network.prefix %}
@@ -3676,6 +3820,12 @@ router bgp {{ router_bgp.as }}
          neighbor {{ neighbor.ip_address }} additional-paths send {{ neighbor.additional_paths.send }}
 {%                     endif %}
 {%                 endif %}
+{%                 if neighbor.peer_tag_in is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%                 endif %}
+{%                 if neighbor.peer_tag_out_discard is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
+{%                 endif %}
 {%             endfor %}
 {%             for network in vrf.address_family_ipv6.networks | arista.avd.natural_sort('prefix') %}
 {%                 set network_cli = "network " ~ network.prefix %}
@@ -3857,6 +4007,12 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%                 if neighbor.route_map_out is arista.avd.defined %}
          neighbor {{ neighbor.ip_address }} route-map {{ neighbor.route_map_out }} out
+{%                 endif %}
+{%                 if neighbor.peer_tag_in is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} peer-tag in {{ neighbor.peer_tag_in }}
+{%                 endif %}
+{%                 if neighbor.peer_tag_out_discard is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} peer-tag out discard {{ neighbor.peer_tag_out_discard }}
 {%                 endif %}
 {%             endfor %}
 {%             for network in vrf.address_family_ipv6_multicast.networks | arista.avd.natural_sort('prefix') %}

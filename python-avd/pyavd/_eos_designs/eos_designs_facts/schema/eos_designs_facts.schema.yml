@@ -283,11 +283,32 @@ keys:
           type: int
         dhcp_server:
           type: bool
+        # TODO: AVD6.0.0 - Remove 'structured_config'
         structured_config:
           type: dict
           documentation_options:
             table: eos_designs_facts
           $ref: eos_designs#/$defs/node_type/keys/defaults/keys/uplink_structured_config
+        ethernet_structured_config:
+          type: dict
+          documentation_options:
+            table: eos_designs_facts
+          $ref: eos_designs#/$defs/node_type/keys/defaults/keys/uplink_ethernet_structured_config
+        port_channel_structured_config:
+          type: dict
+          documentation_options:
+            table: eos_designs_facts
+          $ref: eos_designs#/$defs/node_type/keys/defaults/keys/uplink_port_channel_structured_config
+        peer_ethernet_structured_config:
+          type: dict
+          documentation_options:
+            table: eos_designs_facts
+          $ref: eos_designs#/$defs/node_type/keys/defaults/keys/uplink_ethernet_structured_config
+        peer_port_channel_structured_config:
+          type: dict
+          documentation_options:
+            table: eos_designs_facts
+          $ref: eos_designs#/$defs/node_type/keys/defaults/keys/uplink_port_channel_structured_config
         subinterfaces:
           type: list
           primary_key: interface
@@ -328,6 +349,11 @@ keys:
                 documentation_options:
                   table: eos_designs_facts
                 $ref: eos_designs#/$defs/node_type/keys/defaults/keys/uplink_structured_config
+              ethernet_structured_config:
+                type: dict
+                documentation_options:
+                  table: eos_designs_facts
+                $ref: eos_designs#/$defs/node_type/keys/defaults/keys/uplink_ethernet_structured_config
   uplink_peers:
     type: list
     items:

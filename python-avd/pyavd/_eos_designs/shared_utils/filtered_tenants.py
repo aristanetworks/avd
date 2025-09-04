@@ -27,6 +27,8 @@ class FilteredTenantsMixin(Protocol):
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
+    resolved_l2vlan_profiles_cache: dict[str, EosDesigns.L2vlanProfilesItem] | None = None
+
     @cached_property
     def filtered_tenants(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices:
         """
@@ -87,17 +89,83 @@ class FilteredTenantsMixin(Protocol):
         Filtering based on l2vlan tags.
         """
         if not self.network_services_l2 or not tenant.l2vlans:
-            EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
+            return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
 
-        filtered_l2vlans = tenant.l2vlans._filtered(
-            lambda l2vlan: self.is_accepted_vlan(l2vlan) and bool("all" in self.filter_tags or set(l2vlan.tags).intersection(self.filter_tags))
-        )
+        filtered_l2vlans = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
+        for l2vlan in tenant.l2vlans:
+            if not self.is_accepted_vlan(l2vlan):
+                continue
 
-        if tenant.evpn_vlan_bundle:
-            for l2vlan in filtered_l2vlans:
-                l2vlan.evpn_vlan_bundle = l2vlan.evpn_vlan_bundle or tenant.evpn_vlan_bundle
+            # Perform filtering on tags before merge of profiles, to avoid spending cycles on merging something that will be filtered away.
+            if not ("all" in self.filter_tags or bool(set(l2vlan.tags).intersection(self.filter_tags))):
+                continue
+
+            merged_l2vlan = self.get_merged_l2vlan_config(l2vlan)
+            if tenant.evpn_vlan_bundle:
+                merged_l2vlan.evpn_vlan_bundle = merged_l2vlan.evpn_vlan_bundle or tenant.evpn_vlan_bundle
+
+            filtered_l2vlans.append(merged_l2vlan)
 
         return filtered_l2vlans._natural_sorted(sort_key="id")
+
+    def get_merged_l2vlan_config(
+        self: SharedUtilsProtocol, vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem
+    ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem:
+        """
+        Return structured config for one l2vlan after inheritance.
+
+        Handle inheritance of l2vlan_profiles in two levels:
+        l2vlan > l2vlan_profile > l2vlan_parent_profile --> l2vlan_cfg
+        """
+        if vlan.profile:
+            l2vlan_profile = self.get_merged_l2vlan_profile(vlan.profile, f"{vlan.name}")
+
+            # Inherit from the profile
+            merged_vlan = vlan._deepinherited(
+                l2vlan_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem, ignore_extra_keys=True)
+            )
+        else:
+            merged_vlan = vlan
+        return merged_vlan
+
+    def get_merged_l2vlan_profile(self: SharedUtilsProtocol, profile_name: str, context: str) -> EosDesigns.L2vlanProfilesItem:
+        """
+        Returns a merged "l2vlan_profile" where "parent_profile" has been applied.
+
+        Leverages a dict of resolved profiles as a cache.
+        """
+        if self.resolved_l2vlan_profiles_cache and profile_name in self.resolved_l2vlan_profiles_cache:
+            return self.resolved_l2vlan_profiles_cache[profile_name]
+
+        resolved_profile = self.resolve_l2vlan_profile(profile_name, context)
+
+        # Update the cache so we don't resolve again next time.
+        if self.resolved_l2vlan_profiles_cache is None:
+            self.resolved_l2vlan_profiles_cache = {}
+        self.resolved_l2vlan_profiles_cache[profile_name] = resolved_profile
+
+        return resolved_profile
+
+    def resolve_l2vlan_profile(self: SharedUtilsProtocol, profile_name: str, context: str) -> EosDesigns.L2vlanProfilesItem:
+        """Resolve one l2vlan profile and return it."""
+        if profile_name not in self.inputs.l2vlan_profiles:
+            msg = f"Profile '{profile_name}' applied under l2vlan '{context}' does not exist in 'l2vlan_profiles'."
+            raise AristaAvdInvalidInputsError(msg)
+
+        l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]
+        if l2vlan_profile.parent_profile:
+            if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
+                msg = f"Profile '{l2vlan_profile.parent_profile}' applied under L2VLAN Profile '{profile_name}' does not exist in 'l2vlan_profiles'."
+                raise AristaAvdInvalidInputsError(msg)
+
+            parent_profile = self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile]
+
+            # Notice reuse of the same variable with the merged content.
+            l2vlan_profile = l2vlan_profile._deepinherited(parent_profile)
+
+        delattr(l2vlan_profile, "parent_profile")
+
+        return l2vlan_profile
 
     def is_accepted_vlan(
         self: SharedUtilsProtocol,
@@ -312,6 +380,7 @@ class FilteredTenantsMixin(Protocol):
         for svi in vrf.svis:
             if not self.is_accepted_vlan(svi):
                 continue
+            # TODO: Tags exist only on the SVI itself, not in svi_profiles. Avoid duplicating this logic here—check tags before merging.
             # Handle svi_profile inheritance
             merged_svi = self.get_merged_svi_config(svi)
             # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
