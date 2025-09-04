@@ -12,6 +12,7 @@ from pyavd._cv.client.exceptions import CVClientException
 from .create_workspace_on_cv import create_workspace_on_cv
 from .deploy_configs_to_cv import deploy_configs_to_cv
 from .deploy_cv_pathfinder_metadata_to_cv import deploy_cv_pathfinder_metadata_to_cv
+from .deploy_static_config_studio_manifest_to_cv import deploy_static_config_studio_manifest_to_cv
 from .deploy_studio_inputs_to_cv import deploy_studio_inputs_to_cv
 from .deploy_tags_to_cv import deploy_tags_to_cv
 from .finalize_change_control_on_cv import finalize_change_control_on_cv
@@ -28,12 +29,11 @@ from .models import (
     CVWorkspace,
     DeployToCvResult,
 )
-from .sync_config_hierarchy_to_cv import sync_config_hierarchy_to_cv
 from .verify_devices_on_cv import verify_devices_on_cv
 from .verify_inputs import verify_device_inputs
 
 if TYPE_CHECKING:
-    from .schemas import StaticConfigurationHierarchy
+    from .models import AvdManifest
 
 LOGGER = getLogger(__name__)
 
@@ -43,7 +43,7 @@ async def deploy_to_cv(
     workspace: CVWorkspace | None = None,
     change_control: CVChangeControl | None = None,
     configs: list[CVEosConfig] | None = None,
-    config_hierarchy: StaticConfigurationHierarchy | None = None,
+    static_config_manifest: AvdManifest | None = None,
     device_tags: list[CVDeviceTag] | None = None,
     interface_tags: list[CVInterfaceTag] | None = None,
     studio_inputs: list[CVStudioInputs] | None = None,
@@ -136,12 +136,6 @@ async def deploy_to_cv(
         studio_inputs = []
     if cv_pathfinder_metadata is None:
         cv_pathfinder_metadata = []
-
-    # TODO: For now they are mutually exclusive to keep the code simple and avoid side effects while implementation
-    #       the config_hierarchy feature.
-    if configs and config_hierarchy:
-        msg = "Parameters 'configs' and 'config_hierarchy' are mutually exclusive."
-        raise ValueError(msg)
     try:
         async with CVClient(servers=cloudvision.servers, token=cloudvision.token, verify_certs=cloudvision.verify_certs) as cv_client:
             # Create workspace
@@ -192,20 +186,20 @@ async def deploy_to_cv(
                 )
 
                 # Deploy configs
-                # TODO: Check if we want to consolidate and use the new sync_config_hierarchy_to_cv
+                # TODO: Check if we want to consolidate and use the new deploy_static_config_studio_manifest_to_cv
                 #       by building a hierarchy from the CVEosConfig objects.
-                if configs:
-                    await deploy_configs_to_cv(
-                        configs=configs,
-                        result=result,
-                        cv_client=cv_client,
-                    )
-                # Deploy config hierarchy instead
+                await deploy_configs_to_cv(
+                    configs=configs,
+                    result=result,
+                    cv_client=cv_client,
+                )
+
+                # Deploy Static Configuration Studio manifest
                 # TODO: Update function docstring workflow to reflect this
-                elif config_hierarchy:
-                    await sync_config_hierarchy_to_cv(
-                        desired_hierarchy=config_hierarchy,
-                        result=result,
+                if static_config_manifest:
+                    await deploy_static_config_studio_manifest_to_cv(
+                        manifest=static_config_manifest,
+                        deployment_result=result,
                         cv_client=cv_client,
                     )
 
