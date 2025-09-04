@@ -291,6 +291,30 @@ ethernet_interfaces:
   peer: DOT1X_UNAUTHORIZED_PORT_CHANNEL
   peer_type: custom_server
   port_profile: INDIVIDUAL_TRUNK
+- name: Ethernet26
+  description: CUSTOM_SERVER_DOT1X_SUPPLICANT_PORT_CHANNEL
+  shutdown: false
+  channel_group:
+    id: 26
+    mode: active
+  dot1x:
+    pae:
+      mode: supplicant
+      supplicant_profile: test_profile
+  peer: DOT1X_SUPPLICANT_PORT_CHANNEL
+  peer_type: custom_server
+- name: Ethernet27
+  description: CUSTOM_SERVER_DOT1X_SUPPLICANT_PORT_CHANNEL
+  shutdown: false
+  channel_group:
+    id: 26
+    mode: active
+  dot1x:
+    pae:
+      mode: supplicant
+      supplicant_profile: test_profile
+  peer: DOT1X_SUPPLICANT_PORT_CHANNEL
+  peer_type: custom_server
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
@@ -412,6 +436,11 @@ port_channel_interfaces:
       allowed_vlan: 1,2,3,4,5,6,7,123,234
       native_vlan: 123
       native_vlan_tag: false
+- name: Port-Channel26
+  description: CUSTOM_SERVER_DOT1X_SUPPLICANT_PORT_CHANNEL
+  shutdown: false
+  switchport:
+    enabled: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
