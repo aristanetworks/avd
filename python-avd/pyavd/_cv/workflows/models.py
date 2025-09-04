@@ -5,12 +5,18 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from hashlib import sha256 as create_sha256_hash
-from pathlib import Path
-from typing import Any, Literal
-from uuid import uuid4
+from typing import TYPE_CHECKING, Any, Literal
+from uuid import NAMESPACE_DNS, uuid4, uuid5
 
+from pyavd._cv.client.exceptions import CVManifestError
+
+AVD_NAMESPACE = uuid5(NAMESPACE_DNS, "avd.arista.com")
 AVD_ENTITY_PREFIX = "avd_"
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment
 
 
 @dataclass
@@ -197,13 +203,6 @@ class AvdConfiglet:
     name: str
     file: str
 
-    def __post_init__(self) -> None:
-        """Check if the provided configlet file path exists."""
-        path = Path(self.file)
-        if not path.is_file():
-            msg = f"Configlet {path.resolve()} not found."
-            raise ValueError(msg)
-
 
 @dataclass(frozen=True)
 class AvdContainer:
@@ -233,8 +232,8 @@ class AvdManifest:
     TODO: Add an example.
     """
 
-    configlets: tuple[AvdConfiglet, ...] = field(default_factory=tuple)
-    containers: tuple[AvdContainer, ...] = field(default_factory=tuple)
+    configlets: tuple[AvdConfiglet, ...]
+    containers: tuple[AvdContainer, ...]
 
 
 @dataclass(frozen=True)
@@ -257,52 +256,57 @@ class CVManifest:
             )
             if cv_configlet.name in cv_configlet_map:
                 msg = f"Duplicate configlet name found: '{cv_configlet.name}'. All AVD-managed configlet names must be unique."
-                raise ValueError(msg)
+                raise CVManifestError(msg)
             cv_configlet_map[cv_configlet.name] = cv_configlet
 
-        def _process_container_recursively(container: AvdContainer, parent_path: str) -> str:
-            """Recursively traverse the container tree, creating objects and returning the container generated ID."""
-            current_path = f"{parent_path}/{container.name}" if parent_path else container.name
-
-            # Process sub-containers.
-            child_ids = [_process_container_recursively(sub_container, current_path) for sub_container in container.sub_containers]
-
-            # Process configlets attached to this container.
-            configlet_ids = []
-            for configlet_name in container.configlets:
-                if configlet_name not in cv_configlet_map:
-                    msg = f"Configlet '{configlet_name}' is assigned to a container but is not found in the input definition."
-                    raise ValueError(msg)
-                configlet_ids.append(cv_configlet_map[configlet_name].id)
-
-            # Create the parent CVContainer object.
-            cv_container = CVContainer(
-                avd_container=container,
-                id=cls._generate_deterministic_id(current_path),
-                is_root=(parent_path == ""),
-                configlet_ids=tuple(configlet_ids),
-                child_ids=tuple(child_ids),
-            )
-
-            # Store it in the main dictionary.
-            if current_path in cv_container_map:
-                msg = f"Duplicate container name found: '{current_path}'. All AVD-managed sibling containers must have unique names."
-                raise ValueError(msg)
-            cv_container_map[current_path] = cv_container
-
-            return cv_container.id
-
-        # Start the recursion for each root container.
+        # Recursively process all containers.
         for root_container in avd_manifest.containers:
-            _process_container_recursively(container=root_container, parent_path="")
+            cls._process_container_recursively(container=root_container, parent_path="", cv_configlet_map=cv_configlet_map, cv_container_map=cv_container_map)
 
+        # Return the completed manifest.
         return cls(configlets=tuple(cv_configlet_map.values()), containers=tuple(cv_container_map.values()))
 
+    @classmethod
+    def _process_container_recursively(
+        cls, container: AvdContainer, parent_path: str, cv_configlet_map: dict[str, CVConfiglet], cv_container_map: dict[str, CVContainer]
+    ) -> str:
+        """Recursively traverse the container tree, populating the cv_ mappings along the way. Returns the generated ID for the current container."""
+        current_path = f"{parent_path}/{container.name}" if parent_path else container.name
+
+        # Process sub-containers.
+        child_ids = [
+            cls._process_container_recursively(sub_container, current_path, cv_configlet_map, cv_container_map) for sub_container in container.sub_containers
+        ]
+
+        # Process configlets attached to this container.
+        configlet_ids = []
+        for configlet_name in container.configlets:
+            if configlet_name not in cv_configlet_map:
+                msg = f"Configlet '{configlet_name}' is assigned to a container but is not found in the input definition."
+                raise CVManifestError(msg)
+            configlet_ids.append(cv_configlet_map[configlet_name].id)
+
+        # Create the parent CVContainer object.
+        cv_container = CVContainer(
+            avd_container=container,
+            id=cls._generate_deterministic_id(current_path),
+            is_root=(parent_path == ""),
+            configlet_ids=tuple(configlet_ids),
+            child_ids=tuple(child_ids),
+        )
+
+        # Store it in the main dictionary.
+        if current_path in cv_container_map:
+            msg = f"Duplicate container name found: '{current_path}'. All AVD-managed sibling containers must have unique names."
+            raise CVManifestError(msg)
+        cv_container_map[current_path] = cv_container
+
+        return cv_container.id
+
     @staticmethod
-    def _generate_deterministic_id(data: str) -> str:
-        """Generates a truncated SHA256 hash from a given data string."""
-        sha256_hash = create_sha256_hash(data.encode("UTF-8")).hexdigest()
-        return f"{AVD_ENTITY_PREFIX}{sha256_hash[:16]}"
+    def _generate_deterministic_id(key: str) -> str:
+        """Generate a deterministic ID from AVD_NAMESPACE and the provided key."""
+        return f"{AVD_ENTITY_PREFIX}{uuid5(AVD_NAMESPACE, key)}"
 
 
 @dataclass(frozen=True)
@@ -323,7 +327,7 @@ class CVConfiglet:
 
     @property
     def api_tuple(self) -> tuple[Any, ...]:
-        """Return a tuple representation of the configlet compatible with the CloudVision gRPC APIs."""
+        """Return a tuple representation of the configlet compatible with the CVClient APIs."""
         return (self.id, self.name, self.description, self.file)
 
 
@@ -355,5 +359,27 @@ class CVContainer:
 
     @property
     def api_tuple(self) -> tuple[Any, ...]:
-        """Return a tuple representation of the container compatible with the CloudVision gRPC APIs."""
+        """Return a tuple representation of the container compatible with the CVClient APIs."""
         return (self.id, self.name, self.description or "", list(self.configlet_ids), self.tag_query, list(self.child_ids), self.match_policy)
+
+    def matches_configlet_assignment(self, configlet_assignment: ConfigletAssignment) -> bool:
+        """
+        Check if this container state matches a ConfigletAssignment from CVClient APIs.
+
+        This is primarily used to determine if the local configuration has diverged from the
+        remote configuration, indicating whether an update is required.
+        """
+        match_policy_map = {
+            0: "unspecified",
+            1: "match_first",
+            2: "match_all",
+        }
+        return self.api_tuple == (
+            configlet_assignment.key.configlet_assignment_id,
+            configlet_assignment.display_name,
+            configlet_assignment.description,
+            configlet_assignment.configlet_ids.values,
+            configlet_assignment.query,
+            configlet_assignment.child_assignment_ids.values,
+            match_policy_map.get(configlet_assignment.match_policy.value),
+        )

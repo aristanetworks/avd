@@ -7,8 +7,6 @@ from asyncio import gather
 from logging import getLogger
 from typing import TYPE_CHECKING, cast
 
-from pyavd._cv.client.exceptions import CVManifestError
-
 from .models import AVD_ENTITY_PREFIX, CVManifest
 
 if TYPE_CHECKING:
@@ -22,12 +20,6 @@ LOGGER = getLogger(__name__)
 
 STATIC_CONFIGURATION_STUDIO_ID = "studio-static-configlet"
 
-MATCH_POLICY_MAP = {
-    0: "unspecified",
-    1: "match_first",
-    2: "match_all",
-}
-
 
 async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
     """
@@ -40,11 +32,7 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Starting manifest deployment for workspace '%s'.", workspace_id)
 
     # Build the desired CloudVision manifest from the AVD manifest.
-    try:
-        cv_manifest = CVManifest.from_avd_manifest(manifest)
-    except (TypeError, ValueError) as exc:
-        msg = f"Error while building the CloudVision manifest from the AVD inputs: {exc!s}"
-        raise CVManifestError(msg) from exc
+    cv_manifest = CVManifest.from_avd_manifest(manifest)
 
     LOGGER.info(
         "deploy_static_config_studio_manifest_to_cv: Calculated desired state: %d containers and %d unique configlets.",
@@ -55,8 +43,8 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
         return
 
     # Perform synchronization tasks.
-    await _sync_containers(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
     await _sync_configlets(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
+    await _sync_containers(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
     await _sync_studio_roots(cv_manifest=cv_manifest, workspace_id=workspace_id, cv_client=cv_client)
 
     # Done.
@@ -76,15 +64,7 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
         existing_container = existing_containers_by_id.get(desired_container.id)
 
         # Container is new or has changed, so it needs to be pushed.
-        if not existing_container or desired_container.api_tuple != (
-            existing_container.key.configlet_assignment_id,
-            existing_container.display_name,
-            existing_container.description,
-            existing_container.configlet_ids.values,
-            existing_container.query,
-            existing_container.child_assignment_ids.values,
-            MATCH_POLICY_MAP.get(existing_container.match_policy.value),
-        ):
+        if not existing_container or not desired_container.matches_configlet_assignment(existing_container):
             containers_to_push.append(desired_container)
         else:
             # Container is unchanged.
@@ -118,14 +98,20 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
     desired_configlet_ids = {configlet.id for configlet in cv_manifest.configlets}
 
     if unused_configlet_ids := existing_configlet_ids.difference(desired_configlet_ids):
-        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d no longer used AVD-managed configlets.", len(unused_configlet_ids))
+        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d AVD-managed configlets which are no longer used.", len(unused_configlet_ids))
         await cv_client.delete_configlets(workspace_id=workspace_id, configlet_ids=list(unused_configlet_ids))
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No AVD-managed configlet deletions are needed.")
 
 
 async def _sync_studio_roots(cv_manifest: CVManifest, workspace_id: str, cv_client: CVClient) -> None:
-    """Synchronize Studio root containers. Update root container assignments and delete unused AVD-managed ones."""
+    """
+    Synchronize Studio root containers. Update root container assignments and delete unused AVD-managed ones.
+
+    Note:
+        During an update, this function reorders root containers. All AVD-managed
+        containers are placed first, followed by any existing manually-added containers.
+    """
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Syncing Static Config Studio root container assignments...")
 
     # Get the existing list of root container IDs from the Studio inputs.
