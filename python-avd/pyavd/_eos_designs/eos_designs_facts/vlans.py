@@ -8,11 +8,12 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._utils import remove_cached_property_type
 from pyavd.j2filters import list_compress, natural_sort, range_expand
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import EosDesignsFactsGeneratorProtocol
 
 
@@ -101,17 +102,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
                     adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
                     vlans.update(adapter_vlans)
                     trunk_groups.update(adapter_trunk_groups)
-                    if (
-                        adapter_settings.port_channel.mode
-                        and adapter_settings.port_channel.lacp_fallback.mode == "individual"
-                        and adapter_settings.port_channel.lacp_fallback.individual
-                    ):
-                        individual_adapter = adapter_settings.port_channel.lacp_fallback.individual._cast_as(
-                            EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem
-                        )
-                        individual_adapter._internal_data.context = f"{adapter._internal_data.context}.port_channel.lacp_fallback.individual"
-                        individual_adapter_settings = self.shared_utils.get_merged_adapter_settings(individual_adapter)
-
+                    if individual_adapter_settings := self.shared_utils.get_merged_individual_adapter_settings(adapter_settings):
                         individual_vlans, individual_trunk_groups = self._parse_adapter_settings(individual_adapter_settings)
                         vlans.update(individual_vlans)
                         trunk_groups.update(individual_trunk_groups)
@@ -136,16 +127,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
                 adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
                 vlans.update(adapter_vlans)
                 trunk_groups.update(adapter_trunk_groups)
-                if (
-                    adapter_settings.port_channel.mode
-                    and adapter_settings.port_channel.lacp_fallback.mode == "individual"
-                    and adapter_settings.port_channel.lacp_fallback.individual
-                ):
-                    individual_adapter_settings = self.shared_utils.get_merged_adapter_settings(
-                        adapter_settings.port_channel.lacp_fallback.individual._cast_as(
-                            EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem
-                        )
-                    )
+                if individual_adapter_settings := self.shared_utils.get_merged_individual_adapter_settings(adapter_settings):
                     individual_vlans, individual_trunk_groups = self._parse_adapter_settings(individual_adapter_settings)
                     vlans.update(individual_vlans)
                     trunk_groups.update(individual_trunk_groups)

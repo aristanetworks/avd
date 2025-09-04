@@ -22,6 +22,11 @@ if TYPE_CHECKING:
     ADAPTER_SETTINGS = TypeVar(
         "ADAPTER_SETTINGS", EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem, EosDesigns.NetworkPortsItem
     )
+    ADAPTER_LACP_FALLBACK_INDIVIDUAL = TypeVar(
+        "ADAPTER_LACP_FALLBACK_INDIVIDUAL",
+        EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.PortChannel.LacpFallback.Individual,
+        EosDesigns.NetworkPortsItem.PortChannel.LacpFallback.Individual,
+    )
 
 
 class UtilsMixin(Protocol):
@@ -136,6 +141,22 @@ class UtilsMixin(Protocol):
             adapter_or_network_port_settings._deepinherit(profile_as_adapter_or_network_port_settings)
 
         return adapter_or_network_port_settings
+
+    def get_merged_individual_adapter_settings(
+        self: SharedUtilsProtocol, adapter_or_network_port_settings: ADAPTER_SETTINGS
+    ) -> EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem | None:
+        if (
+            not adapter_or_network_port_settings.port_channel.mode
+            or adapter_or_network_port_settings.port_channel.lacp_fallback.mode != "individual"
+            or not adapter_or_network_port_settings.port_channel.lacp_fallback.individual
+        ):
+            return None
+
+        individual_adapter = adapter_or_network_port_settings.port_channel.lacp_fallback.individual._cast_as(
+            EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem
+        )
+        individual_adapter._internal_data.context = f"{adapter_or_network_port_settings._internal_data.context}.port_channel.lacp_fallback.individual"
+        return self.get_merged_adapter_settings(individual_adapter)
 
     def match_regexes(self: SharedUtilsProtocol, regexes: Iterable[str], value: str) -> bool:
         """

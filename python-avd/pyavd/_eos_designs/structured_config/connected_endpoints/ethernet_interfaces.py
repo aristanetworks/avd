@@ -204,11 +204,12 @@ class EthernetInterfacesMixin(Protocol):
             ethernet_interface.channel_group.id = channel_group_id
             ethernet_interface.channel_group.mode = adapter.port_channel.mode
 
-            if (lacp_fallback_mode := adapter.port_channel.lacp_fallback.mode) == "static":
+            if adapter.port_channel.lacp_fallback.mode == "static":
                 ethernet_interface.lacp_port_priority = 8192 if node_index == 0 else 32768
 
-            elif lacp_fallback_mode == "individual":
+            elif individual_adapter_settings := self.shared_utils.get_merged_individual_adapter_settings(adapter):
                 # if fallback is set to individual a profile _or_ mode+vlans have to be defined
+                # Enforced here and not in facts or shared_utils to fail on the proper device.
                 if not (
                     adapter.port_channel.lacp_fallback.individual.profile
                     or (adapter.port_channel.lacp_fallback.individual.mode and adapter.port_channel.lacp_fallback.individual.vlans)
@@ -219,11 +220,6 @@ class EthernetInterfacesMixin(Protocol):
                     )
                     raise AristaAvdInvalidInputsError(msg)
 
-                individual_adapter = adapter.port_channel.lacp_fallback.individual._cast_as(
-                    EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem
-                )
-                individual_adapter._internal_data.context = f"{adapter._internal_data.context}.port_channel.lacp_fallback.individual"
-                individual_adapter_settings = self.shared_utils.get_merged_adapter_settings(individual_adapter)
                 self._update_ethernet_interface_cfg(individual_adapter_settings, ethernet_interface, connected_endpoint)
 
             if adapter.port_channel.mode != "on" and adapter.port_channel.lacp_timer.mode is not None:
