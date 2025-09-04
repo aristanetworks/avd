@@ -725,6 +725,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-tele
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-twamp.md
 --8<--
 
+### Connectivity Fault Management
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/cfm.md
+--8<--
+
 ### SFLOW
 
 --8<--
