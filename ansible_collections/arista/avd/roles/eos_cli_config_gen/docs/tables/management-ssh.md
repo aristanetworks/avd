@@ -12,10 +12,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;empty_passwords</samp>](## "management_ssh.authentication.empty_passwords") | String |  |  | Valid Values:<br>- <code>auto</code><br>- <code>deny</code><br>- <code>permit</code> | Permit or deny empty passwords for SSH authentication. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "management_ssh.authentication.protocols") | List, items: String |  |  |  | Allowed SSH authentication methods. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_ssh.authentication.protocols.[]") | String |  |  | Valid Values:<br>- <code>keyboard-interactive</code><br>- <code>password</code><br>- <code>public-key</code> |  |
-    | [<samp>&nbsp;&nbsp;access_groups</samp>](## "management_ssh.access_groups") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ip_access_group_in or vrfs.ip_access_group_in</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;access_groups</samp>](## "management_ssh.access_groups") <span style="color:red">removed</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ip_access_group_in or vrfs.ip_access_group_in</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_ssh.access_groups.[].name") | String |  |  |  | Standard ACL Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_ssh.access_groups.[].vrf") | String |  |  |  | VRF Name. |
-    | [<samp>&nbsp;&nbsp;ipv6_access_groups</samp>](## "management_ssh.ipv6_access_groups") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ipv6_access_group_in or vrfs.ipv6_access_group_in</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;ipv6_access_groups</samp>](## "management_ssh.ipv6_access_groups") <span style="color:red">removed</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ipv6_access_group_in or vrfs.ipv6_access_group_in</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_ssh.ipv6_access_groups.[].name") | String |  |  |  | Standard ACL Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_ssh.ipv6_access_groups.[].vrf") | String |  |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;ip_access_group_in</samp>](## "management_ssh.ip_access_group_in") | String |  |  |  | Standard ACL Name. |
@@ -59,26 +59,6 @@
         # Allowed SSH authentication methods.
         protocols:
           - <str; "keyboard-interactive" | "password" | "public-key">
-      # This key is deprecated.
-      # Support will be removed in AVD version 6.0.0.
-      # Use `ip_access_group_in` or `vrfs.ip_access_group_in` instead.
-      access_groups:
-
-          # Standard ACL Name.
-        - name: <str>
-
-          # VRF Name.
-          vrf: <str>
-      # This key is deprecated.
-      # Support will be removed in AVD version 6.0.0.
-      # Use `ipv6_access_group_in` or `vrfs.ipv6_access_group_in` instead.
-      ipv6_access_groups:
-
-          # Standard ACL Name.
-        - name: <str>
-
-          # VRF Name.
-          vrf: <str>
 
       # Standard ACL Name.
       ip_access_group_in: <str>

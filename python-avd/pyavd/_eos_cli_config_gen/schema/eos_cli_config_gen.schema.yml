@@ -9080,6 +9080,7 @@ keys:
         type: list
         deprecation:
           warning: true
+          removed: true
           remove_in_version: 6.0.0
           new_key: ip_access_group_in or vrfs.ip_access_group_in
         items:
@@ -9097,6 +9098,7 @@ keys:
         type: list
         deprecation:
           warning: true
+          removed: true
           remove_in_version: 6.0.0
           new_key: ipv6_access_group_in or vrfs.ipv6_access_group_in
         items:
