@@ -16,7 +16,6 @@ keys:
           description: VRF Name.
           convert_types:
             - int
-        # TODO: AVD 6.0 Add required:true for prefix.
         prefix:
           type: str
           description: IPv4_network/Mask.
