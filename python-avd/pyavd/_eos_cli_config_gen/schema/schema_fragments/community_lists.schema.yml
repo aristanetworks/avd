@@ -10,6 +10,8 @@ keys:
     type: list
     primary_key: name
     display_name: Community Lists (legacy model)
+    documentation_options:
+      table: ip-community-lists
     deprecation:
       warning: true
       removed: true
