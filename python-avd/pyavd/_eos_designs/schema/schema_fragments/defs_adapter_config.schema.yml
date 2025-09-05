@@ -317,7 +317,7 @@ $defs:
                   - individual
                 description: |
                   Either static or individual mode is supported.
-                  If the mode is set to "individual" the "individual.profile" setting must be defined.
+                  If the mode is set to "individual" either 'profile' or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
               individual:
                 type: dict
                 description: Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to "individual".
@@ -325,6 +325,24 @@ $defs:
                   profile:
                     type: str
                     description: Port-profile name to inherit configuration.
+                  vlans:
+                    type: str
+                    description: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                    convert_types:
+                      - int
+                  native_vlan:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Native VLAN on the port-channel member interfaces when in fallback individual.
+                  mode:
+                    type: str
+                    valid_values:
+                      - "access"
+                      - "dot1q-tunnel"
+                      - "trunk"
+                      - "trunk phone"
+                    description: Interface mode on the port-channel member interfaces when in fallback individual.
               timeout:
                 type: int
                 convert_types:
