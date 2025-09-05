@@ -20,7 +20,11 @@ cv_verify_certs: true
 # # Set FQDN/IP of the HTTP CONNECT proxy server.
 # cv_proxy_host: <str>
 # # Set target TCP port of the HTTP CONNECT proxy server.
-# cv_proxy_port: <str>
+cv_proxy_port: 8080
+# # Set authentication username for the HTTP CONNECT proxy server.
+# cv_proxy_username: <str>
+# # Set authentication password for the HTTP CONNECT proxy server.
+# cv_proxy_password: <str>
 
 # Deploy device configs and tags for these devices.
 # Defaults to all hosts in the play.

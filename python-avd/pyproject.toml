@@ -26,8 +26,8 @@ dependencies = [
     "Jinja2>=3.0",
     "PyYAML>=6.0.0",
     "requests>=2.27.0",
-    "python-socks>=2.7.2",
-    "async-timeout>=5.0.1",
+    "grpclib==0.4.8",
+    "python-socks[asyncio]>=2.7.2",
 ]
 
 [project.urls]

@@ -5,18 +5,20 @@ from __future__ import annotations
 
 import asyncio
 import ssl
+import tempfile
 from contextlib import suppress
 from pathlib import Path
 from typing import TYPE_CHECKING, Protocol
 
+import certifi
 from grpclib.client import Channel
-from requests import JSONDecodeError, Session
+from requests import JSONDecodeError, get, post
 
 from .change_control import ChangeControlMixin
 from .configlet import ConfigletMixin
 from .exceptions import CVClientException
 from .inventory import InventoryMixin
-from .proxy import HTTPProxyManager, create_ca_bundle_with_custom_ca
+from .proxy import HTTPProxyManager
 from .studio import StudioMixin
 from .swg import SwgMixin
 from .tag import TagMixin
@@ -52,7 +54,6 @@ class CVClientProtocol(
     _username: str | None
     _password: str | None
     _cv_version: CvVersion | None = None
-    _session: Session | None = None
     _temp_ca_bundle_path: str | None = None
     _proxy_manager: HTTPProxyManager | None = None
 
@@ -65,9 +66,6 @@ class CVClientProtocol(
         if self._channel is not None:
             self._channel.close()
             self._channel = None
-        if self._session is not None:
-            self._session.close()
-            self._session = None
         if self._temp_ca_bundle_path and Path(self._temp_ca_bundle_path).exists():
             with suppress(OSError):
                 Path(self._temp_ca_bundle_path).unlink()
@@ -79,20 +77,7 @@ class CVClientProtocol(
 
         # Load custom CA if provided (for REST and gRPC endpoint verification)
         if self._custom_ca_path:
-            self._temp_ca_bundle_path = create_ca_bundle_with_custom_ca(self._custom_ca_path)
-
-        # Initialize requests session for REST calls
-        self._session = Session()
-
-        # Configure proxy for requests
-        if self._proxy_manager is not None:
-            self._session.proxies.update(self._proxy_manager.get_requests_proxies())
-
-        # Configure SSL verification for requests
-        if self._temp_ca_bundle_path:
-            self._session.verify = self._temp_ca_bundle_path
-        else:
-            self._session.verify = self._verify_certs
+            self._temp_ca_bundle_path = self.create_ca_bundle_with_custom_ca()
 
         # Ensure that the default ssl context is initialized before doing any requests.
         ssl_context = self._ssl_context()
@@ -136,7 +121,7 @@ class CVClientProtocol(
                 proxy_sock = await self._proxy_manager.create_socket_for_grpc()
 
                 # Create the gRPC protocol using the proxy socket
-                transport, protocol = await loop.create_connection(
+                _, protocol = await loop.create_connection(
                     lambda: channel._protocol_factory(),
                     sock=proxy_sock,
                     ssl=ssl_context,
@@ -147,9 +132,9 @@ class CVClientProtocol(
                 msg = f"Failed to create proxy connection: {type(e).__name__}: {e}"
                 raise CVClientException(msg) from e
 
-            else:
-                return protocol
+            return protocol
 
+        # Override the standard method from grpclib with our proxy variant.
         channel._create_connection = proxy_connection
         return channel
 
@@ -161,12 +146,12 @@ class CVClientProtocol(
         The return value (The default ssl context or True) will be passed to grpclib.
         Requests will pick it up from ssl lib itself.
         """
-        # Accepting SonarLint issue: We are purposely implementing no verification of certs.
-        context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
+        context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)
         context.set_alpn_protocols(["h2"])
 
         if not self._verify_certs:
             context.check_hostname = False
+            # Accepting SonarLint issue: We are purposely implementing no verification of certs.
             context.verify_mode = ssl.CERT_NONE  # NOSONAR
             return context
 
@@ -192,9 +177,11 @@ class CVClientProtocol(
             raise CVClientException(msg)
 
         try:
-            response = self._session.post(
+            response = post(  # noqa: S113 TODO: Add configurable timeout
                 "https://" + self._servers[0] + "/cvpservice/login/authenticate.do",
                 auth=(self._username, self._password),
+                verify=self._temp_ca_bundle_path if self._temp_ca_bundle_path else self._verify_certs,
+                proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
                 json={},
             )
 
@@ -216,9 +203,11 @@ class CVClientProtocol(
             raise CVClientException(msg)
 
         try:
-            response = self._session.get(
+            response = get(  # noqa: S113 TODO: Add configurable timeout
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
                 headers={"Authorization": f"Bearer {self._token}"},
+                verify=self._temp_ca_bundle_path if self._temp_ca_bundle_path else self._verify_certs,
+                proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
                 json={},
             )
 
@@ -226,6 +215,28 @@ class CVClientProtocol(
         except (KeyError, JSONDecodeError) as e:
             msg = f"Unable to get version from CloudVision server. Got {response.text}"
             raise CVClientException(msg) from e
+
+    def create_ca_bundle_with_custom_ca(self) -> str:
+        """
+        Create a temporary CA bundle file combining system CAs with custom CA.
+
+        Returns:
+            Path to temporary CA bundle file.
+        """
+        system_ca_path = Path(certifi.where())
+        custom_ca_path_obj = Path(self._custom_ca_path)
+
+        with tempfile.NamedTemporaryFile(delete=False, mode="w", encoding="utf-8") as temp_file:
+            temp_ca_bundle_path = temp_file.name
+
+            # Copy system CAs
+            temp_file.write(system_ca_path.read_text(encoding="UTF-8"))
+            temp_file.write("\n")
+
+            # Append custom CA
+            temp_file.write(custom_ca_path_obj.read_text(encoding="UTF-8"))
+
+        return temp_ca_bundle_path
 
 
 class CVClient(CVClientProtocol):
@@ -239,7 +250,9 @@ class CVClient(CVClientProtocol):
         verify_certs: bool = True,
         custom_ca_path: str | None = None,
         proxy_host: str | None = None,
-        proxy_port: str | None = None,
+        proxy_port: int = 8080,
+        proxy_username: str | None = None,
+        proxy_password: str | None = None,
     ) -> None:
         """
         CVClient is a high-level API library for using CloudVision Resource APIs.
@@ -257,6 +270,8 @@ class CVClient(CVClientProtocol):
             custom_ca_path: Path to custom CA certificate for CloudVision REST/gRPC SSL verification.
             proxy_host: HTTP proxy hostname.
             proxy_port: HTTP proxy port.
+            proxy_username: Proxy authentication username.
+            proxy_password: Proxy authentication password.
         """
         if isinstance(servers, list):
             self._servers = servers
@@ -276,6 +291,8 @@ class CVClient(CVClientProtocol):
             self._proxy_manager = HTTPProxyManager(
                 proxy_host=proxy_host,
                 proxy_port=proxy_port,
+                proxy_username=proxy_username,
+                proxy_password=proxy_password,
                 target_host=self._servers[0],
                 target_port=self._port,
             )

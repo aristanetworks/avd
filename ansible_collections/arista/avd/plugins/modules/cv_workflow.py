@@ -40,6 +40,13 @@ options:
     type: str
   cv_proxy_port:
     description: TCP port of the HTTP CONNECT proxy server.
+    type: int
+    default: 8080
+  cv_proxy_username:
+    description: Authentication username for the HTTP CONNECT proxy server.
+    type: str
+  cv_proxy_password:
+    description: Authentication password for the HTTP CONNECT proxy server.
     type: str
   configuration_dir:
     description: Path to directory containing .cfg files with EOS configurations.
@@ -178,7 +185,9 @@ EXAMPLES = r"""
         # cv_verify_certs: true
         # cv_custom_ca_path: "/tmp/custom_ca.crt"
         # cv_proxy_host: "proxy.local.domain"
-        # cv_proxy_port: "3128"
+        # cv_proxy_port: "8080"
+        # cv_proxy_username: "avd_user"
+        # cv_proxy_password: "avd_password"
         configuration_dir: "{{ inventory_dir }}/intended/configs"
         structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
         # structured_config_suffix: "yml"

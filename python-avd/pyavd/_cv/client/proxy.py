@@ -3,11 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import tempfile
-from pathlib import Path
 from typing import TYPE_CHECKING
 
-import certifi
 from python_socks.async_.asyncio import Proxy
 
 if TYPE_CHECKING:
@@ -25,7 +22,9 @@ class HTTPProxyManager:
     def __init__(
         self,
         proxy_host: str,
-        proxy_port: str,
+        proxy_port: int,
+        proxy_username: str | None,
+        proxy_password: str | None,
         target_host: str,
         target_port: int,
     ) -> None:
@@ -35,25 +34,28 @@ class HTTPProxyManager:
         Args:
             proxy_host: Proxy server hostname or IP address.
             proxy_port: Proxy server port.
+            proxy_username: Proxy authentication username.
+            proxy_password: Proxy authentication password.
             target_host: Target server hostname.
             target_port: Target server port.
-
-        Raises:
-            ImportError: If python-socks is not available.
         """
         self.proxy_host = proxy_host
         self.proxy_port = proxy_port
+        self.proxy_username = proxy_username
+        self.proxy_password = proxy_password
         self.target_host = target_host
         self.target_port = target_port
 
     @property
     def proxy_url(self) -> str:
         """
-        Generate proxy URL for python-socks.
+        Generate proxy URL.
 
         Returns:
-            HTTP proxy URL for python-socks library.
+            HTTP proxy URL.
         """
+        if self.proxy_username and self.proxy_password:
+            return f"http://{self.proxy_username}:{self.proxy_password}@{self.proxy_host}:{self.proxy_port}"
         return f"http://{self.proxy_host}:{self.proxy_port}"
 
     def get_requests_proxies(self) -> dict[str, str]:
@@ -80,29 +82,3 @@ class HTTPProxyManager:
 
         # Connect through proxy to target
         return await proxy.connect(dest_host=self.target_host, dest_port=self.target_port)
-
-
-def create_ca_bundle_with_custom_ca(custom_ca_path: str) -> str:
-    """
-    Create a temporary CA bundle file combining system CAs with custom CA.
-
-    Args:
-        custom_ca_path: Path to custom CA certificate file.
-
-    Returns:
-        Path to temporary CA bundle file.
-    """
-    system_ca_path = Path(certifi.where())
-    custom_ca_path_obj = Path(custom_ca_path)
-
-    with tempfile.NamedTemporaryFile(delete=False, mode="w", encoding="utf-8") as temp_file:
-        temp_ca_bundle_path = temp_file.name
-
-        # Copy system CAs
-        temp_file.write(system_ca_path.read_text(encoding="UTF-8"))
-        temp_file.write("\n")
-
-        # Append custom CA
-        temp_file.write(custom_ca_path_obj.read_text(encoding="UTF-8"))
-
-    return temp_ca_bundle_path

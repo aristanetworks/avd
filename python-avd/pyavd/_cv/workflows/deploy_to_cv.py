@@ -138,6 +138,8 @@ async def deploy_to_cv(
             custom_ca_path=cloudvision.custom_ca_path,
             proxy_host=cloudvision.proxy_host,
             proxy_port=cloudvision.proxy_port,
+            proxy_username=cloudvision.proxy_username,
+            proxy_password=cloudvision.proxy_password,
         ) as cv_client:
             # Create workspace
             await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)

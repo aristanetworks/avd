@@ -56,7 +56,9 @@ ARGUMENT_SPEC = {
     "cv_verify_certs": {"type": "bool", "default": True},
     "cv_custom_ca_path": {"type": "str", "required": False},
     "cv_proxy_host": {"type": "str", "required": False},
-    "cv_proxy_port": {"type": "str", "required": False},
+    "cv_proxy_port": {"type": "int", "required": False, "default": 8080},
+    "cv_proxy_username": {"type": "str", "required": False},
+    "cv_proxy_password": {"type": "str", "required": False},
     "workspace": {
         "type": "dict",
         "options": {
@@ -125,6 +127,8 @@ class ActionModule(ActionBase):
                 custom_ca_path=get(validated_args, "cv_custom_ca_path"),
                 proxy_host=get(validated_args, "cv_proxy_host"),
                 proxy_port=get(validated_args, "cv_proxy_port"),
+                proxy_username=get(validated_args, "cv_proxy_username"),
+                proxy_password=get(validated_args, "cv_proxy_password"),
             )
             # Build lists of CVEosConfig, CVDeviceTag, CVInterfaceTag and CVPathfinderMetadata objects.
             eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects = await self.build_objects(
