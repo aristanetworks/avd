@@ -34,6 +34,9 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>cv_servers</samp> | list | True | None |  | List of hostnames or IP addresses for CloudVision instance to deploy to. |
 | <samp>cv_token</samp> | str | True | None |  | Service account token. It is strongly recommended to use Vault for this. |
 | <samp>cv_verify_certs</samp> | bool | optional | True |  | Verifies CloudVison server certificates. |
+| <samp>cv_custom_ca_path</samp> | str | optional | None |  | Path to the custom CA certificate for CloudVision REST/gRPC SSL verification. |
+| <samp>cv_proxy_host</samp> | str | optional | None |  | FQDN/IP of the HTTP CONNECT proxy server. |
+| <samp>cv_proxy_port</samp> | int | optional | None |  | TCP port of the HTTP CONNECT proxy server. |
 | <samp>configuration_dir</samp> | str | True | None |  | Path to directory containing .cfg files with EOS configurations. |
 | <samp>structured_config_dir</samp> | str | False | None |  | Path to directory containing files with AVD structured configurations.<br>If found, the `serial_number` or `system_mac_address` will be used to identify the Device on CloudVision.<br>Any tags found in the structured configuration metadata will be applied to the Device and/or Interfaces. |
 | <samp>structured_config_suffix</samp> | str | optional | yml |  | File suffix for AVD structured configuration files. |
@@ -84,6 +87,9 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
         cv_servers: [ "www.arista.io" ]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
+        # cv_custom_ca_path: "/tmp/custom_ca.crt"
+        # cv_proxy_host: "proxy.local.domain"
+        # cv_proxy_port: 3128
         configuration_dir: "{{ inventory_dir }}/intended/configs"
         structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
         # structured_config_suffix: "yml"

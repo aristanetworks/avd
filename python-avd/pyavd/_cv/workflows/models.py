@@ -14,6 +14,9 @@ class CloudVision:
     servers: str | list[str]
     token: str
     verify_certs: bool = True
+    custom_ca_path: str | None = None
+    proxy_host: str | None = None
+    proxy_port: int | None = None
 
 
 @dataclass
