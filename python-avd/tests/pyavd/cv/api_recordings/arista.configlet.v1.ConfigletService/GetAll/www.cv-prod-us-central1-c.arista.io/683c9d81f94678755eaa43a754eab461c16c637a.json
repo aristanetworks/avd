@@ -1,0 +1,37 @@
+[{
+    "value": {
+        "key": {
+            "workspaceId": "test_initial_deployment",
+            "configletId": "avd_dc4ed010-07a2-566e-a287-a7c50dda1e0f"
+        },
+        "displayName": "DC1-SPINES-BASE-CONFIG",
+        "description": "Configlet created and uploaded by AVD.",
+        "migratedFrom": "",
+        "createdAt": "2025-09-05T01:45:44.193465504",
+        "createdBy": "Carl_SA",
+        "lastModifiedAt": "2025-09-05T01:45:44.193465504",
+        "lastModifiedBy": "Carl_SA",
+        "digest": "c4ea1711fb4741008367addf3d9d1e2f2e232e936db00557868fc6eef331bc95",
+        "size": 16
+    },
+    "time": "2025-09-05T01:45:44.193465504",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "workspaceId": "test_initial_deployment",
+            "configletId": "avd_f3ffb6f6-b204-50a3-b6a9-9e76bdff6232"
+        },
+        "displayName": "LEAFS-BASE-CONFIG",
+        "description": "Configlet created and uploaded by AVD.",
+        "migratedFrom": "",
+        "createdAt": "2025-09-05T01:45:44.193465504",
+        "createdBy": "Carl_SA",
+        "lastModifiedAt": "2025-09-05T01:45:44.193465504",
+        "lastModifiedBy": "Carl_SA",
+        "digest": "c933a272568cf1a4d03ee0ec0b01f7d2f8211a8d6eb5509397ae5daf84da372a",
+        "size": 15
+    },
+    "time": "2025-09-05T01:45:44.193465504",
+    "type": "INITIAL"
+}]

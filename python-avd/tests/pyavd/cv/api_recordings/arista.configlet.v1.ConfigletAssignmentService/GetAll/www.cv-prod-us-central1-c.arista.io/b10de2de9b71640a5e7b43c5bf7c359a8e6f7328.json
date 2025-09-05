@@ -1,0 +1,70 @@
+[{
+    "value": {
+      "key": {
+        "workspaceId": "test_update_and_prune_deployment",
+        "configletAssignmentId": "avd_8ec93743-4b99-55da-af77-963d538b9240"
+      },
+      "displayName": "RACK1_LEAFS",
+      "description": "Rack 1 specific configuration",
+      "configletIds": {},
+      "query": "topology_hint_rack:RACK1",
+      "matchPolicy": "MATCH_ALL",
+      "childAssignmentIds": {},
+      "createdAt": "2025-09-05T01:45:44.397Z",
+      "createdBy": "Carl_SA",
+      "lastModifiedAt": "2025-09-05T01:45:44.397Z",
+      "lastModifiedBy": "Carl_SA"
+    },
+    "time": "2025-09-05T01:45:44.397Z",
+    "type": "INITIAL"
+}, {
+    "value": {
+      "key": {
+        "workspaceId": "test_update_and_prune_deployment",
+        "configletAssignmentId": "avd_092879d4-d992-5b10-8764-22cc4f73a3c2"
+      },
+      "displayName": "DC1_LEAFS",
+      "description": "Base configuration for DC1 Leafs",
+      "configletIds": {
+        "values": [
+          "avd_f3ffb6f6-b204-50a3-b6a9-9e76bdff6232"
+        ]
+      },
+      "query": "topology_hint_type:leaf AND topology_hint_datacenter:DC1",
+      "matchPolicy": "MATCH_ALL",
+      "childAssignmentIds": {
+        "values": [
+          "avd_8ec93743-4b99-55da-af77-963d538b9240"
+        ]
+      },
+      "createdAt": "2025-09-05T01:45:44.397Z",
+      "createdBy": "Carl_SA",
+      "lastModifiedAt": "2025-09-05T01:45:44.397Z",
+      "lastModifiedBy": "Carl_SA"
+    },
+    "time": "2025-09-05T01:45:44.397Z",
+    "type": "INITIAL"
+}, {
+    "value": {
+      "key": {
+        "workspaceId": "test_update_and_prune_deployment",
+        "configletAssignmentId": "avd_25761f44-3c6b-521f-a372-0485ace986f6"
+      },
+      "displayName": "DC1_SPINES",
+      "description": "Base configuration for DC1 Spines",
+      "configletIds": {
+        "values": [
+          "avd_dc4ed010-07a2-566e-a287-a7c50dda1e0f"
+        ]
+      },
+      "query": "topology_hint_type:spine AND topology_hint_datacenter:DC1",
+      "matchPolicy": "MATCH_ALL",
+      "childAssignmentIds": {},
+      "createdAt": "2025-09-05T01:45:44.397Z",
+      "createdBy": "Carl_SA",
+      "lastModifiedAt": "2025-09-05T01:45:44.397Z",
+      "lastModifiedBy": "Carl_SA"
+    },
+    "time": "2025-09-05T01:45:44.397Z",
+    "type": "INITIAL"
+}]
