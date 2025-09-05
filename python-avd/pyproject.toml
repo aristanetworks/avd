@@ -26,6 +26,7 @@ dependencies = [
     "Jinja2>=3.0",
     "PyYAML>=6.0.0",
     "requests>=2.27.0",
+    "python-socks>=2.7.2",
 ]
 
 [project.urls]
