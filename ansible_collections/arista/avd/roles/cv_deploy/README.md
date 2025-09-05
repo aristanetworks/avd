@@ -65,7 +65,6 @@ This feature is still under development, so several planned features are not imp
 - Make all timeouts configurable. Current exposed settings have no effect.
 - Detect changes in configlets and only update when needed. (Depends on newer API)
 - Validate tag labels and values
-- Detect conflicting devices like using the same serial number or mac for more than one hostname.
 - Support for assigning change control templates.
 - Add automatic testing.
 - Add required CloudVision versions once the APIs are generally available.
@@ -133,6 +132,16 @@ cv_token: <service account token as defined on CloudVision. This value should be
 ```
 
 By default the connection to CloudVision requires valid certificates.
+
+If your remote CloudVision instance uses an SSL certificate signed by a custom Certificate Authority (CA), provide the path to your custom CA certificate file using the `cv_custom_ca_path` parameter.
+
+```yaml
+# Set path to the custom CA certificate for CloudVision REST/gRPC SSL verification.
+cv_custom_ca_path: <Path to the custom CA certificate>
+```
+
+This custom CA will be combined with system CAs and used for verifying SSL connections for both REST and gRPC CloudVision endpoints, ensuring secure and trusted communication in environments with private or enterprise CAs.
+
 For test and lab usage the certificate verification can be disabled.
 
 ```yaml
@@ -298,6 +307,49 @@ Click "Save" to exit the dialogue box.
 !!! note
     The name of the service account must match a username configured to be authorized on
     EOS, otherwise device interactive API calls might fail due to authorization denial.
+
+## Proxy server support
+
+The `arista.avd.cv_deploy` role supports connecting to CloudVision through an [HTTP CONNECT](https://en.wikipedia.org/wiki/HTTP_tunnel#HTTP_CONNECT_method) proxy server, with or without basic authentication.
+
+To enable the proxy, set `cv_proxy_host` (port `TCP/8080` will be used by default). If this variable is not defined, a proxy will not be used (default mode).
+
+!!! Warning
+
+    Authentication credentials (when used) are sent to the proxy server using ***HTTP Basic authentication*** over non-encrypted HTTP transport (credentials are only `Base64` encoded, not encrypted). Credentials can be exposed by intercepting and analyzing raw TCP/IP traffic between AVD and Proxy server.
+
+    Please use AVD proxy authentication only when absolutely necessary. Always use other filtering and identification mechanisms (like HTTP filtering based on the client's SRC IP, requested destination domains, etc.) to limit the security risks.
+
+    It is important to note that plain HTTP is used by AVD only for the initial CONNECT request to establish the tunnel with the CloudVision through proxy server. Once the tunnel to CloudVision is active, all subsequent AVD communication — including both REST and gRPC calls — is protected within a direct secure TLS session established between AVD and CloudVision ***inside*** the tunnel.
+
+Below settings allow modifying the default proxy-related behavior as needed. The values below are the default values.
+
+```yaml
+# Set FQDN/IP of the HTTP CONNECT proxy server.
+cv_proxy_host: <str>
+# Set target TCP port of the HTTP CONNECT proxy server.
+cv_proxy_port: 8080
+# Set authentication username for the HTTP CONNECT proxy server.
+cv_proxy_username: <str>
+# Set authentication password for the HTTP CONNECT proxy server.
+cv_proxy_password: <str>
+```
+
+Example of the configuration to use unauthenticated HTTP proxy using CONNECT method:
+
+```yaml
+cv_proxy_host: squid-1.infosec.enterprise.domain
+cv_proxy_port: 3128
+```
+
+Example of the configuration to use authenticated HTTP proxy using CONNECT method:
+
+```yaml
+cv_proxy_host: squid-1.infosec.enterprise.domain
+cv_proxy_port: 3128
+cv_proxy_username: "avd_proxy_user"
+cv_proxy_password: "avd_proxy_password"
+```
 
 ## License
 
