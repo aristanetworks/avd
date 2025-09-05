@@ -40,7 +40,7 @@ options:
     type: str
   cv_proxy_port:
     description: TCP port of the HTTP CONNECT proxy server.
-    type: int
+    type: str
   configuration_dir:
     description: Path to directory containing .cfg files with EOS configurations.
     required: true
@@ -178,7 +178,7 @@ EXAMPLES = r"""
         # cv_verify_certs: true
         # cv_custom_ca_path: "/tmp/custom_ca.crt"
         # cv_proxy_host: "proxy.local.domain"
-        # cv_proxy_port: 3128
+        # cv_proxy_port: "3128"
         configuration_dir: "{{ inventory_dir }}/intended/configs"
         structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
         # structured_config_suffix: "yml"

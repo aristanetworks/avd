@@ -25,7 +25,7 @@ class HTTPProxyManager:
     def __init__(
         self,
         proxy_host: str,
-        proxy_port: int,
+        proxy_port: str,
         target_host: str,
         target_port: int,
     ) -> None:

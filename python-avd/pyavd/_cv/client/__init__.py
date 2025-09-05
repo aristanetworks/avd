@@ -239,7 +239,7 @@ class CVClient(CVClientProtocol):
         verify_certs: bool = True,
         custom_ca_path: str | None = None,
         proxy_host: str | None = None,
-        proxy_port: int | None = None,
+        proxy_port: str | None = None,
     ) -> None:
         """
         CVClient is a high-level API library for using CloudVision Resource APIs.
