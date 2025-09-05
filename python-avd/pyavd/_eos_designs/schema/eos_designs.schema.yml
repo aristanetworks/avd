@@ -7133,8 +7133,8 @@ $defs:
                 - individual
                 description: 'Either static or individual mode is supported.
 
-                  If the mode is set to "individual" the "individual.profile" setting
-                  must be defined.
+                  If the mode is set to "individual" either ''profile'' or (''mode''
+                  and ''vlans'')  must be set under ''port_channel.lacp_fallback.individual''.
 
                   '
               individual:
@@ -7145,6 +7145,27 @@ $defs:
                   profile:
                     type: str
                     description: Port-profile name to inherit configuration.
+                  vlans:
+                    type: str
+                    description: Allowed VLANs on the port-channel member interfaces
+                      when in fallback individual.
+                    convert_types:
+                    - int
+                  native_vlan:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Native VLAN on the port-channel member interfaces
+                      when in fallback individual.
+                  mode:
+                    type: str
+                    valid_values:
+                    - access
+                    - dot1q-tunnel
+                    - trunk
+                    - trunk phone
+                    description: Interface mode on the port-channel member interfaces
+                      when in fallback individual.
               timeout:
                 type: int
                 convert_types:
@@ -9646,6 +9667,22 @@ $defs:
                         type: str
                       description: Nodes is required to restrict configuration of
                         BGP neighbors to certain nodes in the network.
+              aggregate_addresses:
+                type: list
+                items:
+                  type: dict
+                  $ref: eos_cli_config_gen#/keys/router_bgp/keys/aggregate_addresses/items
+                  keys:
+                    nodes:
+                      type: list
+                      description: 'Nodes where the aggregate should be configured.
+
+                        By default the aggregate will be configured all on all devices
+                        where the VRF is configured.'
+                      items:
+                        type: str
+                        description: Node name or regex pattern matching the full
+                          hostname.
               raw_eos_cli:
                 type: str
                 description: EOS CLI rendered directly on the root level of the final

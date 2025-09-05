@@ -115,13 +115,6 @@ servers:
             - short_esi: auto
             - number: 200
               vlan_id: 200
-  - name: OLD_SW-1/11
-    adapters:
-      - switches: [connected_endpoints]
-        switch_ports: [Ethernet24]
-        endpoint_ports: [Endpoint_port5]
-        mode: trunk
-        vlans: 1-4096
   - name: OLD_SW-1/12
     adapters:
       - switches: [connected_endpoints]
@@ -143,6 +136,7 @@ servers:
             mode: individual
             individual:
               profile: INDIVIDUAL_TRUNK # Notice that poe and dot1x are _not_ inherited from the fallback profile.
+
   - name: DOT1X_UNAUTHORIZED
     adapters:
       - switches: [connected_endpoints]
@@ -165,6 +159,44 @@ servers:
         profile: INDIVIDUAL_TRUNK # Notice that poe and dot1x _are_ inherited from the main profile and applied to the member interfaces.
         port_channel:
           mode: active
+
+  # port-channel with lacp fallback individual and profile for member interfaces
+  - name: INDIVIDUAL_3
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet26, Ethernet27]
+        port_channel:
+          mode: "active"
+          endpoint_port_channel: "INDIVIDUAL_3"
+          lacp_fallback:
+            mode: individual
+            individual:
+              profile: INDIVIDUAL_TRUNK
+              mode: access # note that we are over-riding the mode coming from the profile
+              vlans: "5" # Setting a single access VLAN
+  - name: INDIVIDUAL_4
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet28, Ethernet29]
+        port_channel:
+          mode: "active"
+          endpoint_port_channel: "INDIVIDUAL_4"
+          lacp_fallback:
+            mode: individual
+            individual:
+              profile: INDIVIDUAL_TRUNK
+              vlans: 1,2,3,4 # Modifying the VLAN list
+              native_vlan: 5 # Setting a native VLAN
+
+  # This entry will add all vlans, so we put it last to ensure all facts code is exercised during parsing of the previous entries.
+  - name: OLD_SW-1/11
+    adapters:
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet24]
+        endpoint_ports: [Endpoint_port5]
+        mode: trunk
+        vlans: 1-4096
+
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
