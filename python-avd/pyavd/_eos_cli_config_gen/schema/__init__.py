@@ -66965,9 +66965,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Addresses._item_type = str
 
-                _fields: ClassVar[dict] = {"address": {"type": str}, "addresses": {"type": Addresses}}
-                address: str | None
-                """Virtual IPv6 address."""
+                _fields: ClassVar[dict] = {"addresses": {"type": Addresses}}
                 addresses: Addresses
                 """
                 Virtual IPv6 addresses.
@@ -66977,7 +66975,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, address: str | None | UndefinedType = Undefined, addresses: Addresses | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, addresses: Addresses | UndefinedType = Undefined) -> None:
                         """
                         Ipv6.
 
@@ -66985,7 +66983,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            address: Virtual IPv6 address.
                             addresses:
                                Virtual IPv6 addresses.
 
