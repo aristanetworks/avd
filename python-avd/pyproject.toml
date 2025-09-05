@@ -27,6 +27,7 @@ dependencies = [
     "PyYAML>=6.0.0",
     "requests>=2.27.0",
     "python-socks>=2.7.2",
+    "async-timeout>=5.0.1",
 ]
 
 [project.urls]
@@ -76,6 +77,7 @@ requires = [
     "cryptography>=38.0.4",
     "aristaproto>=0.1.1",
     "ruff==0.12.11",
+    "async-timeout>=5.0.1"
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
