@@ -3,16 +3,20 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import asyncio
 import ssl
+from contextlib import suppress
+from pathlib import Path
 from typing import TYPE_CHECKING, Protocol
 
 from grpclib.client import Channel
-from requests import JSONDecodeError, get, post
+from requests import JSONDecodeError, Session
 
 from .change_control import ChangeControlMixin
 from .configlet import ConfigletMixin
 from .exceptions import CVClientException
 from .inventory import InventoryMixin
+from .proxy import HTTPProxyManager, create_ca_bundle_with_custom_ca
 from .studio import StudioMixin
 from .swg import SwgMixin
 from .tag import TagMixin
@@ -48,20 +52,47 @@ class CVClientProtocol(
     _username: str | None
     _password: str | None
     _cv_version: CvVersion | None = None
+    _session: Session | None = None
+    _temp_ca_bundle_path: str | None = None
+    _proxy_manager: HTTPProxyManager | None = None
 
     async def __aenter__(self) -> Self:
         """Using asynchronous context manager since grpclib must be initialized inside an asyncio loop."""
-        self._connect()
+        await self._connect()
         return self
 
     async def __aexit__(self, _exc_type: type[BaseException] | None, _exc_val: BaseException | None, _exc_tb: TracebackType | None) -> None:
         if self._channel is not None:
             self._channel.close()
             self._channel = None
+        if self._session is not None:
+            self._session.close()
+            self._session = None
+        if self._temp_ca_bundle_path and Path(self._temp_ca_bundle_path).exists():
+            with suppress(OSError):
+                Path(self._temp_ca_bundle_path).unlink()
+            self._temp_ca_bundle_path = None
 
-    def _connect(self) -> None:
+    async def _connect(self) -> None:
         # TODO: Verify connection
         # TODO: Handle multinode clusters
+
+        # Load custom CA if provided (for REST and gRPC endpoint verification)
+        if self._custom_ca_path:
+            self._temp_ca_bundle_path = create_ca_bundle_with_custom_ca(self._custom_ca_path)
+
+        # Initialize requests session for REST calls
+        self._session = Session()
+
+        # Configure proxy for requests
+        if self._proxy_manager is not None:
+            self._session.proxies.update(self._proxy_manager.get_requests_proxies())
+
+        # Configure SSL verification for requests
+        if self._temp_ca_bundle_path:
+            self._session.verify = self._temp_ca_bundle_path
+        else:
+            self._session.verify = self._verify_certs
 
         # Ensure that the default ssl context is initialized before doing any requests.
         ssl_context = self._ssl_context()
@@ -72,9 +103,55 @@ class CVClientProtocol(
         self._set_version()
 
         if self._channel is None:
-            self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
+            if self._proxy_manager is not None:
+                self._channel = await self._create_proxy_channel(ssl_context)
+            else:
+                self._channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
 
         self._metadata = {"authorization": "Bearer " + self._token}
+
+    async def _create_proxy_channel(self, ssl_context: ssl.SSLContext | bool) -> Channel:
+        """
+        Create a gRPC channel using the proxy manager.
+
+        Args:
+            ssl_context: SSL context for destination server connection.
+
+        Returns:
+            Configured gRPC Channel instance.
+        """
+        if self._proxy_manager is None:
+            msg = "Proxy manager not initialized"
+            raise CVClientException(msg)
+
+        # Create the channel first
+        channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
+
+        # Create custom connector that uses proxy
+        async def proxy_connection() -> asyncio.Protocol:
+            loop = asyncio.get_running_loop()
+
+            try:
+                # Create socket through proxy using python-socks
+                proxy_sock = await self._proxy_manager.create_socket_for_grpc()
+
+                # Create the gRPC protocol using the proxy socket
+                transport, protocol = await loop.create_connection(
+                    lambda: channel._protocol_factory(),
+                    sock=proxy_sock,
+                    ssl=ssl_context,
+                    server_hostname=self._servers[0] if ssl_context else None,
+                )
+
+            except Exception as e:
+                msg = f"Failed to create proxy connection: {type(e).__name__}: {e}"
+                raise CVClientException(msg) from e
+
+            else:
+                return protocol
+
+        channel._create_connection = proxy_connection
+        return channel
 
     def _ssl_context(self) -> ssl.SSLContext | bool:
         """
@@ -84,14 +161,19 @@ class CVClientProtocol(
         The return value (The default ssl context or True) will be passed to grpclib.
         Requests will pick it up from ssl lib itself.
         """
+        # Accepting SonarLint issue: We are purposely implementing no verification of certs.
+        context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
+        context.set_alpn_protocols(["h2"])
+
         if not self._verify_certs:
-            # Accepting SonarLint issue: We are purposely implementing no verification of certs.
-            context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
             context.check_hostname = False
             context.verify_mode = ssl.CERT_NONE  # NOSONAR
-            context.set_alpn_protocols(["h2"])
-        else:
-            context = True
+            return context
+
+        # Load custom CA if provided (for gRPC endpoint verification)
+        if self._temp_ca_bundle_path:
+            context.load_verify_locations(cafile=self._temp_ca_bundle_path)
+
         return context
 
     def _set_token(self) -> None:
@@ -110,10 +192,9 @@ class CVClientProtocol(
             raise CVClientException(msg)
 
         try:
-            response = post(  # noqa: S113 TODO: Add configurable timeout
+            response = self._session.post(
                 "https://" + self._servers[0] + "/cvpservice/login/authenticate.do",
                 auth=(self._username, self._password),
-                verify=self._verify_certs,
                 json={},
             )
 
@@ -135,10 +216,9 @@ class CVClientProtocol(
             raise CVClientException(msg)
 
         try:
-            response = get(  # noqa: S113 TODO: Add configurable timeout
+            response = self._session.get(
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
                 headers={"Authorization": f"Bearer {self._token}"},
-                verify=self._verify_certs,
                 json={},
             )
 
@@ -157,6 +237,9 @@ class CVClient(CVClientProtocol):
         password: str | None = None,
         port: int = 443,
         verify_certs: bool = True,
+        custom_ca_path: str | None = None,
+        proxy_host: str | None = None,
+        proxy_port: int | None = None,
     ) -> None:
         """
         CVClient is a high-level API library for using CloudVision Resource APIs.
@@ -171,6 +254,9 @@ class CVClient(CVClientProtocol):
             password: Password to use for authentication if token is not set.
             port: TCP port to use for the connection.
             verify_certs: Disables SSL certificate verification if set to False. Not recommended for production.
+            custom_ca_path: Path to custom CA certificate for CloudVision REST/gRPC SSL verification.
+            proxy_host: HTTP proxy hostname.
+            proxy_port: HTTP proxy port.
         """
         if isinstance(servers, list):
             self._servers = servers
@@ -182,3 +268,14 @@ class CVClient(CVClientProtocol):
         self._username = username
         self._password = password
         self._verify_certs = verify_certs
+        self._custom_ca_path = custom_ca_path
+        self._proxy_manager = None
+
+        # Initialize proxy manager if proxy is configured
+        if proxy_host is not None and proxy_port is not None:
+            self._proxy_manager = HTTPProxyManager(
+                proxy_host=proxy_host,
+                proxy_port=proxy_port,
+                target_host=self._servers[0],
+                target_port=self._port,
+            )
