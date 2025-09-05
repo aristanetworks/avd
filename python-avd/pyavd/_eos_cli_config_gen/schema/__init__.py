@@ -40538,76 +40538,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class RedistributeRoutesItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {
-                "source_protocol": {"type": str},
-                "route_map": {"type": str},
-                "rcf": {"type": str},
-                "include_leaked": {"type": bool},
-                "ospf_route_type": {"type": str},
-            }
-            source_protocol: Literal["attached-host", "bgp", "connected", "dynamic", "isis", "ospf", "ospfv3", "rip", "static", "user"]
-            route_map: str | None
-            rcf: str | None
-            """
-            RCF function name with parenthesis.
-            Example: MyFunction(myarg).
-            `route_map` and `rcf` are mutually
-            exclusive. `route_map` takes precedence.
-            Only applicable if `source_protocol` is one of `connected`,
-            `static`, `isis`, `user`, `dynamic`.
-            """
-            include_leaked: bool | None
-            ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"] | None
-            """
-            Routes learned by the OSPF protocol.
-            The `ospf_route_type` is valid for source_protocols 'ospf' and
-            'ospfv3'.
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    source_protocol: Literal["attached-host", "bgp", "connected", "dynamic", "isis", "ospf", "ospfv3", "rip", "static", "user"]
-                    | UndefinedType = Undefined,
-                    route_map: str | None | UndefinedType = Undefined,
-                    rcf: str | None | UndefinedType = Undefined,
-                    include_leaked: bool | None | UndefinedType = Undefined,
-                    ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"] | None | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    RedistributeRoutesItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        source_protocol: source_protocol
-                        route_map: route_map
-                        rcf:
-                           RCF function name with parenthesis.
-                           Example: MyFunction(myarg).
-                           `route_map` and `rcf` are mutually
-                           exclusive. `route_map` takes precedence.
-                           Only applicable if `source_protocol` is one of `connected`,
-                           `static`, `isis`, `user`, `dynamic`.
-                        include_leaked: include_leaked
-                        ospf_route_type:
-                           Routes learned by the OSPF protocol.
-                           The `ospf_route_type` is valid for source_protocols 'ospf' and
-                           'ospfv3'.
-
-                    """
-
-        class RedistributeRoutes(AvdList[RedistributeRoutesItem]):
-            """Subclass of AvdList with `RedistributeRoutesItem` items."""
-
-        RedistributeRoutes._item_type = RedistributeRoutesItem
-
         class VlanAwareBundlesItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -41978,84 +41908,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             EvpnEthernetSegment._item_type = EvpnEthernetSegmentItem
 
-            class BgpAdditionalPaths(AvdModel):
-                """Subclass of AvdModel."""
-
-                class Send(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {
-                        "any": {"type": bool},
-                        "backup": {"type": bool},
-                        "ecmp": {"type": bool},
-                        "ecmp_limit": {"type": int},
-                        "limit": {"type": int},
-                    }
-                    any: bool | None
-                    """Any eligible path."""
-                    backup: bool | None
-                    """Best path and installed backup path."""
-                    ecmp: bool | None
-                    """All paths in best path ECMP group."""
-                    ecmp_limit: int | None
-                    """Amount of ECMP paths to send."""
-                    limit: int | None
-                    """Amount of paths to send."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            any: bool | None | UndefinedType = Undefined,
-                            backup: bool | None | UndefinedType = Undefined,
-                            ecmp: bool | None | UndefinedType = Undefined,
-                            ecmp_limit: int | None | UndefinedType = Undefined,
-                            limit: int | None | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            Send.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                any: Any eligible path.
-                                backup: Best path and installed backup path.
-                                ecmp: All paths in best path ECMP group.
-                                ecmp_limit: Amount of ECMP paths to send.
-                                limit: Amount of paths to send.
-
-                            """
-
-                _fields: ClassVar[dict] = {"receive": {"type": bool}, "send": {"type": Send}}
-                receive: bool | None
-                """Receive multiple paths."""
-                send: Send
-                """
-                Send multiple paths.
-
-                Subclass of AvdModel.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, receive: bool | None | UndefinedType = Undefined, send: Send | UndefinedType = Undefined) -> None:
-                        """
-                        BgpAdditionalPaths.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            receive: Receive multiple paths.
-                            send:
-                               Send multiple paths.
-
-                               Subclass of AvdModel.
-
-                        """
-
             _fields: ClassVar[dict] = {
                 "domain_identifier": {"type": str},
                 "domain_identifier_remote": {"type": str},
@@ -42070,7 +41922,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "bgp": {"type": Bgp},
                 "layer_2_fec_in_place_update": {"type": Layer2FecInPlaceUpdate},
                 "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
-                "bgp_additional_paths": {"type": BgpAdditionalPaths},
             }
             domain_identifier: str | None
             domain_identifier_remote: str | None
@@ -42104,12 +41955,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             evpn_ethernet_segment: EvpnEthernetSegment
             """Subclass of AvdIndexedList with `EvpnEthernetSegmentItem` items. Primary key is `domain` (`str`)."""
-            bgp_additional_paths: BgpAdditionalPaths
-            """
-            BGP additional-paths commands.
-
-            Subclass of AvdModel.
-            """
 
             if TYPE_CHECKING:
 
@@ -42129,7 +41974,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bgp: Bgp | UndefinedType = Undefined,
                     layer_2_fec_in_place_update: Layer2FecInPlaceUpdate | UndefinedType = Undefined,
                     evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
-                    bgp_additional_paths: BgpAdditionalPaths | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyEvpn.
@@ -42158,10 +42002,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdModel.
                         evpn_ethernet_segment: Subclass of AvdIndexedList with `EvpnEthernetSegmentItem` items. Primary key is `domain` (`str`).
-                        bgp_additional_paths:
-                           BGP additional-paths commands.
-
-                           Subclass of AvdModel.
 
                     """
 
@@ -43533,86 +43373,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class RedistributeRoutesItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {
-                    "source_protocol": {"type": str},
-                    "route_map": {"type": str},
-                    "include_leaked": {"type": bool},
-                    "rcf": {"type": str},
-                    "ospf_route_type": {"type": str},
-                }
-                source_protocol: Literal["attached-host", "bgp", "connected", "dynamic", "isis", "ospf", "ospfv3", "rip", "static", "user"]
-                route_map: str | None
-                include_leaked: bool | None
-                """Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `ospf`, `ospfv3`."""
-                rcf: str | None
-                """
-                RCF function name with parenthesis.
-                Example: MyFunction(myarg).
-                `route_map` and `rcf` are mutually
-                exclusive. `route_map` takes precedence.
-                Only applicable if `source_protocol` is one of `connected`,
-                `static`, `isis`, `user`, `dynamic`.
-                """
-                ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"] | None
-                """
-                Routes learned by the OSPF protocol.
-                The `ospf_route_type` is valid for source_protocols 'ospf' and
-                'ospfv3'.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        source_protocol: Literal["attached-host", "bgp", "connected", "dynamic", "isis", "ospf", "ospfv3", "rip", "static", "user"]
-                        | UndefinedType = Undefined,
-                        route_map: str | None | UndefinedType = Undefined,
-                        include_leaked: bool | None | UndefinedType = Undefined,
-                        rcf: str | None | UndefinedType = Undefined,
-                        ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"]
-                        | None
-                        | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        RedistributeRoutesItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            source_protocol: source_protocol
-                            route_map: route_map
-                            include_leaked: Only applicable if `source_protocol` is one of `connected`, `static`, `isis`, `ospf`, `ospfv3`.
-                            rcf:
-                               RCF function name with parenthesis.
-                               Example: MyFunction(myarg).
-                               `route_map` and `rcf` are mutually
-                               exclusive. `route_map` takes precedence.
-                               Only applicable if `source_protocol` is one of `connected`,
-                               `static`, `isis`, `user`, `dynamic`.
-                            ospf_route_type:
-                               Routes learned by the OSPF protocol.
-                               The `ospf_route_type` is valid for source_protocols 'ospf' and
-                               'ospfv3'.
-
-                        """
-
-            class RedistributeRoutes(AvdList[RedistributeRoutesItem]):
-                """Subclass of AvdList with `RedistributeRoutesItem` items."""
-
-            RedistributeRoutes._item_type = RedistributeRoutesItem
-
             _fields: ClassVar[dict] = {
                 "networks": {"type": Networks},
                 "bgp": {"type": Bgp},
                 "peer_groups": {"type": PeerGroups},
                 "neighbors": {"type": Neighbors},
                 "redistribute": {"type": Redistribute},
-                "redistribute_routes": {"type": RedistributeRoutes},
             }
             networks: Networks
             """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
@@ -43628,8 +43394,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
-            redistribute_routes: RedistributeRoutes
-            """Subclass of AvdList with `RedistributeRoutesItem` items."""
 
             if TYPE_CHECKING:
 
@@ -43641,7 +43405,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
-                    redistribute_routes: RedistributeRoutes | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv4.
@@ -43658,7 +43421,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Redistribute routes in to BGP.
 
                            Subclass of AvdModel.
-                        redistribute_routes: Subclass of AvdList with `RedistributeRoutesItem` items.
 
                     """
 
@@ -45525,82 +45287,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class RedistributeRoutesItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {
-                    "source_protocol": {"type": str},
-                    "route_map": {"type": str},
-                    "include_leaked": {"type": bool},
-                    "rcf": {"type": str},
-                    "ospf_route_type": {"type": str},
-                }
-                source_protocol: str
-                route_map: str | None
-                include_leaked: bool | None
-                """Only applicable if `source_protocol` is `isis`."""
-                rcf: str | None
-                """
-                RCF function name with parenthesis.
-                Example: MyFunction(myarg).
-                `route_map` and `rcf` are mutually
-                exclusive. `route_map` takes precedence.
-                Only applicable if `source_protocol` is `isis`.
-                """
-                ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"] | None
-                """
-                Routes learned by the OSPF protocol.
-                The `ospf_route_type` is valid for source_protocols 'ospf' and
-                'ospfv3'.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        source_protocol: str | UndefinedType = Undefined,
-                        route_map: str | None | UndefinedType = Undefined,
-                        include_leaked: bool | None | UndefinedType = Undefined,
-                        rcf: str | None | UndefinedType = Undefined,
-                        ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"]
-                        | None
-                        | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        RedistributeRoutesItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            source_protocol: source_protocol
-                            route_map: route_map
-                            include_leaked: Only applicable if `source_protocol` is `isis`.
-                            rcf:
-                               RCF function name with parenthesis.
-                               Example: MyFunction(myarg).
-                               `route_map` and `rcf` are mutually
-                               exclusive. `route_map` takes precedence.
-                               Only applicable if `source_protocol` is `isis`.
-                            ospf_route_type:
-                               Routes learned by the OSPF protocol.
-                               The `ospf_route_type` is valid for source_protocols 'ospf' and
-                               'ospfv3'.
-
-                        """
-
-            class RedistributeRoutes(AvdList[RedistributeRoutesItem]):
-                """Subclass of AvdList with `RedistributeRoutesItem` items."""
-
-            RedistributeRoutes._item_type = RedistributeRoutesItem
-
             _fields: ClassVar[dict] = {
                 "bgp": {"type": Bgp},
                 "peer_groups": {"type": PeerGroups},
                 "neighbors": {"type": Neighbors},
                 "redistribute": {"type": Redistribute},
-                "redistribute_routes": {"type": RedistributeRoutes},
             }
             bgp: Bgp
             """Subclass of AvdModel."""
@@ -45614,8 +45305,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
-            redistribute_routes: RedistributeRoutes
-            """Subclass of AvdList with `RedistributeRoutesItem` items."""
 
             if TYPE_CHECKING:
 
@@ -45626,7 +45315,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
-                    redistribute_routes: RedistributeRoutes | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv4Multicast.
@@ -45642,7 +45330,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Redistribute routes in to BGP.
 
                            Subclass of AvdModel.
-                        redistribute_routes: Subclass of AvdList with `RedistributeRoutesItem` items.
 
                     """
 
@@ -46738,82 +46425,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class RedistributeRoutesItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {
-                    "source_protocol": {"type": str},
-                    "route_map": {"type": str},
-                    "include_leaked": {"type": bool},
-                    "rcf": {"type": str},
-                    "ospf_route_type": {"type": str},
-                }
-                source_protocol: str
-                route_map: str | None
-                include_leaked: bool | None
-                rcf: str | None
-                """
-                RCF function name with parenthesis.
-                Example: MyFunction(myarg).
-                `route_map` and `rcf` are mutually
-                exclusive. `route_map` takes precedence.
-                Only used if `source_protocol` is one of `connected`,
-                `static`, `isis`, `user`, `dynamic`.
-                """
-                ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"] | None
-                """
-                Routes learned by the OSPF protocol.
-                The `ospf_route_type` is valid for source_protocols 'ospfv3'.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        source_protocol: str | UndefinedType = Undefined,
-                        route_map: str | None | UndefinedType = Undefined,
-                        include_leaked: bool | None | UndefinedType = Undefined,
-                        rcf: str | None | UndefinedType = Undefined,
-                        ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"]
-                        | None
-                        | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        RedistributeRoutesItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            source_protocol: source_protocol
-                            route_map: route_map
-                            include_leaked: include_leaked
-                            rcf:
-                               RCF function name with parenthesis.
-                               Example: MyFunction(myarg).
-                               `route_map` and `rcf` are mutually
-                               exclusive. `route_map` takes precedence.
-                               Only used if `source_protocol` is one of `connected`,
-                               `static`, `isis`, `user`, `dynamic`.
-                            ospf_route_type:
-                               Routes learned by the OSPF protocol.
-                               The `ospf_route_type` is valid for source_protocols 'ospfv3'.
-
-                        """
-
-            class RedistributeRoutes(AvdList[RedistributeRoutesItem]):
-                """Subclass of AvdList with `RedistributeRoutesItem` items."""
-
-            RedistributeRoutes._item_type = RedistributeRoutesItem
-
             _fields: ClassVar[dict] = {
                 "networks": {"type": Networks},
                 "bgp": {"type": Bgp},
                 "peer_groups": {"type": PeerGroups},
                 "neighbors": {"type": Neighbors},
                 "redistribute": {"type": Redistribute},
-                "redistribute_routes": {"type": RedistributeRoutes},
             }
             networks: Networks
             """Subclass of AvdIndexedList with `NetworksItem` items. Primary key is `prefix` (`str`)."""
@@ -46829,8 +46446,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
-            redistribute_routes: RedistributeRoutes
-            """Subclass of AvdList with `RedistributeRoutesItem` items."""
 
             if TYPE_CHECKING:
 
@@ -46842,7 +46457,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     neighbors: Neighbors | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
-                    redistribute_routes: RedistributeRoutes | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv6.
@@ -46859,7 +46473,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Redistribute routes in to BGP.
 
                            Subclass of AvdModel.
-                        redistribute_routes: Subclass of AvdList with `RedistributeRoutesItem` items.
 
                     """
 
@@ -47539,83 +47152,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class RedistributeRoutesItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {
-                    "source_protocol": {"type": str},
-                    "include_leaked": {"type": bool},
-                    "route_map": {"type": str},
-                    "rcf": {"type": str},
-                    "ospf_route_type": {"type": str},
-                }
-                source_protocol: Literal["connected", "isis", "ospf", "ospfv3", "static"]
-                include_leaked: bool | None
-                """Only applicable if `source_protocol` is `isis`."""
-                route_map: str | None
-                rcf: str | None
-                """
-                RCF function name with parenthesis.
-                Example: MyFunction(myarg).
-                `route_map` and `rcf` are mutually
-                exclusive. `route_map` takes precedence.
-                Only applicable if `source_protocol` is `isis`.
-                """
-                ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"] | None
-                """
-                Routes learned by the OSPF protocol.
-                The `ospf_route_type` is valid for source_protocols 'ospf' and
-                'ospfv3'.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        source_protocol: Literal["connected", "isis", "ospf", "ospfv3", "static"] | UndefinedType = Undefined,
-                        include_leaked: bool | None | UndefinedType = Undefined,
-                        route_map: str | None | UndefinedType = Undefined,
-                        rcf: str | None | UndefinedType = Undefined,
-                        ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"]
-                        | None
-                        | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        RedistributeRoutesItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            source_protocol: source_protocol
-                            include_leaked: Only applicable if `source_protocol` is `isis`.
-                            route_map: route_map
-                            rcf:
-                               RCF function name with parenthesis.
-                               Example: MyFunction(myarg).
-                               `route_map` and `rcf` are mutually
-                               exclusive. `route_map` takes precedence.
-                               Only applicable if `source_protocol` is `isis`.
-                            ospf_route_type:
-                               Routes learned by the OSPF protocol.
-                               The `ospf_route_type` is valid for source_protocols 'ospf' and
-                               'ospfv3'.
-
-                        """
-
-            class RedistributeRoutes(AvdList[RedistributeRoutesItem]):
-                """Subclass of AvdList with `RedistributeRoutesItem` items."""
-
-            RedistributeRoutes._item_type = RedistributeRoutesItem
-
             _fields: ClassVar[dict] = {
                 "bgp": {"type": Bgp},
                 "neighbors": {"type": Neighbors},
                 "peer_groups": {"type": PeerGroups},
                 "networks": {"type": Networks},
                 "redistribute": {"type": Redistribute},
-                "redistribute_routes": {"type": RedistributeRoutes},
             }
             bgp: Bgp
             """Subclass of AvdModel."""
@@ -47631,8 +47173,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
-            redistribute_routes: RedistributeRoutes
-            """Subclass of AvdList with `RedistributeRoutesItem` items."""
 
             if TYPE_CHECKING:
 
@@ -47644,7 +47184,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     peer_groups: PeerGroups | UndefinedType = Undefined,
                     networks: Networks | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
-                    redistribute_routes: RedistributeRoutes | UndefinedType = Undefined,
                 ) -> None:
                     """
                     AddressFamilyIpv6Multicast.
@@ -47661,7 +47200,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Redistribute routes in to BGP.
 
                            Subclass of AvdModel.
-                        redistribute_routes: Subclass of AvdList with `RedistributeRoutesItem` items.
 
                     """
 
@@ -51129,77 +50667,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class RedistributeRoutesItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {
-                    "source_protocol": {"type": str},
-                    "route_map": {"type": str},
-                    "include_leaked": {"type": bool},
-                    "rcf": {"type": str},
-                    "ospf_route_type": {"type": str},
-                }
-                source_protocol: str
-                route_map: str | None
-                include_leaked: bool | None
-                rcf: str | None
-                """
-                RCF function name with parenthesis.
-                Example: MyFunction(myarg).
-                `route_map` and `rcf` are mutually
-                exclusive. `route_map` takes precedence.
-                Only applicable if `source_protocol` is one of `connected`,
-                `dynamic`, `isis`, `static` and `user`.
-                """
-                ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"] | None
-                """
-                Routes learned by the OSPF protocol.
-                The `ospf_route_type` is valid for source_protocols 'ospf' and
-                'ospfv3'.
-                """
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        source_protocol: str | UndefinedType = Undefined,
-                        route_map: str | None | UndefinedType = Undefined,
-                        include_leaked: bool | None | UndefinedType = Undefined,
-                        rcf: str | None | UndefinedType = Undefined,
-                        ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"]
-                        | None
-                        | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        RedistributeRoutesItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            source_protocol: source_protocol
-                            route_map: route_map
-                            include_leaked: include_leaked
-                            rcf:
-                               RCF function name with parenthesis.
-                               Example: MyFunction(myarg).
-                               `route_map` and `rcf` are mutually
-                               exclusive. `route_map` takes precedence.
-                               Only applicable if `source_protocol` is one of `connected`,
-                               `dynamic`, `isis`, `static` and `user`.
-                            ospf_route_type:
-                               Routes learned by the OSPF protocol.
-                               The `ospf_route_type` is valid for source_protocols 'ospf' and
-                               'ospfv3'.
-
-                        """
-
-            class RedistributeRoutes(AvdList[RedistributeRoutesItem]):
-                """Subclass of AvdList with `RedistributeRoutesItem` items."""
-
-            RedistributeRoutes._item_type = RedistributeRoutesItem
-
             class AggregateAddressesItem(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -52325,84 +51792,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class RedistributeRoutesItem(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {
-                        "source_protocol": {"type": str},
-                        "route_map": {"type": str},
-                        "include_leaked": {"type": bool},
-                        "rcf": {"type": str},
-                        "ospf_route_type": {"type": str},
-                    }
-                    source_protocol: Literal["attached-host", "bgp", "connected", "dynamic", "isis", "ospf", "ospfv3", "rip", "static", "user"]
-                    route_map: str | None
-                    include_leaked: bool | None
-                    rcf: str | None
-                    """
-                    RCF function name with parenthesis.
-                    Example: MyFunction(myarg).
-                    `route_map` and `rcf` are mutually
-                    exclusive. `route_map` takes precedence.
-                    Only applicable if `source_protocol` is one of `connected`,
-                    `dynamic`, `isis`, `static` and `user`.
-                    """
-                    ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"] | None
-                    """
-                    Routes learned by the OSPF protocol.
-                    The `ospf_route_type` is valid for source_protocols 'ospf' and
-                    'ospfv3'.
-                    """
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            source_protocol: Literal["attached-host", "bgp", "connected", "dynamic", "isis", "ospf", "ospfv3", "rip", "static", "user"]
-                            | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
-                            rcf: str | None | UndefinedType = Undefined,
-                            ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"]
-                            | None
-                            | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            RedistributeRoutesItem.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                source_protocol: source_protocol
-                                route_map: route_map
-                                include_leaked: include_leaked
-                                rcf:
-                                   RCF function name with parenthesis.
-                                   Example: MyFunction(myarg).
-                                   `route_map` and `rcf` are mutually
-                                   exclusive. `route_map` takes precedence.
-                                   Only applicable if `source_protocol` is one of `connected`,
-                                   `dynamic`, `isis`, `static` and `user`.
-                                ospf_route_type:
-                                   Routes learned by the OSPF protocol.
-                                   The `ospf_route_type` is valid for source_protocols 'ospf' and
-                                   'ospfv3'.
-
-                            """
-
-                class RedistributeRoutes(AvdList[RedistributeRoutesItem]):
-                    """Subclass of AvdList with `RedistributeRoutesItem` items."""
-
-                RedistributeRoutes._item_type = RedistributeRoutesItem
-
                 _fields: ClassVar[dict] = {
                     "bgp": {"type": Bgp},
                     "neighbors": {"type": Neighbors},
                     "networks": {"type": Networks},
                     "redistribute": {"type": Redistribute},
-                    "redistribute_routes": {"type": RedistributeRoutes},
                 }
                 bgp: Bgp
                 """Subclass of AvdModel."""
@@ -52416,8 +51810,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Subclass of AvdModel.
                 """
-                redistribute_routes: RedistributeRoutes
-                """Subclass of AvdList with `RedistributeRoutesItem` items."""
 
                 if TYPE_CHECKING:
 
@@ -52428,7 +51820,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         neighbors: Neighbors | UndefinedType = Undefined,
                         networks: Networks | UndefinedType = Undefined,
                         redistribute: Redistribute | UndefinedType = Undefined,
-                        redistribute_routes: RedistributeRoutes | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AddressFamilyIpv4.
@@ -52444,7 +51835,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Redistribute routes in to BGP.
 
                                Subclass of AvdModel.
-                            redistribute_routes: Subclass of AvdList with `RedistributeRoutesItem` items.
 
                         """
 
@@ -53292,82 +52682,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class RedistributeRoutesItem(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {
-                        "source_protocol": {"type": str},
-                        "route_map": {"type": str},
-                        "include_leaked": {"type": bool},
-                        "rcf": {"type": str},
-                        "ospf_route_type": {"type": str},
-                    }
-                    source_protocol: Literal["attached-host", "bgp", "connected", "dhcp", "dynamic", "isis", "ospfv3", "static", "user"]
-                    route_map: str | None
-                    include_leaked: bool | None
-                    rcf: str | None
-                    """
-                    RCF function name with parenthesis.
-                    Example: MyFunction(myarg).
-                    `route_map` and `rcf` are mutually
-                    exclusive. `route_map` takes precedence.
-                    Only applicable if `source_protocol` is one of `connected`,
-                    `dynamic`, `isis`, `static` and `user`.
-                    """
-                    ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"] | None
-                    """
-                    Routes learned by the OSPF protocol.
-                    The `ospf_route_type` is valid for source_protocols 'ospfv3'.
-                    """
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            source_protocol: Literal["attached-host", "bgp", "connected", "dhcp", "dynamic", "isis", "ospfv3", "static", "user"]
-                            | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
-                            rcf: str | None | UndefinedType = Undefined,
-                            ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"]
-                            | None
-                            | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            RedistributeRoutesItem.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                source_protocol: source_protocol
-                                route_map: route_map
-                                include_leaked: include_leaked
-                                rcf:
-                                   RCF function name with parenthesis.
-                                   Example: MyFunction(myarg).
-                                   `route_map` and `rcf` are mutually
-                                   exclusive. `route_map` takes precedence.
-                                   Only applicable if `source_protocol` is one of `connected`,
-                                   `dynamic`, `isis`, `static` and `user`.
-                                ospf_route_type:
-                                   Routes learned by the OSPF protocol.
-                                   The `ospf_route_type` is valid for source_protocols 'ospfv3'.
-
-                            """
-
-                class RedistributeRoutes(AvdList[RedistributeRoutesItem]):
-                    """Subclass of AvdList with `RedistributeRoutesItem` items."""
-
-                RedistributeRoutes._item_type = RedistributeRoutesItem
-
                 _fields: ClassVar[dict] = {
                     "bgp": {"type": Bgp},
                     "neighbors": {"type": Neighbors},
                     "networks": {"type": Networks},
                     "redistribute": {"type": Redistribute},
-                    "redistribute_routes": {"type": RedistributeRoutes},
                 }
                 bgp: Bgp
                 """Subclass of AvdModel."""
@@ -53381,8 +52700,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Subclass of AvdModel.
                 """
-                redistribute_routes: RedistributeRoutes
-                """Subclass of AvdList with `RedistributeRoutesItem` items."""
 
                 if TYPE_CHECKING:
 
@@ -53393,7 +52710,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         neighbors: Neighbors | UndefinedType = Undefined,
                         networks: Networks | UndefinedType = Undefined,
                         redistribute: Redistribute | UndefinedType = Undefined,
-                        redistribute_routes: RedistributeRoutes | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AddressFamilyIpv6.
@@ -53409,7 +52725,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Redistribute routes in to BGP.
 
                                Subclass of AvdModel.
-                            redistribute_routes: Subclass of AvdList with `RedistributeRoutesItem` items.
 
                         """
 
@@ -54089,82 +53404,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class RedistributeRoutesItem(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {
-                        "source_protocol": {"type": str},
-                        "route_map": {"type": str},
-                        "include_leaked": {"type": bool},
-                        "rcf": {"type": str},
-                        "ospf_route_type": {"type": str},
-                    }
-                    source_protocol: Literal["attached-host", "connected", "isis", "ospf", "ospfv3", "static"]
-                    route_map: str | None
-                    include_leaked: bool | None
-                    """Only applicable if `source_protocol` is `isis`."""
-                    rcf: str | None
-                    """
-                    RCF function name with parenthesis.
-                    Example: MyFunction(myarg).
-                    `route_map` and `rcf` are mutually
-                    exclusive. `route_map` takes precedence.
-                    Only applicable if `source_protocol` is `isis`.
-                    """
-                    ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"] | None
-                    """
-                    Routes learned by the OSPF protocol.
-                    The `ospf_route_type` is valid for source_protocols 'ospf' and
-                    'ospfv3'.
-                    """
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            source_protocol: Literal["attached-host", "connected", "isis", "ospf", "ospfv3", "static"] | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
-                            rcf: str | None | UndefinedType = Undefined,
-                            ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"]
-                            | None
-                            | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            RedistributeRoutesItem.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                source_protocol: source_protocol
-                                route_map: route_map
-                                include_leaked: Only applicable if `source_protocol` is `isis`.
-                                rcf:
-                                   RCF function name with parenthesis.
-                                   Example: MyFunction(myarg).
-                                   `route_map` and `rcf` are mutually
-                                   exclusive. `route_map` takes precedence.
-                                   Only applicable if `source_protocol` is `isis`.
-                                ospf_route_type:
-                                   Routes learned by the OSPF protocol.
-                                   The `ospf_route_type` is valid for source_protocols 'ospf' and
-                                   'ospfv3'.
-
-                            """
-
-                class RedistributeRoutes(AvdList[RedistributeRoutesItem]):
-                    """Subclass of AvdList with `RedistributeRoutesItem` items."""
-
-                RedistributeRoutes._item_type = RedistributeRoutesItem
-
                 _fields: ClassVar[dict] = {
                     "bgp": {"type": Bgp},
                     "neighbors": {"type": Neighbors},
                     "networks": {"type": Networks},
                     "redistribute": {"type": Redistribute},
-                    "redistribute_routes": {"type": RedistributeRoutes},
                 }
                 bgp: Bgp
                 """Subclass of AvdModel."""
@@ -54178,8 +53422,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Subclass of AvdModel.
                 """
-                redistribute_routes: RedistributeRoutes
-                """Subclass of AvdList with `RedistributeRoutesItem` items."""
 
                 if TYPE_CHECKING:
 
@@ -54190,7 +53432,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         neighbors: Neighbors | UndefinedType = Undefined,
                         networks: Networks | UndefinedType = Undefined,
                         redistribute: Redistribute | UndefinedType = Undefined,
-                        redistribute_routes: RedistributeRoutes | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AddressFamilyIpv4Multicast.
@@ -54206,7 +53447,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Redistribute routes in to BGP.
 
                                Subclass of AvdModel.
-                            redistribute_routes: Subclass of AvdList with `RedistributeRoutesItem` items.
 
                         """
 
@@ -54827,82 +54067,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class RedistributeRoutesItem(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {
-                        "source_protocol": {"type": str},
-                        "route_map": {"type": str},
-                        "include_leaked": {"type": bool},
-                        "rcf": {"type": str},
-                        "ospf_route_type": {"type": str},
-                    }
-                    source_protocol: Literal["connected", "isis", "ospf", "ospfv3", "static"]
-                    route_map: str | None
-                    include_leaked: bool | None
-                    """Only applicable if `source_protocol` is `isis`."""
-                    rcf: str | None
-                    """
-                    RCF function name with parenthesis.
-                    Example: MyFunction(myarg).
-                    `route_map` and `rcf` are mutually
-                    exclusive. `route_map` takes precedence.
-                    Only applicable if `source_protocol` is `isis`.
-                    """
-                    ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"] | None
-                    """
-                    Routes learned by the OSPF protocol.
-                    The `ospf_route_type` is valid for source_protocols 'ospf' and
-                    'ospfv3'.
-                    """
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            source_protocol: Literal["connected", "isis", "ospf", "ospfv3", "static"] | UndefinedType = Undefined,
-                            route_map: str | None | UndefinedType = Undefined,
-                            include_leaked: bool | None | UndefinedType = Undefined,
-                            rcf: str | None | UndefinedType = Undefined,
-                            ospf_route_type: Literal["external", "internal", "nssa-external", "nssa-external 1", "nssa-external 2"]
-                            | None
-                            | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            RedistributeRoutesItem.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                source_protocol: source_protocol
-                                route_map: route_map
-                                include_leaked: Only applicable if `source_protocol` is `isis`.
-                                rcf:
-                                   RCF function name with parenthesis.
-                                   Example: MyFunction(myarg).
-                                   `route_map` and `rcf` are mutually
-                                   exclusive. `route_map` takes precedence.
-                                   Only applicable if `source_protocol` is `isis`.
-                                ospf_route_type:
-                                   Routes learned by the OSPF protocol.
-                                   The `ospf_route_type` is valid for source_protocols 'ospf' and
-                                   'ospfv3'.
-
-                            """
-
-                class RedistributeRoutes(AvdList[RedistributeRoutesItem]):
-                    """Subclass of AvdList with `RedistributeRoutesItem` items."""
-
-                RedistributeRoutes._item_type = RedistributeRoutesItem
-
                 _fields: ClassVar[dict] = {
                     "bgp": {"type": Bgp},
                     "neighbors": {"type": Neighbors},
                     "networks": {"type": Networks},
                     "redistribute": {"type": Redistribute},
-                    "redistribute_routes": {"type": RedistributeRoutes},
                 }
                 bgp: Bgp
                 """Subclass of AvdModel."""
@@ -54916,8 +54085,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Subclass of AvdModel.
                 """
-                redistribute_routes: RedistributeRoutes
-                """Subclass of AvdList with `RedistributeRoutesItem` items."""
 
                 if TYPE_CHECKING:
 
@@ -54928,7 +54095,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         neighbors: Neighbors | UndefinedType = Undefined,
                         networks: Networks | UndefinedType = Undefined,
                         redistribute: Redistribute | UndefinedType = Undefined,
-                        redistribute_routes: RedistributeRoutes | UndefinedType = Undefined,
                     ) -> None:
                         """
                         AddressFamilyIpv6Multicast.
@@ -54944,7 +54110,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Redistribute routes in to BGP.
 
                                Subclass of AvdModel.
-                            redistribute_routes: Subclass of AvdList with `RedistributeRoutesItem` items.
 
                         """
 
@@ -55169,7 +54334,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "neighbors": {"type": Neighbors},
                 "neighbor_interfaces": {"type": NeighborInterfaces},
                 "redistribute": {"type": Redistribute},
-                "redistribute_routes": {"type": RedistributeRoutes},
                 "aggregate_addresses": {"type": AggregateAddresses},
                 "address_family_ipv4": {"type": AddressFamilyIpv4},
                 "address_family_ipv6": {"type": AddressFamilyIpv6},
@@ -55233,8 +54397,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdModel.
             """
-            redistribute_routes: RedistributeRoutes
-            """Subclass of AvdList with `RedistributeRoutesItem` items."""
             aggregate_addresses: AggregateAddresses
             """Subclass of AvdIndexedList with `AggregateAddressesItem` items. Primary key is `prefix` (`str`)."""
             address_family_ipv4: AddressFamilyIpv4
@@ -55278,7 +54440,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     neighbors: Neighbors | UndefinedType = Undefined,
                     neighbor_interfaces: NeighborInterfaces | UndefinedType = Undefined,
                     redistribute: Redistribute | UndefinedType = Undefined,
-                    redistribute_routes: RedistributeRoutes | UndefinedType = Undefined,
                     aggregate_addresses: AggregateAddresses | UndefinedType = Undefined,
                     address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                     address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
@@ -55328,7 +54489,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Redistribute routes in to BGP.
 
                            Subclass of AvdModel.
-                        redistribute_routes: Subclass of AvdList with `RedistributeRoutesItem` items.
                         aggregate_addresses: Subclass of AvdIndexedList with `AggregateAddressesItem` items. Primary key is `prefix` (`str`).
                         address_family_ipv4: Subclass of AvdModel.
                         address_family_ipv6: Subclass of AvdModel.
@@ -55400,7 +54560,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "neighbor_interfaces": {"type": NeighborInterfaces},
             "aggregate_addresses": {"type": AggregateAddresses},
             "redistribute": {"type": Redistribute},
-            "redistribute_routes": {"type": RedistributeRoutes},
             "vlan_aware_bundles": {"type": VlanAwareBundles},
             "vlans": {"type": Vlans},
             "vpws": {"type": Vpws},
@@ -55485,8 +54644,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdModel.
         """
-        redistribute_routes: RedistributeRoutes
-        """Subclass of AvdList with `RedistributeRoutesItem` items."""
         vlan_aware_bundles: VlanAwareBundles
         """Subclass of AvdIndexedList with `VlanAwareBundlesItem` items. Primary key is `name` (`str`)."""
         vlans: Vlans
@@ -55554,7 +54711,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 neighbor_interfaces: NeighborInterfaces | UndefinedType = Undefined,
                 aggregate_addresses: AggregateAddresses | UndefinedType = Undefined,
                 redistribute: Redistribute | UndefinedType = Undefined,
-                redistribute_routes: RedistributeRoutes | UndefinedType = Undefined,
                 vlan_aware_bundles: VlanAwareBundles | UndefinedType = Undefined,
                 vlans: Vlans | UndefinedType = Undefined,
                 vpws: Vpws | UndefinedType = Undefined,
@@ -55620,7 +54776,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Redistribute routes in to BGP.
 
                        Subclass of AvdModel.
-                    redistribute_routes: Subclass of AvdList with `RedistributeRoutesItem` items.
                     vlan_aware_bundles: Subclass of AvdIndexedList with `VlanAwareBundlesItem` items. Primary key is `name` (`str`).
                     vlans: Subclass of AvdIndexedList with `VlansItem` items. Primary key is `id` (`int`).
                     vpws: Subclass of AvdIndexedList with `VpwsItem` items. Primary key is `name` (`str`).

@@ -15353,20 +15353,6 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
-            peer_filter:
-              type: str
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: router_bgp.listen_ranges[].peer_filter
-            bgp_listen_range_prefix:
-              type: str
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: router_bgp.listen_ranges[].bgp_listen_range_prefix
       neighbors:
         type: list
         primary_key: ip_address
@@ -15919,57 +15905,6 @@ keys:
 
                   `route_map` and `rcf` are mutually exclusive. `route_map` takes
                   precedence.'
-      redistribute_routes:
-        type: list
-        primary_key: source_protocol
-        allow_duplicate_primary_key: true
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: redistribute
-        items:
-          type: dict
-          keys:
-            source_protocol:
-              type: str
-              valid_values:
-              - attached-host
-              - bgp
-              - connected
-              - dynamic
-              - isis
-              - ospf
-              - ospfv3
-              - rip
-              - static
-              - user
-            route_map:
-              type: str
-            rcf:
-              type: str
-              description: 'RCF function name with parenthesis.
-
-                Example: MyFunction(myarg).
-
-                `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
-
-                Only applicable if `source_protocol` is one of `connected`, `static`,
-                `isis`, `user`, `dynamic`.'
-            include_leaked:
-              type: bool
-            ospf_route_type:
-              type: str
-              valid_values:
-              - external
-              - internal
-              - nssa-external
-              - nssa-external 1
-              - nssa-external 2
-              description: 'Routes learned by the OSPF protocol.
-
-                The `ospf_route_type` is valid for source_protocols ''ospf'' and ''ospfv3''.
-
-                '
       vlan_aware_bundles:
         type: list
         primary_key: name
@@ -16460,40 +16395,9 @@ keys:
             type: dict
             deprecation:
               warning: true
+              removed: true
               remove_in_version: 6.0.0
               new_key: bgp.additional_paths
-            description: BGP additional-paths commands.
-            keys:
-              receive:
-                type: bool
-                description: Receive multiple paths.
-              send:
-                type: dict
-                description: Send multiple paths.
-                keys:
-                  any:
-                    type: bool
-                    description: Any eligible path.
-                  backup:
-                    type: bool
-                    description: Best path and installed backup path.
-                  ecmp:
-                    type: bool
-                    description: All paths in best path ECMP group.
-                  ecmp_limit:
-                    type: int
-                    description: Amount of ECMP paths to send.
-                    convert_types:
-                    - str
-                    min: 2
-                    max: 64
-                  limit:
-                    type: int
-                    description: Amount of paths to send.
-                    convert_types:
-                    - str
-                    min: 2
-                    max: 64
       address_family_rtc:
         type: dict
         keys:
@@ -16613,13 +16517,6 @@ keys:
                           required: true
                         originate:
                           type: bool
-                    address_family_ipv6_originate:
-                      type: bool
-                      deprecation:
-                        warning: true
-                        removed: true
-                        new_key: address_family_ipv6
-                        remove_in_version: 5.0.0
           neighbors:
             type: list
             primary_key: ip_address
@@ -16924,59 +16821,11 @@ keys:
                       precedence.'
           redistribute_routes:
             type: list
-            primary_key: source_protocol
-            allow_duplicate_primary_key: true
             deprecation:
               warning: true
+              removed: true
               remove_in_version: 6.0.0
               new_key: redistribute
-            items:
-              type: dict
-              keys:
-                source_protocol:
-                  type: str
-                  valid_values:
-                  - attached-host
-                  - bgp
-                  - connected
-                  - dynamic
-                  - isis
-                  - ospf
-                  - ospfv3
-                  - rip
-                  - static
-                  - user
-                route_map:
-                  type: str
-                include_leaked:
-                  type: bool
-                  description: Only applicable if `source_protocol` is one of `connected`,
-                    `static`, `isis`, `ospf`, `ospfv3`.
-                rcf:
-                  type: str
-                  description: 'RCF function name with parenthesis.
-
-                    Example: MyFunction(myarg).
-
-                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
-                    precedence.
-
-                    Only applicable if `source_protocol` is one of `connected`, `static`,
-                    `isis`, `user`, `dynamic`.'
-                ospf_route_type:
-                  type: str
-                  valid_values:
-                  - external
-                  - internal
-                  - nssa-external
-                  - nssa-external 1
-                  - nssa-external 2
-                  description: 'Routes learned by the OSPF protocol.
-
-                    The `ospf_route_type` is valid for source_protocols ''ospf'' and
-                    ''ospfv3''.
-
-                    '
       address_family_ipv4_labeled_unicast:
         type: dict
         keys:
@@ -17160,12 +17009,6 @@ keys:
                             policy decision.
                 multi_path:
                   type: bool
-                next_hop_resolution:
-                  type: dict
-                  deprecation:
-                    warning: true
-                    removed: true
-                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -17294,12 +17137,6 @@ keys:
                             policy decision.
                 multi_path:
                   type: bool
-                next_hop_resolution:
-                  type: dict
-                  deprecation:
-                    warning: true
-                    removed: true
-                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -17612,46 +17449,11 @@ keys:
                     type: str
           redistribute_routes:
             type: list
-            primary_key: source_protocol
-            allow_duplicate_primary_key: true
             deprecation:
               warning: true
+              removed: true
               remove_in_version: 6.0.0
               new_key: redistribute
-            items:
-              type: dict
-              keys:
-                source_protocol:
-                  type: str
-                route_map:
-                  type: str
-                include_leaked:
-                  type: bool
-                  description: Only applicable if `source_protocol` is `isis`.
-                rcf:
-                  type: str
-                  description: 'RCF function name with parenthesis.
-
-                    Example: MyFunction(myarg).
-
-                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
-                    precedence.
-
-                    Only applicable if `source_protocol` is `isis`.'
-                ospf_route_type:
-                  type: str
-                  valid_values:
-                  - external
-                  - internal
-                  - nssa-external
-                  - nssa-external 1
-                  - nssa-external 2
-                  description: 'Routes learned by the OSPF protocol.
-
-                    The `ospf_route_type` is valid for source_protocols ''ospf'' and
-                    ''ospfv3''.
-
-                    '
       address_family_ipv4_sr_te:
         type: dict
         keys:
@@ -18007,45 +17809,11 @@ keys:
                       precedence.'
           redistribute_routes:
             type: list
-            primary_key: source_protocol
-            allow_duplicate_primary_key: true
             deprecation:
               warning: true
+              removed: true
               remove_in_version: 6.0.0
               new_key: redistribute
-            items:
-              type: dict
-              keys:
-                source_protocol:
-                  type: str
-                route_map:
-                  type: str
-                include_leaked:
-                  type: bool
-                rcf:
-                  type: str
-                  description: 'RCF function name with parenthesis.
-
-                    Example: MyFunction(myarg).
-
-                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
-                    precedence.
-
-                    Only used if `source_protocol` is one of `connected`, `static`,
-                    `isis`, `user`, `dynamic`.'
-                ospf_route_type:
-                  type: str
-                  valid_values:
-                  - external
-                  - internal
-                  - nssa-external
-                  - nssa-external 1
-                  - nssa-external 2
-                  description: 'Routes learned by the OSPF protocol.
-
-                    The `ospf_route_type` is valid for source_protocols ''ospfv3''.
-
-                    '
       address_family_ipv6_multicast:
         type: dict
         keys:
@@ -18264,52 +18032,11 @@ keys:
                     type: str
           redistribute_routes:
             type: list
-            primary_key: source_protocol
-            allow_duplicate_primary_key: true
             deprecation:
               warning: true
+              removed: true
               remove_in_version: 6.0.0
               new_key: redistribute
-            items:
-              type: dict
-              keys:
-                source_protocol:
-                  type: str
-                  valid_values:
-                  - connected
-                  - isis
-                  - ospf
-                  - ospfv3
-                  - static
-                include_leaked:
-                  type: bool
-                  description: Only applicable if `source_protocol` is `isis`.
-                route_map:
-                  type: str
-                rcf:
-                  type: str
-                  description: 'RCF function name with parenthesis.
-
-                    Example: MyFunction(myarg).
-
-                    `route_map` and `rcf` are mutually exclusive. `route_map` takes
-                    precedence.
-
-                    Only applicable if `source_protocol` is `isis`.'
-                ospf_route_type:
-                  type: str
-                  valid_values:
-                  - external
-                  - internal
-                  - nssa-external
-                  - nssa-external 1
-                  - nssa-external 2
-                  description: 'Routes learned by the OSPF protocol.
-
-                    The `ospf_route_type` is valid for source_protocols ''ospf'' and
-                    ''ospfv3''.
-
-                    '
       address_family_ipv6_sr_te:
         type: dict
         keys:
@@ -19222,24 +18949,6 @@ keys:
                   additional_paths:
                     type: dict
                     $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
-                  prefix_list_in:
-                    type: str
-                    description: Inbound prefix-list name.
-                    deprecation:
-                      warning: true
-                      removed: true
-                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in
-                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in
-                      remove_in_version: 5.0.0
-                  prefix_list_out:
-                    type: str
-                    description: Outbound prefix-list name.
-                    deprecation:
-                      warning: true
-                      removed: true
-                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out
-                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out
-                      remove_in_version: 5.0.0
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -19504,48 +19213,6 @@ keys:
 
                         `route_map` and `rcf` are mutually exclusive. `route_map`
                         takes precedence.'
-            redistribute_routes:
-              type: list
-              primary_key: source_protocol
-              allow_duplicate_primary_key: true
-              deprecation:
-                warning: true
-                remove_in_version: 6.0.0
-                new_key: redistribute
-              items:
-                type: dict
-                keys:
-                  source_protocol:
-                    type: str
-                  route_map:
-                    type: str
-                  include_leaked:
-                    type: bool
-                  rcf:
-                    type: str
-                    description: 'RCF function name with parenthesis.
-
-                      Example: MyFunction(myarg).
-
-                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
-                      precedence.
-
-                      Only applicable if `source_protocol` is one of `connected`,
-                      `dynamic`, `isis`, `static` and `user`.'
-                  ospf_route_type:
-                    type: str
-                    valid_values:
-                    - external
-                    - internal
-                    - nssa-external
-                    - nssa-external 1
-                    - nssa-external 2
-                    description: 'Routes learned by the OSPF protocol.
-
-                      The `ospf_route_type` is valid for source_protocols ''ospf''
-                      and ''ospfv3''.
-
-                      '
             aggregate_addresses:
               type: list
               primary_key: prefix
@@ -19903,57 +19570,11 @@ keys:
                             takes precedence.'
                 redistribute_routes:
                   type: list
-                  primary_key: source_protocol
-                  allow_duplicate_primary_key: true
                   deprecation:
                     warning: true
+                    removed: true
                     remove_in_version: 6.0.0
                     new_key: redistribute
-                  items:
-                    type: dict
-                    keys:
-                      source_protocol:
-                        type: str
-                        valid_values:
-                        - attached-host
-                        - bgp
-                        - connected
-                        - dynamic
-                        - isis
-                        - ospf
-                        - ospfv3
-                        - rip
-                        - static
-                        - user
-                      route_map:
-                        type: str
-                      include_leaked:
-                        type: bool
-                      rcf:
-                        type: str
-                        description: 'RCF function name with parenthesis.
-
-                          Example: MyFunction(myarg).
-
-                          `route_map` and `rcf` are mutually exclusive. `route_map`
-                          takes precedence.
-
-                          Only applicable if `source_protocol` is one of `connected`,
-                          `dynamic`, `isis`, `static` and `user`.'
-                      ospf_route_type:
-                        type: str
-                        valid_values:
-                        - external
-                        - internal
-                        - nssa-external
-                        - nssa-external 1
-                        - nssa-external 2
-                        description: 'Routes learned by the OSPF protocol.
-
-                          The `ospf_route_type` is valid for source_protocols ''ospf''
-                          and ''ospfv3''.
-
-                          '
             address_family_ipv6:
               type: dict
               keys:
@@ -20223,55 +19844,11 @@ keys:
                             takes precedence.'
                 redistribute_routes:
                   type: list
-                  primary_key: source_protocol
-                  allow_duplicate_primary_key: true
                   deprecation:
                     warning: true
+                    removed: true
                     remove_in_version: 6.0.0
                     new_key: redistribute
-                  items:
-                    type: dict
-                    keys:
-                      source_protocol:
-                        type: str
-                        valid_values:
-                        - attached-host
-                        - bgp
-                        - connected
-                        - dhcp
-                        - dynamic
-                        - isis
-                        - ospfv3
-                        - static
-                        - user
-                      route_map:
-                        type: str
-                      include_leaked:
-                        type: bool
-                      rcf:
-                        type: str
-                        description: 'RCF function name with parenthesis.
-
-                          Example: MyFunction(myarg).
-
-                          `route_map` and `rcf` are mutually exclusive. `route_map`
-                          takes precedence.
-
-                          Only applicable if `source_protocol` is one of `connected`,
-                          `dynamic`, `isis`, `static` and `user`.'
-                      ospf_route_type:
-                        type: str
-                        valid_values:
-                        - external
-                        - internal
-                        - nssa-external
-                        - nssa-external 1
-                        - nssa-external 2
-                        description: 'Routes learned by the OSPF protocol.
-
-                          The `ospf_route_type` is valid for source_protocols ''ospfv3''.
-
-                          '
             address_family_ipv4_multicast:
               type: dict
               keys:
@@ -20496,53 +20073,11 @@ keys:
                           type: str
                 redistribute_routes:
                   type: list
-                  primary_key: source_protocol
-                  allow_duplicate_primary_key: true
                   deprecation:
                     warning: true
+                    removed: true
                     remove_in_version: 6.0.0
                     new_key: redistribute
-                  items:
-                    type: dict
-                    keys:
-                      source_protocol:
-                        type: str
-                        valid_values:
-                        - attached-host
-                        - connected
-                        - isis
-                        - ospf
-                        - ospfv3
-                        - static
-                      route_map:
-                        type: str
-                      include_leaked:
-                        type: bool
-                        description: Only applicable if `source_protocol` is `isis`.
-                      rcf:
-                        type: str
-                        description: 'RCF function name with parenthesis.
-
-                          Example: MyFunction(myarg).
-
-                          `route_map` and `rcf` are mutually exclusive. `route_map`
-                          takes precedence.
-
-                          Only applicable if `source_protocol` is `isis`.'
-                      ospf_route_type:
-                        type: str
-                        valid_values:
-                        - external
-                        - internal
-                        - nssa-external
-                        - nssa-external 1
-                        - nssa-external 2
-                        description: 'Routes learned by the OSPF protocol.
-
-                          The `ospf_route_type` is valid for source_protocols ''ospf''
-                          and ''ospfv3''.
-
-                          '
             address_family_ipv6_multicast:
               type: dict
               keys:
@@ -20747,52 +20282,11 @@ keys:
                           type: str
                 redistribute_routes:
                   type: list
-                  primary_key: source_protocol
-                  allow_duplicate_primary_key: true
                   deprecation:
                     warning: true
+                    removed: true
                     remove_in_version: 6.0.0
                     new_key: redistribute
-                  items:
-                    type: dict
-                    keys:
-                      source_protocol:
-                        type: str
-                        valid_values:
-                        - connected
-                        - isis
-                        - ospf
-                        - ospfv3
-                        - static
-                      route_map:
-                        type: str
-                      include_leaked:
-                        type: bool
-                        description: Only applicable if `source_protocol` is `isis`.
-                      rcf:
-                        type: str
-                        description: 'RCF function name with parenthesis.
-
-                          Example: MyFunction(myarg).
-
-                          `route_map` and `rcf` are mutually exclusive. `route_map`
-                          takes precedence.
-
-                          Only applicable if `source_protocol` is `isis`.'
-                      ospf_route_type:
-                        type: str
-                        valid_values:
-                        - external
-                        - internal
-                        - nssa-external
-                        - nssa-external 1
-                        - nssa-external 2
-                        description: 'Routes learned by the OSPF protocol.
-
-                          The `ospf_route_type` is valid for source_protocols ''ospf''
-                          and ''ospfv3''.
-
-                          '
             address_family_flow_spec_ipv4:
               type: dict
               keys:
@@ -20855,20 +20349,19 @@ keys:
                         type: str
                       activate:
                         type: bool
+            redistribute_routes:
+              type: list
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: redistribute
             eos_cli:
               type: str
               description: 'Multiline EOS CLI rendered directly on the Router BGP,
                 VRF definition in the final EOS configuration.
 
                 '
-            address_families:
-              type: list
-              primary_key: address_family
-              deprecation:
-                warning: true
-                removed: true
-                new_key: address_family_*
-                remove_in_version: 5.0.0
       session_trackers:
         type: list
         primary_key: name
@@ -20885,6 +20378,13 @@ keys:
               - str
               min: 1
               max: 3600
+      redistribute_routes:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: redistribute
       eos_cli:
         type: str
         description: Multiline EOS CLI rendered directly on the Router BGP in the
