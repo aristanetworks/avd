@@ -1,5 +1,23 @@
 [{
     "value": {
+      "key": {
+          "workspaceId": "test_update_and_prune_deployment",
+          "configletId": "avd_ca819c29-bab5-5a5e-a5f7-9be5f4be038c"
+       },
+      "displayName": "GLOBAL-BANNER",
+      "description": "Configlet created and uploaded by AVD.",
+      "migratedFrom": "",
+      "createdAt": "2025-09-05T03:26:18.630Z",
+      "createdBy": "Carl_SA",
+      "lastModifiedAt": "2025-09-05T03:26:18.630Z",
+      "lastModifiedBy": "Carl_SA",
+      "digest": "bb16e9c1c211b51984c0699b84eeafce5ab6e7815e22b994be769fdb679831f4",
+      "size": 28
+    },
+    "time": "2025-09-05T03:26:18.630Z",
+    "type": "INITIAL"
+}, {
+    "value": {
         "key": {
             "workspaceId": "test_update_and_prune_deployment",
             "configletId": "avd_dc4ed010-07a2-566e-a287-a7c50dda1e0f"

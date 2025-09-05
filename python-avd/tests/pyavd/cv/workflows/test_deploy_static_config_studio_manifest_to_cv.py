@@ -95,17 +95,24 @@ def avd_manifest_update(tmp_path: Path, initial_manifest_data: dict[str, Any]) -
 # Test Cases
 @pytest.mark.asyncio
 class TestDeployStaticConfigStudioManifest:
+    """
+    Test various scenarios of `deploy_static_config_studio_manifest_to_cv`.
+
+    # TODO: Test deleting unused configlets.
+    # TODO: Test changing AVD-managed root containers order.
+    # TODO: Test stale AVD-managed root containers.
+    """
+
     async def test_initial_deployment(self, cv_client: CVClient, avd_manifest_initial: AvdManifest) -> None:
         """
-        Test case for the initial deployment to an empty CloudVision workspace.
+        Test case for the initial deployment.
 
         Expects all configlets and containers to be created.
         """
         cv_client._cv_version = CvVersion("2025.1.1")
-        workspace = CVWorkspace(name="pytest_test_initial_deployment", id="pytest_test_initial_deployment")
+        workspace = CVWorkspace(name="test_initial_deployment", id="test_initial_deployment")
         deployment_result = DeployToCvResult(workspace=workspace)
 
-        # Deploy manifest
         await deploy_static_config_studio_manifest_to_cv(
             manifest=avd_manifest_initial,
             deployment_result=deployment_result,
@@ -174,5 +181,3 @@ class TestDeployStaticConfigStudioManifest:
         # RACK1_LEAFS deletion happens via API call, not tracked in deployment_result directly.
         assert len(deployment_result.deployed_static_config_containers) == 2
         assert len(deployment_result.skipped_static_config_containers) == 0
-
-        # TODO: Test deleting unused configlets
