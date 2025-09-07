@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from asyncio import gather
 from logging import getLogger
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 from .models import AVD_ENTITY_PREFIX, CVManifest
 
@@ -44,19 +44,24 @@ async def deploy_static_config_studio_manifest_to_cv(manifest: AvdManifest, depl
 
     # Perform synchronization tasks.
     await _sync_configlets(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
-    await _sync_containers(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
-    await _sync_studio_roots(cv_manifest=cv_manifest, workspace_id=workspace_id, cv_client=cv_client)
+    existing_containers_by_id = await _sync_containers(cv_manifest=cv_manifest, deployment_result=deployment_result, cv_client=cv_client)
+    await _sync_studio_roots(
+        cv_manifest=cv_manifest,
+        deployment_result=deployment_result,
+        cv_client=cv_client,
+        existing_containers_by_id=existing_containers_by_id,
+    )
 
     # Done.
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Completed manifest deployment for workspace '%s'.", workspace_id)
 
 
-async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
+async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> dict[str, ConfigletAssignment]:
     """Synchronize containers. Fetch existing ones and push any required creates or updates."""
     workspace_id = deployment_result.workspace.id
 
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Fetching all existing configlet containers from CloudVision...")
-    existing_containers = cast("list[ConfigletAssignment]", await cv_client.get_configlet_containers(workspace_id=workspace_id))
+    existing_containers = await cv_client.get_configlet_containers(workspace_id=workspace_id)
     existing_containers_by_id = {container.key.configlet_assignment_id: container for container in existing_containers}
 
     containers_to_push: list[CVContainer] = []
@@ -78,6 +83,9 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No container creations or updates are needed.")
 
+    # Return all existing containers from CloudVision to be further processed if needed.
+    return existing_containers_by_id
+
 
 async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
     """Synchronize configlets. Create/update new ones and delete unused AVD-managed ones."""
@@ -94,17 +102,24 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
 
     # Delete unused AVD-managed configlets.
     existing_configlets = await cv_client.get_configlets(workspace_id=workspace_id)
-    existing_configlet_ids = {configlet.key.configlet_id for configlet in existing_configlets if configlet.key.configlet_id.startswith(AVD_ENTITY_PREFIX)}
     desired_configlet_ids = {configlet.id for configlet in cv_manifest.configlets}
+    configlets_to_delete = {
+        configlet_id: configlet.display_name
+        for configlet in existing_configlets
+        if (configlet_id := configlet.key.configlet_id).startswith(AVD_ENTITY_PREFIX) and configlet_id not in desired_configlet_ids
+    }
 
-    if unused_configlet_ids := existing_configlet_ids.difference(desired_configlet_ids):
-        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d AVD-managed configlets which are no longer used.", len(unused_configlet_ids))
-        await cv_client.delete_configlets(workspace_id=workspace_id, configlet_ids=list(unused_configlet_ids))
+    if configlets_to_delete:
+        LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d AVD-managed configlets which are no longer used.", len(configlets_to_delete))
+        deployment_result.removed_static_config_configlets.extend(configlets_to_delete.values())
+        await cv_client.delete_configlets(workspace_id=workspace_id, configlet_ids=list(configlets_to_delete.keys()))
     else:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: No AVD-managed configlet deletions are needed.")
 
 
-async def _sync_studio_roots(cv_manifest: CVManifest, workspace_id: str, cv_client: CVClient) -> None:
+async def _sync_studio_roots(
+    cv_manifest: CVManifest, deployment_result: DeployToCvResult, cv_client: CVClient, existing_containers_by_id: dict[str, ConfigletAssignment]
+) -> None:
     """
     Synchronize Studio root containers. Update root container assignments and delete unused AVD-managed ones.
 
@@ -112,6 +127,8 @@ async def _sync_studio_roots(cv_manifest: CVManifest, workspace_id: str, cv_clie
         During an update, this function reorders root containers. All AVD-managed
         containers are placed first, followed by any existing manually-added containers.
     """
+    workspace_id = deployment_result.workspace.id
+
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Syncing Static Config Studio root container assignments...")
 
     # Get the existing list of root container IDs from the Studio inputs.
@@ -149,6 +166,14 @@ async def _sync_studio_roots(cv_manifest: CVManifest, workspace_id: str, cv_clie
     # Delete stale AVD-managed root containers that are no longer needed.
     if stale_avd_ids:
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d stale AVD-managed root containers...", len(stale_avd_ids))
+        deployment_result.removed_static_config_root_containers.extend(
+            [
+                existing_container.display_name
+                for container_id in stale_avd_ids
+                if (existing_container := existing_containers_by_id.get(container_id)) is not None
+            ]
+        )
+
         # TODO: Build a 'delete_configlet_containers' gRPC API
         await gather(*[cv_client.delete_configlet_container(workspace_id=workspace_id, assignment_id=container_id) for container_id in stale_avd_ids])
     else:

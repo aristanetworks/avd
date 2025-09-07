@@ -8,14 +8,13 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Any, Literal
 from uuid import NAMESPACE_DNS, uuid4, uuid5
 
+from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP
 from pyavd._cv.client.exceptions import CVManifestError
 
 AVD_NAMESPACE = uuid5(NAMESPACE_DNS, "avd.arista.com")
 AVD_ENTITY_PREFIX = "avd_"
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
     from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment
 
 
@@ -138,6 +137,8 @@ class DeployToCvResult:
     skipped_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
     skipped_cv_pathfinder_metadata: list[CVPathfinderMetadata] = field(default_factory=list)
     removed_configs: list[str] = field(default_factory=list)
+    removed_static_config_root_containers: list[str] = field(default_factory=list)
+    removed_static_config_configlets: list[str] = field(default_factory=list)
     removed_device_tags: list[CVDeviceTag] = field(default_factory=list)
     removed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
 
@@ -228,12 +229,10 @@ class AvdManifest:
     This model defines the desired state for containers and configlets in the "Static Configuration" Studio.
 
     It can contain a full container hierarchy, only configlets, or both.
-
-    TODO: Add an example.
     """
 
-    configlets: tuple[AvdConfiglet, ...]
-    containers: tuple[AvdContainer, ...]
+    configlets: tuple[AvdConfiglet, ...] = field(default_factory=tuple)
+    containers: tuple[AvdContainer, ...] = field(default_factory=tuple)
 
 
 @dataclass(frozen=True)
@@ -322,7 +321,7 @@ class CVConfiglet:
         return self.avd_configlet.name
 
     @property
-    def file(self) -> Path:
+    def file(self) -> str:
         return self.avd_configlet.file
 
     @property
@@ -369,11 +368,7 @@ class CVContainer:
         This is primarily used to determine if the local configuration has diverged from the
         remote configuration, indicating whether an update is required.
         """
-        match_policy_map = {
-            0: "unspecified",
-            1: "match_first",
-            2: "match_all",
-        }
+        reversed_match_policy_map = {enum_member.value: str_key for str_key, enum_member in ASSIGNMENT_MATCH_POLICY_MAP.items()}
         return self.api_tuple == (
             configlet_assignment.key.configlet_assignment_id,
             configlet_assignment.display_name,
@@ -381,5 +376,5 @@ class CVContainer:
             configlet_assignment.configlet_ids.values,
             configlet_assignment.query,
             configlet_assignment.child_assignment_ids.values,
-            match_policy_map.get(configlet_assignment.match_policy.value),
+            reversed_match_policy_map.get(configlet_assignment.match_policy.value),
         )

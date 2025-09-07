@@ -1,52 +1,26 @@
 # Copyright (c) 2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from dataclasses import dataclass
 
 import pytest
 
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVManifest
 
+from .helpers import MockAssignmentKey, MockConfigletAssignment, MockMatchPolicy, MockRepeatedString, generate_id
 
-# Mock API Object Structure
-# Create simple mock classes to simulate the structure of ConfigletAssignment
-@dataclass
-class MockRepeatedString:
-    values: list[str]
+# === Test Fixtures ===
 
 
-@dataclass
-class MockMatchPolicy:
-    value: int  # 1 for match_first, 2 for match_all
-
-
-@dataclass
-class MockAssignmentKey:
-    configlet_assignment_id: str
-
-
-@dataclass
-class MockConfigletAssignment:
-    key: MockAssignmentKey
-    display_name: str
-    description: str
-    configlet_ids: MockRepeatedString
-    query: str
-    child_assignment_ids: MockRepeatedString
-    match_policy: MockMatchPolicy
-
-
-# Test Fixtures
 @pytest.fixture
 def complex_avd_manifest() -> AvdManifest:
     """Provides a complex, valid AVD manifest with nested containers and configlets."""
-    # Configlets definition
+    # Configlets definition.
     configlet1 = AvdConfiglet(name="configlet_global", file="path/to/global.cfg")
     configlet2 = AvdConfiglet(name="configlet_leaf", file="path/to/leaf.cfg")
     configlet3 = AvdConfiglet(name="configlet_extra", file="path/to/extra.cfg")
 
-    # Container hierarchy definition
+    # Container hierarchy definition.
     container_leaf_1a = AvdContainer(
         name="LEAF_GROUP_A",
         tag_query="rack:1a AND role:leaf",
@@ -79,12 +53,9 @@ def complex_avd_manifest() -> AvdManifest:
     )
 
 
-def generate_id(path: str) -> str:
-    """Helper to consistently generate expected IDs for tests."""
-    return CVManifest._generate_deterministic_id(path)
+# === Test Cases ===
 
 
-# Test Cases
 class TestCVManifestGeneration:
     def test_successful_conversion(self, complex_avd_manifest: AvdManifest) -> None:
         """Tests successful conversion of a complex manifest to a CVManifest."""
@@ -273,7 +244,7 @@ class TestCVContainerMatching:
             configlet_ids=MockRepeatedString(values=list(test_cv_container.configlet_ids)),
             query=test_cv_container.tag_query,
             child_assignment_ids=MockRepeatedString(values=list(test_cv_container.child_ids)),
-            match_policy=MockMatchPolicy(value=2),  # match_all maps to 2
+            match_policy=MockMatchPolicy.MATCH_ALL,
         )
 
         # Introduce a mismatch based on the test parameter using match case.
@@ -291,7 +262,7 @@ class TestCVContainerMatching:
             case "child_ids":
                 mock_assignment.child_assignment_ids.values = ["wrong-child-id"]
             case "match_policy":
-                mock_assignment.match_policy.value = 1  # Change to match_first
+                mock_assignment.match_policy = MockMatchPolicy.MATCH_FIRST  # Change to match_first
 
         # Assert failure.
         assert test_cv_container.matches_configlet_assignment(mock_assignment) is False
@@ -314,7 +285,7 @@ class TestCVContainerMatching:
             configlet_ids=MockRepeatedString(values=[]),
             query=cv_container.tag_query,
             child_assignment_ids=MockRepeatedString(values=[]),
-            match_policy=MockMatchPolicy(value=2),
+            match_policy=MockMatchPolicy.MATCH_ALL,
         )
 
         # Verify api_tuple logic (self.description or "") works.
