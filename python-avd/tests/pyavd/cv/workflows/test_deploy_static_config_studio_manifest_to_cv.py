@@ -59,6 +59,24 @@ def deployment_result() -> DeployToCvResult:
 class TestDeployStaticConfigStudio:
     """Test suite for the deploy_static_config_studio_manifest_to_cv workflow."""
 
+    async def test_empty_manifest_does_nothing(self, mock_cv_client: MagicMock, deployment_result: DeployToCvResult) -> None:
+        """Test that an empty manifest results in no actions and an early return."""
+        # Create an empty manifest with no configlets or containers.
+        empty_manifest = AvdManifest(configlets=(), containers=())
+
+        await deploy_static_config_studio_manifest_to_cv(empty_manifest, deployment_result, mock_cv_client)
+
+        # No API calls should have been made to CloudVision.
+        mock_cv_client.set_configlets_from_files.assert_not_called()
+        mock_cv_client.set_configlet_containers.assert_not_called()
+        mock_cv_client.set_studio_inputs.assert_not_called()
+        mock_cv_client.delete_configlets.assert_not_called()
+        mock_cv_client.delete_configlet_container.assert_not_called()
+
+        # The result object should remain in its initial empty state.
+        assert not deployment_result.deployed_static_config_configlets
+        assert not deployment_result.deployed_static_config_containers
+
     async def test_initial_deployment(self, mock_cv_client: MagicMock, avd_initial_manifest: AvdManifest, deployment_result: DeployToCvResult) -> None:
         """Test initial deployment with no existing configlets or containers on CloudVision."""
         # CV is empty.
