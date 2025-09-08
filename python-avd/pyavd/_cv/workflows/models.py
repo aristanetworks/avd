@@ -221,7 +221,7 @@ class AvdContainer:
     sub_containers: tuple[AvdContainer, ...] = field(default_factory=tuple)
 
     @classmethod
-    def from_dict(cls, data: dict) -> AvdContainer:
+    def from_dict(cls, data: dict[str, Any]) -> AvdContainer:
         """Recursively build an AvdContainer instance from an input dictionary."""
         copied_data = data.copy()
         try:
@@ -251,7 +251,7 @@ class AvdManifest:
     containers: tuple[AvdContainer, ...] = field(default_factory=tuple)
 
     @classmethod
-    def from_dict(cls, data: dict) -> AvdManifest:
+    def from_dict(cls, data: dict[str, Any]) -> AvdManifest:
         """Build an AvdManifest instance from an input dictionary."""
         try:
             configlets_data = data.get("configlets", [])
