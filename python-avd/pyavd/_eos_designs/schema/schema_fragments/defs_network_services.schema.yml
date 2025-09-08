@@ -1248,11 +1248,16 @@ $defs:
                 items:
                   type: dict
                   keys:
+                    nodes:
+                      type: list
+                      items:
+                        type: str
                     destination_address_prefix:
                       type: str
                       description: IPv4_address.
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: prefix
                     gateway:
@@ -1260,35 +1265,33 @@ $defs:
                       description: IPv4_address.
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    nodes:
-                      type: list
-                      items:
-                        type: str
               ipv6_static_routes:
                 type: list
                 $ref: "eos_designs#/$defs/static_routes"
                 items:
                   type: dict
                   keys:
+                    nodes:
+                      type: list
+                      items:
+                        type: str
                     destination_address_prefix:
                       type: str
-                      description: IPv6_address.
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: prefix
                     gateway:
                       type: str
                       deprecation:
                         warning: true
+                        removed: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    nodes:
-                      type: list
-                      items:
-                        type: str
               redistribute_static:
                 type: bool
                 description: Enable or disable the redistribution of all static routes to BGP in the VRF.

@@ -129,11 +129,6 @@ ip_tacacs_source_interfaces:
 - name: Management1
 - name: Vlan10
   vrf: INBANDMGMT
-ipv6_static_routes:
-- vrf: default
-  prefix: ::/0
-  next_hop: 2001:db8:311::4
-  name: IPv6-test-2
 local_users:
 - name: admin
   disabled: true
@@ -232,9 +227,6 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
-  redistribute:
-    static:
-      enabled: true
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -280,10 +272,6 @@ snmp_server:
     enable: true
   - name: INBANDMGMT
     enable: true
-static_routes:
-- vrf: default
-  prefix: 0.0.0.0
-  next_hop: 10.10.1.1
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

@@ -47410,8 +47410,6 @@ class EosDesigns(EosDesignsRootModel):
                         Nodes._item_type = str
 
                         _fields: ClassVar[dict] = {
-                            "destination_address_prefix": {"type": str},
-                            "gateway": {"type": str},
                             "nodes": {"type": Nodes},
                             "prefix": {"type": str},
                             "next_hop": {"type": str},
@@ -47422,10 +47420,6 @@ class EosDesigns(EosDesignsRootModel):
                             "metric": {"type": int},
                             "interface": {"type": str},
                         }
-                        destination_address_prefix: str | None
-                        """IPv4_address."""
-                        gateway: str | None
-                        """IPv4_address."""
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
                         prefix: str | None
@@ -47444,8 +47438,6 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                destination_address_prefix: str | None | UndefinedType = Undefined,
-                                gateway: str | None | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 prefix: str | None | UndefinedType = Undefined,
                                 next_hop: str | None | UndefinedType = Undefined,
@@ -47463,8 +47455,6 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    destination_address_prefix: IPv4_address.
-                                    gateway: IPv4_address.
                                     nodes: Subclass of AvdList with `str` items.
                                     prefix: prefix
                                     next_hop: next_hop
@@ -47491,8 +47481,6 @@ class EosDesigns(EosDesignsRootModel):
                         Nodes._item_type = str
 
                         _fields: ClassVar[dict] = {
-                            "destination_address_prefix": {"type": str},
-                            "gateway": {"type": str},
                             "nodes": {"type": Nodes},
                             "prefix": {"type": str},
                             "next_hop": {"type": str},
@@ -47503,9 +47491,6 @@ class EosDesigns(EosDesignsRootModel):
                             "metric": {"type": int},
                             "interface": {"type": str},
                         }
-                        destination_address_prefix: str | None
-                        """IPv6_address."""
-                        gateway: str | None
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
                         prefix: str | None
@@ -47524,8 +47509,6 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                destination_address_prefix: str | None | UndefinedType = Undefined,
-                                gateway: str | None | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 prefix: str | None | UndefinedType = Undefined,
                                 next_hop: str | None | UndefinedType = Undefined,
@@ -47543,8 +47526,6 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    destination_address_prefix: IPv6_address.
-                                    gateway: gateway
                                     nodes: Subclass of AvdList with `str` items.
                                     prefix: prefix
                                     next_hop: next_hop
