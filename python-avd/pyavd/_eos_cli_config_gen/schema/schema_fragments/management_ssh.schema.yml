@@ -30,17 +30,6 @@ keys:
           removed: true
           remove_in_version: 6.0.0
           new_key: ip_access_group_in or vrfs.ip_access_group_in
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Standard ACL Name.
-            vrf:
-              type: str
-              description: VRF Name.
-              convert_types:
-                - int
       ipv6_access_groups:
         type: list
         deprecation:
