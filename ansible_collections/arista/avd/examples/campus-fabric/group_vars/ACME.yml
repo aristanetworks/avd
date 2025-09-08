@@ -33,11 +33,6 @@ aaa_settings:
     exec:
       default: local
 
-# AAA Authorization
-# aaa_authorization:
-#   exec:
-#     default: local
-
 # OOB Management network default gateway.
 mgmt_gateway: 172.16.100.1
 
