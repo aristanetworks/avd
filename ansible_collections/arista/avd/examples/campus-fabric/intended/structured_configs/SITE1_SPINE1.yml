@@ -1,3 +1,6 @@
+aaa_authorization:
+  exec:
+    default: local
 aaa_root:
   disabled: true
 config_end: true
@@ -84,7 +87,6 @@ ip_name_servers:
   vrf: MGMT
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -109,6 +111,7 @@ management_interfaces:
   type: oob
   gateway: 172.16.100.1
 metadata:
+  is_deployed: true
   platform: cEOSLab
   fabric_name: SITE1
 mlag_configuration:
