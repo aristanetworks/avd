@@ -50244,11 +50244,11 @@ class EosDesigns(EosDesignsRootModel):
                 Point to point services (pseudowires).
                 Only supported for node types with "network_services.l1:
                 true".
-                By default this is only set for node type "pe" with "design.type: mpls"
+                By default this is only set for node type "pe".
 
 
-                Subclass of
-                AvdIndexedList with `PointToPointServicesItem` items. Primary key is `name` (`str`).
+                Subclass of AvdIndexedList with
+                `PointToPointServicesItem` items. Primary key is `name` (`str`).
                 """
 
                 if TYPE_CHECKING:
@@ -50428,11 +50428,11 @@ class EosDesigns(EosDesignsRootModel):
                                Point to point services (pseudowires).
                                Only supported for node types with "network_services.l1:
                                true".
-                               By default this is only set for node type "pe" with "design.type: mpls"
+                               By default this is only set for node type "pe".
 
 
-                               Subclass of
-                               AvdIndexedList with `PointToPointServicesItem` items. Primary key is `name` (`str`).
+                               Subclass of AvdIndexedList with
+                               `PointToPointServicesItem` items. Primary key is `name` (`str`).
 
                         """
 

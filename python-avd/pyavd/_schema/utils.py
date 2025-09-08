@@ -19,11 +19,9 @@ def get_instance_with_defaults(instance: dict, dynamic_key_path: str, schema: di
         return instance
 
     if dynamic_root_key == "node_type_keys":
-        # TODO: AVD6.0.0 remove this if block when we remove the reliance on design.type.
-        from pyavd._eos_designs.shared_utils.node_type_keys import DEFAULT_NODE_TYPE_KEYS  # noqa: PLC0415
+        from pyavd._eos_designs.shared_utils.node_type_keys import DEFAULT_DESIGN_TYPE, DEFAULT_NODE_TYPE_KEYS  # noqa: PLC0415
 
-        design_type = get(instance, "design.type", default="l3ls-evpn")
-        return ChainMap(instance, {"node_type_keys": DEFAULT_NODE_TYPE_KEYS[design_type]})
+        return ChainMap(instance, {"node_type_keys": DEFAULT_NODE_TYPE_KEYS[DEFAULT_DESIGN_TYPE]})
 
     # Fetch default value from schema
     return ChainMap(instance, {dynamic_root_key: get(schema, f"keys.{dynamic_root_key}.default")})
