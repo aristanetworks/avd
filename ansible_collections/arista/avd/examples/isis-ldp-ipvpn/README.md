@@ -391,7 +391,7 @@ Two tenants called `CUSTOMER1` and `CUSTOMER2` are specified. Each of these tena
 
 This defines `C1_VRF1`, with a VRF ID of `10`, enables OSPF routing for PE-CE connections inside the VRF on selected pe routers and defines routed interfaces that are used to connect to the CE devices/aggregation nodes. Each interface has an IP address assigned, a description, and has OSPF routing enabled.
 
-The lists of interfaces, nodes, and ip_addresses used in the above definition of the l3 interface are read by the ansible logic as follows: interface `Ethernet3.10` belongs to the node `pe1` and has the IP address of `10.0.1.1/29`. In other words, the list indices are used to form the basic parameters for one interface.
+The lists of interfaces, nodes, and ip_addresses used in the above definition of the l3 interface are read by the Ansible logic as follows: interface `Ethernet3.10` belongs to the node `pe1` and has the IP address of `10.0.1.1/29`. In other words, the list indices are used to form the basic parameters for one interface.
 
 ## The playbook
 
