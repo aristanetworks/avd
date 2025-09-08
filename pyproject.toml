@@ -11,7 +11,6 @@ line-length = 160
 extend-exclude = [
   "python-avd/pyavd/_cv/api/**/*",
   "python-avd/tests/pyavd/schema/data_merging_schema_class.py", # File is generated during pytest
-  "ansible_collections/arista/avd/tests/**/*",
 ]
 target-version = "py310"
 
@@ -102,6 +101,10 @@ convention = "google"
   "S101",   # Accept 'assert' in pytest.
   "INP001", # implicit namespace package. Add an `__init__.py` - Tests are not in packages
   "PLC0415", # `import` should be at the top-level of a file
+]
+"ansible_collections/arista/avd/tests/**/*" = [
+  "S101",   # Accept 'assert' in pytest.
+  "INP001", # implicit namespace package. Add an `__init__.py` - Tests are not in packages
 ]
 "python-avd/pyavd/_anta/index.py" = [
   "F403", # Allow wildcard imports to avoid cluttering the index
