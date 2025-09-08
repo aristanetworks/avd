@@ -8,7 +8,7 @@ l3leaf:
     vtep_loopback: Loopback1
     evpn_services_l2_only: false
   nodes:
-    - name: tenant-default-vrf-static-routes
+    - name: tenant-default-vrf-settings
       id: 3
       bgp_as: 65101
       filter:
@@ -27,3 +27,7 @@ tenants: # dynamic_key: network_services
         static_routes:
           - prefix: 10.0.0.0/8
             next_hop: 10.2.10.100
+        aggregate_addresses:
+          - prefix: 10.1.1.0/8
+            advertise_only: true
+            nodes: [tenant-default-vrf-settings]
