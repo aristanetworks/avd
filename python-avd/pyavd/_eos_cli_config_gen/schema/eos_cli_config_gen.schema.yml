@@ -11749,9 +11749,6 @@ keys:
         snmp_trap_link_change:
           type: bool
         encapsulation_dot1q:
-          description: 'Warning: `encapsulation_dot1q` should not be combined with
-            `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type:
-            l2dot1q`.'
           type: dict
           keys:
             vlan:
@@ -11892,10 +11889,7 @@ keys:
                     removed: true
                     remove_in_version: 6.0.0
         vlan_id:
-          description: 'This setting can only be applied to sub-interfaces on EOS.
-
-            Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type
-            == l2dot1q`.'
+          description: This setting can only be applied to sub-interfaces on EOS.
           type: int
           convert_types:
           - str
@@ -12168,8 +12162,6 @@ keys:
           type: bool
         isis_authentication:
           type: dict
-          description: This key should not be mixed with port_channel_interfaces[].isis_authentication_mode
-            or ethernet_interfaces[].isis_authentication_key.
           $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication
         traffic_policy:
           type: dict
@@ -12606,8 +12598,6 @@ keys:
           keys:
             enabled:
               type: bool
-              description: 'Warning: This should not be combined with `port_channel_interfaces[].type
-                = routed`.'
             mode:
               type: str
               valid_values:
@@ -12615,17 +12605,13 @@ keys:
               - dot1q-tunnel
               - trunk
               - trunk phone
-              description: 'Warning: This should not be combined with `port_channel_interfaces[].mode`'
             access_vlan:
               type: int
               convert_types:
               - str
               min: 1
               max: 4094
-              description: 'Set VLAN when interface is in access mode.
-
-                Warning: This should not be combined with `port_channel_interfaces[].mode
-                = access/dot1q-tunnel` and `port_channel_interface.vlans`.'
+              description: Set VLAN when interface is in access mode.
             trunk:
               type: dict
               keys:
@@ -12633,34 +12619,22 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'VLAN ID or range(s) of VLAN IDs (1-4094).
-
-                    Warning: This should not be combined with `port_channel_interfaces[].mode
-                    = trunk` and `port_channel_interfaces[].vlans`.'
+                  description: VLAN ID or range(s) of VLAN IDs (1-4094).
                 native_vlan:
                   type: int
                   convert_types:
                   - str
-                  description: 'Set native VLAN when interface is in trunking mode.
-
-                    Warning: This should not be combined with `port_channel_interfaces[].native_vlan`.'
+                  description: Set native VLAN when interface is in trunking mode.
                   min: 1
                   max: 4094
                 native_vlan_tag:
                   type: bool
-                  description: 'If setting both native_vlan and native_vlan_tag, native_vlan_tag
+                  description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
                     takes precedence.
-
-                    Warning: This should not be combined with `port_channel_interfaces[].native_vlan_tag`.'
                 private_vlan_secondary:
                   type: bool
-                  description: 'Enable secondary VLAN mapping for a private vlan.
-
-                    Warning: This should not be combined with `port_channel_interfaces[].trunk_private_vlan_secondary`.'
+                  description: Enable secondary VLAN mapping for a private vlan.
                 groups:
-                  description: 'Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.
-
-                    '
                   type: list
                   items:
                     type: str
@@ -12676,10 +12650,8 @@ keys:
                   max: 4094
                   convert_types:
                   - str
-                  description: 'Warning: This should not be combined with `port_channel_interfaces[].phone.vlan`.'
                 trunk:
                   type: str
-                  description: 'Warning: This should not be combined with `port_channel_interfaces[].phone.trunk`'
                   valid_values:
                   - tagged
                   - tagged phone
@@ -12689,9 +12661,7 @@ keys:
               type: str
               convert_types:
               - int
-              description: 'Secondary VLAN IDs of the private VLAN mapping.
-
-                Warning: This should not be combined with `port_channel_interfaces[].pvlan_mapping`.'
+              description: Secondary VLAN IDs of the private VLAN mapping.
             dot1q:
               type: dict
               keys:
@@ -12718,9 +12688,7 @@ keys:
               - tx
               - tx multicast
             vlan_translations:
-              description: 'VLAN Translation mappings.
-
-                Warning: This should not be combined with `port_channel_interfaces[].vlan_translations`.'
+              description: VLAN Translation mappings.
               type: dict
               keys:
                 in_required:
@@ -13039,15 +13007,12 @@ keys:
                       - microseconds
                       - milliseconds
             srlg:
-              description: SRLG name or number.
               type: str
               deprecation:
                 warning: true
                 removed: true
                 remove_in_version: 6.0.0
                 new_key: srlgs
-              convert_types:
-              - int
         validate_state:
           type: bool
           description: Set to false to disable interface state and LLDP topology validation
@@ -13058,15 +13023,6 @@ keys:
             by the `eos_validate_state` role.
         vlans:
           type: str
-          convert_types:
-          - int
-          description: 'List of switchport vlans as string.
-
-            For a trunk port this would be a range like "1-200,300".
-
-            For an access port this would be a single vlan "123".
-
-            '
           deprecation:
             warning: true
             removed: true
@@ -13078,24 +13034,8 @@ keys:
             warning: true
             removed: true
             remove_in_version: 6.0.0
-            url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
-          valid_values:
-          - routed
-          - switched
-          - l3dot1q
-          - l2dot1q
-          description: 'l3dot1q and l2dot1q are used for sub-interfaces. The parent
-            interface should be defined as routed.
-
-            Interface will not be listed in device documentation, unless "type" is
-            set.
-
-            '
         encapsulation_dot1q_vlan:
           type: int
-          convert_types:
-          - str
-          description: VLAN tag to configure on sub-interface.
           deprecation:
             warning: true
             removed: true
@@ -13103,11 +13043,6 @@ keys:
             new_key: encapsulation_dot1q.vlan
         mode:
           type: str
-          valid_values:
-          - access
-          - dot1q-tunnel
-          - trunk
-          - trunk phone
           deprecation:
             warning: true
             removed: true
@@ -13115,10 +13050,6 @@ keys:
             new_key: switchport.mode
         native_vlan:
           type: int
-          convert_types:
-          - str
-          description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
-            takes precedence.
           deprecation:
             warning: true
             removed: true
@@ -13126,8 +13057,6 @@ keys:
             new_key: switchport.trunk.native_vlan
         native_vlan_tag:
           type: bool
-          description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
-            takes precedence.
           deprecation:
             warning: true
             removed: true
@@ -13158,9 +13087,6 @@ keys:
             new_key: switchport.trunk.private_vlan_secondary
         pvlan_mapping:
           type: str
-          description: List of vlans as string.
-          convert_types:
-          - int
           deprecation:
             warning: true
             removed: true
@@ -13183,12 +13109,8 @@ keys:
             remove_in_version: v6.0.0
             new_key: port_channel_interfaces[].isis_authentication.both.mode or port_channel_interfaces[].isis_authentication.level_1.mode
               or port_channel_interfaces[].isis_authentication.level_2.mode
-          valid_values:
-          - text
-          - md5
         isis_authentication_key:
           type: str
-          description: Type-7 encrypted password.
           deprecation:
             warning: true
             removed: true

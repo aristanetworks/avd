@@ -32190,37 +32190,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "groups": {"type": Groups},
                 }
                 allowed_vlan: str | None
-                """
-                VLAN ID or range(s) of VLAN IDs (1-4094).
-                Warning: This should not be combined with
-                `port_channel_interfaces[].mode = trunk` and `port_channel_interfaces[].vlans`.
-                """
+                """VLAN ID or range(s) of VLAN IDs (1-4094)."""
                 native_vlan: int | None
-                """
-                Set native VLAN when interface is in trunking mode.
-                Warning: This should not be combined with
-                `port_channel_interfaces[].native_vlan`.
-                """
+                """Set native VLAN when interface is in trunking mode."""
                 native_vlan_tag: bool | None
-                """
-                If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
-                Warning: This
-                should not be combined with `port_channel_interfaces[].native_vlan_tag`.
-                """
+                """If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence."""
                 private_vlan_secondary: bool | None
-                """
-                Enable secondary VLAN mapping for a private vlan.
-                Warning: This should not be combined with
-                `port_channel_interfaces[].trunk_private_vlan_secondary`.
-                """
+                """Enable secondary VLAN mapping for a private vlan."""
                 groups: Groups
-                """
-                Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.
-
-
-                Subclass of
-                AvdList with `str` items.
-                """
+                """Subclass of AvdList with `str` items."""
 
                 if TYPE_CHECKING:
 
@@ -32240,28 +32218,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            allowed_vlan:
-                               VLAN ID or range(s) of VLAN IDs (1-4094).
-                               Warning: This should not be combined with
-                               `port_channel_interfaces[].mode = trunk` and `port_channel_interfaces[].vlans`.
-                            native_vlan:
-                               Set native VLAN when interface is in trunking mode.
-                               Warning: This should not be combined with
-                               `port_channel_interfaces[].native_vlan`.
-                            native_vlan_tag:
-                               If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
-                               Warning: This
-                               should not be combined with `port_channel_interfaces[].native_vlan_tag`.
-                            private_vlan_secondary:
-                               Enable secondary VLAN mapping for a private vlan.
-                               Warning: This should not be combined with
-                               `port_channel_interfaces[].trunk_private_vlan_secondary`.
-                            groups:
-                               Warning: This should not be combined with `port_channel_interfaces[].trunk_groups`.
-
-
-                               Subclass of
-                               AvdList with `str` items.
+                            allowed_vlan: VLAN ID or range(s) of VLAN IDs (1-4094).
+                            native_vlan: Set native VLAN when interface is in trunking mode.
+                            native_vlan_tag: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
+                            private_vlan_secondary: Enable secondary VLAN mapping for a private vlan.
+                            groups: Subclass of AvdList with `str` items.
 
                         """
 
@@ -32270,9 +32231,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"vlan": {"type": int}, "trunk": {"type": str}}
                 vlan: int | None
-                """Warning: This should not be combined with `port_channel_interfaces[].phone.vlan`."""
                 trunk: Literal["tagged", "tagged phone", "untagged", "untagged phone"] | None
-                """Warning: This should not be combined with `port_channel_interfaces[].phone.trunk`"""
 
                 if TYPE_CHECKING:
 
@@ -32289,8 +32248,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            vlan: Warning: This should not be combined with `port_channel_interfaces[].phone.vlan`.
-                            trunk: Warning: This should not be combined with `port_channel_interfaces[].phone.trunk`
+                            vlan: vlan
+                            trunk: trunk
 
                         """
 
@@ -33422,25 +33381,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "tool": {"type": Tool},
             }
             enabled: bool | None
-            """Warning: This should not be combined with `port_channel_interfaces[].type = routed`."""
             mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
-            """Warning: This should not be combined with `port_channel_interfaces[].mode`"""
             access_vlan: int | None
-            """
-            Set VLAN when interface is in access mode.
-            Warning: This should not be combined with
-            `port_channel_interfaces[].mode = access/dot1q-tunnel` and `port_channel_interface.vlans`.
-            """
+            """Set VLAN when interface is in access mode."""
             trunk: Trunk
             """Subclass of AvdModel."""
             phone: Phone
             """Subclass of AvdModel."""
             pvlan_mapping: str | None
-            """
-            Secondary VLAN IDs of the private VLAN mapping.
-            Warning: This should not be combined with
-            `port_channel_interfaces[].pvlan_mapping`.
-            """
+            """Secondary VLAN IDs of the private VLAN mapping."""
             dot1q: Dot1q
             """Subclass of AvdModel."""
             source_interface: Literal["tx", "tx multicast"] | None
@@ -33452,8 +33401,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             vlan_translations: VlanTranslations
             """
             VLAN Translation mappings.
-            Warning: This should not be combined with
-            `port_channel_interfaces[].vlan_translations`.
 
             Subclass of AvdModel.
             """
@@ -33515,18 +33462,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        enabled: Warning: This should not be combined with `port_channel_interfaces[].type = routed`.
-                        mode: Warning: This should not be combined with `port_channel_interfaces[].mode`
-                        access_vlan:
-                           Set VLAN when interface is in access mode.
-                           Warning: This should not be combined with
-                           `port_channel_interfaces[].mode = access/dot1q-tunnel` and `port_channel_interface.vlans`.
+                        enabled: enabled
+                        mode: mode
+                        access_vlan: Set VLAN when interface is in access mode.
                         trunk: Subclass of AvdModel.
                         phone: Subclass of AvdModel.
-                        pvlan_mapping:
-                           Secondary VLAN IDs of the private VLAN mapping.
-                           Warning: This should not be combined with
-                           `port_channel_interfaces[].pvlan_mapping`.
+                        pvlan_mapping: Secondary VLAN IDs of the private VLAN mapping.
                         dot1q: Subclass of AvdModel.
                         source_interface:
                            tx: Allow bridged traffic to go out of the source interface.
@@ -33534,8 +33475,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            only to go out of the source interface.
                         vlan_translations:
                            VLAN Translation mappings.
-                           Warning: This should not be combined with
-                           `port_channel_interfaces[].vlan_translations`.
 
                            Subclass of AvdModel.
                         vlan_forwarding_accept_all: vlan_forwarding_accept_all
@@ -33875,12 +33814,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Accept gratuitous ARP."""
         snmp_trap_link_change: bool | None
         encapsulation_dot1q: EncapsulationDot1q
-        """
-        Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type: l3dot1q` or
-        `ethernet_interfaces[].type: l2dot1q`.
-
-        Subclass of AvdModel.
-        """
+        """Subclass of AvdModel."""
         vrf: str | None
         """VRF name."""
         encapsulation_vlan: EncapsulationVlan
@@ -33890,11 +33824,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Subclass of AvdModel.
         """
         vlan_id: int | None
-        """
-        This setting can only be applied to sub-interfaces on EOS.
-        Warning: `vlan_id` should not be combined
-        with `ethernet_interfaces[].type == l2dot1q`.
-        """
+        """This setting can only be applied to sub-interfaces on EOS."""
         link_tracking_groups: LinkTrackingGroups
         """Subclass of AvdIndexedList with `LinkTrackingGroupsItem` items. Primary key is `name` (`str`)."""
         link_tracking: LinkTracking
@@ -33938,12 +33868,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         isis_circuit_type: Literal["level-1-2", "level-1", "level-2"] | None
         isis_hello_padding: bool | None
         isis_authentication: IsisAuthentication
-        """
-        This key should not be mixed with port_channel_interfaces[].isis_authentication_mode or
-        ethernet_interfaces[].isis_authentication_key.
-
-        Subclass of AvdModel.
-        """
+        """Subclass of AvdModel."""
         traffic_policy: TrafficPolicy
         """Subclass of AvdModel."""
         evpn_ethernet_segment: EvpnEthernetSegment
@@ -34144,20 +34069,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
                     arp_gratuitous_accept: Accept gratuitous ARP.
                     snmp_trap_link_change: snmp_trap_link_change
-                    encapsulation_dot1q:
-                       Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type: l3dot1q` or
-                       `ethernet_interfaces[].type: l2dot1q`.
-
-                       Subclass of AvdModel.
+                    encapsulation_dot1q: Subclass of AvdModel.
                     vrf: VRF name.
                     encapsulation_vlan:
                        This setting can only be applied to sub-interfaces on EOS.
 
                        Subclass of AvdModel.
-                    vlan_id:
-                       This setting can only be applied to sub-interfaces on EOS.
-                       Warning: `vlan_id` should not be combined
-                       with `ethernet_interfaces[].type == l2dot1q`.
+                    vlan_id: This setting can only be applied to sub-interfaces on EOS.
                     link_tracking_groups: Subclass of AvdIndexedList with `LinkTrackingGroupsItem` items. Primary key is `name` (`str`).
                     link_tracking: Subclass of AvdModel.
                     l2_protocol: Subclass of AvdModel.
@@ -34184,11 +34102,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     isis_network_point_to_point: isis_network_point_to_point
                     isis_circuit_type: isis_circuit_type
                     isis_hello_padding: isis_hello_padding
-                    isis_authentication:
-                       This key should not be mixed with port_channel_interfaces[].isis_authentication_mode or
-                       ethernet_interfaces[].isis_authentication_key.
-
-                       Subclass of AvdModel.
+                    isis_authentication: Subclass of AvdModel.
                     traffic_policy: Subclass of AvdModel.
                     evpn_ethernet_segment: Subclass of AvdModel.
                     lacp_id: LACP ID with format xxxx.xxxx.xxxx.
