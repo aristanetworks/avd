@@ -414,7 +414,7 @@ ethernet_interfaces:
   dot1x:
     pae:
       mode: supplicant
-      supplicant_profile: test_profile
+      supplicant_profile: test_profile_network_ports
   peer: DOT1X_SUPPLICANT_PORT_CHANNEL
   peer_type: custom_server
 - name: Ethernet33
@@ -426,7 +426,7 @@ ethernet_interfaces:
   dot1x:
     pae:
       mode: supplicant
-      supplicant_profile: test_profile
+      supplicant_profile: test_profile_network_ports
   peer: DOT1X_SUPPLICANT_PORT_CHANNEL
   peer_type: custom_server
 - name: Ethernet31

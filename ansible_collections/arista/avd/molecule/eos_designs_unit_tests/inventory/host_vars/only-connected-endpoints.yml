@@ -55,4 +55,4 @@ network_ports:
     dot1x:
       pae:
         mode: supplicant
-        supplicant_profile: test_profile
+        supplicant_profile: test_profile_only_connected_endpoints

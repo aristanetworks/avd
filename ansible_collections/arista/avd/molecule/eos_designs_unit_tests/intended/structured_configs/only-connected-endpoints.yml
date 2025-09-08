@@ -41,7 +41,7 @@ ethernet_interfaces:
   dot1x:
     pae:
       mode: supplicant
-      supplicant_profile: test_profile
+      supplicant_profile: test_profile_only_connected_endpoints
   peer: Network Port
   peer_type: network_port
   port_profile: MY_PROFILE
@@ -57,7 +57,7 @@ ethernet_interfaces:
   dot1x:
     pae:
       mode: supplicant
-      supplicant_profile: test_profile
+      supplicant_profile: test_profile_only_connected_endpoints
   peer: Network Port
   peer_type: network_port
   port_profile: MY_PROFILE
@@ -73,7 +73,7 @@ ethernet_interfaces:
   dot1x:
     pae:
       mode: supplicant
-      supplicant_profile: test_profile
+      supplicant_profile: test_profile_only_connected_endpoints
   peer: Network Port
   peer_type: network_port
   port_profile: MY_PROFILE
@@ -89,7 +89,7 @@ ethernet_interfaces:
   dot1x:
     pae:
       mode: supplicant
-      supplicant_profile: test_profile
+      supplicant_profile: test_profile_only_connected_endpoints
   peer: Network Port
   peer_type: network_port
   port_profile: MY_PROFILE
@@ -105,7 +105,7 @@ ethernet_interfaces:
   dot1x:
     pae:
       mode: supplicant
-      supplicant_profile: test_profile
+      supplicant_profile: test_profile_only_connected_endpoints
   peer: Network Port
   peer_type: network_port
   port_profile: MY_PROFILE
@@ -121,7 +121,7 @@ ethernet_interfaces:
   dot1x:
     pae:
       mode: supplicant
-      supplicant_profile: test_profile
+      supplicant_profile: test_profile_only_connected_endpoints
   peer: Network Port
   peer_type: network_port
   port_profile: MY_PROFILE
@@ -137,7 +137,7 @@ ethernet_interfaces:
   dot1x:
     pae:
       mode: supplicant
-      supplicant_profile: test_profile
+      supplicant_profile: test_profile_only_connected_endpoints
   peer: Network Port
   peer_type: network_port
   port_profile: MY_PROFILE
@@ -153,7 +153,7 @@ ethernet_interfaces:
   dot1x:
     pae:
       mode: supplicant
-      supplicant_profile: test_profile
+      supplicant_profile: test_profile_only_connected_endpoints
   peer: Network Port
   peer_type: network_port
   port_profile: MY_PROFILE
@@ -169,7 +169,7 @@ ethernet_interfaces:
   dot1x:
     pae:
       mode: supplicant
-      supplicant_profile: test_profile
+      supplicant_profile: test_profile_only_connected_endpoints
   peer: Network Port
   peer_type: network_port
   port_profile: MY_PROFILE
@@ -185,7 +185,7 @@ ethernet_interfaces:
   dot1x:
     pae:
       mode: supplicant
-      supplicant_profile: test_profile
+      supplicant_profile: test_profile_only_connected_endpoints
   peer: Network Port
   peer_type: network_port
   port_profile: MY_PROFILE

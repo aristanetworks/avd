@@ -54,7 +54,6 @@ servers:
           mode: "active"
           description: "Port channel description {endpoint_type}_{endpoint}_Po{port_channel_id}_{endpoint_port_channel}_{adapter_description!u}"
           endpoint_port_channel: ENDPOINT_PORT_CHANNEL
-
   # port-channel and physical port with default descriptions - all fields
   - name: OLD_SW-1/3
     adapters:
@@ -71,7 +70,6 @@ servers:
       - switches: [connected_endpoints]
         switch_ports: [Ethernet4]
         description: "PHYSICAL_PORT_DESCRIPTION"
-
   # port-channel provide port-channel description
   - name: OLD_SW-1/5
     adapters:
@@ -80,7 +78,6 @@ servers:
         port_channel:
           mode: "active"
           description: "PORT_CHANNEL_DESCRIPTION"
-
   # port-channel provide physical and port-channel descriptions
   - name: OLD_SW-1/6
     adapters:
@@ -101,14 +98,12 @@ servers:
         port_channel:
           mode: "active"
           description: "PORT_CHANNEL_DESCRIPTION"
-
   - name: OLD_SW-1/8
     adapters:
       - switches: [connected_endpoints]
         switch_ports: [Ethernet19]
         endpoint_ports: [Endpoint_port4]
         mode: trunk
-
   - name: OLD_SW-1/9
     adapters:
       - switches: [connected_endpoints, connected_endpoints]
@@ -120,7 +115,6 @@ servers:
             - short_esi: auto
             - number: 200
               vlan_id: 200
-
   - name: OLD_SW-1/12
     adapters:
       - switches: [connected_endpoints]
@@ -130,7 +124,6 @@ servers:
           mode: active
           subinterfaces:
             - short_esi: auto
-
   # port-channel with lacp fallback individual and profile for member interfaces
   - name: INDIVIDUAL_1
     adapters:
@@ -149,7 +142,6 @@ servers:
       - switches: [connected_endpoints]
         switch_ports: [Ethernet14]
         profile: INDIVIDUAL_TRUNK # Notice that poe and dot1x _are_ inherited from the main profile.
-
   - name: INDIVIDUAL_2_TRUNK_PHONE
     adapters:
       - switches: [connected_endpoints, connected_endpoints]
@@ -160,7 +152,6 @@ servers:
             mode: individual
             individual:
               profile: INDIVIDUAL_TRUNK_PHONE
-
   - name: DOT1X_UNAUTHORIZED_PORT_CHANNEL
     adapters:
       - switches: [connected_endpoints, connected_endpoints]
@@ -183,7 +174,6 @@ servers:
               profile: INDIVIDUAL_TRUNK
               mode: access # note that we are over-riding the mode coming from the profile
               vlans: "5" # Setting a single access VLAN
-
   - name: INDIVIDUAL_4
     adapters:
       - switches: [connected_endpoints, connected_endpoints]
@@ -214,10 +204,9 @@ servers:
         dot1x:
           pae:
             mode: supplicant
-            supplicant_profile: test_profile
+            supplicant_profile: test_profile_network_ports
         port_channel:
           mode: active
-
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
@@ -247,7 +236,7 @@ port_profiles:
     dot1x:
       pae:
         mode: supplicant
-        supplicant_profile: test_profile
+        supplicant_profile: test_profile_port_profile
 
 monitor:
   - name: custom_connected_endpoint
