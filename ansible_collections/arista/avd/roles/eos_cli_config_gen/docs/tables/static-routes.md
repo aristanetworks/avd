@@ -17,8 +17,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tag</samp>](## "static_routes.[].tag") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "static_routes.[].name") | String |  |  |  | Description. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;metric</samp>](## "static_routes.[].metric") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination_address_prefix</samp>](## "static_routes.[].destination_address_prefix") <span style="color:red">removed</span> | String |  |  |  | IPv4_network/Mask.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>prefix</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;gateway</samp>](## "static_routes.[].gateway") <span style="color:red">removed</span> | String |  |  |  | IPv4 Address.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>next_hop</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination_address_prefix</samp>](## "static_routes.[].destination_address_prefix") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>prefix</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;gateway</samp>](## "static_routes.[].gateway") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>next_hop</samp> instead.</span> |
 
 === "YAML"
 

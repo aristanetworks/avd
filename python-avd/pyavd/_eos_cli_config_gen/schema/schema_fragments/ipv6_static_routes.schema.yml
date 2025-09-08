@@ -49,7 +49,6 @@ keys:
           max: 4294967295
         destination_address_prefix:
           type: str
-          description: IPv6 Network/Mask.
           deprecation:
             warning: true
             removed: true
@@ -57,7 +56,6 @@ keys:
             new_key: prefix
         gateway:
           type: str
-          description: IPv6 Address.
           deprecation:
             warning: true
             removed: true
