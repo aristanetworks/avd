@@ -1742,22 +1742,10 @@ keys:
       table: design
     deprecation:
       warning: true
-      removed: false
+      removed: true
       remove_in_version: 6.0.0
       url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#deprecation-of-designtype
     type: dict
-    keys:
-      type:
-        type: str
-        description: 'By setting the design.type variable, the default node-types
-          and templates described in these documents will be used.
-
-          '
-        valid_values:
-        - l3ls-evpn
-        - mpls
-        - l2ls
-        default: l3ls-evpn
   digital_twin:
     documentation_options:
       table: digital-twin-configuration
@@ -5545,8 +5533,7 @@ keys:
           warning: true
           remove_in_version: 6.0.0
           new_key: 'snmp_settings.vrfs[].source_interface or snmp_settings.hosts[].vrf:
-            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf
-            or avd_6_behaviors.snmp_settings_vrfs'
+            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf'
         keys:
           mgmt_interface:
             type: bool

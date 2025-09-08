@@ -13,6 +13,7 @@ from pyavd._utils import get, get_item
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
 
+DEFAULT_DESIGN_TYPE = "l3ls-evpn"
 MPLS_DEFAULT_NODE_TYPE_KEYS = [
     {
         "key": "p",
@@ -203,8 +204,7 @@ class NodeTypeKeysMixin(Protocol):
             if node_type_key.type == self.type:
                 return node_type_key._cast_as(EosDesigns.NodeTypeKeysItem)
 
-        design_type = self.inputs.design.type
-        default_node_type_keys_for_our_design = EosDesigns.NodeTypeKeys._from_list(get(DEFAULT_NODE_TYPE_KEYS, design_type, default=[]))
+        default_node_type_keys_for_our_design = EosDesigns.NodeTypeKeys._from_list(get(DEFAULT_NODE_TYPE_KEYS, DEFAULT_DESIGN_TYPE, default=[]))
         node_type_keys = self.inputs.node_type_keys or default_node_type_keys_for_our_design
         for node_type_key in node_type_keys:
             if node_type_key.type == self.type:

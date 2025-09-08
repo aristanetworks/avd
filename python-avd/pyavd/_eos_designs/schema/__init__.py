@@ -4215,34 +4215,6 @@ class EosDesigns(EosDesignsRootModel):
 
     DefaultNodeTypes._item_type = DefaultNodeTypesItem
 
-    class Design(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"type": {"type": str, "default": "l3ls-evpn"}}
-        type: Literal["l3ls-evpn", "mpls", "l2ls"]
-        """
-        By setting the design.type variable, the default node-types and templates described in these
-        documents will be used.
-
-        Default value: `"l3ls-evpn"`
-        """
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, type: Literal["l3ls-evpn", "mpls", "l2ls"] | UndefinedType = Undefined) -> None:
-                """
-                Design.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    type:
-                       By setting the design.type variable, the default node-types and templates described in these
-                       documents will be used.
-
-                """
-
     class DigitalTwin(AvdModel):
         """Subclass of AvdModel."""
 
@@ -67959,7 +67931,6 @@ class EosDesigns(EosDesignsRootModel):
         "default_underlay_p2p_ethernet_description": {"type": str, "default": "P2P_{peer}_{peer_interface}{vrf?<_VRF_}"},
         "default_underlay_p2p_port_channel_description": {"type": str, "default": "P2P_{peer}_{peer_interface}"},
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
-        "design": {"type": Design},
         "digital_twin": {"type": DigitalTwin},
         "dns_settings": {"type": DnsSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
@@ -68918,8 +68889,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"DIAG_VRF_{vrf}"`
     """
-    design: Design
-    """Subclass of AvdModel."""
     digital_twin: DigitalTwin
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -70370,7 +70339,6 @@ class EosDesigns(EosDesignsRootModel):
             default_underlay_p2p_ethernet_description: str | UndefinedType = Undefined,
             default_underlay_p2p_port_channel_description: str | UndefinedType = Undefined,
             default_vrf_diag_loopback_description: str | UndefinedType = Undefined,
-            design: Design | UndefinedType = Undefined,
             digital_twin: DigitalTwin | UndefinedType = Undefined,
             dns_settings: DnsSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
@@ -70990,7 +70958,6 @@ class EosDesigns(EosDesignsRootModel):
                      - `vrf`: The VRF name.
                      - `tenant`: The tenant name.
                    By default the description is templated from the VRF name.
-                design: Subclass of AvdModel.
                 digital_twin:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
