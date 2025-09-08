@@ -22,6 +22,7 @@ PLUGIN_NAME = "arista.avd.cv_workflow"
 try:
     from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
     from pyavd._cv.workflows.models import (
+        AvdManifest,
         CloudVision,
         CVChangeControl,
         CVDevice,
@@ -31,6 +32,7 @@ try:
         CVPathfinderMetadata,
         CVTimeOuts,
         CVWorkspace,
+        DeployToCvResult,
     )
     from pyavd._utils import default, get, strip_empties_from_dict
 
@@ -79,6 +81,13 @@ ARGUMENT_SPEC = {
             "change_control_creation_timeout": {"type": "float", "default": CVTimeOuts.change_control_creation_timeout if HAS_PYAVD else 300.0},
         },
     },
+    "static_config_studio": {
+        "type": "dict",
+        "options": {
+            "containers": {"type": "list", "elements": "dict", "required": False},
+            "configlets": {"type": "list", "elements": "dict", "required": False},
+        },
+    },
     "return_details": {"type": "bool", "required": False, "default": False},
 }
 
@@ -122,12 +131,16 @@ class ActionModule(ActionBase):
             )
             # Build lists of CVEosConfig, CVDeviceTag, CVInterfaceTag and CVPathfinderMetadata objects.
             eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects = await self.build_objects(
-                device_list=get(validated_args, "device_list"),
+                device_list=get(validated_args, "device_list", default=[]),
                 structured_config_dir=get(validated_args, "structured_config_dir"),
                 structured_config_suffix=get(validated_args, "structured_config_suffix"),
                 configuration_dir=get(validated_args, "configuration_dir"),
                 configlet_name_template=get(validated_args, "configlet_name_template"),
             )
+
+            # Build Static Config Studio manifest if necessary.
+            static_config_manifest = AvdManifest.from_dict(validated_args["static_config_studio"]) if "static_config_studio" in validated_args else None
+
             # Add return data if relevant.
             if validated_args["return_details"]:
                 # Objects are converted to JSON compatible dicts.
@@ -137,27 +150,45 @@ class ActionModule(ActionBase):
                     device_tags=[asdict(device_tag) for device_tag in device_tag_objects],
                     interface_tags=[asdict(interface_tag) for interface_tag in interface_tag_objects],
                     cv_pathfinder_metadata=[asdict(metadata) for metadata in cv_pathfinder_metadata_objects],
+                    static_config_manifest=asdict(static_config_manifest) if static_config_manifest else None,
                 )
-            # Perform deployment of all objects, getting a DeployToCVResult object back.
-            result_object = await deploy_to_cv(
-                change_control=CVChangeControl(**get(validated_args, "change_control", default={})),
-                cloudvision=cloudvision,
-                configs=eos_config_objects,
-                device_tags=device_tag_objects,
-                interface_tags=interface_tag_objects,
-                cv_pathfinder_metadata=cv_pathfinder_metadata_objects,
-                skip_missing_devices=get(validated_args, "skip_missing_devices"),
-                strict_system_mac_address=get(validated_args, "strict_system_mac_address"),
-                strict_tags=get(validated_args, "strict_tags"),
-                timeouts=CVTimeOuts(**get(validated_args, "timeouts", default={})),
-                workspace=CVWorkspace(**get(validated_args, "workspace", default={})),
-            )
-            # Errors and warnings are converted to JSON compatible strings.
-            result_object.errors = [str(error) for error in result_object.errors]
-            result_object.warnings = [str(warning) for warning in result_object.warnings]
 
-            # Add warnings caught by the logger
-            result_object.warnings.extend(result.get("warnings", []))
+            # Check if there is anything to deploy.
+            work_to_do = any(
+                [
+                    eos_config_objects,
+                    device_tag_objects,
+                    interface_tag_objects,
+                    cv_pathfinder_metadata_objects,
+                    static_config_manifest,
+                ]
+            )
+
+            if work_to_do:
+                # Perform deployment of all objects, getting a DeployToCVResult object back.
+                result_object = await deploy_to_cv(
+                    change_control=CVChangeControl(**get(validated_args, "change_control", default={})),
+                    cloudvision=cloudvision,
+                    configs=eos_config_objects,
+                    static_config_manifest=static_config_manifest,
+                    device_tags=device_tag_objects,
+                    interface_tags=interface_tag_objects,
+                    cv_pathfinder_metadata=cv_pathfinder_metadata_objects,
+                    skip_missing_devices=get(validated_args, "skip_missing_devices"),
+                    strict_system_mac_address=get(validated_args, "strict_system_mac_address"),
+                    strict_tags=get(validated_args, "strict_tags"),
+                    timeouts=CVTimeOuts(**get(validated_args, "timeouts", default={})),
+                    workspace=CVWorkspace(**get(validated_args, "workspace", default={})),
+                )
+                # Errors and warnings are converted to JSON compatible strings.
+                result_object.errors = [str(error) for error in result_object.errors]
+                result_object.warnings = [str(warning) for warning in result_object.warnings]
+
+                # Add warnings caught by the logger.
+                result_object.warnings.extend(result.get("warnings", []))
+            else:
+                result_object = DeployToCvResult(workspace=None)
+                result["notes"] = ["No configuration, tags, or static config manifest found to deploy."]
 
             # Add either all return data or only warnings, errors, failed.
             if validated_args["return_details"]:
@@ -173,7 +204,20 @@ class ActionModule(ActionBase):
                 )
 
             # Set changed if we did anything. TODO: Improve this logic to only set changed if something actually changed.
-            if any([result_object.deployed_configs, result_object.deployed_device_tags, result_object.deployed_interface_tags]):
+            change_indicators = [
+                result_object.deployed_configs,
+                result_object.deployed_static_config_containers,
+                result_object.deployed_static_config_configlets,
+                result_object.deployed_device_tags,
+                result_object.deployed_interface_tags,
+                result_object.deployed_cv_pathfinder_metadata,
+                result_object.removed_configs,
+                result_object.removed_static_config_root_containers,
+                result_object.removed_static_config_configlets,
+                result_object.removed_device_tags,
+                result_object.removed_interface_tags,
+            ]
+            if any(change_indicators):
                 result["changed"] = True
 
         except Exception as error:

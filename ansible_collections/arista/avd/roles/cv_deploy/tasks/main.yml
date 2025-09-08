@@ -39,5 +39,8 @@
       requested_state: "{{ 'completed' if cv_run_change_control else 'pending approval' }}"
     timeouts:
       workspace_build_timeout: "{{ cv_workspace_build_timeout }}"
+    static_config_studio:
+      configlets: "{{ cv_studio_configlets | arista.avd.default([]) }}"
+      containers: "{{ cv_studio_containers | arista.avd.default([]) }}"
     return_details: "{{ cv_register_detailed_results }}"
   register: cv_deploy_results

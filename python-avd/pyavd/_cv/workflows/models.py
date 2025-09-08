@@ -220,6 +220,22 @@ class AvdContainer:
     configlets: tuple[str, ...] = field(default_factory=tuple)
     sub_containers: tuple[AvdContainer, ...] = field(default_factory=tuple)
 
+    @classmethod
+    def from_dict(cls, data: dict) -> AvdContainer:
+        """Recursively build an AvdContainer instance from an input dictionary."""
+        copied_data = data.copy()
+        try:
+            sub_containers_data = copied_data.pop("sub_containers", [])
+            sub_containers = tuple(cls.from_dict(sub_container_data) for sub_container_data in sub_containers_data)
+
+            configlets_data = copied_data.pop("configlets", [])
+            configlets = tuple(item["name"] for item in configlets_data)
+
+            return cls(sub_containers=sub_containers, configlets=configlets, **copied_data)
+        except (KeyError, TypeError) as e:
+            msg = f"Invalid container definition: {data}. Error: {e}"
+            raise ValueError(msg) from e
+
 
 @dataclass(frozen=True)
 class AvdManifest:
@@ -233,6 +249,21 @@ class AvdManifest:
 
     configlets: tuple[AvdConfiglet, ...] = field(default_factory=tuple)
     containers: tuple[AvdContainer, ...] = field(default_factory=tuple)
+
+    @classmethod
+    def from_dict(cls, data: dict) -> AvdManifest:
+        """Build an AvdManifest instance from an input dictionary."""
+        try:
+            configlets_data = data.get("configlets", [])
+            containers_data = data.get("containers", [])
+
+            configlets = tuple(AvdConfiglet(**configlet_data) for configlet_data in configlets_data)
+            containers = tuple(AvdContainer.from_dict(container_data) for container_data in containers_data)
+
+            return cls(configlets=configlets, containers=containers)
+        except (KeyError, TypeError, ValueError) as e:
+            msg = f"Failed to build the static configuration manifest. Please check your input data. Original error: {e}"
+            raise ValueError(msg) from e
 
 
 @dataclass(frozen=True)
