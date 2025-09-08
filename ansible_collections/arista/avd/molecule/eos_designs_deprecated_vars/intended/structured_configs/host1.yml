@@ -108,11 +108,6 @@ flow_tracking:
           host: 127.0.0.1
     shutdown: false
 hostname: host1
-ip_domain_lookup:
-  source_interfaces:
-  - name: Management1
-  - name: Vlan10
-    vrf: INBANDMGMT
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:
@@ -120,15 +115,7 @@ ip_name_servers:
   vrf: default
 - ip_address: 8.8.8.8
   vrf: default
-ip_radius_source_interfaces:
-- name: Management1
-- name: Vlan10
-  vrf: INBANDMGMT
 ip_routing: true
-ip_tacacs_source_interfaces:
-- name: Management1
-- name: Vlan10
-  vrf: INBANDMGMT
 ipv6_static_routes:
 - vrf: default
   prefix: ::/0
@@ -263,10 +250,6 @@ snmp_server:
   - name: SNMP-MGMT
     vrf: MGMT
   - name: onur_v6
-  local_interfaces:
-  - name: Management1
-  - name: Vlan10
-    vrf: INBANDMGMT
   hosts:
   - host: 10.6.75.127
     version: 2c
