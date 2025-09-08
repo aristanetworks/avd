@@ -21435,14 +21435,25 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Paths._item_type = PathsItem
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "paths": {"type": Paths}}
-            name: Literal["sysdb", "smash"] | None
+            _fields: ClassVar[dict] = {"name": {"type": str}, "paths": {"type": Paths}, "interface": {"type": bool}, "mka": {"type": bool}}
+            name: Literal["sysdb", "smash", "macsec"] | None
             paths: Paths
             """Subclass of AvdList with `PathsItem` items."""
+            interface: bool | None
+            """Enable interfaces for 'macsec' provider."""
+            mka: bool | None
+            """Enable mka for 'macsec' provider."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, name: Literal["sysdb", "smash"] | None | UndefinedType = Undefined, paths: Paths | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    name: Literal["sysdb", "smash", "macsec"] | None | UndefinedType = Undefined,
+                    paths: Paths | UndefinedType = Undefined,
+                    interface: bool | None | UndefinedType = Undefined,
+                    mka: bool | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     ProvidersItem.
 
@@ -21452,6 +21463,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: name
                         paths: Subclass of AvdList with `PathsItem` items.
+                        interface: Enable interfaces for 'macsec' provider.
+                        mka: Enable mka for 'macsec' provider.
 
                     """
 

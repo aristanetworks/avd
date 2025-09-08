@@ -8,7 +8,15 @@
 !
 management api models
 {%     for provider in management_api_models.providers | arista.avd.natural_sort('name') %}
-{%         if provider.name is arista.avd.defined and provider.name | lower in ['smash', 'sysdb'] %}
+{%         if provider.name is arista.avd.defined and provider.name | lower == "macsec" %}
+   provider macsec
+{%             if provider.interfaces is arista.avd.defined(true) %}
+      interfaces
+{%             endif %}
+{%             if provider.mka is arista.avd.defined(true) %}
+      mka
+{%             endif %}
+{%         elif provider.name is arista.avd.defined and provider.name | lower in ['smash', 'sysdb'] %}
    !
    provider {{ provider.name }}
 {%             for path in provider.paths | arista.avd.natural_sort('path') %}

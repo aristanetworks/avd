@@ -8572,6 +8572,7 @@ keys:
               valid_values:
               - sysdb
               - smash
+              - macsec
             paths:
               type: list
               items:
@@ -8582,6 +8583,12 @@ keys:
                   disabled:
                     type: bool
                     default: false
+            interface:
+              type: bool
+              description: Enable interfaces for 'macsec' provider.
+            mka:
+              type: bool
+              description: Enable mka for 'macsec' provider.
   management_console:
     type: dict
     keys:

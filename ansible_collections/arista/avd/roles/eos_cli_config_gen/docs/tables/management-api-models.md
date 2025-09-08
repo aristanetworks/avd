@@ -9,18 +9,26 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>management_api_models</samp>](## "management_api_models") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;providers</samp>](## "management_api_models.providers") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_api_models.providers.[].name") | String |  |  | Valid Values:<br>- <code>sysdb</code><br>- <code>smash</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_api_models.providers.[].name") | String |  |  | Valid Values:<br>- <code>sysdb</code><br>- <code>smash</code><br>- <code>macsec</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;paths</samp>](## "management_api_models.providers.[].paths") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;path</samp>](## "management_api_models.providers.[].paths.[].path") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "management_api_models.providers.[].paths.[].disabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "management_api_models.providers.[].interface") | Boolean |  |  |  | Enable interfaces for 'macsec' provider. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mka</samp>](## "management_api_models.providers.[].mka") | Boolean |  |  |  | Enable mka for 'macsec' provider. |
 
 === "YAML"
 
     ```yaml
     management_api_models:
       providers:
-        - name: <str; "sysdb" | "smash">
+        - name: <str; "sysdb" | "smash" | "macsec">
           paths:
             - path: <str>
               disabled: <bool; default=False>
+
+          # Enable interfaces for 'macsec' provider.
+          interface: <bool>
+
+          # Enable mka for 'macsec' provider.
+          mka: <bool>
     ```
