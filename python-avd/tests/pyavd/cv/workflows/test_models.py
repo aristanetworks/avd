@@ -4,10 +4,12 @@
 
 import pytest
 
+from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
+from pyavd._cv.api.fmp import RepeatedString
 from pyavd._cv.client.exceptions import CVManifestError
 from pyavd._cv.workflows.models import AVD_ENTITY_PREFIX, AvdConfiglet, AvdContainer, AvdManifest, CVContainer, CVManifest
 
-from .helpers import MockAssignmentKey, MockConfigletAssignment, MockMatchPolicy, MockRepeatedString, generate_id
+from .helpers import generate_id
 
 # === Test Fixtures ===
 
@@ -209,18 +211,18 @@ class TestCVContainerMatching:
 
     def test_matches_configlet_assignment_success(self, test_cv_container: CVContainer) -> None:
         """Tests successful match between local CVContainer and remote ConfigletAssignment."""
-        # Create a mock remote object that perfectly matches test_cv_container.
-        mock_assignment = MockConfigletAssignment(
-            key=MockAssignmentKey(configlet_assignment_id=test_cv_container.id),
+        # Create an API object that perfectly matches test_cv_container.
+        api_assignment = ConfigletAssignment(
+            key=ConfigletAssignmentKey(configlet_assignment_id=test_cv_container.id),
             display_name=test_cv_container.name,
             description=test_cv_container.description,
-            configlet_ids=MockRepeatedString(values=list(test_cv_container.configlet_ids)),
+            configlet_ids=RepeatedString(values=list(test_cv_container.configlet_ids)),
             query=test_cv_container.tag_query,
-            child_assignment_ids=MockRepeatedString(values=list(test_cv_container.child_ids)),
-            match_policy=MockMatchPolicy(value=2),  # match_policy="match_all" maps to 2
+            child_assignment_ids=RepeatedString(values=list(test_cv_container.child_ids)),
+            match_policy=MatchPolicy.MATCH_ALL,
         )
 
-        assert test_cv_container.matches_configlet_assignment(mock_assignment) is True
+        assert test_cv_container.matches_configlet_assignment(api_assignment) is True
 
     @pytest.mark.parametrize(
         "mismatch_field",
@@ -237,14 +239,14 @@ class TestCVContainerMatching:
     def test_matches_configlet_assignment_mismatch(self, test_cv_container: CVContainer, mismatch_field: str) -> None:
         """Tests mismatch detection for each field individually."""
         # Create a mock remote object that perfectly matches test_cv_container.
-        mock_assignment = MockConfigletAssignment(
-            key=MockAssignmentKey(configlet_assignment_id=test_cv_container.id),
+        mock_assignment = ConfigletAssignment(
+            key=ConfigletAssignmentKey(configlet_assignment_id=test_cv_container.id),
             display_name=test_cv_container.name,
             description=test_cv_container.description,
-            configlet_ids=MockRepeatedString(values=list(test_cv_container.configlet_ids)),
+            configlet_ids=RepeatedString(values=list(test_cv_container.configlet_ids)),
             query=test_cv_container.tag_query,
-            child_assignment_ids=MockRepeatedString(values=list(test_cv_container.child_ids)),
-            match_policy=MockMatchPolicy.MATCH_ALL,
+            child_assignment_ids=RepeatedString(values=list(test_cv_container.child_ids)),
+            match_policy=MatchPolicy.MATCH_ALL,
         )
 
         # Introduce a mismatch based on the test parameter using match case.
@@ -262,7 +264,7 @@ class TestCVContainerMatching:
             case "child_ids":
                 mock_assignment.child_assignment_ids.values = ["wrong-child-id"]
             case "match_policy":
-                mock_assignment.match_policy = MockMatchPolicy.MATCH_FIRST  # Change to match_first
+                mock_assignment.match_policy = MatchPolicy.MATCH_FIRST  # Change to match_first
 
         # Assert failure.
         assert test_cv_container.matches_configlet_assignment(mock_assignment) is False
@@ -278,14 +280,14 @@ class TestCVContainerMatching:
         )
 
         # Create mock assignment with description="".
-        mock_assignment = MockConfigletAssignment(
-            key=MockAssignmentKey(configlet_assignment_id=cv_container.id),
+        mock_assignment = ConfigletAssignment(
+            key=ConfigletAssignmentKey(configlet_assignment_id=cv_container.id),
             display_name=cv_container.name,
             description="",  # Remote side has empty string
-            configlet_ids=MockRepeatedString(values=[]),
+            configlet_ids=RepeatedString(values=[]),
             query=cv_container.tag_query,
-            child_assignment_ids=MockRepeatedString(values=[]),
-            match_policy=MockMatchPolicy.MATCH_ALL,
+            child_assignment_ids=RepeatedString(values=[]),
+            match_policy=MatchPolicy.MATCH_ALL,
         )
 
         # Verify api_tuple logic (self.description or "") works.

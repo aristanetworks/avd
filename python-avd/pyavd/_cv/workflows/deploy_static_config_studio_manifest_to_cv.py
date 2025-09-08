@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from asyncio import gather
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from .models import AVD_ENTITY_PREFIX, CVManifest
 
@@ -62,7 +62,7 @@ async def _sync_containers(cv_manifest: CVManifest, deployment_result: DeployToC
 
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Fetching all existing configlet containers from CloudVision...")
     existing_containers = await cv_client.get_configlet_containers(workspace_id=workspace_id)
-    existing_containers_by_id = {container.key.configlet_assignment_id: container for container in existing_containers}
+    existing_containers_by_id = {cast("str", container.key.configlet_assignment_id): container for container in existing_containers}
 
     containers_to_push: list[CVContainer] = []
     for desired_container in cv_manifest.containers:
@@ -104,9 +104,9 @@ async def _sync_configlets(cv_manifest: CVManifest, deployment_result: DeployToC
     existing_configlets = await cv_client.get_configlets(workspace_id=workspace_id)
     desired_configlet_ids = {configlet.id for configlet in cv_manifest.configlets}
     configlets_to_delete = {
-        configlet_id: configlet.display_name
+        configlet_id: cast("str", configlet.display_name)
         for configlet in existing_configlets
-        if (configlet_id := configlet.key.configlet_id).startswith(AVD_ENTITY_PREFIX) and configlet_id not in desired_configlet_ids
+        if (configlet_id := cast("str", configlet.key.configlet_id)).startswith(AVD_ENTITY_PREFIX) and configlet_id not in desired_configlet_ids
     }
 
     if configlets_to_delete:
@@ -132,7 +132,7 @@ async def _sync_studio_roots(
     LOGGER.info("deploy_static_config_studio_manifest_to_cv: Syncing Static Config Studio root container assignments...")
 
     # Get the existing list of root container IDs from the Studio inputs.
-    existing_root_ids = await cv_client.get_studio_inputs_with_path(
+    existing_root_ids: list[str] = await cv_client.get_studio_inputs_with_path(
         studio_id=STATIC_CONFIGURATION_STUDIO_ID,
         workspace_id=workspace_id,
         input_path=["configletAssignmentRoots"],
@@ -168,7 +168,7 @@ async def _sync_studio_roots(
         LOGGER.info("deploy_static_config_studio_manifest_to_cv: Removing %d stale AVD-managed root containers...", len(stale_avd_ids))
         deployment_result.removed_static_config_root_containers.extend(
             [
-                existing_container.display_name
+                cast("str", existing_container.display_name)
                 for container_id in stale_avd_ids
                 if (existing_container := existing_containers_by_id.get(container_id)) is not None
             ]

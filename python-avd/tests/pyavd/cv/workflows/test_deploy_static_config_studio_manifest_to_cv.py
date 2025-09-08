@@ -5,10 +5,11 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
+from pyavd._cv.api.arista.configlet.v1 import Configlet, ConfigletKey
 from pyavd._cv.workflows.deploy_static_config_studio_manifest_to_cv import deploy_static_config_studio_manifest_to_cv
 from pyavd._cv.workflows.models import AvdConfiglet, AvdContainer, AvdManifest, CVWorkspace, DeployToCvResult
 
-from .helpers import create_mock_grpc_configlet, create_mock_grpc_container, generate_id
+from .helpers import create_grpc_container, generate_id
 
 # === Test Fixtures ===
 
@@ -122,21 +123,21 @@ class TestDeployStaticConfigStudio:
         global_container_id = generate_id("GLOBAL")
 
         existing_containers = [
-            create_mock_grpc_container(
+            create_grpc_container(
                 container_id=global_container_id,
                 name="GLOBAL",
                 description="Global container",
                 query="device:*",
                 child_ids=[leafs_container_id, spines_container_id],
             ),
-            create_mock_grpc_container(
+            create_grpc_container(
                 container_id=leafs_container_id,
                 name="LEAFS",
                 description="Leafs container",
                 query="topology_hint_type:leaf",
                 configlet_ids=[vxlan_configlet_id, mlag_configlet_id],
             ),
-            create_mock_grpc_container(
+            create_grpc_container(
                 container_id=spines_container_id,
                 name="SPINES",
                 description="Spines container",
@@ -178,23 +179,19 @@ class TestDeployStaticConfigStudio:
         unused_root_id = generate_id("UNUSED_ROOT")
 
         existing_containers = [
-            create_mock_grpc_container(
-                container_id=root_id, name="ROOT", description="Root container", query="device:*", child_ids=[cnt_leaf1_id, cnt_leaf2_id]
-            ),
-            create_mock_grpc_container(
+            create_grpc_container(container_id=root_id, name="ROOT", description="Root container", query="device:*", child_ids=[cnt_leaf1_id, cnt_leaf2_id]),
+            create_grpc_container(
                 container_id=cnt_leaf1_id, name="CNT_LEAF1", description="LEAF1 container - OLD", query="device:LEAF1", configlet_ids=[cf_leaf1_id]
             ),
-            create_mock_grpc_container(
+            create_grpc_container(
                 container_id=cnt_leaf2_id, name="CNT_LEAF2", description="LEAF2 container", query="device:LEAF2", configlet_ids=[cf_leaf2_id]
             ),
-            create_mock_grpc_container(
-                container_id=unused_root_id, name="UNUSED_ROOT", description="Unused Root", query="tag:unused", configlet_ids=[cf_unused_id]
-            ),
+            create_grpc_container(container_id=unused_root_id, name="UNUSED_ROOT", description="Unused Root", query="tag:unused", configlet_ids=[cf_unused_id]),
         ]
         existing_configlets = [
-            create_mock_grpc_configlet(configlet_id=cf_leaf1_id, name="CF_LEAF1"),
-            create_mock_grpc_configlet(configlet_id=cf_leaf2_id, name="CF_LEAF2"),
-            create_mock_grpc_configlet(configlet_id=cf_unused_id, name="CF_UNUSED"),
+            Configlet(key=ConfigletKey(configlet_id=cf_leaf1_id), display_name="CF_LEAF1"),
+            Configlet(key=ConfigletKey(configlet_id=cf_leaf2_id), display_name="CF_LEAF2"),
+            Configlet(key=ConfigletKey(configlet_id=cf_unused_id), display_name="CF_UNUSED"),
         ]
         mock_cv_client.get_configlet_containers.return_value = existing_containers
         mock_cv_client.get_configlets.return_value = existing_configlets
@@ -256,9 +253,9 @@ class TestDeployStaticConfigStudio:
         manual_root_id = "manual-root-container-123"  # Does not have the AVD prefix
 
         existing_containers = [
-            create_mock_grpc_container(container_id=avd_root1_id, name="AVD_ROOT1", description="", query="device:*"),
-            create_mock_grpc_container(container_id=avd_root2_id, name="AVD_ROOT2", description="", query="device:*"),
-            create_mock_grpc_container(container_id=manual_root_id, name="MANUAL_ROOT", description="", query="device:*"),
+            create_grpc_container(container_id=avd_root1_id, name="AVD_ROOT1", description="", query="device:*"),
+            create_grpc_container(container_id=avd_root2_id, name="AVD_ROOT2", description="", query="device:*"),
+            create_grpc_container(container_id=manual_root_id, name="MANUAL_ROOT", description="", query="device:*"),
         ]
 
         mock_cv_client.get_configlet_containers.return_value = existing_containers

@@ -345,7 +345,7 @@ class CVContainer:
         return self.avd_container.name
 
     @property
-    def description(self) -> str:
+    def description(self) -> str | None:
         return self.avd_container.description
 
     @property
