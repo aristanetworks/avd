@@ -146,7 +146,7 @@ class CVClientProtocol(
         The return value (The default ssl context or True) will be passed to grpclib.
         Requests will pick it up from ssl lib itself.
         """
-        context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)
+        context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
         context.set_alpn_protocols(["h2"])
 
         if not self._verify_certs:
