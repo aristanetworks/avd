@@ -151,7 +151,7 @@
             cv_deploy_results.workspace.state | default('') != "abandoned"
           # Set HTTPS_PROXY environment variable scoped for this task only
           environment:
-            https_proxy: "http://{{ proxy_username }}:{{ proxy_password }}@{{ proxy_host }}:{{ proxy_port }}"
+            https_proxy: "http://{{ cv_proxy_username }}:{{ cv_proxy_password }}@{{ cv_proxy_host }}:{{ cv_proxy_port }}"
 
         - name: "(ALWAYS) {{ test_id | upper }} Banner"
           tags: ["{{ test_id }}"]
