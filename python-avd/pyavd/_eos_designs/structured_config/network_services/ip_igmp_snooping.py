@@ -95,19 +95,18 @@ class IpIgmpSnoopingMixin(Protocol):
         """
         Return the IGMP snooping querier source address for a given VLAN.
 
-        If the source address is not set, the router ID is returned.
         For an SVI attached to a VRF, if the source address is 'vrf_router_id', the VRF router ID is returned.
         For an L2VLAN, 'vrf_router_id' and 'diagnostic_loopback' are treated as 'main_router_id'.
         """
         source_address_key = default(vlan.igmp_snooping_querier.source_address, tenant.igmp_snooping_querier.source_address)
-        if source_address_key is None:
-            return self.shared_utils.router_id
 
         if vrf is not None:
             # SVI is attached to a VRF
             if source_address_key == "vrf_router_id":
                 return self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
-            return self.get_vrf_router_id(vrf, tenant, source_address_key, context="'vrf_router_id' is set to 'diagnostic_loopback' on the SVI")
+            return self.get_vrf_router_id(
+                vrf, tenant, source_address_key, context="'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VLAN"
+            )
 
         # For L2VLANs, 'vrf_router_id' and 'diagnostic_loopback' are treated as 'main_router_id'.
         if source_address_key in {"main_router_id", "diagnostic_loopback", "vrf_router_id"}:

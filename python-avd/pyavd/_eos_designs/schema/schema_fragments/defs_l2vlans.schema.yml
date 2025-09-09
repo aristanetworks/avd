@@ -116,14 +116,9 @@ $defs:
             source_address:
               type: str
               description: |-
-                The value of `source_address` will be interpreted according to these rules:
-                - `vrf_router_id` -> same as `main_router_id`.
-                - `diagnostic_loopback` -> same as `Loopback0`.
-                - `main_router_id` will configure the Loopback0 IP address.
-                - Any other IPv4 address will be used directly as the source address.
-                - Default IP address of Loopback0
-              convert_types:
-                - int
+                Since there is no VRF tied to an L2VLAN, the values  `vrf_router_id`, `diagnostic_loopback` and `main_router_id` will all configure the Loopback0 IP address.
+                If set to an IPv4 address, it will be used directly as the source address.
+                Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).

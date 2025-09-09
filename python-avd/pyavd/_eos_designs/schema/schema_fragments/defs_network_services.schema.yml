@@ -336,10 +336,8 @@ $defs:
                 - `vrf_router_id` will configure the vrf Loopback address.
                 - `diagnostic_loopback` will configure the vtep loopback.
                 - `main_router_id` will configure the Loopback0 IP address.
-                - Any other IPv4 address will be used directly as the source address.
-                - Default IP address of Loopback0
-              convert_types:
-                - int
+                - An IPv4 address will be used directly as the source address.
+              default: main_router_id
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).

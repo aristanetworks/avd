@@ -215,8 +215,8 @@ $defs:
               - `vrf_router_id` will configure the vrf Loopback address.
               - 'diagnostic_loopback' will configure the vtep loopback.
               - `main_router_id` will configure the Loopback0 IP address.
-              - Any other IPv4 address will be used directly as the source address.
-              - Default IP address of Loopback0
+              - An IPv4 address will be used directly as the source address.
+              Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.
             convert_types:
               - int
           version:

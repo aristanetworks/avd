@@ -7560,20 +7560,14 @@ $defs:
               description: Will be enabled automatically if evpn_l2_multicast is enabled.
             source_address:
               type: str
-              description: 'The value of `source_address` will be interpreted according
-                to these rules:
+              description: 'Since there is no VRF tied to an L2VLAN, the values  `vrf_router_id`,
+                `diagnostic_loopback` and `main_router_id` will all configure the
+                Loopback0 IP address.
 
-                - `vrf_router_id` -> same as `main_router_id`.
+                If set to an IPv4 address, it will be used directly as the source
+                address.
 
-                - `diagnostic_loopback` -> same as `Loopback0`.
-
-                - `main_router_id` will configure the Loopback0 IP address.
-
-                - Any other IPv4 address will be used directly as the source address.
-
-                - Default IP address of Loopback0'
-              convert_types:
-              - int
+                Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.'
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP
@@ -8171,11 +8165,8 @@ $defs:
 
                 - `main_router_id` will configure the Loopback0 IP address.
 
-                - Any other IPv4 address will be used directly as the source address.
-
-                - Default IP address of Loopback0'
-              convert_types:
-              - int
+                - An IPv4 address will be used directly as the source address.'
+              default: main_router_id
             version:
               type: int
               description: IGMP Version (By default EOS uses IGMP version 2 for IGMP
@@ -13014,9 +13005,9 @@ $defs:
 
               - `main_router_id` will configure the Loopback0 IP address.
 
-              - Any other IPv4 address will be used directly as the source address.
+              - An IPv4 address will be used directly as the source address.
 
-              - Default IP address of Loopback0'
+              Overrides `<network_services_key>[].igmp_snooping_querier.source_address`.'
             convert_types:
             - int
           version:
