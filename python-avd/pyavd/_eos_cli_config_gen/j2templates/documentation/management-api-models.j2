@@ -9,18 +9,47 @@
 ### Management API Models
 
 #### Management API Models Summary
+{%     if management_api_models.provider is arista.avd.defined %}
+{%         if management_api_models.provider.smash is arista.avd.defined %}
 
-| Provider | Path | Disabled | Interfaces | MKA |
-| -------- | ---- | -------- | ---------- | --- |
-{%     if management_api_models.providers is arista.avd.defined %}
+##### Smash Provider
+
+| Path | Disabled |
+| ---- | -------- |
+{%             for path in management_api_models.provider.smash.paths | arista.avd.natural_sort('path') %}
+{%                 set disabled = path.disabled | arista.avd.default(false) %}
+| {{ path.path }} | {{ disabled }} |
+{%             endfor %}
+{%         endif %}
+{%         if management_api_models.provider.sysdb is arista.avd.defined %}
+
+##### Sysdb Provider
+
+| Path | Disabled |
+| ---- | -------- |
+{%             for path in management_api_models.provider.sysdb.paths | arista.avd.natural_sort('path') %}
+{%                 set disabled = path.disabled | arista.avd.default(false) %}
+| {{ path.path }} | {{ disabled }} |
+{%             endfor %}
+{%         endif %}
+{%         if management_api_models.provider.macsec is arista.avd.defined %}
+
+##### Macsec Provider
+
+| interfaces | MKA |
+| ---------- | --- |
+| {{ management_api_models.provider.macsec.interfaces | arista.avd.default("-") }} | {{ management_api_models.provider.macsec.mka | arista.avd.default("-") }} |
+{%         endif %}
+{%     elif management_api_models.providers is arista.avd.defined %}
+
+| Provider | Path | Disabled |
+| -------- | ---- | -------- |
 {%         for provider in management_api_models.providers | arista.avd.natural_sort('name') %}
 {%             if provider.paths is arista.avd.defined and provider.name | lower in ['smash', 'sysdb'] %}
 {%                 for path in provider.paths | arista.avd.natural_sort('path') %}
 {%                     set disabled = path.disabled | arista.avd.default(false) %}
-| {{ provider.name }} | {{ path.path }} | {{ disabled }} | - | - |
+| {{ provider.name }} | {{ path.path }} | {{ disabled }} |
 {%                 endfor %}
-{%             elif provider.name is arista.avd.defined and provider.name | lower == "macsec" %}
-| {{ provider.name }} | - | - | {{ provider.interfaces | arista.avd.default("-") }} | {{ provider.mka | arista.avd.default("-") }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

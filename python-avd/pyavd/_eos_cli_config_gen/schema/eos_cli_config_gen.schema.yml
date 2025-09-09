@@ -8564,6 +8564,10 @@ keys:
     keys:
       providers:
         type: list
+        deprecation:
+          warning: true
+          new_key: provider
+          remove_in_version: 7.0.0
         items:
           type: dict
           keys:
@@ -8572,7 +8576,6 @@ keys:
               valid_values:
               - sysdb
               - smash
-              - macsec
             paths:
               type: list
               items:
@@ -8583,12 +8586,40 @@ keys:
                   disabled:
                     type: bool
                     default: false
-            interface:
-              type: bool
-              description: Enable interfaces for 'macsec' provider.
-            mka:
-              type: bool
-              description: Enable mka for 'macsec' provider.
+      provider:
+        type: dict
+        keys:
+          sysdb:
+            type: dict
+            description: Sysdb provider configuration.
+            keys:
+              paths:
+                type: list
+                description: List of paths.
+                items:
+                  type: dict
+                  keys:
+                    path:
+                      type: str
+                      description: Path.
+                    disabled:
+                      type: bool
+                      description: Disable the path.
+                      default: false
+          smash:
+            type: dict
+            description: Smash provider configuration.
+            $ref: eos_cli_config_gen#/keys/management_api_models/keys/provider/keys/sysdb
+          macsec:
+            type: dict
+            description: MACsec provider configuration.
+            keys:
+              interfaces:
+                type: bool
+                description: Enable MACsec for interfaces.
+              mka:
+                type: bool
+                description: Enable MKA for MACsec.
   management_console:
     type: dict
     keys:

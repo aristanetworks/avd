@@ -1139,34 +1139,50 @@ EOF
 
 #### Management API Models Summary
 
-| Provider | Path | Disabled |
-| -------- | ---- | ------- |
-| smash | flexCounters | False |
-| smash | forwarding/srte/status/fec | False |
-| smash | routing6/status | False |
-| smash | routing/bgp/export/allPeerAdjRibIn | False |
-| smash | routing/status | True |
-| smash | tunnel/tunnelFib/entry | False |
-| sysdb | /Sysdb/sys/logging/config/vrfLoggingHost/mgmt | True |
-| sysdb | cell/1/agent | True |
+##### Smash Provider
+
+| Path | Disabled |
+| ---- | -------- |
+| flexCounters | False |
+| forwarding/srte/status/fec | False |
+| routing6/status | False |
+| routing/bgp/export/allPeerAdjRibIn | False |
+| routing/status | True |
+| tunnel/tunnelFib/entry | False |
+
+##### Sysdb Provider
+
+| Path | Disabled |
+| ---- | -------- |
+| cell/1/agent | True |
+| sys/logging/config/vrfLoggingHost/mgmt | True |
+
+##### Macsec Provider
+
+| interfaces | MKA |
+| ---------- | --- |
+| True | True |
 
 #### Management API Models Device Configuration
 
 ```eos
 !
 management api models
+   provider macsec
+      interfaces
+      mka
    !
    provider smash
       path flexCounters
       path forwarding/srte/status/fec
-      path routing6/status
       path routing/bgp/export/allPeerAdjRibIn
-      path routing/status disabled
+      path routing6/status
       path tunnel/tunnelFib/entry
+      path routing/status disabled
    !
    provider sysdb
-      path /Sysdb/sys/logging/config/vrfLoggingHost/mgmt disabled
       path cell/1/agent disabled
+      path sys/logging/config/vrfLoggingHost/mgmt disabled
 ```
 
 ## CVX

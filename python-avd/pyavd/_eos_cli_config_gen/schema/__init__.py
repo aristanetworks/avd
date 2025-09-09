@@ -21435,25 +21435,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Paths._item_type = PathsItem
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "paths": {"type": Paths}, "interface": {"type": bool}, "mka": {"type": bool}}
-            name: Literal["sysdb", "smash", "macsec"] | None
+            _fields: ClassVar[dict] = {"name": {"type": str}, "paths": {"type": Paths}}
+            name: Literal["sysdb", "smash"] | None
             paths: Paths
             """Subclass of AvdList with `PathsItem` items."""
-            interface: bool | None
-            """Enable interfaces for 'macsec' provider."""
-            mka: bool | None
-            """Enable mka for 'macsec' provider."""
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    name: Literal["sysdb", "smash", "macsec"] | None | UndefinedType = Undefined,
-                    paths: Paths | UndefinedType = Undefined,
-                    interface: bool | None | UndefinedType = Undefined,
-                    mka: bool | None | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, name: Literal["sysdb", "smash"] | None | UndefinedType = Undefined, paths: Paths | UndefinedType = Undefined) -> None:
                     """
                     ProvidersItem.
 
@@ -21463,8 +21452,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: name
                         paths: Subclass of AvdList with `PathsItem` items.
-                        interface: Enable interfaces for 'macsec' provider.
-                        mka: Enable mka for 'macsec' provider.
 
                     """
 
@@ -21473,13 +21460,211 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Providers._item_type = ProvidersItem
 
-        _fields: ClassVar[dict] = {"providers": {"type": Providers}}
+        class Provider(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Sysdb(AvdModel):
+                """Subclass of AvdModel."""
+
+                class PathsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"path": {"type": str}, "disabled": {"type": bool, "default": False}}
+                    path: str | None
+                    """Path."""
+                    disabled: bool
+                    """
+                    Disable the path.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, path: str | None | UndefinedType = Undefined, disabled: bool | UndefinedType = Undefined) -> None:
+                            """
+                            PathsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                path: Path.
+                                disabled: Disable the path.
+
+                            """
+
+                class Paths(AvdList[PathsItem]):
+                    """Subclass of AvdList with `PathsItem` items."""
+
+                Paths._item_type = PathsItem
+
+                _fields: ClassVar[dict] = {"paths": {"type": Paths}}
+                paths: Paths
+                """
+                List of paths.
+
+                Subclass of AvdList with `PathsItem` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, paths: Paths | UndefinedType = Undefined) -> None:
+                        """
+                        Sysdb.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            paths:
+                               List of paths.
+
+                               Subclass of AvdList with `PathsItem` items.
+
+                        """
+
+            class Smash(AvdModel):
+                """Subclass of AvdModel."""
+
+                class PathsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"path": {"type": str}, "disabled": {"type": bool, "default": False}}
+                    path: str | None
+                    """Path."""
+                    disabled: bool
+                    """
+                    Disable the path.
+
+                    Default value: `False`
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, path: str | None | UndefinedType = Undefined, disabled: bool | UndefinedType = Undefined) -> None:
+                            """
+                            PathsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                path: Path.
+                                disabled: Disable the path.
+
+                            """
+
+                class Paths(AvdList[PathsItem]):
+                    """Subclass of AvdList with `PathsItem` items."""
+
+                Paths._item_type = PathsItem
+
+                _fields: ClassVar[dict] = {"paths": {"type": Paths}}
+                paths: Paths
+                """
+                List of paths.
+
+                Subclass of AvdList with `PathsItem` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, paths: Paths | UndefinedType = Undefined) -> None:
+                        """
+                        Smash.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            paths:
+                               List of paths.
+
+                               Subclass of AvdList with `PathsItem` items.
+
+                        """
+
+            class Macsec(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"interfaces": {"type": bool}, "mka": {"type": bool}}
+                interfaces: bool | None
+                """Enable MACsec for interfaces."""
+                mka: bool | None
+                """Enable MKA for MACsec."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, interfaces: bool | None | UndefinedType = Undefined, mka: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Macsec.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            interfaces: Enable MACsec for interfaces.
+                            mka: Enable MKA for MACsec.
+
+                        """
+
+            _fields: ClassVar[dict] = {"sysdb": {"type": Sysdb}, "smash": {"type": Smash}, "macsec": {"type": Macsec}}
+            sysdb: Sysdb
+            """
+            Sysdb provider configuration.
+
+            Subclass of AvdModel.
+            """
+            smash: Smash
+            """
+            Smash provider configuration.
+
+            Subclass of AvdModel.
+            """
+            macsec: Macsec
+            """
+            MACsec provider configuration.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, sysdb: Sysdb | UndefinedType = Undefined, smash: Smash | UndefinedType = Undefined, macsec: Macsec | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    Provider.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sysdb:
+                           Sysdb provider configuration.
+
+                           Subclass of AvdModel.
+                        smash:
+                           Smash provider configuration.
+
+                           Subclass of AvdModel.
+                        macsec:
+                           MACsec provider configuration.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        _fields: ClassVar[dict] = {"providers": {"type": Providers}, "provider": {"type": Provider}}
         providers: Providers
         """Subclass of AvdList with `ProvidersItem` items."""
+        provider: Provider
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, providers: Providers | UndefinedType = Undefined) -> None:
+            def __init__(self, *, providers: Providers | UndefinedType = Undefined, provider: Provider | UndefinedType = Undefined) -> None:
                 """
                 ManagementApiModels.
 
@@ -21488,6 +21673,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     providers: Subclass of AvdList with `ProvidersItem` items.
+                    provider: Subclass of AvdModel.
 
                 """
 
