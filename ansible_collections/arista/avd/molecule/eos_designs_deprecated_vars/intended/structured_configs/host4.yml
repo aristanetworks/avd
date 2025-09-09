@@ -9,9 +9,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.42.42.205/31
-  pim:
-    ipv4:
-      sparse_mode: true
   peer: host1
   peer_interface: Ethernet43
   peer_type: l3leaf

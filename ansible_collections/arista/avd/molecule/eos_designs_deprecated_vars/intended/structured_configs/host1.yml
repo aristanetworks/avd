@@ -16,16 +16,11 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet4
-  description: uplink_structured_config on port-channel uplink
+  description: L2_host3_Ethernet4
   shutdown: false
   channel_group:
     id: 4
     mode: active
-  storm_control:
-    broadcast:
-      level: '25'
-    unknown_unicast:
-      level: '25'
   peer: host3
   peer_interface: Ethernet4
   peer_type: l2leaf
@@ -41,18 +36,11 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha512
     key: cJ25Oy2bNyqRwTqh1A2FXmcCqBSvRAvV
-  storm_control:
-    broadcast:
-      level: '25'
-    unknown_unicast:
-      level: '25'
   peer: host2
   peer_interface: Ethernet42
   peer_type: pe
   switchport:
     enabled: false
-    trunk:
-      native_vlan_tag: true
 - name: Ethernet43
   description: P2P_host4_Ethernet43
   shutdown: false
@@ -65,9 +53,6 @@ ethernet_interfaces:
   - id: 1
     hash_algorithm: sha512
     key: cJ25Oy2bNyqRwTqh1A2FXmcCqBSvRAvV
-  pim:
-    ipv4:
-      sparse_mode: true
   peer: host4
   peer_interface: Ethernet43
   peer_type: l3leaf
@@ -175,13 +160,8 @@ metadata:
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 port_channel_interfaces:
 - name: Port-Channel4
-  description: uplink_structured_config on port-channel uplink
+  description: L2_host3_Port-Channel4
   shutdown: false
-  storm_control:
-    broadcast:
-      level: '25'
-    unknown_unicast:
-      level: '25'
   switchport:
     enabled: true
     mode: trunk

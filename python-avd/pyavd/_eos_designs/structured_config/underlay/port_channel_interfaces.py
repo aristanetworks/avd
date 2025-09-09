@@ -116,11 +116,6 @@ class PortChannelInterfacesMixin(Protocol):
                     link.port_channel_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                 )
 
-            elif structured_config := link.structured_config:
-                self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_name)._deepmerge(
-                    EosCliConfigGen.PortChannelInterfacesItem._from_dict(structured_config), list_merge=self.custom_structured_configs.list_merge_strategy
-                )
-
             self.structured_config.port_channel_interfaces.append(port_channel_interface)
 
         # Support l3_port_channels including sub-interfaces

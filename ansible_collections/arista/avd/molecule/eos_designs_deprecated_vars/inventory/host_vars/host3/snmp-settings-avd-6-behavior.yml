@@ -9,13 +9,6 @@ l2leaf: # dynamic_key: node_type
     # Testing uplink_structured_config on l2leaf
     uplink_switches: [host1]
     uplink_switch_interfaces: [Ethernet4]
-    uplink_structured_config:
-      description: uplink_structured_config on port-channel uplink
-      storm_control:
-        broadcast:
-          level: 25
-        unknown_unicast:
-          level: 25
   nodes:
     - name: host3
       id: 43
