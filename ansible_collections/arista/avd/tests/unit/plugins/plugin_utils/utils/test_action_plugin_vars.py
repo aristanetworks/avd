@@ -82,7 +82,7 @@ class TestActionPluginVars:
                 },
                 "ansible_user",
                 "task_user",
-                id="task_wins_precedence"
+                id="task_wins_precedence",
             ),
             # Scenario 2: Block variable takes precedence when no task var (block > play)
             pytest.param(
@@ -106,7 +106,7 @@ class TestActionPluginVars:
                 },
                 "ansible_user",
                 "block_user",
-                id="block_wins_precedence"
+                id="block_wins_precedence",
             ),
             # Scenario 3: Play variable is used when no task or block vars
             pytest.param(
@@ -130,7 +130,7 @@ class TestActionPluginVars:
                 },
                 "ansible_user",
                 "play_user",
-                id="play_wins_precedence"
+                id="play_wins_precedence",
             ),
         ],
         indirect=["ansible_task"],

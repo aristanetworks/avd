@@ -1,0 +1,135 @@
+{#
+ Copyright (c) 2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - cfm #}
+{% if cfm is arista.avd.defined %}
+
+### Connectivity Fault Management (CFM)
+{%     if cfm.domains is arista.avd.defined %}
+{%         set domains = cfm.domains | arista.avd.natural_sort('name') %}
+{%         set cfm_domain_associations = domains | selectattr('associations', 'arista.avd.defined') | list %}
+{%         set associations = cfm_domain_associations | map(attribute='associations') | sum(start=[]) %}
+{%         set cfm_domain_end_points = associations | selectattr('end_points', 'arista.avd.defined') | list %}
+{%         set cfm_domain_remote_end_points = associations | selectattr('remote_end_points', 'arista.avd.defined') | list %}
+
+#### CFM Domains Summary
+
+| Name | Level | Intermediate Point |
+| ---- | ----- | ------------------ |
+{%         for domain in domains %}
+| {{ domain.name }} | {{ domain.level }} | {{ domain.intermediate_point | arista.avd.default('-') }} |
+{%         endfor %}
+{%         if cfm_domain_associations %}
+
+##### CFM Domain Associations
+
+| Domain | Association ID | Direction | Profile | VLAN |
+| ------ | -------------- | --------- | ------- | ---- |
+{%             for domain in cfm_domain_associations %}
+{%                 for association in domain.associations | arista.avd.natural_sort('id') %}
+| {{ domain.name }} | {{ association.id }} | {{ association.direction | arista.avd.default('-') }} | {{ association.profile | arista.avd.default('-') }} | {{ association.vlan | arista.avd.default('-') }} |
+{%                 endfor %}
+{%             endfor %}
+{%         endif %}
+{%         if cfm_domain_end_points %}
+
+##### CFM Domain Endpoints
+
+| Domain | Association ID | Endpoint ID | Remote Endpoint ID | Interface |
+| ------ | -------------- | ----------- | ------------------ | --------- |
+{%             for domain in cfm_domain_associations %}
+{%                 for association in domain.associations | arista.avd.natural_sort('id') %}
+{%                     for endpoint in association.end_points | arista.avd.natural_sort('id') %}
+| {{ domain.name }} | {{ association.id }} | {{ endpoint.id }} | {{ endpoint.remote_end_point | arista.avd.default('-') }} | {{ endpoint.interface | arista.avd.default('-') }} |
+{%                     endfor %}
+{%                 endfor %}
+{%             endfor %}
+{%         endif %}
+{%         if cfm_domain_remote_end_points %}
+
+##### CFM Domain Remote Endpoints
+
+| Domain | Association ID | Remote Endpoint ID | MAC Address |
+| ------ | -------------- | ------------------ | ----------- |
+{%             for domain in cfm_domain_associations %}
+{%                 for association in domain.associations | arista.avd.natural_sort('id') %}
+{%                     for remote_endpoint in association.remote_end_points | arista.avd.natural_sort('id') %}
+| {{ domain.name }} | {{ association.id }} | {{ remote_endpoint.id }} | {{ remote_endpoint.mac_address | arista.avd.default('-') }} |
+{%                     endfor %}
+{%                 endfor %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if cfm.profiles is arista.avd.defined %}
+{%         set profiles = cfm.profiles | arista.avd.natural_sort('name') %}
+{%         set cfm_profile_continuity_check = profiles | selectattr('continuity_check', 'arista.avd.defined') | list %}
+{%         set cfm_profile_alarm_indication = profiles | selectattr('alarm_indication', 'arista.avd.defined') | list %}
+{%         set cfm_profile_delay_measurement = profiles | selectattr('measurement.delay', 'arista.avd.defined') | list %}
+{%         set cfm_profile_loss_measurement = profiles | selectattr('measurement.loss', 'arista.avd.defined') | list %}
+{%         set cfm_profile_synthetic_loss_measurement = profiles | selectattr('measurement.loss.synthetic', 'arista.avd.defined') | list %}
+
+#### CFM Profiles Summary
+{%         if cfm_profile_continuity_check %}
+
+##### CFM Profile Continuity Check
+
+| Profile | Enabled | QoS COS | TX Interval | Alarm Defects |
+| ------- | ------- | ------- | ----------- | ------------- |
+{%             for profile in cfm_profile_continuity_check %}
+{%                 set enabled_defects = "-" %}
+{%                 if profile.continuity_check.alarm_defects is arista.avd.defined %}
+{%                     set enabled_defects = profile.continuity_check.alarm_defects | join(', ') %}
+{%                 endif %}
+| {{ profile.name }} | {{ profile.continuity_check.enabled | arista.avd.default('-') }} | {{ profile.continuity_check.qos_cos | arista.avd.default('-') }} | {{ profile.continuity_check.tx_interval | arista.avd.default('-') }} | {{ enabled_defects }} |
+{%             endfor %}
+{%         endif %}
+{%         if cfm_profile_alarm_indication %}
+
+##### CFM Profile Alarm Indication
+
+| Profile | Enabled | Client Domain Level | TX Interval |
+| ------- | ------- | ------------------- | ----------- |
+{%             for profile in cfm_profile_alarm_indication %}
+| {{ profile.name }} | {{ profile.alarm_indication.enabled | arista.avd.default('-') }} | {{ profile.alarm_indication.client_domain_level | arista.avd.default('-') }} | {{ profile.alarm_indication.tx_interval | arista.avd.default('-') }} |
+{%             endfor %}
+{%         endif %}
+{%         if cfm_profile_delay_measurement %}
+
+##### CFM Profile Delay Measurement
+
+| Profile | Single Ended | QoS COS | TX Interval |
+| ------- | ------------ | ------- | ----------- |
+{%             for profile in cfm_profile_delay_measurement %}
+| {{ profile.name }} | {{ profile.measurement.delay.single_ended | arista.avd.default('-') }} | {{ profile.measurement.delay.qos_cos | arista.avd.default('-') }} | {{ profile.measurement.delay.tx_interval | arista.avd.default('-') }} |
+{%             endfor %}
+{%         endif %}
+{%         if cfm_profile_loss_measurement %}
+
+##### CFM Profile Loss Measurement
+
+| Profile | Enabled | Single Ended | QoS COS | TX Interval |
+| ------- | ------- | ------------ | ------- | ----------- |
+{%             for profile in cfm_profile_loss_measurement %}
+| {{ profile.name }} | {{ profile.measurement.loss.enabled | arista.avd.default('-') }} | {{ profile.measurement.loss.single_ended | arista.avd.default('-') }} | {{ profile.measurement.loss.qos_cos | arista.avd.default('-') }} | {{ profile.measurement.loss.tx_interval | arista.avd.default('-') }} |
+{%             endfor %}
+{%         endif %}
+{%         if cfm_profile_synthetic_loss_measurement %}
+
+##### CFM Profile Synthetic Loss Measurement
+
+| Profile | Enabled | Single Ended | QoS COS | TX Interval | Period Frames |
+| ------- | ------- | ------------ | ------- | ----------- | ------------- |
+{%             for profile in cfm_profile_synthetic_loss_measurement %}
+| {{ profile.name }} | {{ profile.measurement.loss.synthetic.enabled | arista.avd.default('-') }} | {{ profile.measurement.loss.synthetic.single_ended | arista.avd.default('-') }} | {{ profile.measurement.loss.synthetic.qos_cos | arista.avd.default('-') }} | {{ profile.measurement.loss.synthetic.tx_interval.interval | arista.avd.default('-') }} | {{ profile.measurement.loss.synthetic.tx_interval.period_frames | arista.avd.default('-') }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+
+#### CFM Device Configuration
+
+```eos
+{%     include 'eos/cfm.j2' %}
+```
+{% endif %}
