@@ -10,17 +10,7 @@ from pyavd._cv.client.exceptions import CVDuplicatedDevices
 from pyavd._utils import groupby_obj
 
 from .models import (
-    AvdDeviceTag,
-    AvdEosConfig,
-    AvdInterfaceTag,
-    AvdPathfinderMetadata,
-    DeviceInventoryResult,
-    DeviceResult,
     DuplicatedDevices,
-    InternalDevice,
-    MiscComponentResult,
-    Tags,
-    TagsResult,
 )
 
 if TYPE_CHECKING:
@@ -29,7 +19,7 @@ if TYPE_CHECKING:
 LOGGER = getLogger(__name__)
 
 
-def verify_device_inputs(avd_devices: list[AvdDevice] | None, warnings: list[Exception], *, strict_system_mac_address: bool) -> None:
+def verify_device_inputs(avd_devices: list[AvdDevice], warnings: list[Exception], *, strict_system_mac_address: bool) -> None:
     """
     Verify device inputs from structured config files.
 
@@ -49,7 +39,7 @@ def verify_device_inputs(avd_devices: list[AvdDevice] | None, warnings: list[Exc
         )
 
 
-def identify_duplicated_devices(devices: list[AvdDevice] | None) -> DuplicatedDevices:
+def identify_duplicated_devices(devices: list[AvdDevice]) -> DuplicatedDevices:
     """
     Process list of AvdDevice instances to identify those with overlapping serial_number or system_mac_address.
 
@@ -63,18 +53,18 @@ def identify_duplicated_devices(devices: list[AvdDevice] | None) -> DuplicatedDe
     if not devices:
         return duplicated_devices
 
-    # build a list of CVDevice instance for each AvdDevice instance
-    unique_devices = list({id(device): device.get_cv_device() for device in devices}.values())
-    LOGGER.debug("identify_duplicated_avd_devices() input devices: %s ,unique_devices: %s", len(devices), len(unique_devices))
+    # we expect each device input to be represented only once as AvdDevice instance
+    LOGGER.debug("identify_duplicated_avd_devices() input devices: %s", len(devices))
+    cv_devices = [device.get_cv_device() for device in devices]
 
-    # Group devices based on <CVDevice>.serial_number as long as it's not None
+    # Group devices based on <device>.serial_number as long as it's not None
     devices_grouped_by_serial_number = groupby_obj(
-        list_of_objects=[device for device in devices if device.serial_number is not None], attr="serial_number", skip_singles=True
+        list_of_objects=[device for device in cv_devices if device.serial_number is not None], attr="serial_number", skip_singles=True
     )
 
-    # Group devices based on <CVDevice>.system_mac_address as long as it's not None
+    # Group devices based on <device>.system_mac_address as long as it's not None
     devices_grouped_by_system_mac_address = groupby_obj(
-        list_of_objects=[device for device in devices if device.system_mac_address is not None], attr="system_mac_address", skip_singles=True
+        list_of_objects=[device for device in cv_devices if device.system_mac_address is not None], attr="system_mac_address", skip_singles=True
     )
 
     # Populate list of CVDevice with duplicated serial_number values
@@ -143,34 +133,3 @@ def duplicated_devices_handler(
         duplicated_devices.system_mac_address.set_serial_number,
     )
     warnings.append(CVDuplicatedDevices("Duplicated devices found in inventory", duplicated_devices.system_mac_address.set_serial_number))
-
-
-def build_internal_device_inputs(avd_devices: list[AvdDevice] | None) -> list[InternalDevice]:
-    """
-    Build list of InternalDevice instances from specified list of AvdDevice instances.
-
-    Subsequent wrappers to in-place update InternalDevice object as they work on each device.
-    """
-    internal_devices: list[InternalDevice] = []
-    if not avd_devices:
-        return internal_devices
-    for avd_device in avd_devices:
-        # Device result members are initialized with respective members with empty values.
-        # This will make it easier for subsequent wrappers to access and update these members while working on them.
-        device_result = DeviceResult(
-            inventory=DeviceInventoryResult.MISSING,
-            device_tags=TagsResult[AvdDeviceTag](),
-            interface_tags=TagsResult[AvdInterfaceTag](),
-            config=MiscComponentResult[AvdEosConfig](),
-            pathfinder_metadata=MiscComponentResult[AvdPathfinderMetadata](),
-        )
-
-        # serial_number, system_mac_address members of InternalDevice set to None (by default)
-        # These will be populated with revised values upon querying CV Inventory.
-        # device_tags, interface_tags are initialized with empty values.
-        # Subsequent wrappers working on InternalDevice object would be able to update these easily.
-        curr_internal_device = InternalDevice(
-            avd_device=avd_device, result=device_result, device_tags=Tags[AvdDeviceTag](), interface_tags=Tags[AvdInterfaceTag]()
-        )
-        internal_devices.append(curr_internal_device)
-    return internal_devices

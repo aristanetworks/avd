@@ -6,10 +6,12 @@ from __future__ import annotations
 from logging import getLogger
 from typing import TYPE_CHECKING
 
+from .models import DeploymentStatus
+
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
 
-    from .models import DeployToCvResult, InternalDevice
+    from .models import WorkflowConfig, WorkflowDevice
 
 LOGGER = getLogger(__name__)
 
@@ -19,7 +21,7 @@ CONFIGLET_CONTAINER_ID = f"{CONFIGLET_ID_PREFIX}configlets"
 STATIC_CONFIGLET_STUDIO_ID = "studio-static-configlet"
 
 
-async def deploy_configs_to_cv(internal_devices: list[InternalDevice], result: DeployToCvResult, cv_client: CVClient) -> None:
+async def deploy_configs_to_cv(workflow_devices: list[WorkflowDevice], workspace_id: str, cv_client: CVClient) -> None:
     """
     Deploy given configs using "Static Configlet Studio".
 
@@ -28,41 +30,44 @@ async def deploy_configs_to_cv(internal_devices: list[InternalDevice], result: D
 
     TODO: See if this can be optimized to check if the configlets are already in place and correct. A hash would have been nice.
     """
-    LOGGER.info("deploy_configs_to_cv: %s devices to check for config", len(internal_devices))
+    LOGGER.info("deploy_configs_to_cv: %s devices to check for config", len(workflow_devices))
 
-    if not internal_devices:
+    if not workflow_devices:
         return
 
-    # Build todo with InternalDevice objects that exist on CloudVision. Add the rest to skipped.
-    todo_devices_with_configs: list[InternalDevice] = []
-    for device in internal_devices:
+    # Build todo with WorkflowDevice objects that exist on CloudVision. Add the rest to skipped.
+    todo_workflow_configs: list[WorkflowConfig] = []
+    skipped_devices = 0
+    for device in workflow_devices:
         if not device.in_cv_inventory:
-            result.skipped_configs.extend([device.get_cv_eos_config()])
-            device.result.config.skipped.extend([device.avd_device.config])
-            LOGGER.info("deploy_configs_to_cv: Skipping config for device %s missing in CloudVision Inventory", device.avd_device.hostname)
-        else:
-            todo_devices_with_configs.append(device)
+            if device.config:
+                device.config.status = DeploymentStatus.SKIPPED
+                skipped_devices += 1
+                LOGGER.info("deploy_configs_to_cv: Skipping config for device %s missing in CloudVision Inventory", device.input.hostname)
+        elif device.config is not None:
+            todo_workflow_configs.append(device.config)
 
-    LOGGER.info("deploy_configs_to_cv: %s skipped configs because the devices are missing from CloudVision.", len(result.skipped_configs))
-    LOGGER.debug("deploy_configs_to_cv: %s devices with config", len(todo_devices_with_configs))
+    LOGGER.info("deploy_configs_to_cv: %s skipped configs because the devices are missing from CloudVision.", skipped_devices)
+    LOGGER.debug("deploy_configs_to_cv: %s devices with config", len(todo_workflow_configs))
 
     # No need to continue if we have nothing to do.
-    if not todo_devices_with_configs:
+    if not todo_workflow_configs:
         return
 
     # First create all configlets in parallel coroutines.
-    await deploy_configlets_to_cv(todo_devices_with_configs, result.workspace.id, cv_client)
+    await deploy_configlets_to_cv(todo_workflow_configs, workspace_id, cv_client)
     # Next create all containers in parallel coroutines.
-    await deploy_configlet_containers_to_cv(todo_devices_with_configs, result.workspace.id, cv_client)
+    await deploy_configlet_containers_to_cv(todo_workflow_configs, workspace_id, cv_client)
 
-    # consider all candidate configs as added/deployed and update result
-    for device in todo_devices_with_configs:
-        LOGGER.debug("deploy_configs_to_cv: config deployed for device: %s serial_num: %s", device.avd_device.hostname, device.serial_number)
-        result.deployed_configs.extend([device.get_cv_eos_config()])
-        device.result.config.added.extend([device.avd_device.config])
+    # consider all candidate configs as deployed and update status
+    for config in todo_workflow_configs:
+        LOGGER.debug(
+            "deploy_configs_to_cv: config deployed for device: %s serial_num: %s", config.parent_device.input.hostname, config.parent_device.serial_number
+        )
+        config.status = DeploymentStatus.DEPLOYED
 
 
-async def deploy_configlets_to_cv(internal_devices: list[InternalDevice], workspace_id: str, cv_client: CVClient) -> None:
+async def deploy_configlets_to_cv(workflow_configs: list[WorkflowConfig], workspace_id: str, cv_client: CVClient) -> None:
     """
     Bluntly setting configs like nothing was there. Only create missing containers.
 
@@ -70,12 +75,12 @@ async def deploy_configlets_to_cv(internal_devices: list[InternalDevice], worksp
     """
     configlets_devices = [
         (
-            f"{CONFIGLET_ID_PREFIX}{device.serial_number}",
-            device.avd_device.config.configlet_name or f"{CONFIGLET_NAME_PREFIX}{device.avd_device.hostname}",
-            f"Configuration created and uploaded by AVD for {device.avd_device.hostname}",
-            device.avd_device.config.file,
+            f"{CONFIGLET_ID_PREFIX}{config.parent_device.serial_number}",
+            config.input.configlet_name or f"{CONFIGLET_NAME_PREFIX}{config.parent_device.input.hostname}",
+            f"Configuration created and uploaded by AVD for {config.parent_device.input.hostname}",
+            config.input.file,
         )
-        for device in internal_devices
+        for config in workflow_configs
     ]
 
     LOGGER.info("deploy_configlets_to_cv: Deploying %s configlets", len(configlets_devices))
@@ -123,7 +128,7 @@ async def get_existing_device_container_ids_from_root_container(workspace_id: st
     return []
 
 
-async def deploy_configlet_containers_to_cv(internal_devices: list[InternalDevice], workspace_id: str, cv_client: CVClient) -> None:
+async def deploy_configlet_containers_to_cv(workflow_configs: list[WorkflowConfig], workspace_id: str, cv_client: CVClient) -> None:
     """
     Identify existing containers and ensure they have the correct configuration.
 
@@ -153,12 +158,12 @@ async def deploy_configlet_containers_to_cv(internal_devices: list[InternalDevic
 
     update_device_containers = []
     update_device_container_ids = set()
-    for device in internal_devices:
+    for config in workflow_configs:
         # For now we reuse configlet_id as container_id.
-        container_id = configlet_id = f"{CONFIGLET_ID_PREFIX}{device.serial_number}"
-        display_name = f"{device.avd_device.hostname}"
-        description = f"Configuration created and uploaded by AVD for {device.avd_device.hostname}"
-        query = f"device:{device.serial_number}"
+        container_id = configlet_id = f"{CONFIGLET_ID_PREFIX}{config.parent_device.serial_number}"
+        display_name = f"{config.parent_device.input.hostname}"
+        description = f"Configuration created and uploaded by AVD for {config.parent_device.input.hostname}"
+        query = f"device:{config.parent_device.serial_number}"
         configlet_ids = [configlet_id]
         if existing_device_containers_by_id.get(container_id) != (display_name, description, query, configlet_ids):
             update_device_container_ids.add(container_id)

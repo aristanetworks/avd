@@ -26,7 +26,7 @@ def get_studio_id(studio_input: CVStudioInputs) -> str:
     return studio_input.studio_id
 
 
-async def deploy_studio_inputs_to_cv(studio_inputs: list[CVStudioInputs], result: DeployToCvResult, cv_client: CVClient) -> None:
+async def deploy_studio_inputs_to_cv(studio_inputs: list[CVStudioInputs], deployment_result: DeployToCvResult, cv_client: CVClient) -> None:
     """
     Deploy given Studio Inputs.
 
@@ -40,7 +40,7 @@ async def deploy_studio_inputs_to_cv(studio_inputs: list[CVStudioInputs], result
     studio_inputs_coroutines = [
         cv_client.set_studio_inputs(
             studio_id=studio_input.studio_id,
-            workspace_id=result.workspace.id,
+            workspace_id=deployment_result.workspace.id,
             inputs=studio_input.inputs,
             input_path=studio_input.input_path,
         )
@@ -53,4 +53,4 @@ async def deploy_studio_inputs_to_cv(studio_inputs: list[CVStudioInputs], result
         LOGGER.info("deploy_studio_inputs_to_cv: Batch %s", index)
         await gather(*coroutines)
 
-    result.deployed_studio_inputs.extend(studio_inputs)
+    deployment_result.deployed_studio_inputs.extend(studio_inputs)

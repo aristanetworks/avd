@@ -11,16 +11,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 from pyavd._cv.client import CVClient
 from pyavd._cv.workflows.models import (
     AvdDevice,
-    AvdDeviceTag,
-    AvdEosConfig,
-    AvdInterfaceTag,
-    AvdPathfinderMetadata,
-    DeviceInventoryResult,
-    DeviceResult,
-    InternalDevice,
-    MiscComponentResult,
-    Tags,
-    TagsResult,
+    WorkflowDevice,
 )
 from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
 from pyavd._eos_designs.schema import EosDesigns
@@ -77,27 +68,13 @@ class UtilsZscalerMixin(Protocol):
 
         async with CVClient(servers=[cv_server], token=cv_token) as cv_client:
             avd_device = AvdDevice(
-                config=AvdEosConfig(file=""),
-                device_tags=tuple(),  # noqa: C408
-                interface_tags=tuple(),  # noqa: C408
-                pathfinder_metadata=AvdPathfinderMetadata(metadata={}),
                 hostname=self.shared_utils.hostname,
                 serial_number=self.shared_utils.serial_number,
                 system_mac_address=self.shared_utils.system_mac_address,
             )
-            device_result = DeviceResult(
-                inventory=DeviceInventoryResult.MISSING,
-                device_tags=TagsResult[AvdDeviceTag](),
-                interface_tags=TagsResult[AvdInterfaceTag](),
-                config=MiscComponentResult[AvdEosConfig](),
-                pathfinder_metadata=MiscComponentResult[AvdPathfinderMetadata](),
-            )
-
-            internal_device = InternalDevice(
-                avd_device=avd_device, result=device_result, device_tags=Tags[AvdDeviceTag](), interface_tags=Tags[AvdInterfaceTag]()
-            )
-            cv_inventory_devices: list[InternalDevice] = await verify_devices_in_cloudvision_inventory(
-                internal_devices=[internal_device],
+            workflow_device = WorkflowDevice.from_avd_input(avd_input=avd_device)
+            cv_inventory_devices: list[WorkflowDevice] = await verify_devices_in_cloudvision_inventory(
+                workflow_devices=[workflow_device],
                 skip_missing_devices=True,
                 warnings=[],
                 cv_client=cv_client,

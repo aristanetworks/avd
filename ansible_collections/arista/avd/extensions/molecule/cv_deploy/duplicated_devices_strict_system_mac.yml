@@ -200,6 +200,13 @@
           tags: ["{{ test_id }}"]
           ansible.builtin.meta: clear_host_errors
 
+        # Initialize `result_device_configs` var to empty list before appending values to it.
+        # Avoid any effect of value set to this fact by tasks in earlier playbook (duplicated_devices.yml)
+        - name: Initialize result_device_configs fact to empty list
+          run_once: true
+          ansible.builtin.set_fact:
+            result_device_configs: []
+
         - name: "(RESCUE) {{ test_id | upper }} Extract list of configs from CVP return output"
           # Here we build list of dictionaries representing config from each device along with device info such as
           # hostname/serial number/system mac address. This is used subsequently for comparison to check for duplicated info.

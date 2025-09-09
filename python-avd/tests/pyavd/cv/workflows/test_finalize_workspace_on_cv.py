@@ -14,7 +14,7 @@ import pytest
 
 from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed, CVWorkspaceSubmitFailedInactiveDevices
 from pyavd._cv.workflows.finalize_workspace_on_cv import finalize_workspace_on_cv
-from pyavd._cv.workflows.models import CVDevice, CVWorkspace, DeployToCvResult
+from pyavd._cv.workflows.models import AvdDevice, CVWorkspace, DeployToCvResult, WorkflowDevice
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
     MOCKED_WORKSPACE_ID,
@@ -27,7 +27,6 @@ from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_SUCCESS,
     MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
 )
-from tests.pyavd.cv.mockery import mocked_cvdevices
 
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
@@ -41,9 +40,15 @@ ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 async def test_finalize_workspace_on_cv_pending_state(cv_client: CVClient) -> None:
     """Test use case where requested_state == state == 'pending'."""
     workspace = CVWorkspace(requested_state="pending", state="pending")
-    result = await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1"]), [])
+    workflow_device = WorkflowDevice.from_avd_input(
+        avd_input=AvdDevice(
+            hostname="avd-ci-leaf1",
+        )
+    )
+    result = await finalize_workspace_on_cv(workspace, cv_client, [workflow_device], [])
 
     assert result is None
+    assert workspace.state == "pending"
 
 
 @pytest.mark.asyncio
@@ -69,7 +74,15 @@ async def test_finalize_workspace_on_cv_built_state(cv_client: CVClient) -> None
 
     with patch("pyavd._cv.client.workspace.uuid4", side_effect=[workspace_build_id.removeprefix("req-")]):
         workspace = CVWorkspace(id=workspace_id, requested_state=workspace_requested_state)
-        await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1"]), [])
+        workflow_device = WorkflowDevice.from_avd_input(
+            avd_input=AvdDevice(
+                hostname="avd-ci-leaf1",
+            )
+        )
+        # This test case is for validating workspace build.
+        # The streaming status of the device or its presence in CV Inventory is not checked.
+        # Hence this state is not being explicitly set for workflow_device.
+        await finalize_workspace_on_cv(workspace, cv_client, [workflow_device], [])
 
     assert workspace.state == workspace_expected_state
 
@@ -103,7 +116,15 @@ async def test_finalize_workspace_on_cv_abandoned_state(cv_client: CVClient) -> 
 
     with patch("pyavd._cv.client.workspace.uuid4", side_effect=[workspace_build_id.removeprefix("req-"), workspace_abandon_id.removeprefix("req-")]):
         workspace = CVWorkspace(id=workspace_id, requested_state=workspace_requested_state)
-        await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1"]), [])
+        workflow_device = WorkflowDevice.from_avd_input(
+            avd_input=AvdDevice(
+                hostname="avd-ci-leaf1",
+            )
+        )
+        # This test case is for validating workspace abandon.
+        # The streaming status of the device or its presence in CV Inventory is not checked.
+        # Hence this state is not being explicitly set for workflow_device.
+        await finalize_workspace_on_cv(workspace, cv_client, [workflow_device], [])
 
     assert workspace.state == workspace_expected_state
 
@@ -135,7 +156,15 @@ async def test_finalize_workspace_on_cv_deleted_state(cv_client: CVClient) -> No
 
     with patch("pyavd._cv.client.workspace.uuid4", side_effect=[workspace_build_id.removeprefix("req-")]):
         workspace = CVWorkspace(id=workspace_id, requested_state=workspace_requested_state)
-        await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1"]), [])
+        workflow_device = WorkflowDevice.from_avd_input(
+            avd_input=AvdDevice(
+                hostname="avd-ci-leaf1",
+            )
+        )
+        # This test case is for validating workspace deletion.
+        # The streaming status of the device or its presence in CV Inventory is not checked.
+        # Hence this state is not being explicitly set for workflow_device.
+        await finalize_workspace_on_cv(workspace, cv_client, [workflow_device], [])
 
     assert workspace.state == workspace_expected_state
 
@@ -207,7 +236,15 @@ async def test_finalize_workspace_on_cv_build_failure(
         expected_exception as exception_info,
     ):
         workspace = CVWorkspace(name=workspace_name, id=workspace_id, requested_state=workspace_requested_state)
-        await finalize_workspace_on_cv(workspace, cv_client, mocked_cvdevices(hostnames=["avd-ci-leaf1"]), [])
+        workflow_device = WorkflowDevice.from_avd_input(
+            avd_input=AvdDevice(
+                hostname="avd-ci-leaf1",
+            )
+        )
+        # This test case is for validating workspace creation/build fails.
+        # The streaming status of the device or its presence in CV Inventory is not checked.
+        # Hence this state is not being explicitly set for workflow_device.
+        await finalize_workspace_on_cv(workspace, cv_client, [workflow_device], [])
 
     assert workspace.state == workspace_expected_state
 
@@ -269,6 +306,19 @@ async def test_finalize_workspace_on_cv_submit_failed_unspecified(
         requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
         force=workspace_force_submission,
     )
+    workflow_device = WorkflowDevice.from_avd_input(
+        avd_input=AvdDevice(
+            hostname="avd-ci-leaf2",
+            serial_number="B51AA89B6E51E89E1422107EDE3A9438",
+            system_mac_address="50:00:00:d5:5d:c0",
+        )
+    )
+    # mimic device represented by workflow_device exists in CV Inventory, is streaming
+    # and we able to retrieve serial_number, system_mac_address from CV Inventory
+    workflow_device.serial_number = "B51AA89B6E51E89E1422107EDE3A9438"
+    workflow_device.system_mac_address = "50:00:00:d5:5d:c0"
+    workflow_device.in_cv_inventory = True
+    workflow_device.streaming = True
 
     with (
         caplog.at_level(INFO),
@@ -284,15 +334,7 @@ async def test_finalize_workspace_on_cv_submit_failed_unspecified(
         await finalize_workspace_on_cv(
             workspace=cv_workspace,
             cv_client=cv_client,
-            devices=[
-                CVDevice(
-                    hostname="avd-ci-leaf2",
-                    serial_number="50:00:00:d5:5d:c0",
-                    system_mac_address="B51AA89B6E51E89E1422107EDE3A9438",
-                    _exists_on_cv=True,
-                    _streaming=True,
-                )
-            ],
+            workflow_devices=[workflow_device],
             warnings=warnings,
         )
 
@@ -357,6 +399,19 @@ async def test_finalize_workspace_on_cv_streaming_device_failure(
             force=workspace_force_submission,
         )
     )
+    workflow_device = WorkflowDevice.from_avd_input(
+        avd_input=AvdDevice(
+            hostname="avd-ci-leaf2",
+            serial_number="B51AA89B6E51E89E1422107EDE3A9438",
+            system_mac_address="50:00:00:d5:5d:c0",
+        )
+    )
+    # mimic device represented by workflow_device exists in CV Inventory, is streaming
+    # and we able to retrieve serial_number, system_mac_address from CV Inventory
+    workflow_device.serial_number = "B51AA89B6E51E89E1422107EDE3A9438"
+    workflow_device.system_mac_address = "50:00:00:d5:5d:c0"
+    workflow_device.in_cv_inventory = True
+    workflow_device.streaming = True
 
     with (
         caplog.at_level(INFO),
@@ -372,15 +427,7 @@ async def test_finalize_workspace_on_cv_streaming_device_failure(
         await finalize_workspace_on_cv(
             workspace=result.workspace,
             cv_client=cv_client,
-            devices=[
-                CVDevice(
-                    hostname="avd-ci-leaf2",
-                    serial_number="50:00:00:d5:5d:c0",
-                    system_mac_address="B51AA89B6E51E89E1422107EDE3A9438",
-                    _exists_on_cv=True,
-                    _streaming=True,
-                )
-            ],
+            workflow_devices=[workflow_device],
             warnings=result.warnings,
         )
 
@@ -439,6 +486,19 @@ async def test_finalize_workspace_on_cv_non_streaming_device_unforced(
             force=False,
         )
     )
+    workflow_device = WorkflowDevice.from_avd_input(
+        avd_input=AvdDevice(
+            hostname="avd-ci-leaf1",
+            serial_number="13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
+            system_mac_address="50:00:00:72:8b:31",
+        )
+    )
+    # mimic device represented by workflow_device exists in CV Inventory, not streaming
+    # and we able to retrieve serial_number, system_mac_address from CV Inventory
+    workflow_device.serial_number = "13C20F1EDCCED2D85F6DB2FB9E3AC5B6"
+    workflow_device.system_mac_address = "50:00:00:72:8b:31"
+    workflow_device.in_cv_inventory = True
+    workflow_device.streaming = False
 
     with (
         caplog.at_level(INFO),
@@ -454,18 +514,9 @@ async def test_finalize_workspace_on_cv_non_streaming_device_unforced(
         await finalize_workspace_on_cv(
             workspace=result.workspace,
             cv_client=cv_client,
-            devices=[
-                CVDevice(
-                    hostname="avd-ci-leaf1",
-                    serial_number="50:00:00:72:8b:31",
-                    system_mac_address="13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
-                    _exists_on_cv=True,
-                    _streaming=False,
-                )
-            ],
+            workflow_devices=[workflow_device],
             warnings=result.warnings,
         )
-
     # Assert that exception value contains all expected exception patterns
     for expected_pattern in ["Failed to submit CloudVision Workspace due to the presence of inactive devices: \\['avd-ci-leaf1.*"]:
         assert re.search(re.compile(expected_pattern), str(exception_info.value))
@@ -537,19 +588,23 @@ async def test_finalize_workspace_on_cv_non_streaming_device_forced(
                 force=True,
             )
         )
-
+        workflow_device = WorkflowDevice.from_avd_input(
+            avd_input=AvdDevice(
+                hostname="avd-ci-leaf1",
+                serial_number="13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
+                system_mac_address="50:00:00:72:8b:31",
+            )
+        )
+        # mimic device represented by workflow_device exists in CV Inventory, not streaming
+        # and we able to retrieve serial_number, system_mac_address from CV Inventory
+        workflow_device.serial_number = "13C20F1EDCCED2D85F6DB2FB9E3AC5B6"
+        workflow_device.system_mac_address = "50:00:00:72:8b:31"
+        workflow_device.in_cv_inventory = True
+        workflow_device.streaming = False
         await finalize_workspace_on_cv(
             workspace=result.workspace,
             cv_client=cv_client,
-            devices=[
-                CVDevice(
-                    hostname="avd-ci-leaf1",
-                    serial_number="50:00:00:72:8b:31",
-                    system_mac_address="13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
-                    _exists_on_cv=True,
-                    _streaming=False,
-                )
-            ],
+            workflow_devices=[workflow_device],
             warnings=result.warnings,
         )
 

@@ -13,7 +13,14 @@ from contextlib import nullcontext as does_not_raise
 import pytest
 
 from pyavd._cv.client.exceptions import CVDuplicatedDevices
-from pyavd._cv.workflows.models import AvdDevice, AvdEosConfig, AvdPathfinderMetadata, CVDevice
+from pyavd._cv.workflows.models import (
+    AvdDevice,
+    AvdDeviceTag,
+    AvdEosConfig,
+    AvdInterfaceTag,
+    AvdPathfinderMetadata,
+    CVDevice,
+)
 from pyavd._cv.workflows.verify_inputs import identify_duplicated_devices, verify_device_inputs
 
 ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
@@ -25,15 +32,27 @@ def generate_mock_avd_device(
     system_mac_address: str | None = None,
 ) -> AvdDevice:
     # Generate AvdDevice instance set with hostname, serial_number and system_mac_address.
-    # Rest of the attributes are set as empty.
     return AvdDevice(
         hostname=hostname,
         serial_number=serial_number,
         system_mac_address=system_mac_address,
-        config=AvdEosConfig(file=""),
-        device_tags=tuple(),  # noqa: C408
-        interface_tags=tuple(),  # noqa: C408
-        pathfinder_metadata=AvdPathfinderMetadata(metadata={}),
+    )
+
+
+def generate_mock_avd_device_with_deploy_inputs(
+    hostname: str,
+    device_tags: tuple[AvdDeviceTag, ...] | None = None,
+    interface_tags: tuple[AvdInterfaceTag, ...] | None = None,
+    config: AvdEosConfig | None = None,
+    pathfinder_metadata: AvdPathfinderMetadata | None = None,
+) -> AvdDevice:
+    # Generate AvdDevice instance set with hostname and rest of deploy related inputs.
+    return AvdDevice(
+        hostname=hostname,
+        device_tags=device_tags if device_tags is not None else (),
+        interface_tags=interface_tags if interface_tags is not None else (),
+        config=config,
+        pathfinder_metadata=pathfinder_metadata,
     )
 
 

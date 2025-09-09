@@ -12,7 +12,7 @@ from unittest.mock import patch
 import pytest
 
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
-from pyavd._cv.workflows.models import CloudVision, CVEosConfig, CVWorkspace
+from pyavd._cv.workflows.models import AvdDevice, AvdEosConfig, CloudVision, CVWorkspace
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
     MOCKED_WORKSPACE_ID,
@@ -112,6 +112,10 @@ async def test_deploy_to_cv(
         temp_configlet_file.write("alias test test")
         temp_configlet_file.flush()
 
+        cv_device = next(iter(mocked_cvdevices(hostnames=["avd-ci-leaf2"])))
+        config = AvdEosConfig(file=temp_configlet_file.name, configlet_name="TEST_CONFIGLET_NAME")
+        avd_device = AvdDevice.from_device_input(cv_device=cv_device, config=config, device_tags=(), interface_tags=(), pathfinder_metadata=None)
+
         result = await deploy_to_cv(
             cloudvision=CloudVision(
                 servers="",
@@ -131,11 +135,7 @@ async def test_deploy_to_cv(
                 requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
                 force=workspace_force_submission,
             ),
-            configs=[
-                CVEosConfig(
-                    file=temp_configlet_file.name, device=next(iter(mocked_cvdevices(hostnames=["avd-ci-leaf2"]))), configlet_name="TEST_CONFIGLET_NAME"
-                )
-            ],
+            avd_devices=[avd_device],
         )
 
     # Assess result

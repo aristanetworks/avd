@@ -17,17 +17,9 @@ from .deploy_studio_inputs_to_cv import deploy_studio_inputs_to_cv
 from .deploy_tags_to_cv import deploy_tags_to_cv
 from .finalize_change_control_on_cv import finalize_change_control_on_cv
 from .finalize_workspace_on_cv import finalize_workspace_on_cv
-from .models import (
-    AvdDevice,
-    CloudVision,
-    CVChangeControl,
-    CVStudioInputs,
-    CVTimeOuts,
-    CVWorkspace,
-    DeployToCvResult,
-)
+from .models import AvdDevice, CloudVision, CVChangeControl, CVStudioInputs, CVTimeOuts, CVWorkspace, DeployToCvResult, WorkflowDevice
 from .verify_devices_on_cv import verify_devices_on_cv
-from .verify_inputs import build_internal_device_inputs, verify_device_inputs
+from .verify_inputs import verify_device_inputs
 
 if TYPE_CHECKING:
     from .models import AvdManifest
@@ -54,7 +46,7 @@ async def deploy_to_cv(
     - The device must be present in the CloudVision Inventory and onboarded to the "Inventory & Topology Studio".
         - TODO: See if we can onboard ZTP devices and/or preprovision.
     - The hostname will we updated in the I&T Studio.
-    - The `serial_number` and `system_mac_address` properties will be inplace updated in the interim InternalDevice objects.
+    - The `serial_number` and `system_mac_address` properties will be in-place updated in the given CVDevice objects.
 
     TODO: Respect timeouts and add more.
 
@@ -67,7 +59,8 @@ async def deploy_to_cv(
             It is not supported to reuse an existing Change Control, so the `id` field should not be set in the given CVChangeControl object. \
             The `id` and `state` properties will be inplace updated in the given CVChangeControl object.
         avd_devices: AvdDevice objects representing device info, config, device/interface tags and CVPathfinderMetaData. \
-            This signifies read-only input from AVD intended to be deployed to CV.
+            This signifies read-only input from AVD intended to be deployed to CV. \
+            CVPathfinderMetaData represents special metadata for CV Pathfinder solution. Metadata will be combined and deployed to the hidden metadata studio.
         studio_inputs: Studio Inputs to be deployed. \
             It is not supported to update overlapping input paths for the same studio in the same deployment.
         skip_missing_devices: If `True` anything that can be deployed will get deployed. \
@@ -138,44 +131,28 @@ async def deploy_to_cv(
             # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
             verify_device_inputs(avd_devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
 
-            # Form list of InternalDevice instance from given list of input AvdDevice instance.
-            # We will be then passing list of InternalDevice instance to rest of the wrappers
-            # to help identify changes to be done on CV side and in-place update relevant members of InternalDevice instance.
-            internal_devices = build_internal_device_inputs(avd_devices)
-            LOGGER.debug("deploy_to_cv(): built %s internal devices from inputs", len(internal_devices))
+            # Form list of WorkflowDevice instance from given list of input AvdDevice instance.
+            # We will be then passing list of WorkflowDevice instance to rest of the wrappers
+            # to help identify changes to be done on CV side.
+            workflow_devices = [WorkflowDevice.from_avd_input(avd_device) for avd_device in avd_devices]
+            LOGGER.debug("deploy_to_cv(): built %s internal devices from inputs", len(workflow_devices))
 
             try:
                 # Verify devices exist and update CVDevice objects with _exists_on_cv.
                 # Depending on skip_missing_devices we will raise or skip missing devices.
                 await verify_devices_on_cv(
-                    internal_devices=internal_devices,
+                    workflow_devices=workflow_devices,
                     workspace_id=result.workspace.id,
                     skip_missing_devices=skip_missing_devices,
                     warnings=result.warnings,
                     cv_client=cv_client,
                 )
 
-                # Deploy device tags
+                # Deploy device and interface tags
                 await deploy_tags_to_cv(
-                    tag_type="device",
-                    internal_devices=internal_devices,
-                    workspace=result.workspace,
+                    workflow_devices=workflow_devices,
+                    workspace_id=result.workspace.id,
                     strict=strict_tags,
-                    skipped_tags=result.skipped_device_tags,
-                    deployed_tags=result.deployed_device_tags,
-                    removed_tags=result.removed_device_tags,
-                    cv_client=cv_client,
-                )
-
-                # Deploy interface tags
-                await deploy_tags_to_cv(
-                    tag_type="interface",
-                    internal_devices=internal_devices,
-                    workspace=result.workspace,
-                    strict=strict_tags,
-                    skipped_tags=result.skipped_interface_tags,
-                    deployed_tags=result.deployed_interface_tags,
-                    removed_tags=result.removed_interface_tags,
                     cv_client=cv_client,
                 )
 
@@ -183,8 +160,8 @@ async def deploy_to_cv(
                 # TODO: Check if we want to consolidate and use the new deploy_static_config_studio_manifest_to_cv
                 #       by building a hierarchy from the CVEosConfig objects.
                 await deploy_configs_to_cv(
-                    internal_devices=internal_devices,
-                    result=result,
+                    workflow_devices=workflow_devices,
+                    workspace_id=result.workspace.id,
                     cv_client=cv_client,
                 )
 
@@ -200,16 +177,20 @@ async def deploy_to_cv(
                 # Deploy Studio Inputs
                 await deploy_studio_inputs_to_cv(
                     studio_inputs=studio_inputs,
-                    result=result,
+                    deployment_result=result,
                     cv_client=cv_client,
                 )
 
                 # Deploy CV Pathfinder metadata
                 await deploy_cv_pathfinder_metadata_to_cv(
-                    internal_devices=internal_devices,
-                    result=result,
+                    workflow_devices=workflow_devices,
+                    workspace_id=result.workspace.id,
+                    warnings=result.warnings,
                     cv_client=cv_client,
                 )
+
+                # Gather per-device result from each workflow device and set within overall result
+                result.update_from_workflow_devices(workflow_devices=workflow_devices)
 
             except CVClientException as e:
                 result.errors.append(e)
@@ -221,7 +202,7 @@ async def deploy_to_cv(
                 result.workspace.state = "abandoned"
                 return result
 
-            await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=devices, warnings=result.warnings)
+            await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, workflow_devices=workflow_devices, warnings=result.warnings)
 
             # Create/update CVChangeControl object with ID created by workspace.
             if result.workspace.change_control_id is not None:

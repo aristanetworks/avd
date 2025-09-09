@@ -12,7 +12,7 @@ from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmi
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
 
-    from .models import CVDevice, CVWorkspace
+    from .models import WorkflowDevice, CVWorkspace
 
 LOGGER = getLogger(__name__)
 
@@ -26,7 +26,7 @@ WORKSPACE_STATE_TO_FINAL_STATE_MAP = {
 }
 
 
-async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, devices: list[CVDevice], warnings: list) -> None:
+async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, workflow_devices: list[WorkflowDevice], warnings: list) -> None:
     """
     Finalize a Workspace from the given result.CVWorkspace object.
 
@@ -66,7 +66,7 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient, 
             request_id=workspace_config.request_params.request_id,
         )
         # Form a list of known inactive existing devices
-        if inactive_devices := [f"{device.hostname} ({device.serial_number})" for device in devices if device._streaming is False]:
+        if inactive_devices := [f"{device.input.hostname} ({device.serial_number})" for device in workflow_devices if device.streaming is False]:
             msg = f"Inactive devices present: {inactive_devices}"
             warnings.append(msg)
         if submit_result.status != ResponseStatus.SUCCESS:

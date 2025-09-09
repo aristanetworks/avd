@@ -11,11 +11,13 @@ from pyavd._cv.client.exceptions import CVResourceNotFound
 from pyavd._utils import get, get_v2
 from pyavd._utils.password_utils.password import simple_7_decrypt
 
+from .models import DeploymentStatus
+
 if TYPE_CHECKING:
     from pyavd._cv.api.arista.studio.v1 import InputSchema
     from pyavd._cv.client import CVClient
 
-    from .models import DeployToCvResult, InternalDevice
+    from .models import WorkflowDevice
 
 LOGGER = getLogger(__name__)
 
@@ -63,18 +65,18 @@ def is_zscaler_tunnel_endpoint_supported(studio_schema: InputSchema) -> bool:
     return bool(get_v2(studio_schema, "fields.values.serviceNodeEndpoint"))
 
 
-async def get_metadata_studio_schema(result: DeployToCvResult, cv_client: CVClient) -> InputSchema | None:
+async def get_metadata_studio_schema(workspace_id: str, warnings: list[str], cv_client: CVClient) -> InputSchema | None:
     """
     Download and return the input schema for the cv pathfinder metadata studio.
 
     Returns None if the metadata studio is not found.
     """
     try:
-        studio = await cv_client.get_studio(CV_PATHFINDER_METADATA_STUDIO_ID, result.workspace.id)
+        studio = await cv_client.get_studio(CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id)
     except CVResourceNotFound:
         warning = "deploy_cv_pathfinder_metadata_to_cv: Did not find metadata studio."
         LOGGER.info(warning)
-        result.warnings.append(warning)
+        warnings.append(warning)
         return None
 
     studio_schema: InputSchema = studio.input_schema
@@ -136,17 +138,17 @@ def update_general_metadata(metadata: dict, studio_inputs: dict, studio_schema: 
     return warnings
 
 
-def upsert_pathfinder(internal_device: InternalDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
+def upsert_pathfinder(workflow_device: WorkflowDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
     """
     In-place insert / update metadata for one pathfinder device in studio_inputs.
 
     Returns any warnings raised.
     """
-    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_pathfinder %s", internal_device.avd_device.hostname)
+    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_pathfinder %s", workflow_device.input.hostname)
 
     warnings = []
 
-    metadata = internal_device.avd_device.pathfinder_metadata.metadata
+    metadata = workflow_device.pathfinder_metadata.input.metadata
 
     pathfinder_metadata = {
         "inputs": {
@@ -163,13 +165,13 @@ def upsert_pathfinder(internal_device: InternalDevice, studio_inputs: dict, stud
                                 "publicIp": interface.get("public_ip", ""),
                             },
                         },
-                        "tags": {"query": f"interface:{interface.get('name', '')}@{internal_device.serial_number}"},
+                        "tags": {"query": f"interface:{interface.get('name', '')}@{workflow_device.serial_number}"},
                     }
                     for interface in metadata.get("interfaces", [])
                 ],
             },
         },
-        "tags": {"query": f"device:{internal_device.serial_number}"},
+        "tags": {"query": f"device:{workflow_device.serial_number}"},
     }
 
     pathfinder_location = {key: metadata.get(key) for key in ("region", "site", "address")}
@@ -191,30 +193,30 @@ def upsert_pathfinder(internal_device: InternalDevice, studio_inputs: dict, stud
         if not isinstance(router, dict):
             continue
 
-        if get(router, "tags.query") == f"device:{internal_device.serial_number}":
+        if get(router, "tags.query") == f"device:{workflow_device.serial_number}":
             found_index = index
             break
 
     if found_index is None:
-        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: New pathfinder device, adding %s", internal_device.avd_device.hostname)
+        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: New pathfinder device, adding %s", workflow_device.input.hostname)
         studio_inputs_pathfinders.append(pathfinder_metadata)
     else:
-        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing pathfinder device, updating %s", internal_device.avd_device.hostname)
+        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing pathfinder device, updating %s", workflow_device.input.hostname)
         studio_inputs_pathfinders[found_index] = pathfinder_metadata
 
     return warnings
 
 
-def upsert_edge(internal_device: InternalDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
+def upsert_edge(workflow_device: WorkflowDevice, studio_inputs: dict, studio_schema: InputSchema) -> list[str]:
     """
     In-place insert / update metadata for one edge device in studio_inputs.
 
     Returns any warnings raised.
     """
-    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_edge %s", internal_device.avd_device.hostname)
+    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: upsert_edge %s", workflow_device.input.hostname)
 
     warnings = []
-    metadata = internal_device.avd_device.pathfinder_metadata.metadata
+    metadata = workflow_device.pathfinder_metadata.input.metadata
     edge_metadata = {
         "inputs": {
             "router": {
@@ -233,16 +235,16 @@ def upsert_edge(internal_device: InternalDevice, studio_inputs: dict, studio_sch
                                 "pathgroup": interface.get("pathgroup", ""),
                             },
                         },
-                        "tags": {"query": f"interface:{interface.get('name', '')}@{internal_device.serial_number}"},
+                        "tags": {"query": f"interface:{interface.get('name', '')}@{workflow_device.serial_number}"},
                     }
                     for interface in metadata.get("interfaces", [])
                 ],
                 "zone": metadata.get("zone", ""),
             },
         },
-        "tags": {"query": f"device:{internal_device.serial_number}"},
+        "tags": {"query": f"device:{workflow_device.serial_number}"},
     }
-    internet_exit_metadata, ie_warnings = generate_internet_exit_metadata(internal_device, studio_schema)
+    internet_exit_metadata, ie_warnings = generate_internet_exit_metadata(workflow_device, studio_schema)
     warnings.extend(ie_warnings)
     if internet_exit_metadata:
         edge_metadata["inputs"]["router"]["services"] = internet_exit_metadata
@@ -257,21 +259,21 @@ def upsert_edge(internal_device: InternalDevice, studio_inputs: dict, studio_sch
         if not isinstance(router, dict):
             continue
 
-        if get(router, "tags.query") == f"device:{internal_device.serial_number}":
+        if get(router, "tags.query") == f"device:{workflow_device.serial_number}":
             found_index = index
             break
 
     if found_index is None:
-        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: New edge/transit device, adding %s", internal_device.avd_device.hostname)
+        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: New edge/transit device, adding %s", workflow_device.input.hostname)
         studio_inputs_routers.append(edge_metadata)
     else:
-        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing edge/transit device, updating %s", internal_device.avd_device.hostname)
+        LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing edge/transit device, updating %s", workflow_device.input.hostname)
         studio_inputs_routers[found_index] = edge_metadata
 
     return warnings
 
 
-async def deploy_cv_pathfinder_metadata_to_cv(internal_devices: list[InternalDevice], result: DeployToCvResult, cv_client: CVClient) -> None:
+async def deploy_cv_pathfinder_metadata_to_cv(workflow_devices: list[WorkflowDevice], workspace_id: str, warnings: list[str], cv_client: CVClient) -> None:
     """
     Deploy given CV Pathfinder metadata within each device.
 
@@ -343,49 +345,28 @@ async def deploy_cv_pathfinder_metadata_to_cv(internal_devices: list[InternalDev
         vni: 100
     ```
     """
-    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Got %s devices for deploying Pathfinder metadata", len(internal_devices))
-
-    if not internal_devices:
+    if not workflow_devices:
         return
 
-    if (studio_schema := await get_metadata_studio_schema(result, cv_client)) is None:
-        return
-
-    # Get existing studio inputs
-    existing_studio_inputs = await cv_client.get_studio_inputs(
-        studio_id=CV_PATHFINDER_METADATA_STUDIO_ID,
-        workspace_id=result.workspace.id,
-        default_value=CV_PATHFINDER_DEFAULT_STUDIO_INPUTS,
-    )
-    studio_inputs = deepcopy(existing_studio_inputs)
-    if not isinstance(studio_inputs, dict):
-        # Resetting studio inputs to an empty dict in case we received a wrong type (like None)
-        studio_inputs = {}
-
-    # Walk through devices checking for metadata, skip missing devices or invalid roles.
+    # Walk through workflow devices checking for metadata, skip missing devices or invalid roles.
     # Sort between edges (including transit) and pathfinders
-    edges_in_internal_devices: list[InternalDevice] = []
-    pathfinders_in_internal_devices: list[InternalDevice] = []
-    for device in internal_devices:
-        # cv_workflow plugin ensures device.avd_device.pathfinder_metadata is always set.
-        # 'metadata' member itself could be empty dict when there is no metadata applicable.
-        # TODO: Should we just continue if 'device.avd_device.pathfinder_metadata.metadata' is empty?
-        # i.e. not account this towards skipped.
-
+    edges_in_workflow_devices: list[WorkflowDevice] = []
+    pathfinders_in_workflow_devices: list[WorkflowDevice] = []
+    for device in workflow_devices:
         if not device.in_cv_inventory:
             LOGGER.info(
                 "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since the device is not found on CV.",
-                device.avd_device.hostname,
+                device.input.hostname,
             )
-            result.skipped_cv_pathfinder_metadata.append(device.get_cv_pathfinder_metadata())
-            device.result.pathfinder_metadata.skipped.append(device.avd_device.pathfinder_metadata)
+            if device.pathfinder_metadata is not None:
+                device.pathfinder_metadata.status = DeploymentStatus.SKIPPED
             continue
 
-        if not device.avd_device.pathfinder_metadata.metadata:
-            # no CV pathfinder metadata within input for this device, implies no-op
+        if not device.pathfinder_metadata:
+            # no CV pathfinder metadata workflow object for this device, implies no-op
             continue
 
-        device_role = get(device.avd_device.pathfinder_metadata.metadata, "role")
+        device_role = get(device.pathfinder_metadata.input.metadata, "role")
 
         if device_role in ["edge", "transit region"]:
             LOGGER.info(
@@ -393,40 +374,61 @@ async def deploy_cv_pathfinder_metadata_to_cv(internal_devices: list[InternalDev
                 device.serial_number,
                 device_role,
             )
-            edges_in_internal_devices.append(device)
-
+            edges_in_workflow_devices.append(device)
         elif device_role == "pathfinder":
             LOGGER.info(
                 "deploy_cv_pathfinder_metadata_to_cv: Adding metadata for device '%s' as role '%s'.",
                 device.serial_number,
                 device_role,
             )
-            pathfinders_in_internal_devices.append(device)
+            pathfinders_in_workflow_devices.append(device)
         else:
             LOGGER.info(
                 "deploy_cv_pathfinder_metadata_to_cv: Skipping metadata for device '%s' since role '%s' is not supported.",
                 device.serial_number,
                 device_role,
             )
-            result.skipped_cv_pathfinder_metadata.append(device.get_cv_pathfinder_metadata())
-            device.result.pathfinder_metadata.skipped.append(device.avd_device.pathfinder_metadata)
+            device.pathfinder_metadata.status = DeploymentStatus.SKIPPED
             continue
 
-    if pathfinders_in_internal_devices:
+    if len(pathfinders_in_workflow_devices + edges_in_workflow_devices) == 0:
+        # no devices with pathfinder metadata related changes to be deployed
+        return
+
+    LOGGER.info(
+        "deploy_cv_pathfinder_metadata_to_cv: Got %s devices for deploying Pathfinder metadata",
+        len(pathfinders_in_workflow_devices + edges_in_workflow_devices),
+    )
+
+    if (studio_schema := await get_metadata_studio_schema(workspace_id, warnings, cv_client)) is None:
+        return
+
+    # Get existing studio inputs
+    existing_studio_inputs = await cv_client.get_studio_inputs(
+        studio_id=CV_PATHFINDER_METADATA_STUDIO_ID,
+        workspace_id=workspace_id,
+        default_value=CV_PATHFINDER_DEFAULT_STUDIO_INPUTS,
+    )
+    studio_inputs = deepcopy(existing_studio_inputs)
+    if not isinstance(studio_inputs, dict):
+        # Resetting studio inputs to an empty dict in case we received a wrong type (like None)
+        studio_inputs = {}
+
+    if pathfinders_in_workflow_devices:
         # All pathfinders must have the same be general metadata, so we just set it in the studio based on the first one.
-        pf_metadata_copy = deepcopy(pathfinders_in_internal_devices[0].avd_device.pathfinder_metadata.metadata)
+        pf_metadata_copy = deepcopy(pathfinders_in_workflow_devices[0].pathfinder_metadata.input.metadata)
         # Note: allow update_general_metadata() to work on copy of metadata since it does in-place update.
         # Avoid modifying metadata inputs received from AVD.
-        result.warnings.extend(update_general_metadata(metadata=pf_metadata_copy, studio_inputs=studio_inputs, studio_schema=studio_schema))
+        warnings.extend(update_general_metadata(metadata=pf_metadata_copy, studio_inputs=studio_inputs, studio_schema=studio_schema))
 
-    for pathfinder in pathfinders_in_internal_devices:
-        result.warnings.extend(
-            upsert_pathfinder(internal_device=pathfinder, studio_inputs=studio_inputs, studio_schema=studio_schema),
+    for pathfinder in pathfinders_in_workflow_devices:
+        warnings.extend(
+            upsert_pathfinder(workflow_device=pathfinder, studio_inputs=studio_inputs, studio_schema=studio_schema),
         )
 
-    for edge in edges_in_internal_devices:
-        result.warnings.extend(
-            upsert_edge(internal_device=edge, studio_inputs=studio_inputs, studio_schema=studio_schema),
+    for edge in edges_in_workflow_devices:
+        warnings.extend(
+            upsert_edge(workflow_device=edge, studio_inputs=studio_inputs, studio_schema=studio_schema),
         )
 
     if studio_inputs != existing_studio_inputs:
@@ -435,15 +437,14 @@ async def deploy_cv_pathfinder_metadata_to_cv(internal_devices: list[InternalDev
             len(existing_studio_inputs),
             len(studio_inputs),
         )
-        await cv_client.set_studio_inputs(studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=result.workspace.id, inputs=studio_inputs)
+        await cv_client.set_studio_inputs(studio_id=CV_PATHFINDER_METADATA_STUDIO_ID, workspace_id=workspace_id, inputs=studio_inputs)
 
-    for device in pathfinders_in_internal_devices + edges_in_internal_devices:
+    for device in pathfinders_in_workflow_devices + edges_in_workflow_devices:
         # Note: result will not include any updates to metadata, just original input metadata from AVD.
-        result.deployed_cv_pathfinder_metadata.append(device.get_cv_pathfinder_metadata())
-        device.result.pathfinder_metadata.added.append(device.avd_device.pathfinder_metadata)
+        device.pathfinder_metadata.status = DeploymentStatus.DEPLOYED
 
 
-def generate_internet_exit_metadata(internal_device: InternalDevice, studio_schema: InputSchema) -> tuple[dict, list[str]]:
+def generate_internet_exit_metadata(workflow_device: WorkflowDevice, studio_schema: InputSchema) -> tuple[dict, list[str]]:
     """
     Generate internet-exit related metadata for one device.
 
@@ -451,14 +452,14 @@ def generate_internet_exit_metadata(internal_device: InternalDevice, studio_sche
 
     Returns metadata dict and list of any warnings raised.
     """
-    if (internet_exit_policies := get(internal_device.avd_device.pathfinder_metadata.metadata, "internet_exit_policies")) is None:
-        LOGGER.debug("deploy_cv_pathfinder_metadata_to_cv: Did not find 'internet_exit_policies' for device: %s", internal_device.avd_device.hostname)
+    if (internet_exit_policies := get(workflow_device.pathfinder_metadata.input.metadata, "internet_exit_policies")) is None:
+        LOGGER.debug("deploy_cv_pathfinder_metadata_to_cv: Did not find 'internet_exit_policies' for device: %s", workflow_device.input.hostname)
         return {}, []
 
     LOGGER.info(
         "deploy_cv_pathfinder_metadata_to_cv: Found %s 'internet_exit_policies' for device: %s",
         len(internet_exit_policies),
-        internal_device.avd_device.hostname,
+        workflow_device.input.hostname,
     )
 
     services_dict = {}
@@ -469,7 +470,7 @@ def generate_internet_exit_metadata(internal_device: InternalDevice, studio_sche
         if internet_exit_policy.get("type") not in ["zscaler", "direct"]:
             warning = (
                 f"deploy_cv_pathfinder_metadata_to_cv: Ignoring unsupported internet exit policy '{internet_exit_policies.get('name')}' "
-                f"with type '{internet_exit_policy.get('type')}' for device: {internal_device.avd_device.hostname}."
+                f"with type '{internet_exit_policy.get('type')}' for device: {workflow_device.input.hostname}."
             )
             LOGGER.info(warning)
             warnings.append(warning)
@@ -489,8 +490,8 @@ def generate_internet_exit_metadata(internal_device: InternalDevice, studio_sche
         services_dict.setdefault("zscaler", {"locations": [], "tunnels": []})
 
         zscaler_location = {
-            "name": f"{internal_device.avd_device.hostname}_{policy_name}",
-            "description": f"Location corresponding to {internal_device.avd_device.hostname} for internet-exit policy {policy_name}.",
+            "name": f"{workflow_device.input.hostname}_{policy_name}",
+            "description": f"Location corresponding to {workflow_device.input.hostname} for internet-exit policy {policy_name}.",
             "city": internet_exit_policy["city"],
             "country": internet_exit_policy["country"],
             "uploadBandwidth": internet_exit_policy.get("upload_bandwidth"),
@@ -504,7 +505,7 @@ def generate_internet_exit_metadata(internal_device: InternalDevice, studio_sche
         for vpn_credential in internet_exit_policy["vpn_credentials"]:
             zscaler_vpn_credential = {
                 "fqdn": vpn_credential["fqdn"],
-                "comments": f"Credential for {internal_device.avd_device.hostname} internet-exit policy {policy_name}",
+                "comments": f"Credential for {workflow_device.input.hostname} internet-exit policy {policy_name}",
                 "vpnType": vpn_credential["vpn_type"],
             }
             if is_zscaler_tunnel_key_encryption_supported(studio_schema):
