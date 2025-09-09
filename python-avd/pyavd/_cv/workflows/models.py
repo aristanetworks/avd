@@ -204,6 +204,15 @@ class AvdConfiglet:
     name: str
     file: str
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> AvdConfiglet:
+        """Build an AvdConfiglet instance from an input dictionary."""
+        try:
+            return cls(**data)
+        except (KeyError, TypeError) as e:
+            msg = f"Invalid configlet definition: {data}. Error: {e}"
+            raise ValueError(msg) from e
+
 
 @dataclass(frozen=True)
 class AvdContainer:
@@ -257,7 +266,7 @@ class AvdManifest:
             configlets_data = data.get("configlets", [])
             containers_data = data.get("containers", [])
 
-            configlets = tuple(AvdConfiglet(**configlet_data) for configlet_data in configlets_data)
+            configlets = tuple(AvdConfiglet.from_dict(configlet_data) for configlet_data in configlets_data)
             containers = tuple(AvdContainer.from_dict(container_data) for container_data in containers_data)
 
             return cls(configlets=configlets, containers=containers)

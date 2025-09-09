@@ -48,7 +48,7 @@ ARGUMENT_SPEC = {
     "configuration_dir": {"type": "str", "required": True},
     "structured_config_dir": {"type": "str", "required": False},
     "structured_config_suffix": {"type": "str", "default": "yml"},
-    "device_list": {"type": "list", "elements": "str", "required": True},
+    "device_list": {"type": "list", "elements": "str", "required": False},
     "strict_tags": {"type": "bool", "required": False, "default": False},
     "skip_missing_devices": {"type": "bool", "required": False, "default": False},
     "strict_system_mac_address": {"type": "bool", "required": False, "default": False},
@@ -81,7 +81,7 @@ ARGUMENT_SPEC = {
             "change_control_creation_timeout": {"type": "float", "default": CVTimeOuts.change_control_creation_timeout if HAS_PYAVD else 300.0},
         },
     },
-    "static_config_studio": {
+    "static_config_manifest": {
         "type": "dict",
         "options": {
             "containers": {"type": "list", "elements": "dict", "required": False},
@@ -139,7 +139,7 @@ class ActionModule(ActionBase):
             )
 
             # Build Static Config Studio manifest if necessary.
-            static_config_manifest = AvdManifest.from_dict(validated_args["static_config_studio"]) if "static_config_studio" in validated_args else None
+            static_config_manifest = AvdManifest.from_dict(validated_args["static_config_manifest"]) if "static_config_manifest" in validated_args else None
 
             # Add return data if relevant.
             if validated_args["return_details"]:
@@ -188,7 +188,7 @@ class ActionModule(ActionBase):
                 result_object.warnings.extend(result.get("warnings", []))
             else:
                 result_object = DeployToCvResult(workspace=None)
-                result["notes"] = ["No configuration, tags, or static config manifest found to deploy."]
+                result["notes"] = ["No configurations, tags, or static config manifest found to deploy."]
 
             # Add either all return data or only warnings, errors, failed.
             if validated_args["return_details"]:
@@ -217,8 +217,7 @@ class ActionModule(ActionBase):
                 result_object.removed_device_tags,
                 result_object.removed_interface_tags,
             ]
-            if any(change_indicators):
-                result["changed"] = True
+            result["changed"] = any(change_indicators)
 
         except Exception as error:
             # Recast errors as AnsibleActionFail
