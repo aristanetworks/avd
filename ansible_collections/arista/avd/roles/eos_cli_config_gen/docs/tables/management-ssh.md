@@ -12,10 +12,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;empty_passwords</samp>](## "management_ssh.authentication.empty_passwords") | String |  |  | Valid Values:<br>- <code>auto</code><br>- <code>deny</code><br>- <code>permit</code> | Permit or deny empty passwords for SSH authentication. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "management_ssh.authentication.protocols") | List, items: String |  |  |  | Allowed SSH authentication methods. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_ssh.authentication.protocols.[]") | String |  |  | Valid Values:<br>- <code>keyboard-interactive</code><br>- <code>password</code><br>- <code>public-key</code> |  |
-    | [<samp>&nbsp;&nbsp;access_groups</samp>](## "management_ssh.access_groups") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ip_access_group_in or vrfs.ip_access_group_in</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;ipv6_access_groups</samp>](## "management_ssh.ipv6_access_groups") <span style="color:red">removed</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ipv6_access_group_in or vrfs.ipv6_access_group_in</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_ssh.ipv6_access_groups.[].name") | String |  |  |  | Standard ACL Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_ssh.ipv6_access_groups.[].vrf") | String |  |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;ip_access_group_in</samp>](## "management_ssh.ip_access_group_in") | String |  |  |  | Standard ACL Name. |
     | [<samp>&nbsp;&nbsp;ipv6_access_group_in</samp>](## "management_ssh.ipv6_access_group_in") | String |  |  |  | Standard IPv6 ACL Name. |
     | [<samp>&nbsp;&nbsp;idle_timeout</samp>](## "management_ssh.idle_timeout") | Integer |  |  | Min: 0<br>Max: 86400 | Idle timeout in minutes. |
@@ -44,6 +40,8 @@
     | [<samp>&nbsp;&nbsp;client_alive</samp>](## "management_ssh.client_alive") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;count_max</samp>](## "management_ssh.client_alive.count_max") | Integer |  |  | Min: 1<br>Max: 1000 | Number of keep-alive packets that can be sent without a response before the connection is assumed dead. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "management_ssh.client_alive.interval") | Integer |  |  | Min: 1<br>Max: 1000 | Time period (in seconds) to send SSH keep-alive packets. |
+    | [<samp>&nbsp;&nbsp;access_groups</samp>](## "management_ssh.access_groups") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ip_access_group_in or vrfs.ip_access_group_in</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;ipv6_access_groups</samp>](## "management_ssh.ipv6_access_groups") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ipv6_access_group_in or vrfs.ipv6_access_group_in</samp> instead.</span> |
 
 === "YAML"
 
