@@ -78,8 +78,8 @@ options:
       configlets:
         description: |-
           A list of dictionaries defining configlets to be pushed to the Configlet Library.
-          Each dictionary in the list must follow this data model:
 
+          Each dictionary in the list must follow this data model:
           - **name** (`str`, required): Unique name for the configlet.
           - **file** (`str`, required): Filesystem path to the text file containing the configlet body.
         type: list
@@ -87,8 +87,8 @@ options:
       containers:
         description: |-
           A list of dictionaries defining the root containers in the hierarchy.
-          Each dictionary in the list must follow this data model:
 
+          Each dictionary in the list must follow this data model:
           - **name** (`str`, required): Name for the container. Sibling containers must have unique names.
           - **tag_query** (`str`, required): A query string used to match devices based on their assigned tags.
           - **description** (`str`, optional): An optional description for the container.
