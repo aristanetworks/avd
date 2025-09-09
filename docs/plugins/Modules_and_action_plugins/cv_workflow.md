@@ -23,8 +23,8 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 - Verify Devices are in the Inventory &amp; Topology Studio.
 - Update the Device hostname in the Inventory &amp; Topology Studio as needed.
 - Create Workspace and build, submit, abandon as needed.
-- Deploy device-specific EOS configurations using &#34;Static Configlet Studio&#34;.
-- Deploy a full hierarchy of containers and configlets using &#34;Static Configlet Studio&#34;.
+- Deploy device-specific EOS configurations using Static Configuration Studio.
+- Deploy a full hierarchy of containers and configlets using Static Configuration Studio.
 - Create and associate Device and Interface Tags.
 - Approve, run, cancel Change Controls as needed.
 
@@ -43,9 +43,9 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>skip_missing_devices</samp> | bool | optional | False |  | If `true` anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue. |
 | <samp>strict_system_mac_address</samp> | bool | optional | False |  | If `true`, raise an exception if the input data contains devices with a duplicated system_mac_address but unique serial_number values.<br>Otherwise, just issue a warning. |
 | <samp>configlet_name_template</samp> | str | optional | AVD-${hostname} |  | Python String Template to use for creating the configlet name for each device configuration. |
-| <samp>static_config_manifest</samp> | dict | optional | None |  | Deploy a manifest of containers and configlets to CloudVision using the &#34;Static Configuration Studio&#34;. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;configlets</samp> | list | optional | None |  | A list of dictionaries defining static configlets.<br>Each dictionary must have a `name` (string) and a `file` (string) path pointing to its content. |
-| <samp>&nbsp;&nbsp;&nbsp;&nbsp;containers</samp> | list | optional | None |  | A list of dictionaries defining the root containers for the Static Configuration Studio.<br>Each container is a dictionary that can have a `name` (string), `description` (string, optional), `tag_query` (string), `match_policy` (string),<br>a list of `configlets` by name to apply, and a nested list of `sub_containers`.<br>The `sub_containers` follow the same data model, allowing for a full hierarchy. |
+| <samp>static_config_manifest</samp> | dict | optional | None |  | Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;configlets</samp> | list | optional | None |  | A list of dictionaries defining configlets to be pushed to the Configlet Library.<br>Each dictionary in the list must follow this data model:<br><br>- **name** (`str`, required): Unique name for the configlet.<br>- **file** (`str`, required): Filesystem path to the text file containing the configlet body. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;containers</samp> | list | optional | None |  | A list of dictionaries defining the root containers in the hierarchy.<br>Each dictionary in the list must follow this data model:<br><br>- **name** (`str`, required): Name for the container. Sibling containers must have unique names.<br>- **tag_query** (`str`, required): A query string used to match devices based on their assigned tags.<br>- **description** (`str`, optional): An optional description for the container.<br>- **match_policy** (`str`, optional, default: &#34;match_all&#34;): The match policy to determine how devices with a matching tag inherit<br>    a child container configlets. Valid choices are `match_all` or `match_first`.<br>- **configlets** (`list` of `str`, optional): A list of configlet names to apply to this container. Must be defined in the `configlets` section.<br>- **sub_containers** (`list` of `dict`, optional): A nested list of container dictionaries that follow this same data model,<br>    allowing for a full hierarchy. |
 | <samp>workspace</samp> | dict | optional | None |  | CloudVision Workspace to create or use for the deployment. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp> | str | optional | None |  | Optional name to use for the created Workspace. By default the name will be `AVD &lt;timestamp&gt;`. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp> | str | optional | None |  | Optional description to use for the created Workspace. |

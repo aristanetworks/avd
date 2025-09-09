@@ -15,8 +15,8 @@ description: |-
   - Verify Devices are in the Inventory & Topology Studio.
   - Update the Device hostname in the Inventory & Topology Studio as needed.
   - Create Workspace and build, submit, abandon as needed.
-  - Deploy device-specific EOS configurations using "Static Configlet Studio".
-  - Deploy a full hierarchy of containers and configlets using "Static Configlet Studio".
+  - Deploy device-specific EOS configurations using Static Configuration Studio.
+  - Deploy a full hierarchy of containers and configlets using Static Configuration Studio.
   - Create and associate Device and Interface Tags.
   - Approve, run, cancel Change Controls as needed.
 options:
@@ -72,21 +72,31 @@ options:
     type: str
     default: "AVD-${hostname}"
   static_config_manifest:
-    description: Deploy a manifest of containers and configlets to CloudVision using the "Static Configuration Studio".
+    description: Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio.
     type: dict
     suboptions:
       configlets:
         description: |-
-          A list of dictionaries defining static configlets.
-          Each dictionary must have a `name` (string) and a `file` (string) path pointing to its content.
+          A list of dictionaries defining configlets to be pushed to the Configlet Library.
+          Each dictionary in the list must follow this data model:
+
+          - **name** (`str`, required): Unique name for the configlet.
+          - **file** (`str`, required): Filesystem path to the text file containing the configlet body.
         type: list
         elements: dict
       containers:
         description: |-
-          A list of dictionaries defining the root containers for the Static Configuration Studio.
-          Each container is a dictionary that can have a `name` (string), `description` (string, optional), `tag_query` (string), `match_policy` (string),
-          a list of `configlets` by name to apply, and a nested list of `sub_containers`.
-          The `sub_containers` follow the same data model, allowing for a full hierarchy.
+          A list of dictionaries defining the root containers in the hierarchy.
+          Each dictionary in the list must follow this data model:
+
+          - **name** (`str`, required): Name for the container. Sibling containers must have unique names.
+          - **tag_query** (`str`, required): A query string used to match devices based on their assigned tags.
+          - **description** (`str`, optional): An optional description for the container.
+          - **match_policy** (`str`, optional, default: "match_all"): The match policy to determine how devices with a matching tag inherit
+              a child container configlets. Valid choices are `match_all` or `match_first`.
+          - **configlets** (`list` of `str`, optional): A list of configlet names to apply to this container. Must be defined in the `configlets` section.
+          - **sub_containers** (`list` of `dict`, optional): A nested list of container dictionaries that follow this same data model,
+              allowing for a full hierarchy.
         type: list
         elements: dict
   workspace:
