@@ -278,26 +278,28 @@ In addition to deploying device-specific configurations, the role allows for the
 
 ```yaml
 # A list of dictionaries defining configlets to be created in the Configlet Library.
+# Configlet names must be unique across all defined configlets.
 cv_studio_configlets:
   - name: <str>
     file: <str>
 
 # A list of dictionaries defining the root containers in the Static Configuration hierarchy.
+# Container names must be unique among sibling containers (at the same level).
 cv_studio_containers:
   - name: <str>
     description: <str, optional>
     tag_query: <str>
-    match_policy: <str, default="match_all">
+    match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
     configlets:
       - name: <str>
     sub_containers:
       - name: <str>
         description: <str, optional>
         tag_query: <str>
-        match_policy: <str, default="match_all">
+        match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
         configlets:
           - name: <str>
-        sub_containers: <list>
+        sub_containers: <list of containers>
 ```
 
 !!! tip "Manifest-Only Deployment"
