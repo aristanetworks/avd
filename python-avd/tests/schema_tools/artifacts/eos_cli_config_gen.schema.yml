@@ -7301,32 +7301,6 @@ keys:
               - password
               - public-key
             description: Allowed SSH authentication methods.
-      access_groups:
-        type: list
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Standard ACL Name.
-            vrf:
-              type: str
-              description: VRF Name.
-              convert_types:
-              - int
-      ipv6_access_groups:
-        type: list
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Standard ACL Name.
-            vrf:
-              type: str
-              description: VRF Name.
-              convert_types:
-              - int
       idle_timeout:
         type: int
         convert_types:
