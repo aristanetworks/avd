@@ -302,6 +302,9 @@ cv_studio_containers:
         sub_containers: <list of containers>
 ```
 
+!!! note "Root Containers Order"
+    When initially deploying or adding new root containers, the role places its managed root containers to the top of the Studio container tree. Please be aware that this automated ordering **may displace any containers you have manually arranged**. This effect is purely visual and does not change how configurations are applied to devices.
+
 !!! tip "Manifest-Only Deployment"
     To manage the Static Configuration Studio independently, you can run a "manifest-only" deployment. Simply provide an empty list for `cv_devices` (`cv_devices: []`).
 
