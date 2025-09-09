@@ -138,10 +138,6 @@ keys:
                 - int
             use_mgmt_interface_vrf:
               type: bool
-              description: |-
-                Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-                Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.
-                Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
               deprecation:
                 warning: true
                 removed: true
@@ -150,10 +146,6 @@ keys:
                   vrf: "use_mgmt_interface_vrf"
             use_inband_mgmt_vrf:
               type: bool
-              description: |-
-                Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
-                Ignored if inband management is not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.
-                Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure the SNMP host under multiple VRFs.
               deprecation:
                 warning: true
                 removed: true
@@ -174,10 +166,6 @@ keys:
         $ref: "eos_cli_config_gen#/keys/snmp_server/keys/traps"
       enable_mgmt_interface_vrf:
         type: bool
-        description: |-
-          Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
-          Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device.
-          Can be used in combination with "vrfs" and "enable_inband_mgmt_vrf".
         deprecation:
           warning: true
           removed: true
@@ -185,10 +173,6 @@ keys:
           new_key: vrfs[name="use_mgmt_interface_vrf"].enabled
       enable_inband_mgmt_vrf:
         type: bool
-        description: |-
-          Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
-          Ignored if inband management is not configured for the device.
-          Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".
         deprecation:
           warning: true
           removed: true
@@ -196,7 +180,6 @@ keys:
           new_key: vrfs[name="use_inband_mgmt_vrf"].enabled
       ipv4_acls:
         type: list
-        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/ipv4_acls"
         deprecation:
           warning: true
           removed: true
@@ -205,7 +188,6 @@ keys:
             vrfs[].ipv4_acl
       ipv6_acls:
         type: list
-        $ref: "eos_cli_config_gen#/keys/snmp_server/keys/ipv6_acls"
         deprecation:
           warning: true
           removed: true
