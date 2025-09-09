@@ -23,7 +23,8 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 - Verify Devices are in the Inventory &amp; Topology Studio.
 - Update the Device hostname in the Inventory &amp; Topology Studio as needed.
 - Create Workspace and build, submit, abandon as needed.
-- Deploy EOS configurations using &#34;Static Configlet Studio&#34;.
+- Deploy device-specific EOS configurations using &#34;Static Configlet Studio&#34;.
+- Deploy a full hierarchy of containers and configlets using &#34;Static Configlet Studio&#34;.
 - Create and associate Device and Interface Tags.
 - Approve, run, cancel Change Controls as needed.
 
@@ -37,11 +38,14 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>configuration_dir</samp> | str | True | None |  | Path to directory containing .cfg files with EOS configurations. |
 | <samp>structured_config_dir</samp> | str | False | None |  | Path to directory containing files with AVD structured configurations.<br>If found, the `serial_number` or `system_mac_address` will be used to identify the Device on CloudVision.<br>Any tags found in the structured configuration metadata will be applied to the Device and/or Interfaces. |
 | <samp>structured_config_suffix</samp> | str | optional | yml |  | File suffix for AVD structured configuration files. |
-| <samp>device_list</samp> | list | True | None |  | List of devices to deploy. The names are used to find AVD structured configuration and EOS configuration files. |
+| <samp>device_list</samp> | list | False | None |  | List of devices to deploy. The names are used to find AVD structured configuration and EOS configuration files. |
 | <samp>strict_tags</samp> | bool | optional | False |  | If `true` other tags associated with the devices will get removed. Otherwise other tags will be left as-is. |
 | <samp>skip_missing_devices</samp> | bool | optional | False |  | If `true` anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue. |
 | <samp>strict_system_mac_address</samp> | bool | optional | False |  | If `true`, raise an exception if the input data contains devices with a duplicated system_mac_address but unique serial_number values.<br>Otherwise, just issue a warning. |
 | <samp>configlet_name_template</samp> | str | optional | AVD-${hostname} |  | Python String Template to use for creating the configlet name for each device configuration. |
+| <samp>static_config_manifest</samp> | dict | optional | None |  | Deploy a manifest of containers and configlets to CloudVision using the &#34;Static Configuration Studio&#34;. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;configlets</samp> | list | optional | None |  | A list of dictionaries defining static configlets.<br>Each dictionary must have a `name` (string) and a `file` (string) path pointing to its content. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;containers</samp> | list | optional | None |  | A list of dictionaries defining the root containers for the Static Configuration Studio.<br>Each container is a dictionary that can have a `name` (string), `description` (string, optional), `tag_query` (string), `match_policy` (string),<br>a list of `configlets` by name to apply, and a nested list of `sub_containers`.<br>The `sub_containers` follow the same data model, allowing for a full hierarchy. |
 | <samp>workspace</samp> | dict | optional | None |  | CloudVision Workspace to create or use for the deployment. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp> | str | optional | None |  | Optional name to use for the created Workspace. By default the name will be `AVD &lt;timestamp&gt;`. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp> | str | optional | None |  | Optional description to use for the created Workspace. |
@@ -92,6 +96,23 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
         # skip_missing_devices: false
         # strict_system_mac_address: false
         # configlet_name_template: "AVD-${hostname}"
+        # static_config_manifest:
+        #   configlets:
+        #     - name: "GLOBAL_NTP_SERVERS"
+        #       file: "configlets/global_ntp.txt"
+        #     - name: "CORP_BANNER"
+        #       file: "configlets/corp_banner.txt"
+        #   containers:
+        #     - name: "Global"
+        #       tag_query: "device:*"
+        #       match_policy: "match_all"
+        #       configlets:
+        #         - name: "GLOBAL_NTP_SERVERS"
+        #       sub_containers:
+        #         - name: "Data Centers"
+        #           tag_query: "topology_network_type:datacenter"
+        #           configlets:
+        #             - name: "CORP_BANNER"
         workspace:
         #   name:
         #   description:

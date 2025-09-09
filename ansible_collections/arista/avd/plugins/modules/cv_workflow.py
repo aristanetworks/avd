@@ -15,7 +15,8 @@ description: |-
   - Verify Devices are in the Inventory & Topology Studio.
   - Update the Device hostname in the Inventory & Topology Studio as needed.
   - Create Workspace and build, submit, abandon as needed.
-  - Deploy EOS configurations using "Static Configlet Studio".
+  - Deploy device-specific EOS configurations using "Static Configlet Studio".
+  - Deploy a full hierarchy of containers and configlets using "Static Configlet Studio".
   - Create and associate Device and Interface Tags.
   - Approve, run, cancel Change Controls as needed.
 options:
@@ -50,7 +51,7 @@ options:
   device_list:
     description: List of devices to deploy. The names are used to find AVD structured configuration and EOS configuration files.
     type: list
-    required: true
+    required: false
     elements: str
   strict_tags:
     description: If `true` other tags associated with the devices will get removed. Otherwise other tags will be left as-is.
@@ -70,6 +71,24 @@ options:
     description: Python String Template to use for creating the configlet name for each device configuration.
     type: str
     default: "AVD-${hostname}"
+  static_config_manifest:
+    description: Deploy a manifest of containers and configlets to CloudVision using the "Static Configuration Studio".
+    type: dict
+    suboptions:
+      configlets:
+        description: |-
+          A list of dictionaries defining static configlets.
+          Each dictionary must have a `name` (string) and a `file` (string) path pointing to its content.
+        type: list
+        elements: dict
+      containers:
+        description: |-
+          A list of dictionaries defining the root containers for the Static Configuration Studio.
+          Each container is a dictionary that can have a `name` (string), `description` (string, optional), `tag_query` (string), `match_policy` (string),
+          a list of `configlets` by name to apply, and a nested list of `sub_containers`.
+          The `sub_containers` follow the same data model, allowing for a full hierarchy.
+        type: list
+        elements: dict
   workspace:
     description: CloudVision Workspace to create or use for the deployment.
     type: dict
@@ -175,6 +194,23 @@ EXAMPLES = r"""
         # skip_missing_devices: false
         # strict_system_mac_address: false
         # configlet_name_template: "AVD-${hostname}"
+        # static_config_manifest:
+        #   configlets:
+        #     - name: "GLOBAL_NTP_SERVERS"
+        #       file: "configlets/global_ntp.txt"
+        #     - name: "CORP_BANNER"
+        #       file: "configlets/corp_banner.txt"
+        #   containers:
+        #     - name: "Global"
+        #       tag_query: "device:*"
+        #       match_policy: "match_all"
+        #       configlets:
+        #         - name: "GLOBAL_NTP_SERVERS"
+        #       sub_containers:
+        #         - name: "Data Centers"
+        #           tag_query: "topology_network_type:datacenter"
+        #           configlets:
+        #             - name: "CORP_BANNER"
         workspace:
         #   name:
         #   description:
