@@ -9178,11 +9178,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    class NameServers(AvdList[str]):
-        """Subclass of AvdList with `str` items."""
-
-    NameServers._item_type = str
-
     class NetworkPortsItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -67466,7 +67461,6 @@ class EosDesigns(EosDesignsRootModel):
         "mlag_peer_svi_description": {"type": str, "default": "MLAG"},
         "mlag_peer_vlan_name": {"type": str, "default": "MLAG"},
         "mlag_port_channel_description": {"type": str, "default": "MLAG_{mlag_peer}_{peer_interface}"},
-        "name_servers": {"type": NameServers},
         "network_ports": {"type": NetworkPorts},
         "network_services_keys": {"type": NetworkServicesKeys, "default": lambda cls: coerce_type([{"name": "tenants"}], target_type=cls)},
         "custom_node_type_keys": {"type": CustomNodeTypeKeys},
@@ -68946,13 +68940,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"MLAG_{mlag_peer}_{peer_interface}"`
     """
-    name_servers: NameServers
-    """
-    List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
-
-    Subclass of AvdList with `str`
-    items.
-    """
     network_ports: NetworkPorts
     """Subclass of AvdList with `NetworkPortsItem` items."""
     network_services_keys: NetworkServicesKeys
@@ -69866,7 +69853,6 @@ class EosDesigns(EosDesignsRootModel):
             mlag_peer_svi_description: str | UndefinedType = Undefined,
             mlag_peer_vlan_name: str | UndefinedType = Undefined,
             mlag_port_channel_description: str | UndefinedType = Undefined,
-            name_servers: NameServers | UndefinedType = Undefined,
             network_ports: NetworkPorts | UndefinedType = Undefined,
             network_services_keys: NetworkServicesKeys | UndefinedType = Undefined,
             custom_node_type_keys: CustomNodeTypeKeys | UndefinedType = Undefined,
@@ -70824,11 +70810,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    By
                    default the description is templated from the name and port-channel interface of the MLAG peer.
-                name_servers:
-                   List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
-
-                   Subclass of AvdList with `str`
-                   items.
                 network_ports: Subclass of AvdList with `NetworkPortsItem` items.
                 network_services_keys:
                    Network Services can be grouped by using separate keys.
