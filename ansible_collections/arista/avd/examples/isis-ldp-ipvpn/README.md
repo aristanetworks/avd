@@ -231,32 +231,29 @@ ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/FABRIC.yml
 The `ansible-avd-examples/isis-ldp-ipvpn/group_vars/WAN1.yml` file defines settings that apply to all children of the `WAN1` group as specified in the inventory described earlier. However, this time the settings defined are no longer fabric-wide but are limited to WAN1. This example is of limited benefit with only a single data center. Still, it allows us to scale the configuration to a scenario with multiple data centers in the future.
 
 ```yaml title="WAN1.yml"
----
-mgmt_gateway: 172.16.1.1 # (1)!
-
-p:
-  defaults:
-    platform: vEOS-lab # (2)!
-    loopback_ipv4_pool: 10.255.0.0/27 # (3)!
-
-  nodes: # (4)!
-    - name: p1
-      id: 1 # (5)!
-      mgmt_ip: 172.16.1.11/24 # (6)!
-
-    - name: p2
-      id: 2
-      mgmt_ip: 172.16.1.12/24
+--8<--
+ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:1:27
+--8<--
 ```
 
 1. The default gateway for the management interface of all devices in WAN1 is defined.
-2. `platform` references default settings defined in AVD specific to certain switch platforms.
-3. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0.
-4. `nodes` defines the actual p routers, using the hostnames defined in the inventory.
-5. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, p1 will get the IPv4 address 10.255.0.1/27 assigned to the Loopback0 interface.
-6. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
+2. iBGP ASN for the Fabric.
+3. BGP distance for specific route types.
+4. `platform` references default settings defined in AVD specific to certain switch platforms.
+5. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0.
+6. ISIS NET system id prefix.
+7. `nodes` defines the actual p routers, using the hostnames defined in the inventory.
+8. The name of the node to be defined (must be consistent with definition in inventory).
+9. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, p1 will get the IPv4 address 10.255.0.1/27 assigned to the Loopback0 interface.
+10. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
 
 The following section covers the pe routers. Significantly more settings need to be set compared to the p routers:
+
+```yaml title="WAN1.yml"
+--8<--
+ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:35:66
+--8<--
+```
 
 ```yaml title="WAN1.yml"
 # PE router group

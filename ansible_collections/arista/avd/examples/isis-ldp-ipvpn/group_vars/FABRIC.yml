@@ -1,4 +1,5 @@
 ---
+# Please note, comments below are intended for site documentation only
 # Ansible connectivity definitions
 ansible_connection: ansible.netcommon.httpapi # (1)!
 ansible_network_os: arista.eos.eos # (2)!
