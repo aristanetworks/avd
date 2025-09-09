@@ -251,36 +251,8 @@ The following section covers the pe routers. Significantly more settings need to
 
 ```yaml title="WAN1.yml"
 --8<--
-ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:35:66
+ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:35:59
 --8<--
-```
-
-```yaml title="WAN1.yml"
-# PE router group
-pe:
-  defaults:
-    platform: vEOS-lab # (1)!
-    loopback_ipv4_pool: 10.255.1.0/27 # (2)!
-    virtual_router_mac_address: 00:1c:73:00:dc:00 # (3)!
-    mpls_route_reflectors: [ rr1, rr2 ] # (4)!
-    isis_system_id_prefix: '0000.0001' # (5)!
-    spanning_tree_mode: none # (6)!
-
-  node_groups: # (7)!
-    - group: WAN1-PE1-2
-      nodes:
-        - name: pe1
-          id: 1
-          mgmt_ip: 172.16.1.101/24
-        - name: pe2
-          id: 2
-          mgmt_ip: 172.16.1.102/24
-
-    - group: WAN1-PE3
-      nodes:
-        - name: pe3
-          id: 3
-          mgmt_ip: 172.16.1.103/24
 ```
 
 1. `platform` references default settings defined in AVD specific to certain switch platforms.
@@ -294,23 +266,9 @@ pe:
 Finally, more of the same, but this time for the rr routers:
 
 ```yaml title="WAN1.yml"
-rr:
-  defaults:
-    platform: vEOS-lab
-    loopback_ipv4_pool: 10.255.2.0/27
-    mpls_route_reflectors: [ rr1, rr2 ] # (1)!
-    isis_system_id_prefix: '0000.0002'
-    spanning_tree_mode: none
-
-  node_groups:
-    - group: WAN1_RR1-2
-      nodes:
-        - name: rr1
-          id: 1
-          mgmt_ip: 172.16.1.151/24
-        - name: rr2
-          id: 2
-          mgmt_ip: 172.16.1.152/24
+--8<--
+ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:62:78
+--8<--
 ```
 
 1. `mpls_route_reflectors` is used here to make the rr nodes peer with each other.
@@ -320,38 +278,18 @@ rr:
 A free-standing list of `core_interfaces` dictionaries and their associated profiles and IP pools defines the underlay connectivity between nodes.
 
 ```yaml title="WAN1.yml"
-
-core_interfaces:
-  p2p_links_ip_pools:
-    - name: core_pool # (1)!
-      ipv4_pool: 10.255.3.0/24
-
-  p2p_links_profiles:
-    - name: core_profile # (2)!
-      isis_metric: 50
-      ip_pool: core_pool
-      isis_circuit_type: level-2
-      isis_authentication_mode: md5
-      isis_authentication_key: $1c$sTNAlR6rKSw=
-
-  p2p_links: # (3)!
-    - nodes: [ pe1, p1 ] # (4)!
-      id: 1 # (5)!
-      interfaces: [ Ethernet1, Ethernet1 ]
-      profile: core_profile # (6)!
-
-    - nodes: [ pe1, p2 ]
-      id: 2
-      interfaces: [ Ethernet2, Ethernet2 ]
-      profile: core_profile
+--8<--
+ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/WAN1.yml:83:103
+--8<--
 ```
 
-1. The IP pool `name` is used to assign a name to the IP pool, this is later called in the profile to associate the pool to the profile.
-2. The profile `name` is used to assign a name to the link profile, which is later called under the p2p link definitions to inherit settings from the profile.
-3. Each list item in `p2p_links` is a dictionary that defines one routed point-to-point underlay link and its associated parameters.
-4. `nodes` is used to identify which nodes are connecting.
-5. `id` is used to extract a single /31 subnet for the link from the IP pool mentioned by the profile. Each link that shares an IP pool must have a unique ID to prevent overlapping IP addressing.
-6. `profile` is used here to inherit common settings for the link from the profile.
+1. First, an IP-pool for the underlay p2p links is defined.
+2. The IP pool `name` is used to assign a name to the IP pool, this is later called in the profile to associate the pool to the profile.
+3. The profile `name` is used to assign a name to the link profile, which is later called under the p2p link definitions to inherit settings from the profile.
+4. Each list item in `p2p_links` is a dictionary that defines one routed point-to-point underlay link and its associated parameters.
+5. `nodes` is used to identify which nodes are connecting.
+6. `id` is used to extract a single /31 subnet for the link from the IP pool mentioned by the profile. Each link that shares an IP pool must have a unique ID to prevent overlapping IP addressing.
+7. `profile` is used here to inherit common settings for the link from the profile.
 
 ## Specifying network services (VRFs and routed interfaces) and endpoint connectivity in the VPN-IPv4 fabric
 
@@ -366,24 +304,9 @@ All tenant VRFs and routed interfaces for endpoint connectivity in the network a
 Two tenants called `CUSTOMER1` and `CUSTOMER2` are specified. Each of these tenants has a single VRF defined, and under those VRFs, we define the routed interfaces, tenant (PE-CE) routing protocols and address families in use:
 
 ```yaml title="NETWORK_SERVICES.yml"
-      - name: C1_VRF1
-        vrf_id: 10
-        address_families:
-          - vpn-ipv4
-        ospf:
-          enabled: true
-          nodes:
-            - pe1
-            - pe2
-            - pe3
-        l3_interfaces:
-          - interfaces: [ Ethernet3.10, Ethernet4.10, Ethernet2 ]
-            nodes: [ pe1, pe2, pe3 ]
-            description: C1_L3_SERVICE
-            enabled: true
-            ip_addresses: [ 10.0.1.1/29, 10.0.1.2/29, 10.0.1.9/30 ]
-            ospf:
-              enabled: true
+--8<--
+ansible_collections/arista/avd/examples/isis-ldp-ipvpn/group_vars/NETWORK_SERVICES.yml:7:29
+--8<--
 ```
 
 This defines `C1_VRF1`, with a VRF ID of `10`, enables OSPF routing for PE-CE connections inside the VRF on selected pe routers and defines routed interfaces that are used to connect to the CE devices/aggregation nodes. Each interface has an IP address assigned, a description, and has OSPF routing enabled.

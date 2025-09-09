@@ -48,13 +48,9 @@ pe:
     isis_system_id_prefix: '0000.0001'
     spanning_tree_mode: none
 
-  # If two nodes (and only two) are in the same node_group, they will automatically form an MLAG pair
-  node_groups:
-    # Definition of a node group that will include two devices in MLAG.
-    # Definitions under the group will be inherited by both nodes in the group
+  node_groups: # (7)!
     - group: WAN1-PE1-2
       nodes:
-        # Definition of hostnames under the node_group
         - name: pe1
           id: 1
           mgmt_ip: 172.16.1.101/24
@@ -74,8 +70,7 @@ rr:
     platform: cEOSLab
     spanning_tree_mode: none
     loopback_ipv4_pool: 10.255.2.0/27
-    mpls_route_reflectors: [rr1, rr2]
-    # ISIS NET system id prefix
+    mpls_route_reflectors: [ rr1, rr2 ] # (1)!
     isis_system_id_prefix: '0000.0002'
   node_groups:
     - group: WAN1_RR1-2
@@ -92,25 +87,23 @@ rr:
 # substituted for this free-standing data model of core_interfaces, where all p2p underlay links in the topology are defined.
 
 core_interfaces:
-  # First, an IP-pool for the underlay p2p links is defined
-  p2p_links_ip_pools:
-    - name: core_pool
+  p2p_links_ip_pools: # (1)!
+    - name: core_pool # (2)!
       ipv4_pool: 10.255.3.0/24
   p2p_links_profiles:
-    - name: core_profile
-      # speed: 100gfull
+    - name: core_profile # (3)!
+      mtu: 1500
       isis_metric: 50
       ip_pool: core_pool
       isis_circuit_type: level-2
       isis_authentication_mode: md5
       isis_authentication_key: $1c$sTNAlR6rKSw=
-  p2p_links:
-    # PE1 links
-    - nodes: [pe1, p1]
-      id: 1
-      interfaces: [Ethernet1, Ethernet1]
-      profile: core_profile
-    - nodes: [pe1, p2]
+  p2p_links: # (4)!
+    - nodes: [ pe1, p1 ] # (5)!
+      id: 1 # (6)!
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: core_profile # (7)!
+    - nodes: [ pe1, p2 ]
       id: 2
       interfaces: [Ethernet2, Ethernet2]
       profile: core_profile
