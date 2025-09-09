@@ -86,6 +86,7 @@
           run_once: true
           ansible.legacy.uri:
             url: https://{{ cv_server }}/api/resources/changecontrol/v1/ChangeControlConfig?key.id={{ cv_deploy_results.change_control.id }}
+            use_proxy: "{{ true if cv_proxy_host and cv_proxy_port and cv_proxy_username and cv_proxy_password else false }}"
             validate_certs: true
             return_content: true
             headers:
@@ -102,6 +103,9 @@
           delay: 3
           ignore_errors: true
           when: cv_deploy_results.change_control.state | lower in ['pending approval', 'approved']
+          # Set HTTPS_PROXY environment variable scoped for this task only
+          environment:
+            https_proxy: "http://{{ proxy_username }}:{{ proxy_password }}@{{ proxy_host }}:{{ proxy_port }}"
 
         - name: "(ALWAYS) {{ test_id | upper }} Banner"
           tags: ["{{ test_id }}"]
