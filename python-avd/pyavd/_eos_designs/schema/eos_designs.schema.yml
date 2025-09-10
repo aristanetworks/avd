@@ -5709,6 +5709,7 @@ keys:
     type: bool
     default: false
     deprecation:
+      removed: true
       warning: true
       new_key: cv_settings
       remove_in_version: 6.0.0
@@ -5718,6 +5719,7 @@ keys:
     type: str
     default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
     deprecation:
+      removed: true
       warning: true
       new_key: cv_settings
       remove_in_version: 6.0.0
@@ -5743,6 +5745,7 @@ keys:
     type: str
     default: ale,flexCounter,hardware,kni,pulse,strata
     deprecation:
+      removed: true
       warning: true
       new_key: cv_settings
       remove_in_version: 6.0.0

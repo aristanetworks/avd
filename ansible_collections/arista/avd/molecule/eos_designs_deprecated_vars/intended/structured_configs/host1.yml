@@ -9,9 +9,6 @@ daemon_terminattr:
     method: key
     key: test_key
   cvvrf: default
-  disable_aaa: true
-  ingestexclude: excludethis
-  smashexcludes: excludethat
 enable_password:
   disabled: true
 ethernet_interfaces:

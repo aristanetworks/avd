@@ -1,3 +1,0 @@
----
-# Deprecated in 5.5.0. To be removed in AVD 6.0.0
-terminattr_disable_aaa: true

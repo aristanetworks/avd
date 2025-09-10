@@ -68267,10 +68267,7 @@ class EosDesigns(EosDesignsRootModel):
         "ssh_settings": {"type": SshSettings},
         "svi_profiles": {"type": SviProfiles},
         "system_mac_address": {"type": str},
-        "terminattr_disable_aaa": {"type": bool, "default": False},
-        "terminattr_ingestexclude": {"type": str, "default": "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"},
         "terminattr_ingestgrpcurl_port": {"type": int, "default": 9910},
-        "terminattr_smashexcludes": {"type": str, "default": "ale,flexCounter,hardware,kni,pulse,strata"},
         "timezone": {"type": str},
         "trunk_groups": {"type": TrunkGroups},
         "type": {"type": str},
@@ -69922,10 +69919,6 @@ class EosDesigns(EosDesignsRootModel):
     If both are set, the value under node type settings takes
     precedence.
     """
-    terminattr_disable_aaa: bool
-    """Default value: `False`"""
-    terminattr_ingestexclude: str
-    """Default value: `"/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"`"""
     terminattr_ingestgrpcurl_port: int
     """
     Port number used for Terminattr connection to an on-premise CloudVision cluster.
@@ -69934,8 +69927,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `9910`
     """
-    terminattr_smashexcludes: str
-    """Default value: `"ale,flexCounter,hardware,kni,pulse,strata"`"""
     timezone: str | None
     """Clock timezone like "CET" or "US/Pacific"."""
     trunk_groups: TrunkGroups
@@ -70480,10 +70471,7 @@ class EosDesigns(EosDesignsRootModel):
             ssh_settings: SshSettings | UndefinedType = Undefined,
             svi_profiles: SviProfiles | UndefinedType = Undefined,
             system_mac_address: str | None | UndefinedType = Undefined,
-            terminattr_disable_aaa: bool | UndefinedType = Undefined,
-            terminattr_ingestexclude: str | UndefinedType = Undefined,
             terminattr_ingestgrpcurl_port: int | UndefinedType = Undefined,
-            terminattr_smashexcludes: str | UndefinedType = Undefined,
             timezone: str | None | UndefinedType = Undefined,
             trunk_groups: TrunkGroups | UndefinedType = Undefined,
             type: str | None | UndefinedType = Undefined,
@@ -71707,13 +71695,10 @@ class EosDesigns(EosDesignsRootModel):
                    also be set under node type settings.
                    If both are set, the value under node type settings takes
                    precedence.
-                terminattr_disable_aaa: terminattr_disable_aaa
-                terminattr_ingestexclude: terminattr_ingestexclude
                 terminattr_ingestgrpcurl_port:
                    Port number used for Terminattr connection to an on-premise CloudVision cluster.
                    The port number is
                    always 443 when using CloudVision as a Service, so this value is ignored.
-                terminattr_smashexcludes: terminattr_smashexcludes
                 timezone: Clock timezone like "CET" or "US/Pacific".
                 trunk_groups: Subclass of AvdModel.
                 type:
