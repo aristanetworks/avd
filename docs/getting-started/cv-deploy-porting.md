@@ -4,7 +4,7 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# CVP Integration. Porting to `cv_deploy`
+# CVP Integration: Porting to `cv_deploy`
 
 This guide provides a step-by-step process for updating your Ansible inventory and playbooks to ensure a smooth and successful transition from `eos_config_deploy_cvp` to `cv_deploy`.
 
@@ -61,14 +61,14 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
         cloudvision:
           hosts:
             cv_server01:
-            ansible_host: 10.83.28.164
-            ansible_user: ansible
-            ansible_password: ansible
-            ansible_connection: httpapi
-            ansible_httpapi_use_ssl: true
-            ansible_httpapi_validate_certs: false
-            ansible_network_os: eos
-            ansible_httpapi_port: 443
+              ansible_host: 10.83.28.164
+              ansible_user: ansible
+              ansible_password: ansible
+              ansible_connection: httpapi
+              ansible_httpapi_use_ssl: true
+              ansible_httpapi_validate_certs: false
+              ansible_network_os: eos
+              ansible_httpapi_port: 443
     ```
 
 === "New Playbook"
