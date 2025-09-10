@@ -32,7 +32,9 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>cv_servers</samp> | list | True | None |  | List of hostnames or IP addresses for CloudVision instance to deploy to. |
-| <samp>cv_token</samp> | str | True | None |  | Service account token. It is strongly recommended to use Vault for this. |
+| <samp>cv_token</samp> | str | False | None |  | Service account token. It is strongly recommended to use Vault for this. |
+| <samp>cv_username</samp> | str | False | None |  | Username to use if `cv_token` is missing. Not supported for CVaaS. |
+| <samp>cv_password</samp> | str | False | None |  | Password to use if `cv_token` is missing. Not supported for CVaaS. It is strongly recommended to use Vault for this. |
 | <samp>cv_verify_certs</samp> | bool | optional | True |  | Verifies CloudVison server certificates. |
 | <samp>cv_custom_ca_path</samp> | str | optional | None |  | Path to the custom CA certificate for CloudVision REST/gRPC SSL verification. |
 | <samp>cv_proxy_host</samp> | str | optional | None |  | FQDN/IP of the HTTP CONNECT proxy server. |

@@ -140,6 +140,8 @@ async def deploy_to_cv(
         async with CVClient(
             servers=cloudvision.servers,
             token=cloudvision.token,
+            username=cloudvision.username,
+            password=cloudvision.password,
             verify_certs=cloudvision.verify_certs,
             custom_ca_path=cloudvision.custom_ca_path,
             proxy_host=cloudvision.proxy_host,

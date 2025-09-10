@@ -21,7 +21,9 @@ if TYPE_CHECKING:
 @dataclass
 class CloudVision:
     servers: str | list[str]
-    token: str
+    token: str | None
+    username: str | None
+    password: str | None
     verify_certs: bool = True
     custom_ca_path: str | None = None
     proxy_host: str | None = None
