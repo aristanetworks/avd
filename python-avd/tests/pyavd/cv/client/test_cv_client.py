@@ -18,6 +18,7 @@ import pytest
 import pytest_asyncio
 
 from pyavd._cv.client import CVClient
+from pyavd._cv.client.exceptions import CVClientException
 from pyavd._cv.client.versioning import CvVersion
 from tests.pyavd.cv.mockery import mocked_cv_client_aenter, playback_unary_stream, playback_unary_unary, recording_unary_stream, recording_unary_unary
 
@@ -206,3 +207,64 @@ async def test_cv_client_custom_ca_path() -> None:
                         assert isinstance(cvclient._channel._connect_lock, asyncio.locks.Lock)
                         # Assert that state is Idle
                         assert cvclient._channel._state == 1
+
+
+@pytest.mark.asyncio
+async def test_cv_client_no_custom_ca_path() -> None:
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+
+    async with CVClient(
+        servers=servers,
+        token=token,
+    ) as cvclient:
+        assert cvclient._temp_ca_bundle_path is None
+
+
+@pytest.mark.asyncio
+async def test_cv_client_proxy_socket_error() -> None:
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+    proxy_host = "127.0.0.1"
+    proxy_username = "avd_user"
+    proxy_password = "avd_password"  # noqa: S105
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(
+            servers=servers,
+            token=token,
+            proxy_host=proxy_host,
+            proxy_username=proxy_username,
+            proxy_password=proxy_password,
+        ) as cvclient:
+            with pytest.raises(CVClientException) as exception_info:
+                await cvclient.get_inventory_devices([(None, None, "spine1")])
+
+            assert "Failed to create proxy connection" in str(exception_info.value)
+
+
+@pytest.mark.asyncio
+async def test_cv_client_no_verify_certs() -> None:
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(servers=servers, token=token, verify_certs=False) as cvclient:
+            ssl_context = cvclient._ssl_context()
+            assert ssl_context.check_hostname is False
+            assert ssl_context.verify_mode == ssl.CERT_NONE
+
+
+@pytest.mark.asyncio
+async def test_cv_client_unauthenticated_proxy() -> None:
+    servers = "www.arista.io"
+    token = "secret_access_token"  # noqa: S105
+    proxy_host = "127.0.0.1"
+
+    with patch("pyavd._cv.client.CVClient._set_version", return_value="CVaaS"):
+        async with CVClient(
+            servers=servers,
+            token=token,
+            proxy_host=proxy_host,
+        ) as cvclient:
+            assert cvclient._proxy_manager.proxy_url == f"http://{proxy_host}:{cvclient._proxy_manager.proxy_port}"

@@ -105,10 +105,6 @@ class CVClientProtocol(
         Returns:
             Configured gRPC Channel instance.
         """
-        if self._proxy_manager is None:
-            msg = "Proxy manager not initialized"
-            raise CVClientException(msg)
-
         # Create the channel first
         channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
 
