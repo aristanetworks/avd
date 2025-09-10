@@ -329,7 +329,7 @@ To enable the proxy, set `cv_proxy_host` (port `TCP/8080` will be used by defaul
 
     Please use AVD proxy authentication only when absolutely necessary. Always use other filtering and identification mechanisms (like HTTP filtering based on the client's SRC IP, requested destination domains, etc.) to limit the security risks.
 
-    It is important to note that plain HTTP is used by AVD only for the initial CONNECT request to establish the tunnel with the CloudVision through proxy server. Once the tunnel to CloudVision is active, all subsequent AVD communication — including both REST and gRPC calls — is protected within a direct secure TLS session established between AVD and CloudVision ***inside*** the tunnel.
+    It is important to note that plain HTTP is used by AVD only for the initial CONNECT request to establish the tunnel with the CloudVision through proxy server. Once the TCP tunnel to CloudVision through proxy server is active, all subsequent AVD communication — including both REST and gRPC calls — is protected within a direct secure TLS session(s) established between AVD and CloudVision ***inside*** the TCP proxy tunnel.
 
 Below settings allow modifying the default proxy-related behavior as needed. The values below are the default values.
 
