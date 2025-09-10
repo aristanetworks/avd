@@ -17,8 +17,7 @@
 | Path | Disabled |
 | ---- | -------- |
 {%             for path in management_api_models.provider.smash.paths | arista.avd.natural_sort('path') %}
-{%                 set disabled = path.disabled | arista.avd.default("-") %}
-| {{ path.path }} | {{ disabled }} |
+| {{ path.path }} | {{ path.disabled | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endif %}
 {%         if management_api_models.provider.sysdb is arista.avd.defined %}
@@ -27,8 +26,8 @@
 
 | Path | Disabled |
 | ---- | -------- |
-{%             for path in management_api_models.provider.sysdb.paths | arista.avd.natural_sort('path') %}
-| {{ path.path }} | True |
+{%             for path in management_api_models.provider.sysdb.paths | arista.avd.natural_sort() %}
+| {{ path }} | True |
 {%             endfor %}
 {%         endif %}
 {%         if management_api_models.provider.macsec is arista.avd.defined %}

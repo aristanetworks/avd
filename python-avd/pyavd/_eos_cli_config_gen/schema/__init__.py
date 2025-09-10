@@ -21466,37 +21466,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Sysdb(AvdModel):
                 """Subclass of AvdModel."""
 
-                class PathsItem(AvdModel):
-                    """Subclass of AvdModel."""
+                class Paths(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
 
-                    _fields: ClassVar[dict] = {"path": {"type": str}}
-                    path: str | None
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, path: str | None | UndefinedType = Undefined) -> None:
-                            """
-                            PathsItem.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                path: path
-
-                            """
-
-                class Paths(AvdList[PathsItem]):
-                    """Subclass of AvdList with `PathsItem` items."""
-
-                Paths._item_type = PathsItem
+                Paths._item_type = str
 
                 _fields: ClassVar[dict] = {"paths": {"type": Paths}}
                 paths: Paths
                 """
-                List of paths.
+                List of unique disabled paths.
 
-                Subclass of AvdList with `PathsItem` items.
+                Subclass of AvdList with `str` items.
                 """
 
                 if TYPE_CHECKING:
@@ -21510,9 +21490,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             paths:
-                               List of paths.
+                               List of unique disabled paths.
 
-                               Subclass of AvdList with `PathsItem` items.
+                               Subclass of AvdList with `str` items.
 
                         """
 
@@ -21523,13 +21503,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Subclass of AvdModel."""
 
                     _fields: ClassVar[dict] = {"path": {"type": str}, "disabled": {"type": bool}}
-                    path: str | None
+                    path: str
                     disabled: bool | None
-                    """Disable the path."""
+                    """Disabled Smash path for Octa."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, path: str | None | UndefinedType = Undefined, disabled: bool | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, path: str | UndefinedType = Undefined, disabled: bool | None | UndefinedType = Undefined) -> None:
                             """
                             PathsItem.
 
@@ -21538,12 +21518,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 path: path
-                                disabled: Disable the path.
+                                disabled: Disabled Smash path for Octa.
 
                             """
 
-                class Paths(AvdList[PathsItem]):
-                    """Subclass of AvdList with `PathsItem` items."""
+                class Paths(AvdIndexedList[str, PathsItem]):
+                    """Subclass of AvdIndexedList with `PathsItem` items. Primary key is `path` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "path"
 
                 Paths._item_type = PathsItem
 
@@ -21552,7 +21534,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 List of paths.
 
-                Subclass of AvdList with `PathsItem` items.
+                Subclass of AvdIndexedList with `PathsItem` items. Primary key is `path` (`str`).
                 """
 
                 if TYPE_CHECKING:
@@ -21568,7 +21550,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             paths:
                                List of paths.
 
-                               Subclass of AvdList with `PathsItem` items.
+                               Subclass of AvdIndexedList with `PathsItem` items. Primary key is `path` (`str`).
 
                         """
 

@@ -15,12 +15,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "management_api_models.providers.[].paths.[].disabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;provider</samp>](## "management_api_models.provider") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sysdb</samp>](## "management_api_models.provider.sysdb") | Dictionary |  |  |  | Sysdb provider configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;paths</samp>](## "management_api_models.provider.sysdb.paths") | List, items: Dictionary |  |  |  | List of paths. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;path</samp>](## "management_api_models.provider.sysdb.paths.[].path") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;paths</samp>](## "management_api_models.provider.sysdb.paths") | List, items: String |  |  |  | List of unique disabled paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_api_models.provider.sysdb.paths.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;smash</samp>](## "management_api_models.provider.smash") | Dictionary |  |  |  | Smash provider configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;paths</samp>](## "management_api_models.provider.smash.paths") | List, items: Dictionary |  |  |  | List of paths. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;path</samp>](## "management_api_models.provider.smash.paths.[].path") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "management_api_models.provider.smash.paths.[].disabled") | Boolean |  |  |  | Disable the path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;path</samp>](## "management_api_models.provider.smash.paths.[].path") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "management_api_models.provider.smash.paths.[].disabled") | Boolean |  |  |  | Disabled Smash path for Octa. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;macsec</samp>](## "management_api_models.provider.macsec") | Dictionary |  |  |  | MACsec provider configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "management_api_models.provider.macsec.interfaces") | Boolean |  |  |  | Enable MACsec for interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mka</samp>](## "management_api_models.provider.macsec.mka") | Boolean |  |  |  | Enable MKA for MACsec. |
@@ -42,18 +42,18 @@
         # Sysdb provider configuration.
         sysdb:
 
-          # List of paths.
+          # List of unique disabled paths.
           paths:
-            - path: <str>
+            - <str>
 
         # Smash provider configuration.
         smash:
 
           # List of paths.
           paths:
-            - path: <str>
+            - path: <str; required; unique>
 
-              # Disable the path.
+              # Disabled Smash path for Octa.
               disabled: <bool>
 
         # MACsec provider configuration.
