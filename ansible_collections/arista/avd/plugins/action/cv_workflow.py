@@ -115,10 +115,12 @@ class ActionModule(ActionBase):
     async def deploy(self, validated_args: dict, result: dict) -> dict:
         """Prepare data, perform deployment and convert result data."""
         logged_args = validated_args.copy()
+        # Excempting the lines below from Ruff and Sonar since they think we are hardcoding a password,
+        # when we are actually just being conscious about not printing passwords.
         if "cv_token" in logged_args:
             logged_args["cv_token"] = "<removed>"  # noqa: S105
         if "cv_password" in logged_args:
-            logged_args["cv_password"] = "<removed>"  # noqa: S105
+            logged_args["cv_password"] = "<removed>"  # NOSONAR # noqa: S105
         LOGGER.info("deploy: %s", logged_args)
         try:
             # Create CloudVision object
