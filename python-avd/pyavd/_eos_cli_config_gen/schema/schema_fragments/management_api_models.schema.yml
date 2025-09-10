@@ -38,9 +38,9 @@ keys:
             type: dict
             description: Sysdb provider configuration.
             keys:
-              paths:
+              disabled_paths:
                 type: list
-                description: List of unique disabled paths.
+                description: List of unique disabled Sysdb path for Octa.
                 items:
                   type: str
           smash:
@@ -49,7 +49,7 @@ keys:
             keys:
               paths:
                 type: list
-                description: List of paths.
+                description: List of Smash paths.
                 primary_key: path
                 items:
                   type: dict

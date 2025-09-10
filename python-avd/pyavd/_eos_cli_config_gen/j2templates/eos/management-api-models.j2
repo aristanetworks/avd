@@ -17,7 +17,7 @@ management api models
       mka
 {%             endif %}
 {%         endif %}
-{%         if management_api_models.provider.smash is arista.avd.defined %}
+{%         if management_api_models.provider.smash.paths is arista.avd.defined %}
    !
    provider smash
 {%             set enabled_paths = [] %}
@@ -37,10 +37,10 @@ management api models
       {{ provider_cli }}
 {%             endfor %}
 {%         endif %}
-{%         if management_api_models.provider.sysdb is arista.avd.defined %}
+{%         if management_api_models.provider.sysdb.disabled_paths is arista.avd.defined %}
    !
    provider sysdb
-{%             for path in management_api_models.provider.sysdb.paths | arista.avd.natural_sort() %}
+{%             for path in management_api_models.provider.sysdb.disabled_paths | arista.avd.natural_sort() %}
       path {{ path }} disabled
 {%             endfor %}
 {%         endif %}

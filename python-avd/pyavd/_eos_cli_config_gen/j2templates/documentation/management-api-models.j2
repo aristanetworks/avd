@@ -10,7 +10,7 @@
 
 #### Management API Models Summary
 {%     if management_api_models.provider is arista.avd.defined %}
-{%         if management_api_models.provider.smash is arista.avd.defined %}
+{%         if management_api_models.provider.smash.paths is arista.avd.defined %}
 
 ##### Smash Provider
 
@@ -20,17 +20,17 @@
 | {{ path.path }} | {{ path.disabled | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endif %}
-{%         if management_api_models.provider.sysdb is arista.avd.defined %}
+{%         if management_api_models.provider.sysdb.disabled_paths is arista.avd.defined %}
 
 ##### Sysdb Provider
 
 | Path | Disabled |
 | ---- | -------- |
-{%             for path in management_api_models.provider.sysdb.paths | arista.avd.natural_sort() %}
+{%             for path in management_api_models.provider.sysdb.disabled_paths | arista.avd.natural_sort() %}
 | {{ path }} | True |
 {%             endfor %}
 {%         endif %}
-{%         if management_api_models.provider.macsec is arista.avd.defined %}
+{%         if management_api_models.provider.macsec.interfaces is arista.avd.defined or management_api_models.provider.macsec.mka is arista.avd.defined %}
 
 ##### Macsec Provider
 

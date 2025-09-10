@@ -21466,22 +21466,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Sysdb(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Paths(AvdList[str]):
+                class DisabledPaths(AvdList[str]):
                     """Subclass of AvdList with `str` items."""
 
-                Paths._item_type = str
+                DisabledPaths._item_type = str
 
-                _fields: ClassVar[dict] = {"paths": {"type": Paths}}
-                paths: Paths
+                _fields: ClassVar[dict] = {"disabled_paths": {"type": DisabledPaths}}
+                disabled_paths: DisabledPaths
                 """
-                List of unique disabled paths.
+                List of unique disabled Sysdb path for Octa.
 
                 Subclass of AvdList with `str` items.
                 """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, paths: Paths | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, disabled_paths: DisabledPaths | UndefinedType = Undefined) -> None:
                         """
                         Sysdb.
 
@@ -21489,8 +21489,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            paths:
-                               List of unique disabled paths.
+                            disabled_paths:
+                               List of unique disabled Sysdb path for Octa.
 
                                Subclass of AvdList with `str` items.
 
@@ -21532,9 +21532,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"paths": {"type": Paths}}
                 paths: Paths
                 """
-                List of paths.
+                List of Smash paths.
 
-                Subclass of AvdIndexedList with `PathsItem` items. Primary key is `path` (`str`).
+                Subclass of AvdIndexedList with `PathsItem` items. Primary key is `path`
+                (`str`).
                 """
 
                 if TYPE_CHECKING:
@@ -21548,9 +21549,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             paths:
-                               List of paths.
+                               List of Smash paths.
 
-                               Subclass of AvdIndexedList with `PathsItem` items. Primary key is `path` (`str`).
+                               Subclass of AvdIndexedList with `PathsItem` items. Primary key is `path`
+                               (`str`).
 
                         """
 

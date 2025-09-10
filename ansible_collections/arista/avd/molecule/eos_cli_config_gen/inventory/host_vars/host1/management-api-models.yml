@@ -11,7 +11,7 @@ management_api_models:
         - path: routing/status
           disabled: true
     sysdb:
-      paths:
+      disabled_paths:
         - cell/1/agent
         - sys/logging/config/vrfLoggingHost/mgmt
     macsec:
