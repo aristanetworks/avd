@@ -9,9 +9,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.0/31
-  multicast:
-    ipv4:
-      static: true
   pim:
     ipv4:
       sparse_mode: true
@@ -38,9 +35,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.8/31
-  multicast:
-    ipv4:
-      static: true
   pim:
     ipv4:
       sparse_mode: true
@@ -54,9 +48,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.12/31
-  multicast:
-    ipv4:
-      static: true
   pim:
     ipv4:
       sparse_mode: true
@@ -87,7 +78,7 @@ management_interfaces:
 metadata:
   is_deployed: true
   platform: vEOS-LAB
-  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

@@ -27,6 +27,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.9/31
+  multicast:
+    ipv4:
+      static: true
   pim:
     ipv4:
       sparse_mode: true
@@ -253,6 +256,9 @@ vlan_interfaces:
   description: MLAG
   shutdown: false
   ip_address: 10.255.252.4/31
+  multicast:
+    ipv4:
+      static: true
   pim:
     ipv4:
       sparse_mode: true

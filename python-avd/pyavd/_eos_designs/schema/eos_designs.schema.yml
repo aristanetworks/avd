@@ -11823,12 +11823,12 @@ $defs:
                     default: true
                     description: 'Enable/Disable PIM sparse-mode on uplinks.
 
-                      Requires node setting `underlay_multicast.pim_sm: true` or,
-                      if unset, global `underlay_multicast_pim_sm: true'
+                      Requires node setting `underlay_multicast.pim_sm.enabled: true`
+                      or, if unset, global `underlay_multicast_pim_sm: true'
                   uplink_interfaces:
                     description: 'Uplink interface names to enable for PIM sparse-mode.
 
-                      Effective only when node settings `underlay_multicast.uplinks:
+                      Effective only when node settings `underlay_multicast.pim_sm.uplinks:
                       true`.'
                     type: list
                     items:
@@ -11853,12 +11853,12 @@ $defs:
                     default: true
                     description: 'Enable/Disable static multicast on uplinks.
 
-                      Requires node setting `underlay_multicast.static: true` or,
-                      if unset, global `underlay_multicast_static: true'
+                      Requires node setting `underlay_multicast.static.enabled: true`
+                      or, if unset, global `underlay_multicast_static: true'
                   uplink_interfaces:
                     description: 'Uplink interface names to enable for static multicast.
 
-                      Effective only when node settings `underlay_multicast.uplinks:
+                      Effective only when node settings `underlay_multicast.static.uplinks:
                       true`.'
                     type: list
                     items:

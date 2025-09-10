@@ -211,7 +211,7 @@ core_interfaces:
       as: [65001, 65002]
       interfaces: [Ethernet1, Ethernet1]
       include_in_underlay_protocol: true
-      underlay_multicast: true
+      multicast_pim_sm: true
       ip_pool: underlay_pool
 
       # P2P core links with underlay_multicast(pim-sparse) disabled.
@@ -220,15 +220,17 @@ core_interfaces:
       as: [65001, 65003]
       interfaces: [Ethernet2, Ethernet2]
       include_in_underlay_protocol: true
-      underlay_multicast: false
+      multicast_pim_sm: false
       ip_pool: underlay_pool
 
     # P2P core links with underlay_multicast(pim-sparse) default.
+    # Expects to follow the node or global setting for PIM SM because include_in_underlay_protocol is true
     - nodes: [core-4-multicast, peer3]
       id: 12
       as: [65001, 65004]
       interfaces: [Ethernet3, Ethernet3]
       include_in_underlay_protocol: true
+      # multicast_pim_sm: None
       ip_pool: underlay_pool
 
     # core Port-Channel with specified channel_id

@@ -1,8 +1,7 @@
 # UNDERLAY_MULTICAST_TESTS
 
-# Test enabling underlay PIM SM and static multicast and validate that multicast configuration on p2p links and router_multicast based on child configuration.
-underlay_multicast_pim_sm: true
-underlay_multicast_static: true
+# Test underlay_multicast and validate that multicast configuration on p2p links and router_multicast based on child configuration.
+underlay_multicast: true
 
 type: spine
 
@@ -17,7 +16,6 @@ spine:
     # Expected results:
     # - router multicast enabled for ipv4
     # - p2p links configured with "pim ipv4 sparse-mode"
-    # - p2p links configured with "multicast static ipv4"
     - name: UNDERLAY-MULTICAST-SPINE1
       id: 1
       mgmt_ip: 192.168.200.101/24
