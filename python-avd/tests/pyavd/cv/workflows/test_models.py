@@ -2,6 +2,8 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+from typing import Any
+
 import pytest
 
 from pyavd._cv.api.arista.configlet.v1 import ConfigletAssignment, ConfigletAssignmentKey, MatchPolicy
@@ -292,3 +294,157 @@ class TestCVContainerMatching:
 
         # Verify api_tuple logic (self.description or "") works.
         assert cv_container.matches_configlet_assignment(mock_assignment) is True
+
+
+class TestAvdConfigletFromDict:
+    def test_success(self) -> None:
+        """Tests successful creation of AvdConfiglet from a valid dictionary."""
+        data = {"name": "TestConfiglet", "file": "/path/to/file.cfg"}
+        configlet = AvdConfiglet.from_dict(data)
+        assert configlet.name == "TestConfiglet"
+        assert configlet.file == "/path/to/file.cfg"
+
+    @pytest.mark.parametrize(
+        ("invalid_data", "match_str"),
+        [
+            pytest.param({"name": "Test"}, "Invalid configlet definition", id="missing_file"),
+            pytest.param({"file": "path.cfg"}, "Invalid configlet definition", id="missing_name"),
+            pytest.param({"name": "Test", "file": "path.cfg", "extra_key": "invalid"}, "Invalid configlet definition", id="extra_key"),
+            pytest.param({}, "Invalid configlet definition", id="empty_dict"),
+        ],
+    )
+    def test_missing_keys_failure(self, invalid_data: dict[str, Any], match_str: str) -> None:
+        """Tests that ValueError is raised for various invalid data structures in AvdConfiglet."""
+        with pytest.raises(ValueError, match=match_str):
+            AvdConfiglet.from_dict(invalid_data)
+
+
+class TestAvdContainerFromDict:
+    def test_success_minimal(self) -> None:
+        """Tests successful creation of AvdContainer with only required fields."""
+        data = {"name": "MinimalContainer", "tag_query": "role:minimal"}
+        container = AvdContainer.from_dict(data)
+        assert container.name == "MinimalContainer"
+        assert container.tag_query == "role:minimal"
+        assert container.description is None
+        assert container.match_policy == "match_all"
+        assert not container.configlets
+        assert not container.sub_containers
+
+    def test_success_full_and_nested(self) -> None:
+        """Tests successful creation of AvdContainer with all fields, including nested containers."""
+        data = {
+            "name": "Root",
+            "tag_query": "all",
+            "description": "Root container",
+            "match_policy": "match_first",
+            "configlets": [{"name": "cfg1"}, {"name": "cfg2"}],
+            "sub_containers": [
+                {
+                    "name": "Child1",
+                    "tag_query": "rack:1",
+                    "configlets": [{"name": "cfg_child"}],
+                }
+            ],
+        }
+        container = AvdContainer.from_dict(data)
+        assert container.name == "Root"
+        assert container.description == "Root container"
+        assert container.match_policy == "match_first"
+        assert container.configlets == ("cfg1", "cfg2")
+        assert len(container.sub_containers) == 1
+
+        child = container.sub_containers[0]
+        assert isinstance(child, AvdContainer)
+        assert child.name == "Child1"
+        assert child.tag_query == "rack:1"
+        assert child.configlets == ("cfg_child",)
+
+    @pytest.mark.parametrize(
+        ("invalid_data", "match_str"),
+        [
+            pytest.param({"name": "Test"}, "Invalid container definition", id="missing_tag_query"),
+            pytest.param({"tag_query": "q1"}, "Invalid container definition", id="missing_name"),
+            pytest.param({"name": "Test", "tag_query": "q1", "configlets": "not-a-list"}, "Invalid container definition", id="invalid_configlet_type"),
+            pytest.param(
+                {"name": "Test", "tag_query": "q1", "sub_containers": {"is_dict": True}}, "Invalid container definition", id="invalid_subcontainer_type"
+            ),
+            pytest.param(
+                {"name": "Test", "tag_query": "q1", "configlets": ["string_item"]}, "Invalid container definition", id="invalid_configlet_item_format"
+            ),
+        ],
+    )
+    def test_invalid_data_failure(self, invalid_data: dict[str, Any], match_str: str) -> None:
+        """Tests that ValueError is raised for various invalid data structures in AvdContainer."""
+        with pytest.raises(ValueError, match=match_str):
+            AvdContainer.from_dict(invalid_data)
+
+
+class TestAvdManifestFromDict:
+    @pytest.fixture
+    def full_manifest_dict(self) -> dict[str, Any]:
+        """Provides a complex, valid manifest as a dictionary."""
+        return {
+            "configlets": [
+                {"name": "global_cfg", "file": "global.cfg"},
+                {"name": "leaf_cfg", "file": "leaf.cfg"},
+            ],
+            "containers": [
+                {
+                    "name": "ROOT",
+                    "tag_query": "all",
+                    "configlets": [{"name": "global_cfg"}],
+                    "sub_containers": [{"name": "LEAVES", "tag_query": "role:leaf", "configlets": [{"name": "leaf_cfg"}]}],
+                }
+            ],
+        }
+
+    def test_success_full(self, full_manifest_dict: dict[str, Any]) -> None:
+        """Tests successful creation of AvdManifest from a full dictionary."""
+        manifest = AvdManifest.from_dict(full_manifest_dict)
+        assert len(manifest.configlets) == 2
+        assert len(manifest.containers) == 1
+        assert manifest.configlets[0].name == "global_cfg"
+        assert manifest.containers[0].name == "ROOT"
+        assert len(manifest.containers[0].sub_containers) == 1
+        assert manifest.containers[0].sub_containers[0].name == "LEAVES"
+
+    def test_success_configlets_only(self) -> None:
+        """Tests successful creation of AvdManifest with only configlets defined."""
+        data = {"configlets": [{"name": "cfg1", "file": "f1.cfg"}]}
+        manifest = AvdManifest.from_dict(data)
+        assert len(manifest.configlets) == 1
+        assert len(manifest.containers) == 0
+        assert manifest.configlets[0].name == "cfg1"
+
+    def test_success_containers_only(self) -> None:
+        """Tests successful creation of AvdManifest with only containers defined."""
+        data = {"containers": [{"name": "c1", "tag_query": "q1"}]}
+        manifest = AvdManifest.from_dict(data)
+        assert len(manifest.configlets) == 0
+        assert len(manifest.containers) == 1
+        assert manifest.containers[0].name == "c1"
+
+    def test_success_empty_manifest(self) -> None:
+        """Tests successful creation of AvdManifest from an empty dictionary or with empty lists."""
+        manifest_empty_dict = AvdManifest.from_dict({})
+        assert not manifest_empty_dict.configlets
+        assert not manifest_empty_dict.containers
+
+        manifest_empty_lists = AvdManifest.from_dict({"configlets": [], "containers": []})
+        assert not manifest_empty_lists.configlets
+        assert not manifest_empty_lists.containers
+
+    @pytest.mark.parametrize(
+        ("invalid_data", "match_str"),
+        [
+            pytest.param({"configlets": {"is_dict": True}}, "Failed to build", id="invalid_configlets_type"),
+            pytest.param({"containers": {"is_dict": True}}, "Failed to build", id="invalid_containers_type"),
+            pytest.param({"configlets": [{"name_only": True}]}, "Failed to build", id="invalid_item_in_configlets"),
+            pytest.param({"containers": [{"name_only": True}]}, "Failed to build", id="invalid_item_in_containers"),
+        ],
+    )
+    def test_invalid_data_failure(self, invalid_data: dict[str, Any], match_str: str) -> None:
+        """Tests that ValueError is raised for invalid AvdManifest data."""
+        with pytest.raises(ValueError, match=match_str):
+            AvdManifest.from_dict(invalid_data)

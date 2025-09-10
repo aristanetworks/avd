@@ -232,8 +232,8 @@ class AvdContainer:
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> AvdContainer:
         """Recursively build an AvdContainer instance from an input dictionary."""
-        copied_data = data.copy()
         try:
+            copied_data = data.copy()
             sub_containers_data = copied_data.pop("sub_containers", [])
             sub_containers = tuple(cls.from_dict(sub_container_data) for sub_container_data in sub_containers_data)
 
@@ -241,7 +241,7 @@ class AvdContainer:
             configlets = tuple(item["name"] for item in configlets_data)
 
             return cls(sub_containers=sub_containers, configlets=configlets, **copied_data)
-        except (KeyError, TypeError) as e:
+        except (AttributeError, KeyError, TypeError) as e:
             msg = f"Invalid container definition: {data}. Error: {e}"
             raise ValueError(msg) from e
 
