@@ -141,7 +141,7 @@ cv_verify_certs: false
 ```
 
 For an on-premise CloudVision cluster it is possible to authenticate with username/password instead of a service account token.
-The username and password must be set via variables and `ansible_password` and `cv_token` **must not** be set.
+The username and password below must be set via variables on the task, play or in the fabric-level group vars. `ansible_password` and `cv_token` **must not** be set.
 
 ```yaml
 # Use username/password instead of a service account token for authentication to CloudVision.
