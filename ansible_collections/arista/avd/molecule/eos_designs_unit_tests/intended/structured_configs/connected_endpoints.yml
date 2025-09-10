@@ -111,17 +111,6 @@ ethernet_interfaces:
     mode: active
   peer: OLD_SW-1/9
   peer_type: custom_server
-- name: Ethernet24
-  description: CUSTOM_SERVER_OLD_SW-1/11_Endpoint_port5
-  shutdown: false
-  peer: OLD_SW-1/11
-  peer_interface: Endpoint_port5
-  peer_type: custom_server
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: 1-4096
 - name: Ethernet25
   description: CUSTOM_SERVER_OLD_SW-1/12_Endpoint_port6
   shutdown: false
@@ -291,6 +280,131 @@ ethernet_interfaces:
   peer: DOT1X_UNAUTHORIZED_PORT_CHANNEL
   peer_type: custom_server
   port_profile: INDIVIDUAL_TRUNK
+- name: Ethernet26
+  description: CUSTOM_SERVER_INDIVIDUAL_3
+  shutdown: false
+  channel_group:
+    id: 26
+    mode: active
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  peer: INDIVIDUAL_3
+  peer_type: custom_server
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 5
+- name: Ethernet27
+  description: CUSTOM_SERVER_INDIVIDUAL_3
+  shutdown: false
+  channel_group:
+    id: 26
+    mode: active
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  peer: INDIVIDUAL_3
+  peer_type: custom_server
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 5
+- name: Ethernet28
+  description: CUSTOM_SERVER_INDIVIDUAL_4
+  shutdown: false
+  channel_group:
+    id: 28
+    mode: active
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  peer: INDIVIDUAL_4
+  peer_type: custom_server
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1,2,3,4
+      native_vlan: 5
+      native_vlan_tag: false
+- name: Ethernet29
+  description: CUSTOM_SERVER_INDIVIDUAL_4
+  shutdown: false
+  channel_group:
+    id: 28
+    mode: active
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  service_profile: MYQOS
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_portfast: edge
+  peer: INDIVIDUAL_4
+  peer_type: custom_server
+  sflow:
+    enable: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1,2,3,4
+      native_vlan: 5
+      native_vlan_tag: false
+- name: Ethernet24
+  description: CUSTOM_SERVER_OLD_SW-1/11_Endpoint_port5
+  shutdown: false
+  peer: OLD_SW-1/11
+  peer_interface: Endpoint_port5
+  peer_type: custom_server
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4096
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
@@ -412,6 +526,20 @@ port_channel_interfaces:
       allowed_vlan: 1,2,3,4,5,6,7,123,234
       native_vlan: 123
       native_vlan_tag: false
+- name: Port-Channel26
+  description: CUSTOM_SERVER_INDIVIDUAL_3_INDIVIDUAL_3
+  shutdown: false
+  lacp_fallback_timeout: 90
+  lacp_fallback_mode: individual
+  switchport:
+    enabled: true
+- name: Port-Channel28
+  description: CUSTOM_SERVER_INDIVIDUAL_4_INDIVIDUAL_4
+  shutdown: false
+  lacp_fallback_timeout: 90
+  lacp_fallback_mode: individual
+  switchport:
+    enabled: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
