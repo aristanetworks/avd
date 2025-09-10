@@ -310,7 +310,7 @@ cv_static_config_manifest:
 !!! tip "Manifest-Only Deployment"
     To manage the Static Configuration Studio independently, you can run a "manifest-only" deployment. Simply provide an empty list for `cv_devices` (`cv_devices: []`).
 
-    When `cv_devices` is empty, the role skips all device-specific operations (like configlet generation and tagging) and **only** deploys the contents of `cv_static_config_manifest`.
+    When `cv_devices` is empty, the role skips all device-specific operations (like configlet generation and tagging) and **only** deploys the content of `cv_static_config_manifest`.
 
 #### Role default input directories
 
