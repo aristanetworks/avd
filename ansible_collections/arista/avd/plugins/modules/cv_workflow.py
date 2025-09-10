@@ -43,9 +43,11 @@ options:
   cv_custom_ca_path:
     description: Path to the custom CA certificate for CloudVision REST/gRPC SSL verification.
     type: str
+    required: false
   cv_proxy_host:
     description: FQDN/IP of the HTTP CONNECT proxy server.
     type: str
+    required: false
   cv_proxy_port:
     description: TCP port of the HTTP CONNECT proxy server.
     type: int
@@ -53,9 +55,11 @@ options:
   cv_proxy_username:
     description: Authentication username for the HTTP CONNECT proxy server.
     type: str
+    required: false
   cv_proxy_password:
-    description: Authentication password for the HTTP CONNECT proxy server.
+    description: Authentication password for the HTTP CONNECT proxy server. It is strongly recommended to use Vault for this.
     type: str
+    required: false
   configuration_dir:
     description: Path to directory containing .cfg files with EOS configurations.
     required: true

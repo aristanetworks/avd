@@ -60,7 +60,7 @@ ARGUMENT_SPEC = {
     "cv_proxy_host": {"type": "str", "required": False},
     "cv_proxy_port": {"type": "int", "required": False, "default": 8080},
     "cv_proxy_username": {"type": "str", "required": False},
-    "cv_proxy_password": {"type": "str", "required": False},
+    "cv_proxy_password": {"type": "str", "secret": True, "required": False},
     "workspace": {
         "type": "dict",
         "options": {

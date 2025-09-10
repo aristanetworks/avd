@@ -55,8 +55,9 @@ class HTTPProxyManager:
             HTTP proxy URL.
         """
         if self.proxy_username and self.proxy_password:
-            return f"http://{self.proxy_username}:{self.proxy_password}@{self.proxy_host}:{self.proxy_port}"
-        return f"http://{self.proxy_host}:{self.proxy_port}"
+            # Excempting the lines below from Sonar
+            return f"http://{self.proxy_username}:{self.proxy_password}@{self.proxy_host}:{self.proxy_port}"  # NOSONAR
+        return f"http://{self.proxy_host}:{self.proxy_port}"  # NOSONAR
 
     def get_requests_proxies(self) -> dict[str, str]:
         """
