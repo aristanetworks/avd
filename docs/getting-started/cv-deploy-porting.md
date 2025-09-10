@@ -4,9 +4,9 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# Porting `eos_config_deploy_cvp` to `cv_deploy`
+# CVP Integration. Porting to `cv_deploy`
 
-Welcome to the porting guide for transitioning from the `eos_config_deploy_cvp` role to the modern `cv_deploy` role within the Arista AVD ecosystem. This migration marks a key evolution in network automation strategy, moving from pushing configurations through CloudVision's Network Provisioning to the latest Workspace and Studios workflows. This guide provides a clear, step-by-step process for updating your Ansible inventory and playbooks to ensure a smooth and successful transition.
+This guide provides a step-by-step process for updating your Ansible inventory and playbooks to ensure a smooth and successful transition from `eos_config_deploy_cvp` to `cv_deploy`.
 
 ## Requirements
 
