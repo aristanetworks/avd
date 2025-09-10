@@ -8,6 +8,7 @@ import ssl
 import tempfile
 from logging import getLogger
 from os import environ
+from pathlib import Path
 from typing import TYPE_CHECKING
 from unittest.mock import patch
 
@@ -189,6 +190,10 @@ async def test_cv_client_custom_ca_path() -> None:
                         )
                         assert cvclient._proxy_manager.get_requests_proxies()["http"] == cvclient._proxy_manager.proxy_url
                         assert cvclient._proxy_manager.get_requests_proxies()["https"] == cvclient._proxy_manager.proxy_url
+                        # Assert produced certificate bundle
+                        assert (
+                            Path(cvclient._temp_ca_bundle_path).read_text(encoding="utf-8") == f"{OS_CA_CERTIFICATE_CONTENT}\n{CUSTOM_CA_CERTIFICATE_CONTENT}"
+                        )
                         # Assert gRPC channel via Proxy
                         assert cvclient._channel._host == cvclient._servers[0]
                         assert cvclient._channel._port == 443
