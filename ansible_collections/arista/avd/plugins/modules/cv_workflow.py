@@ -72,7 +72,7 @@ options:
     type: str
     default: "AVD-${hostname}"
   static_config_manifest:
-    description: Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio.
+    description: PREVIEW - Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio.
     type: dict
     suboptions:
       configlets:

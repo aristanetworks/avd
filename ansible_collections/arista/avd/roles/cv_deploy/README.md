@@ -270,45 +270,47 @@ cv_strict_system_mac_address: true
 
 !!! warning "Preview Feature"
 
-    This feature is in preview. Everything is subject to change and **not officially supported for production environments**.
+    This feature is in preview. Everything is subject to change, not supported and may not be complete.
 
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions).
 
-In addition to deploying device-specific configurations, the role allows for the deployment of a full hierarchy of containers and configlets to the CloudVision "Static Configuration" Studio. This is controlled by the following variables:
+In addition to deploying device-specific configurations, the role allows for the deployment of a full hierarchy of containers and configlets to the CloudVision "Static Configuration Studio". This is controlled by the `cv_static_config_manifest` variable:
 
 ```yaml
-# A list of dictionaries defining configlets to be created in the Configlet Library.
-# Configlet names must be unique across all defined configlets.
-cv_studio_configlets:
-  - name: <str>
-    file: <str>
+cv_static_config_manifest:
 
-# A list of dictionaries defining the root containers in the Static Configuration hierarchy.
-# Container names must be unique among sibling containers (at the same level).
-cv_studio_containers:
-  - name: <str>
-    description: <str, optional>
-    tag_query: <str>
-    match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
-    configlets:
-      - name: <str>
-    sub_containers:
-      - name: <str>
-        description: <str, optional>
-        tag_query: <str>
-        match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
-        configlets:
-          - name: <str>
-        sub_containers: <list of containers>
+  # A list of dictionaries defining configlets to be created in the Configlet Library.
+  # Configlet names must be unique across all defined configlets.
+  configlets:
+    - name: <str>
+      file: <str>
+
+  # A list of dictionaries defining the root containers in the Static Configuration hierarchy.
+  # Container names must be unique among sibling containers (at the same level).
+  containers:
+    - name: <str>
+      description: <str, optional>
+      tag_query: <str>
+      match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+      configlets:
+        - name: <str>
+      sub_containers:
+        - name: <str>
+          description: <str, optional>
+          tag_query: <str>
+          match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+          configlets:
+            - name: <str>
+          sub_containers: <list of containers>
 ```
 
 !!! note "Root Containers Order"
-    When initially deploying or adding new root containers, the role places its managed root containers to the top of the Studio container tree. Please be aware that this automated ordering **may displace any containers you have manually arranged**. This effect is purely visual and does not change how configurations are applied to devices.
+    When initially deploying or adding new root containers, the role places its managed root containers to the top of the Studio container tree. Please be aware that this automated ordering **may displace any containers you have manually arranged**.
 
 !!! tip "Manifest-Only Deployment"
     To manage the Static Configuration Studio independently, you can run a "manifest-only" deployment. Simply provide an empty list for `cv_devices` (`cv_devices: []`).
 
-    When `cv_devices` is empty, the role skips all device-specific operations (like configlet generation and tagging) and **only** deploys the contents of `cv_studio_configlets` and `cv_studio_containers`.
+    When `cv_devices` is empty, the role skips all device-specific operations (like configlet generation and tagging) and **only** deploys the contents of `cv_static_config_manifest`.
 
 #### Role default input directories
 
