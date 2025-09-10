@@ -40,21 +40,8 @@ management api models
 {%         if management_api_models.provider.sysdb is arista.avd.defined %}
    !
    provider sysdb
-{%             set enabled_paths = [] %}
-{%             set disabled_paths = [] %}
-{%             for path in management_api_models.provider.sysdb.paths %}
-{%                 if path.disabled is arista.avd.defined(true) %}
-{%                     do disabled_paths.append(path) %}
-{%                 else %}
-{%                     do enabled_paths.append(path) %}
-{%                 endif %}
-{%             endfor %}
-{%             for path in (enabled_paths | sort(attribute='path')) + (disabled_paths | sort(attribute='path')) %}
-{%                 set provider_cli = "path " ~ path.path %}
-{%                 if path.disabled is arista.avd.defined(true) %}
-{%                     set provider_cli = provider_cli ~ " disabled" %}
-{%                 endif %}
-      {{ provider_cli }}
+{%             for path in management_api_models.provider.sysdb.paths | sort(attribute='path') %}
+      path {{ path.path }} disabled
 {%             endfor %}
 {%         endif %}
 {%     elif management_api_models.providers is arista.avd.defined %}

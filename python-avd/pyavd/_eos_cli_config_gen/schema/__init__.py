@@ -21469,19 +21469,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class PathsItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"path": {"type": str}, "disabled": {"type": bool, "default": False}}
+                    _fields: ClassVar[dict] = {"path": {"type": str}}
                     path: str | None
-                    """Path."""
-                    disabled: bool
-                    """
-                    Disable the path.
-
-                    Default value: `False`
-                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, path: str | None | UndefinedType = Undefined, disabled: bool | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, path: str | None | UndefinedType = Undefined) -> None:
                             """
                             PathsItem.
 
@@ -21489,8 +21482,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                path: Path.
-                                disabled: Disable the path.
+                                path: path
 
                             """
 
@@ -21530,19 +21522,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class PathsItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"path": {"type": str}, "disabled": {"type": bool, "default": False}}
+                    _fields: ClassVar[dict] = {"path": {"type": str}, "disabled": {"type": bool}}
                     path: str | None
-                    """Path."""
-                    disabled: bool
-                    """
-                    Disable the path.
-
-                    Default value: `False`
-                    """
+                    disabled: bool | None
+                    """Disable the path."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, path: str | None | UndefinedType = Undefined, disabled: bool | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, path: str | None | UndefinedType = Undefined, disabled: bool | None | UndefinedType = Undefined) -> None:
                             """
                             PathsItem.
 
@@ -21550,7 +21537,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                path: Path.
+                                path: path
                                 disabled: Disable the path.
 
                             """

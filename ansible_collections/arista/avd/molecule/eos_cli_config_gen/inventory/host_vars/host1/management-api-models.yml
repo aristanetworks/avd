@@ -13,9 +13,7 @@ management_api_models:
     sysdb:
       paths:
         - path: cell/1/agent
-          disabled: true
         - path: sys/logging/config/vrfLoggingHost/mgmt
-          disabled: true
     macsec:
       interfaces: true
       mka: true

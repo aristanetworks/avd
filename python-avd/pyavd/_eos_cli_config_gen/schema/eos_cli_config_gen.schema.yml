@@ -8601,15 +8601,21 @@ keys:
                   keys:
                     path:
                       type: str
-                      description: Path.
-                    disabled:
-                      type: bool
-                      description: Disable the path.
-                      default: false
           smash:
             type: dict
             description: Smash provider configuration.
-            $ref: eos_cli_config_gen#/keys/management_api_models/keys/provider/keys/sysdb
+            keys:
+              paths:
+                type: list
+                description: List of paths.
+                items:
+                  type: dict
+                  keys:
+                    path:
+                      type: str
+                    disabled:
+                      type: bool
+                      description: Disable the path.
           macsec:
             type: dict
             description: MACsec provider configuration.

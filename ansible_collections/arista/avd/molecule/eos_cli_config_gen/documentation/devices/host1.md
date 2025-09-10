@@ -1143,12 +1143,12 @@ EOF
 
 | Path | Disabled |
 | ---- | -------- |
-| flexCounters | False |
-| forwarding/srte/status/fec | False |
-| routing6/status | False |
-| routing/bgp/export/allPeerAdjRibIn | False |
+| flexCounters | - |
+| forwarding/srte/status/fec | - |
+| routing6/status | - |
+| routing/bgp/export/allPeerAdjRibIn | - |
 | routing/status | True |
-| tunnel/tunnelFib/entry | False |
+| tunnel/tunnelFib/entry | - |
 
 ##### Sysdb Provider
 
