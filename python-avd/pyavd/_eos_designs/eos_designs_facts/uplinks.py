@@ -195,8 +195,10 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         if self.shared_utils.node_config.uplink_macsec.profile:
             uplink.mac_security.profile = self.shared_utils.node_config.uplink_macsec.profile
 
-        if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
-            uplink.underlay_multicast = True
+        if self.shared_utils.underlay_multicast_pim_sm_enabled is True and uplink_switch_facts.shared_utils.underlay_multicast_pim_sm_enabled is True:
+            uplink.underlay_multicast_pim_sm = True
+        if self.shared_utils.underlay_multicast_static_enabled is True and uplink_switch_facts.shared_utils.underlay_multicast_static_enabled is True:
+            uplink.underlay_multicast_static = True
 
         if self.inputs.underlay_rfc5549:
             uplink.ipv6_enable = True

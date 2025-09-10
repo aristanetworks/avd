@@ -2134,7 +2134,7 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool, "default": False},
+                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -2255,12 +2255,10 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool
+            underlay_multicast: bool | None
             """
             Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
             to be `true`.
-
-            Default value: `False`
             """
             multicast_pim_sm: bool | None
             """
@@ -2360,7 +2358,7 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | UndefinedType = Undefined,
+                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -2815,7 +2813,7 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool, "default": False},
+                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -2936,12 +2934,10 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool
+            underlay_multicast: bool | None
             """
             Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
             to be `true`.
-
-            Default value: `False`
             """
             multicast_pim_sm: bool | None
             """
@@ -3041,7 +3037,7 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | UndefinedType = Undefined,
+                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -7623,7 +7619,7 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool, "default": False},
+                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -7744,12 +7740,10 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool
+            underlay_multicast: bool | None
             """
             Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
             to be `true`.
-
-            Default value: `False`
             """
             multicast_pim_sm: bool | None
             """
@@ -7849,7 +7843,7 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | UndefinedType = Undefined,
+                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -8304,7 +8298,7 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool, "default": False},
+                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -8425,12 +8419,10 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool
+            underlay_multicast: bool | None
             """
             Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
             to be `true`.
-
-            Default value: `False`
             """
             multicast_pim_sm: bool | None
             """
@@ -8530,7 +8522,7 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | UndefinedType = Undefined,
+                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -27417,7 +27409,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "enabled": {"type": bool},
                                 "uplinks": {"type": bool, "default": True},
                                 "uplink_interfaces": {"type": UplinkInterfaces},
-                                "mlag": {"type": bool},
+                                "mlag": {"type": bool, "default": True},
                             }
                             enabled: bool | None
                             """
@@ -27449,8 +27441,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
-                            mlag: bool | None
-                            """Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface."""
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+
+                            Default value: `True`
+                            """
 
                             if TYPE_CHECKING:
 
@@ -27460,7 +27456,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     uplinks: bool | UndefinedType = Undefined,
                                     uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                    mlag: bool | None | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     PimSm.
@@ -27507,7 +27503,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "enabled": {"type": bool},
                                 "uplinks": {"type": bool, "default": True},
                                 "uplink_interfaces": {"type": UplinkInterfaces},
-                                "mlag": {"type": bool},
+                                "mlag": {"type": bool, "default": True},
                             }
                             enabled: bool | None
                             """
@@ -27536,8 +27532,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
-                            mlag: bool | None
-                            """Configure static multicast in the underlay on MLAG L3 peer interfacee."""
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
 
                             if TYPE_CHECKING:
 
@@ -27547,7 +27547,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     uplinks: bool | UndefinedType = Undefined,
                                     uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                    mlag: bool | None | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     Static.
@@ -31965,7 +31965,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "enabled": {"type": bool},
                                     "uplinks": {"type": bool, "default": True},
                                     "uplink_interfaces": {"type": UplinkInterfaces},
-                                    "mlag": {"type": bool},
+                                    "mlag": {"type": bool, "default": True},
                                 }
                                 enabled: bool | None
                                 """
@@ -31997,8 +31997,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Subclass of AvdList with `str` items.
                                 """
-                                mlag: bool | None
-                                """Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface."""
+                                mlag: bool
+                                """
+                                Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+
+                                Default value: `True`
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -32008,7 +32012,7 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled: bool | None | UndefinedType = Undefined,
                                         uplinks: bool | UndefinedType = Undefined,
                                         uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                        mlag: bool | None | UndefinedType = Undefined,
+                                        mlag: bool | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         PimSm.
@@ -32055,7 +32059,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "enabled": {"type": bool},
                                     "uplinks": {"type": bool, "default": True},
                                     "uplink_interfaces": {"type": UplinkInterfaces},
-                                    "mlag": {"type": bool},
+                                    "mlag": {"type": bool, "default": True},
                                 }
                                 enabled: bool | None
                                 """
@@ -32084,8 +32088,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Subclass of AvdList with `str` items.
                                 """
-                                mlag: bool | None
-                                """Configure static multicast in the underlay on MLAG L3 peer interfacee."""
+                                mlag: bool
+                                """
+                                Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                Default value: `True`
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -32095,7 +32103,7 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled: bool | None | UndefinedType = Undefined,
                                         uplinks: bool | UndefinedType = Undefined,
                                         uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                        mlag: bool | None | UndefinedType = Undefined,
+                                        mlag: bool | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         Static.
@@ -36442,7 +36450,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "enabled": {"type": bool},
                                 "uplinks": {"type": bool, "default": True},
                                 "uplink_interfaces": {"type": UplinkInterfaces},
-                                "mlag": {"type": bool},
+                                "mlag": {"type": bool, "default": True},
                             }
                             enabled: bool | None
                             """
@@ -36474,8 +36482,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
-                            mlag: bool | None
-                            """Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface."""
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+
+                            Default value: `True`
+                            """
 
                             if TYPE_CHECKING:
 
@@ -36485,7 +36497,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     uplinks: bool | UndefinedType = Undefined,
                                     uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                    mlag: bool | None | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     PimSm.
@@ -36532,7 +36544,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "enabled": {"type": bool},
                                 "uplinks": {"type": bool, "default": True},
                                 "uplink_interfaces": {"type": UplinkInterfaces},
-                                "mlag": {"type": bool},
+                                "mlag": {"type": bool, "default": True},
                             }
                             enabled: bool | None
                             """
@@ -36561,8 +36573,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
-                            mlag: bool | None
-                            """Configure static multicast in the underlay on MLAG L3 peer interfacee."""
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
 
                             if TYPE_CHECKING:
 
@@ -36572,7 +36588,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     uplinks: bool | UndefinedType = Undefined,
                                     uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                    mlag: bool | None | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     Static.
@@ -40999,7 +41015,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "enabled": {"type": bool},
                                 "uplinks": {"type": bool, "default": True},
                                 "uplink_interfaces": {"type": UplinkInterfaces},
-                                "mlag": {"type": bool},
+                                "mlag": {"type": bool, "default": True},
                             }
                             enabled: bool | None
                             """
@@ -41031,8 +41047,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
-                            mlag: bool | None
-                            """Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface."""
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+
+                            Default value: `True`
+                            """
 
                             if TYPE_CHECKING:
 
@@ -41042,7 +41062,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     uplinks: bool | UndefinedType = Undefined,
                                     uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                    mlag: bool | None | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     PimSm.
@@ -41089,7 +41109,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "enabled": {"type": bool},
                                 "uplinks": {"type": bool, "default": True},
                                 "uplink_interfaces": {"type": UplinkInterfaces},
-                                "mlag": {"type": bool},
+                                "mlag": {"type": bool, "default": True},
                             }
                             enabled: bool | None
                             """
@@ -41118,8 +41138,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
-                            mlag: bool | None
-                            """Configure static multicast in the underlay on MLAG L3 peer interfacee."""
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
 
                             if TYPE_CHECKING:
 
@@ -41129,7 +41153,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     uplinks: bool | UndefinedType = Undefined,
                                     uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                    mlag: bool | None | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     Static.
@@ -53915,7 +53939,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "enabled": {"type": bool},
                                 "uplinks": {"type": bool, "default": True},
                                 "uplink_interfaces": {"type": UplinkInterfaces},
-                                "mlag": {"type": bool},
+                                "mlag": {"type": bool, "default": True},
                             }
                             enabled: bool | None
                             """
@@ -53947,8 +53971,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
-                            mlag: bool | None
-                            """Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface."""
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+
+                            Default value: `True`
+                            """
 
                             if TYPE_CHECKING:
 
@@ -53958,7 +53986,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     uplinks: bool | UndefinedType = Undefined,
                                     uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                    mlag: bool | None | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     PimSm.
@@ -54005,7 +54033,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "enabled": {"type": bool},
                                 "uplinks": {"type": bool, "default": True},
                                 "uplink_interfaces": {"type": UplinkInterfaces},
-                                "mlag": {"type": bool},
+                                "mlag": {"type": bool, "default": True},
                             }
                             enabled: bool | None
                             """
@@ -54034,8 +54062,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
-                            mlag: bool | None
-                            """Configure static multicast in the underlay on MLAG L3 peer interfacee."""
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
 
                             if TYPE_CHECKING:
 
@@ -54045,7 +54077,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     uplinks: bool | UndefinedType = Undefined,
                                     uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                    mlag: bool | None | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     Static.
@@ -58463,7 +58495,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "enabled": {"type": bool},
                                     "uplinks": {"type": bool, "default": True},
                                     "uplink_interfaces": {"type": UplinkInterfaces},
-                                    "mlag": {"type": bool},
+                                    "mlag": {"type": bool, "default": True},
                                 }
                                 enabled: bool | None
                                 """
@@ -58495,8 +58527,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Subclass of AvdList with `str` items.
                                 """
-                                mlag: bool | None
-                                """Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface."""
+                                mlag: bool
+                                """
+                                Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+
+                                Default value: `True`
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -58506,7 +58542,7 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled: bool | None | UndefinedType = Undefined,
                                         uplinks: bool | UndefinedType = Undefined,
                                         uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                        mlag: bool | None | UndefinedType = Undefined,
+                                        mlag: bool | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         PimSm.
@@ -58553,7 +58589,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "enabled": {"type": bool},
                                     "uplinks": {"type": bool, "default": True},
                                     "uplink_interfaces": {"type": UplinkInterfaces},
-                                    "mlag": {"type": bool},
+                                    "mlag": {"type": bool, "default": True},
                                 }
                                 enabled: bool | None
                                 """
@@ -58582,8 +58618,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Subclass of AvdList with `str` items.
                                 """
-                                mlag: bool | None
-                                """Configure static multicast in the underlay on MLAG L3 peer interfacee."""
+                                mlag: bool
+                                """
+                                Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                Default value: `True`
+                                """
 
                                 if TYPE_CHECKING:
 
@@ -58593,7 +58633,7 @@ class EosDesigns(EosDesignsRootModel):
                                         enabled: bool | None | UndefinedType = Undefined,
                                         uplinks: bool | UndefinedType = Undefined,
                                         uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                        mlag: bool | None | UndefinedType = Undefined,
+                                        mlag: bool | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         Static.
@@ -62940,7 +62980,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "enabled": {"type": bool},
                                 "uplinks": {"type": bool, "default": True},
                                 "uplink_interfaces": {"type": UplinkInterfaces},
-                                "mlag": {"type": bool},
+                                "mlag": {"type": bool, "default": True},
                             }
                             enabled: bool | None
                             """
@@ -62972,8 +63012,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
-                            mlag: bool | None
-                            """Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface."""
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+
+                            Default value: `True`
+                            """
 
                             if TYPE_CHECKING:
 
@@ -62983,7 +63027,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     uplinks: bool | UndefinedType = Undefined,
                                     uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                    mlag: bool | None | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     PimSm.
@@ -63030,7 +63074,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "enabled": {"type": bool},
                                 "uplinks": {"type": bool, "default": True},
                                 "uplink_interfaces": {"type": UplinkInterfaces},
-                                "mlag": {"type": bool},
+                                "mlag": {"type": bool, "default": True},
                             }
                             enabled: bool | None
                             """
@@ -63059,8 +63103,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
-                            mlag: bool | None
-                            """Configure static multicast in the underlay on MLAG L3 peer interfacee."""
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
 
                             if TYPE_CHECKING:
 
@@ -63070,7 +63118,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     uplinks: bool | UndefinedType = Undefined,
                                     uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                    mlag: bool | None | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     Static.
@@ -67497,7 +67545,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "enabled": {"type": bool},
                                 "uplinks": {"type": bool, "default": True},
                                 "uplink_interfaces": {"type": UplinkInterfaces},
-                                "mlag": {"type": bool},
+                                "mlag": {"type": bool, "default": True},
                             }
                             enabled: bool | None
                             """
@@ -67529,8 +67577,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
-                            mlag: bool | None
-                            """Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface."""
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+
+                            Default value: `True`
+                            """
 
                             if TYPE_CHECKING:
 
@@ -67540,7 +67592,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     uplinks: bool | UndefinedType = Undefined,
                                     uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                    mlag: bool | None | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     PimSm.
@@ -67587,7 +67639,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "enabled": {"type": bool},
                                 "uplinks": {"type": bool, "default": True},
                                 "uplink_interfaces": {"type": UplinkInterfaces},
-                                "mlag": {"type": bool},
+                                "mlag": {"type": bool, "default": True},
                             }
                             enabled: bool | None
                             """
@@ -67616,8 +67668,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
-                            mlag: bool | None
-                            """Configure static multicast in the underlay on MLAG L3 peer interfacee."""
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
 
                             if TYPE_CHECKING:
 
@@ -67627,7 +67683,7 @@ class EosDesigns(EosDesignsRootModel):
                                     enabled: bool | None | UndefinedType = Undefined,
                                     uplinks: bool | UndefinedType = Undefined,
                                     uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
-                                    mlag: bool | None | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     Static.

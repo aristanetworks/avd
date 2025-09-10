@@ -47,7 +47,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].ptp.roles.[]") | String |  | `dynamic` | Valid Values:<br>- <code>dynamic</code><br>- <code>master</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "l3_edge.p2p_links_profiles.[].ptp.profile") | String |  | `aes67-r16-2016` |  | Default available profiles are:<br>  - "aes67"<br>  - "aes67-r16-2016"<br>  - "smpte2059-2" |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "l3_edge.p2p_links_profiles.[].sflow") | Boolean |  |  |  | Enable sFlow. Overrides `fabric_sflow` setting. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "l3_edge.p2p_links_profiles.[].underlay_multicast") <span style="color:red">deprecated</span> | Boolean |  | `False` |  | Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>multicast_pim_sm</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "l3_edge.p2p_links_profiles.[].underlay_multicast") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>multicast_pim_sm</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_pim_sm</samp>](## "l3_edge.p2p_links_profiles.[].multicast_pim_sm") | Boolean |  |  |  | Configure PIM sparse-mode on the P2P links.<br>When `include_in_underlay_protocol: true`, AVD uses the the node_setting `underlay_multicast.pim_sm.enabled` or, if unset, global `underlay_multicast_pim_sm`<br>to decide whether or not enabling PIM sparse-mode on the P2P links.<br><br>When `include_in_underlay_protocol: false`, only the value of this knob matters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_static</samp>](## "l3_edge.p2p_links_profiles.[].multicast_static") | Boolean |  |  |  | Configure static multicast on the P2P links.<br>When `include_in_underlay_protocol: true`, AVD uses the the node_setting `underlay_multicast.pim_sm.enabled` or, if unset, global `underlay_multicast_pim_sm`<br>to decide whether or not enabling static multicast on the P2P links.<br><br>When `include_in_underlay_protocol: false`, only the value of this knob matters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "l3_edge.p2p_links_profiles.[].flow_tracking") | Dictionary |  |  |  | Enable flow-tracking. Overrides `fabric_flow_tracking` setting. |
@@ -107,7 +107,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].ptp.roles.[]") | String |  | `dynamic` | Valid Values:<br>- <code>dynamic</code><br>- <code>master</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "l3_edge.p2p_links.[].ptp.profile") | String |  | `aes67-r16-2016` |  | Default available profiles are:<br>  - "aes67"<br>  - "aes67-r16-2016"<br>  - "smpte2059-2" |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "l3_edge.p2p_links.[].sflow") | Boolean |  |  |  | Enable sFlow. Overrides `fabric_sflow` setting. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "l3_edge.p2p_links.[].underlay_multicast") <span style="color:red">deprecated</span> | Boolean |  | `False` |  | Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>multicast_pim_sm</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "l3_edge.p2p_links.[].underlay_multicast") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>multicast_pim_sm</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_pim_sm</samp>](## "l3_edge.p2p_links.[].multicast_pim_sm") | Boolean |  |  |  | Configure PIM sparse-mode on the P2P links.<br>When `include_in_underlay_protocol: true`, AVD uses the the node_setting `underlay_multicast.pim_sm.enabled` or, if unset, global `underlay_multicast_pim_sm`<br>to decide whether or not enabling PIM sparse-mode on the P2P links.<br><br>When `include_in_underlay_protocol: false`, only the value of this knob matters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_static</samp>](## "l3_edge.p2p_links.[].multicast_static") | Boolean |  |  |  | Configure static multicast on the P2P links.<br>When `include_in_underlay_protocol: true`, AVD uses the the node_setting `underlay_multicast.pim_sm.enabled` or, if unset, global `underlay_multicast_pim_sm`<br>to decide whether or not enabling static multicast on the P2P links.<br><br>When `include_in_underlay_protocol: false`, only the value of this knob matters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "l3_edge.p2p_links.[].flow_tracking") | Dictionary |  |  |  | Enable flow-tracking. Overrides `fabric_flow_tracking` setting. |
@@ -263,7 +263,7 @@
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
           # Use `multicast_pim_sm` instead.
-          underlay_multicast: <bool; default=False>
+          underlay_multicast: <bool>
 
           # Configure PIM sparse-mode on the P2P links.
           # When `include_in_underlay_protocol: true`, AVD uses the the node_setting `underlay_multicast.pim_sm.enabled` or, if unset, global `underlay_multicast_pim_sm`
@@ -468,7 +468,7 @@
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
           # Use `multicast_pim_sm` instead.
-          underlay_multicast: <bool; default=False>
+          underlay_multicast: <bool>
 
           # Configure PIM sparse-mode on the P2P links.
           # When `include_in_underlay_protocol: true`, AVD uses the the node_setting `underlay_multicast.pim_sm.enabled` or, if unset, global `underlay_multicast_pim_sm`

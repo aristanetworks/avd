@@ -1620,6 +1620,7 @@ $defs:
                     description: |-
                       Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
                     type: bool
+                    default: true
               static:
                 type: dict
                 keys:
@@ -1651,6 +1652,7 @@ $defs:
                     description: |-
                       Configure static multicast in the underlay on MLAG L3 peer interfacee.
                     type: bool
+                    default: true
           campus:
             documentation_options:
               table: node-type-common-configuration

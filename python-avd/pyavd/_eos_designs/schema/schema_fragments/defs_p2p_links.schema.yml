@@ -166,7 +166,6 @@ $defs:
         underlay_multicast:
           type: bool
           description: Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
-          default: false
           deprecation:
             removed: false
             warning: true
@@ -181,13 +180,13 @@ $defs:
 
             When `include_in_underlay_protocol: false`, only the value of this knob matters.
         multicast_static:
+          type: bool
           description: |-
             Configure static multicast on the P2P links.
             When `include_in_underlay_protocol: true`, AVD uses the the node_setting `underlay_multicast.pim_sm.enabled` or, if unset, global `underlay_multicast_pim_sm`
             to decide whether or not enabling static multicast on the P2P links.
 
             When `include_in_underlay_protocol: false`, only the value of this knob matters.
-          type: bool
         flow_tracking:
           type: dict
           $ref: "eos_designs#/$defs/flow_tracking_link"

@@ -267,9 +267,20 @@ class UtilsMixin(Protocol):
         if p2p_link_data["ip"]:
             interface.ip_address = p2p_link_data["ip"]
 
+        self._update_interface_multicast_config(p2p_link, interface)
+
         if p2p_link.include_in_underlay_protocol:
-            if p2p_link.underlay_multicast and self.shared_utils.underlay_multicast:
-                interface.pim.ipv4.sparse_mode = True
+            if p2p_link.multicast_static:
+                if not self.shared_utils.underlay_multicast_static_enabled:
+                    msg = (
+                        f"{self.data_model}.p2p_links has `include_in_underlay_protocol: true` and "
+                        "`multicast_static: true`, which requires the global setting `underlay_multicast_static` "
+                        "to also be set to `true`."
+                    )
+                    raise AristaAvdInvalidInputsError(msg)
+                interface.multicast.ipv4.static = True
+            elif p2p_link.multicast_static is not False and self.shared_utils.underlay_multicast_static_enabled:
+                interface.multicast.ipv4.static = True
 
             if (self.inputs.underlay_rfc5549 and p2p_link.routing_protocol != "ebgp") or p2p_link.ipv6_enable is True:
                 interface.ipv6_enable = True
@@ -342,3 +353,24 @@ class UtilsMixin(Protocol):
 
         # channel_id_algorithm "first_port"
         return int("".join(re.findall(r"\d", node_data.interfaces[0])))
+
+    def _update_interface_multicast_config(
+        self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,
+        p2p_link: T_P2pLinksItem,
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
+    ) -> None:
+        if p2p_link.include_in_underlay_protocol:
+            # PIM SM
+            # TODO: AVD 6.0 remove underlay_mutlicast
+            if self.shared_utils.underlay_multicast_pim_sm_enabled and (p2p_link.underlay_multicast is True or p2p_link.multicast_pim_sm is not False):
+                interface.pim.ipv4.sparse_mode = True
+
+            # static multicast
+            if self.shared_utils.underlay_multicast_static_enabled and p2p_link.multicast_static is not False:
+                interface.multicast.ipv4.static = True
+        else:
+            # not included in underlay protocol
+            if self.shared_utils.underlay_multicast_pim_sm_enabled and p2p_link.multicast_pim_sm:
+                interface.pim.ipv4.sparse_mode = True
+            if self.shared_utils.underlay_multicast_static_enabled and p2p_link.multicast_static:
+                interface.multicast.ipv4.static = True
