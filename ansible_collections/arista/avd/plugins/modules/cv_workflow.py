@@ -34,6 +34,8 @@ options:
     required: false
   cv_password:
     description: Password to use if `cv_token` is missing. Not supported for CVaaS. It is strongly recommended to use Vault for this.
+    type: str
+    required: false
   cv_verify_certs:
     description: Verifies CloudVison server certificates.
     type: bool
