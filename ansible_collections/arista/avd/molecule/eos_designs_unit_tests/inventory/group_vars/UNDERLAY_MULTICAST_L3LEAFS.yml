@@ -57,11 +57,23 @@ l3leaf:
           id: 3
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [Ethernet3, Ethernet3]
+          # Testing that these restrictions don't have any effect
+          underlay_multicast:
+            pim_sm:
+              uplinks: true
+            static:
+              uplink_interfaces: [Ethernet1]
         - name: UNDERLAY-MULTICAST-L3LEAF2B
           id: 4
           mgmt_ip: 192.168.200.108/24
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
           # Testing limiting multicast on uplinks
           underlay_multicast:
+            pim_sm:
+              # uplink_interfaces does not contain Ethernet 4
+              uplinks: true
+              uplink_interfaces: [Ethernet5]
             static:
-              uplink_interfaces: [Ethernet3]
+              # interface is in but it uplinks: false
+              uplinks: false
+              uplink_interfaces: [Ethernet1]
