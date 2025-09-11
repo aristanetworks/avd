@@ -5948,19 +5948,21 @@ keys:
     documentation_options:
       table: fabric-settings
     type: bool
-    description: "Enable Protocol Independent Multicast sparse mode in the underlay
-      on all p2p uplink interfaces, mlag l3 peer interface and l3_edge / core interfaces.\nSpecifically
-      PIM Sparse-Mode will be configured on all routed underlay interfaces.\nWhen
-      true, configure\n    router multicast\n      ipv4 routing"
+    description: "When enabled, configures multicast routing and by default configures
+      PIM sparse-mode in the underlay on all:\n  - P2P uplink interfaces if enabled
+      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
+      l3_edge and core interfaces\n\nNote: This changes the default behavior for l3_edge
+      / core_interfaces to automatically include the interfaces\nin multicast, unless
+      `include_in_underlay_protocol: false` or `multicast_pim_sm: false`."
   underlay_multicast_static:
     documentation_options:
       table: fabric-settings
     type: bool
     default: false
-    description: "Enable static multicast in the underlay on all p2p uplink interfaces,
-      mlag l3 peer interface and core interfaces.\nSpecifically 'multicast ipv4 static'
-      will be configured on all routed underlay interfaces.\nWhen true, configure\n
-      \   router multicast\n      ipv4 routing"
+    description: "When enabled, configures multicast routing and by default configures
+      static multicast in the underlay on all:\n  - P2P uplink interfaces if enabled
+      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
+      l3_edge and core interfaces"
   underlay_multicast_anycast_rp:
     documentation_options:
       table: fabric-settings
@@ -11812,21 +11814,21 @@ $defs:
                 keys:
                   enabled:
                     type: bool
-                    description: "Override global `underlay_multicast_pim_sm`.\nWhen
-                      true, configure\n    router multicast\n      ipv4 routing\nBy
-                      default, configure PIM sparse-mode in the underlay on all:\n
-                      \ - P2P uplink interfaces if enabled on uplink switch\n  - MLAG
+                    description: "When enabled, configures multicast routing and by
+                      default configures PIM sparse-mode in the underlay on all:\n
+                      \ - P2P uplink interfaces if enabled on uplink peer\n  - MLAG
                       L3 peer interface if also enabled on MLAG peer\n  - l3_edge
-                      and core interfaces"
+                      and core interfaces\nOverrides the global `underlay_multicast_pim_sm`."
                   uplinks:
                     type: bool
                     default: true
                     description: 'Enable/Disable PIM sparse-mode on uplinks.
 
                       Requires node setting `underlay_multicast.pim_sm.enabled: true`
-                      or, if unset, global `underlay_multicast_pim_sm: true'
+                      or, if unset, global `underlay_multicast_pim_sm: true`'
                   uplink_interfaces:
-                    description: 'Uplink interface names to enable for PIM sparse-mode.
+                    description: 'Limit PIM SM to the uplink_interfaces in this list.
+                      All interfaces if unset.
 
                       Effective only when node settings `underlay_multicast.pim_sm.uplinks:
                       true`.'
@@ -11843,18 +11845,18 @@ $defs:
                 keys:
                   enabled:
                     type: bool
-                    description: "Override `underlay_multicast_static`.\nWhen true,
-                      configure\n    router multicast\n      ipv4 routing\nConfigure
-                      static multicast in the underlay on:\n  - P2P uplink interfaces
-                      if enabled on uplink peer\n  - MLAG L3 peer interface if also
-                      enabled on MLAG peer\n  - l3_edge and core_interfaces"
+                    description: "When enabled, configures multicast routing and by
+                      default configures static multicast in the underlay on all:\n
+                      \ - P2P uplink interfaces if enabled on uplink peer\n  - MLAG
+                      L3 peer interface if also enabled on MLAG peer\n  - l3_edge
+                      and core interfaces\nOverrides the global `underlay_multicast_multicast`."
                   uplinks:
                     type: bool
                     default: true
                     description: 'Enable/Disable static multicast on uplinks.
 
                       Requires node setting `underlay_multicast.static.enabled: true`
-                      or, if unset, global `underlay_multicast_static: true'
+                      or, if unset, global `underlay_multicast_static: true`'
                   uplink_interfaces:
                     description: 'Limit static multicast to the uplink_interfaces
                       in this list. All interfaces if unset.
@@ -12614,8 +12616,14 @@ $defs:
           description: Enable sFlow. Overrides `fabric_sflow` setting.
         underlay_multicast:
           type: bool
-          description: Enable PIM sparse mode. Requires `include_in_underlay_protocol`
+          description: 'Enable PIM sparse mode. Requires `include_in_underlay_protocol`
             and the global `underlay_multicast` to be `true`.
+
+
+            Note: The default value for this key is `false` when using either the
+            new key `underlay_multicast.pim_sm.enabled: true
+
+            or, if unset, global `underlay_multicast_pim_sm: true`'
           deprecation:
             removed: false
             warning: true
@@ -12625,26 +12633,26 @@ $defs:
           type: bool
           description: 'Configure PIM sparse-mode on the P2P links.
 
-            When `include_in_underlay_protocol: true`, AVD uses the the node_setting
-            `underlay_multicast.pim_sm.enabled` or, if unset, global `underlay_multicast_pim_sm`
+            Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if
+            unset, global `underlay_multicast_pim_sm: true`
 
-            to decide whether or not enabling PIM sparse-mode on the P2P links.
+            The default value depends on the value of `include_in_underlay_protocol`:
 
+            * when `include_in_underlay_protocol: true`, the default value is `true`
 
-            When `include_in_underlay_protocol: false`, only the value of this knob
-            matters.'
+            * when `include_in_underlay_protocol: false`, the default value is `false`.'
         multicast_static:
           type: bool
           description: 'Configure static multicast on the P2P links.
 
-            When `include_in_underlay_protocol: true`, AVD uses the the node_setting
-            `underlay_multicast.pim_sm.enabled` or, if unset, global `underlay_multicast_pim_sm`
+            Requires node setting `underlay_multicast.static.enabled: true` or, if
+            unset, global `underlay_multicast_static: true`
 
-            to decide whether or not enabling static multicast on the P2P links.
+            The default value depends on the value of `include_in_underlay_protocol`:
 
+            * when `include_in_underlay_protocol: true`, the default value is `true`
 
-            When `include_in_underlay_protocol: false`, only the value of this knob
-            matters.'
+            * when `include_in_underlay_protocol: false`, the default value is `false`.'
         flow_tracking:
           type: dict
           $ref: eos_designs#/$defs/flow_tracking_link

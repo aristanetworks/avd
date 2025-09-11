@@ -11,7 +11,7 @@ core_interfaces:
     - nodes: [host1, peer1]
       id: 10
       as: [65001, 65002]
-      interfaces: [Ethernet3, Ethernet3]
+      interfaces: [Ethernet5, Ethernet3]
       include_in_underlay_protocol: true
       underlay_multicast: true
       ip_pool: underlay_pool
@@ -20,7 +20,7 @@ core_interfaces:
     - nodes: [host1, peer2]
       id: 11
       as: [65001, 65003]
-      interfaces: [Ethernet4, Ethernet4]
+      interfaces: [Ethernet6, Ethernet6]
       include_in_underlay_protocol: true
       underlay_multicast: false
       ip_pool: underlay_pool
@@ -30,7 +30,7 @@ core_interfaces:
     - nodes: [host1, peer3]
       id: 12
       as: [65001, 65004]
-      interfaces: [Ethernet5, Ethernet5]
+      interfaces: [Ethernet7, Ethernet7]
       include_in_underlay_protocol: true
       # Current values
       # underlay_multicast: None

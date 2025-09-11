@@ -18,9 +18,6 @@ ethernet_interfaces:
 - name: Ethernet4
   description: uplink_structured_config on port-channel uplink
   shutdown: false
-  mtu: 9214
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
   channel_group:
     id: 4
     mode: active
@@ -29,11 +26,9 @@ ethernet_interfaces:
       level: '25'
     unknown_unicast:
       level: '25'
-  peer: peer2
+  peer: host3
   peer_interface: Ethernet4
-  peer_type: other
-  switchport:
-    enabled: false
+  peer_type: l2leaf
 - name: Ethernet42
   description: P2P_host2_Ethernet42
   shutdown: false
@@ -78,7 +73,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
-- name: Ethernet3
+- name: Ethernet5
   description: P2P_peer1_Ethernet3
   shutdown: false
   mtu: 9214
@@ -92,14 +87,25 @@ ethernet_interfaces:
   peer_type: other
   switchport:
     enabled: false
-- name: Ethernet5
-  description: P2P_peer3_Ethernet5
+- name: Ethernet6
+  description: P2P_peer2_Ethernet6
+  shutdown: false
+  mtu: 9214
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  peer: peer2
+  peer_interface: Ethernet6
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: P2P_peer3_Ethernet7
   shutdown: false
   mtu: 9214
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   peer: peer3
-  peer_interface: Ethernet5
+  peer_interface: Ethernet7
   peer_type: other
   switchport:
     enabled: false
@@ -285,9 +291,9 @@ router_ospf:
     no_passive_interfaces:
     - Ethernet42
     - Ethernet43
-    - Ethernet3
-    - Ethernet4
     - Ethernet5
+    - Ethernet6
+    - Ethernet7
     max_lsa: 12000
 service_routing_protocols_model: multi-agent
 snmp_server:

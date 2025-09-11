@@ -45,7 +45,6 @@ l3_edge:
       descriptions:
         - P2P link, included in underlay protocol, PIM SM default, expect enabled.
         - dummy
-        ]
       interfaces: [ethernet2, ethernet2]
       ip: [192.168.0.2/31, 192.168.0.3/31]
       include_in_underlay_protocol: true
