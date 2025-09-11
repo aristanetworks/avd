@@ -140,6 +140,15 @@ For test and lab usage the certificate verification can be disabled.
 cv_verify_certs: false
 ```
 
+For an on-premise CloudVision cluster it is possible to authenticate with username/password instead of a service account token.
+The username and password below must be set via variables on the task, play or in the fabric-level group vars. `ansible_password` and `cv_token` **must not** be set.
+
+```yaml
+# Use username/password instead of a service account token for authentication to CloudVision.
+cv_username: <username>
+cv_password: <password. This value should be using Ansible Vault>
+```
+
 #### EOS Devices configuration
 
 By default this role will deploy configurations for all hosts targeted by the Ansible "play".

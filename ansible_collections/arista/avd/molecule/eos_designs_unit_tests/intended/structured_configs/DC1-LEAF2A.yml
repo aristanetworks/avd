@@ -698,6 +698,13 @@ router_bgp:
     remote_as: '65001'
     peer: DC1-SPINE4
     description: DC1-SPINE4
+  aggregate_addresses:
+  - prefix: 10.12.1.0/8
+    advertise_only: true
+    as_set: true
+    summary_only: true
+    attribute_map: RM-ATTRIBUTE
+    match_map: RM-MATCH
   redistribute:
     connected:
       enabled: true
