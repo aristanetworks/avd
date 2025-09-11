@@ -4,13 +4,13 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# CVP Integration: Porting to `cv_deploy`
+# CloudVision Integration: Porting to `cv_deploy`
 
 This guide provides a step-by-step process for updating your Ansible inventory and playbooks to ensure a smooth and successful transition from `eos_config_deploy_cvp` to `cv_deploy`.
 
 ## Requirements
 
-The `cv_deploy` role is now part of the `arista.avd` Ansible collection. This will now remove the requirement of the `arista.cvp` collection. It may be removed if you have the `arista.cvp` collection listed in your `requirements.yml` file.
+The `cv_deploy` role is now part of the `arista.avd` Ansible collection. This will now remove the requirement of the `arista.cvp` collection. It may be removed if you have the `arista.cvp` collection listed in your `requirements.yml` file. For a complete look at requirements, please see the [installation guide](../installation/collection-installation.md).
 
 <div class="grid" markdown>
 
@@ -70,10 +70,10 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
       children:
         cloudvision:
           hosts:
-            cv_server01:
-              ansible_host: 10.83.28.164
-              ansible_user: ansible
-              ansible_password: ansible
+            <CloudVision node>:
+              ansible_host: <CloudVision address>
+              ansible_user: <CloudVision username>
+              ansible_password: <CloudVision password>
               ansible_connection: httpapi
               ansible_httpapi_use_ssl: true
               ansible_httpapi_validate_certs: false
@@ -94,7 +94,7 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
           ansible.builtin.import_role:
             name: arista.avd.cv_deploy
           vars:
-            cv_server: www.arista.io
+            cv_server: <hostname or IP address of CloudVision host>
             cv_token: <insert service_account token here - use Ansible Vault>
 
     ```
@@ -114,24 +114,12 @@ We recommend leveraging the `cv_server` and `cv_token` keys to specify the authe
       ansible.builtin.import_role:
         name: arista.avd.cv_deploy
       vars:
-        cv_server: www.arista.io
+        cv_server: <hostname or IP address of CloudVision host>
         cv_token: <insert service_account token here - use Ansible Vault>
-        # Optional with username and password instead of cv_token
-        cv_username: arista
-        cv_password: <use Ansible Vault>
 ```
 
-## Topology View with Tags - Preview
-
-Some newer data models can automatically generate CloudVision Tags. The topology tags improve the topology layout within CloudVision.
-
-```yaml
-generate_cv_tags:
-  topology_hints: true
-  # campus_fabric used by CloudVision to render the correct network layout in the
-  # Topology view (`campusV2` network hierarchy) and Campus dashboards.
-  # campus_fabric: true
-```
+!!!warning
+    You may use the combination of `cv_username` and `cv_password` instead of `cv_token`, but this is only supported for on-prem CloudVision. CVaaS only supports the use of tokens, so please keep that in mind.
 
 ## Provisioning
 
@@ -148,7 +136,7 @@ generate_cv_tags:
       ansible.builtin.import_role:
         name: arista.avd.cv_deploy
       vars:
-        cv_server: www.arista.io
+        cv_server: <hostname or IP address of CloudVision host>
         cv_token: <insert service_account token here - use Ansible Vault>
         cv_run_change_control: true
 
