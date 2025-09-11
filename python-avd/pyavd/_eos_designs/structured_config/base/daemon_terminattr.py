@@ -138,4 +138,4 @@ class DaemonTerminattrMixin(Protocol):
                         token_file=self.inputs.cvp_token_file or "/tmp/token",  # NOSONAR # noqa: S108
                     )
 
-        self.structured_config.daemon_terminattr._update(cvvrf=self.inputs.mgmt_interface_vrf)
+        self.structured_config.daemon_terminattr.cvvrf = self.inputs.mgmt_interface_vrf
