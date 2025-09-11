@@ -40,7 +40,7 @@ keys:
             keys:
               disabled_paths:
                 type: list
-                description: List of unique disabled Sysdb path for Octa.
+                description: List of disabled Sysdb paths for Octa.
                 items:
                   type: str
           smash:
