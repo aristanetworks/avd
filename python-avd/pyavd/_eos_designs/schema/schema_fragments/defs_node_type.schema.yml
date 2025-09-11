@@ -1643,7 +1643,7 @@ $defs:
                       Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true
                   uplink_interfaces:
                     description: |-
-                      Uplink interface names to enable for static multicast.
+                      Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
                       Effective only when node settings `underlay_multicast.static.uplinks: true`.
                     type: list
                     items:
