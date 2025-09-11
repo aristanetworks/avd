@@ -64,7 +64,7 @@ l3leaf:
           # Testing limiting multicast on uplinks
           underlay_multicast:
             pim_sm:
-              # uplink_interfaces does not contain Ethernet 4
+              # uplink_interfaces does not contain Ethernet1
               uplinks: true
               uplink_interfaces: [Ethernet5]
             static:
