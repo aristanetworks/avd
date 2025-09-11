@@ -48,17 +48,17 @@ ansible_collections/arista/avd/examples/common/example-installation.md
 
 ```shell
 ansible-avd-examples/ (or wherever the playbook was run)
-  |── dual-dc-l3ls
-    ├── ansible.cfg
-    ├── documentation
-    ├── group_vars
-    ├── images
-    ├── intended
-    ├── inventory.yml
-    ├── build.yml
-    ├── deploy.yml
-    ├── README.md
-    └── switch-basic-configurations
+├── dual-dc-l3ls
+  ├── documentation
+  ├── group_vars
+  ├── images
+  ├── intended
+  ├── switch-basic-configurations
+  ├── ansible.cfg
+  ├── build.yml
+  ├── deploy.yml
+  ├── inventory.yml
+  └── README.md
 ```
 
 ## Overall design overview

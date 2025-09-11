@@ -2,3 +2,18 @@
 ### group_vars/DC2_SPINES.yml
 
 type: spine
+
+spine:
+  defaults:
+    platform: vEOS-lab # (2)!
+    loopback_ipv4_pool: 10.255.128.0/27 # (3)!
+    bgp_as: 65200 # (4)!
+
+  nodes: # (5)!
+    - name: dc2-spine1
+      id: 11 # (6)!
+      mgmt_ip: 172.16.1.21/24 # (7)!
+
+    - name: dc2-spine2
+      id: 12
+      mgmt_ip: 172.16.1.22/24
