@@ -5690,6 +5690,10 @@ interface Ethernet84
    switchport tap encapsulation gre protocol 0x2 feature header length 3 strip
    switchport tap encapsulation gre protocol 0x3 feature header length 2 strip re-encapsulation ethernet
    switchport tap encapsulation gre protocol 0x4 strip re-encapsulation ethernet
+!
+interface Ethernet85
+   description DOT1X Testing - pae mode supplicant
+   dot1x pae supplicant test_profile
 ```
 
 ### Port-Channel Interfaces
@@ -11208,28 +11212,29 @@ ip as-path access-list mylist2 deny _64517$ igp
 
 #### 802.1X Interfaces
 
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
-| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ |
-| Ethernet29 | - | auto | True | - | - | - | - | - |
-| Ethernet30 | - | force-authorized | False | - | - | - | - | - |
-| Ethernet31 | - | force-unauthorized | - | - | - | - | - | - |
-| Ethernet32 | - | auto | - | True | - | - | - | - |
-| Ethernet33 | authenticator | - | - | - | - | - | - | - |
-| Ethernet34 | - | - | - | - | allow vlan 800 | - | - | - |
-| Ethernet35 | - | - | - | - | drop | - | - | - |
-| Ethernet36 | - | - | - | - | - | single-host | - | - |
-| Ethernet37 | - | - | - | - | - | multi-host | - | - |
-| Ethernet38 | - | - | - | - | - | multi-host | - | - |
-| Ethernet39 | - | - | - | - | - | - | True | - |
-| Ethernet40 | - | - | - | - | - | - | True | - |
-| Ethernet41 | - | - | - | - | - | - | True | - |
-| Ethernet42 | - | - | - | - | - | - | True | - |
-| Ethernet43 | - | - | - | - | - | - | - | - |
-| Ethernet44 | - | - | - | - | - | - | - | - |
-| Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True | True |
-| Ethernet70 | - | - | - | - | - | - | - | - |
-| Ethernet71 | - | - | - | - | - | - | - | - |
-| Ethernet72 | - | - | - | - | - | - | - | - |
+| Interface | PAE Mode | Supplicant Profile | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
+| --------- | -------- | ------------------ | ----- | ---------------------- | ---------------- | ------------------- | --------- | -------------- | ----- |
+| Ethernet29 | - | - | auto | True | - | - | - | - | - |
+| Ethernet30 | - | - | force-authorized | False | - | - | - | - | - |
+| Ethernet31 | - | - | force-unauthorized | - | - | - | - | - | - |
+| Ethernet32 | - | - | auto | - | True | - | - | - | - |
+| Ethernet33 | authenticator | - | - | - | - | - | - | - | - |
+| Ethernet34 | - | - | - | - | - | allow vlan 800 | - | - | - |
+| Ethernet35 | - | - | - | - | - | drop | - | - | - |
+| Ethernet36 | - | - | - | - | - | - | single-host | - | - |
+| Ethernet37 | - | - | - | - | - | - | multi-host | - | - |
+| Ethernet38 | - | - | - | - | - | - | multi-host | - | - |
+| Ethernet39 | - | - | - | - | - | - | - | True | - |
+| Ethernet40 | - | - | - | - | - | - | - | True | - |
+| Ethernet41 | - | - | - | - | - | - | - | True | - |
+| Ethernet42 | - | - | - | - | - | - | - | True | - |
+| Ethernet43 | - | - | - | - | - | - | - | - | - |
+| Ethernet44 | - | - | - | - | - | - | - | - | - |
+| Ethernet45 | authenticator | - | auto | - | True | allow vlan 800 | multi-host | True | True |
+| Ethernet70 | - | - | - | - | - | - | - | - | - |
+| Ethernet71 | - | - | - | - | - | - | - | - | - |
+| Ethernet72 | - | - | - | - | - | - | - | - | - |
+| Ethernet85 | supplicant | test_profile | - | - | - | - | - | - | - |
 
 #### Dot1x Configuration
 

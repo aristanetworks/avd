@@ -8773,12 +8773,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Pae(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"mode": {"type": str}}
-                mode: Literal["authenticator"] | None
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
+                mode: Literal["authenticator", "supplicant"] | None
+                supplicant_profile: str | None
+                """Supplicant profile name."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, mode: Literal["authenticator"] | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        mode: Literal["authenticator", "supplicant"] | None | UndefinedType = Undefined,
+                        supplicant_profile: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Pae.
 
@@ -8787,6 +8794,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             mode: mode
+                            supplicant_profile: Supplicant profile name.
 
                         """
 
