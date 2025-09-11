@@ -273,7 +273,6 @@ keys:
               description: Path to Custom J2 template.
             overlay_loopback_interface:
               type: str
-              description: Path to Custom J2 template.
               deprecation:
                 warning: true
                 removed: true
