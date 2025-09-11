@@ -8571,7 +8571,7 @@ keys:
         deprecation:
           warning: true
           new_key: provider
-          remove_in_version: 7.0.0
+          remove_in_version: 6.0.0
         items:
           type: dict
           keys:
@@ -8599,7 +8599,7 @@ keys:
             keys:
               disabled_paths:
                 type: list
-                description: List of unique disabled Sysdb path for Octa.
+                description: List of disabled Sysdb paths for Octa.
                 items:
                   type: str
           smash:

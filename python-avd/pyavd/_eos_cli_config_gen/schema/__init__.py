@@ -21482,7 +21482,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"disabled_paths": {"type": DisabledPaths}}
                 disabled_paths: DisabledPaths
                 """
-                List of unique disabled Sysdb path for Octa.
+                List of disabled Sysdb paths for Octa.
 
                 Subclass of AvdList with `str` items.
                 """
@@ -21498,7 +21498,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             disabled_paths:
-                               List of unique disabled Sysdb path for Octa.
+                               List of disabled Sysdb paths for Octa.
 
                                Subclass of AvdList with `str` items.
 
