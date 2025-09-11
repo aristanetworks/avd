@@ -209,7 +209,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         if (
             self.shared_utils.underlay_multicast_static_enabled is True
             and uplink_switch_facts.shared_utils.underlay_multicast_static_enabled is True
-            and self.shared_utils.node_config.underlay_multicast.static.uplinks is not False
+            and self.shared_utils.node_config.underlay_multicast.static.uplinks
             and (
                 not self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces
                 or uplink_interface in self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces
