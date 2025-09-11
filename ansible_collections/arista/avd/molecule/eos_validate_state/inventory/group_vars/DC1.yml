@@ -198,6 +198,17 @@ l3leaf:
             # If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
             remote_peers:
               - hostname: dc2-leaf2b
+    - group: DC1_L3_LEAF3
+      # do not use this leaf - only testing legacy is_deployed in strutcured_config
+      bgp_as: 65103
+      nodes:
+        - name: dc1-leaf3a
+          id: 5
+          mgmt_ip: 172.16.1.104/24
+          uplink_switch_interfaces:
+            - Ethernet42
+            - Ethernet42
+
 # L2 Leaf switch group
 l2leaf:
   defaults:

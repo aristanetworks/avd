@@ -166,7 +166,6 @@ ip_igmp_snooping:
     fast_leave: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -234,6 +233,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.1
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:

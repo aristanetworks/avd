@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from functools import cached_property
 from typing import Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -15,6 +16,7 @@ from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import Undefined, default, get_v2
 from pyavd.j2filters import natural_sort
 
+from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
 from .management_ssh import ManagementSshMixin
 from .monitor_sessions import MonitorSessionsMixin
@@ -26,6 +28,7 @@ from .utils import UtilsMixin
 
 
 class AvdStructuredConfigBaseProtocol(
+    AddressLockingMixin,
     DaemonTerminattrMixin,
     ManagementSshMixin,
     NtpMixin,
@@ -53,10 +56,6 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def hostname(self) -> None:
         self.structured_config.hostname = self.shared_utils.hostname
-
-    @structured_config_contributor
-    def is_deployed(self) -> None:
-        self.structured_config.is_deployed = self.inputs.is_deployed
 
     @structured_config_contributor
     def serial_number(self) -> None:
@@ -255,8 +254,11 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def enable_password(self) -> None:
-        """enable_password.disable is always set to match EOS default config and historic configs."""
-        self.structured_config.enable_password.disabled = True
+        """enable_password.disable is set to match EOS default config and historic configs if aaa_settings.enable_password.password is not defined."""
+        if self.inputs.aaa_settings.enable_password.password:
+            self.structured_config.enable_password._update(hash_algorithm="sha512", key=self.inputs.aaa_settings.enable_password.password)
+        else:
+            self.structured_config.enable_password.disabled = True
 
     @structured_config_contributor
     def transceiver_qsfp_default_mode_4x10(self) -> None:
@@ -528,6 +530,12 @@ class AvdStructuredConfigBaseProtocol(
                         vrf_name = self.inputs.mgmt_interface_vrf
                     self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
 
+        # Enforce eAPI management access in default VRF for ACT Digital Twin if required
+        if self._act_ensure_eapi_access:
+            self.structured_config.management_api_http.enable_https = True
+            # Create item for default VRF if not present. If present, remove IPv4 ACL.
+            self.structured_config.management_api_http.enable_vrfs.obtain("default").access_group = None
+
     @structured_config_contributor
     def link_tracking_groups(self) -> None:
         """Set link_tracking_groups."""
@@ -593,6 +601,7 @@ class AvdStructuredConfigBaseProtocol(
             ttl=self.shared_utils.node_config.ptp.ttl,
             domain=default(self.shared_utils.node_config.ptp.domain, default_ptp_domain),
             monitor=self.get_ptp_monitor(),
+            forward_v1=default(self.shared_utils.node_config.ptp.forward_v1, self.inputs.ptp_settings.forward_v1) or None,
         )
 
         self.structured_config.ptp.source.ip = self.shared_utils.node_config.ptp.source_ip
@@ -796,6 +805,11 @@ class AvdStructuredConfigBaseProtocol(
     def struct_cfgs(self) -> None:
         if self.shared_utils.platform_settings.structured_config:
             self.custom_structured_configs.root.append(self.shared_utils.platform_settings.structured_config)
+
+    @cached_property
+    def _act_ensure_eapi_access(self) -> bool:
+        """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
+        return self.shared_utils.digital_twin and self.inputs.digital_twin.environment == "act" and self.inputs.digital_twin.fabric.act_ensure_eapi_access
 
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):

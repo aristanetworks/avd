@@ -31,7 +31,6 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -53,6 +52,7 @@ management_interfaces:
   ip_address: 192.168.200.111/24
   type: oob
 metadata:
+  is_deployed: true
   platform: 7280R
   fabric_name: ANSIBLE_ONLY
 platform:

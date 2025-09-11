@@ -8,6 +8,8 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>aaa_settings</samp>](## "aaa_settings") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;enable_password</samp>](## "aaa_settings.enable_password") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "aaa_settings.enable_password.password") | String |  |  |  | SHA512 hashed password. |
     | [<samp>&nbsp;&nbsp;tacacs</samp>](## "aaa_settings.tacacs") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;servers</samp>](## "aaa_settings.tacacs.servers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "aaa_settings.tacacs.servers.[].host") | String | Required |  |  | Host IP address or name.<br>Combination of `host` and `vrf` should be unique. |
@@ -267,6 +269,10 @@
 
     ```yaml
     aaa_settings:
+      enable_password:
+
+        # SHA512 hashed password.
+        password: <str>
       tacacs:
         servers:
 

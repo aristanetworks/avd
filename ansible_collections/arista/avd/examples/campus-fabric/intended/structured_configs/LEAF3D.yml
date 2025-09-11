@@ -3109,7 +3109,6 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -3132,6 +3131,7 @@ management_interfaces:
   type: oob
   gateway: 172.16.100.1
 metadata:
+  is_deployed: true
   platform: cEOSLab
   fabric_name: DC1_FABRIC
 ntp:

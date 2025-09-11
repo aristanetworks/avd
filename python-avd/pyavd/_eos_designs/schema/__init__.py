@@ -23,6 +23,27 @@ class EosDesigns(EosDesignsRootModel):
     class AaaSettings(AvdModel):
         """Subclass of AvdModel."""
 
+        class EnablePassword(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"password": {"type": str}}
+            password: str | None
+            """SHA512 hashed password."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, password: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    EnablePassword.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        password: SHA512 hashed password.
+
+                    """
+
         class Tacacs(AvdModel):
             """Subclass of AvdModel."""
 
@@ -429,6 +450,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         _fields: ClassVar[dict] = {
+            "enable_password": {"type": EnablePassword},
             "tacacs": {"type": Tacacs},
             "radius": {"type": Radius},
             "authentication": {"type": EosCliConfigGen.AaaAuthentication},
@@ -437,6 +459,8 @@ class EosDesigns(EosDesignsRootModel):
             "root_login": {"type": RootLogin},
             "local_users": {"type": EosCliConfigGen.LocalUsers},
         }
+        enable_password: EnablePassword
+        """Subclass of AvdModel."""
         tacacs: Tacacs
         """Subclass of AvdModel."""
         radius: Radius
@@ -453,6 +477,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
+                enable_password: EnablePassword | UndefinedType = Undefined,
                 tacacs: Tacacs | UndefinedType = Undefined,
                 radius: Radius | UndefinedType = Undefined,
                 authentication: EosCliConfigGen.AaaAuthentication | UndefinedType = Undefined,
@@ -468,6 +493,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    enable_password: Subclass of AvdModel.
                     tacacs: Subclass of AvdModel.
                     radius: Subclass of AvdModel.
                     authentication: authentication
@@ -475,6 +501,149 @@ class EosDesigns(EosDesignsRootModel):
                     accounting: accounting
                     root_login: Subclass of AvdModel.
                     local_users: local_users
+
+                """
+
+    class AddressLockingSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class DhcpServersIpv4(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DhcpServersIpv4._item_type = str
+
+        class LeasesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"ip": {"type": str}, "mac": {"type": str}}
+            ip: str
+            """IP address."""
+            mac: str
+            """MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ip: str | UndefinedType = Undefined, mac: str | UndefinedType = Undefined) -> None:
+                    """
+                    LeasesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ip: IP address.
+                        mac: MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh).
+
+                    """
+
+        class Leases(AvdList[LeasesItem]):
+            """Subclass of AvdList with `LeasesItem` items."""
+
+        Leases._item_type = LeasesItem
+
+        class LockedAddress(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "expiration_mac_disabled": {"type": bool},
+                "ipv4_enforcement_disabled": {"type": bool},
+                "ipv6_enforcement_disabled": {"type": bool},
+            }
+            expiration_mac_disabled: bool | None
+            """Configure deauthorizing locked addresses upon MAC aging out."""
+            ipv4_enforcement_disabled: bool | None
+            """Configure enforcement for locked IPv4 addresses."""
+            ipv6_enforcement_disabled: bool | None
+            """Configure enforcement for locked IPv6 addresses."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    expiration_mac_disabled: bool | None | UndefinedType = Undefined,
+                    ipv4_enforcement_disabled: bool | None | UndefinedType = Undefined,
+                    ipv6_enforcement_disabled: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    LockedAddress.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        expiration_mac_disabled: Configure deauthorizing locked addresses upon MAC aging out.
+                        ipv4_enforcement_disabled: Configure enforcement for locked IPv4 addresses.
+                        ipv6_enforcement_disabled: Configure enforcement for locked IPv6 addresses.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
+            "local_users": {"type": EosCliConfigGen.LocalUsers},
+            "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "disabled": {"type": bool},
+            "leases": {"type": Leases},
+            "locked_address": {"type": LockedAddress},
+        }
+        local_interface: str
+        """
+        The value will be interpreted according to these rules:
+          - `use_mgmt_interface` will configure the
+        `mgmt_interface` as the local interface.
+          - `use_inband_mgmt_interface` will configure the
+        `inband_mgmt_interface` as the local interface.
+          - `use_default_mgmt_method_interface` will
+        configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
+        of `default_mgmt_method`.
+          - Any other string will be used directly as the local interface.
+
+        Default value: `"use_default_mgmt_method_interface"`
+        """
+        local_users: EosCliConfigGen.LocalUsers
+        dhcp_servers_ipv4: DhcpServersIpv4
+        """Subclass of AvdList with `str` items."""
+        disabled: bool | None
+        """Disable IP locking on configured ports."""
+        leases: Leases
+        """Subclass of AvdList with `LeasesItem` items."""
+        locked_address: LockedAddress
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                local_interface: str | UndefinedType = Undefined,
+                local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
+                dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                disabled: bool | None | UndefinedType = Undefined,
+                leases: Leases | UndefinedType = Undefined,
+                locked_address: LockedAddress | UndefinedType = Undefined,
+            ) -> None:
+                """
+                AddressLockingSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    local_interface:
+                       The value will be interpreted according to these rules:
+                         - `use_mgmt_interface` will configure the
+                       `mgmt_interface` as the local interface.
+                         - `use_inband_mgmt_interface` will configure the
+                       `inband_mgmt_interface` as the local interface.
+                         - `use_default_mgmt_method_interface` will
+                       configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
+                       of `default_mgmt_method`.
+                         - Any other string will be used directly as the local interface.
+                    local_users: local_users
+                    dhcp_servers_ipv4: Subclass of AvdList with `str` items.
+                    disabled: Disable IP locking on configured ports.
+                    leases: Subclass of AvdList with `LeasesItem` items.
+                    locked_address: Subclass of AvdModel.
 
                 """
 
@@ -1974,6 +2143,8 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
             _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
             _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
@@ -2134,6 +2305,10 @@ class EosDesigns(EosDesignsRootModel):
             Note! The content of this dictionary is _not_ validated by
             the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for ethernet interfaces."""
+            port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for port-channel links."""
 
             if TYPE_CHECKING:
 
@@ -2174,6 +2349,8 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksProfilesItem.
@@ -2282,6 +2459,8 @@ class EosDesigns(EosDesignsRootModel):
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
                            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config for ethernet interfaces.
+                        port_channel_structured_config: Custom structured config for port-channel links.
 
                     """
 
@@ -2609,6 +2788,8 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
             _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
             _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
@@ -2769,6 +2950,10 @@ class EosDesigns(EosDesignsRootModel):
             Note! The content of this dictionary is _not_ validated by
             the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for ethernet interfaces."""
+            port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for port-channel links."""
 
             if TYPE_CHECKING:
 
@@ -2809,6 +2994,8 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksItem.
@@ -2917,6 +3104,8 @@ class EosDesigns(EosDesignsRootModel):
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
                            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config for ethernet interfaces.
+                        port_channel_structured_config: Custom structured config for port-channel links.
 
                     """
 
@@ -4065,6 +4254,7 @@ class EosDesigns(EosDesignsRootModel):
                 "act_username": {"type": str, "default": "cvpadmin"},
                 "act_password": {"type": str, "default": "cvp123!"},
                 "act_internet_access": {"type": bool, "default": False},
+                "act_ensure_eapi_access": {"type": bool, "default": False},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -4090,6 +4280,20 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
+            act_ensure_eapi_access: bool
+            """
+            Ensures eAPI remains accessible for automation and testing via ACT.
+            Clients connecting to device
+            eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+            management VRF, this primary eAPI connectivity can be unintentionally broken.
+            Set this to `true` to
+            enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
+            default VRF and preserving this connectivity.
+            This setting is only applicable to ACT `veos` and
+            `cloudeos` node types.
+
+            Default value: `False`
+            """
 
             if TYPE_CHECKING:
 
@@ -4100,6 +4304,7 @@ class EosDesigns(EosDesignsRootModel):
                     act_username: str | UndefinedType = Undefined,
                     act_password: str | UndefinedType = Undefined,
                     act_internet_access: bool | UndefinedType = Undefined,
+                    act_ensure_eapi_access: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -4117,10 +4322,24 @@ class EosDesigns(EosDesignsRootModel):
                            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
                            types.
                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        act_ensure_eapi_access:
+                           Ensures eAPI remains accessible for automation and testing via ACT.
+                           Clients connecting to device
+                           eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+                           management VRF, this primary eAPI connectivity can be unintentionally broken.
+                           Set this to `true` to
+                           enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
+                           default VRF and preserving this connectivity.
+                           This setting is only applicable to ACT `veos` and
+                           `cloudeos` node types.
 
                     """
 
-        _fields: ClassVar[dict] = {"environment": {"type": str, "default": "act"}, "fabric": {"type": Fabric}}
+        _fields: ClassVar[dict] = {
+            "environment": {"type": str, "default": "act"},
+            "fabric": {"type": Fabric},
+            "use_default_interfaces_of_digital_twin_platform": {"type": bool, "default": False},
+        }
         environment: Literal["act"]
         """
         Targeted Digital Twin environment.
@@ -4133,10 +4352,23 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        use_default_interfaces_of_digital_twin_platform: bool
+        """
+        In Digital Twin mode, AVD can either use the default interfaces of the original or the digital twin
+        platform (as set in `platform_settings.[].digital_twin.platform`).
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, environment: Literal["act"] | UndefinedType = Undefined, fabric: Fabric | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                environment: Literal["act"] | UndefinedType = Undefined,
+                fabric: Fabric | UndefinedType = Undefined,
+                use_default_interfaces_of_digital_twin_platform: bool | UndefinedType = Undefined,
+            ) -> None:
                 """
                 DigitalTwin.
 
@@ -4149,6 +4381,9 @@ class EosDesigns(EosDesignsRootModel):
                        Settings for Digital Twin fabric devices.
 
                        Subclass of AvdModel.
+                    use_default_interfaces_of_digital_twin_platform:
+                       In Digital Twin mode, AVD can either use the default interfaces of the original or the digital twin
+                       platform (as set in `platform_settings.[].digital_twin.platform`).
 
                 """
 
@@ -6563,6 +6798,404 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class L2vlanProfilesItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class TrunkGroups(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        TrunkGroups._item_type = str
+
+        class EvpnL2Multicast(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+            enabled: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    EvpnL2Multicast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+
+                    """
+
+        class VxlanFloodMulticast(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
+            enabled: bool | None
+            """
+            Explicitly enable or disable vxlan_flood_multicast to override setting of
+            `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+            """
+            underlay_multicast_group: str | None
+            """Specific multicast group to use for this VLAN."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    VxlanFloodMulticast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Explicitly enable or disable vxlan_flood_multicast to override setting of
+                           `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                        underlay_multicast_group: Specific multicast group to use for this VLAN.
+
+                    """
+
+        class IgmpSnoopingQuerier(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}, "fast_leave": {"type": bool}}
+            enabled: bool | None
+            """Will be enabled automatically if evpn_l2_multicast is enabled."""
+            source_address: str | None
+            """
+            IPv4_address
+            If not set, IP address of "Loopback0" will be used.
+            """
+            version: Literal[1, 2, 3] | None
+            """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+            fast_leave: bool | None
+            """Enable IGMP snooping fast-leave feature."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    source_address: str | None | UndefinedType = Undefined,
+                    version: Literal[1, 2, 3] | None | UndefinedType = Undefined,
+                    fast_leave: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    IgmpSnoopingQuerier.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
+                        source_address:
+                           IPv4_address
+                           If not set, IP address of "Loopback0" will be used.
+                        version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                        fast_leave: Enable IGMP snooping fast-leave feature.
+
+                    """
+
+        class Bgp(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"structured_config": {"type": EosCliConfigGen.RouterBgp.VlansItem}, "raw_eos_cli": {"type": str}}
+            structured_config: EosCliConfigGen.RouterBgp.VlansItem
+            """
+            Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+            This
+            configuration will not be applied to vlan aware bundles.
+            """
+            raw_eos_cli: str | None
+            """
+            EOS cli commands rendered on router_bgp.vlans.
+            This configuration will not be applied to vlan aware
+            bundles.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    structured_config: EosCliConfigGen.RouterBgp.VlansItem | UndefinedType = Undefined,
+                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Bgp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        structured_config:
+                           Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+                           This
+                           configuration will not be applied to vlan aware bundles.
+                        raw_eos_cli:
+                           EOS cli commands rendered on router_bgp.vlans.
+                           This configuration will not be applied to vlan aware
+                           bundles.
+
+                    """
+
+        class PrivateVlan(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"type": {"type": str}, "primary_vlan": {"type": int}}
+            type: Literal["community", "isolated"]
+            primary_vlan: int
+            """Primary VLAN ID."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, type: Literal["community", "isolated"] | UndefinedType = Undefined, primary_vlan: int | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    PrivateVlan.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        type: type
+                        primary_vlan: Primary VLAN ID.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "profile": {"type": str},
+            "parent_profile": {"type": str},
+            "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking.AddressFamily},
+            "vni_override": {"type": int},
+            "rt_override": {"type": str},
+            "rd_override": {"type": str},
+            "vxlan": {"type": bool, "default": True},
+            "spanning_tree_priority": {"type": int},
+            "evpn_vlan_bundle": {"type": str},
+            "trunk_groups": {"type": TrunkGroups},
+            "evpn_l2_multi_domain": {"type": bool},
+            "evpn_l2_multicast": {"type": EvpnL2Multicast},
+            "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
+            "igmp_snooping_enabled": {"type": bool},
+            "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
+            "bgp": {"type": Bgp},
+            "private_vlan": {"type": PrivateVlan},
+        }
+        profile: str
+        """Profile name."""
+        parent_profile: str | None
+        """
+        Name of parent L2VLAN profile to apply.
+        l2vlan_profiles can refer to another l2vlan_profile to
+        inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+        """
+        address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
+        vni_override: int | None
+        """
+        By default the VNI will be derived from mac_vrf_vni_base.
+        The vni_override, allows to override this
+        value and statically define it.
+        """
+        rt_override: str | None
+        """
+        By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
+        The rt_override allows us
+        to override this value and statically define it.
+        rt_override will default to vni_override if set.
+        rt_override supports two formats:
+          - A single number which will be used in the RT fields instead of
+        mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
+          - A full RT string with colon
+        separator which will override the full RT.
+        """
+        rd_override: str | None
+        """
+        By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
+        The rt_override allows us
+        to override this value and statically define it.
+        rd_override will default to rt_override or
+        vni_override if set.
+        rd_override supports two formats:
+          - A single number which will be used in the
+        RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+          -
+        A full RD string with colon separator which will override the full RD.
+        """
+        vxlan: bool
+        """
+        Extend this L2VLAN over VXLAN.
+
+        Default value: `True`
+        """
+        spanning_tree_priority: int | None
+        """
+        Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst`
+        under node type settings.
+        The default priority for rapid-PVST is set under the node type settings
+        with `spanning_tree_priority` (default=32768).
+        """
+        evpn_vlan_bundle: str | None
+        """
+        Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
+        This setting overrides
+        "evpn_vlan_bundle" set at tenant level.
+        The common option "evpn_vlan_aware_bundles" is disregarded
+        for this option.
+        """
+        trunk_groups: TrunkGroups
+        """Subclass of AvdList with `str` items."""
+        evpn_l2_multi_domain: bool | None
+        """
+        Explicitly extend this VLAN to remote EVPN domains.
+        Overrides
+        `<network_services_key>[].evpn_l2_multi_domain`.
+        """
+        evpn_l2_multicast: EvpnL2Multicast
+        """
+        Explicitly enable or disable evpn_l2_multicast to override setting of
+        `<network_services_key>.[].evpn_l2_multicast.enabled`.
+        When evpn_l2_multicast.enabled is set to true
+        for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding
+        those individual settings.
+        Requires `evpn_multicast` to also be set to `true`.
+
+
+        Subclass of
+        AvdModel.
+        """
+        vxlan_flood_multicast: VxlanFloodMulticast
+        """Subclass of AvdModel."""
+        igmp_snooping_enabled: bool | None
+        """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+        igmp_snooping_querier: IgmpSnoopingQuerier
+        """
+        Enable igmp snooping querier, by default using IP address of Loopback 0.
+        When enabled, igmp snooping
+        querier will only be configured on l3 devices, i.e., uplink_type: p2p.
+
+
+        Subclass of AvdModel.
+        """
+        bgp: Bgp
+        """Subclass of AvdModel."""
+        private_vlan: PrivateVlan
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                profile: str | UndefinedType = Undefined,
+                parent_profile: str | None | UndefinedType = Undefined,
+                address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily | UndefinedType = Undefined,
+                vni_override: int | None | UndefinedType = Undefined,
+                rt_override: str | None | UndefinedType = Undefined,
+                rd_override: str | None | UndefinedType = Undefined,
+                vxlan: bool | UndefinedType = Undefined,
+                spanning_tree_priority: int | None | UndefinedType = Undefined,
+                evpn_vlan_bundle: str | None | UndefinedType = Undefined,
+                trunk_groups: TrunkGroups | UndefinedType = Undefined,
+                evpn_l2_multi_domain: bool | None | UndefinedType = Undefined,
+                evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
+                igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
+                igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
+                bgp: Bgp | UndefinedType = Undefined,
+                private_vlan: PrivateVlan | UndefinedType = Undefined,
+            ) -> None:
+                """
+                L2vlanProfilesItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    profile: Profile name.
+                    parent_profile:
+                       Name of parent L2VLAN profile to apply.
+                       l2vlan_profiles can refer to another l2vlan_profile to
+                       inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+                    address_locking: address_locking
+                    vni_override:
+                       By default the VNI will be derived from mac_vrf_vni_base.
+                       The vni_override, allows to override this
+                       value and statically define it.
+                    rt_override:
+                       By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
+                       The rt_override allows us
+                       to override this value and statically define it.
+                       rt_override will default to vni_override if set.
+                       rt_override supports two formats:
+                         - A single number which will be used in the RT fields instead of
+                       mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
+                         - A full RT string with colon
+                       separator which will override the full RT.
+                    rd_override:
+                       By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
+                       The rt_override allows us
+                       to override this value and statically define it.
+                       rd_override will default to rt_override or
+                       vni_override if set.
+                       rd_override supports two formats:
+                         - A single number which will be used in the
+                       RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+                         -
+                       A full RD string with colon separator which will override the full RD.
+                    vxlan: Extend this L2VLAN over VXLAN.
+                    spanning_tree_priority:
+                       Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst`
+                       under node type settings.
+                       The default priority for rapid-PVST is set under the node type settings
+                       with `spanning_tree_priority` (default=32768).
+                    evpn_vlan_bundle:
+                       Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
+                       This setting overrides
+                       "evpn_vlan_bundle" set at tenant level.
+                       The common option "evpn_vlan_aware_bundles" is disregarded
+                       for this option.
+                    trunk_groups: Subclass of AvdList with `str` items.
+                    evpn_l2_multi_domain:
+                       Explicitly extend this VLAN to remote EVPN domains.
+                       Overrides
+                       `<network_services_key>[].evpn_l2_multi_domain`.
+                    evpn_l2_multicast:
+                       Explicitly enable or disable evpn_l2_multicast to override setting of
+                       `<network_services_key>.[].evpn_l2_multicast.enabled`.
+                       When evpn_l2_multicast.enabled is set to true
+                       for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding
+                       those individual settings.
+                       Requires `evpn_multicast` to also be set to `true`.
+
+
+                       Subclass of
+                       AvdModel.
+                    vxlan_flood_multicast: Subclass of AvdModel.
+                    igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                    igmp_snooping_querier:
+                       Enable igmp snooping querier, by default using IP address of Loopback 0.
+                       When enabled, igmp snooping
+                       querier will only be configured on l3 devices, i.e., uplink_type: p2p.
+
+
+                       Subclass of AvdModel.
+                    bgp: Subclass of AvdModel.
+                    private_vlan: Subclass of AvdModel.
+
+                """
+
+    class L2vlanProfiles(AvdIndexedList[str, L2vlanProfilesItem]):
+        """Subclass of AvdIndexedList with `L2vlanProfilesItem` items. Primary key is `profile` (`str`)."""
+
+        _primary_key: ClassVar[str] = "profile"
+
+    L2vlanProfiles._item_type = L2vlanProfilesItem
+
     class L3Edge(AvdModel):
         """Subclass of AvdModel."""
 
@@ -6927,6 +7560,8 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
             _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
             _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
@@ -7087,6 +7722,10 @@ class EosDesigns(EosDesignsRootModel):
             Note! The content of this dictionary is _not_ validated by
             the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for ethernet interfaces."""
+            port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for port-channel links."""
 
             if TYPE_CHECKING:
 
@@ -7127,6 +7766,8 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksProfilesItem.
@@ -7235,6 +7876,8 @@ class EosDesigns(EosDesignsRootModel):
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
                            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config for ethernet interfaces.
+                        port_channel_structured_config: Custom structured config for port-channel links.
 
                     """
 
@@ -7562,6 +8205,8 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
             _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
             _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
@@ -7722,6 +8367,10 @@ class EosDesigns(EosDesignsRootModel):
             Note! The content of this dictionary is _not_ validated by
             the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for ethernet interfaces."""
+            port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for port-channel links."""
 
             if TYPE_CHECKING:
 
@@ -7762,6 +8411,8 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksItem.
@@ -7870,6 +8521,8 @@ class EosDesigns(EosDesignsRootModel):
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
                            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config for ethernet interfaces.
+                        port_channel_structured_config: Custom structured config for port-channel links.
 
                     """
 
@@ -9590,13 +10243,26 @@ class EosDesigns(EosDesignsRootModel):
                 class Individual(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"profile": {"type": str}}
+                    _fields: ClassVar[dict] = {"profile": {"type": str}, "vlans": {"type": str}, "native_vlan": {"type": int}, "mode": {"type": str}}
                     profile: str | None
                     """Port-profile name to inherit configuration."""
+                    vlans: str | None
+                    """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                    native_vlan: int | None
+                    """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                    """Interface mode on the port-channel member interfaces when in fallback individual."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            profile: str | None | UndefinedType = Undefined,
+                            vlans: str | None | UndefinedType = Undefined,
+                            native_vlan: int | None | UndefinedType = Undefined,
+                            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
                             Individual.
 
@@ -9605,6 +10271,9 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 profile: Port-profile name to inherit configuration.
+                                vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                mode: Interface mode on the port-channel member interfaces when in fallback individual.
 
                             """
 
@@ -9612,8 +10281,8 @@ class EosDesigns(EosDesignsRootModel):
                 mode: Literal["static", "individual"] | None
                 """
                 Either static or individual mode is supported.
-                If the mode is set to "individual" the
-                "individual.profile" setting must be defined.
+                If the mode is set to "individual" either 'profile'
+                or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                 """
                 individual: Individual
                 """
@@ -9647,8 +10316,8 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             mode:
                                Either static or individual mode is supported.
-                               If the mode is set to "individual" the
-                               "individual.profile" setting must be defined.
+                               If the mode is set to "individual" either 'profile'
+                               or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                             individual:
                                Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
                                "individual".
@@ -12299,6 +12968,7 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "sflow": {"type": bool, "default": True},
+                "sflow_subinterfaces": {"type": bool, "default": True},
                 "wan": {"type": bool, "default": True},
                 "ptp": {"type": bool, "default": True},
             }
@@ -12442,6 +13112,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            sflow_subinterfaces: bool
+            """
+            Support for sFlow on sub-interfaces.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             wan: bool
             """
             Support for Arista WAN features.
@@ -12481,6 +13158,7 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     sflow: bool | UndefinedType = Undefined,
+                    sflow_subinterfaces: bool | UndefinedType = Undefined,
                     wan: bool | UndefinedType = Undefined,
                     ptp: bool | UndefinedType = Undefined,
                 ) -> None:
@@ -12566,6 +13244,9 @@ class EosDesigns(EosDesignsRootModel):
                            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
                         sflow:
                            Support for sFlow.
+                           The feature will be ignored on platforms where this is false.
+                        sflow_subinterfaces:
+                           Support for sFlow on sub-interfaces.
                            The feature will be ignored on platforms where this is false.
                         wan:
                            Support for Arista WAN features.
@@ -13032,6 +13713,7 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "sflow": {"type": bool, "default": True},
+                "sflow_subinterfaces": {"type": bool, "default": True},
                 "wan": {"type": bool, "default": True},
                 "ptp": {"type": bool, "default": True},
             }
@@ -13175,6 +13857,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            sflow_subinterfaces: bool
+            """
+            Support for sFlow on sub-interfaces.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
             wan: bool
             """
             Support for Arista WAN features.
@@ -13214,6 +13903,7 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     sflow: bool | UndefinedType = Undefined,
+                    sflow_subinterfaces: bool | UndefinedType = Undefined,
                     wan: bool | UndefinedType = Undefined,
                     ptp: bool | UndefinedType = Undefined,
                 ) -> None:
@@ -13299,6 +13989,9 @@ class EosDesigns(EosDesignsRootModel):
                            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
                         sflow:
                            Support for sFlow.
+                           The feature will be ignored on platforms where this is false.
+                        sflow_subinterfaces:
+                           Support for sFlow on sub-interfaces.
                            The feature will be ignored on platforms where this is false.
                         wan:
                            Support for Arista WAN features.
@@ -14220,13 +14913,26 @@ class EosDesigns(EosDesignsRootModel):
                 class Individual(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"profile": {"type": str}}
+                    _fields: ClassVar[dict] = {"profile": {"type": str}, "vlans": {"type": str}, "native_vlan": {"type": int}, "mode": {"type": str}}
                     profile: str | None
                     """Port-profile name to inherit configuration."""
+                    vlans: str | None
+                    """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                    native_vlan: int | None
+                    """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                    """Interface mode on the port-channel member interfaces when in fallback individual."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            profile: str | None | UndefinedType = Undefined,
+                            vlans: str | None | UndefinedType = Undefined,
+                            native_vlan: int | None | UndefinedType = Undefined,
+                            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
                             Individual.
 
@@ -14235,6 +14941,9 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 profile: Port-profile name to inherit configuration.
+                                vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                mode: Interface mode on the port-channel member interfaces when in fallback individual.
 
                             """
 
@@ -14242,8 +14951,8 @@ class EosDesigns(EosDesignsRootModel):
                 mode: Literal["static", "individual"] | None
                 """
                 Either static or individual mode is supported.
-                If the mode is set to "individual" the
-                "individual.profile" setting must be defined.
+                If the mode is set to "individual" either 'profile'
+                or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                 """
                 individual: Individual
                 """
@@ -14277,8 +14986,8 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             mode:
                                Either static or individual mode is supported.
-                               If the mode is set to "individual" the
-                               "individual.profile" setting must be defined.
+                               If the mode is set to "individual" either 'profile'
+                               or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                             individual:
                                Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
                                "individual".
@@ -15121,6 +15830,7 @@ class EosDesigns(EosDesignsRootModel):
             "profile": {"type": str, "default": "aes67-r16-2016"},
             "domain": {"type": int, "default": 127},
             "auto_clock_identity": {"type": bool, "default": True},
+            "forward_v1": {"type": bool, "default": False},
         }
         enabled: bool | None
         profile: str
@@ -15136,6 +15846,12 @@ class EosDesigns(EosDesignsRootModel):
         """Default value: `127`"""
         auto_clock_identity: bool
         """Default value: `True`"""
+        forward_v1: bool
+        """
+        Forward dataplane PTP V1 packets.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -15146,6 +15862,7 @@ class EosDesigns(EosDesignsRootModel):
                 profile: str | UndefinedType = Undefined,
                 domain: int | UndefinedType = Undefined,
                 auto_clock_identity: bool | UndefinedType = Undefined,
+                forward_v1: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 PtpSettings.
@@ -15162,6 +15879,7 @@ class EosDesigns(EosDesignsRootModel):
                          - "smpte2059-2"
                     domain: domain
                     auto_clock_identity: auto_clock_identity
+                    forward_v1: Forward dataplane PTP V1 packets.
 
                 """
 
@@ -21487,13 +22205,31 @@ class EosDesigns(EosDesignsRootModel):
                             class Individual(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"profile": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "profile": {"type": str},
+                                    "vlans": {"type": str},
+                                    "native_vlan": {"type": int},
+                                    "mode": {"type": str},
+                                }
                                 profile: str | None
                                 """Port-profile name to inherit configuration."""
+                                vlans: str | None
+                                """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                                native_vlan: int | None
+                                """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                                mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                                """Interface mode on the port-channel member interfaces when in fallback individual."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
+                                    def __init__(
+                                        self,
+                                        *,
+                                        profile: str | None | UndefinedType = Undefined,
+                                        vlans: str | None | UndefinedType = Undefined,
+                                        native_vlan: int | None | UndefinedType = Undefined,
+                                        mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                                    ) -> None:
                                         """
                                         Individual.
 
@@ -21502,6 +22238,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             profile: Port-profile name to inherit configuration.
+                                            vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                            native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                            mode: Interface mode on the port-channel member interfaces when in fallback individual.
 
                                         """
 
@@ -21509,8 +22248,8 @@ class EosDesigns(EosDesignsRootModel):
                             mode: Literal["static", "individual"] | None
                             """
                             Either static or individual mode is supported.
-                            If the mode is set to "individual" the
-                            "individual.profile" setting must be defined.
+                            If the mode is set to "individual" either 'profile'
+                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                             """
                             individual: Individual
                             """
@@ -21544,8 +22283,8 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         mode:
                                            Either static or individual mode is supported.
-                                           If the mode is set to "individual" the
-                                           "individual.profile" setting must be defined.
+                                           If the mode is set to "individual" either 'profile'
+                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                                         individual:
                                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
                                            "individual".
@@ -23111,13 +23850,31 @@ class EosDesigns(EosDesignsRootModel):
                             class Individual(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"profile": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "profile": {"type": str},
+                                    "vlans": {"type": str},
+                                    "native_vlan": {"type": int},
+                                    "mode": {"type": str},
+                                }
                                 profile: str | None
                                 """Port-profile name to inherit configuration."""
+                                vlans: str | None
+                                """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                                native_vlan: int | None
+                                """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                                mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                                """Interface mode on the port-channel member interfaces when in fallback individual."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
+                                    def __init__(
+                                        self,
+                                        *,
+                                        profile: str | None | UndefinedType = Undefined,
+                                        vlans: str | None | UndefinedType = Undefined,
+                                        native_vlan: int | None | UndefinedType = Undefined,
+                                        mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                                    ) -> None:
                                         """
                                         Individual.
 
@@ -23126,6 +23883,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             profile: Port-profile name to inherit configuration.
+                                            vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                            native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                            mode: Interface mode on the port-channel member interfaces when in fallback individual.
 
                                         """
 
@@ -23133,8 +23893,8 @@ class EosDesigns(EosDesignsRootModel):
                             mode: Literal["static", "individual"] | None
                             """
                             Either static or individual mode is supported.
-                            If the mode is set to "individual" the
-                            "individual.profile" setting must be defined.
+                            If the mode is set to "individual" either 'profile'
+                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                             """
                             individual: Individual
                             """
@@ -23168,8 +23928,8 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         mode:
                                            Either static or individual mode is supported.
-                                           If the mode is set to "individual" the
-                                           "individual.profile" setting must be defined.
+                                           If the mode is set to "individual" either 'profile'
+                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                                         individual:
                                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
                                            "individual".
@@ -25077,6 +25837,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -25139,6 +25900,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -25164,6 +25927,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -25208,6 +25972,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -26581,6 +27346,10 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -26894,6 +27663,17 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_interfaces`."""
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                    channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -27574,6 +28354,10 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -27831,6 +28615,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                   channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -29378,6 +30168,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "mode_one_step": {"type": bool, "default": False},
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
+                                "forward_v1": {"type": bool},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -29440,6 +30231,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            forward_v1: bool | None
+                            """Forward dataplane PTP V1 packets."""
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -29465,6 +30258,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: bool | UndefinedType = Undefined,
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
+                                    forward_v1: bool | None | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -29509,6 +30303,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode_one_step: mode_one_step
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
+                                        forward_v1: Forward dataplane PTP V1 packets.
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -30898,6 +31693,10 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
                             "uplink_structured_config": {"type": dict},
+                            "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                            "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                             "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -31221,6 +32020,17 @@ class EosDesigns(EosDesignsRootModel):
                         "structured_config" defined on node-level.
                         Note! The content of this dictionary is _not_ validated
                         by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        """
+                        uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """Custom structured config applied to `uplink_interfaces`."""
+                        uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                        uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                        uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                        channel uplinks.
                         """
                         mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
@@ -31903,6 +32713,10 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_structured_config: dict | UndefinedType = Undefined,
+                                uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -32167,6 +32981,12 @@ class EosDesigns(EosDesignsRootModel):
                                        "structured_config" defined on node-level.
                                        Note! The content of this dictionary is _not_ validated
                                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                    uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                    uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                    uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                    uplink_switch_port_channel_structured_config:
+                                       Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                       channel uplinks.
                                     mlag_port_channel_structured_config:
                                        Custom structured config applied to MLAG peer link port-channel id.
                                        Added under
@@ -33636,6 +34456,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -33698,6 +34519,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -33723,6 +34546,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -33767,6 +34591,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -35142,6 +35967,10 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -35468,6 +36297,17 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_interfaces`."""
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                    channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -36150,6 +36990,10 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -36416,6 +37260,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                   channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -37960,6 +38810,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -38022,6 +38873,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -38047,6 +38900,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -38091,6 +38945,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -39466,6 +40321,10 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -39789,6 +40648,17 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_interfaces`."""
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                    channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -40471,6 +41341,10 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -40735,6 +41609,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                   channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -41822,6 +42702,8 @@ class EosDesigns(EosDesignsRootModel):
                         "rib_in_pre_policy_retain": {"type": RibInPrePolicyRetain},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
+                        "peer_tag_in": {"type": str},
+                        "peer_tag_out_discard": {"type": str},
                         "session_tracker": {"type": str},
                         "shared_secret": {"type": SharedSecret},
                         "ttl_maximum_hops": {"type": int},
@@ -41934,6 +42816,10 @@ class EosDesigns(EosDesignsRootModel):
                     """Inbound route-map name."""
                     route_map_out: str | None
                     """Outbound route-map name."""
+                    peer_tag_in: str | None
+                    """Inbound peer tag name."""
+                    peer_tag_out_discard: str | None
+                    """Outbound discard peer tag name."""
                     session_tracker: str | None
                     shared_secret: SharedSecret
                     """Subclass of AvdModel."""
@@ -41981,6 +42867,8 @@ class EosDesigns(EosDesignsRootModel):
                             rib_in_pre_policy_retain: RibInPrePolicyRetain | UndefinedType = Undefined,
                             route_map_in: str | None | UndefinedType = Undefined,
                             route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             session_tracker: str | None | UndefinedType = Undefined,
                             shared_secret: SharedSecret | UndefinedType = Undefined,
                             ttl_maximum_hops: int | None | UndefinedType = Undefined,
@@ -42063,6 +42951,8 @@ class EosDesigns(EosDesignsRootModel):
                                 rib_in_pre_policy_retain: Subclass of AvdModel.
                                 route_map_in: Inbound route-map name.
                                 route_map_out: Outbound route-map name.
+                                peer_tag_in: Inbound peer tag name.
+                                peer_tag_out_discard: Outbound discard peer tag name.
                                 session_tracker: session_tracker
                                 shared_secret: Subclass of AvdModel.
                                 ttl_maximum_hops: Maximum number of hops.
@@ -44507,6 +45397,7 @@ class EosDesigns(EosDesignsRootModel):
                         _fields: ClassVar[dict] = {
                             "id": {"type": int},
                             "name": {"type": str},
+                            "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking.AddressFamily},
                             "profile": {"type": str},
                             "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                             "evpn_vlan_bundle": {"type": str},
@@ -44549,6 +45440,12 @@ class EosDesigns(EosDesignsRootModel):
                         """SVI interface id and VLAN id."""
                         name: str
                         """VLAN name."""
+                        address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
+                        """
+                        To configure `address_locking.ipv4/v6`, you must define either
+                        `address_locking_settings.dhcp_servers_ipv4` or
+                        `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
+                        """
                         profile: str | None
                         """
                         SVI profile name to apply.
@@ -44782,6 +45679,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 id: int | UndefinedType = Undefined,
                                 name: str | UndefinedType = Undefined,
+                                address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily | UndefinedType = Undefined,
                                 profile: str | None | UndefinedType = Undefined,
                                 tags: Tags | UndefinedType = Undefined,
                                 evpn_vlan_bundle: str | None | UndefinedType = Undefined,
@@ -44829,6 +45727,10 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     id: SVI interface id and VLAN id.
                                     name: VLAN name.
+                                    address_locking:
+                                       To configure `address_locking.ipv4/v6`, you must define either
+                                       `address_locking_settings.dhcp_servers_ipv4` or
+                                       `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
                                     profile:
                                        SVI profile name to apply.
                                        SVI can refer to one svi_profile which again can refer to another
@@ -47538,6 +48440,8 @@ class EosDesigns(EosDesignsRootModel):
                             "rib_in_pre_policy_retain": {"type": RibInPrePolicyRetain},
                             "route_map_in": {"type": str},
                             "route_map_out": {"type": str},
+                            "peer_tag_in": {"type": str},
+                            "peer_tag_out_discard": {"type": str},
                             "session_tracker": {"type": str},
                             "shared_secret": {"type": SharedSecret},
                             "ttl_maximum_hops": {"type": int},
@@ -47650,6 +48554,10 @@ class EosDesigns(EosDesignsRootModel):
                         """Inbound route-map name."""
                         route_map_out: str | None
                         """Outbound route-map name."""
+                        peer_tag_in: str | None
+                        """Inbound peer tag name."""
+                        peer_tag_out_discard: str | None
+                        """Outbound discard peer tag name."""
                         session_tracker: str | None
                         shared_secret: SharedSecret
                         """Subclass of AvdModel."""
@@ -47697,6 +48605,8 @@ class EosDesigns(EosDesignsRootModel):
                                 rib_in_pre_policy_retain: RibInPrePolicyRetain | UndefinedType = Undefined,
                                 route_map_in: str | None | UndefinedType = Undefined,
                                 route_map_out: str | None | UndefinedType = Undefined,
+                                peer_tag_in: str | None | UndefinedType = Undefined,
+                                peer_tag_out_discard: str | None | UndefinedType = Undefined,
                                 session_tracker: str | None | UndefinedType = Undefined,
                                 shared_secret: SharedSecret | UndefinedType = Undefined,
                                 ttl_maximum_hops: int | None | UndefinedType = Undefined,
@@ -47779,6 +48689,8 @@ class EosDesigns(EosDesignsRootModel):
                                     rib_in_pre_policy_retain: Subclass of AvdModel.
                                     route_map_in: Inbound route-map name.
                                     route_map_out: Outbound route-map name.
+                                    peer_tag_in: Inbound peer tag name.
+                                    peer_tag_out_discard: Outbound discard peer tag name.
                                     session_tracker: session_tracker
                                     shared_secret: Subclass of AvdModel.
                                     ttl_maximum_hops: Maximum number of hops.
@@ -47846,6 +48758,81 @@ class EosDesigns(EosDesignsRootModel):
 
                     AdditionalRouteTargets._item_type = AdditionalRouteTargetsItem
 
+                    class AggregateAddressesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Nodes(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Nodes._item_type = str
+
+                        _fields: ClassVar[dict] = {
+                            "nodes": {"type": Nodes},
+                            "prefix": {"type": str},
+                            "advertise_only": {"type": bool},
+                            "as_set": {"type": bool},
+                            "summary_only": {"type": bool},
+                            "attribute_map": {"type": str},
+                            "match_map": {"type": str},
+                        }
+                        nodes: Nodes
+                        """
+                        Nodes where the aggregate should be configured.
+                        By default the aggregate will be configured all on
+                        all devices where the VRF is configured.
+
+                        Subclass of AvdList with `str` items.
+                        """
+                        prefix: str | None
+                        """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                        advertise_only: bool | None
+                        as_set: bool | None
+                        summary_only: bool | None
+                        attribute_map: str | None
+                        """Route-map name."""
+                        match_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                nodes: Nodes | UndefinedType = Undefined,
+                                prefix: str | None | UndefinedType = Undefined,
+                                advertise_only: bool | None | UndefinedType = Undefined,
+                                as_set: bool | None | UndefinedType = Undefined,
+                                summary_only: bool | None | UndefinedType = Undefined,
+                                attribute_map: str | None | UndefinedType = Undefined,
+                                match_map: str | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                AggregateAddressesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    nodes:
+                                       Nodes where the aggregate should be configured.
+                                       By default the aggregate will be configured all on
+                                       all devices where the VRF is configured.
+
+                                       Subclass of AvdList with `str` items.
+                                    prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                    advertise_only: advertise_only
+                                    as_set: as_set
+                                    summary_only: summary_only
+                                    attribute_map: Route-map name.
+                                    match_map: Route-map name.
+
+                                """
+
+                    class AggregateAddresses(AvdList[AggregateAddressesItem]):
+                        """Subclass of AvdList with `AggregateAddressesItem` items."""
+
+                    AggregateAddresses._item_type = AggregateAddressesItem
+
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
                         "address_families": {"type": AddressFamilies, "default": lambda cls: coerce_type(["evpn"], target_type=cls)},
@@ -47878,6 +48865,7 @@ class EosDesigns(EosDesignsRootModel):
                         "bgp": {"type": Bgp},
                         "bgp_peer_groups": {"type": BgpPeerGroups},
                         "additional_route_targets": {"type": AdditionalRouteTargets},
+                        "aggregate_addresses": {"type": AggregateAddresses},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen},
                     }
@@ -48130,6 +49118,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `AdditionalRouteTargetsItem` items.
                     """
+                    aggregate_addresses: AggregateAddresses
+                    """Subclass of AvdList with `AggregateAddressesItem` items."""
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
@@ -48171,6 +49161,7 @@ class EosDesigns(EosDesignsRootModel):
                             bgp: Bgp | UndefinedType = Undefined,
                             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
                             additional_route_targets: AdditionalRouteTargets | UndefinedType = Undefined,
+                            aggregate_addresses: AggregateAddresses | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen | UndefinedType = Undefined,
                         ) -> None:
@@ -48366,6 +49357,7 @@ class EosDesigns(EosDesignsRootModel):
                                    address families.
 
                                    Subclass of AvdList with `AdditionalRouteTargetsItem` items.
+                                aggregate_addresses: Subclass of AvdList with `AggregateAddressesItem` items.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
                                 structured_config: Custom structured config for eos_cli_config_gen.
 
@@ -48559,11 +49551,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
+                        "name": {"type": str},
+                        "profile": {"type": str},
+                        "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
+                        "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking.AddressFamily},
                         "vni_override": {"type": int},
                         "rt_override": {"type": str},
                         "rd_override": {"type": str},
-                        "name": {"type": str},
-                        "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                         "vxlan": {"type": bool, "default": True},
                         "spanning_tree_priority": {"type": int},
                         "evpn_vlan_bundle": {"type": str},
@@ -48578,6 +49572,26 @@ class EosDesigns(EosDesignsRootModel):
                     }
                     id: int
                     """VLAN ID."""
+                    name: str
+                    """VLAN name."""
+                    profile: str | None
+                    """
+                    L2VLAN profile name.
+                    The profile must be defined under `l2vlan_profiles`. The profile may refer to
+                    another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
+                    l2vlan_profile -> l2vlan_parent_profile).
+                    """
+                    tags: Tags
+                    """
+                    Tags leveraged for networks services filtering.
+                    Tags are matched against filter.tags defined under
+                    node type settings.
+                    Tags are also matched against the node_group name under node type settings.
+                    Subclass of AvdList with `str` items.
+
+                    Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+                    """
+                    address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
                     vni_override: int | None
                     """
                     By default the VNI will be derived from mac_vrf_vni_base.
@@ -48603,23 +49617,11 @@ class EosDesigns(EosDesignsRootModel):
                     to override this value and statically define it.
                     rd_override will default to rt_override or
                     vni_override if set.
-
                     rd_override supports two formats:
-                      - A single number which will be used in
-                    the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
-                    - A full RD string with colon separator which will override the full RD.
-                    """
-                    name: str
-                    """VLAN name."""
-                    tags: Tags
-                    """
-                    Tags leveraged for networks services filtering.
-                    Tags are matched against filter.tags defined under
-                    node type settings.
-                    Tags are also matched against the node_group name under node type settings.
-                    Subclass of AvdList with `str` items.
-
-                    Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+                      - A single number which will be used in the
+                    RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+                      -
+                    A full RD string with colon separator which will override the full RD.
                     """
                     vxlan: bool
                     """
@@ -48687,11 +49689,13 @@ class EosDesigns(EosDesignsRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
+                            name: str | UndefinedType = Undefined,
+                            profile: str | None | UndefinedType = Undefined,
+                            tags: Tags | UndefinedType = Undefined,
+                            address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily | UndefinedType = Undefined,
                             vni_override: int | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
                             rd_override: str | None | UndefinedType = Undefined,
-                            name: str | UndefinedType = Undefined,
-                            tags: Tags | UndefinedType = Undefined,
                             vxlan: bool | UndefinedType = Undefined,
                             spanning_tree_priority: int | None | UndefinedType = Undefined,
                             evpn_vlan_bundle: str | None | UndefinedType = Undefined,
@@ -48712,6 +49716,19 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 id: VLAN ID.
+                                name: VLAN name.
+                                profile:
+                                   L2VLAN profile name.
+                                   The profile must be defined under `l2vlan_profiles`. The profile may refer to
+                                   another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
+                                   l2vlan_profile -> l2vlan_parent_profile).
+                                tags:
+                                   Tags leveraged for networks services filtering.
+                                   Tags are matched against filter.tags defined under
+                                   node type settings.
+                                   Tags are also matched against the node_group name under node type settings.
+                                   Subclass of AvdList with `str` items.
+                                address_locking: address_locking
                                 vni_override:
                                    By default the VNI will be derived from mac_vrf_vni_base.
                                    The vni_override, allows to override this
@@ -48732,18 +49749,11 @@ class EosDesigns(EosDesignsRootModel):
                                    to override this value and statically define it.
                                    rd_override will default to rt_override or
                                    vni_override if set.
-
                                    rd_override supports two formats:
-                                     - A single number which will be used in
-                                   the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
-                                   - A full RD string with colon separator which will override the full RD.
-                                name: VLAN name.
-                                tags:
-                                   Tags leveraged for networks services filtering.
-                                   Tags are matched against filter.tags defined under
-                                   node type settings.
-                                   Tags are also matched against the node_group name under node type settings.
-                                   Subclass of AvdList with `str` items.
+                                     - A single number which will be used in the
+                                   RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+                                     -
+                                   A full RD string with colon separator which will override the full RD.
                                 vxlan: Extend this L2VLAN over VXLAN.
                                 spanning_tree_priority:
                                    Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst`
@@ -49253,7 +50263,7 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 l2vlans: L2vlans
                 """
-                Define L2 network services organized by vlan id.
+                Define L2 network services organized by VLAN ID.
 
                 Subclass of AvdList with `L2vlansItem` items.
                 """
@@ -49439,7 +50449,7 @@ class EosDesigns(EosDesignsRootModel):
                                Subclass of AvdIndexedList with `VrfsItem` items.
                                Primary key is `name` (`str`).
                             l2vlans:
-                               Define L2 network services organized by vlan id.
+                               Define L2 network services organized by VLAN ID.
 
                                Subclass of AvdList with `L2vlansItem` items.
                             point_to_point_services:
@@ -50513,6 +51523,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -50575,6 +51586,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -50600,6 +51613,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -50644,6 +51658,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -52017,6 +53032,10 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -52330,6 +53349,17 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_interfaces`."""
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                    channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -53010,6 +54040,10 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -53267,6 +54301,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                   channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -54814,6 +55854,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "mode_one_step": {"type": bool, "default": False},
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
+                                "forward_v1": {"type": bool},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -54876,6 +55917,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            forward_v1: bool | None
+                            """Forward dataplane PTP V1 packets."""
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -54901,6 +55944,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: bool | UndefinedType = Undefined,
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
+                                    forward_v1: bool | None | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -54945,6 +55989,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode_one_step: mode_one_step
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
+                                        forward_v1: Forward dataplane PTP V1 packets.
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -56334,6 +57379,10 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
                             "uplink_structured_config": {"type": dict},
+                            "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                            "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                             "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -56657,6 +57706,17 @@ class EosDesigns(EosDesignsRootModel):
                         "structured_config" defined on node-level.
                         Note! The content of this dictionary is _not_ validated
                         by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        """
+                        uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """Custom structured config applied to `uplink_interfaces`."""
+                        uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                        uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                        uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                        channel uplinks.
                         """
                         mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
@@ -57339,6 +58399,10 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_structured_config: dict | UndefinedType = Undefined,
+                                uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -57603,6 +58667,12 @@ class EosDesigns(EosDesignsRootModel):
                                        "structured_config" defined on node-level.
                                        Note! The content of this dictionary is _not_ validated
                                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                    uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                    uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                    uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                    uplink_switch_port_channel_structured_config:
+                                       Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                       channel uplinks.
                                     mlag_port_channel_structured_config:
                                        Custom structured config applied to MLAG peer link port-channel id.
                                        Added under
@@ -59072,6 +60142,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -59134,6 +60205,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -59159,6 +60232,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -59203,6 +60277,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -60578,6 +61653,10 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -60904,6 +61983,17 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_interfaces`."""
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                    channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -61586,6 +62676,10 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -61852,6 +62946,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                   channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -63396,6 +64496,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -63458,6 +64559,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -63483,6 +64586,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -63527,6 +64631,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -64902,6 +66007,10 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -65225,6 +66334,17 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_interfaces`."""
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                    channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -65907,6 +67027,10 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -66171,6 +67295,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                   channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -66755,6 +67885,7 @@ class EosDesigns(EosDesignsRootModel):
 
     _fields: ClassVar[dict] = {
         "aaa_settings": {"type": AaaSettings},
+        "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_6_behaviors": {"type": Avd6Behaviors},
         "avd_data_validation_mode": {"type": str, "default": "error"},
@@ -66876,6 +68007,7 @@ class EosDesigns(EosDesignsRootModel):
         "isis_maximum_paths": {"type": int, "default": 4},
         "isis_system_id_format": {"type": str, "default": "underlay_loopback"},
         "isis_ti_lfa": {"type": IsisTiLfa},
+        "l2vlan_profiles": {"type": L2vlanProfiles},
         "l3_edge": {"type": L3Edge},
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
@@ -67189,6 +68321,8 @@ class EosDesigns(EosDesignsRootModel):
     }
     _allow_other_keys: ClassVar[bool] = True
     aaa_settings: AaaSettings
+    """Subclass of AvdModel."""
+    address_locking_settings: AddressLockingSettings
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
@@ -68119,6 +69253,13 @@ class EosDesigns(EosDesignsRootModel):
     """
     isis_ti_lfa: IsisTiLfa
     """Subclass of AvdModel."""
+    l2vlan_profiles: L2vlanProfiles
+    """
+    Profiles to inherit common settings for l2vlans defined under the network_services key.
+
+    Subclass of
+    AvdIndexedList with `L2vlanProfilesItem` items. Primary key is `profile` (`str`).
+    """
     l3_edge: L3Edge
     """Subclass of AvdModel."""
     l3_interface_profiles: L3InterfaceProfiles
@@ -69177,6 +70318,7 @@ class EosDesigns(EosDesignsRootModel):
             self,
             *,
             aaa_settings: AaaSettings | UndefinedType = Undefined,
+            address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_6_behaviors: Avd6Behaviors | UndefinedType = Undefined,
             avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
@@ -69273,6 +70415,7 @@ class EosDesigns(EosDesignsRootModel):
             isis_maximum_paths: int | UndefinedType = Undefined,
             isis_system_id_format: Literal["node_id", "underlay_loopback"] | UndefinedType = Undefined,
             isis_ti_lfa: IsisTiLfa | UndefinedType = Undefined,
+            l2vlan_profiles: L2vlanProfiles | UndefinedType = Undefined,
             l3_edge: L3Edge | UndefinedType = Undefined,
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
@@ -69399,6 +70542,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Args:
                 aaa_settings: Subclass of AvdModel.
+                address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
                 avd_6_behaviors:
                    Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
@@ -70072,6 +71216,11 @@ class EosDesigns(EosDesignsRootModel):
                    If `underlay_loopback` is selected then all node `isis_system_id_prefix` settings
                    will be ignored and the loopback address will be used to generate the system-id.
                 isis_ti_lfa: Subclass of AvdModel.
+                l2vlan_profiles:
+                   Profiles to inherit common settings for l2vlans defined under the network_services key.
+
+                   Subclass of
+                   AvdIndexedList with `L2vlanProfilesItem` items. Primary key is `profile` (`str`).
                 l3_edge: Subclass of AvdModel.
                 l3_interface_profiles:
                    Profiles to inherit common settings for l3_interfaces defined under the node type key.

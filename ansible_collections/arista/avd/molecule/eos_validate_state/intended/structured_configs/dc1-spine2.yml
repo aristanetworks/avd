@@ -65,9 +65,18 @@ ethernet_interfaces:
   peer_type: service_leaf
   switchport:
     enabled: false
+- name: Ethernet42
+  description: P2P_dc1-leaf3a_Ethernet2
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.255.255.18/31
+  peer: dc1-leaf3a
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: dc1-spine2
 ip_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -96,6 +105,7 @@ management_interfaces:
   type: oob
   gateway: 172.16.1.1
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: FABRIC
 prefix_lists:
@@ -180,6 +190,11 @@ router_bgp:
     remote_as: '65133'
     peer: dc1-svc-leaf1b
     description: dc1-svc-leaf1b_Ethernet2
+  - ip_address: 10.255.255.19
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65103'
+    peer: dc1-leaf3a
+    description: dc1-leaf3a_Ethernet2
   - ip_address: 10.255.0.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
@@ -201,6 +216,11 @@ router_bgp:
     peer: dc1-leaf2b
     description: dc1-leaf2b_Loopback0
     shutdown: true
+  - ip_address: 10.255.0.7
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65103'
+    peer: dc1-leaf3a
+    description: dc1-leaf3a_Loopback0
   - ip_address: 10.33.0.5
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65133'
