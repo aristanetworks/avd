@@ -1,4 +1,5 @@
 ---
+# OOB MGMT is Ma0. ACT Digital Twin version of the config swaps it for Ma1. Code emits info message.
 type: l2leaf
 
 l2leaf:

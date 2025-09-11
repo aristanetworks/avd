@@ -1,4 +1,5 @@
 ---
+# OOB MGMT is Ma0 but ACT node type is third-party. ACT Digital Twin version of the config keeps it as is.
 type: l2leaf
 
 l2leaf:

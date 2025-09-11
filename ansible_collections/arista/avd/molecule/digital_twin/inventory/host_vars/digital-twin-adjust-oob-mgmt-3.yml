@@ -1,4 +1,5 @@
 ---
+# Inline MGMT, no OOB MGMT set. No adjustmnent for OOB MGMT interface as it is not generated.
 type: l2leaf
 
 l2leaf:

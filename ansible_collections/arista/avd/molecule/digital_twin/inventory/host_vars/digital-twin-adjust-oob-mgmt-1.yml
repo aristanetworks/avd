@@ -1,4 +1,5 @@
 ---
+# OOB MGMT is already Ma1 (by default). ACT Digital Twin version of the config respects it.
 type: l2leaf
 
 l2leaf:
