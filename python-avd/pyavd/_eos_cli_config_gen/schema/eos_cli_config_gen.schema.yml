@@ -3617,6 +3617,10 @@ keys:
                   type: str
                   valid_values:
                   - authenticator
+                  - supplicant
+                supplicant_profile:
+                  type: str
+                  description: Supplicant profile name.
             authentication_failure:
               type: dict
               keys:
