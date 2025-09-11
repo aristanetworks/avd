@@ -24,10 +24,10 @@
 
 ##### Sysdb Provider
 
-| Path | Disabled |
-| ---- | -------- |
+| Disabled Path |
+| ------------- |
 {%             for path in management_api_models.provider.sysdb.disabled_paths | arista.avd.natural_sort() %}
-| {{ path }} | True |
+| {{ path }} |
 {%             endfor %}
 {%         endif %}
 {%         if management_api_models.provider.macsec.interfaces is arista.avd.defined or management_api_models.provider.macsec.mka is arista.avd.defined %}

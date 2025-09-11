@@ -1152,10 +1152,10 @@ EOF
 
 ##### Sysdb Provider
 
-| Path | Disabled |
-| ---- | -------- |
-| cell/1/agent | True |
-| sys/logging/config/vrfLoggingHost/mgmt | True |
+| Disabled Path |
+| ------------- |
+| cell/1/agent |
+| sys/logging/config/vrfLoggingHost/mgmt |
 
 ##### Macsec Provider
 
