@@ -199,24 +199,24 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             self.shared_utils.underlay_multicast_pim_sm_enabled is True
             and uplink_switch_facts.shared_utils.underlay_multicast_pim_sm_enabled is True
             and self.shared_utils.node_config.underlay_multicast.pim_sm.uplinks is not False
-        ):
-            if (
+            and (
                 not self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces
                 or uplink_interface in self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces
-            ):
-                # means all uplinks are enabled or uplinks are filtered and this uplink interface is accepted
-                uplink.underlay_multicast_pim_sm = True
+            )
+        ):
+            # means all uplinks are enabled or uplinks are filtered and this uplink interface is accepted
+            uplink.underlay_multicast_pim_sm = True
         if (
             self.shared_utils.underlay_multicast_static_enabled is True
             and uplink_switch_facts.shared_utils.underlay_multicast_static_enabled is True
             and self.shared_utils.node_config.underlay_multicast.static.uplinks is not False
-        ):
-            if (
+            and (
                 not self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces
                 or uplink_interface in self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces
-            ):
-                # means all uplinks are enabled or uplinks are filtered and this uplink interface is accepted
-                uplink.underlay_multicast_static = True
+            )
+        ):
+            # means all uplinks are enabled or uplinks are filtered and this uplink interface is accepted
+            uplink.underlay_multicast_static = True
 
         if self.inputs.underlay_rfc5549:
             uplink.ipv6_enable = True
