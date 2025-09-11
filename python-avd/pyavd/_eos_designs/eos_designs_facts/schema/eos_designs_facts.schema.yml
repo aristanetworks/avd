@@ -127,7 +127,7 @@ keys:
         required: true
   mlag_underlay_multicast:
     type: dict
-    description: The switch ids of both primary and secondary switches for a this node group.
+    description: Should multicast be enabled on the mlag peer-l3-vlan.
     keys:
       pim_sm:
         type: bool
