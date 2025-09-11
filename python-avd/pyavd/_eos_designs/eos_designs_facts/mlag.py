@@ -90,7 +90,6 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
         Exposed in avd_switch_facts.
 
         Returns the switch MLAG enabled protocol for Underlay Multicast
-        {"pim_sm": bool, "static": bool}
         """
         return EosDesignsFactsProtocol.MlagUnderlayMulticast(
             pim_sm=self.shared_utils.underlay_multicast_pim_mlag_enabled,
