@@ -9,9 +9,9 @@ keys:
   overlay_loopback_description:
     documentation_options:
       table: overlay-settings
-    description: Customize the description on overlay interface Loopback0.
     type: str
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
       new_key: router_id_loopback_description

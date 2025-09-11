@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 if TYPE_CHECKING:
@@ -36,7 +35,7 @@ class LoopbackInterfacesMixin(Protocol):
                 InterfaceDescriptionData(
                     shared_utils=self.shared_utils,
                     interface="Loopback0",
-                    description=default(self.inputs.overlay_loopback_description, self.inputs.router_id_loopback_description),
+                    description=self.inputs.router_id_loopback_description,
                 ),
             ),
             shutdown=False,

@@ -1,3 +1,0 @@
----
-# Testing the deprecated overlay loopback description override
-overlay_loopback_description: "MY_OVERLAY_LOOPBACK"
