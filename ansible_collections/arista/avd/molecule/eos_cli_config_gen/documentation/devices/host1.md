@@ -1159,7 +1159,7 @@ EOF
 
 ##### Macsec Provider
 
-| interfaces | MKA |
+| Interfaces | MKA |
 | ---------- | --- |
 | True | True |
 
