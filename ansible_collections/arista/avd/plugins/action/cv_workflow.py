@@ -52,7 +52,9 @@ ARGUMENT_SPEC = {
     "strict_system_mac_address": {"type": "bool", "required": False, "default": False},
     "configlet_name_template": {"type": "str", "default": "AVD-${hostname}"},
     "cv_servers": {"type": "list", "elements": "str", "required": True},
-    "cv_token": {"type": "str", "secret": True, "required": True},
+    "cv_token": {"type": "str", "secret": True, "required": False},
+    "cv_username": {"type": "str", "required": False},
+    "cv_password": {"type": "str", "secret": True, "required": False},
     "cv_verify_certs": {"type": "bool", "default": True},
     "workspace": {
         "type": "dict",
@@ -112,12 +114,21 @@ class ActionModule(ActionBase):
 
     async def deploy(self, validated_args: dict, result: dict) -> dict:
         """Prepare data, perform deployment and convert result data."""
-        LOGGER.info("deploy: %s", {**validated_args, "cv_token": "<removed>"})
+        logged_args = validated_args.copy()
+        # Excempting the lines below from Ruff and Sonar since they think we are hardcoding a password,
+        # when we are actually just being conscious about not printing passwords.
+        if "cv_token" in logged_args:
+            logged_args["cv_token"] = "<removed>"  # noqa: S105
+        if "cv_password" in logged_args:
+            logged_args["cv_password"] = "<removed>"  # NOSONAR # noqa: S105
+        LOGGER.info("deploy: %s", logged_args)
         try:
             # Create CloudVision object
             cloudvision = CloudVision(
                 servers=validated_args["cv_servers"],
-                token=validated_args["cv_token"],
+                token=validated_args.get("cv_token"),
+                username=validated_args.get("cv_username"),
+                password=validated_args.get("cv_password"),
                 verify_certs=validated_args["cv_verify_certs"],
             )
             # Build lists of CVEosConfig, CVDeviceTag, CVInterfaceTag and CVPathfinderMetadata objects.

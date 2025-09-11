@@ -101,7 +101,7 @@ async def playback_unary_stream(
         raise FileNotFoundError(recording_file, "for request", request)
     recording = recording_file.read_text()
     for message_as_dict in json.loads(recording):
-        yield response_type().from_pydict(message_as_dict)
+        yield response_type.from_dict(message_as_dict)
 
 
 async def mocked_cv_client_aenter(self: CVClient) -> CVClient:
