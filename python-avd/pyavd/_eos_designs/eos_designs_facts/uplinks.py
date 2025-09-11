@@ -196,9 +196,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             uplink.mac_security.profile = self.shared_utils.node_config.uplink_macsec.profile
 
         if (
-            self.shared_utils.underlay_multicast_pim_sm_enabled is True
-            and uplink_switch_facts.shared_utils.underlay_multicast_pim_sm_enabled is True
-            and self.shared_utils.node_config.underlay_multicast.pim_sm.uplinks is not False
+            self.shared_utils.underlay_multicast_pim_sm_enabled
+            and uplink_switch_facts.shared_utils.underlay_multicast_pim_sm_enabled
+            and self.shared_utils.node_config.underlay_multicast.pim_sm.uplinks
             and (
                 not self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces
                 or uplink_interface in self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces
