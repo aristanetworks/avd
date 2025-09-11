@@ -137,7 +137,13 @@ async def deploy_to_cv(
     if cv_pathfinder_metadata is None:
         cv_pathfinder_metadata = []
     try:
-        async with CVClient(servers=cloudvision.servers, token=cloudvision.token, verify_certs=cloudvision.verify_certs) as cv_client:
+        async with CVClient(
+            servers=cloudvision.servers,
+            token=cloudvision.token,
+            username=cloudvision.username,
+            password=cloudvision.password,
+            verify_certs=cloudvision.verify_certs,
+        ) as cv_client:
             # Create workspace
             await create_workspace_on_cv(workspace=result.workspace, cv_client=cv_client)
 

@@ -19,6 +19,8 @@
   arista.avd.cv_workflow:
     cv_servers: [ "{{ cv_server }}" ]
     cv_token: "{{ cv_token }}"
+    cv_username: "{{ cv_username | arista.avd.default }}"
+    cv_password: "{{ cv_password | arista.avd.default }}"
     cv_verify_certs: "{{ cv_verify_certs }}"
     configuration_dir: "{{ eos_config_dir }}"
     structured_config_dir: "{{ structured_dir }}"
