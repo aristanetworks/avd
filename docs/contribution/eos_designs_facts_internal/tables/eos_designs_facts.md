@@ -56,7 +56,7 @@
     | [<samp>mlag_switch_ids</samp>](## "mlag_switch_ids") | Dictionary |  |  |  | The switch ids of both primary and secondary switches for a this node group. |
     | [<samp>&nbsp;&nbsp;primary</samp>](## "mlag_switch_ids.primary") | Integer | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;secondary</samp>](## "mlag_switch_ids.secondary") | Integer | Required |  |  |  |
-    | [<samp>mlag_underlay_multicast</samp>](## "mlag_underlay_multicast") | Dictionary |  |  |  | The switch ids of both primary and secondary switches for a this node group. |
+    | [<samp>mlag_underlay_multicast</samp>](## "mlag_underlay_multicast") | Dictionary |  |  |  | Should multicast be enabled on the mlag peer-l3-vlan. |
     | [<samp>&nbsp;&nbsp;pim_sm</samp>](## "mlag_underlay_multicast.pim_sm") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;static</samp>](## "mlag_underlay_multicast.static") | Boolean | Required |  |  |  |
     | [<samp>evpn_role</samp>](## "evpn_role") | String |  |  |  |  |
@@ -258,7 +258,7 @@
       primary: <int; required>
       secondary: <int; required>
 
-    # The switch ids of both primary and secondary switches for a this node group.
+    # Should multicast be enabled on the mlag peer-l3-vlan.
     mlag_underlay_multicast:
       pim_sm: <bool; required>
       static: <bool; required>

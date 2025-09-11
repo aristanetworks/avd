@@ -1109,7 +1109,7 @@ class EosDesignsFactsProtocol(Protocol):
     """
     mlag_underlay_multicast: MlagUnderlayMulticast
     """
-    The switch ids of both primary and secondary switches for a this node group.
+    Should multicast be enabled on the mlag peer-l3-vlan.
 
     Subclass of AvdModel.
     """
@@ -1333,7 +1333,7 @@ class EosDesignsFactsProtocol(Protocol):
 
                    Subclass of AvdModel.
                 mlag_underlay_multicast:
-                   The switch ids of both primary and secondary switches for a this node group.
+                   Should multicast be enabled on the mlag peer-l3-vlan.
 
                    Subclass of AvdModel.
                 evpn_role: evpn_role
