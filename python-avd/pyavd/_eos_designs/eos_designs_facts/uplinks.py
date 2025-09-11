@@ -207,7 +207,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             # means all uplinks are enabled or uplinks are filtered and this uplink interface is accepted
             uplink.underlay_multicast_pim_sm = True
         if (
-            self.shared_utils.underlay_multicast_static_enabled is True
+            self.shared_utils.underlay_multicast_static_enabled
             and uplink_switch_facts.shared_utils.underlay_multicast_static_enabled
             and self.shared_utils.node_config.underlay_multicast.static.uplinks
             and (
