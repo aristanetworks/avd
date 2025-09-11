@@ -174,7 +174,7 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_SPINES.yml
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_SPINES.yml:2:4
     --8<--
     ```
 
@@ -182,7 +182,7 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_L3_LEAVES.yml
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_L3_LEAVES.yml:2:4
     --8<--
     ```
 
@@ -190,7 +190,7 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_L2_LEAVES.yml
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_L2_LEAVES.yml:2:4
     --8<--
     ```
 
@@ -198,7 +198,7 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_SPINES.yml
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_SPINES.yml:2:4
     --8<--
     ```
 
@@ -206,7 +206,7 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_L3_LEAVES.yml
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_L3_LEAVES.yml:2:4
     --8<--
     ```
 
@@ -214,7 +214,7 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_L2_LEAVES.yml
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_L2_LEAVES.yml:2:4
     --8<--
     ```
 
@@ -226,7 +226,7 @@ In this section, only additions to the previous example will be discussed. The o
 
 ```yaml title="FABRIC.yml"
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/FABRIC.yml:75:96
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/FABRIC.yml:77:98
     --8<--
 ```
 
@@ -249,46 +249,62 @@ Creating the `DC2.yml` file limits the defined settings to DC2. In this example,
 ```
 
 1. The default gateway for the management interface of all devices in DC2 is defined.
-2. `platform` references default settings defined in AVD specific to certain switch platforms.
-3. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0.
-4. `bgp_as` defines the BGP AS number.
-5. `nodes` defines the spine switches using the hostnames defined in the inventory.
-6. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc2-spine1 will get the IPv4 address 10.255.128.11/27 assigned to the Loopback0 interface.
-7. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
-8. `platform` references default settings defined in AVD specific to certain switch platforms.
-9. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0. This IP pool is identical to the one used for the spine switches in this example. To avoid setting the same IP addresses for several devices, we define the option `loopback_ipv4_offset`.
-10. `loopback_ipv4_offset` offsets all assigned loopback IP addresses counting from the beginning of the IP scope. This is required to avoid overlapping IPs when the same IP pool is used for two different node_types (like spine and l3leaf in this example). For example, the offset is "2" because each spine switch uses one loopback address.
-11. `vtep_loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the VTEP (Loopback1).
-12. `uplink_switches` defines the uplink switches, which are dc2-spine1 and dc2-spine2. Note that the `uplink_interfaces` and `uplink_switches` are paired vertically.
-13. `uplink_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the uplink interfaces that were just defined.
-14. `mlag_peer_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the MLAG peer link interface VLAN4094.
-15. `mlag_peer_l3_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the iBGP peering established between the two leaf switches via the SVI/IRB interface VLAN4093.
-16. `virtual_router_mac_address` defines the MAC address used for the anycast gateway on the various subnets. This is the MAC address connected endpoints will learn when ARPing for their default gateway.
-17. `spanning_tree_priority` sets the spanning tree priority. Since spanning tree in an L3LS network is effectively only running locally on the switch, the same priority across all L3 leaf switches can be reused.
-18. `spanning_tree_mode` defines the spanning tree mode. In this case, we are using MSTP, which is the default. However, other modes are supported should they be required, for example, for connectivity to legacy or third-party vendor environments.
-19. `node_groups` defines settings common to more than one node. For example, when exactly two nodes are part of a node group for leaf switches, AVD will, by default, automatically generate MLAG configuration.
-20. `bgp_as` is defined once since an MLAG pair shares a single BGP AS number.
-21. `evpn_gateway` configures the EVPN DC GW features that will be inherited by the children of this group, in this case, dc2-leaf2a and dc2-leaf2b. `evpn_l2` configures EVPN DC GW for EVPN type 2 routes (MAC-IP) while `evpn_l3` configures the GW for EVPN type 5 routes (IP-PREFIX).
-22. `remote_peers` defines the RS for EVPN DC GW that will be configured on the device. This is a unique definition per device, and using the hostname, AVD can get all the information from the device to generate the configuration: Router ID to peer and BGP AS.
 
-The following section covers the L3 leaf switches. Significantly more settings need to be set compared to the spine switches:
+The following section covers the spine switches `ansible-avd-examples/dual-dc-l3ls/group_vars/DC2_SPINES.yml`.
 
-Since we are adding the EVPN DC GW functionality in DC2, we must also add it in DC1. This is a snipped part of `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1.yml` file where the changes need to occur:
+```yaml title="DC2_SPINES.yml"
+    --8<--
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_SPINES.yml
+    --8<--
+```
+
+1. `platform` references default settings defined in AVD specific to certain switch platforms.
+2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0.
+3. `bgp_as` defines the BGP AS number.
+4. `nodes` defines the spine switches using the hostnames defined in the inventory.
+5. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc2-spine1 will get the IPv4 address 10.255.128.11/27 assigned to the Loopback0 interface.
+6. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
+
+The following section covers the L3 leaf switches`ansible-avd-examples/dual-dc-l3ls/group_vars/DC2_L3_LEAVES.yml`. Significantly more settings need to be set compared to the spine switches:
+
+```yaml title="DC2_L3_LEAVES.yml"
+    --8<--
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_L3_LEAVES.yml
+    --8<--
+```
+
+1. `platform` references default settings defined in AVD specific to certain switch platforms.
+2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0. This IP pool is identical to the one used for the spine switches in this example. To avoid setting the same IP addresses for several devices, we define the option `loopback_ipv4_offset`.
+3. `loopback_ipv4_offset` offsets all assigned loopback IP addresses counting from the beginning of the IP scope. This is required to avoid overlapping IPs when the same IP pool is used for two different node_types (like spine and l3leaf in this example). For example, the offset is "2" because each spine switch uses one loopback address.
+4. `vtep_loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the VTEP (Loopback1).
+5. `uplink_switches` defines the uplink switches, which are dc2-spine1 and dc2-spine2. Note that the `uplink_interfaces` and `uplink_switches` are paired vertically.
+6. `uplink_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the uplink interfaces that were just defined.
+7. `mlag_peer_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the MLAG peer link interface VLAN4094.
+8. `mlag_peer_l3_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the iBGP peering established between the two leaf switches via the SVI/IRB interface VLAN4093.
+9. `virtual_router_mac_address` defines the MAC address used for the anycast gateway on the various subnets. This is the MAC address connected endpoints will learn when ARPing for their default gateway.
+10. `spanning_tree_priority` sets the spanning tree priority. Since spanning tree in an L3LS network is effectively only running locally on the switch, the same priority across all L3 leaf switches can be reused.
+11. `spanning_tree_mode` defines the spanning tree mode. In this case, we are using MSTP, which is the default. However, other modes are supported should they be required, for example, for connectivity to legacy or third-party vendor environments.
+12. `node_groups` defines settings common to more than one node. For example, when exactly two nodes are part of a node group for leaf switches, AVD will, by default, automatically generate MLAG configuration.
+13. `bgp_as` is defined once since an MLAG pair shares a single BGP AS number.
+14. `evpn_gateway` configures the EVPN DC GW features that will be inherited by the children of this group, in this case, dc2-leaf2a and dc2-leaf2b. `evpn_l2` configures EVPN DC GW for EVPN type 2 routes (MAC-IP) while `evpn_l3` configures the GW for EVPN type 5 routes (IP-PREFIX).
+15. `remote_peers` defines the RS for EVPN DC GW that will be configured on the device. This is a unique definition per device, and using the hostname, AVD can get all the information from the device to generate the configuration: Router ID to peer and BGP AS.
+
+Since we are adding the EVPN DC GW functionality in DC2, we must also add it in DC1. This is a snipped part of `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1_L3_LEAVES.yml` file where the changes need to occur:
 
 !!! important
-    The following is a snipped part of `DC1.yml` reflecting the changes needed compared to the single DC L3LS example. The goal is to configure EVPN DC GW functionality.
+    The following is a snipped part of `DC1_L3_LEAVES.yml` reflecting the changes needed compared to the single DC L3LS example. The goal is to configure EVPN DC GW functionality.
 
-```yaml title="DC1.yml"
+```yaml title="DC1_L3_LEAVES.yml"
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1.yml:82:115
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_L3_LEAVES.yml:52:81
     --8<--
 ```
 
 Finally, the definition in DC2 for the L2 leaf switches:
 
-```yaml title="DC2.yml"
+```yaml title="DC2_L2_LEAVES.yml"
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2.yml:117:142
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_L2_LEAVES.yml
     --8<--
 ```
 
