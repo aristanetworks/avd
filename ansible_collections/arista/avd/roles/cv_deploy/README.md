@@ -347,14 +347,14 @@ cv_proxy_password: <str>
 Example of the configuration to use unauthenticated HTTP proxy using CONNECT method:
 
 ```yaml
-cv_proxy_host: squid-1.infosec.enterprise.domain
+cv_proxy_host: proxy.local.domain
 cv_proxy_port: 3128
 ```
 
 Example of the configuration to use authenticated HTTP proxy using CONNECT method:
 
 ```yaml
-cv_proxy_host: squid-1.infosec.enterprise.domain
+cv_proxy_host: proxy.local.domain
 cv_proxy_port: 3128
 cv_proxy_username: "avd_proxy_user"
 cv_proxy_password: "avd_proxy_password"
