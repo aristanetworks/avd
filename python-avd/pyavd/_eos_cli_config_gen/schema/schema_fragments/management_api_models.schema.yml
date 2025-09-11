@@ -14,7 +14,7 @@ keys:
         deprecation:
           warning: true
           new_key: provider
-          remove_in_version: 7.0.0
+          remove_in_version: 6.0.0
         items:
           type: dict
           keys:
