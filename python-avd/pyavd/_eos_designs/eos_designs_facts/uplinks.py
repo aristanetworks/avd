@@ -208,7 +208,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             uplink.underlay_multicast_pim_sm = True
         if (
             self.shared_utils.underlay_multicast_static_enabled is True
-            and uplink_switch_facts.shared_utils.underlay_multicast_static_enabled is True
+            and uplink_switch_facts.shared_utils.underlay_multicast_static_enabled
             and self.shared_utils.node_config.underlay_multicast.static.uplinks
             and (
                 not self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces
