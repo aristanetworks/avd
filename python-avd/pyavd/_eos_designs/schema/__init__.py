@@ -27420,10 +27420,10 @@ class EosDesigns(EosDesignsRootModel):
                             routing
                             By default, configure PIM sparse-mode in the underlay on all:
                               - P2P uplink interfaces if
-                            enabled on uplink peer
+                            enabled on uplink switch
                               - MLAG L3 peer interface if also enabled on MLAG peer
-                              - l3_edge and core
-                            interfaces
+                              - l3_edge and
+                            core interfaces
                             """
                             uplinks: bool
                             """
@@ -27443,7 +27443,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             mlag: bool
                             """
-                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                             Default value: `True`
                             """
@@ -27473,10 +27473,10 @@ class EosDesigns(EosDesignsRootModel):
                                            routing
                                            By default, configure PIM sparse-mode in the underlay on all:
                                              - P2P uplink interfaces if
-                                           enabled on uplink peer
+                                           enabled on uplink switch
                                              - MLAG L3 peer interface if also enabled on MLAG peer
-                                             - l3_edge and core
-                                           interfaces
+                                             - l3_edge and
+                                           core interfaces
                                         uplinks:
                                            Enable/Disable PIM sparse-mode on uplinks.
                                            Requires node setting `underlay_multicast.pim_sm.enabled:
@@ -27487,7 +27487,7 @@ class EosDesigns(EosDesignsRootModel):
                                            `underlay_multicast.pim_sm.uplinks: true`.
 
                                            Subclass of AvdList with `str` items.
-                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                                     """
 
@@ -27526,11 +27526,12 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplink_interfaces: UplinkInterfaces
                             """
-                            Uplink interface names to enable for static multicast.
-                            Effective only when node settings
-                            `underlay_multicast.static.uplinks: true`.
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
 
-                            Subclass of AvdList with `str` items.
+                            Subclass of AvdList with `str`
+                            items.
                             """
                             mlag: bool
                             """
@@ -27570,11 +27571,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Requires node setting
                                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true
                                         uplink_interfaces:
-                                           Uplink interface names to enable for static multicast.
-                                           Effective only when node settings
-                                           `underlay_multicast.static.uplinks: true`.
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
 
-                                           Subclass of AvdList with `str` items.
+                                           Subclass of AvdList with `str`
+                                           items.
                                         mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
 
                                     """
@@ -31976,10 +31978,10 @@ class EosDesigns(EosDesignsRootModel):
                                 routing
                                 By default, configure PIM sparse-mode in the underlay on all:
                                   - P2P uplink interfaces if
-                                enabled on uplink peer
+                                enabled on uplink switch
                                   - MLAG L3 peer interface if also enabled on MLAG peer
-                                  - l3_edge and core
-                                interfaces
+                                  - l3_edge and
+                                core interfaces
                                 """
                                 uplinks: bool
                                 """
@@ -31999,7 +32001,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 mlag: bool
                                 """
-                                Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                                Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                                 Default value: `True`
                                 """
@@ -32029,10 +32031,10 @@ class EosDesigns(EosDesignsRootModel):
                                                routing
                                                By default, configure PIM sparse-mode in the underlay on all:
                                                  - P2P uplink interfaces if
-                                               enabled on uplink peer
+                                               enabled on uplink switch
                                                  - MLAG L3 peer interface if also enabled on MLAG peer
-                                                 - l3_edge and core
-                                               interfaces
+                                                 - l3_edge and
+                                               core interfaces
                                             uplinks:
                                                Enable/Disable PIM sparse-mode on uplinks.
                                                Requires node setting `underlay_multicast.pim_sm.enabled:
@@ -32043,7 +32045,7 @@ class EosDesigns(EosDesignsRootModel):
                                                `underlay_multicast.pim_sm.uplinks: true`.
 
                                                Subclass of AvdList with `str` items.
-                                            mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                                            mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                                         """
 
@@ -32082,11 +32084,12 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 uplink_interfaces: UplinkInterfaces
                                 """
-                                Uplink interface names to enable for static multicast.
-                                Effective only when node settings
-                                `underlay_multicast.static.uplinks: true`.
+                                Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                Effective
+                                only when node settings `underlay_multicast.static.uplinks: true`.
 
-                                Subclass of AvdList with `str` items.
+                                Subclass of AvdList with `str`
+                                items.
                                 """
                                 mlag: bool
                                 """
@@ -32126,11 +32129,12 @@ class EosDesigns(EosDesignsRootModel):
                                                Requires node setting
                                                `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true
                                             uplink_interfaces:
-                                               Uplink interface names to enable for static multicast.
-                                               Effective only when node settings
-                                               `underlay_multicast.static.uplinks: true`.
+                                               Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                               Effective
+                                               only when node settings `underlay_multicast.static.uplinks: true`.
 
-                                               Subclass of AvdList with `str` items.
+                                               Subclass of AvdList with `str`
+                                               items.
                                             mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
 
                                         """
@@ -36461,10 +36465,10 @@ class EosDesigns(EosDesignsRootModel):
                             routing
                             By default, configure PIM sparse-mode in the underlay on all:
                               - P2P uplink interfaces if
-                            enabled on uplink peer
+                            enabled on uplink switch
                               - MLAG L3 peer interface if also enabled on MLAG peer
-                              - l3_edge and core
-                            interfaces
+                              - l3_edge and
+                            core interfaces
                             """
                             uplinks: bool
                             """
@@ -36484,7 +36488,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             mlag: bool
                             """
-                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                             Default value: `True`
                             """
@@ -36514,10 +36518,10 @@ class EosDesigns(EosDesignsRootModel):
                                            routing
                                            By default, configure PIM sparse-mode in the underlay on all:
                                              - P2P uplink interfaces if
-                                           enabled on uplink peer
+                                           enabled on uplink switch
                                              - MLAG L3 peer interface if also enabled on MLAG peer
-                                             - l3_edge and core
-                                           interfaces
+                                             - l3_edge and
+                                           core interfaces
                                         uplinks:
                                            Enable/Disable PIM sparse-mode on uplinks.
                                            Requires node setting `underlay_multicast.pim_sm.enabled:
@@ -36528,7 +36532,7 @@ class EosDesigns(EosDesignsRootModel):
                                            `underlay_multicast.pim_sm.uplinks: true`.
 
                                            Subclass of AvdList with `str` items.
-                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                                     """
 
@@ -36567,11 +36571,12 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplink_interfaces: UplinkInterfaces
                             """
-                            Uplink interface names to enable for static multicast.
-                            Effective only when node settings
-                            `underlay_multicast.static.uplinks: true`.
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
 
-                            Subclass of AvdList with `str` items.
+                            Subclass of AvdList with `str`
+                            items.
                             """
                             mlag: bool
                             """
@@ -36611,11 +36616,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Requires node setting
                                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true
                                         uplink_interfaces:
-                                           Uplink interface names to enable for static multicast.
-                                           Effective only when node settings
-                                           `underlay_multicast.static.uplinks: true`.
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
 
-                                           Subclass of AvdList with `str` items.
+                                           Subclass of AvdList with `str`
+                                           items.
                                         mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
 
                                     """
@@ -41026,10 +41032,10 @@ class EosDesigns(EosDesignsRootModel):
                             routing
                             By default, configure PIM sparse-mode in the underlay on all:
                               - P2P uplink interfaces if
-                            enabled on uplink peer
+                            enabled on uplink switch
                               - MLAG L3 peer interface if also enabled on MLAG peer
-                              - l3_edge and core
-                            interfaces
+                              - l3_edge and
+                            core interfaces
                             """
                             uplinks: bool
                             """
@@ -41049,7 +41055,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             mlag: bool
                             """
-                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                             Default value: `True`
                             """
@@ -41079,10 +41085,10 @@ class EosDesigns(EosDesignsRootModel):
                                            routing
                                            By default, configure PIM sparse-mode in the underlay on all:
                                              - P2P uplink interfaces if
-                                           enabled on uplink peer
+                                           enabled on uplink switch
                                              - MLAG L3 peer interface if also enabled on MLAG peer
-                                             - l3_edge and core
-                                           interfaces
+                                             - l3_edge and
+                                           core interfaces
                                         uplinks:
                                            Enable/Disable PIM sparse-mode on uplinks.
                                            Requires node setting `underlay_multicast.pim_sm.enabled:
@@ -41093,7 +41099,7 @@ class EosDesigns(EosDesignsRootModel):
                                            `underlay_multicast.pim_sm.uplinks: true`.
 
                                            Subclass of AvdList with `str` items.
-                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                                     """
 
@@ -41132,11 +41138,12 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplink_interfaces: UplinkInterfaces
                             """
-                            Uplink interface names to enable for static multicast.
-                            Effective only when node settings
-                            `underlay_multicast.static.uplinks: true`.
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
 
-                            Subclass of AvdList with `str` items.
+                            Subclass of AvdList with `str`
+                            items.
                             """
                             mlag: bool
                             """
@@ -41176,11 +41183,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Requires node setting
                                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true
                                         uplink_interfaces:
-                                           Uplink interface names to enable for static multicast.
-                                           Effective only when node settings
-                                           `underlay_multicast.static.uplinks: true`.
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
 
-                                           Subclass of AvdList with `str` items.
+                                           Subclass of AvdList with `str`
+                                           items.
                                         mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
 
                                     """
@@ -53950,10 +53958,10 @@ class EosDesigns(EosDesignsRootModel):
                             routing
                             By default, configure PIM sparse-mode in the underlay on all:
                               - P2P uplink interfaces if
-                            enabled on uplink peer
+                            enabled on uplink switch
                               - MLAG L3 peer interface if also enabled on MLAG peer
-                              - l3_edge and core
-                            interfaces
+                              - l3_edge and
+                            core interfaces
                             """
                             uplinks: bool
                             """
@@ -53973,7 +53981,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             mlag: bool
                             """
-                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                             Default value: `True`
                             """
@@ -54003,10 +54011,10 @@ class EosDesigns(EosDesignsRootModel):
                                            routing
                                            By default, configure PIM sparse-mode in the underlay on all:
                                              - P2P uplink interfaces if
-                                           enabled on uplink peer
+                                           enabled on uplink switch
                                              - MLAG L3 peer interface if also enabled on MLAG peer
-                                             - l3_edge and core
-                                           interfaces
+                                             - l3_edge and
+                                           core interfaces
                                         uplinks:
                                            Enable/Disable PIM sparse-mode on uplinks.
                                            Requires node setting `underlay_multicast.pim_sm.enabled:
@@ -54017,7 +54025,7 @@ class EosDesigns(EosDesignsRootModel):
                                            `underlay_multicast.pim_sm.uplinks: true`.
 
                                            Subclass of AvdList with `str` items.
-                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                                     """
 
@@ -54056,11 +54064,12 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplink_interfaces: UplinkInterfaces
                             """
-                            Uplink interface names to enable for static multicast.
-                            Effective only when node settings
-                            `underlay_multicast.static.uplinks: true`.
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
 
-                            Subclass of AvdList with `str` items.
+                            Subclass of AvdList with `str`
+                            items.
                             """
                             mlag: bool
                             """
@@ -54100,11 +54109,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Requires node setting
                                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true
                                         uplink_interfaces:
-                                           Uplink interface names to enable for static multicast.
-                                           Effective only when node settings
-                                           `underlay_multicast.static.uplinks: true`.
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
 
-                                           Subclass of AvdList with `str` items.
+                                           Subclass of AvdList with `str`
+                                           items.
                                         mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
 
                                     """
@@ -58506,10 +58516,10 @@ class EosDesigns(EosDesignsRootModel):
                                 routing
                                 By default, configure PIM sparse-mode in the underlay on all:
                                   - P2P uplink interfaces if
-                                enabled on uplink peer
+                                enabled on uplink switch
                                   - MLAG L3 peer interface if also enabled on MLAG peer
-                                  - l3_edge and core
-                                interfaces
+                                  - l3_edge and
+                                core interfaces
                                 """
                                 uplinks: bool
                                 """
@@ -58529,7 +58539,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 mlag: bool
                                 """
-                                Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                                Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                                 Default value: `True`
                                 """
@@ -58559,10 +58569,10 @@ class EosDesigns(EosDesignsRootModel):
                                                routing
                                                By default, configure PIM sparse-mode in the underlay on all:
                                                  - P2P uplink interfaces if
-                                               enabled on uplink peer
+                                               enabled on uplink switch
                                                  - MLAG L3 peer interface if also enabled on MLAG peer
-                                                 - l3_edge and core
-                                               interfaces
+                                                 - l3_edge and
+                                               core interfaces
                                             uplinks:
                                                Enable/Disable PIM sparse-mode on uplinks.
                                                Requires node setting `underlay_multicast.pim_sm.enabled:
@@ -58573,7 +58583,7 @@ class EosDesigns(EosDesignsRootModel):
                                                `underlay_multicast.pim_sm.uplinks: true`.
 
                                                Subclass of AvdList with `str` items.
-                                            mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                                            mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                                         """
 
@@ -58612,11 +58622,12 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 uplink_interfaces: UplinkInterfaces
                                 """
-                                Uplink interface names to enable for static multicast.
-                                Effective only when node settings
-                                `underlay_multicast.static.uplinks: true`.
+                                Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                Effective
+                                only when node settings `underlay_multicast.static.uplinks: true`.
 
-                                Subclass of AvdList with `str` items.
+                                Subclass of AvdList with `str`
+                                items.
                                 """
                                 mlag: bool
                                 """
@@ -58656,11 +58667,12 @@ class EosDesigns(EosDesignsRootModel):
                                                Requires node setting
                                                `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true
                                             uplink_interfaces:
-                                               Uplink interface names to enable for static multicast.
-                                               Effective only when node settings
-                                               `underlay_multicast.static.uplinks: true`.
+                                               Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                               Effective
+                                               only when node settings `underlay_multicast.static.uplinks: true`.
 
-                                               Subclass of AvdList with `str` items.
+                                               Subclass of AvdList with `str`
+                                               items.
                                             mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
 
                                         """
@@ -62991,10 +63003,10 @@ class EosDesigns(EosDesignsRootModel):
                             routing
                             By default, configure PIM sparse-mode in the underlay on all:
                               - P2P uplink interfaces if
-                            enabled on uplink peer
+                            enabled on uplink switch
                               - MLAG L3 peer interface if also enabled on MLAG peer
-                              - l3_edge and core
-                            interfaces
+                              - l3_edge and
+                            core interfaces
                             """
                             uplinks: bool
                             """
@@ -63014,7 +63026,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             mlag: bool
                             """
-                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                             Default value: `True`
                             """
@@ -63044,10 +63056,10 @@ class EosDesigns(EosDesignsRootModel):
                                            routing
                                            By default, configure PIM sparse-mode in the underlay on all:
                                              - P2P uplink interfaces if
-                                           enabled on uplink peer
+                                           enabled on uplink switch
                                              - MLAG L3 peer interface if also enabled on MLAG peer
-                                             - l3_edge and core
-                                           interfaces
+                                             - l3_edge and
+                                           core interfaces
                                         uplinks:
                                            Enable/Disable PIM sparse-mode on uplinks.
                                            Requires node setting `underlay_multicast.pim_sm.enabled:
@@ -63058,7 +63070,7 @@ class EosDesigns(EosDesignsRootModel):
                                            `underlay_multicast.pim_sm.uplinks: true`.
 
                                            Subclass of AvdList with `str` items.
-                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                                     """
 
@@ -63097,11 +63109,12 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplink_interfaces: UplinkInterfaces
                             """
-                            Uplink interface names to enable for static multicast.
-                            Effective only when node settings
-                            `underlay_multicast.static.uplinks: true`.
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
 
-                            Subclass of AvdList with `str` items.
+                            Subclass of AvdList with `str`
+                            items.
                             """
                             mlag: bool
                             """
@@ -63141,11 +63154,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Requires node setting
                                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true
                                         uplink_interfaces:
-                                           Uplink interface names to enable for static multicast.
-                                           Effective only when node settings
-                                           `underlay_multicast.static.uplinks: true`.
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
 
-                                           Subclass of AvdList with `str` items.
+                                           Subclass of AvdList with `str`
+                                           items.
                                         mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
 
                                     """
@@ -67556,10 +67570,10 @@ class EosDesigns(EosDesignsRootModel):
                             routing
                             By default, configure PIM sparse-mode in the underlay on all:
                               - P2P uplink interfaces if
-                            enabled on uplink peer
+                            enabled on uplink switch
                               - MLAG L3 peer interface if also enabled on MLAG peer
-                              - l3_edge and core
-                            interfaces
+                              - l3_edge and
+                            core interfaces
                             """
                             uplinks: bool
                             """
@@ -67579,7 +67593,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             mlag: bool
                             """
-                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                             Default value: `True`
                             """
@@ -67609,10 +67623,10 @@ class EosDesigns(EosDesignsRootModel):
                                            routing
                                            By default, configure PIM sparse-mode in the underlay on all:
                                              - P2P uplink interfaces if
-                                           enabled on uplink peer
+                                           enabled on uplink switch
                                              - MLAG L3 peer interface if also enabled on MLAG peer
-                                             - l3_edge and core
-                                           interfaces
+                                             - l3_edge and
+                                           core interfaces
                                         uplinks:
                                            Enable/Disable PIM sparse-mode on uplinks.
                                            Requires node setting `underlay_multicast.pim_sm.enabled:
@@ -67623,7 +67637,7 @@ class EosDesigns(EosDesignsRootModel):
                                            `underlay_multicast.pim_sm.uplinks: true`.
 
                                            Subclass of AvdList with `str` items.
-                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
 
                                     """
 
@@ -67662,11 +67676,12 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplink_interfaces: UplinkInterfaces
                             """
-                            Uplink interface names to enable for static multicast.
-                            Effective only when node settings
-                            `underlay_multicast.static.uplinks: true`.
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
 
-                            Subclass of AvdList with `str` items.
+                            Subclass of AvdList with `str`
+                            items.
                             """
                             mlag: bool
                             """
@@ -67706,11 +67721,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Requires node setting
                                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true
                                         uplink_interfaces:
-                                           Uplink interface names to enable for static multicast.
-                                           Effective only when node settings
-                                           `underlay_multicast.static.uplinks: true`.
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
 
-                                           Subclass of AvdList with `str` items.
+                                           Subclass of AvdList with `str`
+                                           items.
                                         mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
 
                                     """
