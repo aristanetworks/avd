@@ -8,8 +8,8 @@ from typing import TYPE_CHECKING, Literal, Protocol
 from pyavd._cv.api.arista.inventory.v1 import Device, DeviceKey, DeviceServiceStub, DeviceStreamRequest
 from pyavd._cv.api.arista.time import TimeBounds
 
+from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
-from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -22,6 +22,7 @@ class InventoryMixin(Protocol):
 
     inventory_api_version: Literal["v1"] = "v1"
 
+    @GRPCRequestHandler()
     async def get_inventory_devices(
         self: CVClientProtocol,
         devices: list[tuple[str, str, str]] | None = None,
@@ -52,10 +53,6 @@ class InventoryMixin(Protocol):
                     ),
                 )
         client = DeviceServiceStub(self._channel)
-        try:
-            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            inventory_devices = [response.value async for response in responses]
-        except Exception as e:
-            raise get_cv_client_exception(e, f"devices '{devices}'") or e
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
 
-        return inventory_devices
+        return [response.value async for response in responses]

@@ -1,18 +1,20 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Literal, Protocol, overload
+from typing import TYPE_CHECKING, Literal, Protocol, cast, overload
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, unique
+from pyavd._utils.password_utils.password import ospf_message_digest_encrypt, ospf_simple_encrypt
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
-    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+    from typing import Any
 
     from . import SharedUtilsProtocol
 
@@ -24,6 +26,8 @@ class FilteredTenantsMixin(Protocol):
     Class should only be used as Mixin to the SharedUtils class.
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
+
+    resolved_l2vlan_profiles_cache: dict[str, EosDesigns.L2vlanProfilesItem] | None = None
 
     @cached_property
     def filtered_tenants(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServices:
@@ -43,6 +47,7 @@ class FilteredTenantsMixin(Protocol):
                 if original_tenant.name not in filter_tenants and "all" not in filter_tenants:
                     continue
                 tenant = original_tenant._deepcopy()
+                tenant._internal_data.context = f"{network_services_key.key}"
                 tenant.l2vlans = self.filtered_l2vlans(tenant)
                 tenant.vrfs = self.filtered_vrfs(tenant)
                 filtered_tenants.append(tenant)
@@ -84,17 +89,83 @@ class FilteredTenantsMixin(Protocol):
         Filtering based on l2vlan tags.
         """
         if not self.network_services_l2 or not tenant.l2vlans:
-            EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
+            return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
 
-        filtered_l2vlans = tenant.l2vlans._filtered(
-            lambda l2vlan: self.is_accepted_vlan(l2vlan) and bool("all" in self.filter_tags or set(l2vlan.tags).intersection(self.filter_tags))
-        )
+        filtered_l2vlans = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlans()
+        for l2vlan in tenant.l2vlans:
+            if not self.is_accepted_vlan(l2vlan):
+                continue
 
-        if tenant.evpn_vlan_bundle:
-            for l2vlan in filtered_l2vlans:
-                l2vlan.evpn_vlan_bundle = l2vlan.evpn_vlan_bundle or tenant.evpn_vlan_bundle
+            # Perform filtering on tags before merge of profiles, to avoid spending cycles on merging something that will be filtered away.
+            if not ("all" in self.filter_tags or bool(set(l2vlan.tags).intersection(self.filter_tags))):
+                continue
+
+            merged_l2vlan = self.get_merged_l2vlan_config(l2vlan)
+            if tenant.evpn_vlan_bundle:
+                merged_l2vlan.evpn_vlan_bundle = merged_l2vlan.evpn_vlan_bundle or tenant.evpn_vlan_bundle
+
+            filtered_l2vlans.append(merged_l2vlan)
 
         return filtered_l2vlans._natural_sorted(sort_key="id")
+
+    def get_merged_l2vlan_config(
+        self: SharedUtilsProtocol, vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem
+    ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem:
+        """
+        Return structured config for one l2vlan after inheritance.
+
+        Handle inheritance of l2vlan_profiles in two levels:
+        l2vlan > l2vlan_profile > l2vlan_parent_profile --> l2vlan_cfg
+        """
+        if vlan.profile:
+            l2vlan_profile = self.get_merged_l2vlan_profile(vlan.profile, f"{vlan.name}")
+
+            # Inherit from the profile
+            merged_vlan = vlan._deepinherited(
+                l2vlan_profile._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem, ignore_extra_keys=True)
+            )
+        else:
+            merged_vlan = vlan
+        return merged_vlan
+
+    def get_merged_l2vlan_profile(self: SharedUtilsProtocol, profile_name: str, context: str) -> EosDesigns.L2vlanProfilesItem:
+        """
+        Returns a merged "l2vlan_profile" where "parent_profile" has been applied.
+
+        Leverages a dict of resolved profiles as a cache.
+        """
+        if self.resolved_l2vlan_profiles_cache and profile_name in self.resolved_l2vlan_profiles_cache:
+            return self.resolved_l2vlan_profiles_cache[profile_name]
+
+        resolved_profile = self.resolve_l2vlan_profile(profile_name, context)
+
+        # Update the cache so we don't resolve again next time.
+        if self.resolved_l2vlan_profiles_cache is None:
+            self.resolved_l2vlan_profiles_cache = {}
+        self.resolved_l2vlan_profiles_cache[profile_name] = resolved_profile
+
+        return resolved_profile
+
+    def resolve_l2vlan_profile(self: SharedUtilsProtocol, profile_name: str, context: str) -> EosDesigns.L2vlanProfilesItem:
+        """Resolve one l2vlan profile and return it."""
+        if profile_name not in self.inputs.l2vlan_profiles:
+            msg = f"Profile '{profile_name}' applied under l2vlan '{context}' does not exist in 'l2vlan_profiles'."
+            raise AristaAvdInvalidInputsError(msg)
+
+        l2vlan_profile = self.inputs.l2vlan_profiles[profile_name]
+        if l2vlan_profile.parent_profile:
+            if l2vlan_profile.parent_profile not in self.inputs.l2vlan_profiles:
+                msg = f"Profile '{l2vlan_profile.parent_profile}' applied under L2VLAN Profile '{profile_name}' does not exist in 'l2vlan_profiles'."
+                raise AristaAvdInvalidInputsError(msg)
+
+            parent_profile = self.inputs.l2vlan_profiles[l2vlan_profile.parent_profile]
+
+            # Notice reuse of the same variable with the merged content.
+            l2vlan_profile = l2vlan_profile._deepinherited(parent_profile)
+
+        delattr(l2vlan_profile, "parent_profile")
+
+        return l2vlan_profile
 
     def is_accepted_vlan(
         self: SharedUtilsProtocol,
@@ -197,11 +268,12 @@ class FilteredTenantsMixin(Protocol):
             vrf.static_routes = vrf.static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
             vrf.ipv6_static_routes = vrf.ipv6_static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
             vrf.svis = self.filtered_svis(vrf)
-            vrf.l3_interfaces = vrf.l3_interfaces._filtered(
-                lambda l3_interface: bool(self.hostname in l3_interface.nodes and l3_interface.ip_addresses and l3_interface.interfaces)
-            )
-            vrf.l3_port_channels = vrf.l3_port_channels._filtered(lambda l3_port_channel: bool(self.hostname == l3_port_channel.node))
+            vrf.l3_interfaces = self.filtered_l3_interfaces(vrf)
+            vrf.l3_port_channels = self.filtered_l3_port_channels(vrf)
             vrf.loopbacks = vrf.loopbacks._filtered(lambda loopback: loopback.node == self.hostname)
+            vrf.aggregate_addresses = vrf.aggregate_addresses._filtered(lambda aggregate_address: self.match_nodes(aggregate_address.nodes))._natural_sorted(
+                sort_key="prefix"
+            )
 
             if self.vtep is True:
                 evpn_l3_multicast_enabled = default(vrf.evpn_l3_multicast.enabled, tenant.evpn_l3_multicast.enabled)
@@ -218,7 +290,7 @@ class FilteredTenantsMixin(Protocol):
                                 msg = f"'pim_rp_addresses.rps' under VRF '{vrf.name}' in Tenant '{tenant.name}' is required."
                                 raise AristaAvdInvalidInputsError(msg)
                             for rp_ip in rp_entry.rps:
-                                rp_address = {"address": rp_ip}
+                                rp_address: dict[str, Any] = {"address": rp_ip}
                                 if rp_entry.groups:
                                     if rp_entry.access_list_name:
                                         rp_address["access_lists"] = [rp_entry.access_list_name]
@@ -302,19 +374,84 @@ class FilteredTenantsMixin(Protocol):
 
         Filtering based on accepted vlans since eos_designs_facts already
         filtered that on tags and trunk_groups.
+        Extracts static_routes and ipv6_static_routes set under SVIs and appends them to vrf.static_routes and vrf.ipv6_static_routes.
         """
         if not (self.network_services_l2 or self.network_services_l2_as_subint):
             return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
 
-        svis = vrf.svis._filtered(self.is_accepted_vlan)
+        filtered_svis = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
+        for svi in vrf.svis:
+            if not self.is_accepted_vlan(svi):
+                continue
+            # TODO: Tags exist only on the SVI itself, not in svi_profiles. Avoid duplicating this logic here—check tags before merging.
+            # Handle svi_profile inheritance
+            merged_svi = self.get_merged_svi_config(svi)
+            # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
+            if not ("all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags))):
+                continue
 
-        # Handle svi_profile inheritance
-        svis = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis([self.get_merged_svi_config(svi) for svi in svis])
+            filtered_svis.append(merged_svi)
 
-        # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
-        svis = svis._filtered(lambda svi: "all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags)))
+            if merged_svi.static_routes:
+                vrf.static_routes.extend(
+                    merged_svi.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            if merged_svi.ipv6_static_routes:
+                vrf.ipv6_static_routes.extend(
+                    merged_svi.ipv6_static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes)
+                )
 
-        return svis._natural_sorted(sort_key="id")
+        return filtered_svis._natural_sorted(sort_key="id")
+
+    def filtered_l3_interfaces(
+        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
+    ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3Interfaces:
+        """
+        Returns filtered l3_interfaces for the VRFs.
+
+        Extracts static_routes and ipv6_static_routes defined under l3_interfaces and appends them to vrf.static_routes and vrf.ipv6_static_routes.
+        """
+        filtered_l3_interfaces = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3Interfaces()
+        for l3_interface in vrf.l3_interfaces:
+            if not (self.hostname in l3_interface.nodes and l3_interface.ip_addresses and l3_interface.interfaces):
+                continue
+            if l3_interface.static_routes:
+                vrf.static_routes.extend(
+                    l3_interface.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            if l3_interface.ipv6_static_routes:
+                vrf.ipv6_static_routes.extend(
+                    l3_interface.ipv6_static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes)
+                )
+            filtered_l3_interfaces.append(l3_interface)
+
+        return filtered_l3_interfaces
+
+    def filtered_l3_port_channels(
+        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
+    ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannels:
+        """
+        Returns filtered l3_port_channels for the VRFs.
+
+        Extracts static_routes and ipv6_static_routes defined under l3_port_channels and appends them to vrf.static_routes and vrf.ipv6_static_routes.
+        """
+        filtered_l3_port_channels = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannels()
+        for l3_port_channel in vrf.l3_port_channels:
+            if self.hostname != l3_port_channel.node:
+                continue
+            if l3_port_channel.static_routes:
+                vrf.static_routes.extend(
+                    l3_port_channel.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            if l3_port_channel.ipv6_static_routes:
+                vrf.ipv6_static_routes.extend(
+                    l3_port_channel.ipv6_static_routes._cast_as(
+                        EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ipv6StaticRoutes
+                    )
+                )
+            filtered_l3_port_channels.append(l3_port_channel)
+
+        return filtered_l3_port_channels
 
     @cached_property
     def endpoint_vlans(self: SharedUtilsProtocol) -> list:
@@ -359,11 +496,12 @@ class FilteredTenantsMixin(Protocol):
 
         return natural_sort({vrf.name for tenant in self.filtered_tenants for vrf in tenant.vrfs})
 
-    @staticmethod
     def get_additional_svi_config(
+        self: SharedUtilsProtocol,
         config: EosCliConfigGen.VlanInterfacesItem | EosCliConfigGen.EthernetInterfacesItem,
         svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> None:
         """
         Adding IP helpers and OSPF for SVIs via a common function.
@@ -387,18 +525,132 @@ class FilteredTenantsMixin(Protocol):
                 ospf_network_point_to_point=svi.ospf.point_to_point,
                 ospf_cost=svi.ospf.cost,
             )
-            ospf_authentication = svi.ospf.authentication
-            if ospf_authentication == "simple" and (ospf_simple_auth_key := svi.ospf.simple_auth_key) is not None:
-                config._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
-            elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := svi.ospf.message_digest_keys):
-                for ospf_key in ospf_message_digest_keys:
-                    if not (ospf_key.id and ospf_key.key):
-                        continue
+            self.update_ospf_authentication(config, svi, vrf, tenant)
 
-                    config.ospf_message_digest_keys.append_new(id=ospf_key.id, hash_algorithm=ospf_key.hash_algorithm, key=ospf_key.key)
+    def update_ospf_authentication(
+        self: SharedUtilsProtocol,
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem | EosCliConfigGen.VlanInterfacesItem,
+        network_services_interface: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+    ) -> None:
+        """
+        Handle OSPF authentication for l3_interfaces, l3_port_channels and SVIs.
 
-                if config.ospf_message_digest_keys:
-                    config.ospf_authentication = ospf_authentication
+        Work for both simple and message_digest authentication method.
+        If encryption by AVD is required via `encrypt_passwords` or because it must always be encrypted (password at VRF level), handle this as well.
+
+        Interface level configuration always takes precedence over VRF level configuration.
+
+        Args:
+            interface: The EosCliConfigGen interface to update with authentication.
+            network_services_interface: The l3_interface, l3_port_channel_interface or SVI input.
+            vrf: The VRF object containing OSPF/BGP and vtep_diagnostic details.
+            tenant: The tenant object containing the VRF.
+
+        Raises:
+            AristaAvdMissingVariableError: If key is missing.
+        """
+        # Handle OSPF authentication
+        ospf_authentication = network_services_interface.ospf.authentication or vrf.ospf.authentication
+        if not ospf_authentication:
+            return
+
+        match ospf_authentication:
+            case "simple":
+                if network_services_interface.ospf.simple_auth_key is not None:
+                    ospf_simple_auth_key = network_services_interface.ospf.simple_auth_key
+                elif network_services_interface.ospf.cleartext_simple_auth_key is not None:
+                    ospf_simple_auth_key = ospf_simple_encrypt(network_services_interface.ospf.cleartext_simple_auth_key, interface.name)
+                elif vrf.ospf.cleartext_simple_auth_key is not None:
+                    # Always encrypt if defined at VRF level.
+                    ospf_simple_auth_key = ospf_simple_encrypt(vrf.ospf.cleartext_simple_auth_key, interface.name)
+                else:
+                    match interface:
+                        case EosCliConfigGen.EthernetInterfacesItem():
+                            interface_ospf_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf"
+                        case EosCliConfigGen.PortChannelInterfacesItem():
+                            interface_ospf_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf"
+                        case _:
+                            # This is EosCliConfigGen.VlanInterfacesItem
+                            interface_ospf_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf"
+                    msg = (
+                        f"`tenants[name={tenant.name}].vrfs[name={vrf.name}].ospf.cleartext_simple_auth_key` or `{interface_ospf_path}.simple_auth_key` "
+                        f"or `{interface_ospf_path}.cleartext_simple_auth_key`"
+                    )
+
+                    raise AristaAvdMissingVariableError(msg)
+
+                interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
+
+            case _:
+                # This is "message-digest"
+                # The full list of keys is EITHER taken from the network_services_interface or from the VRF
+                # TODO: AVD 6.0.0 Make 'id' a primary key and 'key' required - it means the two lists will should be merged instead of replacing.
+                if network_services_interface.ospf.message_digest_keys:
+                    for ospf_key in network_services_interface.ospf.message_digest_keys:
+                        self.update_message_digest_key(ospf_key, interface, vrf, tenant)
+
+                elif vrf.ospf.message_digest_keys:
+                    for ospf_key in vrf.ospf.message_digest_keys:
+                        self.update_message_digest_key(ospf_key, interface, vrf, tenant)
+
+                # TODO: AVD 6.0: raise if we end up with no keys
+                if interface.ospf_message_digest_keys:
+                    interface.ospf_authentication = ospf_authentication
+
+    def update_message_digest_key(
+        self: SharedUtilsProtocol,
+        ospf_key: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.Ospf.MessageDigestKeysItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem.Ospf.MessageDigestKeysItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem.Ospf.MessageDigestKeysItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ospf.MessageDigestKeysItem,
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem | EosCliConfigGen.VlanInterfacesItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+    ) -> None:
+        """Handle OSPF authentication for one message digest key."""
+        if not ospf_key.id:
+            return
+        # VRF level does not have a 'key' attribute.
+        if hasattr(ospf_key, "key") and ospf_key.key is not None:
+            key = ospf_key.key
+        elif ospf_key.cleartext_key is not None:
+            # ospf_key.cleartext_key is not None
+            key = ospf_message_digest_encrypt(
+                password=cast("str", ospf_key.cleartext_key),
+                key=interface.name,
+                hash_algorithm=ospf_key.hash_algorithm,
+                key_id=str(ospf_key.id),
+            )
+        else:
+            # This cannot happen for Vrf level as cleartext_key is required.
+            match ospf_key:
+                case EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.Ospf.MessageDigestKeysItem():
+                    interface_ospf_path = (
+                        f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf.message_digest_keys[key={ospf_key.id}]"
+                    )
+                    msg = f"`{interface_ospf_path}.key` or `{interface_ospf_path}.cleartext_key`"
+                case EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem.Ospf.MessageDigestKeysItem():
+                    interface_ospf_path = (
+                        f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf.message_digest_keys[key={ospf_key.id}]"
+                    )
+                    msg = f"`{interface_ospf_path}.key` or `{interface_ospf_path}.cleartext_key`"
+                case EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem.Ospf.MessageDigestKeysItem():
+                    interface_ospf_path = (
+                        f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={interface.name[4:]}].ospf.message_digest_keys[key={ospf_key.id}]"
+                    )
+                    msg = f"`{interface_ospf_path}.key` or `{interface_ospf_path}.cleartext_key`"
+
+            raise AristaAvdMissingVariableError(msg)
+
+        interface.ospf_message_digest_keys.append_new(
+            id=ospf_key.id,
+            hash_algorithm=ospf_key.hash_algorithm,
+            key=key,
+        )
 
     @cached_property
     def bgp_in_network_services(self: SharedUtilsProtocol) -> bool:

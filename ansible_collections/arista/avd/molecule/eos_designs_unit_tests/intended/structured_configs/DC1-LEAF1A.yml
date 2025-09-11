@@ -1,15 +1,17 @@
 aaa_root:
   disabled: true
+boot:
+  secret:
+    key: a153de6290ff1409257ade45f
 config_end: true
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
   cvauth:
-    method: key
-    key: telarista
+    method: token
+    token_file: /tmp/token
   cvvrf: MGMT
   disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
@@ -131,7 +133,6 @@ ip_name_servers:
   vrf: MGMT
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
-is_deployed: true
 local_users:
 - name: admin
   disabled: true
@@ -174,6 +175,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: VEOS
   rack: rackA
   fabric_name: EOS_DESIGNS_UNIT_TESTS
@@ -287,6 +289,10 @@ router_bgp:
     remote_as: '65001'
     peer: DC1-SPINE4
     description: DC1-SPINE4
+  aggregate_addresses:
+  - prefix: 10.1.1.0/8
+    advertise_only: true
+  - prefix: 10.2.1.0/8
   redistribute:
     connected:
       enabled: true
@@ -353,6 +359,8 @@ router_bgp:
         - '1234:12'
     redistribute:
       connected:
+        enabled: true
+      static:
         enabled: true
   - name: Tenant_A_OP_Zone
     rd: 1.1.1.1:9
@@ -426,6 +434,9 @@ static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
   next_hop: 192.168.200.5
+- vrf: Tenant_A_APP_Zone
+  prefix: 10.10.10.0/24
+  next_hop: 10.10.10.1
 - vrf: Tenant_A_APP_Zone
   prefix: 10.2.32.0/24
   interface: Vlan132

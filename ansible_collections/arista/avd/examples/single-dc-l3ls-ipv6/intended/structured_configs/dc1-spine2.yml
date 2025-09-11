@@ -1,0 +1,218 @@
+aaa_root:
+  disabled: true
+config_end: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.1.12:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvsourceintf: Management1
+  cvvrf: MGMT
+  disable_aaa: true
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_dc1-leaf1a_Ethernet2
+  shutdown: false
+  mtu: 1500
+  ipv6_address: 2001:db8:2:1::1/64
+  peer: dc1-leaf1a
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_dc1-leaf1b_Ethernet2
+  shutdown: false
+  mtu: 1500
+  ipv6_address: 2001:db8:2:3::1/64
+  peer: dc1-leaf1b
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet3
+  description: P2P_dc1-leaf2a_Ethernet2
+  shutdown: false
+  mtu: 1500
+  ipv6_address: 2001:db8:2:5::1/64
+  peer: dc1-leaf2a
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet4
+  description: P2P_dc1-leaf2b_Ethernet2
+  shutdown: false
+  mtu: 1500
+  ipv6_address: 2001:db8:2:7::1/64
+  peer: dc1-leaf2b
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+hostname: dc1-spine2
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
+ip_name_servers:
+- ip_address: 192.168.1.1
+  vrf: MGMT
+ip_routing: true
+ipv6_prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY-V6
+  sequence_numbers:
+  - sequence: 10
+    action: permit 2001:db8::/48 eq 64
+ipv6_unicast_routing: true
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: ansible
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ipv6_address: 2001:db8:0:2::1/64
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.16.1.12/24
+  type: oob
+  gateway: 172.16.1.1
+metadata:
+  is_deployed: true
+  platform: vEOS-lab
+  fabric_name: FABRIC
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 0.pool.ntp.org
+    preferred: true
+    vrf: MGMT
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 30
+    type: permit
+    match:
+    - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65100'
+  router_id: 10.255.0.2
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv6-UNDERLAY-PEERS
+    type: ipv6
+    password: F0bdF6JLcJtagc6PCN8W0Q==
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    next_hop_unchanged: true
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 2001:db8:2:1::2
+    peer_group: IPv6-UNDERLAY-PEERS
+    remote_as: '65101'
+    peer: dc1-leaf1a
+    description: dc1-leaf1a_Ethernet2
+  - ip_address: 2001:db8:2:3::2
+    peer_group: IPv6-UNDERLAY-PEERS
+    remote_as: '65101'
+    peer: dc1-leaf1b
+    description: dc1-leaf1b_Ethernet2
+  - ip_address: 2001:db8:2:5::2
+    peer_group: IPv6-UNDERLAY-PEERS
+    remote_as: '65102'
+    peer: dc1-leaf2a
+    description: dc1-leaf2a_Ethernet2
+  - ip_address: 2001:db8:2:7::2
+    peer_group: IPv6-UNDERLAY-PEERS
+    remote_as: '65102'
+    peer: dc1-leaf2b
+    description: dc1-leaf2b_Ethernet2
+  - ip_address: 2001:db8:1:1::1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65101'
+    peer: dc1-leaf1a
+    description: dc1-leaf1a_Loopback0
+  - ip_address: 2001:db8:1:2::1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65101'
+    peer: dc1-leaf1b
+    description: dc1-leaf1b_Loopback0
+  - ip_address: 2001:db8:1:3::1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65102'
+    peer: dc1-leaf2a
+    description: dc1-leaf2a_Loopback0
+  - ip_address: 2001:db8:1:4::1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65102'
+    peer: dc1-leaf2b
+    description: dc1-leaf2b_Loopback0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  address_family_ipv6:
+    peer_groups:
+    - name: IPv6-UNDERLAY-PEERS
+      activate: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 172.16.1.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

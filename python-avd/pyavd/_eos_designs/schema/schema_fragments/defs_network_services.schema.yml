@@ -99,6 +99,16 @@ $defs:
               name:
                 type: str
                 description: BGP peer group name.
+              password:
+                type: str
+                description: |-
+                  Type 7 encrypted password.
+                  Takes precedence over `cleartext_password`.
+              cleartext_password:
+                type: str
+                description: |-
+                  BGP peer group cleartext password.
+                  To protect the password at rest it is strongly recommended to make use of a vault or similar.
               nodes:
                 type: list
                 items:
@@ -186,6 +196,7 @@ $defs:
               type: str
               description: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
               format: ipv4_pool
+            # TODO: make the default value of the offset 1
             underlay_l2_multicast_group_ipv4_pool_offset:
               type: int
               default: 0
@@ -202,6 +213,29 @@ $defs:
                 Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is enabled will take up additional control-plane and data-plane resources,
                 but it is required to support forwarding of TTL=1 multicast traffic within the VLAN.
                 This can be overridden per SVI.
+        vxlan_flood_multicast:
+          documentation_options:
+            table: network-services-multicast-settings
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              required: true
+              description: |-
+                Enable Flood group Multicast for all SVIs and l2vlans within Tenant.
+            underlay_l2_multicast_group_ipv4_pool:
+              type: str
+              description: |-
+                IPv4 Pool to allocate vxlan flood groups from.
+                The VLAN ID - 1 + `underlay_l2_multicast_group_ipv4_pool_offset` is the offset for each group.
+                Comma separated list of prefixes (IPv4_address/Mask) or ranges (IPv4_address-IPv4_address).
+              format: ipv4_pool
+            # TODO: make the default value of the offset 1
+            underlay_l2_multicast_group_ipv4_pool_offset:
+              type: int
+              default: 0
+              convert_types:
+                - str
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -395,6 +429,13 @@ $defs:
                   The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.
                   If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
                 format: ipv4_pool
+              mlag_ibgp_peering_ipv6_pool:
+                type: str
+                description: |-
+                  Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                  The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.
+                  If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+                format: ipv6_pool
               ip_helpers:
                 type: list
                 primary_key: ip_helper
@@ -452,7 +493,7 @@ $defs:
                     type: str
                     description: |-
                       Provide a custom description or description template to be used on the VRF diagnostic loopback interface.
-                      This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                      This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
                       The available template fields are:
                         - `interface`: The Loopback interface name.
                         - `vrf`: The VRF name.
@@ -548,6 +589,54 @@ $defs:
                       route_map:
                         type: str
                         description: Route-map name.
+                  authentication:
+                    type: str
+                    valid_values:
+                      - simple
+                      - message-digest
+                    description: |-
+                      Configure OSPF authentication for all interfaces under the VRF.
+                      Can be overridden at the interface level under `l3_interfaces`, `l3_port_channels` or `svis`.
+                  cleartext_simple_auth_key:
+                    type: str
+                    description: |-
+                      Cleartext password used with simple authentication.
+                      To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                      Configuration at the interface level under `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+                    min_length: 1
+                    max_length: 8
+                  message_digest_keys:
+                    type: list
+                    primary_key: id
+                    min_length: 1
+                    max_length: 2
+                    items:
+                      type: dict
+                      keys:
+                        id:
+                          type: int
+                          convert_types:
+                            - str
+                        hash_algorithm:
+                          type: str
+                          valid_values:
+                            - md5
+                            - sha1
+                            - sha256
+                            - sha384
+                            - sha512
+                          default: sha512
+                        cleartext_key:
+                          type: str
+                          required: true
+                          convert_types:
+                            - int
+                          description: |-
+                            Cleartext key for OSPF message-digest authentication
+                            To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                            Configuration at the interface level under `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+                          min_length: 1
+                          max_length: 16
                   nodes:
                     type: list
                     items:
@@ -662,6 +751,11 @@ $defs:
                       type: str
                       description: VLAN name.
                       required: true
+                    address_locking:
+                      type: dict
+                      $ref: "eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family"
+                      description: |-
+                        To configure `address_locking.ipv4/v6`, you must define either `address_locking_settings.dhcp_servers_ipv4` or `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
                     profile:
                       type: str
                       description: |
@@ -735,11 +829,23 @@ $defs:
                       items:
                         type: str
                         description: IPv4_address/Mask.
+                    static_routes:
+                      type: list
+                      $ref: "eos_designs#/$defs/static_routes"
+                      description: Static routes to be configured on every device where this interface is configured.
+                    ipv6_static_routes:
+                      type: list
+                      # Reusing the schema from `static_routes` since IPv4 and IPv6 static routes share the same keys.
+                      $ref: "eos_designs#/$defs/static_routes"
+                      description: IPv6 static routes to be configured on every device where this interface is configured.
                     nodes:
                       type: list
                       items:
                         type: str
                         description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                     descriptions:
@@ -790,9 +896,21 @@ $defs:
                             - message-digest
                         simple_auth_key:
                           type: str
-                          description: Password used with simple authentication.
+                          description: |-
+                            Type 7 encrypted key for OSPF simple authentication.
+                            Takes precedence over `cleartext_simple_auth_key`.
+                            NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                        cleartext_simple_auth_key:
+                          type: str
+                          description: |-
+                            Cleartext key for OSPF simple authentication.
+                            To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                          min_length: 1
+                          max_length: 8
                         message_digest_keys:
                           type: list
+                          # TODO: AVD 6.0.0: Make id primary_key and key required.
                           items:
                             type: dict
                             keys:
@@ -811,7 +929,18 @@ $defs:
                                 default: sha512
                               key:
                                 type: str
-                                description: Key password.
+                                description: |-
+                                  Type 7 encrypted key for OSPF message-digest authentication.
+                                  Takes precedence over `cleartext_key`
+                                  NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                                  (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                              cleartext_key:
+                                type: str
+                                description: |-
+                                  Cleartext key for OSPF message-digest authentication
+                                  To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                min_length: 1
+                                max_length: 16
                     pim:
                       type: dict
                       description: |
@@ -826,6 +955,12 @@ $defs:
                       $ref: "eos_designs#/$defs/flow_tracking_link"
                       description: |-
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
+                    monitor_sessions:
+                      type: list
+                      $ref: "eos_designs#/$defs/monitor_sessions"
+                    campus_link_type:
+                      type: list
+                      $ref: "eos_designs#/$defs/campus_link_type"
                     structured_config:
                       type: dict
                       relaxed_validation: true
@@ -858,6 +993,9 @@ $defs:
                       type: str
                       required: true
                       description: Node.
+                    arp_gratuitous_accept:
+                      type: bool
+                      description: Accept gratuitous ARP.
                     description:
                       type: str
                       description: |-
@@ -954,6 +1092,15 @@ $defs:
                       type: str
                       convert_types:
                         - int
+                    static_routes:
+                      type: list
+                      description: Static routes to be configured on the device where this Port-channel interface is configured.
+                      $ref: "eos_designs#/$defs/static_routes"
+                    ipv6_static_routes:
+                      type: list
+                      # Reusing the schema from `static_routes` since IPv4 and IPv6 static routes share the same keys.
+                      $ref: "eos_designs#/$defs/static_routes"
+                      description: IPv6 static routes to be configured on the device where this Port-channel interface is configured.
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
@@ -981,9 +1128,21 @@ $defs:
                             - message-digest
                         simple_auth_key:
                           type: str
-                          description: Password used with simple authentication.
+                          description: |-
+                            Type 7 encrypted key for OSPF simple authentication.
+                            Takes precedence over `cleartext_simple_auth_key`
+                            NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                        cleartext_simple_auth_key:
+                          type: str
+                          description: |-
+                            Cleartext key for OSPF simple authentication.
+                            To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                          min_length: 1
+                          max_length: 8
                         message_digest_keys:
                           type: list
+                          # TODO: AVD 6.0.0: Make id primary_key and key required.
                           items:
                             type: dict
                             keys:
@@ -1002,7 +1161,18 @@ $defs:
                                 default: sha512
                               key:
                                 type: str
-                                description: Key password.
+                                description: |-
+                                  Type 7 encrypted key for OSPF message-digest authentication.
+                                  Takes precedence over `cleartext_key`
+                                  NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                                  (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                              cleartext_key:
+                                type: str
+                                description: |-
+                                  Cleartext key for OSPF message-digest authentication
+                                  To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                min_length: 1
+                                max_length: 16
                     flow_tracking:
                       type: dict
                       $ref: "eos_designs#/$defs/flow_tracking_link"
@@ -1068,6 +1238,7 @@ $defs:
                         EOS CLI rendered directly on the Loopback interface in the final EOS configuration.
               static_routes:
                 type: list
+                $ref: "eos_designs#/$defs/static_routes"
                 description: |
                   List of static routes for v4 and/or v6.
                   This will create static routes inside the tenant VRF.
@@ -1084,9 +1255,6 @@ $defs:
                         warning: true
                         remove_in_version: 6.0.0
                         new_key: prefix
-                    prefix:
-                      type: str
-                      description: Destination prefix.
                     gateway:
                       type: str
                       description: IPv4_address.
@@ -1094,41 +1262,13 @@ $defs:
                         warning: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    next_hop:
-                      type: str
-                      description: Next-hop IPv4 address.
-                    track_bfd:
-                      type: bool
-                      description: Track next-hop using BFD.
-                    distance:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 1
-                      max: 255
-                    tag:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 0
-                      max: 4294967295
-                    name:
-                      type: str
-                      description: description.
-                    metric:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 0
-                      max: 4294967295
-                    interface:
-                      type: str
                     nodes:
                       type: list
                       items:
                         type: str
               ipv6_static_routes:
                 type: list
+                $ref: "eos_designs#/$defs/static_routes"
                 items:
                   type: dict
                   keys:
@@ -1139,44 +1279,12 @@ $defs:
                         warning: true
                         remove_in_version: 6.0.0
                         new_key: prefix
-                    prefix:
-                      type: str
-                      description: Destination prefix.
                     gateway:
                       type: str
                       deprecation:
                         warning: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    next_hop:
-                      type: str
-                      description: Next-hop IPv6 address.
-                    track_bfd:
-                      type: bool
-                      description: Track next-hop using BFD.
-                    distance:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 1
-                      max: 255
-                    tag:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 0
-                      max: 4294967295
-                    name:
-                      type: str
-                      description: description.
-                    metric:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 0
-                      max: 4294967295
-                    interface:
-                      type: str
                     nodes:
                       type: list
                       items:
@@ -1220,7 +1328,14 @@ $defs:
                       type: str
                     password:
                       type: str
-                      description: Encrypted password.
+                      description: |-
+                        Type 7 encrypted password.
+                        Takes precedence over `cleartext_password`.
+                    cleartext_password:
+                      type: str
+                      description: |-
+                        BGP peer group cleartext password.
+                        To protect the password at rest it is strongly recommended to make use of a vault or similar.
                     send_community:
                       type: str
                       description: |
@@ -1301,6 +1416,9 @@ $defs:
                       max: 65535
                     bfd:
                       type: bool
+                    bfd_timers:
+                      type: dict
+                      $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/neighbors/items/keys/bfd_timers"
                     shutdown:
                       type: bool
               bgp:
@@ -1358,6 +1476,16 @@ $defs:
                       description: |
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                         If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
+                    password:
+                      type: str
+                      description: |-
+                        Type 7 encrypted password.
+                        Takes precedence over `cleartext_password`.
+                    cleartext_password:
+                      type: str
+                      description: |-
+                        BGP peer group cleartext password.
+                        To protect the password at rest it is strongly recommended to make use of a vault or similar.
                     address_family_ipv4:
                       type: dict
                       keys:
@@ -1440,6 +1568,20 @@ $defs:
                       items:
                         type: str
                       description: Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+              aggregate_addresses:
+                type: list
+                items:
+                  type: dict
+                  $ref: "eos_cli_config_gen#/keys/router_bgp/keys/aggregate_addresses/items"
+                  keys:
+                    nodes:
+                      type: list
+                      description: |-
+                        Nodes where the aggregate should be configured.
+                        By default the aggregate will be configured all on all devices where the VRF is configured.
+                      items:
+                        type: str
+                        description: Node name or regex pattern matching the full hostname.
               raw_eos_cli:
                 type: str
                 description: EOS CLI rendered directly on the root level of the final EOS configuration.
@@ -1451,12 +1593,13 @@ $defs:
                   hide_keys: true
                 $ref: "eos_cli_config_gen#"
         l2vlans:
+          type: list
+          $ref: "eos_designs#/$defs/l2vlans"
           documentation_options:
             table: network-services-l2vlans-settings
-          type: list
+          description: Define L2 network services organized by VLAN ID.
           primary_key: id
           allow_duplicate_primary_key: true
-          description: Define L2 network services organized by vlan id.
           items:
             type: dict
             keys:
@@ -1467,43 +1610,15 @@ $defs:
                 min: 1
                 max: 4094
                 description: VLAN ID.
-              vni_override:
-                type: int
-                convert_types:
-                  - str
-                min: 1
-                max: 16777215
-                description: |
-                  By default the VNI will be derived from mac_vrf_vni_base.
-                  The vni_override, allows to override this value and statically define it.
-              rt_override:
-                type: str
-                convert_types:
-                  - int
-                description: |
-                  By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
-                  The rt_override allows us to override this value and statically define it.
-                  rt_override will default to vni_override if set.
-
-                  rt_override supports two formats:
-                    - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
-                    - A full RT string with colon separator which will override the full RT.
-              rd_override:
-                type: str
-                convert_types:
-                  - int
-                description: |
-                  By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
-                  The rt_override allows us to override this value and statically define it.
-                  rd_override will default to rt_override or vni_override if set.
-
-                  rd_override supports two formats:
-                    - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
-                    - A full RD string with colon separator which will override the full RD.
               name:
                 type: str
                 required: true
                 description: VLAN name.
+              profile:
+                type: str
+                description: |-
+                  L2VLAN profile name.
+                  The profile must be defined under `l2vlan_profiles`. The profile may refer to another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
               tags:
                 type: list
                 description: |
@@ -1514,96 +1629,6 @@ $defs:
                 items:
                   type: str
                   default: all
-              vxlan:
-                type: bool
-                default: true
-                description: Extend this L2VLAN over VXLAN.
-              spanning_tree_priority:
-                type: int
-                convert_types:
-                  - str
-                description: |-
-                  Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.
-                  The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768).
-              evpn_vlan_bundle:
-                type: str
-                description: |
-                  Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
-                  This setting overrides "evpn_vlan_bundle" set at tenant level.
-                  The common option "evpn_vlan_aware_bundles" is disregarded for this option.
-              trunk_groups:
-                type: list
-                items:
-                  type: str
-                  description: |
-                    Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.
-                    Requires enable_trunk_groups: true.
-              evpn_l2_multi_domain:
-                type: bool
-                description: |
-                  Explicitly extend this VLAN to remote EVPN domains.
-                  Overrides `<network_services_key>[].evpn_l2_multi_domain`.
-              evpn_l2_multicast:
-                documentation_options:
-                  table: network-services-multicast-settings
-                type: dict
-                description: |
-                  Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
-                  When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding those individual settings.
-                  Requires `evpn_multicast` to also be set to `true`.
-                keys:
-                  enabled:
-                    type: bool
-              igmp_snooping_enabled:
-                documentation_options:
-                  table: network-services-multicast-settings
-                type: bool
-                description: Enable or disable IGMP snooping (Enabled by default on EOS).
-              igmp_snooping_querier:
-                documentation_options:
-                  table: network-services-multicast-settings
-                type: dict
-                description: |
-                  Enable igmp snooping querier, by default using IP address of Loopback 0.
-                  When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.
-                keys:
-                  enabled:
-                    type: bool
-                    description: Will be enabled automatically if evpn_l2_multicast is enabled.
-                  source_address:
-                    type: str
-                    description: |
-                      IPv4_address
-                      If not set, IP address of "Loopback0" will be used.
-                  version:
-                    type: int
-                    description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
-                    convert_types:
-                      - str
-                    valid_values:
-                      - 1
-                      - 2
-                      - 3
-                  fast_leave:
-                    type: bool
-                    description: Enable IGMP snooping fast-leave feature.
-              bgp:
-                type: dict
-                keys:
-                  structured_config:
-                    type: dict
-                    relaxed_validation: true
-                    description: |
-                      Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
-                      This configuration will not be applied to vlan aware bundles.
-                    documentation_options:
-                      hide_keys: true
-                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vlans/items"
-                  raw_eos_cli:
-                    type: str
-                    description: |
-                      EOS cli commands rendered on router_bgp.vlans.
-                      This configuration will not be applied to vlan aware bundles.
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings
@@ -1636,6 +1661,34 @@ $defs:
                       description: Subinterface number.
                       convert_types:
                         - str
+                    port_channel:
+                      type: dict
+                      description: Settings to be applied to the Port-Channel subinterface.
+                      keys:
+                        structured_config:
+                          type: dict
+                          relaxed_validation: true
+                          description: |
+                            Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen.
+                          documentation_options:
+                            hide_keys: true
+                          $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
+                        raw_eos_cli:
+                          type: str
+                          description: |
+                            EOS cli commands rendered on the Port-Channel subinterface.
+                    structured_config:
+                      type: dict
+                      relaxed_validation: true
+                      description: |
+                        Custom structured config added on the Ethernet subinterface for eos_cli_config_gen.
+                      documentation_options:
+                        hide_keys: true
+                      $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
+                    raw_eos_cli:
+                      type: str
+                      description: |
+                        EOS cli commands rendered on the Ethernet subinterface.
               endpoints:
                 type: list
                 description: Pseudowire terminating endpoints. Must have exactly two items.

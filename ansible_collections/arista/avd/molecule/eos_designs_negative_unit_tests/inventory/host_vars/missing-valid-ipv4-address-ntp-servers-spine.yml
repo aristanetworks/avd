@@ -2,9 +2,6 @@
 type: spine
 default_mgmt_method: none
 
-cvp_instance_ips:
-  - apiserver
-
 ntp_settings:
   servers:
     - name: pool.ntp.org

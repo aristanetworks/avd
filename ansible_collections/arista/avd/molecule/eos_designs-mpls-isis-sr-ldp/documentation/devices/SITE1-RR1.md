@@ -407,15 +407,16 @@ ASN Notation: asplain
 | 100.70.0.6 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - |
 | 100.70.0.7 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - |
 | 100.70.0.9 | Inherited from peer group RR-OVERLAY-PEERS | default | - | Inherited from peer group RR-OVERLAY-PEERS | Inherited from peer group RR-OVERLAY-PEERS | - | Inherited from peer group RR-OVERLAY-PEERS | - | - | - | - |
+| 100.70.0.12 | Inherited from peer group RR-OVERLAY-PEERS | default | - | Inherited from peer group RR-OVERLAY-PEERS | Inherited from peer group RR-OVERLAY-PEERS | - | Inherited from peer group RR-OVERLAY-PEERS | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| MPLS-OVERLAY-PEERS | True |  - | - | default | - |
-| RR-OVERLAY-PEERS | True |  - | - | default | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - | default | - |
+| RR-OVERLAY-PEERS | True | - | - | - | - | default | - |
 
 ##### EVPN Neighbor Default Encapsulation
 
@@ -427,19 +428,19 @@ ASN Notation: asplain
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-OVERLAY-PEERS | True | - | - | - | - |
-| RR-OVERLAY-PEERS | True | - | - | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - | - | - |
+| RR-OVERLAY-PEERS | True | - | - | - | - | - | - |
 
 #### Router BGP VPN-IPv6 Address Family
 
 ##### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-OVERLAY-PEERS | True | - | - | - | - |
-| RR-OVERLAY-PEERS | True | - | - | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - | - | - |
+| RR-OVERLAY-PEERS | True | - | - | - | - | - | - |
 
 #### Router BGP Device Configuration
 
@@ -476,6 +477,8 @@ router bgp 65000
    neighbor 100.70.0.7 description SITE2-LER1_Loopback0
    neighbor 100.70.0.9 peer group RR-OVERLAY-PEERS
    neighbor 100.70.0.9 description SITE2-RR1_Loopback0
+   neighbor 100.70.0.12 peer group RR-OVERLAY-PEERS
+   neighbor 100.70.0.12 description SITE3-RR1_Loopback0
    !
    address-family evpn
       neighbor default encapsulation mpls

@@ -912,6 +912,280 @@ keys:
           key:
             description: Hashed Password.
             type: str
+  cfm:
+    description: 'Configure connectivity fault management (CFM).
+
+      CFM is a network protocol for monitoring and troubleshooting Ethernet networks.'
+    type: dict
+    keys:
+      continuity_check_loc_state_action_disable_interface_routing:
+        type: bool
+        description: 'Disable routing on interfaces where a loss of connectivity (LOC)
+          defect is detected.
+
+          This prevents traffic from being routed to a faulty link.'
+      domains:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: CFM domain name.
+            level:
+              type: int
+              convert_types:
+              - str
+              required: true
+              min: 0
+              max: 7
+              description: Maintenance domain level.
+            associations:
+              type: list
+              primary_key: id
+              description: List of maintenance associations.
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
+                    description: Maintenance association ID.
+                  direction:
+                    type: str
+                    valid_values:
+                    - up
+                    - down
+                    description: Local maintenance endpoint direction.
+                  end_points:
+                    type: list
+                    primary_key: id
+                    description: Configure the maintenance endpoint(MEP).
+                    items:
+                      type: dict
+                      keys:
+                        id:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 8191
+                          description: Local maintenance endpoint ID.
+                        remote_end_point:
+                          type: str
+                          description: 'Remote maintenance endpoint ID(s) or range(s)
+                            of remote maintenance endpoint ID(s).
+
+                            The range is from 1 to 8191.'
+                          convert_types:
+                          - int
+                        interface:
+                          type: str
+                          description: 'Specifies the interface on which to configure
+                            the local maintenance endpoint.
+
+                            Supported types include Ethernet sub-interfaces, InternalRecirc,
+                            and Port-Channel link aggregation groups (LAGs).'
+                  profile:
+                    type: str
+                    description: Apply connectivity fault management profile.
+                  remote_end_points:
+                    type: list
+                    primary_key: id
+                    description: Configure the remote maintenance endpoint(RMEP).
+                    items:
+                      type: dict
+                      keys:
+                        id:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 8191
+                          description: Configure remote maintenance endpoint ID.
+                        mac_address:
+                          type: str
+                          description: MAC address of the RMEP.
+                  vlan:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Set VLAN in the maintenance association.
+                    min: 1
+                    max: 4094
+            intermediate_point:
+              type: bool
+              description: Configure the device as a maintenance intermediate point.
+      measurement_loss:
+        type: dict
+        description: Configure Ethernet OAM loss measurement functions.
+        keys:
+          inband:
+            type: bool
+            description: Enable hardware-assisted support for OAM loss measurement.
+          synthetic:
+            type: bool
+            description: Enable hardware-assisted support for OAM synthetic loss measurement.
+      profiles:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: CFM profile name.
+            alarm_indication:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable sending of alarm indication signal (AIS) packets.
+                client_domain_level:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 7
+                  description: Client maintenance domain level for which to send AIS
+                    packets.
+                tx_interval:
+                  type: str
+                  description: Transmission interval for AIS packets.
+                  valid_values:
+                  - 1 seconds
+                  - 1 minutes
+            continuity_check:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable the continuity check protocol to monitor connectivity.
+                qos_cos:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Set the class of service (CoS) value for CFM frames.
+                  min: 0
+                  max: 7
+                tx_interval:
+                  type: str
+                  description: Set the transmission interval for continuity check
+                    messages (CCMs).
+                  valid_values:
+                  - 3.33 milliseconds
+                  - 10 milliseconds
+                  - 100 milliseconds
+                  - 1 seconds
+                  - 10 seconds
+                  - 1 minutes
+                  - 10 minutes
+                alarm_defects:
+                  type: list
+                  min_length: 1
+                  description: 'Defines alarm indication signal protocol parameters.
+                    Supported options:
+
+                    - rdi-ccm: Raise alarms on continuity check messages (CCMs) with
+                    the remote defect indication (RDI) bit set.
+
+                    - loc-state: Raise alarms on loss of connectivity (LOC).
+
+                    - error-ccm: Raise alarms on invalid continuity check messages
+                    (CCMs).
+
+                    - cross-connection: Raise alarms on cross-connection defects.'
+                  items:
+                    type: str
+                    valid_values:
+                    - rdi-ccm
+                    - loc-state
+                    - error-ccm
+                    - cross-connection
+            measurement:
+              type: dict
+              keys:
+                delay:
+                  type: dict
+                  keys:
+                    single_ended:
+                      type: bool
+                      description: Enable single-ended delay measurement.
+                    qos_cos:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Set the class of service (CoS) value for CFM frames.
+                      min: 0
+                      max: 7
+                    tx_interval:
+                      type: str
+                      convert_types:
+                      - int
+                      - float
+                      description: 'Interval in milliseconds between successive measurement
+                        frames.
+
+                        The range is from 3.33 to 600000.'
+                loss:
+                  type: dict
+                  keys:
+                    single_ended:
+                      type: bool
+                      description: Enable single-ended loss measurement.
+                    qos_cos:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 7
+                      description: Set the class of service (CoS) value for CFM frames.
+                    tx_interval:
+                      type: str
+                      convert_types:
+                      - int
+                      - float
+                      description: 'Interval in milliseconds between successive measurement
+                        frames.
+
+                        The range is from 3.33 to 600000.'
+                    synthetic:
+                      type: dict
+                      keys:
+                        single_ended:
+                          type: bool
+                          description: Enable single-ended synthetic loss measurement.
+                        qos_cos:
+                          type: str
+                          description: Set the class of service (CoS) value or a range
+                            of values (0-7) for synthetic loss measurement.
+                          convert_types:
+                          - int
+                        tx_interval:
+                          type: dict
+                          keys:
+                            interval:
+                              type: str
+                              required: true
+                              convert_types:
+                              - int
+                              - float
+                              description: 'Interval in milliseconds between successive
+                                measurement frames.
+
+                                The range is from 3.33 to 600000.'
+                            period_frames:
+                              type: int
+                              convert_types:
+                              - str
+                              description: Synthetic loss measurement transmission
+                                frames.
+                              min: 1
+                              max: 65535
   class_maps:
     type: dict
     display_name: QOS Class-maps
@@ -2283,6 +2557,9 @@ keys:
               max: 4094
               convert_types:
               - str
+        arp_gratuitous_accept:
+          type: bool
+          description: Accept gratuitous ARP.
         l2_protocol:
           type: dict
           keys:
@@ -2896,6 +3173,11 @@ keys:
                     Detection is enabled for PIM.
                 bidirectional:
                   type: bool
+                neighbor_filter:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Standard access list name.
                 hello:
                   type: dict
                   keys:
@@ -2935,7 +3217,27 @@ keys:
               - str
               min: 64
               max: 65475
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: ipv4
+            ipv4:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
             ipv6_segment_size:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: ipv6
+            ipv6:
               type: int
               convert_types:
               - str
@@ -3315,6 +3617,10 @@ keys:
                   type: str
                   valid_values:
                   - authenticator
+                  - supplicant
+                supplicant_profile:
+                  type: str
+                  description: Supplicant profile name.
             authentication_failure:
               type: dict
               keys:
@@ -3636,6 +3942,62 @@ keys:
                 override:
                   type: str
                   description: Transceiver type.
+            application_override:
+              type: str
+              description: 'Set CMIS transceiver application.
+
+                ''100gbase-srbd'' should not be used in conjunction with `application_override_lanes`.'
+              valid_values:
+              - '0'
+              - '1'
+              - '2'
+              - '3'
+              - '4'
+              - '5'
+              - '6'
+              - '7'
+              - '8'
+              - '9'
+              - '10'
+              - '11'
+              - '12'
+              - '13'
+              - '14'
+              - '15'
+              - 100gbase-srbd
+              convert_types:
+              - int
+            application_override_lanes:
+              type: list
+              description: Set CMIS transceiver applications with lanes. The ranges
+                of `lanes` should not overlap.
+              items:
+                type: dict
+                keys:
+                  override:
+                    min: 0
+                    max: 15
+                    type: int
+                    required: true
+                    convert_types:
+                    - str
+                  first_lane:
+                    type: int
+                    description: Set the start value of host lanes for which overrides
+                      should be applied.
+                    required: true
+                    min: 1
+                    max: 8
+                    convert_types:
+                    - str
+                  last_lane:
+                    type: int
+                    description: Set the last value of host lanes for which overrides
+                      should be applied.
+                    min: 1
+                    max: 8
+                    convert_types:
+                    - str
         ip_proxy_arp:
           type: bool
         traffic_policy:
@@ -3824,6 +4186,10 @@ keys:
                 - str
                 required: true
                 description: TX-Queue ID.
+              scheduler_profile_responsive:
+                type: bool
+                description: Set scheduler profile to optimize latency at the expense
+                  of burstiness.
               random_detect:
                 type: dict
                 keys:
@@ -3968,6 +4334,11 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv4 address.
+                  secondary_addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
                     convert_types:
@@ -3980,8 +4351,41 @@ keys:
                 keys:
                   address:
                     type: str
-                    required: true
                     description: Virtual IPv6 address.
+                    deprecation:
+                      warning: true
+                      remove_in_version: 6.0.0
+                      new_key: addresses
+                  addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Virtual IPv6 addresses.
+              peer_authentication:
+                type: dict
+                keys:
+                  mode:
+                    type: str
+                    description: Authentication mode.
+                    valid_values:
+                    - text
+                    - ietf-md5
+                    required: true
+                  key:
+                    type: str
+                    required: true
+                    description: Authentication key.
+                    convert_types:
+                    - int
+                  key_type:
+                    type: str
+                    convert_types:
+                    - int
+                    description: Authentication key type.
+                    valid_values:
+                    - '0'
+                    - '7'
+                    - 8a
         validate_state:
           type: bool
           description: Set to false to disable interface state and LLDP topology validation
@@ -4006,6 +4410,9 @@ keys:
               - dot1q-tunnel
               - trunk
               - trunk phone
+              - tap
+              - tool
+              - tap-tool
               description: 'Warning: This should not be combined with `ethernet_interfaces[].mode`.'
             access_vlan:
               type: int
@@ -4603,9 +5010,22 @@ keys:
                 type: str
                 convert_types:
                 - int
+            srlgs:
+              description: List of SRLGs.
+              type: list
+              items:
+                type: str
+                description: SRLG name or number.
+                convert_types:
+                - int
             srlg:
               description: SRLG name or number.
               type: str
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: srlgs
               convert_types:
               - int
             metric:
@@ -4940,6 +5360,81 @@ keys:
               format_ipfix_standard_timestamps_counters:
                 type: bool
                 description: Enable software export of IPFIX data records.
+      mirror_on_drop:
+        type: dict
+        keys:
+          encapsulation:
+            type: dict
+            keys:
+              ipv4_ipv6:
+                description: 'Set IPv4 and IPv6 encapsulations.
+
+                  Both IPv4 and IPv6 encapsulations must be set together.'
+                type: bool
+              mpls:
+                type: bool
+          sample_limit:
+            description: Limit the number of packets sampled.
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967295
+          trackers:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Tracker Name.
+                record_export:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/record_export
+                exporters:
+                  type: list
+                  primary_key: name
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        description: Exporter Name.
+                      collectors:
+                        type: list
+                        primary_key: host
+                        $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/collectors
+                        items:
+                          type: dict
+                          keys:
+                            host:
+                              type: str
+                              description: 'Flow collector name.
+
+                                The collector name can be an IPv4 address, IPv6 address,
+                                fully qualified domain name or `"sflow"`.'
+                      format:
+                        type: str
+                        description: Configure flow export format. Valid values are
+                          platform dependent.
+                        valid_values:
+                        - sflow
+                        - drop-report
+                      local_interface:
+                        type: str
+                        $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/local_interface
+                      template_interval:
+                        type: int
+                        $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/template_interval
+                      dscp:
+                        type: int
+                        min: 0
+                        max: 63
+                        convert_types:
+                        - str
+          shutdown:
+            type: bool
   flow_trackings:
     documentation_options:
       table: flow-tracking
@@ -5177,6 +5672,7 @@ keys:
               - tapagg
               - traffic-class
               - traffic-policy
+              - traffic-policy vlan-interface
               - vlan
               - vlan-interface
               - vni decap
@@ -5198,6 +5694,9 @@ keys:
                 This validation IS NOT made by the schemas.
 
                 '
+            enabled:
+              type: bool
+              default: true
             address_type:
               type: str
               valid_values:
@@ -5668,6 +6167,38 @@ keys:
                     valid_values:
                     - internet
                     - urpf-internet
+          load_balance_distribution:
+            type: dict
+            keys:
+              dynamic:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: Enable dynamic load balancing.
+                    required: true
+                  flow_set_size:
+                    description: 'Set flow set size. Requires `enabled` key to be
+                      set to `true`.
+
+                      1: Allow up to 128 ECMP groups of 256 entries each.
+
+                      2: Allow up to 64 ECMP groups of 512 entries each.
+
+                      3: Allow up to 32 ECMP groups of 1024 entries each.
+
+                      4: Allow up to 16 ECMP groups of 2048 entries each.
+
+                      5: Allow up to 8 ECMP groups of 4096 entries each.
+
+                      6: Allow up to 4 ECMP groups of 8192 entries each.
+
+                      7: Allow up to 2 ECMP groups of 16384 entries each.'
+                    type: int
+                    min: 1
+                    max: 7
+                    convert_types:
+                    - str
   ip_http_client_source_interfaces:
     type: list
     items:
@@ -6070,6 +6601,9 @@ keys:
                   min: 0
                   max: 4294967295
                   description: In seconds.
+  ip_ospf_router_id_output_format_hostnames:
+    type: bool
+    description: Display DNS-resolved router names for OSPF router IDs.
   ip_radius_source_interfaces:
     type: list
     items:
@@ -6140,6 +6674,7 @@ keys:
               - 15
               - 16
               - 17
+              - 19
               - 20
               - 21
               - 24
@@ -6221,6 +6756,7 @@ keys:
               - 15
               - 16
               - 17
+              - 19
               - 20
               - 21
               - 24
@@ -6374,6 +6910,9 @@ keys:
     - str
     min: 0
     max: 86400
+  ip_virtual_router_mac_address_mlag_peer:
+    type: bool
+    description: Enable MLAG peer gateway.
   ipv6_access_lists:
     type: list
     primary_key: name
@@ -6750,9 +7289,10 @@ keys:
   ipv6_unicast_routing:
     type: bool
   is_deployed:
-    description: Key only used for documentation or validation purposes.
+    description: 'Key only used for documentation or validation purposes.
+
+      This key is deprecated and new key is metadata.is_deployed.'
     type: bool
-    default: true
   kernel:
     type: dict
     keys:
@@ -6883,6 +7423,202 @@ keys:
               type: bool
       run:
         type: bool
+  load_balance:
+    type: dict
+    description: Configuration for load balancing behavior across port-channels and
+      ECMP paths.
+    keys:
+      policies:
+        type: dict
+        description: Collection of load balancing policy definitions.
+        keys:
+          sand_profiles:
+            type: list
+            description: List of load balancing profiles for SAND-based platforms,
+              used for port-channel and ECMP hashing.
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Unique name of the load-balancing profile.
+                fields:
+                  type: dict
+                  description: Configure packet fields used as input to the hash function
+                    for port-channel and ECMP load balancing.
+                  keys:
+                    udp:
+                      type: dict
+                      description: 'UDP-specific fields used in the load balancing
+                        hash.
+
+                        Requires EOS version 4.33.1F or higher.'
+                      keys:
+                        dst_port:
+                          type: int
+                          required: true
+                          min: 0
+                          max: 65535
+                          description: Use the UDP destination port as a hash input.
+                          convert_types:
+                          - str
+                        payload_bytes:
+                          type: str
+                          description: 'Specifies the UDP payload bytes to use in
+                            hash calculation.
+
+                            Accepts single bytes (e.g., "10"), comma-separated bytes
+                            (e.g., "0,1,5"),
+
+                            ranges (e.g., "0-15"), or combinations (e.g., "0-10,12,15,20-25").
+
+                            Valid values are between 0 and 62.'
+                          convert_types:
+                          - int
+                        match:
+                          type: dict
+                          description: Configuration to match specific bits and define
+                            custom payload-based hashing.
+                          keys:
+                            payload_bits:
+                              type: str
+                              required: true
+                              description: 'Specifies the bit positions within the
+                                UDP payload to match for hashing.
+
+                                Accepts a single bit (e.g., "12"), a comma-separated
+                                list (e.g., "0,3,8"),
+
+                                a range (e.g., "0-15"), or combinations (e.g., "0-7,9,12-15").
+
+                                Valid values must be in the range 0 to 503.
+
+                                Matching is limited to a maximum of 16 bits total.'
+                              convert_types:
+                              - int
+                            pattern:
+                              type: str
+                              required: true
+                              description: 'Bit pattern to match in the UDP payload.
+
+                                The value should be given as an hexadecimal format
+                                `0x...`.
+
+                                The valid range is from 0 to (2^N - 1), where N is
+                                the number of bits selected in `payload_bits`.'
+                            hash_payload_bytes:
+                              type: str
+                              required: true
+                              description: 'Specifies the UDP payload byte positions
+                                to include in the hash after pattern match.
+
+                                Accepts a single byte (e.g., "5"), a comma-separated
+                                list (e.g., "0,3,7"),
+
+                                a range (e.g., "0-15"), or a combination (e.g., "0-5,8,12-14").
+
+                                All byte positions must be within the range 0 to 62.'
+                              convert_types:
+                              - int
+      cluster:
+        type: dict
+        keys:
+          destination_grouping:
+            type: str
+            valid_values:
+            - bgp field-set
+            - prefix length
+            - vtep
+            description: Perform destination grouping using given setting.
+          prefix_length:
+            type: int
+            convert_types:
+            - str
+            min: 0
+            max: 129
+            description: 'Network address prefix length for destination grouping using
+              prefix length.
+
+              This setting must be defined when `destination_grouping` is set to `prefix
+              length`.'
+          forwarding_type:
+            type: str
+            valid_values:
+            - bridged encapsulation vxlan ipv4
+            - routed ipv4
+          load_balance_method_flow_round_robin:
+            type: bool
+            description: Enable round-robin load balancing for flow-based traffic.
+          flow:
+            type: dict
+            keys:
+              monitor:
+                type: bool
+                description: Monitor the flows without affecting forwarding.
+              source_learning_aging_timeout:
+                description: Flow aging timeout in seconds for flow discovery by learning.
+                type: int
+                convert_types:
+                - str
+                min: 30
+                max: 2147483647
+          port_groups:
+            description: Host ports settings.
+            type: list
+            primary_key: group
+            items:
+              type: dict
+              keys:
+                group:
+                  type: str
+                  description: Port group name.
+                balance_factor:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 4294967295
+                interface:
+                  type: str
+                  description: "Ethernet interface/subinterface name. It could be
+                    a `,` separated list or range.\neg. Ethernet2,\n    Ethernet2-5,\n
+                    \   Ethernet2.2,3.1,\n    Ethernet3.1-2"
+                flow:
+                  type: dict
+                  keys:
+                    limit:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Maximum number of flows per port.
+                      min: 0
+                      max: 4294967295
+                    warning:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 4294967295
+                      description: Warning threshold of flows per port group.
+                    exhaustion_action:
+                      description: Forwarding action when flows reach limits.
+                      type: dict
+                      keys:
+                        dscp:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 0
+                          max: 63
+                          description: Packet DSCP value.
+                        traffic_class:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 0
+                          max: 11
+                          description: Packet traffic-class value.
   load_interval:
     type: dict
     keys:
@@ -7364,6 +8100,45 @@ keys:
                 max: 10
                 convert_types:
                 - str
+      static_entries:
+        type: list
+        description: Add static MAC address entries.
+        items:
+          type: dict
+          keys:
+            mac_address:
+              type: str
+              required: true
+              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
+              description: 'The static MAC address to configure.
+
+                The combination of ''mac_address'' and ''vlan'' must be unique across
+                all static entries.'
+            vlan:
+              type: int
+              required: true
+              convert_types:
+              - str
+              description: The VLAN ID associated with the MAC address.
+            drop:
+              type: bool
+              description: 'If true, traffic destined for this MAC address on the
+                specified VLAN will be dropped.
+
+                This option is mutually exclusive with ''interface'' and takes precedence
+                if both are defined.'
+            interface:
+              type: str
+              description: 'The allowed hardware Ethernet interface, LAG interface,
+                or VXLAN tunnel interface associated with this MAC address and VLAN.
+
+                This option is mutually exclusive with ''drop''.'
+            eligibility_forwarding:
+              type: bool
+              description: 'Enable the ability to forward traffic on the specified
+                interface and VLAN for this MAC address.
+
+                This option is only applicable when ''interface'' is defined.'
   mac_security:
     type: dict
     display_name: MAC Security (MACsec)
@@ -7793,6 +8568,10 @@ keys:
     keys:
       providers:
         type: list
+        deprecation:
+          warning: true
+          new_key: provider
+          remove_in_version: 6.0.0
         items:
           type: dict
           keys:
@@ -7811,6 +8590,44 @@ keys:
                   disabled:
                     type: bool
                     default: false
+      provider:
+        type: dict
+        keys:
+          sysdb:
+            type: dict
+            description: Sysdb provider configuration.
+            keys:
+              disabled_paths:
+                type: list
+                description: List of disabled Sysdb paths for Octa.
+                items:
+                  type: str
+          smash:
+            type: dict
+            description: Smash provider configuration.
+            keys:
+              paths:
+                type: list
+                description: List of Smash paths.
+                primary_key: path
+                items:
+                  type: dict
+                  keys:
+                    path:
+                      type: str
+                    disabled:
+                      type: bool
+                      description: Disabled Smash path for Octa.
+          macsec:
+            type: dict
+            description: MACsec provider configuration.
+            keys:
+              interfaces:
+                type: bool
+                description: Enable MACsec for interfaces.
+              mka:
+                type: bool
+                description: Enable MKA for MACsec.
   management_console:
     type: dict
     keys:
@@ -7909,6 +8726,75 @@ keys:
               convert_types:
               - str
               description: ZTP vlan number.
+        redundancy:
+          type: dict
+          keys:
+            fallback_delay:
+              type: str
+              description: 'The duration to wait before falling back to the higher-priority
+                interface.
+
+                Accepts a value between 0 and 3600 seconds, or the string `infinity`
+                to disable fallback.'
+              convert_types:
+              - int
+            monitor:
+              type: dict
+              keys:
+                link_state:
+                  type: bool
+                  description: 'Link state of interface.
+
+                    `neighbor` and `link_state` are mutually exclusive and `link_state`
+                    takes precedence.'
+                neighbor:
+                  type: dict
+                  description: 'To configure an IPv6 neighbor as monitor, `fallback_delay`
+                    must be set as infinity.
+
+                    `neighbor` and `link_state` are mutually exclusive and `link_state`
+                    takes precedence.'
+                  keys:
+                    ipv6_address:
+                      required: true
+                      type: str
+                    interval:
+                      type: int
+                      description: Interval between neighbor probes in milliseconds.
+                      min: 1
+                      max: 300000
+                      convert_types:
+                      - str
+                    multiplier:
+                      type: int
+                      description: Number of missed neighbor replies after which it
+                        is timed out.
+                      min: 1
+                      max: 100
+                      convert_types:
+                      - str
+            supervisor_1:
+              type: dict
+              description: Configuration for supervisor 1, including its primary and
+                backup management interfaces.
+              keys:
+                primary_management_interface:
+                  type: str
+                  description: Primary management interface name like 'Management1/1'.
+                  required: true
+                backup_management_interfaces:
+                  type: list
+                  description: Backup management interfaces.
+                  required: true
+                  min_length: 1
+                  items:
+                    type: str
+                    description: Management interface name like 'Management2/1'.
+            supervisor_2:
+              type: dict
+              description: Configuration for supervisor 2, including its primary and
+                backup management interfaces.
+              $ref: eos_cli_config_gen#/keys/management_interfaces/items/keys/redundancy/keys/supervisor_1
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the management interface
@@ -7932,6 +8818,15 @@ keys:
           hardware_exclusive:
             type: bool
             description: Only use entropy from the hardware source.
+      signature_verification:
+        type: dict
+        description: Verify the SWIX signatures.
+        keys:
+          enabled:
+            type: bool
+            required: true
+          ssl_profile:
+            type: str
       password:
         type: dict
         keys:
@@ -8229,6 +9124,10 @@ keys:
             description: Allowed SSH authentication methods.
       access_groups:
         type: list
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: ip_access_group_in or vrfs.ip_access_group_in
         items:
           type: dict
           keys:
@@ -8242,6 +9141,10 @@ keys:
               - int
       ipv6_access_groups:
         type: list
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: ipv6_access_group_in or vrfs.ipv6_access_group_in
         items:
           type: dict
           keys:
@@ -8253,6 +9156,16 @@ keys:
               description: VRF Name.
               convert_types:
               - int
+      ip_access_group_in:
+        type: str
+        description: Standard ACL Name.
+        convert_types:
+        - int
+      ipv6_access_group_in:
+        type: str
+        description: Standard IPv6 ACL Name.
+        convert_types:
+        - int
       idle_timeout:
         type: int
         convert_types:
@@ -8293,7 +9206,7 @@ keys:
             type: bool
             description: Enforce strict host key checking.
       enable:
-        description: Enable SSH daemon.
+        description: Enable SSH for VRF default.
         type: bool
       connection:
         type: dict
@@ -8326,6 +9239,22 @@ keys:
             enable:
               description: Enable SSH in VRF.
               type: bool
+            ip_access_group_in:
+              type: str
+              description: 'Standard ACL Name.
+
+                This should not be set for VRF ''default''. Use `management_ssh.ip_access_group_in`
+                instead.'
+              convert_types:
+              - int
+            ipv6_access_group_in:
+              type: str
+              description: 'Standard IPv6 ACL Name.
+
+                This should not be set for VRF ''default''. Use `management_ssh.ipv6_access_group_in`
+                instead.'
+              convert_types:
+              - int
       log_level:
         type: str
         description: SSH daemon log level.
@@ -8461,6 +9390,9 @@ keys:
 
       It will not affect the generated EOS configuration.'
     keys:
+      is_deployed:
+        description: Key only used for documentation or validation purposes.
+        type: bool
       platform:
         type: str
       system_mac_address:
@@ -8803,6 +9735,47 @@ keys:
                           type: str
                         category:
                           type: str
+      digital_twin:
+        type: dict
+        description: Metadata used to generate Digital Twin topology.
+        keys:
+          environment:
+            type: str
+            description: Targeted Digital Twin environment.
+            valid_values:
+            - act
+          node_type:
+            type: str
+            description: 'Digital Twin''s internal device type used for deploying
+              a replica of the fabric device.
+
+              Possible values depend on the target Digital Twin environment.'
+          ip_addr:
+            type: str
+            description: Management IPv4_address/Mask assigned to a replica of the
+              fabric device within the Digital Twin environment.
+          version:
+            type: str
+            description: OS version used for deploying a replica of the fabric device
+              within the Digital Twin environment.
+          username:
+            type: str
+            description: Local username assigned to a replica of the fabric device
+              within the Digital Twin environment.
+          password:
+            type: str
+            description: Local password assigned to a replica of the fabric device
+              within the Digital Twin environment.
+          internet_access:
+            type: bool
+            description: 'Specifies if the ACT Digital Twin device is deployed with
+              direct access to the Internet.
+
+              This option applies only to the `cloudeos` and `veos` node types and
+              will be ignored for all other ACT node types.
+
+              ACT does not provide direct Internet access to `cloudeos` or `veos`
+              devices by default.'
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -10090,6 +11063,22 @@ keys:
                 description: 'The queue profile to be applied to the platform.
 
                   '
+              headroom_pool:
+                type: dict
+                keys:
+                  unit:
+                    type: str
+                    valid_values:
+                    - bytes
+                    - cells
+                    description: 'Unit to be used for the `headroom_pool` value.
+
+                      If not specified, default is bytes.'
+                  limit:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Max limit on headroom pool size.
               queue_profiles:
                 type: list
                 primary_key: name
@@ -10098,9 +11087,117 @@ keys:
                   keys:
                     name:
                       type: str
+                    ingress:
+                      type: dict
+                      keys:
+                        priority_groups:
+                          type: list
+                          primary_key: id
+                          items:
+                            type: dict
+                            keys:
+                              id:
+                                type: int
+                                convert_types:
+                                - str
+                                description: Priority-group group number.
+                                min: 0
+                                max: 7
+                              threshold:
+                                type: str
+                                convert_types:
+                                - int
+                                valid_values:
+                                - '1'
+                                - 1/128
+                                - 1/16
+                                - 1/2
+                                - 1/32
+                                - 1/4
+                                - 1/64
+                                - 1/8
+                                - '2'
+                                - '4'
+                                - '8'
+                              reserved:
+                                type: dict
+                                keys:
+                                  unit:
+                                    type: str
+                                    valid_values:
+                                    - bytes
+                                    - cells
+                                    description: 'Unit to be used for the `priority_groups`
+                                      `reserved` value.
+
+                                      If not specified, default is bytes.'
+                                  memory:
+                                    type: int
+                                    convert_types:
+                                    - str
+                                    description: Specify the amount of memory that
+                                      should be reserved.
+                        threshold:
+                          type: str
+                          convert_types:
+                          - int
+                          description: Specify the dynamic shared memory threshold.
+                          valid_values:
+                          - '1'
+                          - 1/128
+                          - 1/16
+                          - 1/2
+                          - 1/32
+                          - 1/4
+                          - 1/64
+                          - 1/8
+                          - '2'
+                          - '4'
+                          - '8'
+                        reserved:
+                          type: dict
+                          keys:
+                            unit:
+                              type: str
+                              valid_values:
+                              - bytes
+                              - cells
+                              description: 'Unit to be used for the `reserved` value.
+
+                                If not specified, default is bytes.'
+                            memory:
+                              type: int
+                              convert_types:
+                              - str
+                              description: Specify the amount of memory that should
+                                be reserved.
+                        headroom:
+                          type: dict
+                          keys:
+                            unit:
+                              type: str
+                              valid_values:
+                              - bytes
+                              - cells
+                              description: 'Unit to be used for the headroom value.
+
+                                If not specified, default is bytes.'
+                            memory:
+                              type: int
+                              convert_types:
+                              - str
+                              description: Specify the amount of memory that should
+                                be reserved.
+                        resume:
+                          type: int
+                          convert_types:
+                          - str
+                          description: Amount of memory that should be reserved (in
+                            bytes)
                     multicast_queues:
                       type: list
                       primary_key: id
+                      description: Egress multicast queues.
                       items:
                         type: dict
                         keys:
@@ -10137,6 +11234,18 @@ keys:
                             description: 'Dynamic Shared Memory threshold.
 
                               '
+                            valid_values:
+                            - '1'
+                            - 1/128
+                            - 1/16
+                            - 1/2
+                            - 1/32
+                            - 1/4
+                            - 1/64
+                            - 1/8
+                            - '2'
+                            - '4'
+                            - '8'
                           drop:
                             type: dict
                             keys:
@@ -10160,6 +11269,7 @@ keys:
                     unicast_queues:
                       type: list
                       primary_key: id
+                      description: Egress unicast queues.
                       items:
                         type: dict
                         keys:
@@ -10196,6 +11306,18 @@ keys:
                             description: 'Dynamic Shared Memory threshold.
 
                               '
+                            valid_values:
+                            - '1'
+                            - 1/128
+                            - 1/16
+                            - 1/2
+                            - 1/32
+                            - 1/4
+                            - 1/64
+                            - 1/8
+                            - '2'
+                            - '4'
+                            - '8'
                           drop:
                             type: dict
                             keys:
@@ -10335,6 +11457,24 @@ keys:
                 description: 'RSS interface profile name to apply for the platform.
 
                   Needs system reload or Sfe agent restart for change to take effect.'
+      fap:
+        type: dict
+        keys:
+          buffering_egress:
+            type: dict
+            keys:
+              profile:
+                description: Preferred traffic profile for egress fap buffering.
+                type: str
+                valid_values:
+                - unicast
+                - balanced
+          voq:
+            type: dict
+            keys:
+              credit_rates_unified:
+                type: bool
+                description: Set Unified credit rates for all port speeds.
   poe:
     type: dict
     keys:
@@ -10551,6 +11691,53 @@ keys:
                   valid_values:
                   - pps
                   - kbps
+  port_channel:
+    type: dict
+    keys:
+      load_balance_trident_udf:
+        description: Trident chip UDF fields load balancing.
+        type: list
+        items:
+          type: dict
+          keys:
+            eth_type:
+              description: Ethernet type in the port channel hash.
+              type: str
+              valid_values:
+              - ipv4
+              - ipv6
+              required: true
+            ip_protocol:
+              type: str
+              convert_types:
+              - int
+              description: 'IP protocol name like - gre, icmp, tcp, udp, mpls-over-gre,
+                sctp.
+
+                IP protocol number within the range <0-255>.'
+            header:
+              type: str
+              valid_values:
+              - inner_l3
+              - inner_l4
+              - outer_l2
+              - outer_l3
+              - outer_l4
+              required: true
+            offset:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 64
+              required: true
+              description: Offset starting from selected header in the packet.
+            mask:
+              type: str
+              description: Mask of the offset. A hex value within the range 0x01-0xFF.
+      load_balance_sand_profile:
+        description: Name of the load-balance profile for sand platform.
+        type: str
   port_channel_interfaces:
     type: list
     primary_key: name
@@ -10618,6 +11805,9 @@ keys:
             removed: false
             remove_in_version: 6.0.0
             new_key: switchport.access_vlan or switchport.trunk.allowed_vlan
+        arp_gratuitous_accept:
+          type: bool
+          description: Accept gratuitous ARP.
         snmp_trap_link_change:
           type: bool
         type:
@@ -11501,6 +12691,11 @@ keys:
                     Detection is enabled for PIM.
                 bidirectional:
                   type: bool
+                neighbor_filter:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Standard access list name.
                 hello:
                   type: dict
                   keys:
@@ -11654,6 +12849,9 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        vrrp_ids:
+          type: list
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids
         switchport:
           type: dict
           keys:
@@ -12016,9 +13214,22 @@ keys:
                 type: str
                 convert_types:
                 - int
+            srlgs:
+              description: List of SRLGs.
+              type: list
+              items:
+                type: str
+                description: SRLG name or number.
+                convert_types:
+                - int
             srlg:
               description: SRLG name or number.
               type: str
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: srlgs
               convert_types:
               - int
             metric:
@@ -12276,6 +13487,20 @@ keys:
         max: 255
         convert_types:
         - str
+      hold_ptp_time:
+        type: int
+        min: 0
+        max: 172000
+        description: 'The length of time that PTP will remain in hold-down on the
+          internal oscillator if the connection to the GM is lost.
+
+          If a new GM is not elected before the expiry of the hold-down time, the
+          clock will revert to free-running.
+
+          Some platforms support larger maximum values, however 172000 seconds was
+          the max for 7150 series, and was widely used.'
+        convert_types:
+        - str
       message_type:
         type: dict
         keys:
@@ -12382,6 +13607,26 @@ keys:
                     max: 255
                     convert_types:
                     - str
+      free_running:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: 'Enables PTP configuration in free-running mode.
+
+              When set to true, the boundary clock can start serving PTP downstream
+              even before it locks to an upstream master.
+
+              When set to false, the clock will not start serving PTP downstream before
+              it has successfully locked to an upstream master.'
+          source_clock_hardware:
+            type: bool
+            description: When enabled, the hardware clock is used as the source for
+              PTP time during free-running mode.
+      forward_v1:
+        type: bool
+        description: Forward dataplane PTP V1 packets.
   qos:
     type: dict
     keys:
@@ -12438,6 +13683,31 @@ keys:
                   chip_based:
                     type: bool
                     description: Allow non-ect chip-based.
+      tx_queue:
+        type: dict
+        description: Global transmit queue settings.
+        keys:
+          shape_rate_percent_adaptive:
+            type: bool
+            description: Use the parent available bandwidth for transmit queue percentage-based
+              allocation.
+          queues:
+            type: list
+            primary_key: id
+            items:
+              type: dict
+              keys:
+                id:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 7
+                  description: Queue ID.
+                scheduler_profile_responsive:
+                  type: bool
+                  description: Set scheduler profile to optimize latency at the expense
+                    of burstiness.
   qos_profiles:
     type: list
     primary_key: name
@@ -12982,6 +14252,57 @@ keys:
       tx_latency:
         type: bool
         description: Enable tx-latency mode.
+      mirror:
+        description: Enable frame mirroring during congestion.
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          destination:
+            description: Mirror destination.
+            type: dict
+            keys:
+              cpu:
+                type: bool
+                description: CPU ports.
+              ethernet_interfaces:
+                type: list
+                items:
+                  type: str
+                  description: Ethernet interface name.
+              tunnel_mode_gre:
+                type: dict
+                keys:
+                  source:
+                    type: str
+                    required: true
+                    description: Source IP address of GRE tunnel.
+                  destination:
+                    type: str
+                    required: true
+                    description: Destination IP address of GRE tunnel.
+                  dscp:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 63
+                    description: DSCP of the GRE tunnel. EOS default is 0.
+                  ttl:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 255
+                    description: TTL range. EOS default is 128.
+                  protocol:
+                    type: str
+                    description: 'Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+
+                      EOS default is 0x88BE.'
+                  vrf:
+                    type: str
+                    description: VRF name of the GRE tunnel. EOS default is "default".
   queue_monitor_streaming:
     type: dict
     keys:
@@ -13003,6 +14324,90 @@ keys:
         type: str
         convert_types:
         - int
+  radius_proxy:
+    type: dict
+    description: Configure RADIUS proxy parameters.
+    keys:
+      client_key:
+        type: str
+        description: 'Set client secret key, allowed max size is 128.
+
+          Only type 7 supported.'
+      client_session_idle_timeout:
+        type: int
+        description: Idle timeout in seconds.
+        min: 1
+        max: 86400
+        convert_types:
+        - str
+      dynamic_authorization:
+        type: bool
+        description: Enable/Disable dynamic authorization.
+      client_groups:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            server_groups:
+              type: list
+              items:
+                type: str
+                description: RADIUS server-group names.
+            vrfs:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  ipv4_clients:
+                    type: list
+                    primary_key: address
+                    items:
+                      type: dict
+                      keys:
+                        address:
+                          type: str
+                          format: ipv4
+                          description: IPv4 address "A.B.C.D" or prefix "A.B.C.D/E".
+                        key:
+                          type: str
+                          description: 'Key for this client. Overrides`radius_proxy.client_key`.
+
+                            Only type 7 supported.'
+                  ipv6_clients:
+                    type: list
+                    primary_key: address
+                    items:
+                      type: dict
+                      keys:
+                        address:
+                          type: str
+                          format: ipv6
+                          description: IPv6 address "A:B:C:D:E:F:G:H" prefix "A:B:C:D:E:F:G:H/I".
+                        key:
+                          type: str
+                          description: 'Key for this client. Overrides`radius_proxy.client_key`.
+
+                            Only type 7 supported.'
+                  host_clients:
+                    type: list
+                    primary_key: name
+                    items:
+                      type: dict
+                      keys:
+                        name:
+                          type: str
+                          description: Hostname.
+                        key:
+                          type: str
+                          description: 'Key for this client. Overrides`radius_proxy.client_key`.
+
+                            Only type 7 supported.'
   radius_server:
     type: dict
     keys:
@@ -13963,6 +15368,12 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            peer_tag_in:
+              type: str
+              description: Inbound peer tag name.
+            peer_tag_out_discard:
+              type: str
+              description: Outbound discard peer tag name.
             session_tracker:
               type: str
             shared_secret:
@@ -14101,6 +15512,12 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            peer_tag_in:
+              type: str
+              description: Inbound peer tag name.
+            peer_tag_out_discard:
+              type: str
+              description: Outbound discard peer tag name.
             default_originate:
               type: dict
               keys:
@@ -14897,6 +16314,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -14950,6 +16373,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -15181,6 +16610,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -15247,6 +16682,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -15798,6 +17239,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           neighbors:
             type: list
             primary_key: ip_address
@@ -15926,6 +17373,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           networks:
             type: list
             primary_key: prefix
@@ -16021,6 +17474,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -16042,6 +17501,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -16252,6 +17717,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           peer_groups:
             type: list
             primary_key: name
@@ -16269,6 +17740,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
       address_family_ipv6:
         type: dict
         keys:
@@ -16318,6 +17795,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16358,6 +17841,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16645,6 +18134,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -16880,6 +18375,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           peer_groups:
             type: list
             primary_key: name
@@ -16897,6 +18398,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
       address_family_link_state:
         type: dict
         keys:
@@ -17123,6 +18630,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17168,6 +18681,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17217,6 +18736,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17262,6 +18787,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17728,6 +19259,12 @@ keys:
                   route_map_out:
                     type: str
                     description: Outbound route-map name.
+                  peer_tag_in:
+                    type: str
+                    description: Inbound peer tag name.
+                  peer_tag_out_discard:
+                    type: str
+                    description: Outbound discard peer tag name.
                   additional_paths:
                     type: dict
                     $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
@@ -18125,6 +19662,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       rcf_in:
                         type: str
                         description: 'Inbound RCF function name with parenthesis.
@@ -18508,6 +20051,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       rcf_in:
                         type: str
                         description: 'Inbound RCF function name with parenthesis.
@@ -18811,6 +20360,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       additional_paths:
                         type: dict
                         keys:
@@ -19076,6 +20631,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       additional_paths:
                         type: dict
                         keys:
@@ -19390,6 +20951,14 @@ keys:
       nexthop_fast_failover:
         type: bool
         default: false
+      software_forwarding_hardware_offload_mtu:
+        description: MTU value for software-forwarded packets across all vrfs that
+          use hardware offload.
+        type: int
+        convert_types:
+        - str
+        min: 68
+        max: 65535
       vrfs:
         type: list
         primary_key: name
@@ -19413,6 +20982,14 @@ keys:
                   subscribe_policy:
                     type: str
                     description: Route-Map Policy.
+                  subscribe_rcf:
+                    type: str
+                    description: 'RCF Policy name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      Mutually exclusive with `subscribe_policy`, if both are defined
+                      `subscribe_policy` takes precedence.'
             routes:
               type: dict
               keys:
@@ -19424,6 +21001,16 @@ keys:
                       name:
                         type: str
                         description: Dynamic Prefix List Name.
+            software_forwarding_hardware_offload_mtu:
+              description: 'MTU value for software-forwarded packets within a specific
+                VRF that use hardware offload.
+
+                This setting overrides the global config for a specific vrf.'
+              type: int
+              convert_types:
+              - str
+              min: 68
+              max: 65535
       control_functions:
         type: dict
         description: 'Routing control functions (RCF) used to filter and update routes
@@ -20679,6 +22266,27 @@ keys:
         valid_values:
         - stun
         description: Source of dynamic peer discovery.
+      mtu_discovery_interval:
+        type: int
+        description: MTU discovery interval in seconds.
+        min: 60
+        max: 600
+        convert_types:
+        - str
+      mtu_discovery_hosts:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Enable MTU discovery for hosts.
+          fragmentation_needed_rate_limit:
+            type: int
+            convert_types:
+            - str
+            description: Maximum rate of ICMP packet generation per CPU core(packets
+              per second).
+            min: 1
+            max: 500
       path_groups:
         type: list
         primary_key: name
@@ -20921,6 +22529,23 @@ keys:
               for IP + TCP header).'
             convert_types:
             - int
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: ipv4
+          ipv4:
+            type: str
+            description: 'Segment Size for IPv4.
+
+              Can be an integer in the range 64-65515 or "auto".
+
+              "auto" will enable auto-discovery which clamps the TCP MSS value to
+              the minimum of all the direct paths
+
+              and multi-hop path MTU towards a remote VTEP (minus 40bytes to account
+              for IP + TCP header).'
+            convert_types:
+            - int
           direction:
             type: str
             valid_values:
@@ -21066,6 +22691,35 @@ keys:
                         max: 32
                       override:
                         type: bool
+  router_rip:
+    type: dict
+    description: Routing Information Protocol settings.
+    keys:
+      vrfs:
+        type: list
+        primary_key: vrf
+        items:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            vrf:
+              type: str
+              convert_types:
+              - int
+            metric_default:
+              type: int
+              description: Set default metric for the routes.
+              min: 0
+              max: 16
+              convert_types:
+              - str
+            networks:
+              type: list
+              min_length: 1
+              items:
+                type: str
+                description: Subnet/Mask. e.g. 192.168.10.0/24.
   router_segment_security:
     type: dict
     keys:
@@ -21458,6 +23112,13 @@ keys:
         type: int
         convert_types:
         - str
+      sample_truncate_size:
+        type: int
+        min: 128
+        max: 512
+        convert_types:
+        - str
+        description: Maximum sample size, in bytes.
       sample_input_subinterface:
         type: bool
       sample_output_subinterface:
@@ -21991,6 +23652,26 @@ keys:
               type: int
               convert_types:
               - str
+      port_id_allocation_port_channel_range:
+        description: Specify range of port-ids to reserve for port-channels.
+        type: dict
+        keys:
+          minimum:
+            description: Specify minimum value for reserved range.
+            type: int
+            min: 1
+            max: 2048
+            required: true
+            convert_types:
+            - str
+          maximum:
+            description: Specify maximum value for reserved range.
+            type: int
+            min: 1
+            max: 2048
+            required: true
+            convert_types:
+            - str
   standard_access_lists:
     type: list
     primary_key: name
@@ -22185,6 +23866,8 @@ keys:
             valid_values:
             - tagged
             - untagged
+            - tagged phone
+            - untagged phone
           vlan:
             type: int
             description: VLAN ID.
@@ -22195,6 +23878,13 @@ keys:
           access_list_bypass:
             description: Bypass phone traffic from configured access-list.
             type: bool
+          qos_trust:
+            type: str
+            description: Quality of Service (QoS) trust mode. Outgoing traffic class
+              being derived from the ingress COS/DSCP value.
+            valid_values:
+            - cos
+            - dscp
   switchport_port_security:
     type: dict
     keys:
@@ -22465,6 +24155,13 @@ keys:
         keys:
           counter_per_interface:
             type: bool
+          counter_interface_poll_interval:
+            type: int
+            convert_types:
+            - str
+            min: 2
+            max: 60
+            description: Interval between consecutive polls in seconds.
       field_sets:
         type: dict
         keys:
@@ -22482,6 +24179,11 @@ keys:
                   items:
                     type: str
                     description: IPv4 Prefix.
+                except:
+                  type: list
+                  items:
+                    type: str
+                    description: IPv4 prefix to exclude. Added in 4.30.2F.
           ipv6:
             type: list
             primary_key: name
@@ -22496,6 +24198,11 @@ keys:
                   items:
                     type: str
                     description: IPv6 Prefix.
+                except:
+                  type: list
+                  items:
+                    type: str
+                    description: IPv6 prefix to exclude. Added in 4.30.2F.
           ports:
             type: list
             primary_key: name
@@ -22517,6 +24224,13 @@ keys:
             name:
               type: str
               description: Traffic Policy Name.
+            counters:
+              type: list
+              items:
+                type: str
+                convert_types:
+                - int
+              description: Counter name.
             matches:
               type: list
               primary_key: name
@@ -22622,12 +24336,85 @@ keys:
                         description: Traffic class ID.
                       count:
                         type: str
-                        description: Counter name.
+                        convert_types:
+                        - int
+                        description: 'Counter name. This should also be added to the
+                          `policies[].counters` list.
+
+                          It will no longer be added automatically to the counters
+                          in AVD 6.0.'
                       drop:
                         type: bool
                       log:
                         type: bool
                         description: Only supported when action is set to drop.
+                      redirect:
+                        type: dict
+                        keys:
+                          aggregation_groups:
+                            type: list
+                            description: Redirect to aggregation groups in Tap Aggregation
+                              mode.
+                            items:
+                              type: str
+                          interface:
+                            type: str
+                            description: "The allowed hardware Ethernet interface,
+                              LAG interface, InternalRecirc, Switch.\nEx:\n  1. Ethernet1\n
+                              \ 2. Et1,2\n  3. Po2-4"
+                          next_hop:
+                            type: dict
+                            description: 'Redirect to next-hop.
+
+                              This option is mutually exclusive with `aggregation_groups`
+                              and `interface`.
+
+                              If all three are defined, aggregation_groups and interface
+                              take precedence over next-hop.
+
+                              Only one of the below keys can be specified, in the
+                              order of precedence: ipv4_addresses, ipv6_addresses,
+                              groups, recursive_ipv4_addresses, recursive_ipv6_addresses.'
+                            keys:
+                              ipv4_addresses:
+                                type: list
+                                min_length: 1
+                                items:
+                                  type: str
+                                  description: Next hop IPv4 address.
+                              ipv6_addresses:
+                                type: list
+                                min_length: 1
+                                items:
+                                  type: str
+                                  description: Next hop IPv6 address.
+                              vrf:
+                                type: str
+                                convert_types:
+                                - int
+                                description: Resolve next-hop in a VRF for `ipv4_addresses`,
+                                  `ipv6_addresses`, `recursive_ipv4_addresses` or
+                                  `recursive_ipv6_addresses`.
+                              groups:
+                                type: list
+                                items:
+                                  type: str
+                                description: Set groups to redirect flow.
+                              recursive_ipv4_addresses:
+                                type: list
+                                $ref: eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv4_addresses
+                              recursive_ipv6_addresses:
+                                type: list
+                                $ref: eos_cli_config_gen#/keys/traffic_policies/keys/policies/items/keys/matches/items/keys/actions/keys/redirect/keys/next_hop/keys/ipv6_addresses
+                              ttl:
+                                type: int
+                                min: 1
+                                max: 255
+                                convert_types:
+                                - str
+                                description: Set header TTL value for `ipv4_addresses`,
+                                  `ipv6_addresses`, `recursive_ipv4_addresses`, `recursive_ipv6_addresses`
+                                  or `groups`.
             default_actions:
               type: dict
               keys:
@@ -22645,7 +24432,10 @@ keys:
                       description: Traffic class ID.
                     count:
                       type: str
-                      description: Counter name.
+                      convert_types:
+                      - int
+                      description: Counter name. This should also be added to the
+                        `policies[].counters` list.
                     drop:
                       type: bool
                     log:
@@ -22665,12 +24455,28 @@ keys:
                       description: Traffic class ID.
                     count:
                       type: str
-                      description: Counter name.
+                      convert_types:
+                      - int
+                      description: Counter name. This should also be added to the
+                        `policies[].counters` list.
                     drop:
                       type: bool
                     log:
                       type: bool
                       description: Only supported when action is set to drop.
+  transceiver:
+    type: dict
+    keys:
+      dom_threshold_file:
+        type: str
+        description: 'CSV file path for DOM threshold values.
+
+          eg. `dom_threshold_file: flash:/dom_threshold.csv`
+
+          Note: Set `dom_threshold_file` to `default` for default Arista-standardized
+          thresholds.
+
+          eg. `dom_threshold_file: default`'
   transceiver_qsfp_default_mode_4x10:
     type: bool
     default: true
@@ -22768,7 +24574,16 @@ keys:
             `ipsec`: IPsec-over-IP encapsulation.'
         source_interface:
           type: str
-          description: Tunnel Source Interface Name.
+          description: 'Tunnel Source Interface Name.
+
+            Mutually exclusive with `source`, if both are defined `source_interface`
+            takes precedence.'
+        source:
+          type: str
+          description: 'Tunnel Source IPv4/IPv6 address.
+
+            Mutually exclusive with `source_interface`, if both are defined `source_interface`
+            takes precedence.'
         destination:
           type: str
           description: IPv4 or IPv6 Address Tunnel Destination.
@@ -22887,6 +24702,8 @@ keys:
           - str
           min: 1
           max: 3
+        ip_igmp_querier_address_virtual:
+          type: bool
         ip_igmp_host_proxy:
           type: dict
           keys:
@@ -23234,6 +25051,9 @@ keys:
                     Detection is enabled for PIM.
                 bidirectional:
                   type: bool
+                neighbor_filter:
+                  type: str
+                  description: Standard access list name.
                 hello:
                   type: dict
                   keys:
@@ -23364,6 +25184,11 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv4 address.
+                  secondary_addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
                     convert_types:
@@ -23376,8 +25201,19 @@ keys:
                 keys:
                   address:
                     type: str
-                    required: true
                     description: Virtual IPv6 address.
+                    deprecation:
+                      warning: true
+                      remove_in_version: 6.0.0
+                      new_key: addresses
+                  addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Virtual IPv6 addresses.
+              peer_authentication:
+                type: dict
+                $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids/items/keys/peer_authentication
         ip_attached_host_route_export:
           type: dict
           keys:
@@ -23553,6 +25389,18 @@ keys:
           items:
             type: str
             description: Trunk Group Name.
+        e_tree:
+          type: dict
+          keys:
+            leaf_role:
+              type: bool
+              description: Set the VLAN into the E-Tree leaf role. By default all
+                VLANs are in root role.
+            remote_leaf_host_drop:
+              type: bool
+              description: Enables remote leaf hosts to instead be installed as explicit
+                drop routes in the local FDB. This is only applicable for VLANs operating
+                in the 'Leaf' role.
         private_vlan:
           type: dict
           keys:
@@ -23647,6 +25495,15 @@ keys:
                 type: int
                 convert_types:
                 - str
+              encapsulations:
+                type: dict
+                keys:
+                  ipv4:
+                    type: bool
+                    description: Use IPv4 for VXLAN Encapsulation.
+                  ipv6:
+                    type: bool
+                    description: Use IPv6 for VXLAN Encapsulation.
               vtep_to_vtep_bridging:
                 type: bool
                 description: Enable bridging between different VTEPs in vxlan overlay.
@@ -23695,6 +25552,13 @@ keys:
                       '
                   map_dscp_to_traffic_class_decapsulation:
                     type: bool
+                  dscp_ecn:
+                    type: dict
+                    keys:
+                      rewrite_bridged_enabled:
+                        type: bool
+                        description: Enable DSCP and ECN rewrite for VXLAN bridged
+                          packets.
               vlan_range:
                 type: dict
                 description: 'Set VNI on range of VLANs. Number of VLANs must equal
@@ -23740,6 +25604,9 @@ keys:
                       items:
                         type: str
                         description: Remote VTEP IP Address.
+                    flood_group:
+                      type: str
+                      description: Flood multicast group address.
               vrfs:
                 type: list
                 primary_key: name
@@ -23757,7 +25624,38 @@ keys:
                       - str
                     multicast_group:
                       type: str
-                      description: IP Multicast Group Address.
+                      description: Default IP Multicast Group Address for the VRF.
+                    multicast_group_encap_range:
+                      type: str
+                      description: 'N:M mapping, the overlay groups in the VRF are
+                        mapped to one of
+
+                        the underlay groups defined within the encap range.
+
+                        The format is X.X.X.X/YY (IPv4 multicast group with prefix
+                        length between 19 and 32).
+
+                        Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group`
+                        is required for this feature to work.
+
+                        See the TOI at https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups'
+                    multicast_groups:
+                      type: list
+                      primary_key: overlay_group
+                      description: 'List of 1:1 mappings where each configured overlay
+                        multicast group is mapped
+
+                        directly to the specified underlay multicast group.'
+                      items:
+                        type: dict
+                        keys:
+                          overlay_group:
+                            type: str
+                            description: Overlay multicast group.
+                          encap:
+                            type: str
+                            required: true
+                            description: Underlay multicast group.
               flood_vteps:
                 type: list
                 items:
@@ -23952,6 +25850,30 @@ $defs:
                         max: 65535
                         convert_types:
                         - str
+                    deprecation:
+                      warning: true
+                      removed: false
+                      remove_in_version: 6.0.0
+                      new_key: collectors
+                  collectors:
+                    type: list
+                    primary_key: host
+                    items:
+                      type: dict
+                      keys:
+                        host:
+                          type: str
+                          description: 'Flow collector name.
+
+                            The collector name can be an IPv4 address, IPv6 address
+                            and fully qualified domain name.'
+                        port:
+                          type: int
+                          description: Collector Port Number.
+                          min: 1
+                          max: 65535
+                          convert_types:
+                          - str
                   format:
                     type: dict
                     keys:
@@ -23971,7 +25893,6 @@ $defs:
                     description: Template interval in milliseconds.
       shutdown:
         type: bool
-        default: false
   interface_ip_nat:
     type: dict
     keys:

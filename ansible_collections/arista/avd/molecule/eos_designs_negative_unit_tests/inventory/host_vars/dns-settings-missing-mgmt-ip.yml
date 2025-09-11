@@ -1,0 +1,10 @@
+type: l2leaf
+
+l2leaf: {}
+
+dns_settings:
+  servers:
+    - ip_address: 10.10.10.10
+
+expected_error_message: >-
+  'dns_settings.servers[ip_address=10.10.10.10].vrf' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'.

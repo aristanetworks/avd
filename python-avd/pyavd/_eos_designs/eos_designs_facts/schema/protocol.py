@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, ClassVar, Literal, Protocol
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._schema.models.avd_indexed_list import AvdIndexedList
 from pyavd._schema.models.avd_list import AvdList
@@ -26,11 +27,18 @@ class EosDesignsFactsProtocol(Protocol):
 
         DownlinkInterfaces._item_type = str
 
-        _fields: ClassVar[dict] = {"ipv4_pool": {"type": str}, "downlink_interfaces": {"type": DownlinkInterfaces}}
+        _fields: ClassVar[dict] = {"ipv4_pool": {"type": str}, "ipv6_pool": {"type": str}, "downlink_interfaces": {"type": DownlinkInterfaces}}
         ipv4_pool: str | None
         """
         Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
         IPv4
+        subnets used for links to downlink switches will be derived from this pool based on index the peer's
+        uplink interface's index in 'downlink_interfaces'.
+        """
+        ipv6_pool: str | None
+        """
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+        IPv6
         subnets used for links to downlink switches will be derived from this pool based on index the peer's
         uplink interface's index in 'downlink_interfaces'.
         """
@@ -46,7 +54,11 @@ class EosDesignsFactsProtocol(Protocol):
         if TYPE_CHECKING:
 
             def __init__(
-                self, *, ipv4_pool: str | None | UndefinedType = Undefined, downlink_interfaces: DownlinkInterfaces | UndefinedType = Undefined
+                self,
+                *,
+                ipv4_pool: str | None | UndefinedType = Undefined,
+                ipv6_pool: str | None | UndefinedType = Undefined,
+                downlink_interfaces: DownlinkInterfaces | UndefinedType = Undefined,
             ) -> None:
                 """
                 DownlinkPoolsItem.
@@ -58,6 +70,11 @@ class EosDesignsFactsProtocol(Protocol):
                     ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                        IPv4
+                       subnets used for links to downlink switches will be derived from this pool based on index the peer's
+                       uplink interface's index in 'downlink_interfaces'.
+                    ipv6_pool:
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                       IPv6
                        subnets used for links to downlink switches will be derived from this pool based on index the peer's
                        uplink interface's index in 'downlink_interfaces'.
                     downlink_interfaces:
@@ -288,9 +305,13 @@ class EosDesignsFactsProtocol(Protocol):
                 "encapsulation_dot1q_vlan": {"type": int},
                 "ipv6_enable": {"type": bool},
                 "prefix_length": {"type": int},
+                "ipv6_prefix_length": {"type": int},
                 "ip_address": {"type": str},
+                "ipv6_address": {"type": str},
                 "peer_ip_address": {"type": str},
+                "peer_ipv6_address": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             }
             interface: str
             peer_interface: str
@@ -298,8 +319,11 @@ class EosDesignsFactsProtocol(Protocol):
             encapsulation_dot1q_vlan: int
             ipv6_enable: bool | None
             prefix_length: int | None
+            ipv6_prefix_length: int | None
             ip_address: str | None
+            ipv6_address: str | None
             peer_ip_address: str | None
+            peer_ipv6_address: str | None
             structured_config: dict
             """
             Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
@@ -314,6 +338,8 @@ class EosDesignsFactsProtocol(Protocol):
             Note! The content of this dictionary is _not_ validated
             by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config applied to `uplink_interfaces`."""
 
             if TYPE_CHECKING:
 
@@ -326,9 +352,13 @@ class EosDesignsFactsProtocol(Protocol):
                     encapsulation_dot1q_vlan: int | UndefinedType = Undefined,
                     ipv6_enable: bool | None | UndefinedType = Undefined,
                     prefix_length: int | None | UndefinedType = Undefined,
+                    ipv6_prefix_length: int | None | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
+                    ipv6_address: str | None | UndefinedType = Undefined,
                     peer_ip_address: str | None | UndefinedType = Undefined,
+                    peer_ipv6_address: str | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SubinterfacesItem.
@@ -343,8 +373,11 @@ class EosDesignsFactsProtocol(Protocol):
                         encapsulation_dot1q_vlan: encapsulation_dot1q_vlan
                         ipv6_enable: ipv6_enable
                         prefix_length: prefix_length
+                        ipv6_prefix_length: ipv6_prefix_length
                         ip_address: ip_address
+                        ipv6_address: ipv6_address
                         peer_ip_address: peer_ip_address
+                        peer_ipv6_address: peer_ipv6_address
                         structured_config:
                            Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
                            When
@@ -357,6 +390,7 @@ class EosDesignsFactsProtocol(Protocol):
                            "structured_config" defined on node-level.
                            Note! The content of this dictionary is _not_ validated
                            by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
 
                     """
 
@@ -406,6 +440,10 @@ class EosDesignsFactsProtocol(Protocol):
             "inband_ztp_lacp_fallback_delay": {"type": int},
             "dhcp_server": {"type": bool},
             "structured_config": {"type": dict},
+            "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            "peer_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "peer_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "subinterfaces": {"type": Subinterfaces},
         }
         interface: str
@@ -469,6 +507,14 @@ class EosDesignsFactsProtocol(Protocol):
         Note! The content of this dictionary is _not_ validated
         by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
         """
+        ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """Custom structured config applied to `uplink_interfaces`."""
+        port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+        peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """Custom structured config applied to `uplink_interfaces`."""
+        peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
         subinterfaces: Subinterfaces
         """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`)."""
 
@@ -515,6 +561,10 @@ class EosDesignsFactsProtocol(Protocol):
                 inband_ztp_lacp_fallback_delay: int | None | UndefinedType = Undefined,
                 dhcp_server: bool | None | UndefinedType = Undefined,
                 structured_config: dict | UndefinedType = Undefined,
+                ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 subinterfaces: Subinterfaces | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -576,6 +626,10 @@ class EosDesignsFactsProtocol(Protocol):
                        "structured_config" defined on node-level.
                        Note! The content of this dictionary is _not_ validated
                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                    port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                    peer_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                    peer_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                     subinterfaces: Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`).
 
                 """
@@ -910,7 +964,9 @@ class EosDesignsFactsProtocol(Protocol):
         "mpls_lsr": {"type": bool},
         "evpn_multicast": {"type": bool},
         "loopback_ipv4_pool": {"type": str},
+        "loopback_ipv6_pool": {"type": str},
         "uplink_ipv4_pool": {"type": str},
+        "uplink_ipv6_pool": {"type": str},
         "downlink_pools": {"type": DownlinkPools},
         "bgp_as": {"type": str},
         "underlay_routing_protocol": {"type": str},
@@ -941,6 +997,7 @@ class EosDesignsFactsProtocol(Protocol):
         "mpls_route_reflectors": {"type": MplsRouteReflectors},
         "overlay": {"type": Overlay},
         "vtep_ip": {"type": str},
+        "vtep_ipv6": {"type": str},
         "max_parallel_uplinks": {"type": int, "default": 1},
         "max_uplink_switches": {"type": int},
         "uplinks": {"type": Uplinks},
@@ -966,7 +1023,9 @@ class EosDesignsFactsProtocol(Protocol):
     mpls_lsr: bool
     evpn_multicast: bool | None
     loopback_ipv4_pool: str | None
+    loopback_ipv6_pool: str | None
     uplink_ipv4_pool: str | None
+    uplink_ipv6_pool: str | None
     downlink_pools: DownlinkPools
     """
     IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined
@@ -1041,6 +1100,7 @@ class EosDesignsFactsProtocol(Protocol):
     overlay: Overlay
     """Subclass of AvdModel."""
     vtep_ip: str | None
+    vtep_ipv6: str | None
     max_parallel_uplinks: int
     """
     Number of parallel links towards uplink switches.
@@ -1127,7 +1187,9 @@ class EosDesignsFactsProtocol(Protocol):
             mpls_lsr: bool | UndefinedType = Undefined,
             evpn_multicast: bool | None | UndefinedType = Undefined,
             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
+            loopback_ipv6_pool: str | None | UndefinedType = Undefined,
             uplink_ipv4_pool: str | None | UndefinedType = Undefined,
+            uplink_ipv6_pool: str | None | UndefinedType = Undefined,
             downlink_pools: DownlinkPools | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             underlay_routing_protocol: str | UndefinedType = Undefined,
@@ -1158,6 +1220,7 @@ class EosDesignsFactsProtocol(Protocol):
             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
             overlay: Overlay | UndefinedType = Undefined,
             vtep_ip: str | None | UndefinedType = Undefined,
+            vtep_ipv6: str | None | UndefinedType = Undefined,
             max_parallel_uplinks: int | UndefinedType = Undefined,
             max_uplink_switches: int | UndefinedType = Undefined,
             uplinks: Uplinks | UndefinedType = Undefined,
@@ -1190,7 +1253,9 @@ class EosDesignsFactsProtocol(Protocol):
                 mpls_lsr: mpls_lsr
                 evpn_multicast: evpn_multicast
                 loopback_ipv4_pool: loopback_ipv4_pool
+                loopback_ipv6_pool: loopback_ipv6_pool
                 uplink_ipv4_pool: uplink_ipv4_pool
+                uplink_ipv6_pool: uplink_ipv6_pool
                 downlink_pools:
                    IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined
                    with `uplink_ipv4_pool` set on the downlink switch.
@@ -1248,6 +1313,7 @@ class EosDesignsFactsProtocol(Protocol):
                    Subclass of AvdList with `str` items.
                 overlay: Subclass of AvdModel.
                 vtep_ip: vtep_ip
+                vtep_ipv6: vtep_ipv6
                 max_parallel_uplinks:
                    Number of parallel links towards uplink switches.
                    Changing this value may change interface naming on

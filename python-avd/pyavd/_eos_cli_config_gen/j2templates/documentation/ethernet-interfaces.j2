@@ -279,12 +279,8 @@
 | --------- | ----------------- | ----------------- | --------- |
 {%         for tcp_mss_clamping in tcp_mss_clampings | arista.avd.natural_sort('name') %}
 {%             set interface = tcp_mss_clamping.name %}
-{%             if tcp_mss_clamping.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined %}
-{%                 set ipv4_segment_size = tcp_mss_clamping.tcp_mss_ceiling.ipv4_segment_size %}
-{%             endif %}
-{%             if tcp_mss_clamping.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
-{%                 set ipv6_segment_size = tcp_mss_clamping.tcp_mss_ceiling.ipv6_segment_size %}
-{%             endif %}
+{%             set ipv4_segment_size = tcp_mss_clamping.tcp_mss_ceiling.ipv4 | arista.avd.default(tcp_mss_clamping.tcp_mss_ceiling.ipv4_segment_size) %}
+{%             set ipv6_segment_size = tcp_mss_clamping.tcp_mss_ceiling.ipv6 | arista.avd.default(tcp_mss_clamping.tcp_mss_ceiling.ipv6_segment_size) %}
 | {{ interface }} | {{ ipv4_segment_size | arista.avd.default("-") }} | {{ ipv6_segment_size | arista.avd.default("-") }} | {{ tcp_mss_clamping.tcp_mss_ceiling.direction | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
@@ -299,8 +295,8 @@
 
 ##### Transceiver Settings
 
-| Interface | Transceiver Frequency | Media Override |
-| --------- | --------------------- | -------------- |
+| Interface | Transceiver Frequency | Media Override | Application Override |
+| --------- | --------------------- | -------------- | -------------------- |
 {%         for transceiver_setting in transceiver_settings | arista.avd.natural_sort('name') %}
 {%             set interface = transceiver_setting.name %}
 {%             if transceiver_setting.transceiver.frequency is arista.avd.defined %}
@@ -311,8 +307,22 @@
 {%             else %}
 {%                 set frequency = '-' %}
 {%             endif %}
+{%             set applications = [] %}
+{%             if transceiver_setting.transceiver.application_override is arista.avd.defined %}
+{%                 do applications.append(transceiver_setting.transceiver.application_override) %}
+{%             endif %}
+{%             for application_override in transceiver_setting.transceiver.application_override_lanes | arista.avd.default([]) %}
+{%                 set application_override_var = application_override.override ~ " lanes start " ~ application_override.first_lane %}
+{%                 if application_override.last_lane is arista.avd.defined %}
+{%                     set application_override_var = application_override_var ~ " end " ~ application_override.last_lane %}
+{%                 endif %}
+{%                 do applications.append(application_override_var) %}
+{%             endfor %}
+{%             if applications == [] %}
+{%                 do applications.append("-") %}
+{%             endif %}
 {%             set m_override = transceiver_setting.transceiver.media.override | arista.avd.default('-') %}
-| {{ interface }} | {{ frequency }} | {{ m_override }} |
+| {{ interface }} | {{ frequency }} | {{ m_override }} | {{ applications | join("</br>") }} |
 {%         endfor %}
 {%     endif %}
 {# Link Tracking Groups #}
@@ -565,10 +575,10 @@
 
 ##### VRRP Details
 
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- |
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
 {%         for ethernet_interface in ethernet_interfaces_vrrp_details | arista.avd.natural_sort('name') %}
-{%             for vrid in ethernet_interface.vrrp_ids if vrid.id is arista.avd.defined %}
+{%             for vrid in ethernet_interface.vrrp_ids | arista.avd.natural_sort('id') %}
 {%                 set row_id = vrid.id %}
 {%                 set row_prio_level = vrid.priority_level | arista.avd.default('-') %}
 {%                 set row_ad_interval = vrid.advertisement.interval | arista.avd.default('-') %}
@@ -590,10 +600,17 @@
 {%                     set row_tracked_object_name = row_tracked_object_name | join(", ") %}
 {%                     set row_tracked_object_action = row_tracked_object_action | join(", ") %}
 {%                 endif %}
-{%                 set row_ipv4_virt = vrid.ipv4.address | arista.avd.default('-') %}
-{%                 set row_ipv4_vers = vrid.ipv4.version | arista.avd.default('2') %}
-{%                 set row_ipv6_virt = vrid.ipv6.address | arista.avd.default('-') %}
-| {{ ethernet_interface.name }} | {{ row_id }} | {{ row_prio_level }} | {{ row_ad_interval }} | {{ row_preempt }} | {{ row_tracked_object_name | arista.avd.default('-') }} | {{ row_tracked_object_action | arista.avd.default('-') }} | {{ row_ipv4_virt }} | {{ row_ipv4_vers }} | {{ row_ipv6_virt }} |
+{%                 set peer_auth_mode = vrid.peer_authentication.mode | arista.avd.default('-') %}
+{%                 set row_ipv4_virtual_ips = [] %}
+{%                 if vrid.ipv4.address is arista.avd.defined %}
+{%                     do row_ipv4_virtual_ips.append(vrid.ipv4.address) %}
+{%                 endif %}
+{%                 if vrid.ipv4.secondary_addresses is arista.avd.defined %}
+{%                     do row_ipv4_virtual_ips.extend(vrid.ipv4.secondary_addresses) %}
+{%                 endif %}
+{%                 set row_ipv4_version = vrid.ipv4.version | arista.avd.default('2') %}
+{%                 set row_ipv6_virtual_ips = vrid.ipv6.addresses | arista.avd.default(vrid.ipv6.address, '-') | join(', ') %}
+| {{ ethernet_interface.name }} | {{ row_id }} | {{ row_prio_level }} | {{ row_ad_interval }} | {{ row_preempt }} | {{ row_tracked_object_name | arista.avd.default('-') }} | {{ row_tracked_object_action | arista.avd.default('-') }} | {{ row_ipv4_virtual_ips | join(", ") | arista.avd.default("-") }} | {{ row_ipv4_version }} | {{ row_ipv6_virtual_ips }} | {{ peer_auth_mode }} |
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
@@ -805,12 +822,18 @@
 
 #### Traffic Engineering
 
-| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLG |
+| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
 | --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
 {%         for te_interface in te_interfaces %}
 {%             set admin_groups = te_interface.traffic_engineering.administrative_groups | arista.avd.default (["-"]) | join(",") %}
 {%             set te_enabled = te_interface.traffic_engineering.enabled | arista.avd.default("-") %}
-{%             set te_srlg = te_interface.traffic_engineering.srlg | arista.avd.default("-") %}
+{%             if te_interface.traffic_engineering.srlgs is arista.avd.defined %}
+{%                 set te_srlgs = te_interface.traffic_engineering.srlgs %}
+{%             elif te_interface.traffic_engineering.srlg is arista.avd.defined %}
+{%                 set te_srlgs = [ te_interface.traffic_engineering.srlg ] %}
+{%             else %}
+{%                 set te_srlgs = ["-"] %}
+{%             endif %}
 {%             set te_metric = te_interface.traffic_engineering.metric | arista.avd.default("-") %}
 {%             if te_interface.traffic_engineering.bandwidth is arista.avd.defined %}
 {%                 set te_bandwidth = te_interface.traffic_engineering.bandwidth.number ~ " " ~ te_interface.traffic_engineering.bandwidth.unit %}
@@ -824,7 +847,7 @@
 {%             else %}
 {%                 set te_min_del = "-" %}
 {%             endif %}
-| {{ te_interface.name }} | {{ te_enabled }} | {{ admin_groups }} | {{ te_metric }} | {{ te_bandwidth }} | {{ te_min_del }} | {{ te_srlg }} |
+| {{ te_interface.name }} | {{ te_enabled }} | {{ admin_groups }} | {{ te_metric }} | {{ te_bandwidth }} | {{ te_min_del }} | {{ te_srlgs | join(",") }} |
 {%         endfor %}
 {%     endif %}
 

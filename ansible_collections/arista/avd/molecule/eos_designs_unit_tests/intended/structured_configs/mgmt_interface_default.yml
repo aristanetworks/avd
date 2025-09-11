@@ -1,15 +1,17 @@
 aaa_root:
   disabled: true
+boot:
+  secret:
+    key: a153de6290ff1409257ade45f
 config_end: true
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
   cvauth:
-    method: key
-    key: telarista
+    method: token
+    token_file: /tmp/token
   cvvrf: MGMT
   disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
@@ -30,7 +32,6 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 2001:db8::2
   vrf: MGMT
-is_deployed: true
 local_users:
 - name: admin
   disabled: true
@@ -59,6 +60,7 @@ management_interfaces:
   type: oob
   gateway: 1.1.1.1
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:
   local_interface:

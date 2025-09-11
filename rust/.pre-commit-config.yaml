@@ -1,0 +1,24 @@
+---
+# pre-commit hooks for Rust 🦀 in a separate file to
+# avoid regular users to have to install Rust / Cargo
+repos:
+  - repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+      - id: fmt
+        name: Lint Rust files using fmt
+        files: ^rust/
+      - id: cargo-check
+        name: Lint Rust files using cargo check
+        files: ^rust/
+      - id: clippy
+        name: Lint Rust files using clippy
+        args: ["--all-targets", "--all-features"]
+        files: ^rust/
+
+  - repo: https://github.com/EmbarkStudios/cargo-deny
+    rev: 0.18.1
+    hooks:
+      # Check licenses of Rust dependencies
+      - id: cargo-deny
+        files: ^rust/

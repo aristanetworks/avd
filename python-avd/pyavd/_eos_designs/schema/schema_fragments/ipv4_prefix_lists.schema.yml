@@ -9,7 +9,14 @@ keys:
   ipv4_prefix_list_catalog:
     type: list
     primary_key: name
-    description: IPv4 prefix-list catalog.
+    description: |-
+      IPv4 prefix-list catalog.
+      Note: Entries defined in `ipv4_prefix_list_catalog` are only rendered in the configuration when
+      they are explicitly referenced in one of the following node config keys:
+      - `l3_interfaces.[].bgp.ipv4_prefix_list_in`
+      - `l3_interfaces.[].bgp.ipv4_prefix_list_out`
+      - `l3_port_channels.[].bgp.ipv4_prefix_list_in`
+      - `l3_port_channels.[].bgp.ipv4_prefix_list_out`.
     items:
       type: dict
       keys:

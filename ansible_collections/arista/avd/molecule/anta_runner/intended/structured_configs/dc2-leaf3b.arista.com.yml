@@ -53,9 +53,39 @@ ethernet_interfaces:
   peer_type: firewall
 - name: Ethernet16
   description: Test_dhcp_interface_connectivity
+  shutdown: true
   ip_address: dhcp
   peer: dc2-leaf3a.arista.com
   peer_interface: Ethernet16
+  switchport:
+    enabled: false
+- name: Ethernet17
+  description: Test_ip_unnumbered_interface_connectivity
+  ip_address: unnumbered Loopback0
+  peer: dc2-leaf3a.arista.com
+  peer_interface: Ethernet17
+  switchport:
+    enabled: false
+- name: Ethernet18
+  description: Test_peer_dhcp_interface_connectivity
+  ip_address: dhcp
+  peer: dc2-leaf3a.arista.com
+  peer_interface: Ethernet18
+  switchport:
+    enabled: false
+- name: Ethernet19
+  description: Test_peer_ip_unnumbered_interface_connectivity
+  ip_address: unnumbered Loopback0
+  peer: dc2-leaf3a.arista.com
+  peer_interface: Ethernet19
+  switchport:
+    enabled: false
+- name: Ethernet20
+  description: Test_peer_shutdown_interface_connectivity
+  shutdown: true
+  ip_address: 10.19.20.1/31
+  peer: dc2-leaf3a.arista.com
+  peer_interface: Ethernet20
   switchport:
     enabled: false
 hostname: dc2-leaf3b.arista.com
@@ -66,7 +96,6 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -109,6 +138,7 @@ management_interfaces:
   type: oob
   gateway: 172.16.1.1
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   dc_name: DC2
   fabric_name: FABRIC

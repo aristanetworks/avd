@@ -5,6 +5,10 @@
 
 router_path_selection:
   peer_dynamic_source: stun
+  mtu_discovery_interval: 100
+  mtu_discovery_hosts:
+    enabled: true
+    fragmentation_needed_rate_limit: 100
   path_groups:
     # Out of order to test sorting
     - name: PG-2
@@ -138,7 +142,7 @@ router_path_selection:
     # testing VRF without path_selection_policy
     - name: VRF-3
   tcp_mss_ceiling:
-    ipv4_segment_size: 200
+    ipv4: 200
   interfaces:
     - name: Ethernet2
     - name: Port-Channel4

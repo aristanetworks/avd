@@ -54,6 +54,18 @@ options:
     description: Generate P2P links CSV with all routed point-to-point links between devices.
     default: false
     type: bool
+  digital_twin_file:
+    description: |-
+      PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+      Path to output Digital Twin topology file.
+    required: true
+    type: str
+  digital_twin:
+    description: |-
+      PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+      Generate Digital Twin topology information.
+    default: false
+    type: bool
 """
 
 EXAMPLES = r"""
@@ -70,6 +82,8 @@ EXAMPLES = r"""
     topology_csv: "{{ eos_designs_documentation.topology_csv | arista.avd.default(true) }}"
     p2p_links_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
     p2p_links_csv: "{{ eos_designs_documentation.p2p_links_csv | arista.avd.default(true) }}"
+    digital_twin_file: "{{ fabric_dir }}/{{ fabric_name }}-digital-twin-topology.yml"
+    digital_twin: "{{ avd_digital_twin_mode | arista.avd.default(false) }}"
     mode: "0o664"
   delegate_to: localhost
   check_mode: false

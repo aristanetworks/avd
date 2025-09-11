@@ -6,6 +6,7 @@
   - [Management Interfaces](#management-interfaces)
   - [DNS Domain](#dns-domain)
   - [IP Name Servers](#ip-name-servers)
+  - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
@@ -94,6 +95,20 @@ dns domain wan.example.local
 ip name-server vrf MGMT 192.168.17.1
 ```
 
+### Domain Lookup
+
+#### DNS Domain Lookup Summary
+
+| Source interface | vrf |
+| ---------------- | --- |
+| Management1 | MGMT |
+
+#### DNS Domain Lookup Device Configuration
+
+```eos
+ip domain lookup vrf MGMT source-interface Management1
+```
+
 ### NTP
 
 #### NTP Summary
@@ -152,7 +167,7 @@ management api http-commands
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
-| ansible | 15 | network-admin | False | - |
+| admin | 15 | network-admin | False | - |
 | arista | 15 | network-admin | False | - |
 | cvpadmin | 15 | network-admin | False | - |
 
@@ -160,7 +175,7 @@ management api http-commands
 
 ```eos
 !
-username ansible privilege 15 role network-admin secret sha512 <removed>
+username admin privilege 15 role network-admin nopassword
 username arista privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
@@ -246,14 +261,14 @@ dhcp server
 
 | CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | www.cv-staging.corp.arista.io:443 | MGMT | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
+| gzip | apiserver.arista.io:443 | MGMT | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | - | False |
 
 #### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=www.cv-staging.corp.arista.io:443 -cvauth=token-secure,/tmp/cv-onboarding-token -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=apiserver.arista.io:443 -cvauth=token-secure,/tmp/cv-onboarding-token -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -taillogs -cvsourceintf=Management1
    no shutdown
 ```
 
@@ -309,6 +324,7 @@ vlan internal order ascending range 1006 1199
 | Ethernet7 | site2-wan2-Ethernet4 | - | 100.64.21.1/24 | default | - | False | - | - |
 | Ethernet8 | - | 8 | *100.64.30.1/24 | *default | *- | *False | *- | *- |
 | Ethernet9 | - | 8 | *100.64.30.1/24 | *default | *- | *False | *- | *- |
+| Ethernet10 | site4-wan1-Ethernet4 | - | 100.64.40.1/24 | default | - | False | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -355,6 +371,12 @@ interface Ethernet8
 interface Ethernet9
    no shutdown
    channel-group 8 mode active
+!
+interface Ethernet10
+   description site4-wan1-Ethernet4
+   no shutdown
+   no switchport
+   ip address 100.64.40.1/24
 ```
 
 ### Port-Channel Interfaces

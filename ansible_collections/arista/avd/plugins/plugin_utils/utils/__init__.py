@@ -4,10 +4,11 @@
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 
 from .action_plugin_vars import ActionPluginVars
-from .anta_logging_filter import AntaLoggingFilter
+from .anta_workflow_logging import AntaWorkflowFilter, AntaWorkflowHandler
 from .avd_switch_facts_default_dict import AvdSwitchFactsDefaultDict
 from .compile_searchpath import compile_searchpath
 from .cprofile_decorator import cprofile
+from .deprecated_dict import DeprecatedDict
 from .get_templar import get_templar
 from .get_validated_path import get_validated_path
 from .get_validated_value import get_validated_value
@@ -25,8 +26,10 @@ except ImportError as e:
 
 __all__ = [
     "ActionPluginVars",
-    "AntaLoggingFilter",
+    "AntaWorkflowFilter",
+    "AntaWorkflowHandler",
     "AvdSwitchFactsDefaultDict",
+    "DeprecatedDict",
     "NoAliasDumper",
     "PythonToAnsibleContextFilter",
     "PythonToAnsibleHandler",

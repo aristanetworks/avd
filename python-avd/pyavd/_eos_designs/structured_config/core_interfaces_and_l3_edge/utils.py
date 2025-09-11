@@ -7,12 +7,13 @@ import re
 from functools import cached_property
 from ipaddress import ip_network
 from itertools import islice
-from typing import TYPE_CHECKING, Literal, Protocol, TypeVar
+from typing import TYPE_CHECKING, Literal, Protocol, TypeVar, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import Undefined, default, get_ip_from_pool
+from pyavd._utils import default, get_ip_from_pool
+from pyavd._utils.password_utils.password import isis_encrypt
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
@@ -37,11 +38,11 @@ class UtilsMixin(Protocol):
         For each links any referenced profiles are applied and IP addresses are resolved
         from pools or subnets.
         """
-        if not (p2p_links := self.inputs_data.p2p_links):
+        if not self.inputs_data.p2p_links:
             return []
 
         # Apply p2p_profiles if set. Silently ignoring missing profile.
-        p2p_links: list[T_P2pLinksItem] = [self._apply_p2p_links_profile(p2p_link) for p2p_link in p2p_links]
+        p2p_links: list[T_P2pLinksItem] = [self._apply_p2p_links_profile(p2p_link) for p2p_link in cast("list[T_P2pLinksItem]", self.inputs_data.p2p_links)]
 
         # Filter to only include p2p_links with our hostname under "nodes"
         p2p_links = [p2p_link for p2p_link in p2p_links if self.shared_utils.hostname in p2p_link.nodes]
@@ -198,7 +199,7 @@ class UtilsMixin(Protocol):
         ptp_config = output_type()
 
         # Early return if PTP is not enabled
-        if not p2p_link.ptp.enabled:
+        if not (p2p_link.ptp.enabled and self.shared_utils.platform_settings.feature_support.ptp):
             return ptp_config
 
         if self.shared_utils.ptp_enabled:
@@ -212,8 +213,8 @@ class UtilsMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
 
             else:
-                ptp_profile_config = self.inputs.ptp_profiles[p2p_link.ptp.profile]
-                if hasattr(ptp_profile_config, "profile"):
+                ptp_profile_config = self.inputs.ptp_profiles[p2p_link.ptp.profile]._deepcopy()
+                if ptp_profile_config.profile:
                     delattr(ptp_profile_config, "profile")
                 ptp_config = ptp_profile_config._cast_as(output_type, ignore_extra_keys=True)
 
@@ -243,22 +244,22 @@ class UtilsMixin(Protocol):
             peer_interface=p2p_link_data["peer_interface"],
             peer_type=p2p_link_data["peer_type"],
             shutdown=False,
-            mtu=p2p_link._get("mtu", self.shared_utils.p2p_uplinks_mtu) if self.shared_utils.platform_settings.feature_support.per_interface_mtu else None,
+            mtu=self.shared_utils.get_interface_mtu(p2p_link_data["interface"], p2p_link._get("mtu", self.shared_utils.p2p_uplinks_mtu)),
             service_profile=p2p_link._get("qos_profile", self.inputs.p2p_uplinks_qos_profile),
             eos_cli=p2p_link.raw_eos_cli,
         )
         interface.switchport.enabled = False
-
-        if p2p_link.structured_config:
-            if str(interface_name := p2p_link_data["interface"]).lower().startswith("p"):
+        # Remove this block after removing p2p_links[].structured_config from schema.
+        if not (p2p_link.ethernet_structured_config or p2p_link.port_channel_structured_config) and p2p_link.structured_config:
+            if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
                 # Port-channel
-                self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface_name)._deepmerge(
+                self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
                     EosCliConfigGen.PortChannelInterfacesItem._from_dict(p2p_link.structured_config),
                     list_merge=self.custom_structured_configs.list_merge_strategy,
                 )
             else:
                 # Ethernet
-                self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface_name)._deepmerge(
+                self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface.name)._deepmerge(
                     EosCliConfigGen.EthernetInterfacesItem._from_dict(p2p_link.structured_config),
                     list_merge=self.custom_structured_configs.list_merge_strategy,
                 )
@@ -290,19 +291,33 @@ class UtilsMixin(Protocol):
                 mode: Literal["md5", "text"] | None = default(p2p_link.isis_authentication_mode, self.inputs.underlay_isis_authentication_mode)
                 interface.isis_authentication.both.mode = mode
 
-                if isis_authentication_key := default(p2p_link.isis_authentication_key, self.inputs.underlay_isis_authentication_key):
+                if p2p_link.isis_authentication_key is not None:
+                    interface.isis_authentication.both._update(key=p2p_link.isis_authentication_key, key_type="7")
+                elif p2p_link.isis_authentication_cleartext_key is not None:
+                    interface.isis_authentication.both._update(
+                        key=isis_encrypt(
+                            password=p2p_link.isis_authentication_cleartext_key,
+                            key=cast("str", self.shared_utils.isis_instance_name),
+                            mode=mode or "none",
+                        ),
+                        key_type="7",
+                    )
+                elif (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                     interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
         if p2p_link.macsec_profile:
             interface.mac_security.profile = p2p_link.macsec_profile
 
-        if p2p_link.sflow is not None:
-            interface.sflow.enable = p2p_link.sflow
-        elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
-            interface.sflow.enable = p2p_link_sflow
+        interface.sflow.enable = self.shared_utils.get_interface_sflow(
+            interface.name,
+            default(p2p_link.sflow, self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge),
+        )
 
-        if (p2p_link_flow_tracking := self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker)) is not Undefined:
-            interface.flow_tracker = p2p_link_flow_tracking
+        # Adding type check to avoid confusing the type checker.
+        if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR, this is for the type checker
+            interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
+        else:
+            interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
 
         if self.shared_utils.mpls_lsr and default(p2p_link.mpls_ip, True):  # noqa: FBT003
             interface.mpls.ip = True
@@ -310,7 +325,12 @@ class UtilsMixin(Protocol):
                 interface.mpls.ldp.interface = True
                 interface.mpls.ldp.igp_sync = True
 
-    def _get_channel_id(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem, node_data: dict) -> int:
+    def _get_channel_id(
+        self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,
+        p2p_link: T_P2pLinksItem,
+        node_data: EosDesigns.CoreInterfaces.P2pLinksItem.PortChannel.NodesChildInterfacesItem
+        | EosDesigns.L3Edge.P2pLinksItem.PortChannel.NodesChildInterfacesItem,
+    ) -> int:
         """Returns a channel ID for one p2p_link."""
         if node_data.channel_id:
             return node_data.channel_id

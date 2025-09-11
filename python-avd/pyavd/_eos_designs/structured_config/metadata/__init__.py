@@ -13,9 +13,10 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
 
 from .cv_pathfinder import CvPathfinderMixin
 from .cv_tags import CvTagsMixin
+from .digital_twin import DigitalTwinMixin
 
 
-class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, StructuredConfigGeneratorProtocol, Protocol):
+class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, DigitalTwinMixin, StructuredConfigGeneratorProtocol, Protocol):
     """Protocol for the AvdStructuredConfigMetadata Class."""
 
     ignore_avd_eos_designs_enforce_duplication_checks_across_all_models = True
@@ -24,6 +25,7 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Struct
     def metadata(self) -> None:
         self.structured_config.metadata._update(
             platform=self.shared_utils.platform,
+            is_deployed=self.inputs.is_deployed,
             system_mac_address=self.shared_utils.system_mac_address,
             rack=self.shared_utils.node_config.rack,
             pod_name=self.inputs.pod_name,
@@ -32,6 +34,8 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Struct
         )
         self._set_cv_tags()
         self._set_cv_pathfinder()
+        if self.shared_utils.digital_twin:
+            self._set_digital_twin()
 
 
 class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfigMetadataProtocol):
@@ -68,7 +72,8 @@ class AvdStructuredConfigMetadata(StructuredConfigGenerator, AvdStructuredConfig
                     }
                 ]
             },
-            "cv_pathfinder": {<see schema for model>}
+            "cv_pathfinder": {<see schema for model>},
+            "digital_twin": {<see schema for model>}
         }
     }.
     """

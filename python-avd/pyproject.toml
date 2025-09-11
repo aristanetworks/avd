@@ -24,6 +24,7 @@ dependencies = [
     "cryptography>=38.0.4",
     "deepmerge>=1.1.0",
     "Jinja2>=3.0",
+    "PyYAML>=6.0.0",
     "requests>=2.27.0",
 ]
 
@@ -34,15 +35,14 @@ repository = "https://github.com/aristanetworks/avd"
 [dependency-groups]
 pytest = [
     "ansible-core>=2.16.0,<2.19.0",
-    "anta>=1.3.0",
+    "anta>=1.5.0",
     "pytest",
     "pytest-asyncio",
-    "PyYAML>=6.0.0",
     "pydantic>=2.3.0",
     "referencing>=0.35.0",
 ]
 coverage = [
-    "coverage[toml]",
+    "coverage[toml]==7.10.6",
 ]
 
 [project.optional-dependencies]
@@ -51,10 +51,9 @@ ansible = [
     "pyavd[ansible-collection]",
 ]
 ansible-collection = [
-    "anta>=1.3.0",
+    "anta>=1.5.0",
     "cvprac>=1.4.0",
     "netaddr>=0.7.19",
-    "PyYAML>=6.0.0",
     "treelib>=1.5.5",
     # jsonschema is required for the arista.cvp Ansible collection
     "jsonschema>=3.2.0",
@@ -75,7 +74,7 @@ requires = [
     "pydantic>=2.3.0",
     "cryptography>=38.0.4",
     "aristaproto>=0.1.1",
-    "ruff==0.11.8",
+    "ruff==0.12.12",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
@@ -117,6 +116,7 @@ extend_skip_glob = [
 
 [tool.coverage.run]
 branch = true
+parallel = true
 
 [tool.coverage.report]
 show_missing = true
@@ -144,6 +144,8 @@ exclude_also = [
     "@(abc\\.)?abstractmethod",
     # Don't complain about TYPE_CHECKING blocks
     "if TYPE_CHECKING:",
+    # Ignore typing overloads
+    "@overload",
     # Don't complain about Jinja2 internalcode
     # Note that except KeyError is a bit sad but this is the pattern
     "except KeyError:",
@@ -161,6 +163,7 @@ extend = "../pyproject.toml"
 [tool.pytest.ini_options]
 markers = [
     "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios.",
+    "digital_twin_molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios executed in digital_twin mode.",
 ]
 asyncio_default_fixture_loop_scope = "function"
 

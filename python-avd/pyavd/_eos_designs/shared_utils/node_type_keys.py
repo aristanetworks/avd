@@ -63,6 +63,7 @@ L2LS_DEFAULT_NODE_TYPE_KEYS = [
         },
         "default_overlay_routing_protocol": "none",
         "default_underlay_routing_protocol": "none",
+        "cv_tags_topology_type": "spine",
     },
     {
         "key": "spine",
@@ -74,6 +75,7 @@ L2LS_DEFAULT_NODE_TYPE_KEYS = [
         },
         "underlay_router": False,
         "uplink_type": "port-channel",
+        "cv_tags_topology_type": "spine",
     },
     {
         "key": "leaf",
@@ -85,6 +87,7 @@ L2LS_DEFAULT_NODE_TYPE_KEYS = [
         },
         "underlay_router": False,
         "uplink_type": "port-channel",
+        "cv_tags_topology_type": "leaf",
     },
 ]
 
@@ -137,6 +140,7 @@ DEFAULT_NODE_TYPE_KEYS = {
             },
             "underlay_router": False,
             "uplink_type": "port-channel",
+            "cv_tags_topology_type": "spine",
         },
         {
             "key": "super_spine",

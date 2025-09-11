@@ -37,6 +37,15 @@ keys:
                 type: int
                 convert_types:
                   - str
+              encapsulations:
+                type: dict
+                keys:
+                  ipv4:
+                    type: bool
+                    description: Use IPv4 for VXLAN Encapsulation.
+                  ipv6:
+                    type: bool
+                    description: Use IPv6 for VXLAN Encapsulation.
               vtep_to_vtep_bridging:
                 type: bool
                 description: Enable bridging between different VTEPs in vxlan overlay.
@@ -77,6 +86,12 @@ keys:
                       Enable copying the ECN marking to/from encapsulated packets.
                   map_dscp_to_traffic_class_decapsulation:
                     type: bool
+                  dscp_ecn:
+                    type: dict
+                    keys:
+                      rewrite_bridged_enabled:
+                        type: bool
+                        description: Enable DSCP and ECN rewrite for VXLAN bridged packets.
               vlan_range:
                 type: dict
                 description: |-
@@ -119,6 +134,9 @@ keys:
                       items:
                         type: str
                         description: Remote VTEP IP Address.
+                    flood_group:
+                      type: str
+                      description: Flood multicast group address.
               vrfs:
                 type: list
                 primary_key: name
@@ -136,7 +154,31 @@ keys:
                         - str
                     multicast_group:
                       type: str
-                      description: IP Multicast Group Address.
+                      description: Default IP Multicast Group Address for the VRF.
+                    multicast_group_encap_range:
+                      type: str
+                      description: |-
+                        N:M mapping, the overlay groups in the VRF are mapped to one of
+                        the underlay groups defined within the encap range.
+                        The format is X.X.X.X/YY (IPv4 multicast group with prefix length between 19 and 32).
+                        Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group` is required for this feature to work.
+                        See the TOI at https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups
+                    multicast_groups:
+                      type: list
+                      primary_key: overlay_group
+                      description: |-
+                        List of 1:1 mappings where each configured overlay multicast group is mapped
+                        directly to the specified underlay multicast group.
+                      items:
+                        type: dict
+                        keys:
+                          overlay_group:
+                            type: str
+                            description: Overlay multicast group.
+                          encap:
+                            type: str
+                            required: true
+                            description: Underlay multicast group.
               flood_vteps:
                 type: list
                 items:

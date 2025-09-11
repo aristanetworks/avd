@@ -31,12 +31,20 @@ class PrefixListsMixin(Protocol):
         if not self.shared_utils.is_wan_router and (not self.shared_utils.underlay_bgp or self.shared_utils.overlay_routing_protocol == "none"):
             return
 
+        if self.shared_utils.underlay_ipv6_numbered:
+            return
+
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY
         sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
         for index, network in enumerate(collapse_addresses(get_ipv4_networks_from_pool(self.shared_utils.loopback_ipv4_pool)), start=1):
             sequence_numbers.append_new(sequence=index * 10, action=f"permit {network} eq 32")
 
-        if self.shared_utils.overlay_vtep and self.shared_utils.vtep_loopback.lower() != "loopback0" and not self.shared_utils.is_wan_router:
+        if (
+            self.shared_utils.overlay_vtep
+            and self.shared_utils.vtep_loopback.lower() != "loopback0"
+            and not self.shared_utils.is_wan_router
+            and self.shared_utils.vtep_loopback_ipv4_pool
+        ):
             for index, network in enumerate(
                 collapse_addresses(get_ipv4_networks_from_pool(self.shared_utils.vtep_loopback_ipv4_pool)), start=len(sequence_numbers) + 1
             ):
@@ -46,6 +54,14 @@ class PrefixListsMixin(Protocol):
             sequence_numbers.append_new(sequence=(len(sequence_numbers) + 1) * 10, action=f"permit {self.inputs.vtep_vvtep_ip}")
 
         self.structured_config.prefix_lists.append_new(name="PL-LOOPBACKS-EVPN-OVERLAY", sequence_numbers=sequence_numbers)
+
+        # IPv4 - PL-DPS-WAN-OVERLAY - Prefix list distributes DPS VTEPs from WAN to LAN.
+        # Not bundled with LOOPBACKS prefix list to avoid tagging DPS VTEPs with SOO, to prevent
+        # DPS VTEPs from being redistributed within WAN overlay directly.
+        if self.shared_utils.evpn_wan_gateway:
+            sequence_numbers_dps = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
+            sequence_numbers_dps.append_new(sequence=(len(sequence_numbers_dps) + 1) * 10, action=f"permit {self.shared_utils.vtep_ip}/32 eq 32")
+            self.structured_config.prefix_lists.append_new(name="PL-DPS-WAN-OVERLAY", sequence_numbers=sequence_numbers_dps)
 
         if self.shared_utils.underlay_multicast_rp_interfaces is not None:
             sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
@@ -101,5 +117,10 @@ class PrefixListsMixin(Protocol):
         # IPv6 - PL-LOOPBACKS-EVPN-OVERLAY-V6
         sequence_numbers = EosCliConfigGen.Ipv6PrefixListsItem.SequenceNumbers()
         for index, network in enumerate(collapse_addresses(get_ipv6_networks_from_pool(self.shared_utils.loopback_ipv6_pool)), start=1):
-            sequence_numbers.append_new(sequence=index * 10, action=f"permit {network} eq 128")
+            sequence_numbers.append_new(sequence=index * 10, action=f"permit {network} eq {self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length}")
+        if self.shared_utils.overlay_vtep and self.shared_utils.underlay_ipv6_numbered:
+            for index, network in enumerate(
+                collapse_addresses(get_ipv6_networks_from_pool(self.shared_utils.vtep_loopback_ipv6_pool)), start=len(sequence_numbers) + 1
+            ):
+                sequence_numbers.append_new(sequence=index * 10, action=f"permit {network} eq {self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length}")
         self.structured_config.ipv6_prefix_lists.append_new(name="PL-LOOPBACKS-EVPN-OVERLAY-V6", sequence_numbers=sequence_numbers)

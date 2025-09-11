@@ -10,6 +10,9 @@ title: Ansible Collection Role dhcp_provisioner
 
 # dhcp_provisioner
 
+!!! warning "Deprecation Warning"
+    The role `arista.avd.dhcp_provisioner` has been deprecated and will be removed in AVD version 6.0.0.
+
 ## Overview
 
 **dhcp_provisioner** is a role to build and deploy a DHCP configuration file to support Zero Touch Provisioning with Arista EOS devices.
@@ -19,6 +22,10 @@ title: Ansible Collection Role dhcp_provisioner
 
 - `Offline` mode let you generate a configuration you can apply on your DHCP server after carefully reviewing it.
 - `Online` mode lets you generate and push configuration to CloudVision, RHEL, or Ubuntu-based Linux systems.
+
+!!! Note
+    The role cannot automatically generate the ZTP bootstrap URL when using `cv_settings` in AVD.
+    Set `ztp_bootstrap_file` instead.
 
 ## Role requirements
 
@@ -55,6 +62,7 @@ all:
 - **`ztp_lease_time`**: Maximum lease time before devices lose IP. Renewal is max/2 (default is 300 sec).
 - **`ztp_mac_source`**: Define which mac-address field is used for identification: interface mac-address (`interface`) or system-mac-address (`system`). Default: `system`
 - **`ztp_mode`**: Define how role works either `offline` or `online` (Default `offline`).
+- **`ztp_bootstrap_file`**: URL to set as boot-file option (Default `http://<cvp_instance_ips[0]>/ztp/bootstrap`).
 - **`avd_dhcp_provisioner_provision`**: Run `arista.cvp.dhcp_configuration` in either online or offline mode (Default `true`).
 
 *Example*:

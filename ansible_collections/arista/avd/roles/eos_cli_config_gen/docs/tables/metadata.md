@@ -8,6 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>metadata</samp>](## "metadata") | Dictionary |  |  |  | The data under `metadata` is used for documentation, validation or integration purposes.<br>It will not affect the generated EOS configuration. |
+    | [<samp>&nbsp;&nbsp;is_deployed</samp>](## "metadata.is_deployed") | Boolean |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;platform</samp>](## "metadata.platform") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;system_mac_address</samp>](## "metadata.system_mac_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;rack</samp>](## "metadata.rack") | String |  |  |  |  |
@@ -122,6 +123,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user_defined_applications</samp>](## "metadata.cv_pathfinder.applications.categories.user_defined_applications") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_pathfinder.applications.categories.user_defined_applications.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;category</samp>](## "metadata.cv_pathfinder.applications.categories.user_defined_applications.[].category") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;digital_twin</samp>](## "metadata.digital_twin") | Dictionary |  |  |  | Metadata used to generate Digital Twin topology. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;environment</samp>](## "metadata.digital_twin.environment") | String |  |  | Valid Values:<br>- <code>act</code> | Targeted Digital Twin environment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;node_type</samp>](## "metadata.digital_twin.node_type") | String |  |  |  | Digital Twin's internal device type used for deploying a replica of the fabric device.<br>Possible values depend on the target Digital Twin environment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_addr</samp>](## "metadata.digital_twin.ip_addr") | String |  |  |  | Management IPv4_address/Mask assigned to a replica of the fabric device within the Digital Twin environment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "metadata.digital_twin.version") | String |  |  |  | OS version used for deploying a replica of the fabric device within the Digital Twin environment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "metadata.digital_twin.username") | String |  |  |  | Local username assigned to a replica of the fabric device within the Digital Twin environment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "metadata.digital_twin.password") | String |  |  |  | Local password assigned to a replica of the fabric device within the Digital Twin environment. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;internet_access</samp>](## "metadata.digital_twin.internet_access") | Boolean |  |  |  | Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.<br>This option applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node types.<br>ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default. |
     | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used only for documentation and deployment purposes. It is used by the 'eos_config_deploy_cvp' and 'cv_deploy' roles. |
 
 === "YAML"
@@ -130,6 +139,9 @@
     # The data under `metadata` is used for documentation, validation or integration purposes.
     # It will not affect the generated EOS configuration.
     metadata:
+
+      # Key only used for documentation or validation purposes.
+      is_deployed: <bool>
       platform: <str>
       system_mac_address: <str>
       rack: <str>
@@ -246,6 +258,33 @@
             user_defined_applications:
               - name: <str>
                 category: <str>
+
+      # Metadata used to generate Digital Twin topology.
+      digital_twin:
+
+        # Targeted Digital Twin environment.
+        environment: <str; "act">
+
+        # Digital Twin's internal device type used for deploying a replica of the fabric device.
+        # Possible values depend on the target Digital Twin environment.
+        node_type: <str>
+
+        # Management IPv4_address/Mask assigned to a replica of the fabric device within the Digital Twin environment.
+        ip_addr: <str>
+
+        # OS version used for deploying a replica of the fabric device within the Digital Twin environment.
+        version: <str>
+
+        # Local username assigned to a replica of the fabric device within the Digital Twin environment.
+        username: <str>
+
+        # Local password assigned to a replica of the fabric device within the Digital Twin environment.
+        password: <str>
+
+        # Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+        # This option applies only to the `cloudeos` and `veos` node types and will be ignored for all other ACT node types.
+        # ACT does not provide direct Internet access to `cloudeos` or `veos` devices by default.
+        internet_access: <bool>
 
     # Serial Number of the device.
     # Used only for documentation and deployment purposes. It is used by the 'eos_config_deploy_cvp' and 'cv_deploy' roles.

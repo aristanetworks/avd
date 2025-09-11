@@ -5,6 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [IP Name Servers](#ip-name-servers)
+  - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
@@ -85,6 +86,20 @@ ip name-server vrf MGMT 8.8.4.4
 ip name-server vrf MGMT 8.8.8.8
 ```
 
+### Domain Lookup
+
+#### DNS Domain Lookup Summary
+
+| Source interface | vrf |
+| ---------------- | --- |
+| Management0 | MGMT |
+
+#### DNS Domain Lookup Device Configuration
+
+```eos
+ip domain lookup vrf MGMT source-interface Management0
+```
+
 ### NTP
 
 #### NTP Summary
@@ -146,12 +161,14 @@ management api http-commands
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
 | admin | 15 | network-admin | False | - |
+| arista | 15 | network-admin | False | - |
 
 #### Local Users Device Configuration
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 <removed>
+username admin privilege 15 role network-admin nopassword
+username arista privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ### Enable Password
@@ -1506,56 +1523,56 @@ ip route vrf MGMT 0.0.0.0/0 172.16.100.1
 
 #### 802.1X Interfaces
 
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
-| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ |
-| Ethernet1 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet2 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet3 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet4 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet5 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet6 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet7 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet8 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet9 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet10 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet11 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet12 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet13 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet14 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet15 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet16 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet17 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet18 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet19 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet20 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet21 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet22 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet23 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet24 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet25 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet26 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet27 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet28 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet29 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet30 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet31 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet32 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet33 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet34 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet35 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet36 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet37 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet38 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet39 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet40 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet41 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet42 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet43 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet44 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet45 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet46 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet47 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
-| Ethernet48 | authenticator | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Interface | PAE Mode | Supplicant Profile | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
+| --------- | -------- | ------------------ | ----- | ---------------------- | ---------------- | ------------------- | --------- | -------------- | ----- |
+| Ethernet1 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet2 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet3 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet4 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet5 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet6 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet7 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet8 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet9 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet10 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet11 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet12 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet13 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet14 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet15 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet16 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet17 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet18 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet19 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet20 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet21 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet22 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet23 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet24 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet25 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet26 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet27 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet28 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet29 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet30 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet31 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet32 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet33 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet34 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet35 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet36 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet37 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet38 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet39 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet40 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet41 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet42 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet43 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet44 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet45 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet46 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet47 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
+| Ethernet48 | authenticator | - | auto | - | True | allow vlan 130 | multi-host | True | - |
 
 ## VRF Instances
 

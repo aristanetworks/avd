@@ -24,6 +24,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;phone</samp>](## "ethernet_interfaces.[].phone") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>switchport.phone</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "ethernet_interfaces.[].phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>tagged phone</code><br>- <code>untagged</code><br>- <code>untagged phone</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "ethernet_interfaces.[].phone.vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;arp_gratuitous_accept</samp>](## "ethernet_interfaces.[].arp_gratuitous_accept") | Boolean |  |  |  | Accept gratuitous ARP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_protocol</samp>](## "ethernet_interfaces.[].l2_protocol") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "ethernet_interfaces.[].l2_protocol.encapsulation_dot1q_vlan") | Integer |  |  |  | Vlan tag to configure on sub-interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forwarding_profile</samp>](## "ethernet_interfaces.[].l2_protocol.forwarding_profile") | String |  |  |  | L2 protocol forwarding profile. |
@@ -194,6 +195,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sparse_mode</samp>](## "ethernet_interfaces.[].pim.ipv4.sparse_mode") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "ethernet_interfaces.[].pim.ipv4.bfd") | Boolean |  |  |  | Set the default for whether Bidirectional Forwarding Detection is enabled for PIM. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bidirectional</samp>](## "ethernet_interfaces.[].pim.ipv4.bidirectional") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor_filter</samp>](## "ethernet_interfaces.[].pim.ipv4.neighbor_filter") | String |  |  |  | Standard access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hello</samp>](## "ethernet_interfaces.[].pim.ipv4.hello") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "ethernet_interfaces.[].pim.ipv4.hello.count") | String |  |  |  | Number of missed hellos after which the neighbor expires. Range <1.5-65535>. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "ethernet_interfaces.[].pim.ipv4.hello.interval") | Integer |  |  | Min: 1<br>Max: 65535 | PIM hello interval in seconds. |
@@ -201,8 +203,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "ethernet_interfaces.[].mac_security.profile") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ntp_serve</samp>](## "ethernet_interfaces.[].ntp_serve") | Boolean |  |  |  | Enable/disable serving NTP to clients. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tcp_mss_ceiling</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling") | Dictionary |  |  |  | The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header<br>of TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_segment_size</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.ipv4_segment_size") | Integer |  |  | Min: 64<br>Max: 65475 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_segment_size</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.ipv6_segment_size") | Integer |  |  | Min: 64<br>Max: 65475 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_segment_size</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.ipv4_segment_size") <span style="color:red">deprecated</span> | Integer |  |  | Min: 64<br>Max: 65475 | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ipv4</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.ipv4") | Integer |  |  | Min: 64<br>Max: 65475 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_segment_size</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.ipv6_segment_size") <span style="color:red">deprecated</span> | Integer |  |  | Min: 64<br>Max: 65475 | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ipv6</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.ipv6") | Integer |  |  | Min: 64<br>Max: 65475 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.direction") | String |  |  | Valid Values:<br>- <code>egress</code><br>- <code>ingress</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;channel_group</samp>](## "ethernet_interfaces.[].channel_group") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "ethernet_interfaces.[].channel_group.id") | Integer |  |  |  |  |
@@ -331,7 +335,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control_force_authorized_phone</samp>](## "ethernet_interfaces.[].dot1x.port_control_force_authorized_phone") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauthentication</samp>](## "ethernet_interfaces.[].dot1x.reauthentication") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pae</samp>](## "ethernet_interfaces.[].dot1x.pae") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].dot1x.pae.mode") | String |  |  | Valid Values:<br>- <code>authenticator</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].dot1x.pae.mode") | String |  |  | Valid Values:<br>- <code>authenticator</code><br>- <code>supplicant</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supplicant_profile</samp>](## "ethernet_interfaces.[].dot1x.pae.supplicant_profile") | String |  |  |  | Supplicant profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication_failure</samp>](## "ethernet_interfaces.[].dot1x.authentication_failure") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "ethernet_interfaces.[].dot1x.authentication_failure.action") | String |  |  | Valid Values:<br>- <code>allow</code><br>- <code>drop</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vlan</samp>](## "ethernet_interfaces.[].dot1x.authentication_failure.allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
@@ -422,6 +427,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;frequency_unit</samp>](## "ethernet_interfaces.[].transceiver.frequency_unit") | String |  |  | Valid Values:<br>- <code>ghz</code> | Unit of Transceiver Laser Frequency. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;media</samp>](## "ethernet_interfaces.[].transceiver.media") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.media.override") | String |  |  |  | Transceiver type. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override</samp>](## "ethernet_interfaces.[].transceiver.application_override") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>1</code><br>- <code>2</code><br>- <code>3</code><br>- <code>4</code><br>- <code>5</code><br>- <code>6</code><br>- <code>7</code><br>- <code>8</code><br>- <code>9</code><br>- <code>10</code><br>- <code>11</code><br>- <code>12</code><br>- <code>13</code><br>- <code>14</code><br>- <code>15</code><br>- <code>100gbase-srbd</code> | Set CMIS transceiver application.<br>'100gbase-srbd' should not be used in conjunction with `application_override_lanes`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_override_lanes</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes") | List, items: Dictionary |  |  |  | Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;override</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes.[].override") | Integer | Required |  | Min: 0<br>Max: 15 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_lane</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes.[].first_lane") | Integer | Required |  | Min: 1<br>Max: 8 | Set the start value of host lanes for which overrides should be applied. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_lane</samp>](## "ethernet_interfaces.[].transceiver.application_override_lanes.[].last_lane") | Integer |  |  | Min: 1<br>Max: 8 | Set the last value of host lanes for which overrides should be applied. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_proxy_arp</samp>](## "ethernet_interfaces.[].ip_proxy_arp") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "ethernet_interfaces.[].traffic_policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;input</samp>](## "ethernet_interfaces.[].traffic_policy.input") | String |  |  |  | Ingress traffic policy. |
@@ -465,6 +475,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weight</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect.ecn.threshold.weight") | Integer |  |  | Min: 0<br>Max: 15 | Set the random-detect ECN weight. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tx_queues</samp>](## "ethernet_interfaces.[].tx_queues") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "ethernet_interfaces.[].tx_queues.[].id") | Integer | Required, Unique |  |  | TX-Queue ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scheduler_profile_responsive</samp>](## "ethernet_interfaces.[].tx_queues.[].scheduler_profile_responsive") | Boolean |  |  |  | Set scheduler profile to optimize latency at the expense of burstiness. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;random_detect</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn") | Dictionary |  |  |  | Explicit Congestion Notification. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn.count") | Boolean |  |  |  | Enable counter for random-detect ECNs. |
@@ -493,14 +504,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "ethernet_interfaces.[].vrrp_ids.[].tracked_object.[].shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv4.address") | String | Required |  |  | Virtual IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secondary_addresses</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv4.secondary_addresses") | List, items: String |  |  |  | Additional VRRP IPv4 addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv4.secondary_addresses.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv4.version") | Integer |  |  | Valid Values:<br>- <code>2</code><br>- <code>3</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv6") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv6.address") | String | Required |  |  | Virtual IPv6 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv6.address") <span style="color:red">deprecated</span> | String |  |  |  | Virtual IPv6 address.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>addresses</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv6.addresses") | List, items: String |  |  |  | Virtual IPv6 addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].vrrp_ids.[].ipv6.addresses.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_authentication</samp>](## "ethernet_interfaces.[].vrrp_ids.[].peer_authentication") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].vrrp_ids.[].peer_authentication.mode") | String | Required |  | Valid Values:<br>- <code>text</code><br>- <code>ietf-md5</code> | Authentication mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "ethernet_interfaces.[].vrrp_ids.[].peer_authentication.key") | String | Required |  |  | Authentication key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "ethernet_interfaces.[].vrrp_ids.[].peer_authentication.key_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> | Authentication key type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "ethernet_interfaces.[].validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `eos_validate_state` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "ethernet_interfaces.[].validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switchport</samp>](## "ethernet_interfaces.[].switchport") | Dictionary |  |  |  | This should not be combined with `ethernet_interfaces[].type = switched/routed`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ethernet_interfaces.[].switchport.enabled") | Boolean |  |  |  | Warning: This should not be combined with `ethernet_interfaces[].type = routed`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].switchport.mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> | Warning: This should not be combined with `ethernet_interfaces[].mode`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "ethernet_interfaces.[].switchport.mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code><br>- <code>tap</code><br>- <code>tool</code><br>- <code>tap-tool</code> | Warning: This should not be combined with `ethernet_interfaces[].mode`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_vlan</samp>](## "ethernet_interfaces.[].switchport.access_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Set VLAN when interface is in access mode.<br>Warning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel` and `ethernet_interface[].vlans`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "ethernet_interfaces.[].switchport.trunk") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allowed_vlan</samp>](## "ethernet_interfaces.[].switchport.trunk.allowed_vlan") | String |  |  |  | VLAN ID or range(s) of VLAN IDs.<br>Warning: This should not be combined with `ethernet_interfaces[].mode = trunk` and `ethernet_interface[].vlans`. |
@@ -613,7 +632,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ethernet_interfaces.[].traffic_engineering.enabled") | Boolean |  |  |  | Whether to enable traffic-engineering on this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;administrative_groups</samp>](## "ethernet_interfaces.[].traffic_engineering.administrative_groups") | List, items: String |  |  |  | List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single integers 0-127. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].traffic_engineering.administrative_groups.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;srlg</samp>](## "ethernet_interfaces.[].traffic_engineering.srlg") | String |  |  |  | SRLG name or number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;srlgs</samp>](## "ethernet_interfaces.[].traffic_engineering.srlgs") | List, items: String |  |  |  | List of SRLGs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].traffic_engineering.srlgs.[]") | String |  |  |  | SRLG name or number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;srlg</samp>](## "ethernet_interfaces.[].traffic_engineering.srlg") <span style="color:red">deprecated</span> | String |  |  |  | SRLG name or number.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>srlgs</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric</samp>](## "ethernet_interfaces.[].traffic_engineering.metric") | Integer |  |  | Min: 1<br>Max: 16777215 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bandwidth</samp>](## "ethernet_interfaces.[].traffic_engineering.bandwidth") | Dictionary |  |  |  | Interface maximum reservable bandwidth. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number</samp>](## "ethernet_interfaces.[].traffic_engineering.bandwidth.number") | Integer | Required |  | Min: 0<br>Max: 10000 |  |
@@ -656,28 +677,31 @@
         # For an access port this would be a single vlan "123".
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.access_vlan or switchport.trunk.allowed_vlan</samp> instead.
+        # Use `switchport.access_vlan` or `switchport.trunk.allowed_vlan` instead.
         vlans: <str>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.trunk.native_vlan</samp> instead.
+        # Use `switchport.trunk.native_vlan` instead.
         native_vlan: <int>
 
         # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.trunk.native_vlan_tag</samp> instead.
+        # Use `switchport.trunk.native_vlan_tag` instead.
         native_vlan_tag: <bool>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.mode</samp> instead.
+        # Use `switchport.mode` instead.
         mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone">
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.phone</samp> instead.
+        # Use `switchport.phone` instead.
         phone:
           trunk: <str; "tagged" | "tagged phone" | "untagged" | "untagged phone">
           vlan: <int; 1-4094>
+
+        # Accept gratuitous ARP.
+        arp_gratuitous_accept: <bool>
         l2_protocol:
 
           # Vlan tag to configure on sub-interface.
@@ -692,7 +716,7 @@
         mac_timestamp: <str; "before-fcs" | "replace-fcs" | "header">
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.trunk.groups</samp> instead.
+        # Use `switchport.trunk.groups` instead.
         trunk_groups:
           - <str>
 
@@ -781,7 +805,7 @@
         # VLAN tag to configure on sub-interface.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>encapsulation_dot1q.vlan</samp> instead.
+        # Use `encapsulation_dot1q.vlan` instead.
         encapsulation_dot1q_vlan: <int>
 
         # Warning: `encapsulation_dot1q` should not be combined with `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.
@@ -1042,6 +1066,9 @@
             # Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
             bfd: <bool>
             bidirectional: <bool>
+
+            # Standard access list name.
+            neighbor_filter: <str>
             hello:
 
               # Number of missed hellos after which the neighbor expires. Range <1.5-65535>.
@@ -1058,8 +1085,16 @@
         # The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header
         # of TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.
         tcp_mss_ceiling:
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use `ipv4` instead.
           ipv4_segment_size: <int; 64-65475>
+          ipv4: <int; 64-65475>
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use `ipv6` instead.
           ipv6_segment_size: <int; 64-65475>
+          ipv6: <int; 64-65475>
           direction: <str; "egress" | "ingress">
         channel_group:
           id: <int>
@@ -1077,13 +1112,13 @@
         isis_hello_padding: <bool>
         # This key is deprecated.
         # Support will be removed in AVD version v6.0.0.
-        # Use <samp>isis_authentication.both.mode or isis_authentication.level_1.mode or isis_authentication.level_2.mode</samp> instead.
+        # Use `isis_authentication.both.mode` or `isis_authentication.level_1.mode` or `isis_authentication.level_2.mode` instead.
         isis_authentication_mode: <str; "text" | "md5">
 
         # Type-7 encrypted password.
         # This key is deprecated.
         # Support will be removed in AVD version v6.0.0.
-        # Use <samp>isis_authentication.both.key or isis_authentication.level_1.key or isis_authentication.level_2.key</samp> instead.
+        # Use `isis_authentication.both.key` or `isis_authentication.level_1.key` or `isis_authentication.level_2.key` instead.
         isis_authentication_key: <str>
 
         # This key should not be mixed with ethernet_interfaces[].isis_authentication_mode or ethernet_interfaces[].isis_authentication_key.
@@ -1309,17 +1344,17 @@
           ztp_vlan: <int>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.trunk.private_vlan_secondary</samp> instead.
+        # Use `switchport.trunk.private_vlan_secondary` instead.
         trunk_private_vlan_secondary: <bool>
 
         # List of vlans as string.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.pvlan_mapping</samp> instead.
+        # Use `switchport.pvlan_mapping` instead.
         pvlan_mapping: <str>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>switchport.vlan_translations</samp> instead.
+        # Use `switchport.vlan_translations` instead.
         vlan_translations:
 
             # List of vlans as string (only one vlan if direction is "both").
@@ -1335,7 +1370,10 @@
           port_control_force_authorized_phone: <bool>
           reauthentication: <bool>
           pae:
-            mode: <str; "authenticator">
+            mode: <str; "authenticator" | "supplicant">
+
+            # Supplicant profile name.
+            supplicant_profile: <str>
           authentication_failure:
             action: <str; "allow" | "drop">
             allow_vlan: <int; 1-4094>
@@ -1499,6 +1537,20 @@
 
             # Transceiver type.
             override: <str>
+
+          # Set CMIS transceiver application.
+          # '100gbase-srbd' should not be used in conjunction with `application_override_lanes`.
+          application_override: <str; "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12" | "13" | "14" | "15" | "100gbase-srbd">
+
+          # Set CMIS transceiver applications with lanes. The ranges of `lanes` should not overlap.
+          application_override_lanes:
+            - override: <int; 0-15; required>
+
+              # Set the start value of host lanes for which overrides should be applied.
+              first_lane: <int; 1-8; required>
+
+              # Set the last value of host lanes for which overrides should be applied.
+              last_lane: <int; 1-8>
         ip_proxy_arp: <bool>
         traffic_policy:
 
@@ -1588,6 +1640,9 @@
 
             # TX-Queue ID.
           - id: <int; required; unique>
+
+            # Set scheduler profile to optimize latency at the expense of burstiness.
+            scheduler_profile_responsive: <bool>
             random_detect:
 
               # Explicit Congestion Notification.
@@ -1650,11 +1705,32 @@
 
               # Virtual IPv4 address.
               address: <str; required>
+
+              # Additional VRRP IPv4 addresses.
+              secondary_addresses:
+                - <str>
               version: <int; 2 | 3>
             ipv6:
 
               # Virtual IPv6 address.
-              address: <str; required>
+              # This key is deprecated.
+              # Support will be removed in AVD version 6.0.0.
+              # Use `addresses` instead.
+              address: <str>
+
+              # Virtual IPv6 addresses.
+              addresses:
+                - <str>
+            peer_authentication:
+
+              # Authentication mode.
+              mode: <str; "text" | "ietf-md5"; required>
+
+              # Authentication key.
+              key: <str; required>
+
+              # Authentication key type.
+              key_type: <str; "0" | "7" | "8a">
 
         # Set to false to disable interface state and LLDP topology validation performed by the `eos_validate_state` role.
         validate_state: <bool>
@@ -1669,7 +1745,7 @@
           enabled: <bool>
 
           # Warning: This should not be combined with `ethernet_interfaces[].mode`.
-          mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone">
+          mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone" | "tap" | "tool" | "tap-tool">
 
           # Set VLAN when interface is in access mode.
           # Warning: This should not be combined with `ethernet_interfaces[].mode = access/dot1q-tunnel` and `ethernet_interface[].vlans`.
@@ -1980,7 +2056,16 @@
           administrative_groups:
             - <str>
 
+          # List of SRLGs.
+          srlgs:
+
+              # SRLG name or number.
+            - <str>
+
           # SRLG name or number.
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use `srlgs` instead.
           srlg: <str>
           metric: <int; 1-16777215>
 

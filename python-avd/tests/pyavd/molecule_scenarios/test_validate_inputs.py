@@ -11,6 +11,7 @@ from tests.models import MoleculeHost
 
 # eos_cli_config_gen inputs are validated by `validate_structured_config` in another file.
 @pytest.mark.molecule_scenarios(
+    "digital_twin",
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
     "eos_designs-l2ls",
@@ -26,6 +27,7 @@ from tests.models import MoleculeHost
     "example-isis-ldp-ipvpn",
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
+    "example-single-dc-l3ls-ipv6",
 )
 def test_validate_inputs_with_valid_inputs(molecule_host: MoleculeHost) -> None:
     """Test validate_inputs."""

@@ -1,9 +1,20 @@
+# Test the new anta_ variables for connection settings
+anta_user: anta
+anta_password: anta
+anta_enable_mode: true
+anta_enable_password: anta
+anta_port: 443
+anta_use_ssl: true
+
 # Custom router bgp structured_config to test external BGP peer
 custom_structured_configuration_router_bgp:
   neighbors:
     - ip_address: 10.1.1.1
       description: External peer
       peer_group: EVPN-OVERLAY-PEERS
+  neighbor_interfaces:
+    - name: Ethernet1
+      remote_as: "577"
 
 # Custom router path selection structured_config to test negative case for STUN client test case
 custom_structured_configuration_router_path_selection:
@@ -16,6 +27,10 @@ custom_structured_configuration_router_path_selection:
       id: 210
       local_interfaces:
         - name: Ethernet3
+
+# Custom router adaptive virtual topology structured_config to test skip the anta test VerifyAVTSpecificPath for empty static peers
+custom_structured_configuration_router_adaptive_virtual_topology:
+  topology_role: edge
 
 # Custom inputs for the hardware tests
 accepted_xcvr_manufacturers:

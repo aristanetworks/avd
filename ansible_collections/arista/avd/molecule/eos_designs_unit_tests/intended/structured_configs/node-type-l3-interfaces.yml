@@ -53,9 +53,26 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
+- name: Ethernet44
+  description: Telecom_10220
+  shutdown: false
+  ip_address: 192.168.44.44/24
+  peer_type: l3_interface
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
+- name: Ethernet44.10
+  description: Telecom
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 10
+  ip_address: 192.168.44.45/24
+  peer_type: l3_interface
+  sflow:
+    enable: true
 hostname: node-type-l3-interfaces
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -66,6 +83,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY

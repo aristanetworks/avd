@@ -11,6 +11,7 @@ from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get
+from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
@@ -64,10 +65,14 @@ class MiscMixin(Protocol):
             id_from_pool = self.pool_manager.get_assignment(pool_type="node_id_pools", shared_utils=self, requested_value=node_id)
 
             if node_id is not None and node_id != id_from_pool:
-                msg = (
-                    "When 'fabric_numbering.node_id.algorithm' is set to 'pool_manager', any 'id' set for the node will be reserved in the pool if possible. "
-                    f"Unfortunately the 'id: {node_id}' is not available in the Node ID pool at this time. The 'id' setting must either be removed or changed. "
-                    f"If you prefer to keep the 'id' setting, the next available value is {id_from_pool}."
+                pool = self.pool_manager.get_pool(pool_type="node_id_pools", shared_utils=self)
+                msg = "When 'fabric_numbering.node_id.algorithm' is set to 'pool_manager', any 'id' set for the node will be reserved in the pool if possible."
+                if (assignment := pool.get_assignment_by_value(node_id)) is None:
+                    msg += f" The given 'id: {node_id}' is not a valid Node ID for the Pool Manager."
+                else:
+                    msg += f" The given 'id: {node_id}' is already assigned to '{assignment.key}'."
+                msg += (
+                    f" The 'id' setting must either be removed or changed. If you prefer to keep the 'id' setting, the next available value is {id_from_pool}."
                 )
                 raise AristaAvdInvalidInputsError(msg)
 
@@ -135,8 +140,6 @@ class MiscMixin(Protocol):
 
     @cached_property
     def p2p_uplinks_mtu(self: SharedUtilsProtocol) -> int | None:
-        if not self.platform_settings.feature_support.per_interface_mtu:
-            return None
         p2p_uplinks_mtu = default(self.platform_settings.p2p_uplinks_mtu, self.inputs.p2p_uplinks_mtu)
         return default(self.node_config.uplink_mtu, p2p_uplinks_mtu)
 
@@ -164,6 +167,29 @@ class MiscMixin(Protocol):
     @cached_property
     def evpn_multicast(self: SharedUtilsProtocol) -> bool:
         return self.switch_facts.evpn_multicast is True
+
+    def get_interface_mtu(self: SharedUtilsProtocol, interface_name: str, configured_mtu: int | None) -> int | None:
+        """Returns MTU value for the interface."""
+        if not self.platform_settings.feature_support.per_interface_mtu:
+            return None
+        if "." in interface_name and not self.platform_settings.feature_support.subinterface_mtu:
+            return None
+        return configured_mtu
+
+    def get_interface_sflow(self: SharedUtilsProtocol, interface: str, configured_sflow: bool | None) -> bool | None:
+        """
+        Get the configured sFlow state if the interface supports it based on platform settings.
+
+        Considers global sFlow support and specific support for subinterfaces.
+
+        Returns:
+            The configured_sflow value if supported, otherwise None.
+        """
+        sflow_supported_on_interface = self.platform_settings.feature_support.sflow and (
+            "." not in interface or self.platform_settings.feature_support.sflow_subinterfaces
+        )
+
+        return configured_sflow if sflow_supported_on_interface else None
 
     def get_ipv4_acl(
         self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None
@@ -386,3 +412,44 @@ class MiscMixin(Protocol):
         if not self.is_sfe_interface_profile_supported:
             return 0
         return self.platform_settings.feature_support.platform_sfe_interface_profile.max_rx_queues
+
+    @cached_property
+    def all_connected_endpoints(
+        self: SharedUtilsProtocol,
+    ) -> EosDesigns._DynamicKeys.DynamicConnectedEndpoints:
+        """Emit the complete list of connected_endpoints and custom_connected_endpoints, prioritizing custom_connected_endpoints."""
+        all_connected_endpoints = EosDesigns._DynamicKeys.DynamicConnectedEndpoints()
+        for connected_endpoint in self.inputs._dynamic_keys.custom_connected_endpoints:
+            connected_endpoint_item = connected_endpoint._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem)
+            connected_endpoint_item._internal_data.description = self.inputs.custom_connected_endpoints_keys[connected_endpoint.key].description
+            connected_endpoint_item._internal_data.type = self.inputs.custom_connected_endpoints_keys[connected_endpoint.key].type
+            all_connected_endpoints.append(connected_endpoint_item)
+
+        for connected_endpoint in self.inputs._dynamic_keys.connected_endpoints:
+            if connected_endpoint.key not in all_connected_endpoints:
+                connected_endpoint._internal_data.description = self.inputs.connected_endpoints_keys[connected_endpoint.key].description
+                connected_endpoint._internal_data.type = self.inputs.connected_endpoints_keys[connected_endpoint.key].type
+                all_connected_endpoints.append(connected_endpoint)
+
+        return all_connected_endpoints
+
+    def get_ipsec_key(self: SharedUtilsProtocol, cleartext_key: str, profile_name: str) -> str:
+        """
+        Return a type 7 encrypted shared key for IPsec.
+
+        Args:
+            cleartext_key: The cleartext key to encrypt
+            profile_name: The profile name to derive a salt deterministically
+
+        Returns:
+            str: type 7 encrypted key.
+        """
+        # Need to compute it deterministically
+        salt = sum(bytearray(profile_name, "ascii")) % 16
+
+        return simple_7_encrypt(cleartext_key, salt)
+
+    @cached_property
+    def is_campus_device(self: SharedUtilsProtocol) -> bool:
+        """Return True if generation of the Campus tags is globally enabled and current device is a Campus device."""
+        return bool(self.inputs.generate_cv_tags.campus_fabric and default(self.node_config.campus, self.inputs.campus))

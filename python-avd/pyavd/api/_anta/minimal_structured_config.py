@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from pyavd._utils import get
+from pyavd._utils import default, get
 
 
 @dataclass(frozen=True)
@@ -14,6 +14,7 @@ class MinimalEthernetInterface:
 
     name: str
     ip_address: str
+    shutdown: bool
 
 
 @dataclass(frozen=True)
@@ -30,7 +31,7 @@ def get_minimal_structured_configs(structured_configs: dict[str, dict]) -> dict[
     """
     Get a minimal version of structured configurations for all devices to generate tests.
 
-    Loaded in dataclasses and used in `pyavd.get_device_anta_catalog` to generate ANTA catalogs.
+    Loaded in dataclasses and used in `pyavd.get_device_test_catalog` to generate ANTA catalogs.
 
     Parameters
     ----------
@@ -48,15 +49,17 @@ def get_minimal_structured_configs(structured_configs: dict[str, dict]) -> dict[
     for device, structured_config in structured_configs.items():
         # Parse the Ethernet interfaces
         minimal_ethernet_interfaces = [
-            MinimalEthernetInterface(name=intf["name"], ip_address=intf_ip)
+            MinimalEthernetInterface(
+                name=intf["name"], ip_address=intf_ip, shutdown=get(intf, "shutdown", get(structured_config, "interface_defaults.ethernet.shutdown", False))
+            )
             for intf in get(structured_config, "ethernet_interfaces", default=[])
-            if (intf_ip := get(intf, "ip_address")) and intf_ip != "dhcp" and get(intf, "switchport.enabled") is False
+            if (intf_ip := get(intf, "ip_address")) and get(intf, "switchport.enabled") is False
         ]
 
         # Create the minimal structured configuration
         minimal_structured_configs[device] = MinimalStructuredConfig(
             hostname=structured_config["hostname"],
-            is_deployed=get(structured_config, "is_deployed", default=False),
+            is_deployed=default(get(structured_config, "metadata.is_deployed"), get(structured_config, "is_deployed", default=False)),
             dns_domain=get(structured_config, "dns_domain"),
             ethernet_interfaces=minimal_ethernet_interfaces,
         )

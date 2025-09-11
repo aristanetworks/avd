@@ -47,8 +47,8 @@ flow_tracking:
         on_interval: 300000
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
@@ -78,7 +78,6 @@ ip_security:
     mode: transport
   key_controller:
     profile: AUTOVPN
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -99,6 +98,7 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
@@ -277,7 +277,7 @@ router_path_selection:
   - name: default
     path_selection_policy: DEFAULT-POLICY-WITH-CP
   tcp_mss_ceiling:
-    ipv4_segment_size: auto
+    ipv4: auto
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none

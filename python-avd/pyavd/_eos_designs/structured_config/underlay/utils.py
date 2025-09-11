@@ -40,8 +40,10 @@ class UtilsMixin(Protocol):
         underlay_links = self.facts.uplinks._deepcopy()
 
         for uplink in underlay_links:
-            uplink.sflow_enabled = self.inputs.fabric_sflow.uplinks
+            uplink.sflow_enabled = self.shared_utils.get_interface_sflow(uplink.interface, self.inputs.fabric_sflow.uplinks)
             uplink.flow_tracking = self.inputs.fabric_flow_tracking.uplinks
+            if not self.shared_utils.platform_settings.feature_support.ptp:
+                uplink.ptp.enable = False
 
         downlinks_flow_tracking = (
             # Cast as uplink model since that is used in the facts' uplink which we reuse below model
@@ -73,17 +75,20 @@ class UtilsMixin(Protocol):
                     native_vlan=uplink.native_vlan,
                     trunk_groups=uplink.peer_trunk_groups._cast_as(EosDesignsFacts.UplinksItem.TrunkGroups),
                     bfd=uplink.bfd,
-                    ptp=uplink.ptp,
+                    ptp=uplink.ptp if self.shared_utils.platform_settings.feature_support.ptp else Undefined,
                     mac_security=uplink.mac_security,
                     short_esi=uplink.peer_short_esi,
                     mlag=uplink.peer_mlag,
                     underlay_multicast=uplink.underlay_multicast,
                     ipv6_enable=uplink.ipv6_enable,
-                    sflow_enabled=self.inputs.fabric_sflow.downlinks,
+                    sflow_enabled=self.shared_utils.get_interface_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
                     structured_config=uplink.structured_config,
+                    ethernet_structured_config=uplink.peer_ethernet_structured_config,
+                    port_channel_structured_config=uplink.peer_port_channel_structured_config,
                 )
+
                 if peer_facts.inband_ztp:
                     # l2 inband ztp
                     downlink.inband_ztp_vlan = peer_facts.inband_ztp_vlan
@@ -126,18 +131,26 @@ class UtilsMixin(Protocol):
     ) -> EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem:
         """Returns common structured_configuration for L3 interface or L3 Port-Channel."""
         # variables being set for constructing appropriate validation error
+        # Also set flow_tracker to avoid type checking issues.
         if isinstance(l3_generic_interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem):
-            interface = EosCliConfigGen.EthernetInterfacesItem()
+            interface = EosCliConfigGen.EthernetInterfacesItem(
+                flow_tracker=self.shared_utils.get_flow_tracker(l3_generic_interface.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
+            )
             schema_key = "l3_interfaces"
         else:
             # implies interface is "L3 Port-Channel"
-            interface = EosCliConfigGen.PortChannelInterfacesItem()
+            interface = EosCliConfigGen.PortChannelInterfacesItem(
+                flow_tracker=self.shared_utils.get_flow_tracker(l3_generic_interface.flow_tracking, EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
+            )
             schema_key = "l3_port_channels"
 
         # logic below is common to l3_interface and l3_port_channel interface types
 
+        # Check if the interface is a parent L3 Port-Channel with subinterfaces.
+        is_parent_l3_port_channel = schema_key == "l3_port_channels" and l3_generic_interface.name in self._l3_port_channels_with_subinterfaces
+
         # TODO: catch if ip_address is not valid or not dhcp
-        if not l3_generic_interface.ip_address:
+        if not l3_generic_interface.ip_address and not is_parent_l3_port_channel:
             msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}"
             msg += f"[name={l3_generic_interface.name}].ip_address"
             raise AristaAvdMissingVariableError(msg)
@@ -150,7 +163,6 @@ class UtilsMixin(Protocol):
             shutdown=not l3_generic_interface.enabled,
             service_profile=l3_generic_interface.qos_profile,
             eos_cli=l3_generic_interface.raw_eos_cli,
-            flow_tracker=self.shared_utils.get_flow_tracker(l3_generic_interface.flow_tracking, interface.FlowTracker),
         )
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 
@@ -181,7 +193,7 @@ class UtilsMixin(Protocol):
                     if svi.id not in vlans:
                         continue
 
-                    interfaces.append(self._get_l2_as_subint(link, svi, vrf))
+                    interfaces.append(self._get_l2_as_subint(link, svi, vrf, tenant))
 
         # If we have the main interface covered, we can just remove it from the list and return as main interface.
         # Otherwise we return an almost empty dict as the main interface since it was already covered by the calling function.
@@ -191,10 +203,14 @@ class UtilsMixin(Protocol):
             del interfaces[link.interface]
         else:
             main_interface = EosCliConfigGen.EthernetInterfacesItem(
-                switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False), mtu=self.shared_utils.p2p_uplinks_mtu
+                switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False),
+                mtu=self.shared_utils.get_interface_mtu(link.interface, self.shared_utils.p2p_uplinks_mtu),
             )
 
-        if (mtu := default(main_interface.mtu, 1500)) != self.shared_utils.p2p_uplinks_mtu:
+        if (
+            self.shared_utils.platform_settings.feature_support.per_interface_mtu
+            and (mtu := default(main_interface.mtu, 1500)) != self.shared_utils.p2p_uplinks_mtu
+        ):
             msg = (
                 f"MTU '{self.shared_utils.p2p_uplinks_mtu}' set for 'p2p_uplinks_mtu' conflicts with MTU '{mtu}' "
                 f"set on SVI for uplink_native_vlan '{link.native_vlan}'."
@@ -208,6 +224,7 @@ class UtilsMixin(Protocol):
         link: EosDesignsFacts.UplinksItem,
         svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> EosCliConfigGen.EthernetInterfacesItem:
         """
         Return structured config for one subinterface representing the given SVI.
@@ -229,7 +246,7 @@ class UtilsMixin(Protocol):
             ip_address=svi.ip_address,
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
-            mtu=svi.mtu if self.shared_utils.platform_settings.feature_support.per_interface_mtu else None,
+            mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
 
@@ -261,7 +278,7 @@ class UtilsMixin(Protocol):
             pass
 
         # Adding IP helpers and OSPF via a common function also used for SVIs on L3 switches.
-        self.shared_utils.get_additional_svi_config(subinterface, svi, vrf)
+        self.shared_utils.get_additional_svi_config(subinterface, svi, vrf, tenant)
 
         return subinterface
 

@@ -27,24 +27,37 @@ keys:
             id:
               type: int
               convert_types:
-              - str
+                - str
             hash_algorithm:
               type: str
               valid_values:
-              - md5
-              - sha1
-              - sha256
-              - sha384
-              - sha512
+                - md5
+                - sha1
+                - sha256
+                - sha384
+                - sha512
               default: sha512
             key:
               type: str
-              required: true
-              max_length: 16
               min_length: 1
+              max_length: 16
               convert_types:
-              - int
+                - int
               description: |-
-                Key password.
-                Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual underlay interface.
-                To protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.
+                Cleartext key.
+                To protect the password at rest it is strongly recommended to make use of a vault or similar.
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: cleartext_key
+            cleartext_key:
+              type: str
+              # TODO: 6.0 makes this required
+              # required: true
+              convert_types:
+                - int
+              description: |-
+                Cleartext key for OSPF message-digest authentication
+                To protect the password at rest it is strongly recommended to make use of a vault or similar.
+              min_length: 1
+              max_length: 16

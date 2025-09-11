@@ -3170,3 +3170,391 @@ releases:
     fragments:
     - v5.4.0.yml
     release_date: '2025-05-02'
+  5.5.0:
+    changes:
+      bugfixes:
+      - 'Fix(anta_runner): AVD-catalog filters now default to all devices targeted
+        by the run by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5411'
+      - 'Fix(anta_runner): Add ZTP cause to VerifyReloadCause by @carl-baillargeon
+        in https://github.com/aristanetworks/avd/pull/5408'
+      - 'Fix(anta_runner): Remove VerifyBFDPeersHealth by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5400'
+      - 'Fix(anta_runner): Remove input_dict from TestSpec by @carl-baillargeon in
+        https://github.com/aristanetworks/avd/pull/5424'
+      - 'Fix(anta_runner): Skip IP unnumbered interfaces in P2P reachability test
+        by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5406'
+      - 'Fix(anta_runner): Update Ansible task failed criteria and various logging
+        issues by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5341'
+      - 'Fix(dhcp_provisioner): Add ztp_bootstrap_file option when used with cv_settings
+        by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5560'
+      - 'Fix(eos_cli_config_gen)!: Fixing j2 templates for router_bgp/bgp_additional_paths
+        and mac-address-table-static-entries by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5518'
+      - 'Fix(eos_cli_config_gen): Change interface srlg data model to allow more than
+        one srlg by @emilarista in https://github.com/aristanetworks/avd/pull/5497'
+      - 'Fix(eos_designs)!: Add missing underlay OSPF authentication on MLAG peer-link
+        by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5431'
+      - 'Fix(eos_designs)!: l3_edge with rfc5549 underlay and ''ebgp: true'' should
+        not have next-hop address-family ipv6 by @nathanmusser in https://github.com/aristanetworks/avd/pull/4491'
+      - 'Fix(eos_designs): Snmp-settings enable only specific traps by @ClausHolbechArista
+        in https://github.com/aristanetworks/avd/pull/5371'
+      minor_changes:
+      - 'Bump(pyavd): Add PyYAML to PyAVD dependencies by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5447'
+      - 'Bump(requirements): Bump the prod group across 2 directories with 1 update
+        by @dependabot in https://github.com/aristanetworks/avd/pull/5545'
+      - 'Bump: ANTA requirements to v1.4.0 by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5399'
+      - 'Bump: Pre-release 5.5.0-dev0 by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5364'
+      - 'Bump: Pre-release 5.5.0-dev1 by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5435'
+      - 'Bump: Pre-release 5.5.0-dev2 by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5454'
+      - 'Bump: Pre-release 5.5.0-dev3 by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5557'
+      - 'Doc(eos_designs): Add `vrf_id` in l2ls-fabric example by @laxmikantchintakindi
+        in https://github.com/aristanetworks/avd/pull/5370'
+      - 'Doc(eos_designs): Describe `use_default_mgmt_method_vrf` under logging and
+        dns settings by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5563'
+      - 'Doc(eos_designs): Fix typo in SNMP settings documentation for source_interface
+        by @gmuloc in https://github.com/aristanetworks/avd/pull/5577'
+      - 'Doc: Align examples with common username for device connectivity by @joelbreton2
+        in https://github.com/aristanetworks/avd/pull/5404'
+      - 'Doc: Fix quotes for new_key in yaml schema docs by @ClausHolbechArista in
+        https://github.com/aristanetworks/avd/pull/5529'
+      - 'Doc: Update doc for ISIS encryption by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5553'
+      - 'Doc: Update porting guide for routed ports by @gmuloc in https://github.com/aristanetworks/avd/pull/5488'
+      - 'Doc: Updated eos_cli_config_gen contribution guide to use host1 as centric
+        testing by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5483'
+      - 'Feat(anta_runner): Add ANTA DNS test by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5278'
+      - 'Feat(anta_runner): Add new hardware tests by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5430'
+      - 'Feat(anta_runner): Added new specific AVT path and router path tests by @MaheshGSLAB
+        in https://github.com/aristanetworks/avd/pull/5437'
+      - 'Feat(anta_runner): Honor validate_state for port-channel interfaces test
+        by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5504'
+      - 'Feat(cv_deploy): Allow Campus hybrid workflow (AVD and Access Interface Studio)
+        by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5141'
+      - 'Feat(cv_deploy): New decorator class to handle various gRPC errors for CVClient
+        by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5326'
+      - 'Feat(eos_cli_config_gen): Add Diffie-Hellman Group 19 as a valid value for
+        ip security configuration by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5463'
+      - 'Feat(eos_cli_config_gen): Add cli_config_gen support for E-Tree options by
+        @colinmacgiolla in https://github.com/aristanetworks/avd/pull/5452'
+      - 'Feat(eos_cli_config_gen): Add support for VRRP peer_authentication under
+        ethernet_interfaces by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5460'
+      - 'Feat(eos_cli_config_gen): Add support for pim ipv4 neighbor filter by @Vibhu-gslab
+        in https://github.com/aristanetworks/avd/pull/5433'
+      - 'Feat(eos_cli_config_gen): Add support for platform fap buffering command
+        by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5468'
+      - 'Feat(eos_cli_config_gen): Add support for queue-monitor length mirror by
+        @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5451'
+      - 'Feat(eos_cli_config_gen): Add support for software forwarding hardware offload
+        MTU  under router general by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5439'
+      - 'Feat(eos_cli_config_gen): Add support for static mac-address configuration
+        by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5409'
+      - 'Feat(eos_cli_config_gen): Add support for transceiver dom-thresholds by @Shivani-gslab
+        in https://github.com/aristanetworks/avd/pull/5390'
+      - 'Feat(eos_cli_config_gen): Add support to generate ''tunnel source <ip_address>''
+        under Tunnel Interfaces by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5453'
+      - 'Feat(eos_cli_config_gen): Added Support for Management Active interface HA
+        in modular devices by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5486'
+      - 'Feat(eos_cli_config_gen): Added Support for Spanning Tree Port ID Allocation
+        by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5286'
+      - 'Feat(eos_cli_config_gen): Added support for DLB on ECMP groups by @MaheshGSLAB
+        in https://github.com/aristanetworks/avd/pull/5450'
+      - 'Feat(eos_cli_config_gen): Added support for Mirror on drop export to sflow
+        collector by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5466'
+      - 'Feat(eos_cli_config_gen): Added support for Sand UDP payload hashing load-balance
+        policies by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5515'
+      - 'Feat(eos_cli_config_gen): Added support for ip virtual router mac-address
+        mlag-peer by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5405'
+      - 'Feat(eos_cli_config_gen): Adding support for ingress for platform MMU profiles  by
+        @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5479'
+      - 'Feat(eos_cli_config_gen): Adding support for platform trident mmu headroom-pool
+        limit by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5459'
+      - 'Feat(eos_cli_config_gen): Adding support for port-channel load-balance trident
+        headers by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5493'
+      - 'Feat(eos_cli_config_gen): Adding support for vxlan qos dscp ecn rewrite bridged
+        enabled by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5432'
+      - 'Feat(eos_cli_config_gen): Move access-group keys for management_ssh model
+        by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5554'
+      - 'Feat(eos_cli_config_gen): SVI support for IGMP Querier Virtual Address by
+        @ctyrider in https://github.com/aristanetworks/avd/pull/5523'
+      - 'Feat(eos_cli_config_gen): Support enabling PMTUD for hosts by @laxmikantchintakindi
+        in https://github.com/aristanetworks/avd/pull/5462'
+      - 'Feat(eos_cli_config_gen): add support for signature-verification extension
+        by @KrasenKolev in https://github.com/aristanetworks/avd/pull/5465'
+      - 'Feat(eos_cli_config_gen, eos_designs): Flooded Traffic using Multicast Underlay
+        by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5219'
+      - 'Feat(eos_designs): Add VRF level OSPF authentication knobs for network services
+        by @gmuloc in https://github.com/aristanetworks/avd/pull/5481'
+      - 'Feat(eos_designs): Add `endpoint_port_channel` access for j2 descriptions
+        for connected_endpoints_port_channel_interfaces by @laxmikantchintakindi in
+        https://github.com/aristanetworks/avd/pull/5489'
+      - 'Feat(eos_designs): Add a platform setting to allow/disallow mtu on sub-interfaces
+        by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5456'
+      - 'Feat(eos_designs): Add cv_settings to replace cvp_* and terminattr_* by @ClausHolbechArista
+        in https://github.com/aristanetworks/avd/pull/3301'
+      - 'Feat(eos_designs): Add dns_settings to replace name_servers by @ClausHolbechArista
+        in https://github.com/aristanetworks/avd/pull/3283'
+      - 'Feat(eos_designs): Add more feature support toggles for platform_settings
+        by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5338'
+      - 'Feat(eos_designs): Add possibility to pass cleartext IPsec keys for wan_ipsec_profiles
+        by @gmuloc in https://github.com/aristanetworks/avd/pull/5551'
+      - 'Feat(eos_designs): Add pvlan support for l2vlans by @bjmeuer in https://github.com/aristanetworks/avd/pull/5535'
+      - 'Feat(eos_designs): Add static_routes data model under svis in network services
+        by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5240'
+      - 'Feat(eos_designs): Add structured_config and raw_eos_cli keys to p2p service
+        subinterfaces by @emilarista in https://github.com/aristanetworks/avd/pull/5350'
+      - 'Feat(eos_designs): Add support for IPv6 only underlay and overlay by @Xatrekak
+        in https://github.com/aristanetworks/avd/pull/4393'
+      - 'Feat(eos_designs): Add support for cleartext_key for ntp_settings.authentication_keys
+        by @gmuloc in https://github.com/aristanetworks/avd/pull/5575'
+      - 'Feat(eos_designs): Add support for cleartext_password for BGP peer groups
+        and neighbors in eos_designs by @gmuloc in https://github.com/aristanetworks/avd/pull/5541'
+      - 'Feat(eos_designs): Add support to set static_routes under l3_interfaces and
+        l3_portchannel_interfaces in network_services by @laxmikantchintakindi in
+        https://github.com/aristanetworks/avd/pull/5402'
+      - 'Feat(eos_designs): Added bfd timer support for a peer inside vrfs by @MaheshGSLAB
+        in https://github.com/aristanetworks/avd/pull/5423'
+      - 'Feat(eos_designs): Added support for logging_settings by @MaheshGSLAB in
+        https://github.com/aristanetworks/avd/pull/5498'
+      - 'Feat(eos_designs): Added support of Spanning Tree Port ID Allocation by @MaheshGSLAB
+        in https://github.com/aristanetworks/avd/pull/5444'
+      - 'Feat(eos_designs): Adding custom_connected_endpoints_keys by @Vibhu-gslab
+        in https://github.com/aristanetworks/avd/pull/5255'
+      - 'Feat(eos_designs): Changes to eos_designs schema to support path outlier
+        elimination for one or more avt profiles by @ashenoy-arista in https://github.com/aristanetworks/avd/pull/5355'
+      - 'Feat(eos_designs): Configure SSH settings via eos_designs by @Shivani-gslab
+        in https://github.com/aristanetworks/avd/pull/5543'
+      - 'Feat(eos_designs): Enable evpn_gateway for pathfinder deployment using next-hop-self
+        by @ayushmittal-arista in https://github.com/aristanetworks/avd/pull/5082'
+      - 'Feat(eos_designs): Move generate_cv_tags out of preview by @ClausHolbechArista
+        in https://github.com/aristanetworks/avd/pull/5421'
+      - 'Feat(eos_designs): Preview: Digital Twin for ACT by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5436'
+      - 'Feat(eos_designs): VRF assignment improvements for snmp_settings by @ClausHolbechArista
+        in https://github.com/aristanetworks/avd/pull/5531'
+      - 'Feat(plugins): Add support for encryption and decryption of tacacs keys by
+        @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5434'
+      - 'Refactor(eos_cli_config_gen, eos_designs): Renamed `ipv4/ipv6_segment_size
+        key` to `ipv4/ipv6` under tcp_mss_ceiling by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5457'
+      - 'Refactor(eos_designs): Add pytest coverage for network_services/port_channel_interfaces.py
+        by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5443'
+      - 'Refactor(eos_designs): Improve /metadata/cv_pathfinder.py and improve pytest
+        coverage by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5310'
+      - 'Refactor(eos_designs): Improve coverage for shared_utils/inband_management.py
+        by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5330'
+      - 'Refactor(eos_designs): Improve pytest coverage for base/snmp_server.py  by
+        @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5534'
+      - 'Refactor(eos_designs): Improve pytest coverage for eos_designs_facts/vlans.py
+        by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5384'
+      - 'Refactor(eos_designs): Improve pytest coverage for network_services/route_maps.py
+        by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5317'
+      - 'Refactor(eos_designs): Improve pytest coverage for network_services/vlan_interfaces.py
+        by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5520'
+      - 'Refactor(eos_designs): Improve pytest coverage for network_services/vxlan_interfaces.py
+        by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5397'
+      - 'Refactor(eos_designs): Improve pytest coverage for shared_utils/node_type_keys.py
+        by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5336'
+      - 'Refactor(eos_designs): Improve pytest coverage for shared_utils/overlay.py
+        by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5480'
+      - 'Refactor(eos_designs): Improved test coverage for shared_utils/wan.py by
+        @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5385'
+      - 'Refactor(eos_designs): Modify data format for node id pool manager by @ClausHolbechArista
+        in https://github.com/aristanetworks/avd/pull/5362'
+      - 'Refactor(eos_designs): Relax control for MLAG subnets when using same subnet
+        by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5375'
+      - 'Refactor(eos_designs): Rename keys `destination_address_prefix` and `gateway`
+        under ipv4/6 `static_routes` by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5327'
+      - 'Refactor(eos_designs): Update error messages and improve pytest coverage
+        for shared_utils/mlag.py by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5299'
+      - 'Refactor(eos_designs): Use new eos_cli_config_gen model for SSH ACLs by @Shivani-gslab
+        in https://github.com/aristanetworks/avd/pull/5574'
+      - 'Refactor(plugins): Improve generation of schema classes by @ClausHolbechArista
+        in https://github.com/aristanetworks/avd/pull/5359'
+      - 'Refactor(pyavd): Improve Python typing and type checking by @ClausHolbechArista
+        in https://github.com/aristanetworks/avd/pull/5506'
+      - 'Refactor(pyavd): Improve typing and add pyright to CI by @ClausHolbechArista
+        in https://github.com/aristanetworks/avd/pull/5458'
+      release_summary: 'Release 5.5.0 - See documentation on avd.arista.com for details.
+
+        '
+    fragments:
+    - v5.5.0.yml
+    release_date: '2025-07-04'
+  5.6.0:
+    changes:
+      bugfixes:
+      - 'Fix(anta_runner): Remove VerifyDNSServers test by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5686'
+      - 'Fix(eos_cli_config_gen): Fix documentation generation when using vrf default
+        for SSH by @gmuloc in https://github.com/aristanetworks/avd/pull/5592'
+      - 'Fix(eos_designs): Correct device targeted in facts for uplink wrong bgp AS
+        by @gmuloc in https://github.com/aristanetworks/avd/pull/5612'
+      - 'Fix(eos_designs): Fix bad regex in cv_settings cluster names by @ClausHolbechArista
+        in https://github.com/aristanetworks/avd/pull/5703'
+      - 'Fix(eos_designs): Fix deprecation warning for eos_designs molecule tests
+        by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5667'
+      - 'Fix(eos_designs): Preview: Digital Twin for ACT. Avoid rendering fabric sub-interfaces
+        in ACT topology by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5645'
+      - 'Fix(eos_designs): Relax schema for parent port-channel interfaces with subinterfaces
+        by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5776'
+      - 'Fix(eos_designs): Render ip attached-host route export only when underlay
+        is BGP by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5694'
+      - 'Fix(eos_designs): per-interface L3 MTU feature support for iBGP SVIs by @alexeygorbunov
+        in https://github.com/aristanetworks/avd/pull/5684'
+      - 'Fix: Fix schema table check typo in documentation pre-commit hook by @MaheshGSLAB
+        in https://github.com/aristanetworks/avd/pull/5748'
+      minor_changes:
+      - 'Bump: Pre-release 5.6.0-dev0 by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5596'
+      - 'Bump: Pre-release 5.6.0-dev1 by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5654'
+      - 'Cut(eos_designs): Remove max_ha_interfaces key under node_type as this is
+        not used by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5711'
+      - 'Doc(eos_designs): Improved the documentation for how ipv4_prefix_list_catalog
+        entries are used by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5600'
+      - 'Doc: Adding ANTA tests table index by @JulioPDX in https://github.com/aristanetworks/avd/pull/5661'
+      - 'Doc: Fix internal incorrect links reported by muffet by @gmuloc in https://github.com/aristanetworks/avd/pull/5616'
+      - 'Doc: Mkdocs cleanup v5.6 by @gmuloc in https://github.com/aristanetworks/avd/pull/5780'
+      - 'Doc: Release-notes for release 5.5.1 by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5594'
+      - 'Doc: Update L2LS Example by @JulioPDX in https://github.com/aristanetworks/avd/pull/5682'
+      - 'Doc: Update semantic versioning for anta_runner by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5708'
+      - 'Doc: anta_runner by @JulioPDX in https://github.com/aristanetworks/avd/pull/5637'
+      - 'Doc: move data_plane_cpu_allocation_max to node type wan configuration table
+        by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5729'
+      - 'Feat(anta_runner): Add BGP IPv6 and RFC5549 support by @carl-baillargeon
+        in https://github.com/aristanetworks/avd/pull/5476'
+      - 'Feat(anta_runner): Add anta variables support for connection settings by
+        @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5700'
+      - 'Feat(anta_runner): Added VerifyMaintenance anta test case by @MaheshGSLAB
+        in https://github.com/aristanetworks/avd/pull/5537'
+      - 'Feat(anta_runner): Added support for VerifyVxlanConfigSanity anta tests by
+        @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5524'
+      - 'Feat(eos_cli_config_gen): Add a documentation table for radius av-pair in
+        dot1x by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5642'
+      - 'Feat(eos_cli_config_gen): Add ability to disable default hardware counters
+        by @colinmacgiolla in https://github.com/aristanetworks/avd/pull/5633'
+      - 'Feat(eos_cli_config_gen): Add sFlow sample truncate by @colinmacgiolla in
+        https://github.com/aristanetworks/avd/pull/5723'
+      - 'Feat(eos_cli_config_gen): Add secondary IP to VRRP definition by @Shivani-gslab
+        in https://github.com/aristanetworks/avd/pull/5701'
+      - 'Feat(eos_cli_config_gen): Add support for ip ospf router-id output-format
+        hostnames by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5718'
+      - 'Feat(eos_cli_config_gen): Add support for load-balance cluster by @Shivani-gslab
+        in https://github.com/aristanetworks/avd/pull/5648'
+      - 'Feat(eos_cli_config_gen): Add support for peer_authentication under vlan_interfaces
+        by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5626'
+      - 'Feat(eos_cli_config_gen): Add support for ptp hold-down timer by @colinmacgiolla
+        in https://github.com/aristanetworks/avd/pull/5710'
+      - 'Feat(eos_cli_config_gen): Add support for radius proxy by @Vibhu-gslab in
+        https://github.com/aristanetworks/avd/pull/5582'
+      - 'Feat(eos_cli_config_gen): Add support for redirect actions to traffic-policies
+        by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5656'
+      - 'Feat(eos_cli_config_gen): Add support for transceiver application override
+        under ethernet interfaces by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5601'
+      - 'Feat(eos_cli_config_gen): Add the ability to exclude prefixes from field-sets
+        by @colinmacgiolla in https://github.com/aristanetworks/avd/pull/5634'
+      - 'Feat(eos_cli_config_gen): Added support for preventing propagating free running
+        time from PTP boundary clock by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5650'
+      - 'Feat(eos_cli_config_gen): Adding `counters` key for traffic-policies by @Shivani-gslab
+        in https://github.com/aristanetworks/avd/pull/5674'
+      - 'Feat(eos_cli_config_gen): Adding support for Vxlan multicast group - encap
+        range, overlay, underlay (encap) group by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5753'
+      - 'Feat(eos_cli_config_gen): Deprecate the collector key for flow_tracking.sampled/hardware
+        and add collectors key by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5591'
+      - 'Feat(eos_cli_config_gen): Global Knob for txQueue Percentage-based Allocation
+        by @ctyrider in https://github.com/aristanetworks/avd/pull/5599'
+      - 'Feat(eos_cli_config_gen): RCF Support for router general vrf leak agent by
+        @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5680'
+      - 'Feat(eos_cli_config_gen): Support for Low Latency tx-queue Scheduler Profile
+        by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5658'
+      - 'Feat(eos_cli_config_gen): Update hardware counter schema by @colinmacgiolla
+        in https://github.com/aristanetworks/avd/pull/5630'
+      - 'Feat(eos_cli_config_gen): Update schema and tests for tap, tool and tap-tool
+        config by @colinmacgiolla in https://github.com/aristanetworks/avd/pull/5629'
+      - 'Feat(eos_cli_config_gen, eos_designs): Add support for ptp forward-v1 by
+        @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5752'
+      - 'Feat(eos_designs): Add deprecation warning for direct usage of eos_cli_config_gen
+        keys when using eos_designs. by @gmuloc in https://github.com/aristanetworks/avd/pull/5775'
+      - 'Feat(eos_designs): Add ipv6_static_routes data model under svis in network
+        services by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5688'
+      - 'Feat(eos_designs): Add main_interface_wan_carrier support for node l3 interfaces
+        by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5622'
+      - 'Feat(eos_designs): Add platform_settings.feature_support toggles for WAN
+        and PTP by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5552'
+      - 'Feat(eos_designs): Add sflow feature support toggle for platform_settings.
+        by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5603'
+      - 'Feat(eos_designs): Add support for address_locking functionality in vlans
+        by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5647'
+      - 'Feat(eos_designs): Add support for templated description for node l3-port-channels
+        by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5482'
+      - 'Feat(eos_designs): Add support to encrypt isis cleartext keys by @laxmikantchintakindi
+        in https://github.com/aristanetworks/avd/pull/5571'
+      - 'Feat(eos_designs): Add support to set maximum-paths for OSPF underlay by
+        @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5731'
+      - 'Feat(eos_designs): Add support to set monitor sessions for l3 interfaces
+        by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5655'
+      - 'Feat(eos_designs): Added support for cleartext_key on radius and tacacs servers
+        of aaa_settings by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5608'
+      - 'Feat(eos_designs): Added support for ipv6_static_routes under l3_interfaces
+        and l3_portchannel_interfaces in network_services by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5690'
+      - 'Feat(eos_designs): Added support for platform settings of sFlow on sub-interfaces
+        by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5761'
+      - 'Feat(eos_designs): Added support for setting mlag interface speed via default_interfaces
+        by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5580'
+      - 'Feat(eos_designs): Adding enable_password to aaa_settings by @Vibhu-gslab
+        in https://github.com/aristanetworks/avd/pull/5724'
+      - 'Feat(eos_designs): Adding inband_mgmt_subnet_offset to node_type by @Shivani-gslab
+        in https://github.com/aristanetworks/avd/pull/5721'
+      - 'Feat(eos_designs): Deprecate the `collector` key for `flow_tracking_settings`
+        and add new key `collectors` by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5660'
+      - 'Feat(eos_designs): Improve error message for missing or insufficient downlink_interfaces
+        defined in default interfaces by @Vibhu-gslab in https://github.com/aristanetworks/avd/pull/5768'
+      - 'Feat(eos_designs): Node ID pool-manager automatic upgrade of old files by
+        @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5730'
+      - 'Feat(eos_designs): Preview: Digital Twin for ACT. Enforce eAPI access in
+        default VRF. by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5639'
+      - 'Feat(eos_designs): Preview: Digital Twin for ACT. Use standard default creds
+        for vEOS and CloudEOS node types by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5638'
+      - 'Feat(eos_designs): Preview: Digital Twin for ACT. default_interfaces of original
+        platform. by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5727'
+      - 'Feat(eos_designs): Preview: Digital Twin for ACT. internet_access flag for
+        cloudeos and veos node type by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5569'
+      - 'Feat(eos_designs): Refactor `uplink_structured_config` for node type settings
+        and `structured_config` for p2p_links by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5696'
+      - 'Feat(eos_designs): Support for AAA settings via eos_designs by @MaheshGSLAB
+        in https://github.com/aristanetworks/avd/pull/5549'
+      - 'Feat(eos_designs): Support for aaa_settings.local_users and deprecating the
+        global local_users by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5735'
+      - 'Feat(eos_designs, eos_cli_config_gen): Add arp_gratuitous_accept to svi/l3_interfaces/l3_port_channels
+        by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5695'
+      - 'Feat(plugins): Add support for encryption and decryption of radius keys by
+        @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5570'
+      - 'Refactor(anta_runner): Added the support of peer interface detection for
+        LLDP and p2p reachability tests by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5687'
+      - 'Refactor(anta_runner): Removed the VerifyMlagDualPrimary and VerifyMlagReloadDelay
+        tests as since they are covered by the config sanity test by @MaheshGSLAB
+        in https://github.com/aristanetworks/avd/pull/5605'
+      - 'Refactor(anta_runner): Removed the config validation tests from anta_runner
+        role by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5604'
+      - 'Refactor(dhcp_provisioner): Deprecate the arista.avd.dhcp_provisioner role
+        by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5739'
+      - 'Refactor(eos_config_deploy_cvp): Deprecate arista.avd.eos_config_deploy_cvp
+        by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5741'
+      - 'Refactor(eos_designs): Add pytest coverage for `eos_designs_facts/uplinks.py`
+        by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5539'
+      - 'Refactor(eos_designs): Deprecate support for Jinja templating using `switch.*`
+        facts by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5689'
+      - 'Refactor(eos_designs): Deprecate support for unknown variables in structured_config
+        by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5676'
+      - 'Refactor(eos_designs): Fix the duplicate tacacs server configuration by @MaheshGSLAB
+        in https://github.com/aristanetworks/avd/pull/5659'
+      - 'Refactor(eos_designs): Improve pytest coverage for overlay/router_bgp.py
+        by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5360'
+      - 'Refactor(eos_designs): Improved test coverage for overlay/utils.py by @MaheshGSLAB
+        in https://github.com/aristanetworks/avd/pull/5422'
+      - 'Refactor(eos_designs): Support for management_eapi vrfs by @Vibhu-gslab in
+        https://github.com/aristanetworks/avd/pull/5559'
+      - 'Refactor(eos_designs): Take WAN HA out of preview for CV Pathfinder by @gmuloc
+        in https://github.com/aristanetworks/avd/pull/5750'
+      - 'Refactor(eos_designs,eos_cli_config_gen): Move is_deployed to metadata.is_deployed
+        by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5743'
+      - 'Refactor(eos_validate_state): Deprecate eos_validate_state by @carlbuchmann
+        in https://github.com/aristanetworks/avd/pull/5709'
+      release_summary: 'Release 5.6.0 - See documentation on avd.arista.com for details.
+
+        '
+    fragments:
+    - v5.6.0.yml
+    release_date: '2025-08-29'

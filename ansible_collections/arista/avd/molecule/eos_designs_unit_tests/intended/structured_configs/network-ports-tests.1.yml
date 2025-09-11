@@ -732,15 +732,21 @@ ethernet_interfaces:
     id: 222
     mode: active
   peer_type: network_port
+- name: Ethernet25
+  description: Add all vlans
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
 hostname: network-ports-tests.1
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   platform: 720XPM-48Y6
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:
@@ -801,6 +807,9 @@ vlans:
   tenant: TEST
 - id: 300
   name: VLAN300_PHONE_ON_L2LEAF1_AND_2
+  tenant: TEST
+- id: 400
+  name: VLAN400_FALLBACK_INDIVIDUAL_VLAN
   tenant: TEST
 vrfs:
 - name: MGMT

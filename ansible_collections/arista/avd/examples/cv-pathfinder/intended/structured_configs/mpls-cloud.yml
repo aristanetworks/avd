@@ -6,13 +6,13 @@ aaa_root:
 config_end: true
 daemon_terminattr:
   cvaddrs:
-  - www.cv-staging.corp.arista.io:443
+  - apiserver.arista.io:443
   cvauth:
     method: token-secure
     token_file: /tmp/cv-onboarding-token
+  cvsourceintf: Management1
   cvvrf: MGMT
   disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 dns_domain: wan.example.local
 enable_password:
@@ -53,17 +53,27 @@ ethernet_interfaces:
   peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet8
+  description: site4-wan1-Ethernet3
+  shutdown: false
+  ip_address: 172.18.40.1/24
+  peer_type: l3_interface
+  switchport:
+    enabled: false
 hostname: mpls-cloud
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
 ip_name_servers:
 - ip_address: 192.168.17.1
   vrf: MGMT
 ip_routing: true
-is_deployed: true
 local_users:
-- name: ansible
+- name: admin
   privilege: 15
   role: network-admin
-  sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+  no_password: true
 - name: arista
   privilege: 15
   role: network-admin
@@ -93,6 +103,7 @@ management_interfaces:
     transmit: false
     receive: false
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: WAN
 ntp:

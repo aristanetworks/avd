@@ -239,6 +239,7 @@ vlan_interfaces:
         sparse_mode: true
         bfd: true
         bidirectional: true
+        neighbor_filter: Test_Filter_Vlan
         hello:
           count: 3.5
           interval: 10
@@ -509,6 +510,7 @@ vlan_interfaces:
     shutdown: false
     ip_igmp: true
     ip_igmp_version: 2
+    ip_igmp_querier_address_virtual: true
     ip_address_virtual: 10.10.144.3/20
     ipv6_address: 1b11:3a00:22b0:5200::15/64
     ipv6_nd_managed_config_flag: true
@@ -589,12 +591,23 @@ vlan_interfaces:
             reload: 800
         ipv4:
           address: 192.0.2.1
+          secondary_addresses:
+            - 192.0.3.3
+            - 192.0.4.4
+        peer_authentication:
+          mode: ietf-md5
+          key: auth_key
       - id: 2
         preempt:
           enabled: true
           delay:
         ipv6:
-          address: 2001:db8:667::1
+          addresses:
+            - 2001:db8:667::1
+        peer_authentication:
+          mode: text
+          key: auth_key
+          key_type: "0"
 
   - name: Vlan333
     description: Multiple VRIDs and tracking
@@ -616,17 +629,29 @@ vlan_interfaces:
             reload: 800
         ipv4:
           address: 192.0.2.1
+          secondary_addresses:
+            - 192.0.3.3
+            - 192.0.4.4
         tracked_object:
           - name: ID1TrackedObjectDecrement
             decrement: 5
           - name: ID1TrackedObjectShutdown
             shutdown: true
+        peer_authentication:
+          mode: ietf-md5
+          key: auth_key
+          key_type: "0"
       - id: 2
         preempt:
           enabled: true
           delay:
         ipv6:
-          address: 2001:db8:333::1
+          addresses:
+            - 2001:db8:333::1
+            - 2002:db8:333::2
+        peer_authentication:
+          mode: text
+          key: auth_key
         tracked_object:
           - name: ID2TrackedObjectDecrement
             decrement: 10

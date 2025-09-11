@@ -21,8 +21,8 @@ flow_tracking_settings:
     - name: FT_Test
       exporters:
         - name: CV-TELEMETRY
-          collector:
-            host: 127.0.0.1
+          collectors:
+            - host: 127.0.0.1
           local_interface: Loopback0
           template_interval: 3600000
       record_export:
@@ -55,6 +55,7 @@ tenants:
             peer_port_channel: Po11
             enabled: true
             node: network-services-l3-port-channels
+            arp_gratuitous_accept: true
             member_interfaces:
               - name: Ethernet10
                 peer_interface: Ethernet10
@@ -100,6 +101,7 @@ tenants:
         vrf_id: 2
         ospf:
           enabled: true
+          authentication: simple
           structured_config:
             auto_cost_reference_bandwidth: 10
         l3_port_channels:
@@ -140,8 +142,8 @@ tenants:
               point_to_point: false
               area: "0.0.0.0"
               cost: 1
-              authentication: "simple"
-              simple_auth_key: testpass
+              authentication: simple
+              simple_auth_key: VYW+BCfsYBkuQbloxSLuoQ==
             structured_config:
               logging:
                 event:
@@ -167,16 +169,41 @@ tenants:
               point_to_point: false
               area: "0.0.0.0"
               cost: 1
-              authentication: "message-digest"
+              authentication: message-digest
               message_digest_keys:
                 - id: 1
-                  hash_algorithm: "sha256"
-                  key: testpass1
+                  hash_algorithm: sha256
+                  key: ocAzkT2JRNKrbPGT790Geg==
                 - id: 2
-                  key: testpass2
+                  key: uVG6QXeIXN+QGY2DP4UCtA==
+                # Test when 'id' and 'key' are not set under message-digest keys.
+                # TODO: AVD 6.0.0 Make 'id' a primary key and 'key' required
+                - hash_algorithm: sha384
             raw_eos_cli: |
-               logging event storm-control discards
-               logging event link-status
+              logging event storm-control discards
+              logging event link-status
+          - name: Port-Channel1112
+            description: incomplete message-digest keys
+            peer: inet-cloud-po1112
+            peer_port_channel: Po1112
+            enabled: true
+            ip_address: 1.1.1.12/29
+            node: network-services-l3-port-channels
+            ospf:
+              enabled: true
+              authentication: "message-digest"
+              message_digest_keys:
+                - hash_algorithm: "sha256"
+          - name: Port-Channel1113
+            description: empty message_digest_keys with authentication set to message-digest
+            peer: inet-cloud-po1113
+            peer_port_channel: Po1113
+            enabled: true
+            ip_address: 1.1.1.13/29
+            node: network-services-l3-port-channels
+            ospf:
+              enabled: true
+              authentication: "message-digest"
 
   - name: Subinterface
     mac_vrf_vni_base: 20000

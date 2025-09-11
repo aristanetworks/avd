@@ -1,15 +1,17 @@
 aaa_root:
   disabled: true
+boot:
+  secret:
+    key: a153de6290ff1409257ade45f
 config_end: true
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
   cvauth:
-    method: key
-    key: telarista
+    method: token
+    token_file: /tmp/token
   cvvrf: MGMT
   disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
@@ -38,7 +40,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet29
   shutdown: false
   speed: forced 100gfull
-  mtu: 1500
   ip_address: 172.31.255.161/31
   peer: DC1-SPINE1
   peer_interface: Ethernet29
@@ -49,7 +50,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet29
   shutdown: false
   speed: forced 100gfull
-  mtu: 1500
   ip_address: 172.31.255.163/31
   peer: DC1-SPINE2
   peer_interface: Ethernet29
@@ -60,7 +60,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet29
   shutdown: false
   speed: forced 100gfull
-  mtu: 1500
   ip_address: 172.31.255.165/31
   peer: DC1-SPINE3
   peer_interface: Ethernet29
@@ -71,7 +70,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet29
   shutdown: false
   speed: forced 100gfull
-  mtu: 1500
   ip_address: 172.31.255.167/31
   peer: DC1-SPINE4
   peer_interface: Ethernet29
@@ -122,7 +120,6 @@ ip_name_servers:
   vrf: MGMT
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
-is_deployed: false
 local_users:
 - name: admin
   disabled: true
@@ -165,6 +162,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: false
   platform: my_custom_platform
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:
@@ -530,6 +528,8 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+      static:
+        enabled: true
   - name: Tenant_A_WEB_Zone
     rd: 192.168.255.22:11
     route_targets:
@@ -654,6 +654,10 @@ static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
   next_hop: 192.168.200.5
+- vrf: Tenant_A_WAN_Zone
+  prefix: 10.3.5.0/24
+  next_hop: 1.2.3.4
+  name: SVI_static_route
 tcam_profile:
   system: vxlan-routing
 transceiver_qsfp_default_mode_4x10: true
@@ -665,12 +669,10 @@ vlan_interfaces:
   description: MLAG_PEER_L3_PEERING
   shutdown: false
   ip_address: 10.255.251.25/31
-  mtu: 1500
 - name: Vlan4092
   description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.25/31
-  mtu: 1500
   no_autostate: true
 - name: Vlan130
   description: Tenant_A_APP_Zone_1
@@ -694,7 +696,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_APP_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_A
   type: underlay_peering
 - name: Vlan140
@@ -719,7 +720,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_DB_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_A
   type: underlay_peering
 - name: Vlan110
@@ -752,7 +752,6 @@ vlan_interfaces:
   - ip_helper: 2.2.2.2
     source_interface: lo101
     vrf: MGMT
-  mtu: 1560
   tenant: Tenant_A
   tags:
   - opzone
@@ -761,7 +760,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_OP_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_A
   type: underlay_peering
 - name: Vlan150
@@ -782,7 +780,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_WAN_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_A
   type: underlay_peering
 - name: Vlan120
@@ -806,7 +803,6 @@ vlan_interfaces:
   shutdown: true
   vrf: Tenant_A_WEB_Zone
   ip_address_virtual: 10.1.10.254/24
-  mtu: 1560
   tenant: Tenant_A
   tags:
   - web
@@ -815,7 +811,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_A_WEB_Zone
   ip_address: 172.31.11.25/31
-  mtu: 1500
   tenant: Tenant_A
   type: underlay_peering
 - name: Vlan210
@@ -839,7 +834,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_B_OP_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_B
   type: underlay_peering
 - name: Vlan250
@@ -855,7 +849,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_B_WAN_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_B
   type: underlay_peering
 - name: Vlan310
@@ -879,7 +872,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_C_OP_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_C
   type: underlay_peering
 - name: Vlan350
@@ -895,7 +887,6 @@ vlan_interfaces:
   shutdown: false
   vrf: Tenant_C_WAN_Zone
   ip_address: 10.255.251.25/31
-  mtu: 1500
   tenant: Tenant_C
   type: underlay_peering
 vlan_internal_order:

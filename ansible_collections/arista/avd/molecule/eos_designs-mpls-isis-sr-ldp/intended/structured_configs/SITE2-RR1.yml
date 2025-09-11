@@ -38,7 +38,6 @@ ethernet_interfaces:
 hostname: SITE2-RR1
 ip_routing: true
 ipv6_unicast_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -66,6 +65,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: 7280SR3
   fabric_name: MPLS_CORE
 mpls:
@@ -130,6 +130,10 @@ router_bgp:
     peer_group: RR-OVERLAY-PEERS
     peer: SITE1-RR1
     description: SITE1-RR1_Loopback0
+  - ip_address: 100.70.0.12
+    peer_group: RR-OVERLAY-PEERS
+    peer: SITE3-RR1
+    description: SITE3-RR1_Loopback0
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls

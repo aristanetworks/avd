@@ -111,8 +111,8 @@ flow_tracking:
         on_interval: 300000
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
@@ -158,7 +158,6 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -179,6 +178,7 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
   cv_tags:
     device_tags:
@@ -216,6 +216,10 @@ metadata:
       - name: Circuit
         value: '105'
     - interface: Port-Channel5.105
+      tags:
+      - name: Type
+        value: lan
+    - interface: Port-Channel5.110
       tags:
       - name: Type
         value: lan
@@ -287,7 +291,7 @@ port_channel_interfaces:
 
     '
 - name: Port-Channel5.100
-  description: ExtremeCable_105_peer2_Port-Channel15
+  description: ExtremeCable_105
   shutdown: false
   encapsulation_dot1q:
     vlan: 108
@@ -309,6 +313,15 @@ port_channel_interfaces:
     hardware: FLOW-TRACKER
   peer: peer2
   peer_interface: Port-Channel16
+  peer_type: l3_port_channel
+- name: Port-Channel5.110
+  description: StreamFast_peer3_Port-Channel17
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 110
+  ip_address: 192.168.100.118/31
+  peer: peer3
+  peer_interface: Port-Channel17
   peer_type: l3_port_channel
 - name: Port-Channel8
   description: BlizzardFast_peerDevice3_Port-Channel18
@@ -497,7 +510,7 @@ router_path_selection:
     path_groups:
     - name: INET
   tcp_mss_ceiling:
-    ipv4_segment_size: auto
+    ipv4: auto
 router_traffic_engineering:
   enabled: true
 service_routing_protocols_model: multi-agent

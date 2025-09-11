@@ -49,7 +49,6 @@ hostname: UNDERLAY-MULTICAST-L3LEAF1B
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -75,6 +74,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:
@@ -213,8 +213,6 @@ router_pim_sparse_mode:
       access_lists:
       - RP_ACL_2
     - address: 192.168.200.3
-      access_lists:
-      - RP_ACL_3
     - address: 192.168.200.4
       access_lists:
       - RP_ACL_4
@@ -234,10 +232,6 @@ standard_access_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 239.255.2.0/24
-- name: RP_ACL_3
-  sequence_numbers:
-  - sequence: 10
-    action: permit 239.255.3.0/24
 - name: RP_ACL_4
   sequence_numbers:
   - sequence: 10

@@ -12,6 +12,10 @@ application_traffic_recognition:
     - name: CUSTOM-APPLICATION-2
     - name: CUSTOM-DSCP-APPLICATION
     - name: microsoft-teams
+  - name: VIDEO-WITH-SERVICE
+    applications:
+    - name: microsoft
+      service: chat
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -59,10 +63,13 @@ application_traffic_recognition:
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
+      service: chat
     application_transports:
     - rtp
     categories:
     - name: VIDEO1
+    - name: VIDEO-WITH-SERVICE
+      service: audio-video
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
@@ -186,8 +193,8 @@ flow_tracking:
         on_interval: 300000
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
@@ -220,7 +227,6 @@ ip_security:
     mode: transport
   key_controller:
     profile: ONE-PROFILE-TO-CONTROL-THEM-ALL
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -241,6 +247,7 @@ management_security:
       file: profileA.crt
       key: profileA.key
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
   cv_tags:
     device_tags:
@@ -759,7 +766,7 @@ router_path_selection:
     - name: MPLS
     - name: CUSTOM_LAN_HA
   tcp_mss_ceiling:
-    ipv4_segment_size: auto
+    ipv4: auto
 router_traffic_engineering:
   enabled: true
 service_routing_protocols_model: multi-agent

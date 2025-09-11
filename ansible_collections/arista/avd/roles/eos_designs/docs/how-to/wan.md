@@ -47,12 +47,9 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 
 ### Features in preview
 
-- WAN HA is in preview
-  - While HA is in preview, it is required to either enable or disable HA if exactly two WAN routers are in one node group.
-  - For HA, the considered interfaces are only the `uplink_interfaces` in VRF default or the interfaces defined under `wan_ha.ha_interfaces` node settings. This key can be used either to select only some `uplink_interfaces` available for establishing the HA tunnel OR to select one interface that is not an `uplink_interfaces`, for instance for direct HA connectivity.
-  - HA for AutoVPN is not supported
 - Internet-exit for Zscaler is in preview
 - `eos_validate_state` is being enriched to support new tests for WAN designs.
+- EVPN WAN gateway is in preview as it requires the use of `wan_use_evpn_node_settings_for_lan`. It is supported only on sites with single WAN Router.
 
 ### Known limitations
 
@@ -65,11 +62,19 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - All the WAN routers must have a common path-group with at least one WAN route server to be able to inject the default control-plane match statement in the VRF default WAN policy.
 - For the default VRF, routes received over BGP peering configured under tenants in `network_services` will not be automatically advertised to the WAN (they will be advertised toward the LAN if eBGP is used). To advertise them towards the WAN, they need to be injected in EVPN and this can be achieved by adding a route-map to mark them with the site SOO.
 - Internet exit policies are not supported under WAN port-channel interfaces.
+- EVPN WAN gateway is supported only on sites with single WAN Router.
+- WAN HA must be explicitly enabled.
+- WAN HA for AutoVPN is not supported
+- For WAN HA, the considered interfaces are only the `uplink_interfaces` in VRF default or the interfaces defined under `wan_ha.ha_interfaces` node settings. This key can be used either to select only some `uplink_interfaces` available for establishing the HA tunnel OR to select one interface that is not an `uplink_interfaces`, for instance for direct HA connectivity.
 
 ### Future work
 
+!!! info
+
+    This section describes features which have been envisionned. No active work
+    is done in AVD to implement these until a request is made.
+
 - New LAN scenarios (L2 port-channel, HA for L2 `lan` using VRRP..)
-- HA for AutoVPN
 - WAN Internet exit for other type than Zscaler
 - `import path-group` functionality
 - Indirect connectivity to pathfinder
@@ -77,8 +82,8 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - Auto generation of Path-group IDs and other IDs.
 - Proper OSPF-BGP redistribution in VRF default.
 - Support for OSPF subinterfaces for `p2p-vrfs`.
-- Increase test coverage in `eos_validate_state` support for AutoVPN and CV-Pathfinder
-- Path selection outlier detection feature
+- Increase test coverage in `anta_runner` support for AutoVPN and CV-Pathfinder
+- WAN HA for AutoVPN
 
 !!! info
 
@@ -695,7 +700,8 @@ The following LAN scenarios are supported:
 - Single Router L3 EBGP LAN
 - Single Router L2 LAN
 - Dual Router L3 EBGP LAN with HA
-- Dual Router using one directed connected HA interface.
+- Dual Router using one directed connected HA interface
+- [PREVIEW] - Single Router EVPN Gateway
 
 Some design points:
 
@@ -740,7 +746,7 @@ wan_router:
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site42
       wan_ha:
-      enabled: true
+        enabled: true
       nodes:
         - name: node1
           id: 1
@@ -821,11 +827,7 @@ The following diagram shows the additional route-maps configured to support eBGP
   <img src="../../../../../../../docs/_media/wan_ebgp_lan_single_router.png" alt="WAN eBGP LAN Single Router"/>
 </div>
 
-##### HA (PREVIEW)
-
-!!! warning "PREVIEW: Changes ahead"
-
-    This configuration currently in PREVIEW **will** change in future version of AVD.
+##### HA
 
 for eBGP LAN routing protocol the following is done to enable HA:
 
@@ -846,7 +848,7 @@ This is described in the following diagram:
   <img src="../../../../../../../docs/_media/wan_ebgp_lan_ha.png" alt="WAN eBGP LAN with HA"/>
 </div>
 
-##### HA with Direct Link (PREVIEW)
+##### HA with Direct Link
 
 In the situation where the LAN is EBGP but HA is configured over a direct link, there is no peering with the HA peer required via the LAN and the configuration is simplified as follow:
 
@@ -864,6 +866,40 @@ In the situation where the LAN is EBGP but HA is configured over a direct link, 
     If it is the case, only one interface can be used for Direct HA, and the port-channel creation can be disabled using `wan_ha.use_port_channel_for_direct_ha: false`.
 
     It is *not* possible to use multiple direct HA links while disabling the port-channel.
+
+#### EVPN Gateway LAN (PREVIEW)
+
+- the LAN routes are received via EVPN
+- Enabling the gateway requires to configure:
+  - `wan_use_evpn_node_settings_for_lan: true`
+  - `overlay_routing_protocol: ebgp` for the WAN router
+  - `evpn_role: client` for the WAN router
+  - an EVPN route server should be defined, e.g. using `evpn_route_servers` settings.
+- When all the conditions are met, the EVPN Gateway using DPS Interconnect is enabled and the following configuration is added to the WAN router:
+
+```shell
+router adaptive-virtual-topology
+   topology role edge gateway vxlan # (1)!
+   [...]
+[...]
+router bgp <AS>
+   ...
+   !
+   address-family evpn
+      neighbor WAN_RR activate
+      neighbor WAN_RR domain remote
+      neighbor WAN_RR encapsulation path-selection
+      neighbor DC1_RR activate
+      neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
+```
+
+1. Notice the gateway VXLAN
+
+!!! warning
+
+    TODO: Add a drawing.
+
+    TOI: https://www.arista.com/en/support/toi/eos-4-32-2f/20422-l3-evpn-dci-gateway-using-dps-interconnect
 
 #### OSPF LAN (NOT SUPPORTED)
 

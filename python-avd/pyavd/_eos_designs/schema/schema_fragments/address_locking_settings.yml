@@ -1,0 +1,24 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  address_locking_settings:
+    type: dict
+    $ref: "eos_cli_config_gen#/keys/address_locking"
+    keys:
+      local_interface:
+        type: str
+        default: use_default_mgmt_method_interface
+        description: |-
+          The value will be interpreted according to these rules:
+            - `use_mgmt_interface` will configure the `mgmt_interface` as the local interface.
+            - `use_inband_mgmt_interface` will configure the `inband_mgmt_interface` as the local interface.
+            - `use_default_mgmt_method_interface` will configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value of `default_mgmt_method`.
+            - Any other string will be used directly as the local interface.
+      local_users:
+        $ref: eos_cli_config_gen#/keys/local_users
+        type: list

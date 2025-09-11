@@ -11,3 +11,7 @@ keys:
       table: cloudvision-settings
     type: str
     default: "ale,flexCounter,hardware,kni,pulse,strata"
+    deprecation:
+      warning: true
+      new_key: cv_settings
+      remove_in_version: 6.0.0

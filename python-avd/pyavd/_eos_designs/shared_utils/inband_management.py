@@ -62,9 +62,6 @@ class InbandManagementMixin(Protocol):
 
         Otherwise return None
         """
-        if not self.inband_mgmt_ip:
-            return None
-
         if not self.configure_parent_for_inband_mgmt:
             return self.node_config.inband_mgmt_gateway
 
@@ -85,9 +82,6 @@ class InbandManagementMixin(Protocol):
 
         Otherwise return None
         """
-        if not self.inband_mgmt_ipv6_address:
-            return None
-
         if not self.configure_parent_for_inband_mgmt_ipv6:
             return self.node_config.inband_mgmt_ipv6_gateway
 
@@ -114,11 +108,11 @@ class InbandManagementMixin(Protocol):
             return None
 
         if self.id is None:
-            msg = f"'id' is not set on '{self.hostname}' and is required to set inband_mgmt_ip from inband_mgmt_subnet"
+            msg = "'id' is required to set inband_mgmt_ip from inband_mgmt_subnet"
             raise AristaAvdInvalidInputsError(msg)
 
         subnet = ip_network(self.node_config.inband_mgmt_subnet, strict=False)
-        inband_mgmt_ip = str(subnet[3 + self.id])
+        inband_mgmt_ip = str(subnet[3 + self.id + self.node_config.inband_mgmt_subnet_offset])
         return f"{inband_mgmt_ip}/{subnet.prefixlen}"
 
     @cached_property
@@ -138,7 +132,7 @@ class InbandManagementMixin(Protocol):
             return None
 
         if self.id is None:
-            msg = f"'id' is not set on '{self.hostname}' and is required to set inband_mgmt_ipv6_address from inband_mgmt_ipv6_subnet"
+            msg = "'id' is required to set inband_mgmt_ipv6_address from inband_mgmt_ipv6_subnet"
             raise AristaAvdInvalidInputsError(msg)
 
         subnet = ip_network(self.node_config.inband_mgmt_ipv6_subnet, strict=False)

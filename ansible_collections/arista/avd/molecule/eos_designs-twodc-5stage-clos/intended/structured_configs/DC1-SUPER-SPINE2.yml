@@ -82,7 +82,6 @@ ethernet_interfaces:
     enabled: false
 hostname: DC1-SUPER-SPINE2
 ip_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -107,6 +106,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.1.254
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   dc_name: DC1
   fabric_name: TWODC_5STAGE_CLOS

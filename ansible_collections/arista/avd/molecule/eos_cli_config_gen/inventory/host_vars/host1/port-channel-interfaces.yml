@@ -78,6 +78,7 @@ port_channel_interfaces:
       testing multi line comments with |
       applied to port-channel 15
     description: DC1_L2LEAF3_Po1
+    arp_gratuitous_accept: true
     link_tracking_groups:
       - name: EVPN_MH_ES2
         direction: upstream
@@ -556,6 +557,7 @@ port_channel_interfaces:
         sparse_mode: true
         bfd: true
         bidirectional: true
+        neighbor_filter: Test_Filter_PortChannel
         hello:
           count: 4.5
           interval: 15
@@ -1072,6 +1074,8 @@ port_channel_interfaces:
       enabled: true
       administrative_groups:
         - 7
+      srlgs:
+        - 666
       min_delay_dynamic:
         twamp_light_fallback:
           number: 123
@@ -1088,7 +1092,9 @@ port_channel_interfaces:
         - 4
         - 7-100
         - testgrp
-      srlg: 16
+      srlgs:
+        - 16
+        - TEST
       metric: 2
       bandwidth:
         number: 100
@@ -1096,3 +1102,89 @@ port_channel_interfaces:
       min_delay_static:
         number: 2
         unit: milliseconds
+
+  # VRRP
+  - name: Port-Channel667
+    description: Multiple VRIDs
+    vrrp_ids:
+      - id: 1
+        priority_level: 105
+        advertisement:
+          interval: 2
+        preempt:
+          enabled: true
+          delay:
+            minimum: 30
+            reload: 800
+        ipv4:
+          address: 192.0.2.1
+          secondary_addresses:
+            - 192.0.3.3
+            - 192.0.4.4
+        peer_authentication:
+          mode: ietf-md5
+          key: auth_key
+      - id: 2
+        preempt:
+          enabled: true
+          delay:
+        ipv6:
+          addresses:
+            - 2001:db8:667::1
+        peer_authentication:
+          mode: text
+          key: auth_key
+          key_type: "0"
+
+  - name: Port-Channel333
+    description: Multiple VRIDs and tracking
+    shutdown: false
+    vrrp_ids:
+      - id: 1
+        priority_level: 105
+        advertisement:
+          interval: 2
+        preempt:
+          enabled: true
+          delay:
+            minimum: 30
+            reload: 800
+        ipv4:
+          address: 192.0.2.1
+          secondary_addresses:
+            - 192.0.3.3
+            - 192.0.4.4
+        tracked_object:
+          - name: ID1TrackedObjectDecrement
+            decrement: 5
+          - name: ID1TrackedObjectShutdown
+            shutdown: true
+        peer_authentication:
+          mode: ietf-md5
+          key: auth_key
+          key_type: "0"
+      - id: 2
+        preempt:
+          enabled: true
+          delay:
+        ipv6:
+          addresses:
+            - 2001:db8:333::1
+            - 2002:db8:333::2
+        peer_authentication:
+          mode: text
+          key: auth_key
+        tracked_object:
+          - name: ID2TrackedObjectDecrement
+            decrement: 10
+          - name: ID2TrackedObjectShutdown
+            shutdown: true
+      - id: 3
+        timers:
+          delay:
+            reload: 900
+        preempt:
+          enabled: false
+        ipv4:
+          address: 100.64.0.1
+          version: 3

@@ -329,6 +329,7 @@ interface Port-Channel3.1000
    !
    encapsulation vlan
       client dot1q 1000 network client
+   storm-control broadcast level 15
 !
 interface Port-Channel3.1001
    no shutdown
@@ -337,6 +338,7 @@ interface Port-Channel3.1001
       client dot1q 1001 network client
 !
 interface Port-Channel3.1002
+   !! Test structured_config for Port-Channel subinterface
    no shutdown
    !
    encapsulation vlan
@@ -655,9 +657,9 @@ ASN Notation: asplain
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| MPLS-OVERLAY-PEERS | True |  - | - | default | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - | default | - |
 
 ##### EVPN Neighbor Default Encapsulation
 
@@ -669,17 +671,17 @@ ASN Notation: asplain
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-OVERLAY-PEERS | True | - | - | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - | - | - |
 
 #### Router BGP VPN-IPv6 Address Family
 
 ##### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-OVERLAY-PEERS | True | - | - | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - | - | - |
 
 #### Router BGP VLANs
 
@@ -772,6 +774,9 @@ router bgp 65000
    !
    address-family ipv4
       no neighbor MPLS-OVERLAY-PEERS activate
+   !
+   address-family rt-membership
+      neighbor MPLS-OVERLAY-PEERS activate
    !
    address-family vpn-ipv4
       neighbor MPLS-OVERLAY-PEERS activate
