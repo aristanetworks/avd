@@ -3,21 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-ethernet_interfaces:
-- name: Ethernet1
-  description: L2_add-subnets-to-redistribution-in-default-vrf-with-sequence30_Ethernet2
-  shutdown: false
-  spanning_tree_portfast: edge
-  peer: add-subnets-to-redistribution-in-default-vrf-with-sequence30
-  peer_interface: Ethernet2
-  peer_type: wan_router
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: '111'
-      native_vlan: 10
-hostname: tenant-default-vrf-static-routes
+hostname: l2vlan_profiles
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -44,10 +30,6 @@ prefix_lists:
     action: permit 10.10.0.0/24 eq 32
   - sequence: 20
     action: permit 10.11.0.0/24 eq 32
-- name: PL-STATIC-VRF-DEFAULT
-  sequence_numbers:
-  - sequence: 10
-    action: permit 10.0.0.0/8
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -55,20 +37,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-- name: RM-EVPN-EXPORT-VRF-DEFAULT
-  sequence_numbers:
-  - sequence: 20
-    type: permit
-    match:
-    - ip address prefix-list PL-STATIC-VRF-DEFAULT
-- name: RM-BGP-UNDERLAY-PEERS-OUT
-  sequence_numbers:
-  - sequence: 15
-    type: deny
-    match:
-    - ip address prefix-list PL-STATIC-VRF-DEFAULT
-  - sequence: 20
-    type: permit
 router_bfd:
   multihop:
     interval: 300
@@ -90,7 +58,6 @@ router_bgp:
     type: ipv4
     send_community: all
     maximum_routes: 12000
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
@@ -102,15 +69,29 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
-    static:
-      enabled: true
   vlans:
-  - id: 111
-    tenant: TEST
-    rd: 10.10.0.3:10111
+  - id: 110
+    tenant: research
+    rd: 10.10.0.3:10110
     route_targets:
       both:
-      - 10111:10111
+      - 10110:10110
+    redistribute_routes:
+    - learned
+  - id: 120
+    tenant: research
+    rd: 10.10.0.3:10120
+    route_targets:
+      both:
+      - 10120:10120
+    redistribute_routes:
+    - learned
+  - id: 130
+    tenant: research
+    rd: 10.10.0.3:10130
+    route_targets:
+      both:
+      - 10130:10130
     redistribute_routes:
     - learned
   address_family_evpn:
@@ -123,56 +104,45 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  vrfs:
-  - name: default
-    rd: 10.10.0.3:111
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 111:111
-      export:
-      - address_family: evpn
-        route_targets:
-        - 111:111
-        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
 service_routing_protocols_model: multi-agent
-static_routes:
-- vrf: default
-  prefix: 10.0.0.0/8
-  next_hop: 10.2.10.100
 transceiver_qsfp_default_mode_4x10: true
-vlan_interfaces:
-- name: Vlan111
-  description: svi_with_default_vrf
-  shutdown: true
-  tenant: TEST
-  tags:
-  - fabric
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 10
-  name: NATIVE
-  state: suspend
-- id: 111
-  name: svi_with_default_vrf
-  tenant: TEST
+- id: 110
+  name: research1
+  private_vlan:
+    type: isolated
+    primary_vlan: 120
+  tenant: research
+- id: 120
+  name: research2
+  private_vlan:
+    type: community
+    primary_vlan: 110
+  tenant: research
+- id: 130
+  name: research3
+  private_vlan:
+    type: community
+    primary_vlan: 120
+  tenant: research
 vrfs:
 - name: MGMT
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: tenant-default-vrf-static-routes_VTEP
+    description: l2vlan_profiles_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
       vlans:
-      - id: 111
-        vni: 10111
-      vrfs:
-      - name: default
-        vni: 111
+      - id: 110
+        vni: 10110
+      - id: 120
+        vni: 10120
+      - id: 130
+        vni: 10130

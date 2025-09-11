@@ -110,7 +110,7 @@ async def playback_unary_stream(
         raise FileNotFoundError(recording_file, "for request", request)
     recording = recording_file.read_text()
     for message_as_dict in json.loads(recording):
-        yield response_type().from_pydict(message_as_dict)
+        yield response_type.from_dict(message_as_dict)
 
 
 # General recordings are those that are natively received from CV and dumped as is.
