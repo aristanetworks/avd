@@ -5,7 +5,7 @@ underlay_ospf_graceful_restart: true
 type: spine
 spine:
   nodes:
-    - name: legacy_l3_edge_multicast
+    - name: l3_edge_multicast
       id: 1
       evpn_role: "none"
       loopback_ipv4_pool: 1.2.3.4/24
@@ -29,13 +29,13 @@ l3_edge:
 
   p2p_links:
     # P2P link with underlay multicast(pim-sparse) disabled.
-    - nodes: [legacy_l3_edge_multicast, peer1]
+    - nodes: [l3_edge_multicast, peer1]
       interfaces: [ethernet1, ethernet1]
       ip: [192.168.0.4/31, 192.168.0.5/31]
       include_in_underlay_protocol: true
       underlay_multicast: false
     # P2P link with underlay multicast(pim-sparse) enabled.
-    - nodes: [legacy_l3_edge_multicast, peer2]
+    - nodes: [l3_edge_multicast, peer2]
       interfaces: [ethernet2, ethernet2]
       ip: [192.168.0.2/31, 192.168.0.3/31]
       include_in_underlay_protocol: true

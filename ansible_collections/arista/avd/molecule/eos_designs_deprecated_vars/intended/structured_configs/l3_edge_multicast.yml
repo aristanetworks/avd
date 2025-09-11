@@ -31,7 +31,7 @@ ethernet_interfaces:
   peer_type: other
   switchport:
     enabled: false
-hostname: legacy_l3_edge_multicast
+hostname: l3_edge_multicast
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
@@ -45,7 +45,7 @@ management_api_http:
   - name: MGMT
 metadata:
   is_deployed: true
-  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 router_multicast:
   ipv4:
     routing: true
