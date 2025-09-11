@@ -1618,7 +1618,7 @@ $defs:
                       type: str
                   mlag:
                     description: |-
-                      Configure PIM sparse-mode in the underlay on the MLAG L3 peer interface.
+                      Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
                     type: bool
                     default: true
               static:
