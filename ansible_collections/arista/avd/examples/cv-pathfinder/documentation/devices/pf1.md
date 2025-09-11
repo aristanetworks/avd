@@ -474,8 +474,8 @@ interface Loopback0
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
 | BLUE | 100 | - |
 | default | 1 | - |
 | RED | 101 | - |
@@ -788,19 +788,19 @@ ASN Notation: asplain
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| WAN-OVERLAY-PEERS | True |  - | - | path-selection | - |
-| WAN-RR-OVERLAY-PEERS | True |  - | - | path-selection | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| WAN-OVERLAY-PEERS | True | - | - | - | - | path-selection | - |
+| WAN-RR-OVERLAY-PEERS | True | - | - | - | - | path-selection | - |
 
 #### Router BGP IPv4 SR-TE Address Family
 
 ##### IPv4 SR-TE Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| WAN-OVERLAY-PEERS | True | - | - |
-| WAN-RR-OVERLAY-PEERS | True | - | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ |
+| WAN-OVERLAY-PEERS | True | - | - | - | - |
+| WAN-RR-OVERLAY-PEERS | True | - | - | - | - |
 
 #### Router BGP Link-State Address Family
 

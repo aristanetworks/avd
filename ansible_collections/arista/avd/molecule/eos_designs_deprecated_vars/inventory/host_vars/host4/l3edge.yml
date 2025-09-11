@@ -1,0 +1,22 @@
+---
+# Testing sturctured_config for l3_edge
+l3_edge:
+  p2p_links_profiles:
+    - name: profile1
+      ip_pool: pool1
+      structured_config:
+        service_policy:
+          qos:
+            input: TEST_POLICY
+  p2p_links_ip_pools:
+    - name: pool1
+      ipv4_pool: 192.168.0.0/24
+  p2p_links:
+    - nodes: [host4, peer1]
+      interfaces: [ethernet12, ethernet1]
+      id: 1
+      profile: profile1
+      include_in_underlay_protocol: false
+      # Testing merging of structured_config between profiles and links
+      structured_config:
+        description: I come from p2p_links

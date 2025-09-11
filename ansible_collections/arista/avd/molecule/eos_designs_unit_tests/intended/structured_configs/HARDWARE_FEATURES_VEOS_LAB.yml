@@ -25,6 +25,27 @@ ethernet_interfaces:
     enable: true
   switchport:
     enabled: false
+- name: Ethernet2.2
+  description: P2P_HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet1.1
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.10.50.14/31
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+  peer_interface: Ethernet1.1
+  peer_type: l3leaf
+  sflow:
+    enable: true
+  switchport:
+    enabled: false
 - name: Ethernet4
   description: P2P_HARDWARE_FEATURES_CLOUDEOS_Ethernet4
   shutdown: false
@@ -123,7 +144,6 @@ hostname: HARDWARE_FEATURES_VEOS_LAB
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -138,6 +158,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:
@@ -263,6 +284,11 @@ router_bgp:
     remote_as: '65001'
     peer: HARDWARE_FEATURES_CLOUDEOS
     description: HARDWARE_FEATURES_CLOUDEOS_Ethernet1
+  - ip_address: 10.10.50.15
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    peer: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1
+    description: HARDWARE_FEATURE_SFLOW_SUBINTERFACE_1_Ethernet1.1
   - ip_address: 10.10.30.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'

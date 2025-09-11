@@ -896,6 +896,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/overlay-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/evpn-settings.md
 --8<--
 
+## Address locking settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/address-locking-settings.md
+--8<--
+
 ## WAN Settings
 
 ### WAN generic settings
@@ -1550,8 +1556,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/svi-profiles.md
 
 ### EVPN VLAN aware bundles settings
 
-EVPN VLAN aware bundles referenced by name in `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].evpn_vlan_bundle`
-or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle` or `<network_services_key>[].l2vlans[].evpn_vlan_bundle`.
+EVPN VLAN aware bundles referenced by name in `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle` or `<network_services_key>[].l2vlans[].evpn_vlan_bundle`.
 
 An EVPN VLAN aware bundle will only be configured if at least one VLAN is associated with it.
 

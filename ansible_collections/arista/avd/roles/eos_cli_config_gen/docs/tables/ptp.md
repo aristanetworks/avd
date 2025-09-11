@@ -47,6 +47,7 @@
     | [<samp>&nbsp;&nbsp;free_running</samp>](## "ptp.free_running") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ptp.free_running.enabled") | Boolean | Required |  |  | Enables PTP configuration in free-running mode.<br>When set to true, the boundary clock can start serving PTP downstream even before it locks to an upstream master.<br>When set to false, the clock will not start serving PTP downstream before it has successfully locked to an upstream master. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;source_clock_hardware</samp>](## "ptp.free_running.source_clock_hardware") | Boolean |  |  |  | When enabled, the hardware clock is used as the source for PTP time during free-running mode. |
+    | [<samp>&nbsp;&nbsp;forward_v1</samp>](## "ptp.forward_v1") | Boolean |  |  |  | Forward dataplane PTP V1 packets. |
 
 === "YAML"
 
@@ -105,4 +106,7 @@
 
         # When enabled, the hardware clock is used as the source for PTP time during free-running mode.
         source_clock_hardware: <bool>
+
+      # Forward dataplane PTP V1 packets.
+      forward_v1: <bool>
     ```
