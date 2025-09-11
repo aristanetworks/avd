@@ -54,9 +54,9 @@ class MgmtMixin(Protocol):
                     "OOB management interface for node '%s' changed from '%s' to '%s' for its ACT Digital Twin copy.",
                     self.hostname,
                     mgmt_interface,
-                    "Management1",
+                    act_mgmt_interface,
                 )
-                return "Management1"
+                return act_mgmt_interface
 
         return mgmt_interface
 
