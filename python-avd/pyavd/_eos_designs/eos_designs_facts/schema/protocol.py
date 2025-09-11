@@ -180,6 +180,28 @@ class EosDesignsFactsProtocol(Protocol):
 
                 """
 
+    class MlagUnderlayMulticast(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"pim_sm": {"type": bool}, "static": {"type": bool}}
+        pim_sm: bool
+        static: bool
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, pim_sm: bool | UndefinedType = Undefined, static: bool | UndefinedType = Undefined) -> None:
+                """
+                MlagUnderlayMulticast.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    pim_sm: pim_sm
+                    static: static
+
+                """
+
     class EvpnRouteServers(AvdList[str]):
         """Subclass of AvdList with `str` items."""
 
@@ -995,6 +1017,7 @@ class EosDesignsFactsProtocol(Protocol):
         "mlag_ip": {"type": str},
         "mlag_l3_ip": {"type": str},
         "mlag_switch_ids": {"type": MlagSwitchIds},
+        "mlag_underlay_multicast": {"type": MlagUnderlayMulticast},
         "evpn_role": {"type": str},
         "mpls_overlay_role": {"type": str},
         "evpn_route_servers": {"type": EvpnRouteServers},
@@ -1079,6 +1102,12 @@ class EosDesignsFactsProtocol(Protocol):
     mlag_ip: str | None
     mlag_l3_ip: str | None
     mlag_switch_ids: MlagSwitchIds
+    """
+    The switch ids of both primary and secondary switches for a this node group.
+
+    Subclass of AvdModel.
+    """
+    mlag_underlay_multicast: MlagUnderlayMulticast
     """
     The switch ids of both primary and secondary switches for a this node group.
 
@@ -1218,6 +1247,7 @@ class EosDesignsFactsProtocol(Protocol):
             mlag_ip: str | None | UndefinedType = Undefined,
             mlag_l3_ip: str | None | UndefinedType = Undefined,
             mlag_switch_ids: MlagSwitchIds | UndefinedType = Undefined,
+            mlag_underlay_multicast: MlagUnderlayMulticast | UndefinedType = Undefined,
             evpn_role: str | None | UndefinedType = Undefined,
             mpls_overlay_role: str | None | UndefinedType = Undefined,
             evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
@@ -1299,6 +1329,10 @@ class EosDesignsFactsProtocol(Protocol):
                 mlag_ip: mlag_ip
                 mlag_l3_ip: mlag_l3_ip
                 mlag_switch_ids:
+                   The switch ids of both primary and secondary switches for a this node group.
+
+                   Subclass of AvdModel.
+                mlag_underlay_multicast:
                    The switch ids of both primary and secondary switches for a this node group.
 
                    Subclass of AvdModel.

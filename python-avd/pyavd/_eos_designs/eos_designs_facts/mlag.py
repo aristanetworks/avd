@@ -82,3 +82,17 @@ class MlagMixin(EosDesignsFactsProtocol, Protocol):
             return EosDesignsFactsProtocol.MlagSwitchIds()
 
         return EosDesignsFactsProtocol.MlagSwitchIds(primary=mlag_switch_ids["primary"], secondary=mlag_switch_ids["secondary"])
+
+    @remove_cached_property_type
+    @cached_property
+    def mlag_underlay_multicast(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.MlagUnderlayMulticast:
+        """
+        Exposed in avd_switch_facts.
+
+        Returns the switch MLAG enabled protocol for Underlay Multicast
+        {"pim_sm": bool, "static": bool}
+        """
+        return EosDesignsFactsProtocol.MlagUnderlayMulticast(
+            pim_sm=self.shared_utils.underlay_multicast_pim_mlag_enabled,
+            static=self.shared_utils.underlay_multicast_static_mlag_enabled,
+        )

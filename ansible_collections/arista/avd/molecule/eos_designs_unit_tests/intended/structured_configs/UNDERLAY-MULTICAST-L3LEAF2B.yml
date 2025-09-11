@@ -250,9 +250,6 @@ vlan_interfaces:
   description: MLAG
   shutdown: false
   ip_address: 10.255.252.5/31
-  multicast:
-    ipv4:
-      static: true
   pim:
     ipv4:
       sparse_mode: true

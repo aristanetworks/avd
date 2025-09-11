@@ -125,6 +125,16 @@ keys:
       secondary:
         type: int
         required: true
+  mlag_underlay_multicast:
+    type: dict
+    description: The switch ids of both primary and secondary switches for a this node group.
+    keys:
+      pim_sm:
+        type: bool
+        required: true
+      static:
+        type: bool
+        required: true
   evpn_role:
     type: str
   mpls_overlay_role:

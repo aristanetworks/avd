@@ -24,8 +24,7 @@ l3leaf:
     # Expected results:
     # - router multicast enabled for ipv4
     # - p2p links configured with "pim ipv4 sparse-mode" and "multicast static ipv4"
-    # TODO: check below if static
-    # - VLAN 4093 configured with "pim ipv4 sparse-mode"
+    # - VLAN 4093 configured with "pim ipv4 sparse-mode" but not "multicast static ipv4" because disabled on 1B
     - group: DC1_LEAF1
       bgp_as: 65101
       nodes:
@@ -33,11 +32,6 @@ l3leaf:
           id: 1
           mgmt_ip: 192.168.200.105/24
           uplink_switch_interfaces: [Ethernet1, Ethernet1]
-          # TODO: implement and test - probably a 3rd pair
-          # Disabling static multicast on mlag
-          # underlay_multicast:
-          #  static:
-          #    mlag: false
         # Tested from host_vars
         - name: UNDERLAY-MULTICAST-L3LEAF1B
           # [...] defined in host_vars
@@ -77,3 +71,6 @@ l3leaf:
               # interface is in but it uplinks: false
               uplinks: false
               uplink_interfaces: [Ethernet1]
+              # shutting down static multicast on one side of MLAG and making sure it is not configured
+              # on BOTH side
+              mlag: false
