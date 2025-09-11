@@ -1,15 +1,6 @@
 aaa_root:
   disabled: true
 config_end: true
-daemon_terminattr:
-  cvaddrs:
-  - 192.168.200.12:9910
-  - 192.168.200.13:9910
-  - apiserver.arista.io:443
-  cvauth:
-    method: token-secure
-    token_file: /tmp/anothertoken
-  cvvrf: MGMT
 enable_password:
   disabled: true
 ethernet_interfaces:

@@ -4032,11 +4032,6 @@ class EosDesigns(EosDesignsRootModel):
 
     CvTopology._item_type = CvTopologyItem
 
-    class CvpInstanceIps(AvdList[str]):
-        """Subclass of AvdList with `str` items."""
-
-    CvpInstanceIps._item_type = str
-
     class DefaultInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -67943,9 +67938,6 @@ class EosDesigns(EosDesignsRootModel):
         "cv_tags_topology_type": {"type": str},
         "cv_token": {"type": str},
         "cv_topology": {"type": CvTopology},
-        "cvp_ingestauth_key": {"type": str},
-        "cvp_instance_ips": {"type": CvpInstanceIps},
-        "cvp_token_file": {"type": str},
         "dc_name": {"type": str},
         "default_connected_endpoints_description": {"type": str, "default": "{endpoint_type!u}_{endpoint}{endpoint_port?<_}"},
         "default_connected_endpoints_port_channel_description": {"type": str, "default": "{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}"},
@@ -68677,36 +68669,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of
     AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
-    """
-    cvp_ingestauth_key: str | None
-    """
-    On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication
-    for on-premise CVP.
-    If not set, TerminAttr will be configured with certificate based authentication:
-    - On-premise using token onboarding. Default token path is '/tmp/token'.
-    - CVaaS using token-secure
-    onboarding. Default token path is '/tmp/cv-onboarding-token'.
-    Token must be copied to the device
-    first.
-    """
-    cvp_instance_ips: CvpInstanceIps
-    """
-    List of IPv4 addresses or DNS names for CloudVision.
-    For on-premise CloudVision enter all the nodes
-    of the cluster.
-    For CloudVision as a Service enter the DNS name of the instance.
-    `eos_designs` only
-    supports one CloudVision cluster.
-
-
-    Subclass of AvdList with `str` items.
-    """
-    cvp_token_file: str | None
-    """
-    cvp_token_file is the path to the token file on the switch.
-    If not set the default locations for on-
-    premise or CVaaS will be used.
-    See cvp_ingestauth_key for details.
     """
     dc_name: str | None
     """
@@ -70345,9 +70307,6 @@ class EosDesigns(EosDesignsRootModel):
             cv_tags_topology_type: str | None | UndefinedType = Undefined,
             cv_token: str | None | UndefinedType = Undefined,
             cv_topology: CvTopology | UndefinedType = Undefined,
-            cvp_ingestauth_key: str | None | UndefinedType = Undefined,
-            cvp_instance_ips: CvpInstanceIps | UndefinedType = Undefined,
-            cvp_token_file: str | None | UndefinedType = Undefined,
             dc_name: str | None | UndefinedType = Undefined,
             default_connected_endpoints_description: str | UndefinedType = Undefined,
             default_connected_endpoints_port_channel_description: str | UndefinedType = Undefined,
@@ -70792,30 +70751,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of
                    AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
-                cvp_ingestauth_key:
-                   On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication
-                   for on-premise CVP.
-                   If not set, TerminAttr will be configured with certificate based authentication:
-                   - On-premise using token onboarding. Default token path is '/tmp/token'.
-                   - CVaaS using token-secure
-                   onboarding. Default token path is '/tmp/cv-onboarding-token'.
-                   Token must be copied to the device
-                   first.
-                cvp_instance_ips:
-                   List of IPv4 addresses or DNS names for CloudVision.
-                   For on-premise CloudVision enter all the nodes
-                   of the cluster.
-                   For CloudVision as a Service enter the DNS name of the instance.
-                   `eos_designs` only
-                   supports one CloudVision cluster.
-
-
-                   Subclass of AvdList with `str` items.
-                cvp_token_file:
-                   cvp_token_file is the path to the token file on the switch.
-                   If not set the default locations for on-
-                   premise or CVaaS will be used.
-                   See cvp_ingestauth_key for details.
                 dc_name:
                    DC Name is used in:
                    - Fabric Documentation (Optional, falls back to fabric_name)

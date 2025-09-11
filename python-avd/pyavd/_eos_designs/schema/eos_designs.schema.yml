@@ -1450,18 +1450,9 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: str
-    description: 'On-premise CVP ingest auth key. If set, TerminAttr will be configured
-      with key-based authentication for on-premise CVP.
-
-      If not set, TerminAttr will be configured with certificate based authentication:
-
-      - On-premise using token onboarding. Default token path is ''/tmp/token''.
-
-      - CVaaS using token-secure onboarding. Default token path is ''/tmp/cv-onboarding-token''.
-
-      Token must be copied to the device first.'
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
   cvp_instance_ip:
     documentation_options:
@@ -1482,33 +1473,18 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: list
-    description: 'List of IPv4 addresses or DNS names for CloudVision.
-
-      For on-premise CloudVision enter all the nodes of the cluster.
-
-      For CloudVision as a Service enter the DNS name of the instance.
-
-      `eos_designs` only supports one CloudVision cluster.
-
-      '
-    items:
-      type: str
-      description: IPv4 address or DNS name for CloudVision
     deprecation:
       warning: true
+      removed: true
       new_key: cv_settings
       remove_in_version: 6.0.0
   cvp_token_file:
     documentation_options:
       table: cloudvision-settings
     type: str
-    description: 'cvp_token_file is the path to the token file on the switch.
-
-      If not set the default locations for on-premise or CVaaS will be used.
-
-      See cvp_ingestauth_key for details.'
     deprecation:
       warning: true
+      removed: true
       new_key: cv_settings
       remove_in_version: 6.0.0
   dc_name:

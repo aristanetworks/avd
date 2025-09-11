@@ -1,6 +1,0 @@
----
-# Deprecated in 5.5.0. To be removed in AVD 6.0.0
-cvp_instance_ips:
-  - 192.168.200.12
-  - 192.168.200.13
-  - 'apiserver.arista.io'
