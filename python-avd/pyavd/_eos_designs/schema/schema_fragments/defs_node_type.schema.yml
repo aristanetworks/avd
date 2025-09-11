@@ -1600,7 +1600,7 @@ $defs:
                           router multicast
                             ipv4 routing
                       By default, configure PIM sparse-mode in the underlay on all:
-                        - P2P uplink interfaces if enabled on uplink peer
+                        - P2P uplink interfaces if enabled on uplink switch
                         - MLAG L3 peer interface if also enabled on MLAG peer
                         - l3_edge and core interfaces
                   uplinks:
