@@ -48,7 +48,6 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 ### Features in preview
 
 - Internet-exit for Zscaler is in preview
-- `eos_validate_state` is being enriched to support new tests for WAN designs.
 - EVPN WAN gateway is in preview as it requires the use of `wan_use_evpn_node_settings_for_lan`. It is supported only on sites with single WAN Router.
 
 ### Known limitations

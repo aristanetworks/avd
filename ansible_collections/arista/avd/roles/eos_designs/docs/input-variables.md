@@ -574,10 +574,6 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/type-setting.md
 Node types can be defined statically on each node or in each group of nodes.  By leveraging `default_node_types`, regular expressions can be used to determine the node type based
 on the hostname.
 
-!!! warning
-    Please note that using the `default_node_types` functionality will cause certain tests in the eos_validate_state role to not be executed.
-    This functionality will be restored as part of a later update to eos_validate_state and this note will then be removed.
-
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/default-node-types.md
 --8<--
