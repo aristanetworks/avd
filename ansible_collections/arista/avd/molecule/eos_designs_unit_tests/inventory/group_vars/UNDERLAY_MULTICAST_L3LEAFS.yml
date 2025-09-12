@@ -74,3 +74,22 @@ l3leaf:
               # shutting down static multicast on one side of MLAG and making sure it is not configured
               # on BOTH side
               mlag: false
+
+    - group: DC1_LEAF3
+      bgp_as: 65103
+      mlag_peer_l3_vlan: 4094
+      # Checking static multicast over MLAG removing anything else
+      underlay_multicast:
+        pim_sm:
+          enabled: false
+        static:
+          uplinks: false
+      nodes:
+        - name: UNDERLAY-MULTICAST-L3LEAF3A
+          id: 5
+          mgmt_ip: 192.168.200.109/24
+          uplink_switch_interfaces: [Ethernet5, Ethernet5]
+        - name: UNDERLAY-MULTICAST-L3LEAF3B
+          id: 6
+          mgmt_ip: 192.168.200.10/24
+          uplink_switch_interfaces: [Ethernet6, Ethernet6]
