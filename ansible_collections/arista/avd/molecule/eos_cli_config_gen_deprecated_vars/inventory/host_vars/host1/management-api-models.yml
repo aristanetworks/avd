@@ -1,7 +1,7 @@
 ---
 management_api_models:
-  provider:
-    smash:
+  providers:
+    - name: smash
       paths:
         - path: flexCounters
         - path: forwarding/srte/status/fec
@@ -10,10 +10,9 @@ management_api_models:
         - path: routing/bgp/export/allPeerAdjRibIn
         - path: routing/status
           disabled: true
-    sysdb:
-      disabled_paths:
-        - cell/1/agent
-        - sys/logging/config/vrfLoggingHost/mgmt
-    macsec:
-      interfaces: true
-      mka: true
+    - name: sysdb
+      paths:
+        - path: cell/1/agent
+          disabled: true
+        - path: /Sysdb/sys/logging/config/vrfLoggingHost/mgmt
+          disabled: true
