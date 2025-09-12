@@ -110,7 +110,7 @@ repos:
         name: PyRight static type checker
         types: [python]
         additional_dependencies:
-          - 'anta==1.4.0'
+          - 'anta==1.5.0'
           - 'ansible-core>=2.16.0,<2.19.0'
           - 'deepmerge>=1.1.0'
           - 'PyYAML>=6.0.0'
