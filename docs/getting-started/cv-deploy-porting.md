@@ -119,7 +119,7 @@ We recommend leveraging the `cv_server` and `cv_token` keys to specify the authe
 ```
 
 !!!warning
-    You may use the combination of `cv_username` and `cv_password` instead of `cv_token`, but this is only supported for on-prem CloudVision. CVaaS only supports the use of tokens, so please keep that in mind.
+    You may use the combination of `cv_username` and `cv_password` instead of `cv_token`, but this is only supported for on-prem CloudVision. CVaaS only supports token-based authentication.
 
 ## Provisioning
 
