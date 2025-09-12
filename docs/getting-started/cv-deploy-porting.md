@@ -43,7 +43,28 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
 
 <div class="grid" markdown>
 
-=== "Old Playbook"
+=== "Old"
+
+    Inventory
+
+    ```yaml
+    ---
+    all:
+      children:
+        cloudvision:
+          hosts:
+            <CloudVision node>:
+              ansible_host: <CloudVision address>
+              ansible_user: <CloudVision username>
+              ansible_password: <CloudVision password>
+              ansible_connection: httpapi
+              ansible_httpapi_use_ssl: true
+              ansible_httpapi_validate_certs: false
+              ansible_network_os: eos
+              ansible_httpapi_port: 443
+    ```
+
+    Playbook
 
     ```yaml hl_lines="3"
     ---
@@ -63,25 +84,12 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
 
     ```
 
-=== "Old Inventory"
+=== "New"
 
-    ```yaml
-    all:
-      children:
-        cloudvision:
-          hosts:
-            <CloudVision node>:
-              ansible_host: <CloudVision address>
-              ansible_user: <CloudVision username>
-              ansible_password: <CloudVision password>
-              ansible_connection: httpapi
-              ansible_httpapi_use_ssl: true
-              ansible_httpapi_validate_certs: false
-              ansible_network_os: eos
-              ansible_httpapi_port: 443
-    ```
+    !!! note
+        Defining the CloudVision host in the Ansible inventory is no longer required.
 
-=== "New Playbook"
+    Playbook
 
     ```yaml hl_lines="3"
     ---
@@ -101,9 +109,6 @@ In `eos_config_deploy_cvp`, we targeted the definition of a CloudVision host as 
 
 </div>
 
-!!! note
-    An additional inventory definition is no longer required.
-
 ## Authentication
 
 We recommend leveraging the `cv_server` and `cv_token` keys to specify the authentication to your CloudVision instance. The `cv_token` should be generated from a service account with the appropriate permissions in your workflows. You can find step-by-step instructions on creating service account tokens in the `cv_deploy` role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md#steps-to-create-service-accounts-on-cloudvision).
@@ -118,7 +123,7 @@ We recommend leveraging the `cv_server` and `cv_token` keys to specify the authe
         cv_token: <insert service_account token here - use Ansible Vault>
 ```
 
-!!!warning
+!!! info
     You may use the combination of `cv_username` and `cv_password` instead of `cv_token`, but this is only supported for on-prem CloudVision. CVaaS only supports token-based authentication.
 
 ## Provisioning
