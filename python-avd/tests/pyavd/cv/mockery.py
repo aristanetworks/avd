@@ -162,6 +162,5 @@ async def mocked_cv_client_aenter(self: CVClient) -> CVClient:
 
     self._channel = MockedChannel()
     self._channel._host = self._servers[0]
-    self._cv_version = None
     self._metadata = {}
     return self

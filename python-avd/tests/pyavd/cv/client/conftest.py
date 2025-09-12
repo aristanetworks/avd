@@ -12,6 +12,7 @@ import aristaproto
 import pytest_asyncio
 
 from pyavd._cv.client import CVClient
+from pyavd._cv.client.versioning import CvVersion
 from pyavd._utils import get_v2
 from tests.pyavd.cv.mockery import (
     mocked_cv_client_aenter,
@@ -79,7 +80,10 @@ async def cv_client(request: pytest.FixtureRequest) -> AsyncGenerator[CVClient, 
         else:
             aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = playback_unary_unary
             aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = playback_unary_stream
-        with patch("pyavd._cv.client.CVClient.__aenter__", new=mocked_cv_client_aenter):
+        with (
+            patch("pyavd._cv.client.CVClient.__aenter__", new=mocked_cv_client_aenter),
+            patch("pyavd._cv.client.CVClient._cv_version", CvVersion(get_v2(request, "param.cv_version", default="CVaaS"))),
+        ):
             async with CVClient(servers=CV_SERVER, token=CV_TOKEN) as cv_client:
                 yield cv_client
 

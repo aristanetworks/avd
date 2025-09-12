@@ -1,0 +1,2094 @@
+{
+    "payload": [
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-DFE856076FF8544AC57F86A1B3F23F64"
+                },
+                "displayName": "campus-LEAF3A",
+                "description": "Configuration created and uploaded by AVD for campus-LEAF3A",
+                "configletIds": {
+                    "values": [
+                        "avd-DFE856076FF8544AC57F86A1B3F23F64"
+                    ]
+                },
+                "query": "device:DFE856076FF8544AC57F86A1B3F23F64",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T21:49:10.041534214",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T21:49:29.631371719",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T21:49:29.631371719",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-19CEA7D283AC30209DCD8C7F626B2E57"
+                },
+                "displayName": "cv-pathfinder-mpls-cloud",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-mpls-cloud",
+                "configletIds": {
+                    "values": [
+                        "avd-19CEA7D283AC30209DCD8C7F626B2E57"
+                    ]
+                },
+                "query": "device:19CEA7D283AC30209DCD8C7F626B2E57",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-16T16:54:08.667595605",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-16T16:54:43.094394276",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-16T16:54:43.094394276",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-DCBFFD6C843A1F912D20EDA4950C46A7"
+                },
+                "displayName": "dc1-leaf2a",
+                "description": "Configuration created and uploaded by AVD for dc1-leaf2a",
+                "configletIds": {
+                    "values": [
+                        "avd-DCBFFD6C843A1F912D20EDA4950C46A7"
+                    ]
+                },
+                "query": "device:DCBFFD6C843A1F912D20EDA4950C46A7",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-20T04:14:32.265956573",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-20T04:14:32.265956573",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-20T04:14:32.265956573",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-B51AA89B6E51E89E1422107EDE3A9438"
+                },
+                "displayName": "avd-ci-leaf2",
+                "description": "Configuration created and uploaded by AVD for avd-ci-leaf2",
+                "configletIds": {
+                    "values": [
+                        "avd-B51AA89B6E51E89E1422107EDE3A9438"
+                    ]
+                },
+                "query": "device:B51AA89B6E51E89E1422107EDE3A9438",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-19T17:41:26.623822671",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-19T17:41:26.623822671",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-19T17:41:26.623822671",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-C295935793CEE00D5A5E0D0EEDA480DD"
+                },
+                "displayName": "isis-ldp-p1",
+                "description": "Configuration created and uploaded by AVD for isis-ldp-p1",
+                "configletIds": {
+                    "values": [
+                        "avd-C295935793CEE00D5A5E0D0EEDA480DD"
+                    ]
+                },
+                "query": "device:C295935793CEE00D5A5E0D0EEDA480DD",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-22T05:21:18.320367150",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-22T05:22:34.001892352",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-22T05:22:34.001892352",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-D565C5DF47ACBAC564A1BFB6F386FD48"
+                },
+                "displayName": "l2ls-SPINE1",
+                "description": "Configuration created and uploaded by AVD for l2ls-SPINE1",
+                "configletIds": {
+                    "values": [
+                        "avd-D565C5DF47ACBAC564A1BFB6F386FD48"
+                    ]
+                },
+                "query": "device:D565C5DF47ACBAC564A1BFB6F386FD48",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-11T19:29:10.982489552",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-11T19:29:23.467294476",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-11T19:29:23.467294476",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-3CDED314225030143F1472ECEE0C5546"
+                },
+                "displayName": "cv-pathfinder-site1-wan1",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site1-wan1",
+                "configletIds": {
+                    "values": [
+                        "avd-3CDED314225030143F1472ECEE0C5546"
+                    ]
+                },
+                "query": "device:3CDED314225030143F1472ECEE0C5546",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-22T17:56:29.747476135",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-22T17:57:05.205457593",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-22T17:57:05.205457593",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-196C0C3879DC1724370E4626D01F3359"
+                },
+                "displayName": "cv-pathfinder-site3-wan1",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site3-wan1",
+                "configletIds": {
+                    "values": [
+                        "avd-196C0C3879DC1724370E4626D01F3359"
+                    ]
+                },
+                "query": "device:196C0C3879DC1724370E4626D01F3359",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-22T17:56:29.747476135",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-22T17:57:05.205457593",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-22T17:57:05.205457593",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-36DAFF8649E6D45E01C69DA87EAE7D76"
+                },
+                "displayName": "single-dc-dc1-leaf1b",
+                "description": "Configuration created and uploaded by AVD for single-dc-dc1-leaf1b",
+                "configletIds": {
+                    "values": [
+                        "avd-36DAFF8649E6D45E01C69DA87EAE7D76"
+                    ]
+                },
+                "query": "device:36DAFF8649E6D45E01C69DA87EAE7D76",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T16:01:06.945718813",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T16:01:37.996494191",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T16:01:37.996494191",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-6E54D1DD3083BD73A55C76190D3CF378"
+                },
+                "displayName": "campus-LEAF3E",
+                "description": "Configuration created and uploaded by AVD for campus-LEAF3E",
+                "configletIds": {
+                    "values": [
+                        "avd-6E54D1DD3083BD73A55C76190D3CF378"
+                    ]
+                },
+                "query": "device:6E54D1DD3083BD73A55C76190D3CF378",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T21:49:10.041534214",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T21:49:29.631371719",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T21:49:29.631371719",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-DA6663E74DFF65C0D8679C5F195F88FE"
+                },
+                "displayName": "dual-dc-dc2-leaf2c",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc2-leaf2c",
+                "configletIds": {
+                    "values": [
+                        "avd-DA6663E74DFF65C0D8679C5F195F88FE"
+                    ]
+                },
+                "query": "device:DA6663E74DFF65C0D8679C5F195F88FE",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-A17E5FEF1FD6978D30B03F493CE891CD"
+                },
+                "displayName": "dual-dc-dc1-leaf1b",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc1-leaf1b",
+                "configletIds": {
+                    "values": [
+                        "avd-A17E5FEF1FD6978D30B03F493CE891CD"
+                    ]
+                },
+                "query": "device:A17E5FEF1FD6978D30B03F493CE891CD",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-F8379B3749A66BE3B160ACA6FDBD51F7"
+                },
+                "displayName": "cv-pathfinder-pf1",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-pf1",
+                "configletIds": {
+                    "values": [
+                        "avd-F8379B3749A66BE3B160ACA6FDBD51F7"
+                    ]
+                },
+                "query": "device:F8379B3749A66BE3B160ACA6FDBD51F7",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-16T18:36:52.712516580",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-20T19:40:29.156357660",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-20T19:40:29.156357660",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-E970C4E7BD7F96C2C5E7270CB0623FD7"
+                },
+                "displayName": "dual-dc-dc1-spine1",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc1-spine1",
+                "configletIds": {
+                    "values": [
+                        "avd-E970C4E7BD7F96C2C5E7270CB0623FD7"
+                    ]
+                },
+                "query": "device:E970C4E7BD7F96C2C5E7270CB0623FD7",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-3583F8588F66C1433476032BD3598F8E"
+                },
+                "displayName": "dual-dc-dc2-spine2",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc2-spine2",
+                "configletIds": {
+                    "values": [
+                        "avd-3583F8588F66C1433476032BD3598F8E"
+                    ]
+                },
+                "query": "device:3583F8588F66C1433476032BD3598F8E",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-A35041DA2FAE8F7159BE42AB792E60CE"
+                },
+                "displayName": "dc1-leaf2b",
+                "description": "Configuration created and uploaded by AVD for dc1-leaf2b",
+                "configletIds": {
+                    "values": [
+                        "avd-A35041DA2FAE8F7159BE42AB792E60CE"
+                    ]
+                },
+                "query": "device:A35041DA2FAE8F7159BE42AB792E60CE",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-20T04:14:32.265956573",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-20T04:14:32.265956573",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-20T04:14:32.265956573",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-6BCF81EFEF92EB232F3BD198B6412835"
+                },
+                "displayName": "single-dc-ipv6-dc1-leaf2c",
+                "description": "Configuration created and uploaded by AVD for single-dc-ipv6-dc1-leaf2c",
+                "configletIds": {
+                    "values": [
+                        "avd-6BCF81EFEF92EB232F3BD198B6412835"
+                    ]
+                },
+                "query": "device:6BCF81EFEF92EB232F3BD198B6412835",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-06-02T13:24:11.616618977",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-06-02T13:24:51.071783130",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-06-02T13:24:51.071783130",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-D1B05116007D08BF0F09B472BC9DF5E3"
+                },
+                "displayName": "dc1-leaf2c",
+                "description": "Configuration created and uploaded by AVD for dc1-leaf2c",
+                "configletIds": {
+                    "values": [
+                        "avd-D1B05116007D08BF0F09B472BC9DF5E3"
+                    ]
+                },
+                "query": "device:D1B05116007D08BF0F09B472BC9DF5E3",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-20T04:14:32.265956573",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-20T04:14:32.265956573",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-20T04:14:32.265956573",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-E556E19FFB81EE6D9592658E0539A4DA"
+                },
+                "displayName": "dc1-spine2",
+                "description": "Configuration created and uploaded by AVD for dc1-spine2",
+                "configletIds": {
+                    "values": [
+                        "avd-E556E19FFB81EE6D9592658E0539A4DA"
+                    ]
+                },
+                "query": "device:E556E19FFB81EE6D9592658E0539A4DA",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-20T04:14:32.265956573",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-20T04:14:32.265956573",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-20T04:14:32.265956573",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-C3B86DE8DB888671398A1868A9A171E3"
+                },
+                "displayName": "single-dc-ipv6-dc1-leaf1b",
+                "description": "Configuration created and uploaded by AVD for single-dc-ipv6-dc1-leaf1b",
+                "configletIds": {
+                    "values": [
+                        "avd-C3B86DE8DB888671398A1868A9A171E3"
+                    ]
+                },
+                "query": "device:C3B86DE8DB888671398A1868A9A171E3",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-06-02T13:51:32.858427572",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-06-02T13:51:42.523968960",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-06-02T13:51:42.523968960",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-1CFA458E7FAA8DB4C1E06BD69B265ACA"
+                },
+                "displayName": "dual-dc-dc2-spine1",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc2-spine1",
+                "configletIds": {
+                    "values": [
+                        "avd-1CFA458E7FAA8DB4C1E06BD69B265ACA"
+                    ]
+                },
+                "query": "device:1CFA458E7FAA8DB4C1E06BD69B265ACA",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-D015DEBCFAC0E6599CBE057F3D9CDCA8"
+                },
+                "displayName": "isis-ldp-p3",
+                "description": "Configuration created and uploaded by AVD for isis-ldp-p3",
+                "configletIds": {
+                    "values": [
+                        "avd-D015DEBCFAC0E6599CBE057F3D9CDCA8"
+                    ]
+                },
+                "query": "device:D015DEBCFAC0E6599CBE057F3D9CDCA8",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-23T05:24:06.503391441",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-23T05:24:51.538154035",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-23T05:24:51.538154035",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-9773E71071E814212551CA1E70F24593"
+                },
+                "displayName": "campus-LEAF2A",
+                "description": "Configuration created and uploaded by AVD for campus-LEAF2A",
+                "configletIds": {
+                    "values": [
+                        "avd-9773E71071E814212551CA1E70F24593"
+                    ]
+                },
+                "query": "device:9773E71071E814212551CA1E70F24593",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T21:49:10.041534214",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T21:49:29.631371719",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T21:49:29.631371719",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-1F2044A88A3207E6F1B576859A2F7828"
+                },
+                "displayName": "isis-ldp-pe2",
+                "description": "Configuration created and uploaded by AVD for isis-ldp-pe2",
+                "configletIds": {
+                    "values": [
+                        "avd-1F2044A88A3207E6F1B576859A2F7828"
+                    ]
+                },
+                "query": "device:1F2044A88A3207E6F1B576859A2F7828",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-23T05:24:06.503391441",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-23T05:24:51.538154035",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-23T05:24:51.538154035",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-2E3DE6A1F3021C444F6103CB8FD5017E"
+                },
+                "displayName": "single-dc-ipv6-dc1-spine1",
+                "description": "Configuration created and uploaded by AVD for single-dc-ipv6-dc1-spine1",
+                "configletIds": {
+                    "values": [
+                        "avd-2E3DE6A1F3021C444F6103CB8FD5017E"
+                    ]
+                },
+                "query": "device:2E3DE6A1F3021C444F6103CB8FD5017E",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-06-02T13:51:32.858427572",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-06-02T13:51:42.523968960",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-06-02T13:51:42.523968960",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-3EBF078529E5271C18A0F4E0BE81A070"
+                },
+                "displayName": "cv-pathfinder-site1-border2",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site1-border2",
+                "configletIds": {
+                    "values": [
+                        "avd-3EBF078529E5271C18A0F4E0BE81A070"
+                    ]
+                },
+                "query": "device:3EBF078529E5271C18A0F4E0BE81A070",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-16T18:36:52.712516580",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-20T19:40:29.156357660",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-20T19:40:29.156357660",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-F98FC38F0C7CC3E8F5E0DC3537466FEF"
+                },
+                "displayName": "single-dc-dc1-spine2",
+                "description": "Configuration created and uploaded by AVD for single-dc-dc1-spine2",
+                "configletIds": {
+                    "values": [
+                        "avd-F98FC38F0C7CC3E8F5E0DC3537466FEF"
+                    ]
+                },
+                "query": "device:F98FC38F0C7CC3E8F5E0DC3537466FEF",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T16:01:06.945718813",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T16:01:37.996494191",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T16:01:37.996494191",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-A1C0BC13CF6D49CA2087B35172FE9BF9"
+                },
+                "displayName": "isis-ldp-rr2",
+                "description": "Configuration created and uploaded by AVD for isis-ldp-rr2",
+                "configletIds": {
+                    "values": [
+                        "avd-A1C0BC13CF6D49CA2087B35172FE9BF9"
+                    ]
+                },
+                "query": "device:A1C0BC13CF6D49CA2087B35172FE9BF9",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-25T05:25:02.891752639",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-25T05:25:35.897010339",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-25T05:25:35.897010339",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-FC96F69BEC7FF46148B7EABC068E88E4"
+                },
+                "displayName": "cv-pathfinder-site1-wan2",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site1-wan2",
+                "configletIds": {
+                    "values": [
+                        "avd-FC96F69BEC7FF46148B7EABC068E88E4"
+                    ]
+                },
+                "query": "device:FC96F69BEC7FF46148B7EABC068E88E4",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-16T18:36:52.712516580",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-20T19:40:29.156357660",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-20T19:40:29.156357660",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-83FE0F023CEA0D17CAD3D48F642A0D48"
+                },
+                "displayName": "l2ls-LEAF3",
+                "description": "Configuration created and uploaded by AVD for l2ls-LEAF3",
+                "configletIds": {
+                    "values": [
+                        "avd-83FE0F023CEA0D17CAD3D48F642A0D48"
+                    ]
+                },
+                "query": "device:83FE0F023CEA0D17CAD3D48F642A0D48",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-12T14:55:29.656567458",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-12T14:55:49.674172258",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-12T14:55:49.674172258",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-E20B8FD63538AE67470135F2AA1371CC"
+                },
+                "displayName": "l2ls-SPINE2",
+                "description": "Configuration created and uploaded by AVD for l2ls-SPINE2",
+                "configletIds": {
+                    "values": [
+                        "avd-E20B8FD63538AE67470135F2AA1371CC"
+                    ]
+                },
+                "query": "device:E20B8FD63538AE67470135F2AA1371CC",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-12T14:55:29.656567458",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-12T14:55:49.674172258",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-12T14:55:49.674172258",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-20C292B489214DF32F9506C242A722FF"
+                },
+                "displayName": "avd-ci-core1",
+                "description": "Configuration created and uploaded by AVD for avd-ci-core1",
+                "configletIds": {
+                    "values": [
+                        "avd-20C292B489214DF32F9506C242A722FF"
+                    ]
+                },
+                "query": "device:20C292B489214DF32F9506C242A722FF",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-20T04:14:14.354221417",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-20T04:14:14.354221417",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-20T04:14:14.354221417",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-6223F3808D24D7A841E6088E6C5A196A"
+                },
+                "displayName": "single-dc-dc1-leaf2c",
+                "description": "Configuration created and uploaded by AVD for single-dc-dc1-leaf2c",
+                "configletIds": {
+                    "values": [
+                        "avd-6223F3808D24D7A841E6088E6C5A196A"
+                    ]
+                },
+                "query": "device:6223F3808D24D7A841E6088E6C5A196A",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T16:01:06.945718813",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T16:01:37.996494191",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T16:01:37.996494191",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-0F0E358C5CA4793F4ED3979D2725957C"
+                },
+                "displayName": "cv-pathfinder-site2-wan2",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site2-wan2",
+                "configletIds": {
+                    "values": [
+                        "avd-0F0E358C5CA4793F4ED3979D2725957C"
+                    ]
+                },
+                "query": "device:0F0E358C5CA4793F4ED3979D2725957C",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-15T22:59:45.668006240",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-15T23:00:20.816000166",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-15T23:00:20.816000166",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-58E8BAD98A1A5C214442159D8627B449"
+                },
+                "displayName": "single-dc-ipv6-dc1-leaf1a",
+                "description": "Configuration created and uploaded by AVD for single-dc-ipv6-dc1-leaf1a",
+                "configletIds": {
+                    "values": [
+                        "avd-58E8BAD98A1A5C214442159D8627B449"
+                    ]
+                },
+                "query": "device:58E8BAD98A1A5C214442159D8627B449",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-06-02T13:51:32.858427572",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-06-02T13:51:42.523968960",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-06-02T13:51:42.523968960",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-3C0C022C3B42779C0992AEEE5D314D98"
+                },
+                "displayName": "single-dc-ipv6-dc1-leaf1c",
+                "description": "Configuration created and uploaded by AVD for single-dc-ipv6-dc1-leaf1c",
+                "configletIds": {
+                    "values": [
+                        "avd-3C0C022C3B42779C0992AEEE5D314D98"
+                    ]
+                },
+                "query": "device:3C0C022C3B42779C0992AEEE5D314D98",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-06-02T13:24:11.616618977",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-06-02T13:24:51.071783130",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-06-02T13:24:51.071783130",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-A5EEE0F68E6A5C5599411D4493B2B2A5"
+                },
+                "displayName": "campus-LEAF1A",
+                "description": "Configuration created and uploaded by AVD for campus-LEAF1A",
+                "configletIds": {
+                    "values": [
+                        "avd-A5EEE0F68E6A5C5599411D4493B2B2A5"
+                    ]
+                },
+                "query": "device:A5EEE0F68E6A5C5599411D4493B2B2A5",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T22:34:27.837348705",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T22:34:52.550185667",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T22:34:52.550185667",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-3B3769D2D6E699B4837B2040DD41858A"
+                },
+                "displayName": "dual-dc-dc2-leaf2a",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc2-leaf2a",
+                "configletIds": {
+                    "values": [
+                        "avd-3B3769D2D6E699B4837B2040DD41858A"
+                    ]
+                },
+                "query": "device:3B3769D2D6E699B4837B2040DD41858A",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-C7B26167EFD6EBD42E01D55187B3C7B3"
+                },
+                "displayName": "avd-ci-leaf3",
+                "description": "Configuration created and uploaded by AVD for avd-ci-leaf3",
+                "configletIds": {
+                    "values": [
+                        "avd-C7B26167EFD6EBD42E01D55187B3C7B3"
+                    ]
+                },
+                "query": "device:C7B26167EFD6EBD42E01D55187B3C7B3",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-19T17:41:26.623822671",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-19T17:41:26.623822671",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-19T17:41:26.623822671",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-4A703F816943E7B2A04C5A60F3E6C14C"
+                },
+                "displayName": "l2ls-LEAF2",
+                "description": "Configuration created and uploaded by AVD for l2ls-LEAF2",
+                "configletIds": {
+                    "values": [
+                        "avd-4A703F816943E7B2A04C5A60F3E6C14C"
+                    ]
+                },
+                "query": "device:4A703F816943E7B2A04C5A60F3E6C14C",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-12T14:55:29.656567458",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-12T14:55:49.674172258",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-12T14:55:49.674172258",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-D89ACC3D4B5671CE1DF22D7CE0BC473E"
+                },
+                "displayName": "cv-pathfinder-site1-wan2",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site1-wan2",
+                "configletIds": {
+                    "values": [
+                        "avd-D89ACC3D4B5671CE1DF22D7CE0BC473E"
+                    ]
+                },
+                "query": "device:D89ACC3D4B5671CE1DF22D7CE0BC473E",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-15T22:59:45.668006240",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-15T23:00:20.816000166",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-15T23:00:20.816000166",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-39BA32E848ADE07ED9844A64A3B26B52"
+                },
+                "displayName": "cv-pathfinder-site4-wan1",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site4-wan1",
+                "configletIds": {
+                    "values": [
+                        "avd-39BA32E848ADE07ED9844A64A3B26B52"
+                    ]
+                },
+                "query": "device:39BA32E848ADE07ED9844A64A3B26B52",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-22T17:56:29.747476135",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-22T17:57:05.205457593",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-22T17:57:05.205457593",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-C3E7909D103E8A684E957C81E69E6D4C"
+                },
+                "displayName": "single-dc-dc1-leaf1a",
+                "description": "Configuration created and uploaded by AVD for single-dc-dc1-leaf1a",
+                "configletIds": {
+                    "values": [
+                        "avd-C3E7909D103E8A684E957C81E69E6D4C"
+                    ]
+                },
+                "query": "device:C3E7909D103E8A684E957C81E69E6D4C",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T16:01:06.945718813",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T16:01:37.996494191",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T16:01:37.996494191",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-231BA70D319BFD45B00F5A30FE15B1D2"
+                },
+                "displayName": "campus-LEAF3B",
+                "description": "Configuration created and uploaded by AVD for campus-LEAF3B",
+                "configletIds": {
+                    "values": [
+                        "avd-231BA70D319BFD45B00F5A30FE15B1D2"
+                    ]
+                },
+                "query": "device:231BA70D319BFD45B00F5A30FE15B1D2",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T21:49:10.041534214",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T21:49:29.631371719",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T21:49:29.631371719",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-CDE77D6F1CB56AEF59D5AA26B33062C2"
+                },
+                "displayName": "campus-SPINE1",
+                "description": "Configuration created and uploaded by AVD for campus-SPINE1",
+                "configletIds": {
+                    "values": [
+                        "avd-CDE77D6F1CB56AEF59D5AA26B33062C2"
+                    ]
+                },
+                "query": "device:CDE77D6F1CB56AEF59D5AA26B33062C2",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T21:49:10.041534214",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T21:49:29.631371719",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T21:49:29.631371719",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-9BA501594D019F7A05268F5D2771125D"
+                },
+                "displayName": "l2ls-LEAF1",
+                "description": "Configuration created and uploaded by AVD for l2ls-LEAF1",
+                "configletIds": {
+                    "values": [
+                        "avd-9BA501594D019F7A05268F5D2771125D"
+                    ]
+                },
+                "query": "device:9BA501594D019F7A05268F5D2771125D",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-12T14:55:29.656567458",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-12T14:55:49.674172258",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-12T14:55:49.674172258",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-8A5B1A53C0AD190F6D48FE7208FD9E41"
+                },
+                "displayName": "avd-ci-leaf4",
+                "description": "Configuration created and uploaded by AVD for avd-ci-leaf4",
+                "configletIds": {
+                    "values": [
+                        "avd-8A5B1A53C0AD190F6D48FE7208FD9E41"
+                    ]
+                },
+                "query": "device:8A5B1A53C0AD190F6D48FE7208FD9E41",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-19T17:41:26.623822671",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-19T17:41:26.623822671",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-19T17:41:26.623822671",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-24F87A3F2C3E3ED71AAFFD1649E73524"
+                },
+                "displayName": "single-dc-dc1-leaf1c",
+                "description": "Configuration created and uploaded by AVD for single-dc-dc1-leaf1c",
+                "configletIds": {
+                    "values": [
+                        "avd-24F87A3F2C3E3ED71AAFFD1649E73524"
+                    ]
+                },
+                "query": "device:24F87A3F2C3E3ED71AAFFD1649E73524",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T16:01:06.945718813",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T16:01:37.996494191",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T16:01:37.996494191",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-8EBAA0F28562F73870735D13AEF52D27"
+                },
+                "displayName": "isis-ldp-p2",
+                "description": "Configuration created and uploaded by AVD for isis-ldp-p2",
+                "configletIds": {
+                    "values": [
+                        "avd-8EBAA0F28562F73870735D13AEF52D27"
+                    ]
+                },
+                "query": "device:8EBAA0F28562F73870735D13AEF52D27",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-22T05:21:18.320367150",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-22T05:22:34.001892352",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-22T05:22:34.001892352",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-325C9161FEB05485875A9BA287F9B1D1"
+                },
+                "displayName": "cv-pathfinder-site2-leaf1",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site2-leaf1",
+                "configletIds": {
+                    "values": [
+                        "avd-325C9161FEB05485875A9BA287F9B1D1"
+                    ]
+                },
+                "query": "device:325C9161FEB05485875A9BA287F9B1D1",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-16T18:36:52.712516580",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-20T19:40:29.156357660",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-20T19:40:29.156357660",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-0412FABC87738A32BA098A23257C2E2D"
+                },
+                "displayName": "cv-pathfinder-site1-border1",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site1-border1",
+                "configletIds": {
+                    "values": [
+                        "avd-0412FABC87738A32BA098A23257C2E2D"
+                    ]
+                },
+                "query": "device:0412FABC87738A32BA098A23257C2E2D",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-16T18:36:52.712516580",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-20T19:40:29.156357660",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-20T19:40:29.156357660",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-824561E3586DFDA11218B309B892C453"
+                },
+                "displayName": "dual-dc-dc1-leaf1a",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc1-leaf1a",
+                "configletIds": {
+                    "values": [
+                        "avd-824561E3586DFDA11218B309B892C453"
+                    ]
+                },
+                "query": "device:824561E3586DFDA11218B309B892C453",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-A9DB6B1887FA086E4D4CB468BAEC800E"
+                },
+                "displayName": "cv-pathfinder-site2-leaf1",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site2-leaf1",
+                "configletIds": {},
+                "query": "device:A9DB6B1887FA086E4D4CB468BAEC800E",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-07T18:56:12.456768833",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-15T17:57:15.793949711",
+                "lastModifiedBy": "joel.breton"
+            },
+            "time": "2025-05-15T17:57:15.793949711",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-BF8CA9FDABF4143E58A43E1678D071B2"
+                },
+                "displayName": "cv-pathfinder-site2-wan1",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site2-wan1",
+                "configletIds": {
+                    "values": [
+                        "avd-BF8CA9FDABF4143E58A43E1678D071B2"
+                    ]
+                },
+                "query": "device:BF8CA9FDABF4143E58A43E1678D071B2",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-22T17:56:29.747476135",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-22T17:57:05.205457593",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-22T17:57:05.205457593",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-680503F46DF176987E835D301ABB58B2"
+                },
+                "displayName": "cv-pathfinder-site3-leaf1",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site3-leaf1",
+                "configletIds": {
+                    "values": [
+                        "avd-680503F46DF176987E835D301ABB58B2"
+                    ]
+                },
+                "query": "device:680503F46DF176987E835D301ABB58B2",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-16T16:54:08.667595605",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-16T16:54:43.094394276",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-16T16:54:43.094394276",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-7FA6D30C88D340D049E32041CCAA7A37"
+                },
+                "displayName": "single-dc-dc1-spine1",
+                "description": "Configuration created and uploaded by AVD for single-dc-dc1-spine1",
+                "configletIds": {
+                    "values": [
+                        "avd-7FA6D30C88D340D049E32041CCAA7A37"
+                    ]
+                },
+                "query": "device:7FA6D30C88D340D049E32041CCAA7A37",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-29T15:16:55.978824974",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-29T15:17:09.090660917",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-29T15:17:09.090660917",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-DCC844EDE98449EA8A08E921276A6A01"
+                },
+                "displayName": "cv-pathfinder-inet-cloud",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-inet-cloud",
+                "configletIds": {
+                    "values": [
+                        "avd-DCC844EDE98449EA8A08E921276A6A01"
+                    ]
+                },
+                "query": "device:DCC844EDE98449EA8A08E921276A6A01",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-16T18:36:52.712516580",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-20T19:40:29.156357660",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-20T19:40:29.156357660",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-BDAECA294FB07FFFF853183EEC474653"
+                },
+                "displayName": "isis-ldp-pe1",
+                "description": "Configuration created and uploaded by AVD for isis-ldp-pe1",
+                "configletIds": {
+                    "values": [
+                        "avd-BDAECA294FB07FFFF853183EEC474653"
+                    ]
+                },
+                "query": "device:BDAECA294FB07FFFF853183EEC474653",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-23T05:24:06.503391441",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-23T05:24:51.538154035",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-23T05:24:51.538154035",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-386BF9B280985E37ECEBF48567EC1ECF"
+                },
+                "displayName": "dual-dc-dc1-leaf2c",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc1-leaf2c",
+                "configletIds": {
+                    "values": [
+                        "avd-386BF9B280985E37ECEBF48567EC1ECF"
+                    ]
+                },
+                "query": "device:386BF9B280985E37ECEBF48567EC1ECF",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-991515227CB0180F58C520E485990E05"
+                },
+                "displayName": "single-dc-dc1-leaf2b",
+                "description": "Configuration created and uploaded by AVD for single-dc-dc1-leaf2b",
+                "configletIds": {
+                    "values": [
+                        "avd-991515227CB0180F58C520E485990E05"
+                    ]
+                },
+                "query": "device:991515227CB0180F58C520E485990E05",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T16:01:06.945718813",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T16:01:37.996494191",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T16:01:37.996494191",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-82AA8ADD8D956CAB49EFAFC79BD3C6FF"
+                },
+                "displayName": "campus-SPINE2",
+                "description": "Configuration created and uploaded by AVD for campus-SPINE2",
+                "configletIds": {
+                    "values": [
+                        "avd-82AA8ADD8D956CAB49EFAFC79BD3C6FF"
+                    ]
+                },
+                "query": "device:82AA8ADD8D956CAB49EFAFC79BD3C6FF",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T21:49:10.041534214",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T21:49:29.631371719",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T21:49:29.631371719",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-FC2A0D29F28CA2F7B59274F1BDD17F12"
+                },
+                "displayName": "isis-ldp-rr1",
+                "description": "Configuration created and uploaded by AVD for isis-ldp-rr1",
+                "configletIds": {
+                    "values": [
+                        "avd-FC2A0D29F28CA2F7B59274F1BDD17F12"
+                    ]
+                },
+                "query": "device:FC2A0D29F28CA2F7B59274F1BDD17F12",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-25T05:25:02.891752639",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-25T05:25:35.897010339",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-25T05:25:35.897010339",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-C0C5B431659247A1F6C6550C9F4A6366"
+                },
+                "displayName": "single-dc-ipv6-dc1-leaf2b",
+                "description": "Configuration created and uploaded by AVD for single-dc-ipv6-dc1-leaf2b",
+                "configletIds": {
+                    "values": [
+                        "avd-C0C5B431659247A1F6C6550C9F4A6366"
+                    ]
+                },
+                "query": "device:C0C5B431659247A1F6C6550C9F4A6366",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-06-02T13:24:11.616618977",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-06-02T13:24:51.071783130",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-06-02T13:24:51.071783130",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-186633F2F2C957596660EFCF490E9168"
+                },
+                "displayName": "dual-dc-dc1-spine2",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc1-spine2",
+                "configletIds": {
+                    "values": [
+                        "avd-186633F2F2C957596660EFCF490E9168"
+                    ]
+                },
+                "query": "device:186633F2F2C957596660EFCF490E9168",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-7739702975E3D2FEFFA17AAB07A7BA77"
+                },
+                "displayName": "cv-pathfinder-site2-leaf2",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site2-leaf2",
+                "configletIds": {
+                    "values": [
+                        "avd-7739702975E3D2FEFFA17AAB07A7BA77"
+                    ]
+                },
+                "query": "device:7739702975E3D2FEFFA17AAB07A7BA77",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-16T18:36:52.712516580",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-20T19:40:29.156357660",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-20T19:40:29.156357660",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-32136C2A866EA92C5A2CB60C0E1723F9"
+                },
+                "displayName": "dc1-spine1",
+                "description": "Configuration created and uploaded by AVD for dc1-spine1",
+                "configletIds": {
+                    "values": [
+                        "avd-32136C2A866EA92C5A2CB60C0E1723F9"
+                    ]
+                },
+                "query": "device:32136C2A866EA92C5A2CB60C0E1723F9",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-20T04:14:32.265956573",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-20T04:14:32.265956573",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-20T04:14:32.265956573",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-344730B897C3EBCAFA97DA5231DAE329"
+                },
+                "displayName": "isis-ldp-p4",
+                "description": "Configuration created and uploaded by AVD for isis-ldp-p4",
+                "configletIds": {
+                    "values": [
+                        "avd-344730B897C3EBCAFA97DA5231DAE329"
+                    ]
+                },
+                "query": "device:344730B897C3EBCAFA97DA5231DAE329",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-23T05:24:06.503391441",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-23T05:24:51.538154035",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-23T05:24:51.538154035",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-7A1D7F9A86436AA8745E368A5C5B6FB6"
+                },
+                "displayName": "campus-LEAF3C",
+                "description": "Configuration created and uploaded by AVD for campus-LEAF3C",
+                "configletIds": {
+                    "values": [
+                        "avd-7A1D7F9A86436AA8745E368A5C5B6FB6"
+                    ]
+                },
+                "query": "device:7A1D7F9A86436AA8745E368A5C5B6FB6",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T21:49:10.041534214",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T21:49:29.631371719",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T21:49:29.631371719",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-D7EFB2C79AEE22C11057CA37CAED347C"
+                },
+                "displayName": "single-dc-ipv6-dc1-leaf2a",
+                "description": "Configuration created and uploaded by AVD for single-dc-ipv6-dc1-leaf2a",
+                "configletIds": {
+                    "values": [
+                        "avd-D7EFB2C79AEE22C11057CA37CAED347C"
+                    ]
+                },
+                "query": "device:D7EFB2C79AEE22C11057CA37CAED347C",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-06-02T13:24:11.616618977",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-06-02T13:24:51.071783130",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-06-02T13:24:51.071783130",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-CA6B39449B6A9580CED7AC602B43AB24"
+                },
+                "displayName": "cv-pathfinder-site2-wan2",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site2-wan2",
+                "configletIds": {
+                    "values": [
+                        "avd-CA6B39449B6A9580CED7AC602B43AB24"
+                    ]
+                },
+                "query": "device:CA6B39449B6A9580CED7AC602B43AB24",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-22T17:56:29.747476135",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-22T17:57:05.205457593",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-22T17:57:05.205457593",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-B60D3A9014819A8490D9B007E0AFF21A"
+                },
+                "displayName": "single-dc-dc1-leaf2a",
+                "description": "Configuration created and uploaded by AVD for single-dc-dc1-leaf2a",
+                "configletIds": {
+                    "values": [
+                        "avd-B60D3A9014819A8490D9B007E0AFF21A"
+                    ]
+                },
+                "query": "device:B60D3A9014819A8490D9B007E0AFF21A",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T16:01:06.945718813",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T16:01:37.996494191",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T16:01:37.996494191",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-3A8AAFA3F67854C25030F3CF481A2BF3"
+                },
+                "displayName": "dc1-leaf1c",
+                "description": "Configuration created and uploaded by AVD for dc1-leaf1c",
+                "configletIds": {
+                    "values": [
+                        "avd-3A8AAFA3F67854C25030F3CF481A2BF3"
+                    ]
+                },
+                "query": "device:3A8AAFA3F67854C25030F3CF481A2BF3",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-20T04:14:32.265956573",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-20T04:14:32.265956573",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-20T04:14:32.265956573",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-0F2188CCC37D0BCAE2A653ABA5866F96"
+                },
+                "displayName": "dual-dc-dc1-leaf2a",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc1-leaf2a",
+                "configletIds": {
+                    "values": [
+                        "avd-0F2188CCC37D0BCAE2A653ABA5866F96"
+                    ]
+                },
+                "query": "device:0F2188CCC37D0BCAE2A653ABA5866F96",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-87E6B969074089BBEAECE8479D9AD5F6"
+                },
+                "displayName": "dual-dc-dc2-leaf1b",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc2-leaf1b",
+                "configletIds": {
+                    "values": [
+                        "avd-87E6B969074089BBEAECE8479D9AD5F6"
+                    ]
+                },
+                "query": "device:87E6B969074089BBEAECE8479D9AD5F6",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-1FB1F2CE95AB1FAF14D09896C97FCC89"
+                },
+                "displayName": "cv-pathfinder-site4-border2",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site4-border2",
+                "configletIds": {
+                    "values": [
+                        "avd-1FB1F2CE95AB1FAF14D09896C97FCC89"
+                    ]
+                },
+                "query": "device:1FB1F2CE95AB1FAF14D09896C97FCC89",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-16T18:36:52.712516580",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-20T19:40:29.156357660",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-20T19:40:29.156357660",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-ABDB3CE69C7A3095CE43AE84B749B09E"
+                },
+                "displayName": "dual-dc-dc2-leaf1c",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc2-leaf1c",
+                "configletIds": {
+                    "values": [
+                        "avd-ABDB3CE69C7A3095CE43AE84B749B09E"
+                    ]
+                },
+                "query": "device:ABDB3CE69C7A3095CE43AE84B749B09E",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-A7D46613D44DE45D68D5B5C5CBA06B0D"
+                },
+                "displayName": "avd-ci-spine2",
+                "description": "Configuration created and uploaded by AVD for avd-ci-spine2",
+                "configletIds": {
+                    "values": [
+                        "avd-A7D46613D44DE45D68D5B5C5CBA06B0D"
+                    ]
+                },
+                "query": "device:A7D46613D44DE45D68D5B5C5CBA06B0D",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-19T17:41:26.623822671",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-19T17:41:26.623822671",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-19T17:41:26.623822671",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-41C6F82429A0C6487E063FE24B2F281D"
+                },
+                "displayName": "isis-ldp-pe3",
+                "description": "Configuration created and uploaded by AVD for isis-ldp-pe3",
+                "configletIds": {
+                    "values": [
+                        "avd-41C6F82429A0C6487E063FE24B2F281D"
+                    ]
+                },
+                "query": "device:41C6F82429A0C6487E063FE24B2F281D",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-23T05:24:06.503391441",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-23T05:24:51.538154035",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-23T05:24:51.538154035",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-13C20F1EDCCED2D85F6DB2FB9E3AC5B6"
+                },
+                "displayName": "avd-ci-leaf1",
+                "description": "Configuration created and uploaded by AVD for avd-ci-leaf1",
+                "configletIds": {
+                    "values": [
+                        "avd-13C20F1EDCCED2D85F6DB2FB9E3AC5B6"
+                    ]
+                },
+                "query": "device:13C20F1EDCCED2D85F6DB2FB9E3AC5B6",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-19T17:41:26.623822671",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-19T17:41:26.623822671",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-19T17:41:26.623822671",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-9404C07527327D8767F0E4BD25A14312"
+                },
+                "displayName": "dc1-leaf1a",
+                "description": "Configuration created and uploaded by AVD for dc1-leaf1a",
+                "configletIds": {
+                    "values": [
+                        "avd-9404C07527327D8767F0E4BD25A14312"
+                    ]
+                },
+                "query": "device:9404C07527327D8767F0E4BD25A14312",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-20T04:14:32.265956573",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-20T04:14:32.265956573",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-20T04:14:32.265956573",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-5EDC6BED3C5F7B726E7F066506A44E7E"
+                },
+                "displayName": "dual-dc-dc1-leaf2b",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc1-leaf2b",
+                "configletIds": {
+                    "values": [
+                        "avd-5EDC6BED3C5F7B726E7F066506A44E7E"
+                    ]
+                },
+                "query": "device:5EDC6BED3C5F7B726E7F066506A44E7E",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-A1D1837BA8BB2236A9667CEDD6BDB75F"
+                },
+                "displayName": "single-dc-ipv6-dc1-spine2",
+                "description": "Configuration created and uploaded by AVD for single-dc-ipv6-dc1-spine2",
+                "configletIds": {
+                    "values": [
+                        "avd-A1D1837BA8BB2236A9667CEDD6BDB75F"
+                    ]
+                },
+                "query": "device:A1D1837BA8BB2236A9667CEDD6BDB75F",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-06-02T13:24:11.616618977",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-06-02T13:24:51.071783130",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-06-02T13:24:51.071783130",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-DCC816CEAC4BBD6319385043AD318362"
+                },
+                "displayName": "avd-ci-spine1",
+                "description": "Configuration created and uploaded by AVD for avd-ci-spine1",
+                "configletIds": {
+                    "values": [
+                        "avd-DCC816CEAC4BBD6319385043AD318362"
+                    ]
+                },
+                "query": "device:DCC816CEAC4BBD6319385043AD318362",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-19T17:41:26.623822671",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-19T17:41:26.623822671",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-19T17:41:26.623822671",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-30160234DEF2DF9D5776425366F3E21C"
+                },
+                "displayName": "dc1-leaf1b",
+                "description": "Configuration created and uploaded by AVD for dc1-leaf1b",
+                "configletIds": {
+                    "values": [
+                        "avd-30160234DEF2DF9D5776425366F3E21C"
+                    ]
+                },
+                "query": "device:30160234DEF2DF9D5776425366F3E21C",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-03-20T04:14:32.265956573",
+                "createdBy": "ci-avd",
+                "lastModifiedAt": "2025-03-20T04:14:32.265956573",
+                "lastModifiedBy": "ci-avd"
+            },
+            "time": "2025-03-20T04:14:32.265956573",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-9218B0192DE24062A0222D146B0E4F52"
+                },
+                "displayName": "cv-pathfinder-pf2",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-pf2",
+                "configletIds": {
+                    "values": [
+                        "avd-9218B0192DE24062A0222D146B0E4F52"
+                    ]
+                },
+                "query": "device:9218B0192DE24062A0222D146B0E4F52",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-16T16:54:08.667595605",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-16T16:54:43.094394276",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-16T16:54:43.094394276",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-D4E37F7B113537A698778FA84CE6B89D"
+                },
+                "displayName": "dual-dc-dc2-leaf2b",
+                "description": "Configuration created and uploaded by AVD for dual-dc-dc2-leaf2b",
+                "configletIds": {
+                    "values": [
+                        "avd-D4E37F7B113537A698778FA84CE6B89D"
+                    ]
+                },
+                "query": "device:D4E37F7B113537A698778FA84CE6B89D",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-26T01:36:45.474566731",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-26T01:37:23.434653626",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-26T01:37:23.434653626",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-353DF92756FB1674C56A4259F0FA81C6"
+                },
+                "displayName": "l2ls-LEAF4",
+                "description": "Configuration created and uploaded by AVD for l2ls-LEAF4",
+                "configletIds": {
+                    "values": [
+                        "avd-353DF92756FB1674C56A4259F0FA81C6"
+                    ]
+                },
+                "query": "device:353DF92756FB1674C56A4259F0FA81C6",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-12T14:55:29.656567458",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-12T14:55:49.674172258",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-12T14:55:49.674172258",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-B78D6406118A0D1503727C255C17AC16"
+                },
+                "displayName": "campus-LEAF3D",
+                "description": "Configuration created and uploaded by AVD for campus-LEAF3D",
+                "configletIds": {
+                    "values": [
+                        "avd-B78D6406118A0D1503727C255C17AC16"
+                    ]
+                },
+                "query": "device:B78D6406118A0D1503727C255C17AC16",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T21:49:10.041534214",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T21:49:29.631371719",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T21:49:29.631371719",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-4292B47D4011923258852D65B25C526F"
+                },
+                "displayName": "LEAF4",
+                "description": "Configuration created and uploaded by AVD for LEAF4",
+                "configletIds": {
+                    "values": [
+                        "avd-4292B47D4011923258852D65B25C526F"
+                    ]
+                },
+                "query": "device:4292B47D4011923258852D65B25C526F",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-10T18:39:53.196665670",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-10T18:40:02.251504690",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-10T18:40:02.251504690",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-408BE50B9B7BF091FFD1285B98568B7A"
+                },
+                "displayName": "cv-pathfinder-site4-border1",
+                "description": "Configuration created and uploaded by AVD for cv-pathfinder-site4-border1",
+                "configletIds": {
+                    "values": [
+                        "avd-408BE50B9B7BF091FFD1285B98568B7A"
+                    ]
+                },
+                "query": "device:408BE50B9B7BF091FFD1285B98568B7A",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-05-16T18:36:52.712516580",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-05-20T19:40:29.156357660",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-05-20T19:40:29.156357660",
+            "type": "INITIAL"
+        }, {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e",
+                    "configletAssignmentId": "avd-9C7198FDD7E3494FDD6E3B29AF8BB264"
+                },
+                "displayName": "campus-LEAF1B",
+                "description": "Configuration created and uploaded by AVD for campus-LEAF1B",
+                "configletIds": {
+                    "values": [
+                        "avd-9C7198FDD7E3494FDD6E3B29AF8BB264"
+                    ]
+                },
+                "query": "device:9C7198FDD7E3494FDD6E3B29AF8BB264",
+                "matchPolicy": "MATCH_ALL",
+                "childAssignmentIds": {},
+                "createdAt": "2025-04-25T21:49:10.041534214",
+                "createdBy": "ci-test",
+                "lastModifiedAt": "2025-04-25T21:49:29.631371719",
+                "lastModifiedBy": "ci-test"
+            },
+            "time": "2025-04-25T21:49:29.631371719",
+            "type": "INITIAL"
+        }
+    ]
+}
