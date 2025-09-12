@@ -2,13 +2,14 @@
 
 type: l2leaf
 
-underlay_multicast: true
+underlay_multicast_pim_sm: true
+underlay_multicast_static: true
 
 l2leaf:
   defaults:
     platform: vEOS-LAB
-    uplink_interfaces: ['Ethernet1']
-    uplink_switches: ['UNDERLAY-MULTICAST-L3LEAF1A']
+    uplink_interfaces: [Ethernet1]
+    uplink_switches: [UNDERLAY-MULTICAST-L3LEAF1A]
   node_groups:
     # Test scenario of child device with underlay_router: false (default for l2leaf).
     # Expected results:

@@ -15,7 +15,7 @@ keys:
       If multiple nodes are configured under 'nodes' for the same RP address, they will be configured
       according to the 'underlay_multicast_anycast_rp.mode' setting.
 
-      Requires 'underlay_multicast: true'.
+      Requires 'underlay_multicast_pim_sm: true'.
     type: list
     primary_key: rp
     items:
