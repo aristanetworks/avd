@@ -10,7 +10,7 @@ This guide provides a step-by-step process for updating your Ansible inventory a
 
 ## Requirements
 
-The `cv_deploy` role is now part of the `arista.avd` Ansible collection. This will now remove the requirement of the `arista.cvp` collection. It may be removed if you have the `arista.cvp` collection listed in your `requirements.yml` file. For a complete look at requirements, please see the [installation guide](../installation/collection-installation.md).
+The `cv_deploy` role is part of the `arista.avd` Ansible collection. `arista.cvp` collection is not required any more for AVD-to-CloudVision integration using `cv_deploy`. For a complete look at requirements, please see the [installation guide](../installation/collection-installation.md).
 
 <div class="grid" markdown>
 
