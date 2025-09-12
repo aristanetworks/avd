@@ -121,7 +121,7 @@ class CVClientProtocol(
         channel._create_connection = proxy_connection
         return channel
 
-    def _ssl_context(self) -> ssl.SSLContext:
+    def _ssl_context(self) -> ssl.SSLContext | bool:
         """
         Initialize the default SSL context with relaxed verification if needed.
 
@@ -132,12 +132,11 @@ class CVClientProtocol(
         if not self._verify_certs:
             # Accepting SonarLint issue: We are purposely implementing no verification of certs.
             context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
-            context.check_hostname = False  # NOSONAR
+            context.check_hostname = False
             context.verify_mode = ssl.CERT_NONE  # NOSONAR
+            context.set_alpn_protocols(["h2"])
         else:
-            context = ssl.create_default_context()
-
-        context.set_alpn_protocols(["h2"])
+            context = True
         return context
 
     def _set_token(self) -> None:
@@ -181,6 +180,7 @@ class CVClientProtocol(
             msg = "Unable to get version from CloudVision server. Missing token."
             raise CVClientException(msg)
 
+        response = None
         try:
             response = get(  # noqa: S113 TODO: Add configurable timeout
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
@@ -189,10 +189,10 @@ class CVClientProtocol(
                 proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
                 json={},
             )
-
+            response.raise_for_status()
             self._cv_version = CvVersion(response.json()["version"])
         except (KeyError, JSONDecodeError) as e:
-            msg = f"Unable to get version from CloudVision server. Got {response.text}"
+            msg = f"Unable to get version from CloudVision server. Got {response.text if response else 'No response'}"
             raise CVClientException(msg) from e
 
 
