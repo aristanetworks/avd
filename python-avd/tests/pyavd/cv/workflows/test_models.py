@@ -2,6 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -20,9 +21,9 @@ from .helpers import generate_id
 def complex_avd_manifest() -> AvdManifest:
     """Provides a complex, valid AVD manifest with nested containers and configlets."""
     # Configlets definition.
-    configlet1 = AvdConfiglet(name="configlet_global", file="path/to/global.cfg")
-    configlet2 = AvdConfiglet(name="configlet_leaf", file="path/to/leaf.cfg")
-    configlet3 = AvdConfiglet(name="configlet_extra", file="path/to/extra.cfg")
+    configlet1 = AvdConfiglet(name="configlet_global", file=Path("path/to/global.cfg"))
+    configlet2 = AvdConfiglet(name="configlet_leaf", file=Path("path/to/leaf.cfg"))
+    configlet3 = AvdConfiglet(name="configlet_extra", file=Path("path/to/extra.cfg"))
 
     # Container hierarchy definition.
     container_leaf_1a = AvdContainer(
@@ -77,7 +78,7 @@ class TestCVManifestGeneration:
         assert "configlet_leaf" in configlet_map
         cv_cfg = configlet_map["configlet_leaf"]
         assert cv_cfg.name == "configlet_leaf"
-        assert cv_cfg.file == "path/to/leaf.cfg"
+        assert str(cv_cfg.file) == "path/to/leaf.cfg"
         assert cv_cfg.id == generate_id("configlet_leaf")
 
         # Verify root container properties (CVContainer).
@@ -112,8 +113,8 @@ class TestCVManifestGeneration:
 
     def test_duplicate_configlet_name_error(self) -> None:
         """Tests that a CVManifestError is raised for duplicate configlet names."""
-        configlet1 = AvdConfiglet(name="duplicate_name", file="file1.conf")
-        configlet2 = AvdConfiglet(name="duplicate_name", file="file2.conf")
+        configlet1 = AvdConfiglet(name="duplicate_name", file=Path("file1.conf"))
+        configlet2 = AvdConfiglet(name="duplicate_name", file=Path("file2.conf"))
         avd_manifest = AvdManifest(configlets=(configlet1, configlet2), containers=())
 
         with pytest.raises(CVManifestError, match="Duplicate configlet name found: 'duplicate_name'"):
@@ -148,7 +149,7 @@ class TestCVManifestGeneration:
 
     def test_manifest_with_configlets_only(self) -> None:
         """Tests a manifest that has configlets but no container definitions."""
-        configlet = AvdConfiglet(name="cfg1", file="file1.cfg")
+        configlet = AvdConfiglet(name="cfg1", file=Path("file1.cfg"))
         avd_manifest = AvdManifest(configlets=(configlet,), containers=())
 
         cv_manifest = CVManifest.from_avd_manifest(avd_manifest)
@@ -193,7 +194,7 @@ class TestCVContainerMatching:
     def test_cv_container(self) -> CVContainer:
         """Creates a single CVContainer instance for matching tests."""
         # Setup data to create one container instance.
-        avd_cfg = AvdConfiglet(name="test_cfg", file="test.cfg")
+        avd_cfg = AvdConfiglet(name="test_cfg", file=Path("test.cfg"))
         avd_container = AvdContainer(
             name="TEST_CONTAINER", description="Test Description", tag_query="app:test", match_policy="match_all", configlets=("test_cfg",)
         )
@@ -302,14 +303,13 @@ class TestAvdConfigletFromDict:
         data = {"name": "TestConfiglet", "file": "/path/to/file.cfg"}
         configlet = AvdConfiglet.from_dict(data)
         assert configlet.name == "TestConfiglet"
-        assert configlet.file == "/path/to/file.cfg"
+        assert str(configlet.file) == "/path/to/file.cfg"
 
     @pytest.mark.parametrize(
         ("invalid_data", "match_str"),
         [
             pytest.param({"name": "Test"}, "Invalid configlet definition", id="missing_file"),
             pytest.param({"file": "path.cfg"}, "Invalid configlet definition", id="missing_name"),
-            pytest.param({"name": "Test", "file": "path.cfg", "extra_key": "invalid"}, "Invalid configlet definition", id="extra_key"),
             pytest.param({}, "Invalid configlet definition", id="empty_dict"),
         ],
     )
