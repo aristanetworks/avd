@@ -55,7 +55,7 @@ all:
           ansible_httpapi_port: 443
 ```
 
-For complete list of authentication options available with CloudVision Ansible collection, you can read dedicated page on [arista.cvp collection](https://cvp.avd.sh/en/latest/docs/how-to/cvp-authentication/).
+For complete list of authentication options available with CloudVision Ansible collection, you can read dedicated page on [arista.cvp collection](https://aristanetworks.github.io/ansible-cvp/docs/how-to/cvp-authentication/).
 
 #### Module variables
 
