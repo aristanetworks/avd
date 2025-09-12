@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._utils import default
 from pyavd._utils.password_utils.password import isis_encrypt
 
 if TYPE_CHECKING:
@@ -60,12 +61,24 @@ class UnderlayMixin(Protocol):
         return self.inputs.underlay_ipv6 and self.underlay_router
 
     @cached_property
-    def underlay_multicast(self: SharedUtilsProtocol) -> bool:
-        return self.inputs.underlay_multicast and self.underlay_router
+    def underlay_multicast_pim_sm_enabled(self: SharedUtilsProtocol) -> bool:
+        # TODO: AVD 6.0, remove legacy underlay_multicast
+        return (
+            default(self.node_config.underlay_multicast.pim_sm.enabled, self.inputs.underlay_multicast_pim_sm, self.inputs.underlay_multicast)
+            and self.underlay_router
+        )
+
+    @cached_property
+    def underlay_multicast_static_enabled(self: SharedUtilsProtocol) -> bool:
+        return (default(self.node_config.underlay_multicast.static.enabled, self.inputs.underlay_multicast_static)) and self.underlay_router
+
+    @cached_property
+    def any_multicast_enabled(self: SharedUtilsProtocol) -> bool:
+        return self.underlay_multicast_pim_sm_enabled or self.underlay_multicast_static_enabled
 
     @cached_property
     def underlay_multicast_rp_interfaces(self: SharedUtilsProtocol) -> list[EosCliConfigGen.LoopbackInterfacesItem] | None:
-        if not self.underlay_multicast or not self.inputs.underlay_multicast_rps:
+        if not self.underlay_multicast_pim_sm_enabled or not self.inputs.underlay_multicast_rps:
             return None
 
         underlay_multicast_rp_interfaces = []
@@ -92,7 +105,7 @@ class UnderlayMixin(Protocol):
             if self.is_wan_router:
                 msg = "Invalid combination of inputs. WAN is not yet supported with IPv6 underlay"
                 raise AristaAvdInvalidInputsError(msg)
-            if self.underlay_multicast_rp_interfaces or self.underlay_multicast:
+            if self.underlay_multicast_rp_interfaces or self.underlay_multicast_static_enabled:
                 msg = "Invalid combination of inputs. Underlay multicast is not yet supported with IPv6 underlay"
                 raise AristaAvdInvalidInputsError(msg)
             if self.inputs.underlay_rfc5549:
