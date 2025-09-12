@@ -8,8 +8,6 @@ type: dict
 keys:
   avd_6_behaviors:
     type: dict
-    description: |-
-      Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
     documentation_options:
       table: role-settings
     deprecation:
