@@ -43,7 +43,7 @@ class MlagMixin(Protocol):
         return None
 
     @cached_property
-    def mlag_interfaces(self: SharedUtilsProtocol) -> list:
+    def mlag_interfaces(self: SharedUtilsProtocol) -> list[str]:
         return range_expand(self.node_config.mlag_interfaces or get(self.cv_topology_config, "mlag_interfaces") or self.default_interfaces.mlag_interfaces)
 
     @cached_property
@@ -152,7 +152,7 @@ class MlagMixin(Protocol):
         return None
 
     @cached_property
-    def mlag_switch_ids(self: SharedUtilsProtocol) -> dict | None:
+    def mlag_switch_ids(self: SharedUtilsProtocol) -> dict[str, int] | None:
         """
         Returns the switch id's of both primary and secondary switches for a given node group.
 
@@ -183,7 +183,7 @@ class MlagMixin(Protocol):
         return self.mlag_peer_facts.mlag_port_channel_id or self.mlag_port_channel_id
 
     @cached_property
-    def mlag_peer_interfaces(self: SharedUtilsProtocol) -> list:
+    def mlag_peer_interfaces(self: SharedUtilsProtocol) -> list[str]:
         return list(self.mlag_peer_facts.mlag_interfaces) or self.mlag_interfaces
 
     @cached_property
@@ -275,3 +275,25 @@ class MlagMixin(Protocol):
         if rfc5549:
             address_family_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
         return address_family_peer_group
+
+    @cached_property
+    def underlay_multicast_pim_mlag_enabled(self: SharedUtilsProtocol) -> bool:
+        """
+        Return whether PIM should be enabled on MLAG L3 interface.
+
+        Requires PIM SM to be enabled on the router.
+        """
+        if self.underlay_multicast_pim_sm_enabled:
+            return self.node_config.underlay_multicast.pim_sm.mlag
+        return False
+
+    @cached_property
+    def underlay_multicast_static_mlag_enabled(self: SharedUtilsProtocol) -> bool:
+        """
+        Return whether static multicast should be enabled on MLAG L3 interface.
+
+        Requires static multicast to be enabled on the router.
+        """
+        if self.underlay_multicast_static_enabled:
+            return self.node_config.underlay_multicast.static.mlag
+        return False
