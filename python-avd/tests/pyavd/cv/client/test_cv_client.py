@@ -390,6 +390,7 @@ async def test_verify_devices_in_cloudvision_inventory(
                 "submit_request_id": MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_SUCCESS,
             },
             {
+                "result_warnings_qty": 0,
                 "result_warnings_patterns": [],
                 "result_errors_patterns": [],
                 "logs_patterns": [],
@@ -466,6 +467,8 @@ async def test_deploy_to_cv_streaming_device_success(
     # Assess result
     assert result.failed == expected["execution_failed"]
 
+    # Assert number of returned warnings
+    assert len(result.warnings) == expected["result_warnings_qty"]
     # Assert that updated warnings match expected warning patterns
     for expected_pattern in expected["result_warnings_patterns"]:
         assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
@@ -510,6 +513,7 @@ async def test_deploy_to_cv_streaming_device_success(
                 "submit_request_id": MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_FAILURE_INACTIVE_DEVICES,
             },
             {
+                "result_warnings_qty": 0,
                 "result_warnings_patterns": [],
                 "result_errors_patterns": [],
                 "logs_patterns": [],
@@ -588,6 +592,8 @@ async def test_deploy_to_cv_streaming_device_failure(
     # Assess result
     assert result.failed == expected["execution_failed"]
 
+    # Assert number of returned warnings
+    assert len(result.warnings) == expected["result_warnings_qty"]
     # Assert that updated warnings match expected warning patterns
     for expected_pattern in expected["result_warnings_patterns"]:
         assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
@@ -637,6 +643,7 @@ async def test_deploy_to_cv_streaming_device_failure(
             # 196b71ff9d79dd22efd981b7cbbd601e7173f18c.json
             _mocked_cvdevices(hostnames=["avd-ci-leaf1"]),
             {
+                "result_warnings_qty": 1,
                 "result_warnings_patterns": ["Inactive devices present: \\['avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)'\\]"],
                 "result_errors_patterns": [],
                 "logs_patterns": [],
@@ -718,6 +725,8 @@ async def test_deploy_to_cv_non_streaming_device_unforced(
     # Assess result
     assert result.failed == expected["execution_failed"]
 
+    # Assert number of returned warnings
+    assert len(result.warnings) == expected["result_warnings_qty"]
     # Assert that updated warnings match expected warning patterns
     for expected_pattern in expected["result_warnings_patterns"]:
         assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
@@ -769,6 +778,7 @@ async def test_deploy_to_cv_non_streaming_device_unforced(
             # 196b71ff9d79dd22efd981b7cbbd601e7173f18c.json
             _mocked_cvdevices(hostnames=["avd-ci-leaf1"]),
             {
+                "result_warnings_qty": 1,
                 "result_warnings_patterns": ["Inactive devices present: \\['avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)'\\]"],
                 "result_errors_qty": 0,
                 "result_errors_patterns": [],
@@ -846,6 +856,8 @@ async def test_deploy_to_cv_non_streaming_device_forced(
     # Assess result
     assert result.failed == expected["execution_failed"]
 
+    # Assert number of returned warnings
+    assert len(result.warnings) == expected["result_warnings_qty"]
     # Assert that updated warnings match expected warning patterns
     for expected_pattern in expected["result_warnings_patterns"]:
         assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
