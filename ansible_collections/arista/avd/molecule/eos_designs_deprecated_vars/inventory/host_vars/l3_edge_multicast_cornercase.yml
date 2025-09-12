@@ -11,7 +11,7 @@
 
 type: l3leaf
 
-# purposely use legacy variable, overriden at node level.
+# purposely use legacy variable, overridden at node level.
 underlay_multicast: true
 
 l3leaf:
