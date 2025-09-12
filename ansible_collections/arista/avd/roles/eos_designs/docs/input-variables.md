@@ -668,6 +668,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l3-port-c
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-bgp-configuration.md
 --8<--
 
+### Node type Multicast configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-multicast.md
+--8<--
+
 ### Node type network services configuration
 
 --8<--

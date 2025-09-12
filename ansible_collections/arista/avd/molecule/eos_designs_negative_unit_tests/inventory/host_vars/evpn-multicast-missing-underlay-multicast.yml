@@ -1,0 +1,21 @@
+---
+fabric_name: FABRIC_MISSING_UNDERLAY_MULTICAST_FOR_EVPN_MULTICAST
+
+# not configuring underlay_multicast_pim_sm so it will error out
+evpn_multicast: true
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    - name: evpn-multicast-missing-underlay-multicast
+      bgp_as: 42
+      id: 42
+
+type: l3leaf
+
+expected_error_message: >-
+  'evpn_multicast: True' is only supported in combination with and 'igmp_snooping_enabled : true'
+  and either node_settings 'underlay_multicast.pim_sm.enabled: true' or 'underlay_multicast_pim_sm: true'
+  for host 'evpn-multicast-missing-underlay-multicast'.
