@@ -270,18 +270,6 @@ class UtilsMixin(Protocol):
         self._update_interface_multicast_config(p2p_link, interface)
 
         if p2p_link.include_in_underlay_protocol:
-            if p2p_link.multicast_static:
-                if not self.shared_utils.underlay_multicast_static_enabled:
-                    msg = (
-                        f"{self.data_model}.p2p_links has `include_in_underlay_protocol: true` and "
-                        "`multicast_static: true`, which requires the global setting `underlay_multicast_static` "
-                        "to also be set to `true`."
-                    )
-                    raise AristaAvdInvalidInputsError(msg)
-                interface.multicast.ipv4.static = True
-            elif p2p_link.multicast_static is not False and self.shared_utils.underlay_multicast_static_enabled:
-                interface.multicast.ipv4.static = True
-
             if (self.inputs.underlay_rfc5549 and p2p_link.routing_protocol != "ebgp") or p2p_link.ipv6_enable is True:
                 interface.ipv6_enable = True
 
