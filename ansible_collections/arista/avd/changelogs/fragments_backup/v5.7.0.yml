@@ -34,7 +34,7 @@ minor_changes:
 - |-
  Feat(cv_deploy): Deploy manifest for CV Static Config Studio containers and configlets by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5824
 - |-
- Feat: Add support for multicast ipv4 static on p2p uplinks ethernet by @gmuloc in https://github.com/aristanetworks/avd/pull/5843
+ Feat(eos_designs): Add support for multicast ipv4 static on p2p uplinks ethernet by @gmuloc in https://github.com/aristanetworks/avd/pull/5843
 ### PyAVD Changes
 - |-
  Refactor(pyavd): deploy manifest of CV static config containers and configlets by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5793

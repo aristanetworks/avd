@@ -31,7 +31,7 @@ Minor Changes
 - Feat(eos_designs): Add support for BGP aggregate addresses by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5749
 - Feat(eos_designs): Added support for L2VLAN profiles by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5722
 - Feat(eos_designs): Extend LACP fallback individual options by @colinmacgiolla in https://github.com/aristanetworks/avd/pull/5781
-- Feat: Add support for multicast ipv4 static on p2p uplinks ethernet by @gmuloc in https://github.com/aristanetworks/avd/pull/5843
+- Feat(eos_designs): Add support for multicast ipv4 static on p2p uplinks ethernet by @gmuloc in https://github.com/aristanetworks/avd/pull/5843
 - Refactor(cvp_configlet_upload): Deprecate arista.avd.cvp_configlet_upload by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5740
 - Refactor(pyavd): deploy manifest of CV static config containers and configlets by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5793
 - Refactor: Include ansible tests in Ruff by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5698
