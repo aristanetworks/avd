@@ -68259,7 +68259,6 @@ class EosDesigns(EosDesignsRootModel):
         "ssh_settings": {"type": SshSettings},
         "svi_profiles": {"type": SviProfiles},
         "system_mac_address": {"type": str},
-        "terminattr_ingestgrpcurl_port": {"type": int, "default": 9910},
         "timezone": {"type": str},
         "trunk_groups": {"type": TrunkGroups},
         "type": {"type": str},
@@ -69881,14 +69880,6 @@ class EosDesigns(EosDesignsRootModel):
     If both are set, the value under node type settings takes
     precedence.
     """
-    terminattr_ingestgrpcurl_port: int
-    """
-    Port number used for Terminattr connection to an on-premise CloudVision cluster.
-    The port number is
-    always 443 when using CloudVision as a Service, so this value is ignored.
-
-    Default value: `9910`
-    """
     timezone: str | None
     """Clock timezone like "CET" or "US/Pacific"."""
     trunk_groups: TrunkGroups
@@ -70430,7 +70421,6 @@ class EosDesigns(EosDesignsRootModel):
             ssh_settings: SshSettings | UndefinedType = Undefined,
             svi_profiles: SviProfiles | UndefinedType = Undefined,
             system_mac_address: str | None | UndefinedType = Undefined,
-            terminattr_ingestgrpcurl_port: int | UndefinedType = Undefined,
             timezone: str | None | UndefinedType = Undefined,
             trunk_groups: TrunkGroups | UndefinedType = Undefined,
             type: str | None | UndefinedType = Undefined,
@@ -71630,10 +71620,6 @@ class EosDesigns(EosDesignsRootModel):
                    also be set under node type settings.
                    If both are set, the value under node type settings takes
                    precedence.
-                terminattr_ingestgrpcurl_port:
-                   Port number used for Terminattr connection to an on-premise CloudVision cluster.
-                   The port number is
-                   always 443 when using CloudVision as a Service, so this value is ignored.
                 timezone: Clock timezone like "CET" or "US/Pacific".
                 trunk_groups: Subclass of AvdModel.
                 type:

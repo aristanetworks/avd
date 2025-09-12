@@ -18,5 +18,6 @@ keys:
       The port number is always 443 when using CloudVision as a Service, so this value is ignored.
     deprecation:
       warning: true
+      removed: true
       new_key: cv_settings
       remove_in_version: 6.0.0

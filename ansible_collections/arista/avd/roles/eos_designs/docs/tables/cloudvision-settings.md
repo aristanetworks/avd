@@ -35,7 +35,7 @@
     | [<samp>cvp_token_file</samp>](## "cvp_token_file") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
     | [<samp>terminattr_disable_aaa</samp>](## "terminattr_disable_aaa") <span style="color:red">removed</span> | Boolean |  | `False` |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
     | [<samp>terminattr_ingestexclude</samp>](## "terminattr_ingestexclude") <span style="color:red">removed</span> | String |  | `/Sysdb/cell/1/agent,/Sysdb/cell/2/agent` |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
-    | [<samp>terminattr_ingestgrpcurl_port</samp>](## "terminattr_ingestgrpcurl_port") <span style="color:red">deprecated</span> | Integer |  | `9910` |  | Port number used for Terminattr connection to an on-premise CloudVision cluster.<br>The port number is always 443 when using CloudVision as a Service, so this value is ignored.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
+    | [<samp>terminattr_ingestgrpcurl_port</samp>](## "terminattr_ingestgrpcurl_port") <span style="color:red">removed</span> | Integer |  | `9910` |  | Port number used for Terminattr connection to an on-premise CloudVision cluster.<br>The port number is always 443 when using CloudVision as a Service, so this value is ignored.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
     | [<samp>terminattr_smashexcludes</samp>](## "terminattr_smashexcludes") <span style="color:red">removed</span> | String |  | `ale,flexCounter,hardware,kni,pulse,strata` |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>cv_settings</samp> instead.</span> |
 
 === "YAML"
@@ -127,11 +127,4 @@
       # Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
       # Can be set to `false` to avoid changes when migrating from the old `cv_instances` model.
       set_source_interfaces: <bool; default=True>
-
-    # Port number used for Terminattr connection to an on-premise CloudVision cluster.
-    # The port number is always 443 when using CloudVision as a Service, so this value is ignored.
-    # This key is deprecated.
-    # Support will be removed in AVD version 6.0.0.
-    # Use `cv_settings` instead.
-    terminattr_ingestgrpcurl_port: <int; default=9910>
     ```
