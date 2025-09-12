@@ -60,12 +60,6 @@ traffic-policies
 {%         if policy.counters is arista.avd.defined %}
 {%             do transient_values.counters.extend(policy.counters) %}
 {%         endif %}
-{# TODO: Remove this logic for counter creation in AVD 6.0, only use the `policy.counters` list #}
-{%         for match in policy.matches | arista.avd.default([]) %}
-{%             if match.actions.count is arista.avd.defined %}
-{%                 do transient_values.counters.append(match.actions.count) %}
-{%             endif %}
-{%         endfor %}
 {%         if transient_values.counters | length > 0 %}
       counter {{ transient_values.counters | unique | arista.avd.natural_sort | join(' ') }}
       !
