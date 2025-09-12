@@ -61,7 +61,7 @@
     "categories": [
       "bfd"
     ],
-    "description": "Verifies the health of IPv4 BFD peers across all VRFs."
+    "description": "Verifies the health of BFD peers across all VRFs."
   },
   {
     "name": "dc1-spine1",
@@ -69,7 +69,7 @@
     "categories": [
       "bfd"
     ],
-    "description": "Verifies the timers of IPv4 BFD peer sessions."
+    "description": "Verifies the operational timers of BFD peer sessions."
   },
   {
     "name": "dc1-spine1",
@@ -77,7 +77,7 @@
     "categories": [
       "bfd"
     ],
-    "description": "Verifies the state of IPv4 BFD peer sessions."
+    "description": "Verifies the state of BFD peer sessions."
   },
   {
     "name": "dc1-spine1",
@@ -311,7 +311,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches."
+    "description": "Verifies there are no adverse drops exceeding defined thresholds."
   },
   {
     "name": "dc1-spine1",
@@ -336,7 +336,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the power supplies status."
+    "description": "Verifies the power supplies state and input voltage."
   },
   {
     "name": "dc1-spine1",
@@ -344,7 +344,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the power supplies status.",
+    "description": "Verifies the power supplies state and input voltage.",
     "custom_field": "Accepted States: 'ok'"
   },
   {
@@ -402,7 +402,7 @@
     "categories": [
       "interfaces"
     ],
-    "description": "Verifies there are no illegal LACP packets in all port channels."
+    "description": "Verifies there are no illegal LACP packets in port channels."
   },
   {
     "name": "dc1-spine1",
@@ -530,7 +530,7 @@
     "categories": [
       "interfaces"
     ],
-    "description": "Verifies the global L2 MTU of all L2 interfaces."
+    "description": "Verifies the L2 MTU of bridged interfaces."
   },
   {
     "name": "dc1-spine1",
@@ -538,7 +538,7 @@
     "categories": [
       "interfaces"
     ],
-    "description": "Verifies the global L3 MTU of all L3 interfaces."
+    "description": "Verifies the L3 MTU of routed interfaces."
   },
   {
     "name": "dc1-spine1",
@@ -554,7 +554,7 @@
     "categories": [
       "interfaces"
     ],
-    "description": "Verifies there are no inactive ports in all port channels."
+    "description": "Verifies there are no inactive ports in port channels."
   },
   {
     "name": "dc1-spine1",
