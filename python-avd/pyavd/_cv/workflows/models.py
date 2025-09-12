@@ -212,7 +212,6 @@ class AvdConfiglet:
         """Build an AvdConfiglet instance from an input dictionary."""
         try:
             return cls(name=data["name"], file=Path(data["file"]).resolve())
-            return cls(**data)
         except (KeyError, TypeError) as e:
             msg = f"Invalid configlet definition: {data}. Error: {e}"
             raise ValueError(msg) from e
