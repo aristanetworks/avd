@@ -2038,7 +2038,7 @@ keys:
     type: bool
     description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"
       or \"evpn_l3_multicast\" must also be configured under the Network Services
-      (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled
+      (tenants).\nRequires `underlay_multicast_pim_sm: true` and IGMP snooping enabled
       globally (default).\nFor MLAG devices Route Distinguisher must be unique since
       this feature will create multi-vtep configuration.\nWarning !!! For Trident3
       based platforms i.e 7050X3, 7300X3, 720XP.\n  The Following default platform
@@ -2049,7 +2049,7 @@ keys:
       when this configuration is applied.\n  You can tune the settings by overriding
       the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
       \ Please contact an Arista representative for help with determining the appropriate
-      values for your environment.\n"
+      values for your environment."
     default: false
   evpn_overlay_bgp_rtc:
     documentation_options:
@@ -5939,6 +5939,30 @@ keys:
 
       '
     default: false
+    deprecation:
+      removed: false
+      warning: true
+      new_key: underlay_multicast_pim_sm
+      remove_in_version: 6.0.0
+  underlay_multicast_pim_sm:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    description: "When enabled, configures multicast routing and by default configures
+      PIM sparse-mode in the underlay on all:\n  - P2P uplink interfaces if enabled
+      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
+      l3_edge and core interfaces\n\nNote: This changes the default behavior for l3_edge
+      / core_interfaces to automatically include the interfaces\nin multicast, unless
+      `include_in_underlay_protocol: false` or `multicast_pim_sm: false`."
+  underlay_multicast_static:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    default: false
+    description: "When enabled, configures multicast routing and by default configures
+      static multicast in the underlay on all:\n  - P2P uplink interfaces if enabled
+      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
+      l3_edge and core interfaces"
   underlay_multicast_anycast_rp:
     documentation_options:
       table: fabric-settings
@@ -5979,7 +6003,7 @@ keys:
       according to the ''underlay_multicast_anycast_rp.mode'' setting.
 
 
-      Requires ''underlay_multicast: true''.
+      Requires ''underlay_multicast_pim_sm: true''.
 
       '
     type: list
@@ -11780,6 +11804,73 @@ $defs:
               new_key: inband_mgmt_vlan
               remove_in_version: 5.0.0
             type: int
+          underlay_multicast:
+            type: dict
+            documentation_options:
+              table: node-type-multicast
+            keys:
+              pim_sm:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: "When enabled, configures multicast routing and by
+                      default configures PIM sparse-mode in the underlay on all:\n
+                      \ - P2P uplink interfaces if enabled on uplink peer\n  - MLAG
+                      L3 peer interface if also enabled on MLAG peer\n  - l3_edge
+                      and core interfaces\nOverrides the global `underlay_multicast_pim_sm`."
+                  uplinks:
+                    type: bool
+                    default: true
+                    description: 'Enable/Disable PIM sparse-mode on uplinks.
+
+                      Requires node setting `underlay_multicast.pim_sm.enabled: true`
+                      or, if unset, global `underlay_multicast_pim_sm: true`'
+                  uplink_interfaces:
+                    description: 'Limit PIM SM to the uplink_interfaces in this list.
+                      All interfaces if unset.
+
+                      Effective only when node settings `underlay_multicast.pim_sm.uplinks:
+                      true`.'
+                    type: list
+                    items:
+                      type: str
+                  mlag:
+                    description: Configure PIM sparse-mode in the underlay on the
+                      MLAG L3 peer VLAN interface.
+                    type: bool
+                    default: true
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: "When enabled, configures multicast routing and by
+                      default configures static multicast in the underlay on all:\n
+                      \ - P2P uplink interfaces if enabled on uplink peer\n  - MLAG
+                      L3 peer interface if also enabled on MLAG peer\n  - l3_edge
+                      and core interfaces\nOverrides the global `underlay_multicast_multicast`."
+                  uplinks:
+                    type: bool
+                    default: true
+                    description: 'Enable/Disable static multicast on uplinks.
+
+                      Requires node setting `underlay_multicast.static.enabled: true`
+                      or, if unset, global `underlay_multicast_static: true`'
+                  uplink_interfaces:
+                    description: 'Limit static multicast to the uplink_interfaces
+                      in this list. All interfaces if unset.
+
+                      Effective only when node settings `underlay_multicast.static.uplinks:
+                      true`.'
+                    type: list
+                    items:
+                      type: str
+                  mlag:
+                    description: Configure static multicast in the underlay on MLAG
+                      L3 peer interfacee.
+                    type: bool
+                    default: true
           campus:
             documentation_options:
               table: node-type-common-configuration
@@ -12525,9 +12616,43 @@ $defs:
           description: Enable sFlow. Overrides `fabric_sflow` setting.
         underlay_multicast:
           type: bool
-          description: Enable PIM sparse mode. Requires `include_in_underlay_protocol`
+          description: 'Enable PIM sparse mode. Requires `include_in_underlay_protocol`
             and the global `underlay_multicast` to be `true`.
-          default: false
+
+
+            Note: The default value for this key is `false` when using either the
+            new key `underlay_multicast.pim_sm.enabled: true
+
+            or, if unset, global `underlay_multicast_pim_sm: true`'
+          deprecation:
+            removed: false
+            warning: true
+            new_key: multicast_pim_sm
+            remove_in_version: 6.0.0
+        multicast_pim_sm:
+          type: bool
+          description: 'Configure PIM sparse-mode on the P2P links.
+
+            Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if
+            unset, global `underlay_multicast_pim_sm: true`
+
+            The default value depends on the value of `include_in_underlay_protocol`:
+
+            * when `include_in_underlay_protocol: true`, the default value is `true`
+
+            * when `include_in_underlay_protocol: false`, the default value is `false`.'
+        multicast_static:
+          type: bool
+          description: 'Configure static multicast on the P2P links.
+
+            Requires node setting `underlay_multicast.static.enabled: true` or, if
+            unset, global `underlay_multicast_static: true`
+
+            The default value depends on the value of `include_in_underlay_protocol`:
+
+            * when `include_in_underlay_protocol: true`, the default value is `true`
+
+            * when `include_in_underlay_protocol: false`, the default value is `false`.'
         flow_tracking:
           type: dict
           $ref: eos_designs#/$defs/flow_tracking_link

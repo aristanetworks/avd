@@ -28,7 +28,7 @@ class RouterMsdpMixin(Protocol):
 
         Used for to configure multicast anycast RPs for the underlay
         """
-        if not self.shared_utils.underlay_multicast or not self.inputs.underlay_multicast_rps:
+        if not self.shared_utils.underlay_multicast_pim_sm_enabled or not self.inputs.underlay_multicast_rps:
             return
 
         if self.inputs.underlay_multicast_anycast_rp.mode != "msdp":
