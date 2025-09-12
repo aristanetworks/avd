@@ -129,13 +129,13 @@ class CVClientProtocol(
         The return value (The default ssl context or True) will be passed to grpclib.
         Requests will pick it up from ssl lib itself.
         """
-        if self._verify_certs:
-            context = ssl.create_default_context()
-        else:
+        if not self._verify_certs:
             # Accepting SonarLint issue: We are purposely implementing no verification of certs.
             context = ssl.create_default_context(purpose=ssl.Purpose.SERVER_AUTH)  # NOSONAR
-            context.check_hostname = False
+            context.check_hostname = False  # NOSONAR
             context.verify_mode = ssl.CERT_NONE  # NOSONAR
+        else:
+            context = ssl.create_default_context()
 
         context.set_alpn_protocols(["h2"])
         return context
