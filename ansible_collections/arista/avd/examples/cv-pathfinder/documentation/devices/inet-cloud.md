@@ -205,9 +205,9 @@ aaa authorization exec default local
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile | IPv6 Lease Time |
-| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | --------------- | ---------------- | ------------- | --------------- |
-| True | default | - | - | - | 6 days 23 hours 59 minutes | - | - | - | - |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv4 Option 66 | IPv4 Option 150 | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile | IPv6 Lease Time |
+| ------------------- | --- | --------------- | ---------------- | ------------- | -------------- | --------------- | --------------- | --------------- | ---------------- | ------------- | --------------- |
+| True | default | - | - | - | - | - | 6 days 23 hours 59 minutes | - | - | - | - |
 
 #### VRF default DHCP Server
 
