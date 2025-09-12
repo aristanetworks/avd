@@ -519,10 +519,9 @@ connected_endpoints_port_channel_interfaces:
 - `{{ adapter_description }}`
 - All group/hostvars
 
-router_id_loopback_interfaces (replacing overlay_loopback_interface):
+router_id_loopback_interfaces:
 
 - `{{ router_id_loopback_description }}`
-- `{{ overlay_loopback_description }}` (deprecated - use `router_id_loopback_description` instead)
 - All group/hostvars
 
 vtep_loopback_interface:
