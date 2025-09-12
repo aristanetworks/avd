@@ -23,7 +23,7 @@ async def verify_devices_on_cv(
     """
     Verify that the given Devices are already present in the CloudVision Inventory & I&T Studio.
 
-    Returns deduplicated list of CVDevice objects found on CloudVision.
+    Returns list of CVDevice objects found on CloudVision.
     """
     LOGGER.info("verify_devices_on_cv: %s", len(devices))
 
@@ -59,13 +59,14 @@ async def verify_devices_in_cloudvision_inventory(
 
     Populate current streaming status for all existing devices.
 
-    Returns deduplicated list of CVDevice objects found on CloudVision.
+    Returns list of CVDevice objects found on CloudVision.
     """
-    device_tuples = [
+    # Using set to only include a device once.
+    device_tuples = {
         (device.serial_number, device.system_mac_address, device.hostname if not any([device.serial_number, device.system_mac_address]) else None)
         for device in devices
         if device._exists_on_cv is None
-    ]
+    }
     LOGGER.info("verify_devices_in_cloudvision_inventory: %s unique devices.", len(device_tuples))
 
     found_devices = await cv_client.get_inventory_devices(devices=device_tuples)
@@ -74,7 +75,6 @@ async def verify_devices_in_cloudvision_inventory(
     found_device_dict_by_system_mac = {found_device.system_mac_address: found_device for found_device in found_devices}
     found_device_dict_by_hostname = {found_device.hostname: found_device for found_device in found_devices}
 
-    # We may have multiple entries in the list that point to the same CVDevice object.
     # By updating the objects in-place, we will skip duplicates by checking if _exists_on_cv was already set.
     # This also helps if the same object is used in multiple lists (like interface_tags and device_tags).
     existing_devices: list[CVDevice] = []

@@ -69,17 +69,11 @@ async def recording_unary_stream(
     LOGGER.info("Recording API request: %s", request)
     recording_file = get_recording_file(route, request, cv_server=self.channel._host)
     messages_as_json = []
-
-    try:
-        async for message in self._org_unary_stream(route, request, response_type, timeout=timeout, deadline=deadline, metadata=metadata):
-            messages_as_json.append(message.to_json(indent=4))
-            yield message
-    finally:
-        # TODO: Investigate whether it can lead to incomplete data
-        # TODO: Investigate whether it can lead to incomplete data
-        if recording_file and messages_as_json:
-            result = f"[{', '.join(messages_as_json)}]"
-            recording_file.write_text(result)
+    async for message in self._org_unary_stream(route, request, response_type, timeout=timeout, deadline=deadline, metadata=metadata):
+        messages_as_json.append(message.to_json(indent=4))
+        yield message
+    result = f"[{', '.join(messages_as_json)}]"
+    recording_file.write_text(result)
 
 
 async def playback_unary_unary(
@@ -116,7 +110,7 @@ async def playback_unary_stream(
 # General recordings are those that are natively received from CV and dumped as is.
 # Static recordings are the same recordings but wrapped into 'payload' and 'raise'
 # that are used during the tests like in mockery.py::playback_static_recording_unary_stream.
-# These static recordings are not updated/impacted by RECORDING env var and must be changed manually (if ever needed).
+# These static recordings are not updated/impacted by RECORDING env var and must be changed manually (when needed).
 async def playback_static_recording_unary_unary(
     self: ServiceStub,
     route: str,
