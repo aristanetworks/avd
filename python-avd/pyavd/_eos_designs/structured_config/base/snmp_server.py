@@ -47,7 +47,7 @@ class SnmpServerMixin(Protocol):
         self._snmp_users(snmp_settings)
         # Local interfaces first, since it may be updated by snmp_hosts.
         self._snmp_hosts(snmp_settings)
-        self._snmp_vrfs(snmp_settings)
+        self._snmp_vrfs_and_acls(snmp_settings)
 
         self.structured_config.snmp_server._update(
             contact=snmp_settings.contact,
@@ -181,7 +181,7 @@ class SnmpServerMixin(Protocol):
 
         self.structured_config.snmp_server.hosts = snmp_hosts
 
-    def _snmp_vrfs(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
+    def _snmp_vrfs_and_acls(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """
         Set list of dicts for enabling/disabling SNMP for VRFs.
 
