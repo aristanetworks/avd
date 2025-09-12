@@ -19,6 +19,13 @@ class HTTPProxyManager:
     and gRPC connections without authentication or SSL to the proxy.
     """
 
+    proxy_host: str
+    proxy_port: int
+    proxy_username: str | None
+    proxy_password: str | None
+    target_host: str
+    target_port: int
+
     def __init__(
         self,
         proxy_host: str,
@@ -55,7 +62,7 @@ class HTTPProxyManager:
             HTTP proxy URL.
         """
         if self.proxy_username and self.proxy_password:
-            # Excempting the lines below from Sonar
+            # Excempting the lines below from Sonar since we cannot use HTTPS here.
             return f"http://{self.proxy_username}:{self.proxy_password}@{self.proxy_host}:{self.proxy_port}"  # NOSONAR
         return f"http://{self.proxy_host}:{self.proxy_port}"  # NOSONAR
 

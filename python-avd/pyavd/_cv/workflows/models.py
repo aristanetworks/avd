@@ -25,7 +25,6 @@ class CloudVision:
     username: str | None
     password: str | None
     verify_certs: bool = True
-    custom_ca_path: str | None = None
     proxy_host: str | None = None
     proxy_port: int | None = 8080
     proxy_username: str | None = None

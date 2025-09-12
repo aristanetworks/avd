@@ -132,16 +132,6 @@ cv_token: <service account token as defined on CloudVision. This value should be
 ```
 
 By default the connection to CloudVision requires valid certificates.
-
-If your remote CloudVision instance uses an SSL certificate signed by a custom Certificate Authority (CA), provide the path to your custom CA certificate file using the `cv_custom_ca_path` parameter.
-
-```yaml
-# Set path to the custom CA certificate for CloudVision REST/gRPC SSL verification.
-cv_custom_ca_path: <Path to the custom CA certificate>
-```
-
-This custom CA will be combined with system CAs and used for verifying SSL connections for both REST and gRPC CloudVision endpoints, ensuring secure and trusted communication in environments with private or enterprise CAs.
-
 For test and lab usage the certificate verification can be disabled.
 
 ```yaml

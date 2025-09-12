@@ -40,10 +40,6 @@ options:
     description: Verifies CloudVison server certificates.
     type: bool
     default: true
-  cv_custom_ca_path:
-    description: Path to the custom CA certificate for CloudVision REST/gRPC SSL verification.
-    type: str
-    required: false
   cv_proxy_host:
     description: FQDN/IP of the HTTP CONNECT proxy server.
     type: str
@@ -195,7 +191,6 @@ EXAMPLES = r"""
         cv_servers: [ "www.arista.io" ]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
-        # cv_custom_ca_path: "/tmp/custom_ca.crt"
         # cv_proxy_host: "proxy.local.domain"
         # cv_proxy_port: "8080"
         # cv_proxy_username: "avd_user"

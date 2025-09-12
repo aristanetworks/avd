@@ -36,7 +36,6 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>cv_username</samp> | str | False | None |  | Username to use if `cv_token` is missing. Not supported for CVaaS. |
 | <samp>cv_password</samp> | str | False | None |  | Password to use if `cv_token` is missing. Not supported for CVaaS. It is strongly recommended to use Vault for this. |
 | <samp>cv_verify_certs</samp> | bool | optional | True |  | Verifies CloudVison server certificates. |
-| <samp>cv_custom_ca_path</samp> | str | False | None |  | Path to the custom CA certificate for CloudVision REST/gRPC SSL verification. |
 | <samp>cv_proxy_host</samp> | str | False | None |  | FQDN/IP of the HTTP CONNECT proxy server. |
 | <samp>cv_proxy_port</samp> | int | optional | 8080 |  | TCP port of the HTTP CONNECT proxy server. |
 | <samp>cv_proxy_username</samp> | str | False | None |  | Authentication username for the HTTP CONNECT proxy server. |
@@ -91,7 +90,6 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
         cv_servers: [ "www.arista.io" ]
         cv_token: "<insert vaulted service account token here>"
         # cv_verify_certs: true
-        # cv_custom_ca_path: "/tmp/custom_ca.crt"
         # cv_proxy_host: "proxy.local.domain"
         # cv_proxy_port: "8080"
         # cv_proxy_username: "avd_user"
