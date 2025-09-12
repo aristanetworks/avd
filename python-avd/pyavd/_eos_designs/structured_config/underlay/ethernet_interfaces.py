@@ -139,8 +139,10 @@ class EthernetInterfacesMixin(Protocol):
                     if (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                         ethernet_interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
-                if link.underlay_multicast:
+                if link.underlay_multicast_pim_sm:
                     ethernet_interface.pim.ipv4.sparse_mode = True
+                if link.underlay_multicast_static:
+                    ethernet_interface.multicast.ipv4.static = True
 
                 # DHCP server settings (primarily used for ZTP)
                 if link.ip_address and "unnumbered" not in link.ip_address.lower() and link.dhcp_server:
