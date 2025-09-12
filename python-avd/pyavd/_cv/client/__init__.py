@@ -25,6 +25,7 @@ from .workspace import WorkspaceMixin
 if TYPE_CHECKING:
     from types import TracebackType
 
+    from grpclib.protocol import H2Protocol
     from typing_extensions import Self
 
 
@@ -96,7 +97,7 @@ class CVClientProtocol(
         channel = Channel(host=self._servers[0], port=self._port, ssl=ssl_context)
 
         # Create custom connector that uses proxy
-        async def proxy_connection() -> asyncio.Protocol:
+        async def proxy_connection() -> H2Protocol:
             loop = asyncio.get_running_loop()
 
             try:
