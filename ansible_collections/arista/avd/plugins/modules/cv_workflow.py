@@ -80,7 +80,7 @@ options:
     type: str
     default: "AVD-${hostname}"
   static_config_manifest:
-    description: PREVIEW - Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio.
+    description: Deploy a manifest of containers and configlets to CloudVision using the Static Configuration Studio.
     type: dict
     suboptions:
       configlets:
@@ -89,7 +89,7 @@ options:
 
           Each dictionary in the list must follow this data model:
           - **name** (`str`, required): Unique name for the configlet.
-          - **file** (`str`, required): Filesystem path to the text file containing the configlet body.
+          - **file** (`str`, required): Filesystem path to the text file containing the configlet body. Relative to the current working directory.
         type: list
         elements: dict
       containers:

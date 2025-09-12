@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 from uuid import NAMESPACE_DNS, uuid4, uuid5
 
@@ -204,12 +205,13 @@ class AvdConfiglet:
     """
 
     name: str
-    file: str
+    file: Path
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> AvdConfiglet:
         """Build an AvdConfiglet instance from an input dictionary."""
         try:
+            return cls(name=data["name"], file=Path(data["file"]).resolve())
             return cls(**data)
         except (KeyError, TypeError) as e:
             msg = f"Invalid configlet definition: {data}. Error: {e}"
@@ -363,13 +365,13 @@ class CVConfiglet:
         return self.avd_configlet.name
 
     @property
-    def file(self) -> str:
+    def file(self) -> Path:
         return self.avd_configlet.file
 
     @property
-    def api_tuple(self) -> tuple[Any, ...]:
+    def api_tuple(self) -> tuple[str, str, str, str]:
         """Return a tuple representation of the configlet compatible with the CVClient APIs."""
-        return (self.id, self.name, self.description, self.file)
+        return (self.id, self.name, self.description, str(self.file))
 
 
 @dataclass(frozen=True)

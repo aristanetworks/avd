@@ -17,7 +17,7 @@ title: Ansible Collection Role cv_deploy
 Depending on the configured options, the role supports multiple operations:
 
 - Deploys device-specific configurations for one or more devices using the "Static Configuration Studio".
-- Deploys a full hierarchy of containers and configlets using the "Static Configuration Studio" [(Preview Feature)](#static-configuration-studio-deployment-preview).
+- Deploys a full hierarchy of containers and configlets using the "Static Configuration Studio".
 - Deploys device and interface Tags for one or more devices.
 - Adds missing devices and updates device details for existing devices in the "Inventory & Topology Studio".
 - Creates, builds, submits Workspaces.
@@ -275,13 +275,7 @@ To force an error to always be raised in case of duplicate `system_mac_address`,
 cv_strict_system_mac_address: true
 ```
 
-#### Static Configuration Studio deployment (Preview)
-
-!!! warning "Preview Feature"
-
-    This feature is in preview. Everything is subject to change, not supported and may not be complete.
-
-    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions).
+#### Static Configuration Studio deployment
 
 In addition to deploying device-specific configurations, the role allows for the deployment of a full hierarchy of containers and configlets to the CloudVision "Static Configuration Studio". This is controlled by the `cv_static_config_manifest` variable:
 
