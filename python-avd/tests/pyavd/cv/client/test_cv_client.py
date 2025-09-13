@@ -14,7 +14,7 @@ from unittest.mock import patch
 
 import pytest
 
-from pyavd._cv.client.exceptions import CVResourceInvalidState, CVWorkspaceBuildFailed
+from pyavd._cv.client.exceptions import CVResourceInvalidState, CVWorkspaceBuildFailed, CVWorkspaceSubmitFailedInactiveDevices
 from pyavd._cv.workflows.create_workspace_on_cv import create_workspace_on_cv
 from pyavd._cv.workflows.deploy_to_cv import deploy_to_cv
 from pyavd._cv.workflows.finalize_workspace_on_cv import finalize_workspace_on_cv
@@ -27,6 +27,7 @@ from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_REQUEST_ID_ABANDON,
     MOCKED_WORKSPACE_REQUEST_ID_BUILD_FAIL,
     MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS,
+    MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_FAILURE_INACTIVE_DEVICES,
     MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_SUCCESS,
     MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
 )
@@ -470,3 +471,386 @@ async def test_verify_devices_in_cloudvision_inventory(
         cv_client=cv_client,
     )
     assert result == expected_result
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
+@pytest.mark.parametrize(
+    ("mocked_cvdevices"),
+    [
+        # mocked API response: tests/pyavd/cv/mocked_api_recordings/arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/\\
+        # effc85b759a4d35ba98ae7c22bcef828c070752d.json
+        pytest.param(_mocked_cvdevices(hostnames=["avd-ci-leaf2"]), id="SINGLE_STREAMING_DEVICE"),
+    ],
+)
+@pytest.mark.parametrize(("workspace_force_submission"), [pytest.param(False, id="UNFORCED"), pytest.param(True, id="FORCED")])
+@pytest.mark.parametrize(
+    (
+        "workspace",
+        "expected",
+    ),
+    [
+        pytest.param(
+            {
+                "id": MOCKED_WORKSPACE_ID,
+                "name": MOCKED_WORKSPACE_NAME,
+                "description": MOCKED_WORKSPACE_DESCRIPTION,
+                "requested_state": MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+                "build_request_id": MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS,
+                "submit_request_id": MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_FAILURE_INACTIVE_DEVICES,
+            },
+            {
+                "result_warnings_qty": 0,
+                "result_warnings_patterns": [],
+                "result_errors_patterns": [],
+                "logs_patterns": [],
+                "exception_patterns": ["Failed to submit CloudVision Workspace due to the presence of inactive devices. "],
+                "exception": pytest.raises(CVWorkspaceSubmitFailedInactiveDevices),
+                "execution_failed": False,
+                "workspace_state": "submit failed",
+            },
+            id="SUBMIT_FAILURE_INACTIVE",
+        ),
+    ],
+)
+async def test_deploy_to_cv_streaming_device_failure(
+    caplog: pytest.LogCaptureFixture,
+    cv_client: CVClient,
+    mocked_cvdevices: list[CVDevice],
+    workspace: dict[str, Any],
+    expected: dict[str, Any],
+    workspace_force_submission: bool,
+) -> None:
+    """
+    Test building and submitting Workspace (both forced and unforced) with streaming device.
+
+    Specific use case where Workspace submission fails due to streaming status changing from ACTIVE to INACTIVE right before submission.
+
+    Build request:
+        WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+        request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))
+    Recorded build response:
+        tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
+        1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json
+    Submit request:
+        WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+        request=Request.SUBMIT, request_params=RequestParams(request_id='req-18654b6a-9f75-4a57-878d-d40d73701238')))
+    Recorded submit responses:
+        tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
+        54f25797c08b0d4ca2c4497e73b4afbfd2959b6f.json
+    """
+    with (
+        caplog.at_level(INFO),
+        patch(
+            "pyavd._cv.client.workspace.uuid4",
+            side_effect=[workspace["build_request_id"]["id"].removeprefix("req-"), workspace["submit_request_id"]["id"].removeprefix("req-")],
+        ),
+        expected["exception"] as exception_info,
+    ):
+        result = DeployToCvResult(
+            workspace=CVWorkspace(
+                name=workspace["name"],
+                description=workspace["description"],
+                id=workspace["id"],
+                requested_state=workspace["requested_state"],
+                force=workspace_force_submission,
+            )
+        )
+
+        _ = await verify_devices_in_cloudvision_inventory(
+            devices=mocked_cvdevices,
+            skip_missing_devices=False,
+            warnings=result.warnings,
+            cv_client=cv_client,
+        )
+
+        await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=mocked_cvdevices, warnings=result.warnings)
+
+    # Assert that log messages match expected log patterns
+    for expected_pattern in expected["logs_patterns"]:
+        assert any(re.search(re.compile(expected_pattern), str(record.message)) for record in caplog.records)
+
+    # Assert that exception value contains all expected exception patterns
+    for expected_pattern in expected["exception_patterns"]:
+        assert re.search(re.compile(expected_pattern), str(exception_info.value))
+
+    # Assess result
+    assert result.failed == expected["execution_failed"]
+
+    # Assert number of returned warnings
+    assert len(result.warnings) == expected["result_warnings_qty"]
+    # Assert that updated warnings match expected warning patterns
+    for expected_pattern in expected["result_warnings_patterns"]:
+        assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
+
+    # Assert that updated errors match expected error patterns
+    for expected_pattern in expected["result_errors_patterns"]:
+        assert any(re.search(re.compile(expected_pattern), str(error_item)) for error_item in result.errors)
+
+    # Assert returned workspace object
+    assert result.workspace.name == workspace["name"]
+    assert result.workspace.description == workspace["description"]
+    assert result.workspace.id == workspace["id"]
+    assert result.workspace.requested_state == workspace["requested_state"]
+    assert result.workspace.force == workspace_force_submission
+    assert result.workspace.state == (expected["workspace_state"] or workspace["requested_state"])
+
+
+# Targeting non-streaming device without forcing
+@pytest.mark.asyncio
+@pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
+@pytest.mark.parametrize(
+    ("workspace"),
+    [
+        pytest.param(
+            {
+                "id": MOCKED_WORKSPACE_ID,
+                "name": MOCKED_WORKSPACE_NAME,
+                "description": MOCKED_WORKSPACE_DESCRIPTION,
+                "requested_state": MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+                "build_request_id": MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS,
+                "submit_request_id": MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_FAILURE_INACTIVE_DEVICES,
+            },
+            id="SUBMIT_FAILURE",
+        )
+    ],
+)
+@pytest.mark.parametrize(("workspace_force_submission"), [pytest.param(False, id="UNFORCED")])
+@pytest.mark.parametrize(
+    (
+        "mocked_cvdevices",
+        "expected",
+    ),
+    [
+        # Targeting single non-streaming device
+        pytest.param(
+            # mocked API response: tests/pyavd/cv/mocked_api_recordings/arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/\\
+            # 196b71ff9d79dd22efd981b7cbbd601e7173f18c.json
+            _mocked_cvdevices(hostnames=["avd-ci-leaf1"]),
+            {
+                "result_warnings_qty": 1,
+                "result_warnings_patterns": ["Inactive devices present: \\['avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)'\\]"],
+                "result_errors_patterns": [],
+                "logs_patterns": [],
+                "exception_patterns": [
+                    "Failed to submit CloudVision Workspace due to the presence of inactive devices: "
+                    "\\["
+                    "'avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)'"
+                    "\\]"
+                ],
+                "exception": pytest.raises(CVWorkspaceSubmitFailedInactiveDevices),
+                "execution_failed": False,
+                "workspace_state": "submit failed",
+            },
+            id="SINGLE_NON_STREAMING_DEVICE",
+        ),
+    ],
+)
+async def test_deploy_to_cv_non_streaming_device_unforced(
+    caplog: pytest.LogCaptureFixture,
+    cv_client: CVClient,
+    mocked_cvdevices: list[CVDevice],
+    workspace: dict[str, Any],
+    expected: dict[str, Any],
+    workspace_force_submission: bool,
+) -> None:
+    """
+    Test building and submitting Workspace with non-streaming device without forcing.
+
+    Build request:
+        WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+        request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))
+    Recorded build response:
+        tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
+        1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json
+    Submit request:
+        WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+        request=Request.SUBMIT, request_params=RequestParams(request_id='req-18654b6a-9f75-4a57-878d-d40d73701238')))
+    Recorded submit responses:
+        tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
+        54f25797c08b0d4ca2c4497e73b4afbfd2959b6f.json
+    """
+    with (
+        caplog.at_level(INFO),
+        patch(
+            "pyavd._cv.client.workspace.uuid4",
+            side_effect=[workspace["build_request_id"]["id"].removeprefix("req-"), workspace["submit_request_id"]["id"].removeprefix("req-")],
+        ),
+        expected["exception"] as exception_info,
+    ):
+        result = DeployToCvResult(
+            workspace=CVWorkspace(
+                name=workspace["name"],
+                description=workspace["description"],
+                id=workspace["id"],
+                requested_state=workspace["requested_state"],
+                force=workspace_force_submission,
+            )
+        )
+
+        _ = await verify_devices_in_cloudvision_inventory(
+            devices=mocked_cvdevices,
+            skip_missing_devices=False,
+            warnings=result.warnings,
+            cv_client=cv_client,
+        )
+
+        await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=mocked_cvdevices, warnings=result.warnings)
+
+    # Assert that log messages match expected log patterns
+    for expected_pattern in expected["logs_patterns"]:
+        assert any(re.search(re.compile(expected_pattern), str(record.message)) for record in caplog.records)
+
+    # Assert that exception value contains all expected exception patterns
+    for expected_pattern in expected["exception_patterns"]:
+        assert re.search(re.compile(expected_pattern), str(exception_info.value))
+
+    # Assess result
+    assert result.failed == expected["execution_failed"]
+
+    # Assert number of returned warnings
+    assert len(result.warnings) == expected["result_warnings_qty"]
+    # Assert that updated warnings match expected warning patterns
+    for expected_pattern in expected["result_warnings_patterns"]:
+        assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
+
+    # Assert that updated errors match expected error patterns
+    for expected_pattern in expected["result_errors_patterns"]:
+        assert any(re.search(re.compile(expected_pattern), str(error_item)) for error_item in result.errors)
+
+    # Assert returned workspace object
+    assert result.workspace.name == workspace["name"]
+    assert result.workspace.description == workspace["description"]
+    assert result.workspace.id == workspace["id"]
+    assert result.workspace.requested_state == workspace["requested_state"]
+    assert result.workspace.force == workspace_force_submission
+    assert result.workspace.state == (expected["workspace_state"] or workspace["requested_state"])
+
+
+# Targeting non-streaming device with forcing
+@pytest.mark.asyncio
+@pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
+@pytest.mark.parametrize(
+    ("workspace"),
+    [
+        pytest.param(
+            {
+                "id": MOCKED_WORKSPACE_ID,
+                "name": MOCKED_WORKSPACE_NAME,
+                "description": MOCKED_WORKSPACE_DESCRIPTION,
+                "requested_state": MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+                "build_request_id": MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS,
+                # Live attempt to submit WS targeting single non-streaming device returns ResponseStatus.SUCCESS. Live example shown below:
+                #   Response(status=ResponseStatus.SUCCESS, message='Submitted successfully. No change control was created because no config or \\  # ERA001
+                #   software changes were created.', code=ResponseCode.UNSPECIFIED)
+                "submit_request_id": MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_SUCCESS,
+            },
+            id="SUBMIT_SUCCESS",
+        )
+    ],
+)
+@pytest.mark.parametrize(("workspace_force_submission"), [pytest.param(True, id="FORCED")])
+@pytest.mark.parametrize(
+    (
+        "mocked_cvdevices",
+        "expected",
+    ),
+    [
+        pytest.param(
+            # mocked API response: tests/pyavd/cv/mocked_api_recordings/arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/\\
+            # 196b71ff9d79dd22efd981b7cbbd601e7173f18c.json
+            _mocked_cvdevices(hostnames=["avd-ci-leaf1"]),
+            {
+                "result_warnings_qty": 1,
+                "result_warnings_patterns": ["Inactive devices present: \\['avd-ci-leaf1 \\(13C20F1EDCCED2D85F6DB2FB9E3AC5B6\\)'\\]"],
+                "result_errors_qty": 0,
+                "result_errors_patterns": [],
+                "logs_patterns": [],
+                "exception_patterns": [],
+                "exception": does_not_raise(),
+                "execution_failed": False,
+                "workspace_state": None,
+            },
+            id="SINGLE_NON_STREAMING_DEVICE",
+        ),
+    ],
+)
+async def test_deploy_to_cv_non_streaming_device_forced(
+    caplog: pytest.LogCaptureFixture,
+    cv_client: CVClient,
+    mocked_cvdevices: list[CVDevice],
+    workspace: dict[str, Any],
+    expected: dict[str, Any],
+    workspace_force_submission: bool,
+) -> None:
+    """
+    Test building and submitting Workspace with non-streaming device with forcing.
+
+    Build request:
+        WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+        request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))
+    Recorded build response:
+        tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
+        1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json
+    Submit request:
+        WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+            request=Request.SUBMIT_FORCE, request_params=RequestParams(request_id='req-b8f4e511-58de-4afe-99f0-b75abf980131')))
+    Recorded submit responses:
+        tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/
+        47049c8a6b520f110540f81bcd892ba0e4954908.json
+    """
+    with (
+        caplog.at_level(INFO),
+        patch(
+            "pyavd._cv.client.workspace.uuid4",
+            side_effect=[workspace["build_request_id"]["id"].removeprefix("req-"), workspace["submit_request_id"]["id"].removeprefix("req-")],
+        ),
+        expected["exception"] as exception_info,
+    ):
+        result = DeployToCvResult(
+            workspace=CVWorkspace(
+                name=workspace["name"],
+                description=workspace["description"],
+                id=workspace["id"],
+                requested_state=workspace["requested_state"],
+                force=workspace_force_submission,
+            )
+        )
+
+        _ = await verify_devices_in_cloudvision_inventory(
+            devices=mocked_cvdevices,
+            skip_missing_devices=False,
+            warnings=result.warnings,
+            cv_client=cv_client,
+        )
+
+        await finalize_workspace_on_cv(workspace=result.workspace, cv_client=cv_client, devices=mocked_cvdevices, warnings=result.warnings)
+
+    # Assert that log messages match expected log patterns
+    for expected_pattern in expected["logs_patterns"]:
+        assert any(re.search(re.compile(expected_pattern), str(record.message)) for record in caplog.records)
+
+    # Assert that exception value contains all expected exception patterns
+    for expected_pattern in expected["exception_patterns"]:
+        assert re.search(re.compile(expected_pattern), str(exception_info.value))
+
+    # Assess result
+    assert result.failed == expected["execution_failed"]
+
+    # Assert number of returned warnings
+    assert len(result.warnings) == expected["result_warnings_qty"]
+    # Assert that updated warnings match expected warning patterns
+    for expected_pattern in expected["result_warnings_patterns"]:
+        assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
+
+    # Assert that updated errors match expected error patterns
+    for expected_pattern in expected["result_errors_patterns"]:
+        assert any(re.search(re.compile(expected_pattern), str(error_item)) for error_item in result.errors)
+
+    # Assert returned workspace object
+    assert result.workspace.name == workspace["name"]
+    assert result.workspace.description == workspace["description"]
+    assert result.workspace.id == workspace["id"]
+    assert result.workspace.requested_state == workspace["requested_state"]
+    assert result.workspace.force == workspace_force_submission
+    assert result.workspace.state == (expected["workspace_state"] or workspace["requested_state"])
