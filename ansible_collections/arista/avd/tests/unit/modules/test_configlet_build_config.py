@@ -3,13 +3,13 @@
 # that can be found in the LICENSE file.
 
 
-import os
+from pathlib import Path
 
 import pytest
 
 from ansible_collections.arista.avd.plugins.modules.configlet_build_config import get_configlet
 
-CONFIGLETS_DIR = f"{os.path.dirname(os.path.realpath(__file__))}../../inventory/intended/configs"
+CONFIGLETS_DIR = str(Path(__file__).parents[2] / "inventory/intended/configs")
 
 CONFIGLETS_DATA = {
     "valid_source": {"src_folder": CONFIGLETS_DIR, "prefix": "AVD"},
@@ -19,24 +19,26 @@ CONFIGLETS_DATA = {
 
 
 class TestConfigletBuildConfig:
-    def verify_configlets(self, src_folder, prefix, extension, output) -> None:
-        suffixes = [".cfg"]
-        for dirpath, _dirnames, filenames in os.walk(src_folder):
-            for filename in filenames:
-                filesplit = os.path.splitext(filename)
-                key = filesplit[0] if not prefix else prefix + "_" + filesplit[0]
-                if filesplit[1] in suffixes:
-                    assert key in output
+    def verify_configlets(self, src_folder: str, prefix: str, extension: str, output: dict) -> None:
+        """Verify that the configlets are correct."""
+        suffixes = [f".{extension}"]
+        for file_path in Path(src_folder).rglob("*"):
+            if not file_path.is_file():
+                continue
 
-                    # Compare contents of each file
-                    with open(os.path.join(dirpath, filename), encoding="utf8") as f:
-                        assert f.read() == output[key]
+            if file_path.suffix in suffixes:
+                key = file_path.stem if not prefix else f"{prefix}_{file_path.stem}"
+                assert key in output
 
-    @pytest.mark.parametrize("DATA", CONFIGLETS_DATA.values(), ids=CONFIGLETS_DATA.keys())
-    def test_get_configlet(self, DATA) -> None:
-        prefix = DATA.get("prefix", None)
-        extension = DATA.get("extension", "cfg")
-        src_folder = DATA["src_folder"]
+                # Compare contents of each file
+                with file_path.open(encoding="utf8") as f:
+                    assert f.read() == output[key]
+
+    @pytest.mark.parametrize("data", CONFIGLETS_DATA.values(), ids=CONFIGLETS_DATA.keys())
+    def test_get_configlet(self, data: dict) -> None:
+        prefix = data.get("prefix")
+        extension = data.get("extension", "cfg")
+        src_folder = data["src_folder"]
 
         if prefix:
             output = get_configlet(src_folder=src_folder, prefix=prefix, extension=extension)
