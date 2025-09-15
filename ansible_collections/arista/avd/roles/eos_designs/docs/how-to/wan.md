@@ -1101,7 +1101,7 @@ The `anta_runner` role validates WAN designs by executing a series of automated 
 | VerifySpecificIPSecConn | Validates the establishment of **IPsec connections** for static peers defined under the `router path-selection` configuration. |
 | VerifySpecificPath | Validates that **Dynamic Path Selection (DPS)** paths are healthy and report an active telemetry state for each configured IPv4 peer. |
 
-See the [AVD-generated catalog test index](https://avd.arista.com/stable/ansible_collections/arista/avd/roles/anta_runner/index.html#avd-generated-catalog-test-index) for more details.
+See the [AVD-generated catalog test index](../../../anta_runner/README.md#avd-generated-catalog-test-index) for more details.
 
 !!! note
 
