@@ -21,7 +21,7 @@ The purpose of this tutorial is to review the steps required in order to integra
     - on the CV UI the username in Users page and Service Accounts page would be `john.smith`
     - on EOS in the running config there would be either a local user: `username john.smith privilege 15 role <roleName> <nopassword/secret>` or one in TACACS/RADIUS
     - on ansible side in `inventory.yaml` the `ansible_user` has to be set to `cvaas` or `svc_account`, e.g.:  `ansible_user: cvaas` or `ansible_user: svc_account` and `ansible_password` will reference the service account token, e.g.: `"{{ lookup('file', '/tokens/cvaas.tok')}}"`
-    - reference: [ansible-cvp authentication](https://cvp.avd.sh/en/stable/docs/how-to/cvp-authentication/)
+    - reference: [ansible-cvp authentication](https://aristanetworks.github.io/ansible-cvp/docs/how-to/cvp-authentication/)
 
 ## Steps to create service accounts on CloudVision
 

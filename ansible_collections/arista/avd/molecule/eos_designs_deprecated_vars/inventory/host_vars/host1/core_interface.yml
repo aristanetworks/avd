@@ -1,0 +1,38 @@
+---
+# Test that when deprecated underlay_multicast is configured and core_interface.p2p_links
+# is configured with include_in_underlay_protocol: True and no value for underlay_multicast not multicast_pim_sm
+# Then PIM SM is not configured
+
+underlay_multicast: true
+
+core_interfaces:
+  p2p_links:
+    # P2P core links with underlay_multicast(pim-sparse) enabled.
+    - nodes: [host1, peer1]
+      id: 10
+      as: [65001, 65002]
+      interfaces: [Ethernet5, Ethernet3]
+      include_in_underlay_protocol: true
+      underlay_multicast: true
+      ip_pool: underlay_pool
+
+      # P2P core links with underlay_multicast(pim-sparse) disabled.
+    - nodes: [host1, peer2]
+      id: 11
+      as: [65001, 65003]
+      interfaces: [Ethernet6, Ethernet6]
+      include_in_underlay_protocol: true
+      underlay_multicast: false
+      ip_pool: underlay_pool
+
+    # P2P core links with underlay_multicast(pim-sparse) default.
+    # expect to not be enabled because using legacy global `underlay_multicast`
+    - nodes: [host1, peer3]
+      id: 12
+      as: [65001, 65004]
+      interfaces: [Ethernet7, Ethernet7]
+      include_in_underlay_protocol: true
+      # Current values
+      # underlay_multicast: None
+      # multicast_pim_sm: None
+      ip_pool: underlay_pool
