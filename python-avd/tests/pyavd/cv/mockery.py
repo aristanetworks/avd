@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, NoReturn
 
 from grpclib import GRPCError, Status
 
+from pyavd._cv.workflows.models import CVDevice
 from pyavd._utils import get_v2
 
 if TYPE_CHECKING:
@@ -29,6 +30,24 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 RECORDING_DIR = Path(__file__).parent / "api_recordings"
+
+
+def mocked_cvdevices(hostnames: list[str] | None = None, device_count: int | None = None) -> list[CVDevice]:
+    """
+    Generate mocked CVDevice instances.
+
+    Parameters:
+        hostnames (list[str]): List of device hostnames.
+        device_count (int): Number of CVDevice instances to generate.
+
+    Returns:
+        list[CVDevice]: List of CVDevice instances.
+    """
+    if hostnames:
+        return [CVDevice(item) for item in hostnames]
+    if device_count:
+        return [CVDevice(str(item), str(item), str(item)) for item in range(device_count)]
+    return [CVDevice(str(item), str(item), str(item)) for item in range(1000000)]
 
 
 def get_recording_file(route: str, request: IProtoMessage, cv_server: str, recording_dir: Path = RECORDING_DIR) -> Path:
