@@ -405,6 +405,30 @@ ethernet_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 1-4096
+- name: Ethernet32
+  description: CUSTOM_SERVER_DOT1X_SUPPLICANT_PORT_CHANNEL
+  shutdown: false
+  channel_group:
+    id: 32
+    mode: active
+  dot1x:
+    pae:
+      mode: supplicant
+      supplicant_profile: test_profile_network_ports
+  peer: DOT1X_SUPPLICANT_PORT_CHANNEL
+  peer_type: custom_server
+- name: Ethernet33
+  description: CUSTOM_SERVER_DOT1X_SUPPLICANT_PORT_CHANNEL
+  shutdown: false
+  channel_group:
+    id: 32
+    mode: active
+  dot1x:
+    pae:
+      mode: supplicant
+      supplicant_profile: test_profile_network_ports
+  peer: DOT1X_SUPPLICANT_PORT_CHANNEL
+  peer_type: custom_server
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic101
   shutdown: false
@@ -538,6 +562,11 @@ port_channel_interfaces:
   shutdown: false
   lacp_fallback_timeout: 90
   lacp_fallback_mode: individual
+  switchport:
+    enabled: true
+- name: Port-Channel32
+  description: CUSTOM_SERVER_DOT1X_SUPPLICANT_PORT_CHANNEL
+  shutdown: false
   switchport:
     enabled: true
 service_routing_protocols_model: multi-agent

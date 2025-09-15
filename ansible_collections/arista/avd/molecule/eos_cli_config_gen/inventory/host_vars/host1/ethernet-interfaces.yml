@@ -2072,3 +2072,10 @@ ethernet_interfaces:
               - protocol: "0x4"
                 re_encapsulation_ethernet_header: true
                 strip: true
+
+  - name: Ethernet85
+    description: DOT1X Testing - pae mode supplicant
+    dot1x:
+      pae:
+        mode: supplicant
+        supplicant_profile: test_profile
