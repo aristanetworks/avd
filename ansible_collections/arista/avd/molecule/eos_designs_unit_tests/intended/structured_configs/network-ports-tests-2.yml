@@ -735,6 +735,26 @@ ethernet_interfaces:
   peer_type: network_port
   switchport:
     enabled: true
+- name: Ethernet22
+  shutdown: false
+  channel_group:
+    id: 222
+    mode: active
+  peer_type: network_port
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 400
+- name: Ethernet23
+  shutdown: false
+  channel_group:
+    id: 222
+    mode: active
+  peer_type: network_port
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 400
 hostname: network-ports-tests-2
 ip_igmp_snooping:
   globally_enabled: true
@@ -809,6 +829,16 @@ port_channel_interfaces:
   mlag: 43
   switchport:
     enabled: true
+- name: Port-Channel222
+  shutdown: false
+  mlag: 222
+  lacp_fallback_timeout: 90
+  lacp_fallback_mode: individual
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '300'
 service_routing_protocols_model: multi-agent
 spanning_tree:
   no_spanning_tree_vlan: '4094'
@@ -843,6 +873,9 @@ vlans:
   tenant: TEST
 - id: 300
   name: VLAN300_PHONE_ON_L2LEAF1_AND_2
+  tenant: TEST
+- id: 400
+  name: VLAN400_FALLBACK_INDIVIDUAL_VLAN
   tenant: TEST
 vrfs:
 - name: MGMT

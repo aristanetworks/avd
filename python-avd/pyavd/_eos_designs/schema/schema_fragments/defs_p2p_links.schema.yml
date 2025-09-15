@@ -165,8 +165,32 @@ $defs:
           description: Enable sFlow. Overrides `fabric_sflow` setting.
         underlay_multicast:
           type: bool
-          description: Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
-          default: false
+          description: |-
+            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
+
+            Note: The default value for this key is `false` when using either the new key `underlay_multicast.pim_sm.enabled: true
+            or, if unset, global `underlay_multicast_pim_sm: true`
+          deprecation:
+            removed: false
+            warning: true
+            new_key: multicast_pim_sm
+            remove_in_version: 6.0.0
+        multicast_pim_sm:
+          type: bool
+          description: |-
+            Configure PIM sparse-mode on the P2P links.
+            Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+            The default value depends on the value of `include_in_underlay_protocol`:
+            * when `include_in_underlay_protocol: true`, the default value is `true`
+            * when `include_in_underlay_protocol: false`, the default value is `false`.
+        multicast_static:
+          type: bool
+          description: |-
+            Configure static multicast on the P2P links.
+            Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+            The default value depends on the value of `include_in_underlay_protocol`:
+            * when `include_in_underlay_protocol: true`, the default value is `true`
+            * when `include_in_underlay_protocol: false`, the default value is `false`.
         flow_tracking:
           type: dict
           $ref: "eos_designs#/$defs/flow_tracking_link"

@@ -17,7 +17,7 @@ ethernet_interfaces:
     trunk:
       allowed_vlan: '111'
       native_vlan: 10
-hostname: tenant-default-vrf-static-routes
+hostname: tenant-default-vrf-settings
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -98,6 +98,9 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
+  aggregate_addresses:
+  - prefix: 10.1.1.0/8
+    advertise_only: true
   redistribute:
     connected:
       enabled: true
@@ -166,7 +169,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: tenant-default-vrf-static-routes_VTEP
+    description: tenant-default-vrf-settings_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

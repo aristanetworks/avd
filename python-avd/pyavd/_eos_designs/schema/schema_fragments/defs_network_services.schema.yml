@@ -1568,6 +1568,20 @@ $defs:
                       items:
                         type: str
                       description: Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+              aggregate_addresses:
+                type: list
+                items:
+                  type: dict
+                  $ref: "eos_cli_config_gen#/keys/router_bgp/keys/aggregate_addresses/items"
+                  keys:
+                    nodes:
+                      type: list
+                      description: |-
+                        Nodes where the aggregate should be configured.
+                        By default the aggregate will be configured all on all devices where the VRF is configured.
+                      items:
+                        type: str
+                        description: Node name or regex pattern matching the full hostname.
               raw_eos_cli:
                 type: str
                 description: EOS CLI rendered directly on the root level of the final EOS configuration.
