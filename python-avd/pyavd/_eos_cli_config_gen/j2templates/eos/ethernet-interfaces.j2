@@ -1277,8 +1277,10 @@ interface {{ ethernet_interface.name }}
    {{ frequency_cli }}
 {%     endif %}
 {%     if ethernet_interface.dot1x is arista.avd.defined %}
-{%         if ethernet_interface.dot1x.pae.mode is arista.avd.defined %}
+{%         if ethernet_interface.dot1x.pae.mode is arista.avd.defined("authenticator") %}
    dot1x pae {{ ethernet_interface.dot1x.pae.mode }}
+{%         elif ethernet_interface.dot1x.pae.mode is arista.avd.defined("supplicant") and ethernet_interface.dot1x.pae.supplicant_profile is arista.avd.defined %}
+   dot1x pae {{ ethernet_interface.dot1x.pae.mode }} {{ ethernet_interface.dot1x.pae.supplicant_profile }}
 {%         endif %}
 {%         if ethernet_interface.dot1x.authentication_failure is arista.avd.defined %}
 {%             if ethernet_interface.dot1x.authentication_failure.action is arista.avd.defined('allow') and
