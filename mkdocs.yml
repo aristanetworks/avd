@@ -90,8 +90,6 @@ plugins:
         - docs/release-notes/1.1.x.md
         - docs/release-notes/2.x.x.md
         - docs/release-notes/3.x.x.md
-        - docs/release-notes/4.x.x.md
-        - docs/porting-guides/4.x.x.md
         - ansible_collections/arista/avd/roles/*/docs/tables/*
         - development/*
         - galaxy-importer/*
@@ -215,8 +213,8 @@ nav:
       - Validation of Input Variables: docs/contribution/input-variable-validation.md
       - EOS Designs internal notes: docs/contribution/eos_designs_internal_notes.md
       - Authoring eos_cli_config_gen Role Guide: docs/contribution/authoring_eos_cli_config_gen.md
-  - Release Notes: docs/release-notes/5.x.x.md
-  - Porting Guide: docs/porting-guides/5.x.x.md
+  - Release Notes: docs/release-notes/6.x.x.md
+  - Porting Guide: docs/porting-guides/6.x.x.md
   - PyAVD: docs/pyavd/pyavd.md
   - Versioning: docs/versioning/semantic-versioning.md
   - AVD Dev Containers:
@@ -227,3 +225,7 @@ not_in_nav: |
   /ansible_collections/arista/avd/examples/single-dc-l3ls/documentation/*
   /docs/contribution/eos_designs_facts_internal/tables/eos_designs_facts.md
   /docs/warn-eos-cli-config-keys-usage-in-eos-designs.md
+  /docs/release-notes/4.x.x.md
+  /docs/release-notes/5.x.x.md
+  /docs/porting-guides/4.x.x.md
+  /docs/porting-guides/5.x.x.md
