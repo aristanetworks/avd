@@ -90,6 +90,10 @@ plugins:
         - docs/release-notes/1.1.x.md
         - docs/release-notes/2.x.x.md
         - docs/release-notes/3.x.x.md
+        - docs/release-notes/4.x.x.md
+        - docs/release-notes/5.x.x.md
+        - docs/porting-guides/4.x.x.md
+        - docs/porting-guides/5.x.x.md
         - ansible_collections/arista/avd/roles/*/docs/tables/*
         - development/*
         - galaxy-importer/*
@@ -225,7 +229,3 @@ not_in_nav: |
   /ansible_collections/arista/avd/examples/single-dc-l3ls/documentation/*
   /docs/contribution/eos_designs_facts_internal/tables/eos_designs_facts.md
   /docs/warn-eos-cli-config-keys-usage-in-eos-designs.md
-  /docs/release-notes/4.x.x.md
-  /docs/release-notes/5.x.x.md
-  /docs/porting-guides/4.x.x.md
-  /docs/porting-guides/5.x.x.md
