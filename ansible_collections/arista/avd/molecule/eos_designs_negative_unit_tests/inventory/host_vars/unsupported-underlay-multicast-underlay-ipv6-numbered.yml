@@ -1,7 +1,7 @@
 ---
 type: spine
 fabric_name: FABRIC_UNSPPORTED_UNDERLAY_MULTICAST_UNDERLAY_IPV6_UNMBERED
-underlay_multicast: true
+underlay_multicast_pim_sm: true
 underlay_multicast_rps:
   - rp: 192.168.200.4
     groups:

@@ -2134,7 +2134,6 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -2255,15 +2254,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool | None
-            """
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-            to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key
-            `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
-            """
             multicast_pim_sm: bool | None
             """
             Configure PIM sparse-mode on the P2P links.
@@ -2368,7 +2358,6 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -2454,13 +2443,6 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         sflow: Enable sFlow. Overrides `fabric_sflow` setting.
-                        underlay_multicast:
-                           Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-                           to be `true`.
-
-                           Note: The default value for this key is `false` when using either the new key
-                           `underlay_multicast.pim_sm.enabled: true
-                           or, if unset, global `underlay_multicast_pim_sm: true`
                         multicast_pim_sm:
                            Configure PIM sparse-mode on the P2P links.
                            Requires node setting
@@ -2833,7 +2815,6 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -2954,15 +2935,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool | None
-            """
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-            to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key
-            `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
-            """
             multicast_pim_sm: bool | None
             """
             Configure PIM sparse-mode on the P2P links.
@@ -3067,7 +3039,6 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -3153,13 +3124,6 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         sflow: Enable sFlow. Overrides `fabric_sflow` setting.
-                        underlay_multicast:
-                           Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-                           to be `true`.
-
-                           Note: The default value for this key is `false` when using either the new key
-                           `underlay_multicast.pim_sm.enabled: true
-                           or, if unset, global `underlay_multicast_pim_sm: true`
                         multicast_pim_sm:
                            Configure PIM sparse-mode on the P2P links.
                            Requires node setting
@@ -7659,7 +7623,6 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -7780,15 +7743,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool | None
-            """
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-            to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key
-            `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
-            """
             multicast_pim_sm: bool | None
             """
             Configure PIM sparse-mode on the P2P links.
@@ -7893,7 +7847,6 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -7979,13 +7932,6 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         sflow: Enable sFlow. Overrides `fabric_sflow` setting.
-                        underlay_multicast:
-                           Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-                           to be `true`.
-
-                           Note: The default value for this key is `false` when using either the new key
-                           `underlay_multicast.pim_sm.enabled: true
-                           or, if unset, global `underlay_multicast_pim_sm: true`
                         multicast_pim_sm:
                            Configure PIM sparse-mode on the P2P links.
                            Requires node setting
@@ -8358,7 +8304,6 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -8479,15 +8424,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool | None
-            """
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-            to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key
-            `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
-            """
             multicast_pim_sm: bool | None
             """
             Configure PIM sparse-mode on the P2P links.
@@ -8592,7 +8528,6 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -8678,13 +8613,6 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         sflow: Enable sFlow. Overrides `fabric_sflow` setting.
-                        underlay_multicast:
-                           Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-                           to be `true`.
-
-                           Note: The default value for this key is `false` when using either the new key
-                           `underlay_multicast.pim_sm.enabled: true
-                           or, if unset, global `underlay_multicast_pim_sm: true`
                         multicast_pim_sm:
                            Configure PIM sparse-mode on the P2P links.
                            Requires node setting
@@ -70157,8 +70085,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_isis_instance_name": {"type": str},
         "underlay_l2_ethernet_description": {"type": str, "default": "L2_{peer}_{peer_interface}"},
         "underlay_l2_port_channel_description": {"type": str, "default": "L2_{peer_node_group_or_peer}_{peer_interface}"},
-        "underlay_multicast": {"type": bool, "default": False},
-        "underlay_multicast_pim_sm": {"type": bool},
+        "underlay_multicast_pim_sm": {"type": bool, "default": False},
         "underlay_multicast_static": {"type": bool, "default": False},
         "underlay_multicast_anycast_rp": {"type": UnderlayMulticastAnycastRp},
         "underlay_multicast_rps": {"type": UnderlayMulticastRps},
@@ -71950,18 +71877,7 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"L2_{peer_node_group_or_peer}_{peer_interface}"`
     """
-    underlay_multicast: bool
-    """
-    Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
-    Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-    No other
-    configuration is added, so the underlay will only support Source-Specific Multicast (SSM).
-    The
-    configuration is intended to be used as multicast underlay for EVPN OISM overlay.
-
-    Default value: `False`
-    """
-    underlay_multicast_pim_sm: bool | None
+    underlay_multicast_pim_sm: bool
     """
     When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
     on all:
@@ -71974,6 +71890,8 @@ class EosDesigns(EosDesignsRootModel):
     l3_edge / core_interfaces to automatically include the interfaces
     in multicast, unless
     `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
+
+    Default value: `False`
     """
     underlay_multicast_static: bool
     """
@@ -72394,8 +72312,7 @@ class EosDesigns(EosDesignsRootModel):
             underlay_isis_instance_name: str | None | UndefinedType = Undefined,
             underlay_l2_ethernet_description: str | UndefinedType = Undefined,
             underlay_l2_port_channel_description: str | UndefinedType = Undefined,
-            underlay_multicast: bool | UndefinedType = Undefined,
-            underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
+            underlay_multicast_pim_sm: bool | UndefinedType = Undefined,
             underlay_multicast_static: bool | UndefinedType = Undefined,
             underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp | UndefinedType = Undefined,
             underlay_multicast_rps: UnderlayMulticastRps | UndefinedType = Undefined,
@@ -73713,13 +73630,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    By default the description is templated from the peer's node group (for MLAG
                    or EVPN A/A) or hostname and port-channel interface of the peer.
-                underlay_multicast:
-                   Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
-                   Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-                   No other
-                   configuration is added, so the underlay will only support Source-Specific Multicast (SSM).
-                   The
-                   configuration is intended to be used as multicast underlay for EVPN OISM overlay.
                 underlay_multicast_pim_sm:
                    When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
                    on all:

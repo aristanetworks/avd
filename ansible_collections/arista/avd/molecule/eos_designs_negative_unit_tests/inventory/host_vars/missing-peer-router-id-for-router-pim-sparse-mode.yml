@@ -1,4 +1,4 @@
-underlay_multicast: true
+underlay_multicast_pim_sm: true
 underlay_multicast_rps:
   - rp: 192.168.200.1
     groups:

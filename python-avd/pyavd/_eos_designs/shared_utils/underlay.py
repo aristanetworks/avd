@@ -62,11 +62,7 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def underlay_multicast_pim_sm_enabled(self: SharedUtilsProtocol) -> bool:
-        # TODO: AVD 6.0, remove legacy underlay_multicast
-        return (
-            default(self.node_config.underlay_multicast.pim_sm.enabled, self.inputs.underlay_multicast_pim_sm, self.inputs.underlay_multicast)
-            and self.underlay_router
-        )
+        return default(self.node_config.underlay_multicast.pim_sm.enabled, self.inputs.underlay_multicast_pim_sm) and self.underlay_router
 
     @cached_property
     def underlay_multicast_static_enabled(self: SharedUtilsProtocol) -> bool:

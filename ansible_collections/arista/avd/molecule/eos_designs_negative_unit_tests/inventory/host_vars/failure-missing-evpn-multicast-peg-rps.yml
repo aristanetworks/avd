@@ -1,5 +1,5 @@
 type: l3leaf
-underlay_multicast: true
+underlay_multicast_pim_sm: true
 evpn_multicast: true
 
 l3leaf:
@@ -13,7 +13,7 @@ l3leaf:
       id: 3
       bgp_as: 65101
       filter:
-        tags: ['evpn-multicast-pegs']
+        tags: ["evpn-multicast-pegs"]
 
 tenants:
   - name: FABRIC
@@ -31,12 +31,12 @@ tenants:
         svis:
           - id: 210
             name: Tenant_A_OP_Zone_1
-            tags: ['evpn-multicast-l3']
+            tags: ["evpn-multicast-l3"]
         l3_interfaces:
-          - nodes: [ failure-missing-evpn-multicast-peg-rps ]
-            interfaces: [ Ethernet1 ]
-            ip_addresses: [ 10.254.248.0/31 ]
-            descriptions: [ "L3 Link to RPs" ]
+          - nodes: [failure-missing-evpn-multicast-peg-rps]
+            interfaces: [Ethernet1]
+            ip_addresses: [10.254.248.0/31]
+            descriptions: ["L3 Link to RPs"]
             enabled: true
             pim:
               enabled: true

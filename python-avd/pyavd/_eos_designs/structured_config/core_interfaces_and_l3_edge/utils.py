@@ -348,14 +348,7 @@ class UtilsMixin(Protocol):
         interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
     ) -> None:
         if p2p_link.include_in_underlay_protocol:
-            # TODO: AVD 6.0 remove underlay_mutlicast
-            # Legacy - to be non breaking, when using the legacy `underlay_multicast`, we cannot enable PIM SM if p2p_link.multicast_pim_sm is not set
-            # otherwise it is breaking, as underlay_multicast used to be default False
-            # The porting guide must describe the change in default between underlay_multicast and underlay_multicast_pim_sm_enabled
-            if self.inputs.underlay_multicast is True and self.shared_utils.node_config.underlay_multicast.pim_sm.enabled is not False:
-                if p2p_link.underlay_multicast is True or p2p_link.multicast_pim_sm is True:
-                    interface.pim.ipv4.sparse_mode = True
-            elif self.shared_utils.underlay_multicast_pim_sm_enabled and (p2p_link.underlay_multicast is True or p2p_link.multicast_pim_sm is not False):
+            if self.shared_utils.underlay_multicast_pim_sm_enabled and p2p_link.multicast_pim_sm is not False:
                 interface.pim.ipv4.sparse_mode = True
 
             # static multicast
