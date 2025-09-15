@@ -239,17 +239,6 @@ keys:
 
           - `ip attached-host route export` will only be rendered for inband management
           VLAN interfaces if the underlay protocol is BGP.'
-  avd_data_conversion_mode:
-    documentation_options:
-      table: role-input-validation
-    type: str
-    deprecation:
-      warning: true
-      removed: true
-      remove_in_version: 5.0.0
-    description: 'Conversion Mode for AVD input data conversion.
-
-      '
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -1463,21 +1452,6 @@ keys:
     deprecation:
       warning: true
       remove_in_version: 6.0.0
-  cvp_instance_ip:
-    documentation_options:
-      table: cloudvision-settings
-    deprecation:
-      warning: true
-      new_key: cv_settings
-      remove_in_version: 5.0.0
-      removed: true
-    type: str
-    description: 'IPv4 address or DNS name for CloudVision.
-
-      This variable only supports an on-premise single-node cluster or the DNS name
-      of a CloudVision as a Service instance.
-
-      '
   cvp_instance_ips:
     documentation_options:
       table: cloudvision-settings
@@ -3422,19 +3396,6 @@ keys:
           type: str
     default:
     - name: tenants
-  new_network_services_bgp_vrf_config:
-    type: bool
-    default: true
-    description: 'This key was used to generate BGP configuration for network services
-      even when `evpn` is not in the address families for the node as well as the
-      VRF.
-
-      This is now part of the default behavior so this key has been removed.'
-    deprecation:
-      warning: true
-      removed: true
-      remove_in_version: 5.0.0
-      url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#bgp-is-now-configured-for-network-services-vrfs-even-if-evpn-is-not-part-of-the-address-families
   custom_node_type_keys:
     $ref: eos_designs#/keys/node_type_keys
     default: null
@@ -4934,15 +4895,6 @@ keys:
             up to two levels (adapter->profile->parent_profile).
 
             '
-  ptp:
-    deprecation:
-      warning: true
-      removed: true
-      new_key: ptp_settings
-      remove_in_version: v5.0.0
-    documentation_options:
-      table: ptp_settings
-    type: dict
   ptp_profiles:
     documentation_options:
       table: ptp_settings
@@ -7291,14 +7243,6 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
-          short_esi:
-            type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
-            deprecation:
-              removed: true
-              warning: true
-              remove_in_version: 5.0.0
-              new_key: ethernet_segment.short_esi
       validate_state:
         type: bool
         description: Set to false to disable interface state and LLDP topology validation
@@ -11786,24 +11730,6 @@ $defs:
               level.
 
               `default_flow_tracker_type` default value is `sampled`.'
-          inband_management_subnet:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              removed: true
-              warning: true
-              new_key: inband_mgmt_subnet
-              remove_in_version: 5.0.0
-            type: str
-          inband_management_vlan:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              removed: true
-              warning: true
-              new_key: inband_mgmt_vlan
-              remove_in_version: 5.0.0
-            type: int
           underlay_multicast:
             type: dict
             documentation_options:
@@ -13253,18 +13179,6 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/vlan_interfaces/items
-      ipv6_address_virtual:
-        type: str
-        description: 'IPv6_address/Mask.
-
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
-
-          '
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: 5.0.0
-          new_key: ipv6_address_virtuals
       evpn_l2_multi_domain:
         type: bool
         description: 'Explicitly extend SVI to remote EVPN domains.
