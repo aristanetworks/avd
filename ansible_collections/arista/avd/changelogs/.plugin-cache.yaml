@@ -93,6 +93,16 @@ plugins:
       name: eos_designs_structured_config
       namespace: ''
       version_added: 4.0.0
+    eos_validate_state_reports:
+      description: Generates validation reports for the eos_validate_state role
+      name: eos_validate_state_reports
+      namespace: ''
+      version_added: 4.5.0
+    eos_validate_state_runner:
+      description: Uses ANTA for eos_validate_state role
+      name: eos_validate_state_runner
+      namespace: ''
+      version_added: 4.4.0
     inventory_to_container:
       description: Transform information from inventory to arista.cvp collection
       name: inventory_to_container
