@@ -142,9 +142,9 @@ The [Molecule](https://ansible.readthedocs.io/projects/molecule/) project is des
 The AVD project leverages Molecule for:
 
 - Static integration test on the following Ansible roles:
+  - `anta_runner`
   - `eos_designs`
   - `eos_cli_config_gen`
-  - `eos_validate_state`
   - `eos_config_deploy_cvp`
   - `dhcp_provisioner` (requires docker)
 - End-to-end systems integration tests on the following CloudVision role and module:
