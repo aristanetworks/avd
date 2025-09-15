@@ -339,16 +339,6 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items"
-      ipv6_address_virtual:
-        type: str
-        description: |
-          IPv6_address/Mask.
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: 5.0.0
-          new_key: ipv6_address_virtuals
       evpn_l2_multi_domain:
         type: bool
         description: |

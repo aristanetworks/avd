@@ -1515,21 +1515,3 @@ keys:
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
-        esi:
-          type: str
-          description: |
-            EVPN Ethernet Segment Identifier (Type 1 format).
-          deprecation:
-            removed: true
-            warning: true
-            new_key: evpn_ethernet_segment.identifier
-            remove_in_version: "5.0.0"
-        rt:
-          type: str
-          description: |
-            EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
-          deprecation:
-            removed: true
-            warning: true
-            new_key: evpn_ethernet_segment.route_target
-            remove_in_version: "5.0.0"
