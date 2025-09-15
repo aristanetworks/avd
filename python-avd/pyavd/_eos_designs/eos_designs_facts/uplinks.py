@@ -195,8 +195,28 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         if self.shared_utils.node_config.uplink_macsec.profile:
             uplink.mac_security.profile = self.shared_utils.node_config.uplink_macsec.profile
 
-        if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
-            uplink.underlay_multicast = True
+        if (
+            self.shared_utils.underlay_multicast_pim_sm_enabled
+            and uplink_switch_facts.shared_utils.underlay_multicast_pim_sm_enabled
+            and self.shared_utils.node_config.underlay_multicast.pim_sm.uplinks
+            and (
+                not self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces
+                or uplink_interface in self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces
+            )
+        ):
+            # means all uplinks are enabled or uplinks are filtered and this uplink interface is accepted
+            uplink.underlay_multicast_pim_sm = True
+        if (
+            self.shared_utils.underlay_multicast_static_enabled
+            and uplink_switch_facts.shared_utils.underlay_multicast_static_enabled
+            and self.shared_utils.node_config.underlay_multicast.static.uplinks
+            and (
+                not self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces
+                or uplink_interface in self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces
+            )
+        ):
+            # means all uplinks are enabled or uplinks are filtered and this uplink interface is accepted
+            uplink.underlay_multicast_static = True
 
         if self.inputs.underlay_rfc5549:
             uplink.ipv6_enable = True
@@ -214,8 +234,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 EosDesignsFactsProtocol.UplinksItem.LinkTrackingGroupsItem(name=lt_group.name, direction="upstream")
                 for lt_group in self.shared_utils.link_tracking_groups
             )
-        if self.shared_utils.node_config.uplink_structured_config is not None:
-            uplink.structured_config = self.shared_utils.node_config.uplink_structured_config
+        self._update_uplink_structured_config(uplink)
 
         return uplink
 
@@ -311,9 +330,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             # This child device does not support VLANs, so we tell the peer to enable portfast
             uplink.peer_spanning_tree_portfast = "edge"
 
-        if self.shared_utils.node_config.uplink_structured_config is not None:
-            uplink.structured_config = self.shared_utils.node_config.uplink_structured_config
-
+        self._update_uplink_structured_config(uplink)
         return uplink
 
     def _get_p2p_vrfs_uplink(
@@ -358,6 +375,35 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 uplink.subinterfaces.append(subinterface)
 
         return uplink
+
+    def _update_uplink_structured_config(self: EosDesignsFactsGeneratorProtocol, uplink: EosDesignsFactsProtocol.UplinksItem) -> None:
+        """
+        Update uplink object with structured_config keys.
+
+        Take structured config from the various input keys and apply it to uplink.
+        - `uplink_ethernet_structured_config`
+        - `uplink_switch_ethernet_structured_config`
+        - `uplink_port_channel_structured_config`
+        - `uplink_switch_port_channel_structured_config`
+
+        OR
+
+        - `uplink_structured_config` (deprecated) TODO: Remove in AVD 6.0.0
+        """
+        if ethernet_struct_config := self.shared_utils.node_config.uplink_ethernet_structured_config:
+            uplink.ethernet_structured_config = ethernet_struct_config
+        if peer_ethernet_struct_config := self.shared_utils.node_config.uplink_switch_ethernet_structured_config:
+            uplink.peer_ethernet_structured_config = peer_ethernet_struct_config
+        if port_channel_struct_config := self.shared_utils.node_config.uplink_port_channel_structured_config:
+            uplink.port_channel_structured_config = port_channel_struct_config
+        if peer_port_channel_struct_config := self.shared_utils.node_config.uplink_switch_port_channel_structured_config:
+            uplink.peer_port_channel_structured_config = peer_port_channel_struct_config
+
+        if (
+            not any((ethernet_struct_config, peer_ethernet_struct_config, port_channel_struct_config, peer_port_channel_struct_config))
+            and self.shared_utils.node_config.uplink_structured_config is not None
+        ):
+            uplink.structured_config = self.shared_utils.node_config.uplink_structured_config
 
     @remove_cached_property_type
     @cached_property

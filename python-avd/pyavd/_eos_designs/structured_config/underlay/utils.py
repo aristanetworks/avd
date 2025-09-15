@@ -79,13 +79,17 @@ class UtilsMixin(Protocol):
                     mac_security=uplink.mac_security,
                     short_esi=uplink.peer_short_esi,
                     mlag=uplink.peer_mlag,
-                    underlay_multicast=uplink.underlay_multicast,
+                    underlay_multicast_pim_sm=uplink.underlay_multicast_pim_sm,
+                    underlay_multicast_static=uplink.underlay_multicast_static,
                     ipv6_enable=uplink.ipv6_enable,
                     sflow_enabled=self.shared_utils.get_interface_sflow(uplink.peer_interface, self.inputs.fabric_sflow.downlinks),
                     flow_tracking=downlinks_flow_tracking,
                     spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
                     structured_config=uplink.structured_config,
+                    ethernet_structured_config=uplink.peer_ethernet_structured_config,
+                    port_channel_structured_config=uplink.peer_port_channel_structured_config,
                 )
+
                 if peer_facts.inband_ztp:
                     # l2 inband ztp
                     downlink.inband_ztp_vlan = peer_facts.inband_ztp_vlan

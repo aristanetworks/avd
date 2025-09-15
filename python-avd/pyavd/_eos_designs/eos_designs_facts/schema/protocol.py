@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, ClassVar, Literal, Protocol
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._schema.models.avd_indexed_list import AvdIndexedList
 from pyavd._schema.models.avd_list import AvdList
@@ -179,6 +180,28 @@ class EosDesignsFactsProtocol(Protocol):
 
                 """
 
+    class MlagUnderlayMulticast(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"pim_sm": {"type": bool}, "static": {"type": bool}}
+        pim_sm: bool
+        static: bool
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, pim_sm: bool | UndefinedType = Undefined, static: bool | UndefinedType = Undefined) -> None:
+                """
+                MlagUnderlayMulticast.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    pim_sm: pim_sm
+                    static: static
+
+                """
+
     class EvpnRouteServers(AvdList[str]):
         """Subclass of AvdList with `str` items."""
 
@@ -310,6 +333,7 @@ class EosDesignsFactsProtocol(Protocol):
                 "peer_ip_address": {"type": str},
                 "peer_ipv6_address": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
             }
             interface: str
             peer_interface: str
@@ -336,6 +360,8 @@ class EosDesignsFactsProtocol(Protocol):
             Note! The content of this dictionary is _not_ validated
             by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config applied to `uplink_interfaces`."""
 
             if TYPE_CHECKING:
 
@@ -354,6 +380,7 @@ class EosDesignsFactsProtocol(Protocol):
                     peer_ip_address: str | None | UndefinedType = Undefined,
                     peer_ipv6_address: str | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SubinterfacesItem.
@@ -385,6 +412,7 @@ class EosDesignsFactsProtocol(Protocol):
                            "structured_config" defined on node-level.
                            Note! The content of this dictionary is _not_ validated
                            by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
 
                     """
 
@@ -408,7 +436,8 @@ class EosDesignsFactsProtocol(Protocol):
             "peer_speed": {"type": str},
             "ptp": {"type": Ptp},
             "mac_security": {"type": MacSecurity},
-            "underlay_multicast": {"type": bool},
+            "underlay_multicast_pim_sm": {"type": bool},
+            "underlay_multicast_static": {"type": bool},
             "ipv6_enable": {"type": bool},
             "prefix_length": {"type": int},
             "ip_address": {"type": str},
@@ -434,6 +463,10 @@ class EosDesignsFactsProtocol(Protocol):
             "inband_ztp_lacp_fallback_delay": {"type": int},
             "dhcp_server": {"type": bool},
             "structured_config": {"type": dict},
+            "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+            "peer_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+            "peer_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             "subinterfaces": {"type": Subinterfaces},
         }
         interface: str
@@ -454,7 +487,8 @@ class EosDesignsFactsProtocol(Protocol):
         """
         mac_security: MacSecurity
         """Subclass of AvdModel."""
-        underlay_multicast: bool | None
+        underlay_multicast_pim_sm: bool | None
+        underlay_multicast_static: bool | None
         ipv6_enable: bool | None
         prefix_length: int | None
         ip_address: str | None
@@ -497,6 +531,14 @@ class EosDesignsFactsProtocol(Protocol):
         Note! The content of this dictionary is _not_ validated
         by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
         """
+        ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """Custom structured config applied to `uplink_interfaces`."""
+        port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+        peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+        """Custom structured config applied to `uplink_interfaces`."""
+        peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
         subinterfaces: Subinterfaces
         """Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`)."""
 
@@ -517,7 +559,8 @@ class EosDesignsFactsProtocol(Protocol):
                 peer_speed: str | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 mac_security: MacSecurity | UndefinedType = Undefined,
-                underlay_multicast: bool | None | UndefinedType = Undefined,
+                underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                underlay_multicast_static: bool | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 prefix_length: int | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
@@ -543,6 +586,10 @@ class EosDesignsFactsProtocol(Protocol):
                 inband_ztp_lacp_fallback_delay: int | None | UndefinedType = Undefined,
                 dhcp_server: bool | None | UndefinedType = Undefined,
                 structured_config: dict | UndefinedType = Undefined,
+                ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                peer_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                peer_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 subinterfaces: Subinterfaces | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -567,7 +614,8 @@ class EosDesignsFactsProtocol(Protocol):
 
                        Subclass of AvdModel.
                     mac_security: Subclass of AvdModel.
-                    underlay_multicast: underlay_multicast
+                    underlay_multicast_pim_sm: underlay_multicast_pim_sm
+                    underlay_multicast_static: underlay_multicast_static
                     ipv6_enable: ipv6_enable
                     prefix_length: prefix_length
                     ip_address: ip_address
@@ -604,6 +652,10 @@ class EosDesignsFactsProtocol(Protocol):
                        "structured_config" defined on node-level.
                        Note! The content of this dictionary is _not_ validated
                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                    port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                    peer_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                    peer_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
                     subinterfaces: Subclass of AvdIndexedList with `SubinterfacesItem` items. Primary key is `interface` (`str`).
 
                 """
@@ -965,6 +1017,7 @@ class EosDesignsFactsProtocol(Protocol):
         "mlag_ip": {"type": str},
         "mlag_l3_ip": {"type": str},
         "mlag_switch_ids": {"type": MlagSwitchIds},
+        "mlag_underlay_multicast": {"type": MlagUnderlayMulticast},
         "evpn_role": {"type": str},
         "mpls_overlay_role": {"type": str},
         "evpn_route_servers": {"type": EvpnRouteServers},
@@ -1051,6 +1104,12 @@ class EosDesignsFactsProtocol(Protocol):
     mlag_switch_ids: MlagSwitchIds
     """
     The switch ids of both primary and secondary switches for a this node group.
+
+    Subclass of AvdModel.
+    """
+    mlag_underlay_multicast: MlagUnderlayMulticast
+    """
+    Should multicast be enabled on the mlag peer-l3-vlan.
 
     Subclass of AvdModel.
     """
@@ -1188,6 +1247,7 @@ class EosDesignsFactsProtocol(Protocol):
             mlag_ip: str | None | UndefinedType = Undefined,
             mlag_l3_ip: str | None | UndefinedType = Undefined,
             mlag_switch_ids: MlagSwitchIds | UndefinedType = Undefined,
+            mlag_underlay_multicast: MlagUnderlayMulticast | UndefinedType = Undefined,
             evpn_role: str | None | UndefinedType = Undefined,
             mpls_overlay_role: str | None | UndefinedType = Undefined,
             evpn_route_servers: EvpnRouteServers | UndefinedType = Undefined,
@@ -1270,6 +1330,10 @@ class EosDesignsFactsProtocol(Protocol):
                 mlag_l3_ip: mlag_l3_ip
                 mlag_switch_ids:
                    The switch ids of both primary and secondary switches for a this node group.
+
+                   Subclass of AvdModel.
+                mlag_underlay_multicast:
+                   Should multicast be enabled on the mlag peer-l3-vlan.
 
                    Subclass of AvdModel.
                 evpn_role: evpn_role

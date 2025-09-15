@@ -48,7 +48,15 @@ class EthernetInterfacesMixin(Protocol):
                 speed=link.speed,
                 shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
             )
-
+            # Structured Config
+            if link.ethernet_structured_config:
+                self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
+                    link.ethernet_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                )
+            elif structured_config := link.structured_config:
+                self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
+                    EosCliConfigGen.EthernetInterfacesItem._from_dict(structured_config), list_merge=self.custom_structured_configs.list_merge_strategy
+                )
             # L3 interface
             # Used for p2p uplinks as well as main interface for p2p-vrfs.
             if link.type == "underlay_p2p":
@@ -131,18 +139,14 @@ class EthernetInterfacesMixin(Protocol):
                     if (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                         ethernet_interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
-                if link.underlay_multicast:
+                if link.underlay_multicast_pim_sm:
                     ethernet_interface.pim.ipv4.sparse_mode = True
+                if link.underlay_multicast_static:
+                    ethernet_interface.multicast.ipv4.static = True
 
                 # DHCP server settings (primarily used for ZTP)
                 if link.ip_address and "unnumbered" not in link.ip_address.lower() and link.dhcp_server:
                     ethernet_interface.dhcp_server_ipv4 = True
-
-                # Structured Config
-                if structured_config := link.structured_config:
-                    self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
-                        EosCliConfigGen.EthernetInterfacesItem._from_dict(structured_config), list_merge=self.custom_structured_configs.list_merge_strategy
-                    )
 
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 

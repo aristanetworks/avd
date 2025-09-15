@@ -249,8 +249,8 @@ class UtilsMixin(Protocol):
             eos_cli=p2p_link.raw_eos_cli,
         )
         interface.switchport.enabled = False
-
-        if p2p_link.structured_config:
+        # Remove this block after removing p2p_links[].structured_config from schema.
+        if not (p2p_link.ethernet_structured_config or p2p_link.port_channel_structured_config) and p2p_link.structured_config:
             if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
                 # Port-channel
                 self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
@@ -267,10 +267,9 @@ class UtilsMixin(Protocol):
         if p2p_link_data["ip"]:
             interface.ip_address = p2p_link_data["ip"]
 
-        if p2p_link.include_in_underlay_protocol:
-            if p2p_link.underlay_multicast and self.shared_utils.underlay_multicast:
-                interface.pim.ipv4.sparse_mode = True
+        self._update_interface_multicast_config(p2p_link, interface)
 
+        if p2p_link.include_in_underlay_protocol:
             if (self.inputs.underlay_rfc5549 and p2p_link.routing_protocol != "ebgp") or p2p_link.ipv6_enable is True:
                 interface.ipv6_enable = True
 
@@ -314,7 +313,7 @@ class UtilsMixin(Protocol):
         )
 
         # Adding type check to avoid confusing the type checker.
-        if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR, this is for the type checker
+        if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR(S3923)
             interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
         else:
             interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
@@ -342,3 +341,29 @@ class UtilsMixin(Protocol):
 
         # channel_id_algorithm "first_port"
         return int("".join(re.findall(r"\d", node_data.interfaces[0])))
+
+    def _update_interface_multicast_config(
+        self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,
+        p2p_link: T_P2pLinksItem,
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
+    ) -> None:
+        if p2p_link.include_in_underlay_protocol:
+            # TODO: AVD 6.0 remove underlay_mutlicast
+            # Legacy - to be non breaking, when using the legacy `underlay_multicast`, we cannot enable PIM SM if p2p_link.multicast_pim_sm is not set
+            # otherwise it is breaking, as underlay_multicast used to be default False
+            # The porting guide must describe the change in default between underlay_multicast and underlay_multicast_pim_sm_enabled
+            if self.inputs.underlay_multicast is True and self.shared_utils.node_config.underlay_multicast.pim_sm.enabled is not False:
+                if p2p_link.underlay_multicast is True or p2p_link.multicast_pim_sm is True:
+                    interface.pim.ipv4.sparse_mode = True
+            elif self.shared_utils.underlay_multicast_pim_sm_enabled and (p2p_link.underlay_multicast is True or p2p_link.multicast_pim_sm is not False):
+                interface.pim.ipv4.sparse_mode = True
+
+            # static multicast
+            if self.shared_utils.underlay_multicast_static_enabled and p2p_link.multicast_static is not False:
+                interface.multicast.ipv4.static = True
+        else:
+            # not included in underlay protocol
+            if self.shared_utils.underlay_multicast_pim_sm_enabled and p2p_link.multicast_pim_sm:
+                interface.pim.ipv4.sparse_mode = True
+            if self.shared_utils.underlay_multicast_static_enabled and p2p_link.multicast_static:
+                interface.multicast.ipv4.static = True
