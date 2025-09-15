@@ -2,4 +2,4 @@
 # Expecting that no EVPN service is configured with EVPN Multicast.
 
 evpn_multicast: false
-underlay_multicast: true
+underlay_multicast_pim_sm_enabled: true
