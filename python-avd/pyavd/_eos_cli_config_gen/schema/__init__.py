@@ -22974,64 +22974,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class AccessGroupsItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-            name: str | None
-            """Standard ACL Name."""
-            vrf: str | None
-            """VRF Name."""
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    AccessGroupsItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: Standard ACL Name.
-                        vrf: VRF Name.
-
-                    """
-
-        class AccessGroups(AvdList[AccessGroupsItem]):
-            """Subclass of AvdList with `AccessGroupsItem` items."""
-
-        AccessGroups._item_type = AccessGroupsItem
-
-        class Ipv6AccessGroupsItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-            name: str | None
-            """Standard ACL Name."""
-            vrf: str | None
-            """VRF Name."""
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    Ipv6AccessGroupsItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: Standard ACL Name.
-                        vrf: VRF Name.
-
-                    """
-
-        class Ipv6AccessGroups(AvdList[Ipv6AccessGroupsItem]):
-            """Subclass of AvdList with `Ipv6AccessGroupsItem` items."""
-
-        Ipv6AccessGroups._item_type = Ipv6AccessGroupsItem
-
         class Cipher(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
@@ -23210,8 +23152,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "authentication": {"type": Authentication},
-            "access_groups": {"type": AccessGroups},
-            "ipv6_access_groups": {"type": Ipv6AccessGroups},
             "ip_access_group_in": {"type": str},
             "ipv6_access_group_in": {"type": str},
             "idle_timeout": {"type": int},
@@ -23228,10 +23168,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         authentication: Authentication
         """Subclass of AvdModel."""
-        access_groups: AccessGroups
-        """Subclass of AvdList with `AccessGroupsItem` items."""
-        ipv6_access_groups: Ipv6AccessGroups
-        """Subclass of AvdList with `Ipv6AccessGroupsItem` items."""
         ip_access_group_in: str | None
         """Standard ACL Name."""
         ipv6_access_group_in: str | None
@@ -23277,8 +23213,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 authentication: Authentication | UndefinedType = Undefined,
-                access_groups: AccessGroups | UndefinedType = Undefined,
-                ipv6_access_groups: Ipv6AccessGroups | UndefinedType = Undefined,
                 ip_access_group_in: str | None | UndefinedType = Undefined,
                 ipv6_access_group_in: str | None | UndefinedType = Undefined,
                 idle_timeout: int | None | UndefinedType = Undefined,
@@ -23301,8 +23235,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     authentication: Subclass of AvdModel.
-                    access_groups: Subclass of AvdList with `AccessGroupsItem` items.
-                    ipv6_access_groups: Subclass of AvdList with `Ipv6AccessGroupsItem` items.
                     ip_access_group_in: Standard ACL Name.
                     ipv6_access_group_in: Standard IPv6 ACL Name.
                     idle_timeout: Idle timeout in minutes.
