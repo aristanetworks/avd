@@ -134,6 +134,7 @@ disable=
 [BASIC]
 
 bad-names=
+    _,
     bar,
     baz,
     foo,
