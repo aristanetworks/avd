@@ -1769,10 +1769,10 @@ keys:
                       - "8a"
         validate_state:
           type: bool
-          description: Set to false to disable interface state and LLDP topology validation performed by the `eos_validate_state` role.
+          description: Set to false to disable interface state and LLDP topology validation performed by the `anta_runner` role.
         validate_lldp:
           type: bool
-          description: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+          description: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
         switchport:
           type: dict
           description: This should not be combined with `ethernet_interfaces[].type = switched/routed`.

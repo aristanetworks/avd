@@ -3671,7 +3671,7 @@ keys:
                     description: Virtual IPv6 address.
         validate_state:
           type: bool
-          description: Set to false to disable interface validation by the `eos_validate_state`
+          description: Set to false to disable interface validation by the `anta_runner`
             role.
         switchport:
           type: dict
@@ -10225,7 +10225,7 @@ keys:
                         - str
         validate_state:
           type: bool
-          description: Set to false to disable interface validation by the `eos_validate_state`
+          description: Set to false to disable interface validation by the `anta_runner`
             role.
         eos_cli:
           type: str

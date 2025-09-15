@@ -12695,11 +12695,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         validate_state: bool | None
         """
-        Set to false to disable interface state and LLDP topology validation performed by the
-        `eos_validate_state` role.
+        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+        role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         switchport: Switchport
         """
         This should not be combined with `ethernet_interfaces[].type = switched/routed`.
@@ -13004,9 +13004,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                        Subclass of AvdIndexedList with `VrrpIdsItem` items. Primary key is `id` (`int`).
                     validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the
-                       `eos_validate_state` role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                       role.
+                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     switchport:
                        This should not be combined with `ethernet_interfaces[].type = switched/routed`.
 
@@ -34340,11 +34340,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         validate_state: bool | None
         """
-        Set to false to disable interface state and LLDP topology validation performed by the
-        `eos_validate_state` role.
+        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+        role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         eos_cli: str | None
         """Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
 
@@ -34584,9 +34584,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     switchport: Subclass of AvdModel.
                     traffic_engineering: Subclass of AvdModel.
                     validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the
-                       `eos_validate_state` role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                       role.
+                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     eos_cli: Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
 
                 """
