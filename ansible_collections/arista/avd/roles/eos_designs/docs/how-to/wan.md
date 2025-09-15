@@ -1105,6 +1105,6 @@ See the [AVD-generated catalog test index](../../../anta_runner/README.md#avd-ge
 
 !!! note
 
-    Many more tests are available directly in ANTA and can be added using user-defined catalogs. Please refer to the `anta_runner` (role documentation)[https://avd.arista.com/stable/ansible_collections/arista/avd/roles/anta_runner] for more information.
+    Many more tests are available directly in ANTA and can be added using user-defined catalogs. Please refer to the `anta_runner` [role documentation](../../../anta_runner/README.md) for more information.
 
     If you believe a valuable WAN test is missing, we encourage you to let us know by raising a GitHub issue or submitting a pull request.
