@@ -663,26 +663,3 @@ keys:
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
-        ipv6_address_virtual:
-          type: str
-          description: |
-            IPv6_address/Mask.
-          deprecation:
-            removed: true
-            warning: true
-            new_key: ipv6_address_virtuals
-            remove_in_version: "5.0.0"
-        ipv6_virtual_router_address:
-          type: str
-          deprecation:
-            removed: true
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: ipv6_virtual_router_addresses
-        vrrp:
-          type: dict
-          deprecation:
-            removed: true
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: vrrp_ids
