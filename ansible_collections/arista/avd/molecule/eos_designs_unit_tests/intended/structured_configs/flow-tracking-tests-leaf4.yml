@@ -100,8 +100,8 @@ flow_tracking:
         on_interval: 300332
       exporters:
       - name: ayush_exporter
-        collector:
-          host: 127.0.0.2
+        collectors:
+        - host: 127.0.0.2
         local_interface: Loopback0
         template_interval: 40002
     - name: FLOW-TRACKER-4
@@ -110,8 +110,8 @@ flow_tracking:
         on_interval: 300321
       exporters:
       - name: ayush_exporter
-        collector:
-          host: 127.0.2.1
+        collectors:
+        - host: 127.0.2.1
         local_interface: Loopback0
         template_interval: 40020
     shutdown: false
@@ -120,7 +120,6 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:11:22:33:44:55
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -143,6 +142,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.0.1
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: FLOW_TRACKING_TESTS
 mlag_configuration:

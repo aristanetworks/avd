@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from functools import cached_property
 from typing import Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -12,11 +13,13 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default, get_v2
+from pyavd._utils import Undefined, default, get_v2
 from pyavd.j2filters import natural_sort
 
+from .address_locking import AddressLockingMixin
 from .daemon_terminattr import DaemonTerminattrMixin
 from .management_ssh import ManagementSshMixin
+from .monitor_sessions import MonitorSessionsMixin
 from .ntp import NtpMixin
 from .platform_mixin import PlatformMixin
 from .router_general import RouterGeneralMixin
@@ -25,12 +28,14 @@ from .utils import UtilsMixin
 
 
 class AvdStructuredConfigBaseProtocol(
+    AddressLockingMixin,
     DaemonTerminattrMixin,
     ManagementSshMixin,
     NtpMixin,
     SnmpServerMixin,
     RouterGeneralMixin,
     PlatformMixin,
+    MonitorSessionsMixin,
     UtilsMixin,
     StructuredConfigGeneratorProtocol,
     Protocol,
@@ -51,10 +56,6 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def hostname(self) -> None:
         self.structured_config.hostname = self.shared_utils.hostname
-
-    @structured_config_contributor
-    def is_deployed(self) -> None:
-        self.structured_config.is_deployed = self.inputs.is_deployed
 
     @structured_config_contributor
     def serial_number(self) -> None:
@@ -166,7 +167,7 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def router_multicast(self) -> None:
         """router_multicast set based on underlay_multicast, underlay_router and switch.evpn_multicast facts."""
-        if not self.shared_utils.underlay_multicast:
+        if not self.shared_utils.any_multicast_enabled:
             return
 
         self.structured_config.router_multicast.ipv4.routing = True
@@ -253,8 +254,11 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def enable_password(self) -> None:
-        """enable_password.disable is always set to match EOS default config and historic configs."""
-        self.structured_config.enable_password.disabled = True
+        """enable_password.disable is set to match EOS default config and historic configs if aaa_settings.enable_password.password is not defined."""
+        if self.inputs.aaa_settings.enable_password.password:
+            self.structured_config.enable_password._update(hash_algorithm="sha512", key=self.inputs.aaa_settings.enable_password.password)
+        else:
+            self.structured_config.enable_password.disabled = True
 
     @structured_config_contributor
     def transceiver_qsfp_default_mode_4x10(self) -> None:
@@ -429,11 +433,12 @@ class AvdStructuredConfigBaseProtocol(
 
     @structured_config_contributor
     def local_users(self) -> None:
-        """local_users set based on local_users data model."""
-        if not self.inputs.local_users:
+        """local_users set based on global local_users data model or aaa_settings.local_users data model."""
+        local_users = self.inputs.aaa_settings.local_users or self.inputs.local_users
+        if not local_users:
             return
 
-        self.structured_config.local_users = self.inputs.local_users._natural_sorted()
+        self.structured_config.local_users = local_users._natural_sorted()
 
     @structured_config_contributor
     def clock(self) -> None:
@@ -505,12 +510,31 @@ class AvdStructuredConfigBaseProtocol(
     def management_api_http(self) -> None:
         """management_api_http set based on management_eapi data-model."""
         if self.inputs.management_eapi.enabled:
-            self.structured_config.management_api_http.enable_vrfs.append_new(name=self.inputs.mgmt_interface_vrf)
             self.structured_config.management_api_http._update(
                 enable_http=self.inputs.management_eapi.enable_http,
                 enable_https=self.inputs.management_eapi.enable_https,
                 default_services=self.inputs.management_eapi.default_services,
             )
+
+            # TODO: For backward compatibility, checking in advance if we are using the default value
+            # remove in AVD 6.0 as well as the try/except below
+            using_default_vrfs = self.inputs.management_eapi._get_defined_attr("vrfs") == Undefined
+
+            for vrf in self.inputs.management_eapi.vrfs:
+                if vrf.enabled:
+                    try:
+                        vrf_name = self.get_vrf(vrf.name, context=f"self.inputs.management_eapi.vrfs[name={vrf.name}]")
+                    except AristaAvdInvalidInputsError:
+                        if not using_default_vrfs:
+                            raise
+                        vrf_name = self.inputs.mgmt_interface_vrf
+                    self.structured_config.management_api_http.enable_vrfs.append_new(name=vrf_name, access_group=vrf.ipv4_acl, ipv6_access_group=vrf.ipv6_acl)
+
+        # Enforce eAPI management access in default VRF for ACT Digital Twin if required
+        if self._act_ensure_eapi_access:
+            self.structured_config.management_api_http.enable_https = True
+            # Create item for default VRF if not present. If present, remove IPv4 ACL.
+            self.structured_config.management_api_http.enable_vrfs.obtain("default").access_group = None
 
     @structured_config_contributor
     def link_tracking_groups(self) -> None:
@@ -577,6 +601,7 @@ class AvdStructuredConfigBaseProtocol(
             ttl=self.shared_utils.node_config.ptp.ttl,
             domain=default(self.shared_utils.node_config.ptp.domain, default_ptp_domain),
             monitor=self.get_ptp_monitor(),
+            forward_v1=default(self.shared_utils.node_config.ptp.forward_v1, self.inputs.ptp_settings.forward_v1) or None,
         )
 
         self.structured_config.ptp.source.ip = self.shared_utils.node_config.ptp.source_ip
@@ -655,7 +680,8 @@ class AvdStructuredConfigBaseProtocol(
                     EosCliConfigGen.IpRadiusSourceInterfacesItem(name=source_interface, vrf=server_vrf)
                 )
 
-            self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server.key)
+            server_key = self._get_tacacs_or_radius_server_password(server)
+            self.structured_config.radius_server.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
 
             for group in server.groups:
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
@@ -678,7 +704,7 @@ class AvdStructuredConfigBaseProtocol(
         """Parse AAA tacacs server configurations and update structured config with server and source interface details."""
         if not self.inputs.aaa_settings.tacacs:
             return
-
+        all_tacacs_servers = EosCliConfigGen.TacacsServers.Hosts()
         for server in self.inputs.aaa_settings.tacacs.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
@@ -686,17 +712,21 @@ class AvdStructuredConfigBaseProtocol(
                 set_source_interfaces=True,
                 context=f"aaa_settings.tacacs.servers[host={server.host}].vrf",
             )
+
             if source_interface:
                 self.structured_config.ip_tacacs_source_interfaces.append_unique(
                     EosCliConfigGen.IpTacacsSourceInterfacesItem(name=source_interface, vrf=server_vrf)
                 )
+            tacacs_server = EosCliConfigGen.TacacsServers.HostsItem(host=server.host, vrf=server_vrf)
+            if not all_tacacs_servers.__contains__(tacacs_server):
+                all_tacacs_servers.append(tacacs_server)
+                server_key = self._get_tacacs_or_radius_server_password(server)
+                self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server_key)
 
-            self.structured_config.tacacs_servers.hosts.append_new(host=server.host, vrf=server_vrf, key=server.key)
-
-            for group in server.groups:
-                tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
-                tacacs_group.type = "tacacs+"
-                tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
+                for group in server.groups:
+                    tacacs_group = self.structured_config.aaa_server_groups.obtain(group)
+                    tacacs_group.type = "tacacs+"
+                    tacacs_group.servers.append_new(server=server.host, vrf=server_vrf)
 
         self.structured_config.tacacs_servers.policy_unknown_mandatory_attribute_ignore = (
             self.inputs.aaa_settings.tacacs.policy.ignore_unknown_mandatory_attribute
@@ -775,6 +805,11 @@ class AvdStructuredConfigBaseProtocol(
     def struct_cfgs(self) -> None:
         if self.shared_utils.platform_settings.structured_config:
             self.custom_structured_configs.root.append(self.shared_utils.platform_settings.structured_config)
+
+    @cached_property
+    def _act_ensure_eapi_access(self) -> bool:
+        """Flag indicating if we are in ACT Digital Twin mode and if eAPI access in default VRF is enforced."""
+        return self.shared_utils.digital_twin and self.inputs.digital_twin.environment == "act" and self.inputs.digital_twin.fabric.act_ensure_eapi_access
 
 
 class AvdStructuredConfigBase(StructuredConfigGenerator, AvdStructuredConfigBaseProtocol):

@@ -83,8 +83,8 @@ flow_tracking:
       name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
@@ -133,7 +133,6 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -172,6 +171,7 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
+  is_deployed: true
   fabric_name: FABRIC
   cv_tags:
     device_tags:

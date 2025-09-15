@@ -156,8 +156,10 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     key=isis_authentication_key,
                     key_type="7",
                 )
-        if self.shared_utils.underlay_multicast:
+        if self.shared_utils.underlay_multicast_pim_mlag_enabled and self.shared_utils.mlag_peer_facts.mlag_underlay_multicast.pim_sm:
             vlan_interface.pim.ipv4.sparse_mode = True
+        if self.shared_utils.underlay_multicast_static_mlag_enabled and self.shared_utils.mlag_peer_facts.mlag_underlay_multicast.static:
+            vlan_interface.multicast.ipv4.static = True
 
         if self.inputs.underlay_rfc5549:
             vlan_interface.ipv6_enable = True
@@ -200,8 +202,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             # except in the case where the same trunk group name is defined.
             port_channel_interface.switchport.trunk.groups.append(self.inputs.trunk_groups.mlag_l3.name)
 
-        if (self.inputs.fabric_sflow.mlag_interfaces) is not None:
-            port_channel_interface.sflow.enable = self.inputs.fabric_sflow.mlag_interfaces
+        port_channel_interface.sflow.enable = self.shared_utils.get_interface_sflow(port_channel_interface.name, self.inputs.fabric_sflow.mlag_interfaces)
 
         if self.shared_utils.ptp_enabled and self.shared_utils.node_config.ptp.mlag:
             ptp_profile_config = self.shared_utils.ptp_profile._deepcopy()

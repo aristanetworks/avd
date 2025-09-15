@@ -443,8 +443,8 @@ interface Vlan350
 
 ##### VRF to VNI and Multicast Group Mappings
 
-| VRF | VNI | Multicast Group |
-| ---- | --- | --------------- |
+| VRF | VNI | Overlay Multicast Group to Encap Mappings |
+| --- | --- | ----------------------------------------- |
 | Tenant_A_WAN_Zone | 14 | - |
 | Tenant_B_WAN_Zone | 21 | - |
 | Tenant_C_WAN_Zone | 31 | - |
@@ -552,10 +552,10 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 #### VRF Route leaking
 
-| VRF | Source VRF | Route Map Policy |
-|-----|------------|------------------|
-| Tenant_B_OP_Zone | Tenant_A_OP_Zone | RM-CONN-2-BGP |
-| Tenant_B_OP_Zone | Tenant_C_OP_Zone | RM-CONN-2-BGP |
+| VRF | Source VRF | Route Map Policy | RCF Policy |
+|-----|------------|------------------| ---------- |
+| Tenant_B_OP_Zone | Tenant_A_OP_Zone | RM-CONN-2-BGP | - |
+| Tenant_B_OP_Zone | Tenant_C_OP_Zone | RM-CONN-2-BGP | - |
 
 #### Router General Device Configuration
 
@@ -636,9 +636,9 @@ ASN Notation: asplain
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| EVPN-OVERLAY-PEERS | True |  - | - | default | - |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
+| EVPN-OVERLAY-PEERS | True | - | - | - | - | default | - |
 
 ##### EVPN Host Flapping Settings
 

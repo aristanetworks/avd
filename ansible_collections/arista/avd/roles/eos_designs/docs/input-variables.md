@@ -668,6 +668,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l3-port-c
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-bgp-configuration.md
 --8<--
 
+### Node type Multicast configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-multicast.md
+--8<--
+
 ### Node type network services configuration
 
 --8<--
@@ -896,6 +902,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/overlay-settings.md
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/evpn-settings.md
 --8<--
 
+## Address locking settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/address-locking-settings.md
+--8<--
+
 ## WAN Settings
 
 ### WAN generic settings
@@ -961,6 +973,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-pathfinder-inter
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/zscaler-endpoints.md
 --8<--
 
+### WAN Zscaler Integration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/wan-cv-pathfinder-zscaler-integration.md
+--8<--
+
 ## Management settings
 
 --8<--
@@ -1023,6 +1041,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/system-settings.md
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/cloudvision-settings.md
+--8<--
+
+## CloudVision Tags Settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/cloudvision-tags.md
 --8<--
 
 ## Endpoint connectivity
@@ -1538,8 +1562,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/svi-profiles.md
 
 ### EVPN VLAN aware bundles settings
 
-EVPN VLAN aware bundles referenced by name in `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].evpn_vlan_bundle`
-or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle` or `<network_services_key>[].l2vlans[].evpn_vlan_bundle`.
+EVPN VLAN aware bundles referenced by name in `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle` or `<network_services_key>[].l2vlans[].evpn_vlan_bundle`.
 
 An EVPN VLAN aware bundle will only be configured if at least one VLAN is associated with it.
 

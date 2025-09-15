@@ -35,7 +35,7 @@ class EthernetInterfacesMixin(Protocol):
         - Silently overwrite duplicate network_ports with connected_endpoints.
         - Do NOT overwrite connected_endpoints with other connected_endpoints. Instead we raise a duplicate error.
         """
-        for connected_endpoint in self._filtered_connected_endpoints:
+        for connected_endpoint in self.shared_utils.filtered_connected_endpoints:
             for adapter in connected_endpoint.adapters:
                 for node_index, node_name in enumerate(adapter.switches):
                     if node_name != self.shared_utils.hostname:
@@ -52,7 +52,7 @@ class EthernetInterfacesMixin(Protocol):
         # We need this since network ports can override each other, so the last one "wins"
         # Values are the real structured config and the custom structured config for this interface.
         network_ports_ethernet_interfaces: dict[str, tuple[EosCliConfigGen.EthernetInterfacesItem, EosCliConfigGen.EthernetInterfacesItem]] = {}
-        for network_port in self._filtered_network_ports:
+        for network_port in self.shared_utils.filtered_network_ports:
             connected_endpoint = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem(name=network_port.endpoint or Undefined)
             connected_endpoint._internal_data.type = "network_port"
             network_port_as_adapter = network_port._cast_as(
@@ -103,7 +103,9 @@ class EthernetInterfacesMixin(Protocol):
             flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.EthernetInterfacesItem.LinkTrackingGroups),
         )
-        ethernet_interface.sflow.enable = default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
+        ethernet_interface.sflow.enable = self.shared_utils.get_interface_sflow(
+            ethernet_interface.name, default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
+        )
         ethernet_interface.switchport._update(
             enabled=True,
             mode=adapter.mode,
@@ -202,22 +204,23 @@ class EthernetInterfacesMixin(Protocol):
             ethernet_interface.channel_group.id = channel_group_id
             ethernet_interface.channel_group.mode = adapter.port_channel.mode
 
-            if (lacp_fallback_mode := adapter.port_channel.lacp_fallback.mode) == "static":
+            if adapter.port_channel.lacp_fallback.mode == "static":
                 ethernet_interface.lacp_port_priority = 8192 if node_index == 0 else 32768
 
-            elif lacp_fallback_mode == "individual":
-                # if fallback is set to individual a profile has to be defined
-                if (profile_name := adapter.port_channel.lacp_fallback.individual.profile) is None:
+            elif individual_adapter_settings := self.shared_utils.get_merged_individual_adapter_settings(adapter):
+                # if fallback is set to individual a profile _or_ mode+vlans have to be defined
+                # Enforced here and not in facts or shared_utils to fail on the proper device.
+                if not (
+                    adapter.port_channel.lacp_fallback.individual.profile
+                    or (adapter.port_channel.lacp_fallback.individual.mode and adapter.port_channel.lacp_fallback.individual.vlans)
+                ):
                     msg = (
-                        "A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined. Profile definition is missing for"
-                        f" the connected endpoint with the name '{connected_endpoint.name}'."
+                        "A Port-channel which is set to LACP fallback mode 'individual' must have either 'profile' or ('mode' and 'vlans') set under "
+                        f"'port_channel.lacp_fallback.individual'. This is missing for the connected endpoint with the name '{connected_endpoint.name}'."
                     )
                     raise AristaAvdInvalidInputsError(msg)
 
-                profile = self.shared_utils.get_merged_port_profile(
-                    profile_name, context=f"{adapter._internal_data.context}.port_channel.lacp_fallback.individual"
-                )._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem)
-                self._update_ethernet_interface_cfg(profile, ethernet_interface, connected_endpoint)
+                self._update_ethernet_interface_cfg(individual_adapter_settings, ethernet_interface, connected_endpoint)
 
             if adapter.port_channel.mode != "on" and adapter.port_channel.lacp_timer.mode is not None:
                 ethernet_interface.lacp_timer.mode = adapter.port_channel.lacp_timer.mode

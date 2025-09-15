@@ -33,8 +33,12 @@ router general
       software forwarding hardware offload mtu {{ vrf.software_forwarding_hardware_offload_mtu }}
 {%         endif %}
 {%         for leak_route in vrf.leak_routes | arista.avd.natural_sort %}
-{%             if leak_route.source_vrf is arista.avd.defined and leak_route.subscribe_policy is arista.avd.defined %}
+{%             if leak_route.source_vrf is arista.avd.defined %}
+{%                 if leak_route.subscribe_policy is arista.avd.defined %}
       leak routes source-vrf {{ leak_route.source_vrf }} subscribe-policy {{ leak_route.subscribe_policy }}
+{%                 elif leak_route.subscribe_rcf is arista.avd.defined %}
+      leak routes source-vrf {{ leak_route.source_vrf }} subscribe rcf {{ leak_route.subscribe_rcf }}
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%         for dynamic_prefix_list in vrf.routes.dynamic_prefix_lists | arista.avd.natural_sort('name') %}

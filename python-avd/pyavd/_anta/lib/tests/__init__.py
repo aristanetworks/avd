@@ -33,7 +33,6 @@ from anta.tests.path_selection import VerifySpecificPath
 from anta.tests.routing.bgp import VerifyBGPPeerSession
 from anta.tests.routing.generic import VerifyRoutingProtocolModel
 from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn
-from anta.tests.services import VerifyDNSServers
 from anta.tests.stp import VerifySTPCounters
 from anta.tests.system import (
     VerifyAgentLogs,
@@ -44,6 +43,7 @@ from anta.tests.system import (
     VerifyNTP,
     VerifyReloadCause,
 )
+from anta.tests.vxlan import VerifyVxlanConfigSanity
 
 __all__ = [
     "VerifyAPIHttpsSSL",
@@ -51,7 +51,6 @@ __all__ = [
     "VerifyAgentLogs",
     "VerifyBGPPeerSession",
     "VerifyCoredump",
-    "VerifyDNSServers",
     "VerifyEnvironmentCooling",
     "VerifyEnvironmentPower",
     "VerifyEnvironmentSystemCooling",
@@ -81,5 +80,6 @@ __all__ = [
     "VerifyStormControlDrops",
     "VerifyTemperature",
     "VerifyTransceiversTemperature",
+    "VerifyVxlanConfigSanity",
     "VerifyZeroTouch",
 ]

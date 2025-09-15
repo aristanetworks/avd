@@ -125,9 +125,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         These facts are leveraged by templates for this device when rendering uplinks
         and by templates for peer devices when rendering downlinks
         """
-        if self.shared_utils.uplink_type == "p2p":
-            get_uplink = self._get_p2p_uplink
-        elif self.shared_utils.uplink_type == "port-channel":
+        if self.shared_utils.uplink_type == "port-channel":
             get_uplink = self._get_port_channel_uplink
         elif self.shared_utils.uplink_type == "p2p-vrfs":
             if self.shared_utils.network_services_l3 is False or self.shared_utils.underlay_router is False:
@@ -146,8 +144,8 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 # Got {self._uplink_interfaces}. Consider 'uplink_type: lan-port-channel' if applicable.
             get_uplink = self._get_l2_uplink
         else:
-            msg = f"Invalid uplink_type '{self.shared_utils.uplink_type}'."
-            raise AristaAvdError(msg)
+            # Uplink type is 'p2p'.
+            get_uplink = self._get_p2p_uplink
 
         uplinks = EosDesignsFactsProtocol.Uplinks()
         uplink_switches = self.shared_utils.uplink_switches
@@ -159,12 +157,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
 
             uplink_switch = uplink_switches[uplink_index]
             uplink_switch_interface = uplink_switch_interfaces[uplink_index]
-            if uplink_switch is None or uplink_switch not in self.shared_utils.all_fabric_devices:
-                # Invalid uplink_switch. Skipping.
-                continue
 
-            if (uplink := get_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)) is not None:
-                uplinks.append(uplink)
+            uplink = get_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)
+            uplinks.append(uplink)
 
         return uplinks
 
@@ -191,16 +186,37 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         if self.shared_utils.uplink_switch_interface_speed is not None:
             uplink.peer_speed = self.shared_utils.uplink_switch_interface_speed
 
-        if uplink_ptp := self.shared_utils.node_config.uplink_ptp:
-            uplink.ptp.enable = uplink_ptp.enable
-        elif self.shared_utils.ptp_enabled and (not (ptp_uplinks := self.shared_utils.node_config.ptp.uplinks) or (uplink_interface in ptp_uplinks)):
-            uplink.ptp.enable = True
+        if self.shared_utils.platform_settings.feature_support.ptp:
+            if uplink_ptp := self.shared_utils.node_config.uplink_ptp:
+                uplink.ptp.enable = uplink_ptp.enable
+            elif self.shared_utils.ptp_enabled and (not (ptp_uplinks := self.shared_utils.node_config.ptp.uplinks) or (uplink_interface in ptp_uplinks)):
+                uplink.ptp.enable = True
 
         if self.shared_utils.node_config.uplink_macsec.profile:
             uplink.mac_security.profile = self.shared_utils.node_config.uplink_macsec.profile
 
-        if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
-            uplink.underlay_multicast = True
+        if (
+            self.shared_utils.underlay_multicast_pim_sm_enabled
+            and uplink_switch_facts.shared_utils.underlay_multicast_pim_sm_enabled
+            and self.shared_utils.node_config.underlay_multicast.pim_sm.uplinks
+            and (
+                not self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces
+                or uplink_interface in self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces
+            )
+        ):
+            # means all uplinks are enabled or uplinks are filtered and this uplink interface is accepted
+            uplink.underlay_multicast_pim_sm = True
+        if (
+            self.shared_utils.underlay_multicast_static_enabled
+            and uplink_switch_facts.shared_utils.underlay_multicast_static_enabled
+            and self.shared_utils.node_config.underlay_multicast.static.uplinks
+            and (
+                not self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces
+                or uplink_interface in self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces
+            )
+        ):
+            # means all uplinks are enabled or uplinks are filtered and this uplink interface is accepted
+            uplink.underlay_multicast_static = True
 
         if self.inputs.underlay_rfc5549:
             uplink.ipv6_enable = True
@@ -218,8 +234,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 EosDesignsFactsProtocol.UplinksItem.LinkTrackingGroupsItem(name=lt_group.name, direction="upstream")
                 for lt_group in self.shared_utils.link_tracking_groups
             )
-        if self.shared_utils.node_config.uplink_structured_config is not None:
-            uplink.structured_config = self.shared_utils.node_config.uplink_structured_config
+        self._update_uplink_structured_config(uplink)
 
         return uplink
 
@@ -276,10 +291,11 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         if self.shared_utils.uplink_switch_interface_speed is not None:
             uplink.peer_speed = self.shared_utils.uplink_switch_interface_speed
 
-        if self.shared_utils.node_config.uplink_ptp:
-            uplink.ptp.enable = self.shared_utils.node_config.uplink_ptp.enable
-        elif self.shared_utils.ptp_enabled:
-            uplink.ptp.enable = True
+        if self.shared_utils.platform_settings.feature_support.ptp:
+            if self.shared_utils.node_config.uplink_ptp:
+                uplink.ptp.enable = self.shared_utils.node_config.uplink_ptp.enable
+            elif self.shared_utils.ptp_enabled:
+                uplink.ptp.enable = True
 
         # Remove vlans if upstream switch does not have them #}
         if self.inputs.enable_trunk_groups:
@@ -314,9 +330,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             # This child device does not support VLANs, so we tell the peer to enable portfast
             uplink.peer_spanning_tree_portfast = "edge"
 
-        if self.shared_utils.node_config.uplink_structured_config is not None:
-            uplink.structured_config = self.shared_utils.node_config.uplink_structured_config
-
+        self._update_uplink_structured_config(uplink)
         return uplink
 
     def _get_p2p_vrfs_uplink(
@@ -361,6 +375,35 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 uplink.subinterfaces.append(subinterface)
 
         return uplink
+
+    def _update_uplink_structured_config(self: EosDesignsFactsGeneratorProtocol, uplink: EosDesignsFactsProtocol.UplinksItem) -> None:
+        """
+        Update uplink object with structured_config keys.
+
+        Take structured config from the various input keys and apply it to uplink.
+        - `uplink_ethernet_structured_config`
+        - `uplink_switch_ethernet_structured_config`
+        - `uplink_port_channel_structured_config`
+        - `uplink_switch_port_channel_structured_config`
+
+        OR
+
+        - `uplink_structured_config` (deprecated) TODO: Remove in AVD 6.0.0
+        """
+        if ethernet_struct_config := self.shared_utils.node_config.uplink_ethernet_structured_config:
+            uplink.ethernet_structured_config = ethernet_struct_config
+        if peer_ethernet_struct_config := self.shared_utils.node_config.uplink_switch_ethernet_structured_config:
+            uplink.peer_ethernet_structured_config = peer_ethernet_struct_config
+        if port_channel_struct_config := self.shared_utils.node_config.uplink_port_channel_structured_config:
+            uplink.port_channel_structured_config = port_channel_struct_config
+        if peer_port_channel_struct_config := self.shared_utils.node_config.uplink_switch_port_channel_structured_config:
+            uplink.peer_port_channel_structured_config = peer_port_channel_struct_config
+
+        if (
+            not any((ethernet_struct_config, peer_ethernet_struct_config, port_channel_struct_config, peer_port_channel_struct_config))
+            and self.shared_utils.node_config.uplink_structured_config is not None
+        ):
+            uplink.structured_config = self.shared_utils.node_config.uplink_structured_config
 
     @remove_cached_property_type
     @cached_property
@@ -418,7 +461,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             return EosDesignsFactsProtocol.UplinkSwitchInterfaces()
 
         if self.id is None:
-            msg = f"'id' is not set on '{self.shared_utils.hostname}'"
+            msg = f"'id' is not set on '{self.shared_utils.hostname}'."
             raise AristaAvdInvalidInputsError(msg)
 
         uplink_switch_interfaces = EosDesignsFactsProtocol.UplinkSwitchInterfaces()
@@ -434,12 +477,21 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             # For max_parallel_uplinks: 2 this would assign downlink interfaces like this:
             # spine1 downlink-interface mapping: [ leaf-id1, leaf-id1, leaf-id2, leaf-id2, leaf-id3, leaf-id3, ... ]
             downlink_index = (self.id - 1) * self.shared_utils.node_config.max_parallel_uplinks + index_of_parallel_uplinks
-            if len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
+            uplink_switch_downlink_interfaces_length = len(uplink_switch_facts._default_downlink_interfaces)
+            if uplink_switch_downlink_interfaces_length > downlink_index:
                 uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
+            elif uplink_switch_downlink_interfaces_length == 0:
+                msg = (
+                    f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
+                    f"does not have any 'downlink_interfaces' set under 'default_interfaces'. At least one or the other must be defined."
+                )
+                raise AristaAvdError(msg)
             else:
                 msg = (
                     f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
-                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'"
+                    f"does not have enough 'downlink_interfaces' defined under 'default_interfaces'. "
+                    f"The uplink switch requires at least {downlink_index + 1} downlink_interfaces, but "
+                    f"only {uplink_switch_downlink_interfaces_length} are configured."
                 )
                 raise AristaAvdError(msg)
 

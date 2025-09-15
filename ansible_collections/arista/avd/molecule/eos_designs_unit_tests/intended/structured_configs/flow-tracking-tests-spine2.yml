@@ -143,8 +143,8 @@ flow_tracking:
         on_interval: 300000
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 3600000
     - name: FLOW-TRACKER-1
@@ -153,8 +153,8 @@ flow_tracking:
         on_interval: 300331
       exporters:
       - name: ayush_exporter
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 40000
     - name: FLOW-TRACKER-2
@@ -163,14 +163,13 @@ flow_tracking:
         on_interval: 300321
       exporters:
       - name: ayush_exporter
-        collector:
-          host: 127.0.2.1
+        collectors:
+        - host: 127.0.2.1
         local_interface: Loopback0
         template_interval: 40020
     shutdown: false
 hostname: flow-tracking-tests-spine2
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -189,6 +188,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.0.1
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   fabric_name: FLOW_TRACKING_TESTS
 prefix_lists:

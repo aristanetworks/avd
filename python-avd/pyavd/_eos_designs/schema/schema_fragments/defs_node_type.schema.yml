@@ -367,6 +367,46 @@ $defs:
               Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             # Schema ref not implemented since we do not know which of the schemas to look at.
             # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: uplink_port_channel_structured_config or uplink_ethernet_structured_config or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config
+          uplink_ethernet_structured_config:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: |-
+              Custom structured config applied to `uplink_interfaces`.
+          uplink_port_channel_structured_config:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: |-
+              Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+          uplink_switch_ethernet_structured_config:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: |-
+              Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+          uplink_switch_port_channel_structured_config:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
+            documentation_options:
+              table: node-type-uplink-configuration
+              hide_keys: true
+            relaxed_validation: true
+            description: |-
+              Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-channel uplinks.
           mlag_port_channel_structured_config:
             $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
             documentation_options:
@@ -1003,7 +1043,7 @@ $defs:
               virtual-router: <subnet> + 1
               l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
               l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-              l2leafs       : <subnet> + 3 + <l2leaf id>
+              l2leafs       : <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
               GW on l2leafs : <subnet> + 1
               Assign range larger than total l2leafs + 5
 
@@ -1012,6 +1052,16 @@ $defs:
               This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
             type: str
             format: ipv4_cidr
+          inband_mgmt_subnet_offset:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            type: int
+            convert_types:
+              - str
+            default: 0
+            description: |-
+              Offset value to adjust the calculated inband management IP address within the subnet.
+              The assigned IP will be computed by adding this offset to the device ID.
           inband_mgmt_ip:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -1257,6 +1307,9 @@ $defs:
                 default: false
                 description: |
                   Enable PTP unicast forwarding.
+              forward_v1:
+                type: bool
+                description: Forward dataplane PTP V1 packets.
               dscp:
                 type: dict
                 keys:
@@ -1409,8 +1462,6 @@ $defs:
               table: node-type-wan-configuration
             type: dict
             description: |-
-              PREVIEW: This key is currently not supported
-
               The key is supported only if `wan_mode` == `cv-pathfinder`.
               AutoVPN support is still to be determined.
 
@@ -1451,13 +1502,6 @@ $defs:
                   Not used for uplink interfaces.
                 type: str
                 format: ipv4_pool
-              max_ha_interfaces:
-                type: int
-                convert_types:
-                  - str
-                description: |-
-                  Number of parallel links towards HA switches.
-                  Can be used to reserve IP addresses for future parallel HA links.
               port_channel_id:
                 type: int
                 convert_types:
@@ -1505,7 +1549,7 @@ $defs:
               L3 Port-Channel interfaces to configure on the node.
           data_plane_cpu_allocation_max:
             documentation_options:
-              table: system-settings
+              table: node-type-wan-configuration
             type: int
             $ref: "eos_cli_config_gen#/keys/platform/keys/sfe/keys/data_plane_cpu_allocation_max"
             description: |-
@@ -1540,6 +1584,69 @@ $defs:
               new_key: inband_mgmt_vlan
               remove_in_version: 5.0.0
             type: int
+          underlay_multicast:
+            type: dict
+            documentation_options:
+              table: node-type-multicast
+            keys:
+              pim_sm:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: |-
+                      When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay on all:
+                        - P2P uplink interfaces if enabled on uplink peer
+                        - MLAG L3 peer interface if also enabled on MLAG peer
+                        - l3_edge and core interfaces
+                      Overrides the global `underlay_multicast_pim_sm`.
+                  uplinks:
+                    type: bool
+                    default: true
+                    description: |-
+                      Enable/Disable PIM sparse-mode on uplinks.
+                      Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+                  uplink_interfaces:
+                    description: |-
+                      Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                      Effective only when node settings `underlay_multicast.pim_sm.uplinks: true`.
+                    type: list
+                    items:
+                      type: str
+                  mlag:
+                    description: |-
+                      Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+                    type: bool
+                    default: true
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: |-
+                      When enabled, configures multicast routing and by default configures static multicast in the underlay on all:
+                        - P2P uplink interfaces if enabled on uplink peer
+                        - MLAG L3 peer interface if also enabled on MLAG peer
+                        - l3_edge and core interfaces
+                      Overrides the global `underlay_multicast_multicast`.
+                  uplinks:
+                    type: bool
+                    default: true
+                    description: |-
+                      Enable/Disable static multicast on uplinks.
+                      Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                  uplink_interfaces:
+                    description: |-
+                      Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                      Effective only when node settings `underlay_multicast.static.uplinks: true`.
+                    type: list
+                    items:
+                      type: str
+                  mlag:
+                    description: |-
+                      Configure static multicast in the underlay on MLAG L3 peer interfacee.
+                    type: bool
+                    default: true
           campus:
             documentation_options:
               table: node-type-common-configuration
@@ -1587,6 +1694,13 @@ $defs:
                 # TODO: Add this in a separate PR.
                 # Overrides the dynamically generated (from the pool `digital_twin.fabric.mgmt_ipv4_pool`) Digital Twin MGMT IP.
                 format: cidr
+              act_internet_access:
+                type: bool
+                description: |-
+                  Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                  This option applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node types.
+                  ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                  Overrides global `digital_twin.fabric.act_internet_access` flag.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

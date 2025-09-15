@@ -501,13 +501,33 @@ interface {{ vlan_interface.name }}
 {%             if vrid.timers.delay.reload is arista.avd.defined %}
    vrrp {{ vrid.id }} timers delay reload {{ vrid.timers.delay.reload }}
 {%             endif %}
+{%             if vrid.peer_authentication is arista.avd.defined %}
+{%                 set peer_auth_cli = "vrrp " ~ vrid.id ~ " peer authentication" %}
+{%                 if vrid.peer_authentication.mode == "ietf-md5" %}
+{%                     set peer_auth_cli = peer_auth_cli ~ " ietf-md5 key-string" %}
+{%                 else %}
+{%                     set peer_auth_cli = peer_auth_cli ~ " text" %}
+{%                 endif %}
+{%                 if vrid.peer_authentication.key_type is arista.avd.defined %}
+{%                     set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key_type %}
+{%                 endif %}
+{%                 set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key | arista.avd.hide_passwords(hide_passwords) %}
+   {{ peer_auth_cli }}
+{%             endif %}
 {%             if vrid.ipv4.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv4 {{ vrid.ipv4.address }}
 {%             endif %}
+{%             for secondary_ip in vrid.ipv4.secondary_addresses | arista.avd.natural_sort %}
+   vrrp {{ vrid.id }} ipv4 {{ secondary_ip }} secondary
+{%             endfor %}
 {%             if vrid.ipv4.version is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv4 version {{ vrid.ipv4.version }}
 {%             endif %}
-{%             if vrid.ipv6.address is arista.avd.defined %}
+{%             if vrid.ipv6.addresses is arista.avd.defined %}
+{%                 for ipv6_address in vrid.ipv6.addresses | arista.avd.natural_sort %}
+   vrrp {{ vrid.id }} ipv6 {{ ipv6_address }}
+{%                 endfor %}
+{%             elif vrid.ipv6.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv6 {{ vrid.ipv6.address }}
 {%             endif %}
 {%             for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}

@@ -48,7 +48,15 @@ class EthernetInterfacesMixin(Protocol):
                 speed=link.speed,
                 shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
             )
-
+            # Structured Config
+            if link.ethernet_structured_config:
+                self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
+                    link.ethernet_structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                )
+            elif structured_config := link.structured_config:
+                self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
+                    EosCliConfigGen.EthernetInterfacesItem._from_dict(structured_config), list_merge=self.custom_structured_configs.list_merge_strategy
+                )
             # L3 interface
             # Used for p2p uplinks as well as main interface for p2p-vrfs.
             if link.type == "underlay_p2p":
@@ -67,7 +75,7 @@ class EthernetInterfacesMixin(Protocol):
                         name=link_tracking_group.name,
                         direction=link_tracking_group.direction,
                     )
-                ethernet_interface.sflow.enable = link.sflow_enabled
+                ethernet_interface.sflow.enable = self.shared_utils.get_interface_sflow(ethernet_interface.name, link.sflow_enabled)
 
                 # PTP
                 if link.ptp.enable:
@@ -131,18 +139,14 @@ class EthernetInterfacesMixin(Protocol):
                     if (isis_authentication_key := self.shared_utils.underlay_isis_authentication_key) is not None:
                         ethernet_interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
-                if link.underlay_multicast:
+                if link.underlay_multicast_pim_sm:
                     ethernet_interface.pim.ipv4.sparse_mode = True
+                if link.underlay_multicast_static:
+                    ethernet_interface.multicast.ipv4.static = True
 
                 # DHCP server settings (primarily used for ZTP)
                 if link.ip_address and "unnumbered" not in link.ip_address.lower() and link.dhcp_server:
                     ethernet_interface.dhcp_server_ipv4 = True
-
-                # Structured Config
-                if structured_config := link.structured_config:
-                    self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
-                        EosCliConfigGen.EthernetInterfacesItem._from_dict(structured_config), list_merge=self.custom_structured_configs.list_merge_strategy
-                    )
 
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
@@ -209,7 +213,7 @@ class EthernetInterfacesMixin(Protocol):
                     )
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
 
-                    ethernet_subinterface.sflow.enable = link.sflow_enabled
+                    ethernet_subinterface.sflow.enable = self.shared_utils.get_interface_sflow(ethernet_subinterface.name, link.sflow_enabled)
 
                     if subinterface.ip_address:
                         ethernet_subinterface.ip_address = f"{subinterface.ip_address}/{subinterface.prefix_length}"
@@ -256,19 +260,25 @@ class EthernetInterfacesMixin(Protocol):
         """Set structured_configuration for one L3 interface."""
         # build common portion of the interface cfg
         interface = self._get_l3_common_interface_cfg(l3_interface)
+        main_interface_wan_carrier = None
+        if "." in l3_interface.name:
+            parent_interface_name, _ = l3_interface.name.split(".", maxsplit=1)
+            if (main_interface := self.shared_utils.l3_interfaces.get(parent_interface_name)) and main_interface.wan_carrier:
+                main_interface_wan_carrier = main_interface.wan_carrier
 
-        interface_description = l3_interface.description
-        if not interface_description:
-            interface_description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
-                InterfaceDescriptionData(
-                    shared_utils=self.shared_utils,
-                    interface=l3_interface.name,
-                    peer=l3_interface.peer,
-                    peer_interface=l3_interface.peer_interface,
-                    wan_carrier=l3_interface.wan_carrier,
-                    wan_circuit_id=l3_interface.wan_circuit_id,
-                ),
-            )
+        interface_description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+            InterfaceDescriptionData(
+                shared_utils=self.shared_utils,
+                interface=l3_interface.name,
+                description=l3_interface.description,
+                peer=l3_interface.peer,
+                peer_interface=l3_interface.peer_interface,
+                wan_carrier=l3_interface.wan_carrier,
+                wan_circuit_id=l3_interface.wan_circuit_id,
+                main_interface_wan_carrier=main_interface_wan_carrier,
+            ),
+        )
+
         interface._update(
             description=interface_description or None,
             peer_type="l3_interface",
@@ -289,8 +299,7 @@ class EthernetInterfacesMixin(Protocol):
             self.custom_structured_configs.nested.ethernet_interfaces.obtain(l3_interface.name)._deepmerge(
                 l3_interface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
-        if self.inputs.fabric_sflow.l3_interfaces is not None:
-            interface.sflow.enable = self.inputs.fabric_sflow.l3_interfaces
+        interface.sflow.enable = self.shared_utils.get_interface_sflow(interface.name, self.inputs.fabric_sflow.l3_interfaces)
 
         if (
             self.shared_utils.is_wan_router
@@ -316,19 +325,18 @@ class EthernetInterfacesMixin(Protocol):
         """
         channel_group_id = l3_port_channel.name.split("Port-Channel")[-1]
         for member_intf in l3_port_channel.member_interfaces:
-            interface_description = member_intf.description
             # derive values for peer from parent L3 port-channel
             # if not defined explicitly for member interface
             peer = member_intf.peer if member_intf.peer else l3_port_channel.peer
-            if not interface_description:
-                interface_description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
-                    InterfaceDescriptionData(
-                        shared_utils=self.shared_utils,
-                        interface=member_intf.name,
-                        peer=peer,
-                        peer_interface=member_intf.peer_interface,
-                    ),
-                )
+            interface_description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=member_intf.name,
+                    description=member_intf.description,
+                    peer=peer,
+                    peer_interface=member_intf.peer_interface,
+                ),
+            )
             self.structured_config.ethernet_interfaces.append_new(
                 name=member_intf.name,
                 description=interface_description or None,

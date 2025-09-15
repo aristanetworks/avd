@@ -23,6 +23,27 @@ class EosDesigns(EosDesignsRootModel):
     class AaaSettings(AvdModel):
         """Subclass of AvdModel."""
 
+        class EnablePassword(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"password": {"type": str}}
+            password: str | None
+            """SHA512 hashed password."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, password: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    EnablePassword.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        password: SHA512 hashed password.
+
+                    """
+
         class Tacacs(AvdModel):
             """Subclass of AvdModel."""
 
@@ -34,9 +55,18 @@ class EosDesigns(EosDesignsRootModel):
 
                 Groups._item_type = str
 
-                _fields: ClassVar[dict] = {"host": {"type": str}, "groups": {"type": Groups}, "vrf": {"type": str}, "key": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "host": {"type": str},
+                    "groups": {"type": Groups},
+                    "vrf": {"type": str},
+                    "key": {"type": str},
+                    "cleartext_key": {"type": str},
+                }
                 host: str
-                """Host IP address or name."""
+                """
+                Host IP address or name.
+                Combination of `host` and `vrf` should be unique.
+                """
                 groups: Groups
                 """Subclass of AvdList with `str` items."""
                 vrf: str | None
@@ -56,8 +86,23 @@ class EosDesigns(EosDesignsRootModel):
                 `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
                 """
-                key: str
-                """Encrypted type-7 key."""
+                key: str | None
+                """
+                Encrypted Type 7 key.
+                Takes precedence over `cleartext_key` if both are provided.
+                Either `key` or
+                `cleartext_key` must be set to render the configuration;
+                otherwise, an error will be raised.
+                """
+                cleartext_key: str | None
+                """
+                Plaintext password that will be encrypted to Type 7 by AVD.
+                To protect the password at rest it is
+                strongly recommended to make use of a vault or similar.
+                Either `key` or `cleartext_key` must be set
+                to render the configuration;
+                otherwise, an error will be raised.
+                """
 
                 if TYPE_CHECKING:
 
@@ -67,7 +112,8 @@ class EosDesigns(EosDesignsRootModel):
                         host: str | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
-                        key: str | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
+                        cleartext_key: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ServersItem.
@@ -76,7 +122,9 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            host: Host IP address or name.
+                            host:
+                               Host IP address or name.
+                               Combination of `host` and `vrf` should be unique.
                             groups: Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
@@ -93,7 +141,19 @@ class EosDesigns(EosDesignsRootModel):
                                the VRF and source-interface for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
-                            key: Encrypted type-7 key.
+                            key:
+                               Encrypted Type 7 key.
+                               Takes precedence over `cleartext_key` if both are provided.
+                               Either `key` or
+                               `cleartext_key` must be set to render the configuration;
+                               otherwise, an error will be raised.
+                            cleartext_key:
+                               Plaintext password that will be encrypted to Type 7 by AVD.
+                               To protect the password at rest it is
+                               strongly recommended to make use of a vault or similar.
+                               Either `key` or `cleartext_key` must be set
+                               to render the configuration;
+                               otherwise, an error will be raised.
 
                         """
 
@@ -204,9 +264,18 @@ class EosDesigns(EosDesignsRootModel):
 
                 Groups._item_type = str
 
-                _fields: ClassVar[dict] = {"host": {"type": str}, "groups": {"type": Groups}, "vrf": {"type": str}, "key": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "host": {"type": str},
+                    "groups": {"type": Groups},
+                    "vrf": {"type": str},
+                    "key": {"type": str},
+                    "cleartext_key": {"type": str},
+                }
                 host: str
-                """Host IP address or name."""
+                """
+                Host IP address or name.
+                Combination of `host` and `vrf` should be unique.
+                """
                 groups: Groups
                 """Subclass of AvdList with `str` items."""
                 vrf: str | None
@@ -226,8 +295,18 @@ class EosDesigns(EosDesignsRootModel):
                 `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
                 """
-                key: str
-                """Encrypted key."""
+                key: str | None
+                """
+                Encrypted type-7 key.
+                Takes precedence over `cleartext_key`.
+                """
+                cleartext_key: str | None
+                """
+                Cleartext password.
+                Encrypted to Type 7 by AVD.
+                To protect the password at rest it is strongly
+                recommended to make use of a vault or similar.
+                """
 
                 if TYPE_CHECKING:
 
@@ -237,7 +316,8 @@ class EosDesigns(EosDesignsRootModel):
                         host: str | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
-                        key: str | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
+                        cleartext_key: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ServersItem.
@@ -246,7 +326,9 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            host: Host IP address or name.
+                            host:
+                               Host IP address or name.
+                               Combination of `host` and `vrf` should be unique.
                             groups: Subclass of AvdList with `str` items.
                             vrf:
                                VRF name.
@@ -263,7 +345,14 @@ class EosDesigns(EosDesignsRootModel):
                                the VRF and source-interface for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
-                            key: Encrypted key.
+                            key:
+                               Encrypted type-7 key.
+                               Takes precedence over `cleartext_key`.
+                            cleartext_key:
+                               Cleartext password.
+                               Encrypted to Type 7 by AVD.
+                               To protect the password at rest it is strongly
+                               recommended to make use of a vault or similar.
 
                         """
 
@@ -361,13 +450,17 @@ class EosDesigns(EosDesignsRootModel):
                     """
 
         _fields: ClassVar[dict] = {
+            "enable_password": {"type": EnablePassword},
             "tacacs": {"type": Tacacs},
             "radius": {"type": Radius},
             "authentication": {"type": EosCliConfigGen.AaaAuthentication},
             "authorization": {"type": EosCliConfigGen.AaaAuthorization},
             "accounting": {"type": EosCliConfigGen.AaaAccounting},
             "root_login": {"type": RootLogin},
+            "local_users": {"type": EosCliConfigGen.LocalUsers},
         }
+        enable_password: EnablePassword
+        """Subclass of AvdModel."""
         tacacs: Tacacs
         """Subclass of AvdModel."""
         radius: Radius
@@ -377,18 +470,21 @@ class EosDesigns(EosDesignsRootModel):
         accounting: EosCliConfigGen.AaaAccounting
         root_login: RootLogin
         """Subclass of AvdModel."""
+        local_users: EosCliConfigGen.LocalUsers
 
         if TYPE_CHECKING:
 
             def __init__(
                 self,
                 *,
+                enable_password: EnablePassword | UndefinedType = Undefined,
                 tacacs: Tacacs | UndefinedType = Undefined,
                 radius: Radius | UndefinedType = Undefined,
                 authentication: EosCliConfigGen.AaaAuthentication | UndefinedType = Undefined,
                 authorization: EosCliConfigGen.AaaAuthorization | UndefinedType = Undefined,
                 accounting: EosCliConfigGen.AaaAccounting | UndefinedType = Undefined,
                 root_login: RootLogin | UndefinedType = Undefined,
+                local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
             ) -> None:
                 """
                 AaaSettings.
@@ -397,19 +493,164 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    enable_password: Subclass of AvdModel.
                     tacacs: Subclass of AvdModel.
                     radius: Subclass of AvdModel.
                     authentication: authentication
                     authorization: authorization
                     accounting: accounting
                     root_login: Subclass of AvdModel.
+                    local_users: local_users
+
+                """
+
+    class AddressLockingSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class DhcpServersIpv4(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        DhcpServersIpv4._item_type = str
+
+        class LeasesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"ip": {"type": str}, "mac": {"type": str}}
+            ip: str
+            """IP address."""
+            mac: str
+            """MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, ip: str | UndefinedType = Undefined, mac: str | UndefinedType = Undefined) -> None:
+                    """
+                    LeasesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ip: IP address.
+                        mac: MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh).
+
+                    """
+
+        class Leases(AvdList[LeasesItem]):
+            """Subclass of AvdList with `LeasesItem` items."""
+
+        Leases._item_type = LeasesItem
+
+        class LockedAddress(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "expiration_mac_disabled": {"type": bool},
+                "ipv4_enforcement_disabled": {"type": bool},
+                "ipv6_enforcement_disabled": {"type": bool},
+            }
+            expiration_mac_disabled: bool | None
+            """Configure deauthorizing locked addresses upon MAC aging out."""
+            ipv4_enforcement_disabled: bool | None
+            """Configure enforcement for locked IPv4 addresses."""
+            ipv6_enforcement_disabled: bool | None
+            """Configure enforcement for locked IPv6 addresses."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    expiration_mac_disabled: bool | None | UndefinedType = Undefined,
+                    ipv4_enforcement_disabled: bool | None | UndefinedType = Undefined,
+                    ipv6_enforcement_disabled: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    LockedAddress.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        expiration_mac_disabled: Configure deauthorizing locked addresses upon MAC aging out.
+                        ipv4_enforcement_disabled: Configure enforcement for locked IPv4 addresses.
+                        ipv6_enforcement_disabled: Configure enforcement for locked IPv6 addresses.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "local_interface": {"type": str, "default": "use_default_mgmt_method_interface"},
+            "local_users": {"type": EosCliConfigGen.LocalUsers},
+            "dhcp_servers_ipv4": {"type": DhcpServersIpv4},
+            "disabled": {"type": bool},
+            "leases": {"type": Leases},
+            "locked_address": {"type": LockedAddress},
+        }
+        local_interface: str
+        """
+        The value will be interpreted according to these rules:
+          - `use_mgmt_interface` will configure the
+        `mgmt_interface` as the local interface.
+          - `use_inband_mgmt_interface` will configure the
+        `inband_mgmt_interface` as the local interface.
+          - `use_default_mgmt_method_interface` will
+        configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
+        of `default_mgmt_method`.
+          - Any other string will be used directly as the local interface.
+
+        Default value: `"use_default_mgmt_method_interface"`
+        """
+        local_users: EosCliConfigGen.LocalUsers
+        dhcp_servers_ipv4: DhcpServersIpv4
+        """Subclass of AvdList with `str` items."""
+        disabled: bool | None
+        """Disable IP locking on configured ports."""
+        leases: Leases
+        """Subclass of AvdList with `LeasesItem` items."""
+        locked_address: LockedAddress
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                local_interface: str | UndefinedType = Undefined,
+                local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
+                dhcp_servers_ipv4: DhcpServersIpv4 | UndefinedType = Undefined,
+                disabled: bool | None | UndefinedType = Undefined,
+                leases: Leases | UndefinedType = Undefined,
+                locked_address: LockedAddress | UndefinedType = Undefined,
+            ) -> None:
+                """
+                AddressLockingSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    local_interface:
+                       The value will be interpreted according to these rules:
+                         - `use_mgmt_interface` will configure the
+                       `mgmt_interface` as the local interface.
+                         - `use_inband_mgmt_interface` will configure the
+                       `inband_mgmt_interface` as the local interface.
+                         - `use_default_mgmt_method_interface` will
+                       configure `mgmt_interface` or `inband_mgmt_interface` as the local interface depending on the value
+                       of `default_mgmt_method`.
+                         - Any other string will be used directly as the local interface.
+                    local_users: local_users
+                    dhcp_servers_ipv4: Subclass of AvdList with `str` items.
+                    disabled: Disable IP locking on configured ports.
+                    leases: Subclass of AvdList with `LeasesItem` items.
+                    locked_address: Subclass of AvdModel.
 
                 """
 
     class Avd6Behaviors(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}}
+        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}, "inband_mgmt_attached_hosts": {"type": bool, "default": False}}
         snmp_settings_vrfs: bool
         """
         Opt-in to the new behavior for snmp_settings:
@@ -424,10 +665,18 @@ class EosDesigns(EosDesignsRootModel):
 
         Default value: `False`
         """
+        inband_mgmt_attached_hosts: bool
+        """
+        Opt-in to the new behavior for inband management route export:
+        - `ip attached-host route export`
+        will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined) -> None:
+            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined, inband_mgmt_attached_hosts: bool | UndefinedType = Undefined) -> None:
                 """
                 Avd6Behaviors.
 
@@ -445,6 +694,10 @@ class EosDesigns(EosDesignsRootModel):
                          If
                        `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
                        "default".
+                    inband_mgmt_attached_hosts:
+                       Opt-in to the new behavior for inband management route export:
+                       - `ip attached-host route export`
+                       will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
 
                 """
 
@@ -1881,7 +2134,9 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool, "default": False},
+                "underlay_multicast": {"type": bool},
+                "multicast_pim_sm": {"type": bool},
+                "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
@@ -1890,6 +2145,8 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
             _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
             _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
@@ -1998,12 +2255,38 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool
+            underlay_multicast: bool | None
             """
             Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
             to be `true`.
 
-            Default value: `False`
+            Note: The default value for this key is `false` when using either the new key
+            `underlay_multicast.pim_sm.enabled: true
+            or, if unset, global `underlay_multicast_pim_sm: true`
+            """
+            multicast_pim_sm: bool | None
+            """
+            Configure PIM sparse-mode on the P2P links.
+            Requires node setting
+            `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
+            """
+            multicast_static: bool | None
+            """
+            Configure static multicast on the P2P links.
+            Requires node setting
+            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
             """
             flow_tracking: FlowTracking
             """
@@ -2050,6 +2333,10 @@ class EosDesigns(EosDesignsRootModel):
             Note! The content of this dictionary is _not_ validated by
             the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for ethernet interfaces."""
+            port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for port-channel links."""
 
             if TYPE_CHECKING:
 
@@ -2081,7 +2368,9 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | UndefinedType = Undefined,
+                    underlay_multicast: bool | None | UndefinedType = Undefined,
+                    multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                    multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
@@ -2090,6 +2379,8 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksProfilesItem.
@@ -2166,6 +2457,30 @@ class EosDesigns(EosDesignsRootModel):
                         underlay_multicast:
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
+
+                           Note: The default value for this key is `false` when using either the new key
+                           `underlay_multicast.pim_sm.enabled: true
+                           or, if unset, global `underlay_multicast_pim_sm: true`
+                        multicast_pim_sm:
+                           Configure PIM sparse-mode on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
+                        multicast_static:
+                           Configure static multicast on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -2198,6 +2513,8 @@ class EosDesigns(EosDesignsRootModel):
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
                            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config for ethernet interfaces.
+                        port_channel_structured_config: Custom structured config for port-channel links.
 
                     """
 
@@ -2516,7 +2833,9 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool, "default": False},
+                "underlay_multicast": {"type": bool},
+                "multicast_pim_sm": {"type": bool},
+                "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
@@ -2525,6 +2844,8 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
             _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
             _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
@@ -2633,12 +2954,38 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool
+            underlay_multicast: bool | None
             """
             Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
             to be `true`.
 
-            Default value: `False`
+            Note: The default value for this key is `false` when using either the new key
+            `underlay_multicast.pim_sm.enabled: true
+            or, if unset, global `underlay_multicast_pim_sm: true`
+            """
+            multicast_pim_sm: bool | None
+            """
+            Configure PIM sparse-mode on the P2P links.
+            Requires node setting
+            `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
+            """
+            multicast_static: bool | None
+            """
+            Configure static multicast on the P2P links.
+            Requires node setting
+            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
             """
             flow_tracking: FlowTracking
             """
@@ -2685,6 +3032,10 @@ class EosDesigns(EosDesignsRootModel):
             Note! The content of this dictionary is _not_ validated by
             the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for ethernet interfaces."""
+            port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for port-channel links."""
 
             if TYPE_CHECKING:
 
@@ -2716,7 +3067,9 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | UndefinedType = Undefined,
+                    underlay_multicast: bool | None | UndefinedType = Undefined,
+                    multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                    multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
@@ -2725,6 +3078,8 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksItem.
@@ -2801,6 +3156,30 @@ class EosDesigns(EosDesignsRootModel):
                         underlay_multicast:
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
+
+                           Note: The default value for this key is `false` when using either the new key
+                           `underlay_multicast.pim_sm.enabled: true
+                           or, if unset, global `underlay_multicast_pim_sm: true`
+                        multicast_pim_sm:
+                           Configure PIM sparse-mode on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
+                        multicast_static:
+                           Configure static multicast on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -2833,6 +3212,8 @@ class EosDesigns(EosDesignsRootModel):
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
                            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config for ethernet interfaces.
+                        port_channel_structured_config: Custom structured config for port-channel links.
 
                     """
 
@@ -3978,8 +4359,10 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {
                 "act_os_version": {"type": str},
-                "act_username": {"type": str, "default": "admin"},
-                "act_password": {"type": str, "default": "admin"},
+                "act_username": {"type": str, "default": "cvpadmin"},
+                "act_password": {"type": str, "default": "cvp123!"},
+                "act_internet_access": {"type": bool, "default": False},
+                "act_ensure_eapi_access": {"type": bool, "default": False},
             }
             act_os_version: str | None
             """OS version for ACT Digital Twin fabric devices."""
@@ -3987,13 +4370,37 @@ class EosDesigns(EosDesignsRootModel):
             """
             Username for ACT Digital Twin fabric devices.
 
-            Default value: `"admin"`
+            Default value: `"cvpadmin"`
             """
             act_password: str
             """
             Cleartext password for ACT Digital Twin fabric devices.
 
-            Default value: `"admin"`
+            Default value: `"cvp123!"`
+            """
+            act_internet_access: bool
+            """
+            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+            This option
+            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+            types.
+            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+
+            Default value: `False`
+            """
+            act_ensure_eapi_access: bool
+            """
+            Ensures eAPI remains accessible for automation and testing via ACT.
+            Clients connecting to device
+            eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+            management VRF, this primary eAPI connectivity can be unintentionally broken.
+            Set this to `true` to
+            enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
+            default VRF and preserving this connectivity.
+            This setting is only applicable to ACT `veos` and
+            `cloudeos` node types.
+
+            Default value: `False`
             """
 
             if TYPE_CHECKING:
@@ -4004,6 +4411,8 @@ class EosDesigns(EosDesignsRootModel):
                     act_os_version: str | None | UndefinedType = Undefined,
                     act_username: str | UndefinedType = Undefined,
                     act_password: str | UndefinedType = Undefined,
+                    act_internet_access: bool | UndefinedType = Undefined,
+                    act_ensure_eapi_access: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -4015,10 +4424,30 @@ class EosDesigns(EosDesignsRootModel):
                         act_os_version: OS version for ACT Digital Twin fabric devices.
                         act_username: Username for ACT Digital Twin fabric devices.
                         act_password: Cleartext password for ACT Digital Twin fabric devices.
+                        act_internet_access:
+                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                           This option
+                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                           types.
+                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        act_ensure_eapi_access:
+                           Ensures eAPI remains accessible for automation and testing via ACT.
+                           Clients connecting to device
+                           eAPI though ACT rely on access in the default VRF. If eAPI is reconfigured for a dedicated
+                           management VRF, this primary eAPI connectivity can be unintentionally broken.
+                           Set this to `true` to
+                           enforce the required EOS configuration, guaranteeing eAPI over HTTPS is always enabled in the
+                           default VRF and preserving this connectivity.
+                           This setting is only applicable to ACT `veos` and
+                           `cloudeos` node types.
 
                     """
 
-        _fields: ClassVar[dict] = {"environment": {"type": str, "default": "act"}, "fabric": {"type": Fabric}}
+        _fields: ClassVar[dict] = {
+            "environment": {"type": str, "default": "act"},
+            "fabric": {"type": Fabric},
+            "use_default_interfaces_of_digital_twin_platform": {"type": bool, "default": False},
+        }
         environment: Literal["act"]
         """
         Targeted Digital Twin environment.
@@ -4031,10 +4460,23 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        use_default_interfaces_of_digital_twin_platform: bool
+        """
+        In Digital Twin mode, AVD can either use the default interfaces of the original or the digital twin
+        platform (as set in `platform_settings.[].digital_twin.platform`).
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, environment: Literal["act"] | UndefinedType = Undefined, fabric: Fabric | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                environment: Literal["act"] | UndefinedType = Undefined,
+                fabric: Fabric | UndefinedType = Undefined,
+                use_default_interfaces_of_digital_twin_platform: bool | UndefinedType = Undefined,
+            ) -> None:
                 """
                 DigitalTwin.
 
@@ -4047,6 +4489,9 @@ class EosDesigns(EosDesignsRootModel):
                        Settings for Digital Twin fabric devices.
 
                        Subclass of AvdModel.
+                    use_default_interfaces_of_digital_twin_platform:
+                       In Digital Twin mode, AVD can either use the default interfaces of the original or the digital twin
+                       platform (as set in `platform_settings.[].digital_twin.platform`).
 
                 """
 
@@ -5562,6 +6007,44 @@ class EosDesigns(EosDesignsRootModel):
 
                             """
 
+                class CollectorsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"host": {"type": str}, "port": {"type": int}}
+                    host: str
+                    """
+                    Flow collector name.
+                    The collector name can be an IPv4 address, IPv6 address and fully qualified
+                    domain name.
+                    """
+                    port: int | None
+                    """Collector Port Number."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, host: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            CollectorsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                host:
+                                   Flow collector name.
+                                   The collector name can be an IPv4 address, IPv6 address and fully qualified
+                                   domain name.
+                                port: Collector Port Number.
+
+                            """
+
+                class Collectors(AvdIndexedList[str, CollectorsItem]):
+                    """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "host"
+
+                Collectors._item_type = CollectorsItem
+
                 class Format(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -5585,6 +6068,7 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
                     "collector": {"type": Collector},
+                    "collectors": {"type": Collectors},
                     "format": {"type": Format},
                     "local_interface": {"type": str},
                     "template_interval": {"type": int},
@@ -5593,6 +6077,8 @@ class EosDesigns(EosDesignsRootModel):
                 """Exporter Name"""
                 collector: Collector
                 """Subclass of AvdModel."""
+                collectors: Collectors
+                """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
                 format: Format
                 """Subclass of AvdModel."""
                 local_interface: str | None
@@ -5607,6 +6093,7 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         name: str | UndefinedType = Undefined,
                         collector: Collector | UndefinedType = Undefined,
+                        collectors: Collectors | UndefinedType = Undefined,
                         format: Format | UndefinedType = Undefined,
                         local_interface: str | None | UndefinedType = Undefined,
                         template_interval: int | None | UndefinedType = Undefined,
@@ -5620,6 +6107,7 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             name: Exporter Name
                             collector: Subclass of AvdModel.
+                            collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`).
                             format: Subclass of AvdModel.
                             local_interface: Local Source Interface
                             template_interval: Template interval in milliseconds
@@ -5697,7 +6185,7 @@ class EosDesigns(EosDesignsRootModel):
                             "name": "FLOW-TRACKER",
                             "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000},
                             "exporters": [
-                                {"name": "CV-TELEMETRY", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 3600000}
+                                {"name": "CV-TELEMETRY", "collectors": [{"host": "127.0.0.1"}], "local_interface": "Loopback0", "template_interval": 3600000}
                             ],
                         }
                     ],
@@ -5721,7 +6209,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
 
-        Default value: `lambda cls: coerce_type([{"name": "FLOW-TRACKER", "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000}, "exporters": [{"name": "CV-TELEMETRY", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 3600000}]}], target_type=cls)`
+        Default value: `lambda cls: coerce_type([{"name": "FLOW-TRACKER", "record_export": {"on_inactive_timeout": 70000, "on_interval": 300000}, "exporters": [{"name": "CV-TELEMETRY", "collectors": [{"host": "127.0.0.1"}], "local_interface": "Loopback0", "template_interval": 3600000}]}], target_type=cls)`
         """
 
         if TYPE_CHECKING:
@@ -6418,6 +6906,404 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class L2vlanProfilesItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        class TrunkGroups(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        TrunkGroups._item_type = str
+
+        class EvpnL2Multicast(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+            enabled: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    EvpnL2Multicast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+
+                    """
+
+        class VxlanFloodMulticast(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
+            enabled: bool | None
+            """
+            Explicitly enable or disable vxlan_flood_multicast to override setting of
+            `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+            """
+            underlay_multicast_group: str | None
+            """Specific multicast group to use for this VLAN."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    VxlanFloodMulticast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled:
+                           Explicitly enable or disable vxlan_flood_multicast to override setting of
+                           `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                        underlay_multicast_group: Specific multicast group to use for this VLAN.
+
+                    """
+
+        class IgmpSnoopingQuerier(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "source_address": {"type": str}, "version": {"type": int}, "fast_leave": {"type": bool}}
+            enabled: bool | None
+            """Will be enabled automatically if evpn_l2_multicast is enabled."""
+            source_address: str | None
+            """
+            IPv4_address
+            If not set, IP address of "Loopback0" will be used.
+            """
+            version: Literal[1, 2, 3] | None
+            """IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)."""
+            fast_leave: bool | None
+            """Enable IGMP snooping fast-leave feature."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    source_address: str | None | UndefinedType = Undefined,
+                    version: Literal[1, 2, 3] | None | UndefinedType = Undefined,
+                    fast_leave: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    IgmpSnoopingQuerier.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Will be enabled automatically if evpn_l2_multicast is enabled.
+                        source_address:
+                           IPv4_address
+                           If not set, IP address of "Loopback0" will be used.
+                        version: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                        fast_leave: Enable IGMP snooping fast-leave feature.
+
+                    """
+
+        class Bgp(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"structured_config": {"type": EosCliConfigGen.RouterBgp.VlansItem}, "raw_eos_cli": {"type": str}}
+            structured_config: EosCliConfigGen.RouterBgp.VlansItem
+            """
+            Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+            This
+            configuration will not be applied to vlan aware bundles.
+            """
+            raw_eos_cli: str | None
+            """
+            EOS cli commands rendered on router_bgp.vlans.
+            This configuration will not be applied to vlan aware
+            bundles.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    structured_config: EosCliConfigGen.RouterBgp.VlansItem | UndefinedType = Undefined,
+                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Bgp.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        structured_config:
+                           Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+                           This
+                           configuration will not be applied to vlan aware bundles.
+                        raw_eos_cli:
+                           EOS cli commands rendered on router_bgp.vlans.
+                           This configuration will not be applied to vlan aware
+                           bundles.
+
+                    """
+
+        class PrivateVlan(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"type": {"type": str}, "primary_vlan": {"type": int}}
+            type: Literal["community", "isolated"]
+            primary_vlan: int
+            """Primary VLAN ID."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, type: Literal["community", "isolated"] | UndefinedType = Undefined, primary_vlan: int | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    PrivateVlan.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        type: type
+                        primary_vlan: Primary VLAN ID.
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "profile": {"type": str},
+            "parent_profile": {"type": str},
+            "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking.AddressFamily},
+            "vni_override": {"type": int},
+            "rt_override": {"type": str},
+            "rd_override": {"type": str},
+            "vxlan": {"type": bool, "default": True},
+            "spanning_tree_priority": {"type": int},
+            "evpn_vlan_bundle": {"type": str},
+            "trunk_groups": {"type": TrunkGroups},
+            "evpn_l2_multi_domain": {"type": bool},
+            "evpn_l2_multicast": {"type": EvpnL2Multicast},
+            "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
+            "igmp_snooping_enabled": {"type": bool},
+            "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
+            "bgp": {"type": Bgp},
+            "private_vlan": {"type": PrivateVlan},
+        }
+        profile: str
+        """Profile name."""
+        parent_profile: str | None
+        """
+        Name of parent L2VLAN profile to apply.
+        l2vlan_profiles can refer to another l2vlan_profile to
+        inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+        """
+        address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
+        vni_override: int | None
+        """
+        By default the VNI will be derived from mac_vrf_vni_base.
+        The vni_override, allows to override this
+        value and statically define it.
+        """
+        rt_override: str | None
+        """
+        By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
+        The rt_override allows us
+        to override this value and statically define it.
+        rt_override will default to vni_override if set.
+        rt_override supports two formats:
+          - A single number which will be used in the RT fields instead of
+        mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
+          - A full RT string with colon
+        separator which will override the full RT.
+        """
+        rd_override: str | None
+        """
+        By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
+        The rt_override allows us
+        to override this value and statically define it.
+        rd_override will default to rt_override or
+        vni_override if set.
+        rd_override supports two formats:
+          - A single number which will be used in the
+        RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+          -
+        A full RD string with colon separator which will override the full RD.
+        """
+        vxlan: bool
+        """
+        Extend this L2VLAN over VXLAN.
+
+        Default value: `True`
+        """
+        spanning_tree_priority: int | None
+        """
+        Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst`
+        under node type settings.
+        The default priority for rapid-PVST is set under the node type settings
+        with `spanning_tree_priority` (default=32768).
+        """
+        evpn_vlan_bundle: str | None
+        """
+        Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
+        This setting overrides
+        "evpn_vlan_bundle" set at tenant level.
+        The common option "evpn_vlan_aware_bundles" is disregarded
+        for this option.
+        """
+        trunk_groups: TrunkGroups
+        """Subclass of AvdList with `str` items."""
+        evpn_l2_multi_domain: bool | None
+        """
+        Explicitly extend this VLAN to remote EVPN domains.
+        Overrides
+        `<network_services_key>[].evpn_l2_multi_domain`.
+        """
+        evpn_l2_multicast: EvpnL2Multicast
+        """
+        Explicitly enable or disable evpn_l2_multicast to override setting of
+        `<network_services_key>.[].evpn_l2_multicast.enabled`.
+        When evpn_l2_multicast.enabled is set to true
+        for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding
+        those individual settings.
+        Requires `evpn_multicast` to also be set to `true`.
+
+
+        Subclass of
+        AvdModel.
+        """
+        vxlan_flood_multicast: VxlanFloodMulticast
+        """Subclass of AvdModel."""
+        igmp_snooping_enabled: bool | None
+        """Enable or disable IGMP snooping (Enabled by default on EOS)."""
+        igmp_snooping_querier: IgmpSnoopingQuerier
+        """
+        Enable igmp snooping querier, by default using IP address of Loopback 0.
+        When enabled, igmp snooping
+        querier will only be configured on l3 devices, i.e., uplink_type: p2p.
+
+
+        Subclass of AvdModel.
+        """
+        bgp: Bgp
+        """Subclass of AvdModel."""
+        private_vlan: PrivateVlan
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                profile: str | UndefinedType = Undefined,
+                parent_profile: str | None | UndefinedType = Undefined,
+                address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily | UndefinedType = Undefined,
+                vni_override: int | None | UndefinedType = Undefined,
+                rt_override: str | None | UndefinedType = Undefined,
+                rd_override: str | None | UndefinedType = Undefined,
+                vxlan: bool | UndefinedType = Undefined,
+                spanning_tree_priority: int | None | UndefinedType = Undefined,
+                evpn_vlan_bundle: str | None | UndefinedType = Undefined,
+                trunk_groups: TrunkGroups | UndefinedType = Undefined,
+                evpn_l2_multi_domain: bool | None | UndefinedType = Undefined,
+                evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
+                igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
+                igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
+                bgp: Bgp | UndefinedType = Undefined,
+                private_vlan: PrivateVlan | UndefinedType = Undefined,
+            ) -> None:
+                """
+                L2vlanProfilesItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    profile: Profile name.
+                    parent_profile:
+                       Name of parent L2VLAN profile to apply.
+                       l2vlan_profiles can refer to another l2vlan_profile to
+                       inherit settings in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+                    address_locking: address_locking
+                    vni_override:
+                       By default the VNI will be derived from mac_vrf_vni_base.
+                       The vni_override, allows to override this
+                       value and statically define it.
+                    rt_override:
+                       By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
+                       The rt_override allows us
+                       to override this value and statically define it.
+                       rt_override will default to vni_override if set.
+                       rt_override supports two formats:
+                         - A single number which will be used in the RT fields instead of
+                       mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
+                         - A full RT string with colon
+                       separator which will override the full RT.
+                    rd_override:
+                       By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
+                       The rt_override allows us
+                       to override this value and statically define it.
+                       rd_override will default to rt_override or
+                       vni_override if set.
+                       rd_override supports two formats:
+                         - A single number which will be used in the
+                       RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+                         -
+                       A full RD string with colon separator which will override the full RD.
+                    vxlan: Extend this L2VLAN over VXLAN.
+                    spanning_tree_priority:
+                       Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst`
+                       under node type settings.
+                       The default priority for rapid-PVST is set under the node type settings
+                       with `spanning_tree_priority` (default=32768).
+                    evpn_vlan_bundle:
+                       Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
+                       This setting overrides
+                       "evpn_vlan_bundle" set at tenant level.
+                       The common option "evpn_vlan_aware_bundles" is disregarded
+                       for this option.
+                    trunk_groups: Subclass of AvdList with `str` items.
+                    evpn_l2_multi_domain:
+                       Explicitly extend this VLAN to remote EVPN domains.
+                       Overrides
+                       `<network_services_key>[].evpn_l2_multi_domain`.
+                    evpn_l2_multicast:
+                       Explicitly enable or disable evpn_l2_multicast to override setting of
+                       `<network_services_key>.[].evpn_l2_multicast.enabled`.
+                       When evpn_l2_multicast.enabled is set to true
+                       for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding
+                       those individual settings.
+                       Requires `evpn_multicast` to also be set to `true`.
+
+
+                       Subclass of
+                       AvdModel.
+                    vxlan_flood_multicast: Subclass of AvdModel.
+                    igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
+                    igmp_snooping_querier:
+                       Enable igmp snooping querier, by default using IP address of Loopback 0.
+                       When enabled, igmp snooping
+                       querier will only be configured on l3 devices, i.e., uplink_type: p2p.
+
+
+                       Subclass of AvdModel.
+                    bgp: Subclass of AvdModel.
+                    private_vlan: Subclass of AvdModel.
+
+                """
+
+    class L2vlanProfiles(AvdIndexedList[str, L2vlanProfilesItem]):
+        """Subclass of AvdIndexedList with `L2vlanProfilesItem` items. Primary key is `profile` (`str`)."""
+
+        _primary_key: ClassVar[str] = "profile"
+
+    L2vlanProfiles._item_type = L2vlanProfilesItem
+
     class L3Edge(AvdModel):
         """Subclass of AvdModel."""
 
@@ -6773,7 +7659,9 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool, "default": False},
+                "underlay_multicast": {"type": bool},
+                "multicast_pim_sm": {"type": bool},
+                "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
@@ -6782,6 +7670,8 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
             _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
             _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
@@ -6890,12 +7780,38 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool
+            underlay_multicast: bool | None
             """
             Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
             to be `true`.
 
-            Default value: `False`
+            Note: The default value for this key is `false` when using either the new key
+            `underlay_multicast.pim_sm.enabled: true
+            or, if unset, global `underlay_multicast_pim_sm: true`
+            """
+            multicast_pim_sm: bool | None
+            """
+            Configure PIM sparse-mode on the P2P links.
+            Requires node setting
+            `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
+            """
+            multicast_static: bool | None
+            """
+            Configure static multicast on the P2P links.
+            Requires node setting
+            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
             """
             flow_tracking: FlowTracking
             """
@@ -6942,6 +7858,10 @@ class EosDesigns(EosDesignsRootModel):
             Note! The content of this dictionary is _not_ validated by
             the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for ethernet interfaces."""
+            port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for port-channel links."""
 
             if TYPE_CHECKING:
 
@@ -6973,7 +7893,9 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | UndefinedType = Undefined,
+                    underlay_multicast: bool | None | UndefinedType = Undefined,
+                    multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                    multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
@@ -6982,6 +7904,8 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksProfilesItem.
@@ -7058,6 +7982,30 @@ class EosDesigns(EosDesignsRootModel):
                         underlay_multicast:
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
+
+                           Note: The default value for this key is `false` when using either the new key
+                           `underlay_multicast.pim_sm.enabled: true
+                           or, if unset, global `underlay_multicast_pim_sm: true`
+                        multicast_pim_sm:
+                           Configure PIM sparse-mode on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
+                        multicast_static:
+                           Configure static multicast on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -7090,6 +8038,8 @@ class EosDesigns(EosDesignsRootModel):
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
                            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config for ethernet interfaces.
+                        port_channel_structured_config: Custom structured config for port-channel links.
 
                     """
 
@@ -7408,7 +8358,9 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool, "default": False},
+                "underlay_multicast": {"type": bool},
+                "multicast_pim_sm": {"type": bool},
+                "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
@@ -7417,6 +8369,8 @@ class EosDesigns(EosDesignsRootModel):
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
+                "ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                "port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
             }
             _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
             _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
@@ -7525,12 +8479,38 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool
+            underlay_multicast: bool | None
             """
             Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
             to be `true`.
 
-            Default value: `False`
+            Note: The default value for this key is `false` when using either the new key
+            `underlay_multicast.pim_sm.enabled: true
+            or, if unset, global `underlay_multicast_pim_sm: true`
+            """
+            multicast_pim_sm: bool | None
+            """
+            Configure PIM sparse-mode on the P2P links.
+            Requires node setting
+            `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
+            """
+            multicast_static: bool | None
+            """
+            Configure static multicast on the P2P links.
+            Requires node setting
+            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
             """
             flow_tracking: FlowTracking
             """
@@ -7577,6 +8557,10 @@ class EosDesigns(EosDesignsRootModel):
             Note! The content of this dictionary is _not_ validated by
             the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
             """
+            ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+            """Custom structured config for ethernet interfaces."""
+            port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+            """Custom structured config for port-channel links."""
 
             if TYPE_CHECKING:
 
@@ -7608,7 +8592,9 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | UndefinedType = Undefined,
+                    underlay_multicast: bool | None | UndefinedType = Undefined,
+                    multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                    multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
@@ -7617,6 +8603,8 @@ class EosDesigns(EosDesignsRootModel):
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
+                    ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                    port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                 ) -> None:
                     """
                     P2pLinksItem.
@@ -7693,6 +8681,30 @@ class EosDesigns(EosDesignsRootModel):
                         underlay_multicast:
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
+
+                           Note: The default value for this key is `false` when using either the new key
+                           `underlay_multicast.pim_sm.enabled: true
+                           or, if unset, global `underlay_multicast_pim_sm: true`
+                        multicast_pim_sm:
+                           Configure PIM sparse-mode on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
+                        multicast_static:
+                           Configure static multicast on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -7725,6 +8737,8 @@ class EosDesigns(EosDesignsRootModel):
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
                            the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        ethernet_structured_config: Custom structured config for ethernet interfaces.
+                        port_channel_structured_config: Custom structured config for port-channel links.
 
                     """
 
@@ -8612,11 +9626,85 @@ class EosDesigns(EosDesignsRootModel):
     class ManagementEapi(AvdModel):
         """Subclass of AvdModel."""
 
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool}, "ipv4_acl": {"type": str}, "ipv6_acl": {"type": str}}
+            name: str
+            """
+            VRF name.
+            The value will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure the eAPI under the VRF set with `mgmt_interface_vrf`.
+              An error will be raised if
+            `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf` will
+            configure the eAPI under the VRF set with `inband_mgmt_vrf`.
+              An error will be raised if inband
+            management is not configured for the device.
+            - `use_default_mgmt_method_vrf` will configure the eAPI
+            under VRF for one of the two options above depending on the value of `default_mgmt_method`.
+            - Any
+            other string will be used directly as the VRF name.
+            """
+            enabled: bool
+            """Enable/disable Management eAPI for this VRF."""
+            ipv4_acl: str | None
+            """IPv4 access-list name."""
+            ipv6_acl: str | None
+            """IPv6 access-list name."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    enabled: bool | UndefinedType = Undefined,
+                    ipv4_acl: str | None | UndefinedType = Undefined,
+                    ipv6_acl: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name:
+                           VRF name.
+                           The value will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure the eAPI under the VRF set with `mgmt_interface_vrf`.
+                             An error will be raised if
+                           `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf` will
+                           configure the eAPI under the VRF set with `inband_mgmt_vrf`.
+                             An error will be raised if inband
+                           management is not configured for the device.
+                           - `use_default_mgmt_method_vrf` will configure the eAPI
+                           under VRF for one of the two options above depending on the value of `default_mgmt_method`.
+                           - Any
+                           other string will be used directly as the VRF name.
+                        enabled: Enable/disable Management eAPI for this VRF.
+                        ipv4_acl: IPv4 access-list name.
+                        ipv6_acl: IPv6 access-list name.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
         _fields: ClassVar[dict] = {
             "enabled": {"type": bool, "default": True},
             "enable_http": {"type": bool},
             "enable_https": {"type": bool, "default": True},
             "default_services": {"type": bool},
+            "vrfs": {"type": Vrfs, "default": lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)},
         }
         enabled: bool
         """
@@ -8628,6 +9716,20 @@ class EosDesigns(EosDesignsRootModel):
         enable_https: bool
         """Default value: `True`"""
         default_services: bool | None
+        vrfs: Vrfs
+        """
+        Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not**
+        configured and the default value of `use_mgmt_interface_vrf` is used.
+        To enforce the presence of
+        `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using
+        `name: use_mgmt_interface_vrf`.
+        This behavior will be removed in AVD 6.0.
+
+        Subclass of
+        AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+
+        Default value: `lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)`
+        """
 
         if TYPE_CHECKING:
 
@@ -8638,6 +9740,7 @@ class EosDesigns(EosDesignsRootModel):
                 enable_http: bool | None | UndefinedType = Undefined,
                 enable_https: bool | UndefinedType = Undefined,
                 default_services: bool | None | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
             ) -> None:
                 """
                 ManagementEapi.
@@ -8650,6 +9753,16 @@ class EosDesigns(EosDesignsRootModel):
                     enable_http: enable_http
                     enable_https: enable_https
                     default_services: default_services
+                    vrfs:
+                       Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not**
+                       configured and the default value of `use_mgmt_interface_vrf` is used.
+                       To enforce the presence of
+                       `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using
+                       `name: use_mgmt_interface_vrf`.
+                       This behavior will be removed in AVD 6.0.
+
+                       Subclass of
+                       AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
 
@@ -9346,13 +10459,26 @@ class EosDesigns(EosDesignsRootModel):
                 class Individual(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"profile": {"type": str}}
+                    _fields: ClassVar[dict] = {"profile": {"type": str}, "vlans": {"type": str}, "native_vlan": {"type": int}, "mode": {"type": str}}
                     profile: str | None
                     """Port-profile name to inherit configuration."""
+                    vlans: str | None
+                    """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                    native_vlan: int | None
+                    """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                    """Interface mode on the port-channel member interfaces when in fallback individual."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            profile: str | None | UndefinedType = Undefined,
+                            vlans: str | None | UndefinedType = Undefined,
+                            native_vlan: int | None | UndefinedType = Undefined,
+                            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
                             Individual.
 
@@ -9361,6 +10487,9 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 profile: Port-profile name to inherit configuration.
+                                vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                mode: Interface mode on the port-channel member interfaces when in fallback individual.
 
                             """
 
@@ -9368,8 +10497,8 @@ class EosDesigns(EosDesignsRootModel):
                 mode: Literal["static", "individual"] | None
                 """
                 Either static or individual mode is supported.
-                If the mode is set to "individual" the
-                "individual.profile" setting must be defined.
+                If the mode is set to "individual" either 'profile'
+                or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                 """
                 individual: Individual
                 """
@@ -9403,8 +10532,8 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             mode:
                                Either static or individual mode is supported.
-                               If the mode is set to "individual" the
-                               "individual.profile" setting must be defined.
+                               If the mode is set to "individual" either 'profile'
+                               or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                             individual:
                                Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
                                "individual".
@@ -9957,7 +11086,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         monitor_sessions: MonitorSessions
         """
-        Used to define switchports as source or destination for monitoring sessions.
+        Used to define interfaces as source or destination for monitoring sessions.
 
         Subclass of AvdList
         with `MonitorSessionsItem` items.
@@ -10178,7 +11307,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     monitor_sessions:
-                       Used to define switchports as source or destination for monitoring sessions.
+                       Used to define interfaces as source or destination for monitoring sessions.
 
                        Subclass of AvdList
                        with `MonitorSessionsItem` items.
@@ -12054,6 +13183,10 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_counter_features": {"type": HardwareCounterFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
+                "sflow": {"type": bool, "default": True},
+                "sflow_subinterfaces": {"type": bool, "default": True},
+                "wan": {"type": bool, "default": True},
+                "ptp": {"type": bool, "default": True},
             }
             queue_monitor: bool
             """
@@ -12188,6 +13321,36 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            sflow: bool
+            """
+            Support for sFlow.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            sflow_subinterfaces: bool
+            """
+            Support for sFlow on sub-interfaces.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            wan: bool
+            """
+            Support for Arista WAN features.
+            An error will be raised if the feature is enabled and this is
+            false.
+
+            Default value: `True`
+            """
+            ptp: bool
+            """
+            Support for Precision Time Protocol (PTP).
+            The feature will be ignored on platforms where this is
+            false.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -12210,6 +13373,10 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
+                    sflow: bool | UndefinedType = Undefined,
+                    sflow_subinterfaces: bool | UndefinedType = Undefined,
+                    wan: bool | UndefinedType = Undefined,
+                    ptp: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -12291,6 +13458,20 @@ class EosDesigns(EosDesignsRootModel):
                            set this via "private_vlan" in the specific platform settings.
                            See the TOI at
                            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
+                        sflow:
+                           Support for sFlow.
+                           The feature will be ignored on platforms where this is false.
+                        sflow_subinterfaces:
+                           Support for sFlow on sub-interfaces.
+                           The feature will be ignored on platforms where this is false.
+                        wan:
+                           Support for Arista WAN features.
+                           An error will be raised if the feature is enabled and this is
+                           false.
+                        ptp:
+                           Support for Precision Time Protocol (PTP).
+                           The feature will be ignored on platforms where this is
+                           false.
 
                     """
 
@@ -12747,6 +13928,10 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_counter_features": {"type": HardwareCounterFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
+                "sflow": {"type": bool, "default": True},
+                "sflow_subinterfaces": {"type": bool, "default": True},
+                "wan": {"type": bool, "default": True},
+                "ptp": {"type": bool, "default": True},
             }
             queue_monitor: bool
             """
@@ -12881,6 +14066,36 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            sflow: bool
+            """
+            Support for sFlow.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            sflow_subinterfaces: bool
+            """
+            Support for sFlow on sub-interfaces.
+            The feature will be ignored on platforms where this is false.
+
+            Default value: `True`
+            """
+            wan: bool
+            """
+            Support for Arista WAN features.
+            An error will be raised if the feature is enabled and this is
+            false.
+
+            Default value: `True`
+            """
+            ptp: bool
+            """
+            Support for Precision Time Protocol (PTP).
+            The feature will be ignored on platforms where this is
+            false.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -12903,6 +14118,10 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
+                    sflow: bool | UndefinedType = Undefined,
+                    sflow_subinterfaces: bool | UndefinedType = Undefined,
+                    wan: bool | UndefinedType = Undefined,
+                    ptp: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -12984,6 +14203,20 @@ class EosDesigns(EosDesignsRootModel):
                            set this via "private_vlan" in the specific platform settings.
                            See the TOI at
                            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
+                        sflow:
+                           Support for sFlow.
+                           The feature will be ignored on platforms where this is false.
+                        sflow_subinterfaces:
+                           Support for sFlow on sub-interfaces.
+                           The feature will be ignored on platforms where this is false.
+                        wan:
+                           Support for Arista WAN features.
+                           An error will be raised if the feature is enabled and this is
+                           false.
+                        ptp:
+                           Support for Precision Time Protocol (PTP).
+                           The feature will be ignored on platforms where this is
+                           false.
 
                     """
 
@@ -13896,13 +15129,26 @@ class EosDesigns(EosDesignsRootModel):
                 class Individual(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"profile": {"type": str}}
+                    _fields: ClassVar[dict] = {"profile": {"type": str}, "vlans": {"type": str}, "native_vlan": {"type": int}, "mode": {"type": str}}
                     profile: str | None
                     """Port-profile name to inherit configuration."""
+                    vlans: str | None
+                    """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                    native_vlan: int | None
+                    """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                    """Interface mode on the port-channel member interfaces when in fallback individual."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self,
+                            *,
+                            profile: str | None | UndefinedType = Undefined,
+                            vlans: str | None | UndefinedType = Undefined,
+                            native_vlan: int | None | UndefinedType = Undefined,
+                            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                        ) -> None:
                             """
                             Individual.
 
@@ -13911,6 +15157,9 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 profile: Port-profile name to inherit configuration.
+                                vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                mode: Interface mode on the port-channel member interfaces when in fallback individual.
 
                             """
 
@@ -13918,8 +15167,8 @@ class EosDesigns(EosDesignsRootModel):
                 mode: Literal["static", "individual"] | None
                 """
                 Either static or individual mode is supported.
-                If the mode is set to "individual" the
-                "individual.profile" setting must be defined.
+                If the mode is set to "individual" either 'profile'
+                or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                 """
                 individual: Individual
                 """
@@ -13953,8 +15202,8 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             mode:
                                Either static or individual mode is supported.
-                               If the mode is set to "individual" the
-                               "individual.profile" setting must be defined.
+                               If the mode is set to "individual" either 'profile'
+                               or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                             individual:
                                Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
                                "individual".
@@ -14461,7 +15710,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         monitor_sessions: MonitorSessions
         """
-        Used to define switchports as source or destination for monitoring sessions.
+        Used to define interfaces as source or destination for monitoring sessions.
 
         Subclass of AvdList
         with `MonitorSessionsItem` items.
@@ -14641,7 +15890,7 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     monitor_sessions:
-                       Used to define switchports as source or destination for monitoring sessions.
+                       Used to define interfaces as source or destination for monitoring sessions.
 
                        Subclass of AvdList
                        with `MonitorSessionsItem` items.
@@ -14797,6 +16046,7 @@ class EosDesigns(EosDesignsRootModel):
             "profile": {"type": str, "default": "aes67-r16-2016"},
             "domain": {"type": int, "default": 127},
             "auto_clock_identity": {"type": bool, "default": True},
+            "forward_v1": {"type": bool, "default": False},
         }
         enabled: bool | None
         profile: str
@@ -14812,6 +16062,12 @@ class EosDesigns(EosDesignsRootModel):
         """Default value: `127`"""
         auto_clock_identity: bool
         """Default value: `True`"""
+        forward_v1: bool
+        """
+        Forward dataplane PTP V1 packets.
+
+        Default value: `False`
+        """
 
         if TYPE_CHECKING:
 
@@ -14822,6 +16078,7 @@ class EosDesigns(EosDesignsRootModel):
                 profile: str | UndefinedType = Undefined,
                 domain: int | UndefinedType = Undefined,
                 auto_clock_identity: bool | UndefinedType = Undefined,
+                forward_v1: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 PtpSettings.
@@ -14838,6 +16095,7 @@ class EosDesigns(EosDesignsRootModel):
                          - "smpte2059-2"
                     domain: domain
                     auto_clock_identity: auto_clock_identity
+                    forward_v1: Forward dataplane PTP V1 packets.
 
                 """
 
@@ -16537,6 +17795,67 @@ class EosDesigns(EosDesignsRootModel):
 
             StaticRoutes._item_type = StaticRoutesItem
 
+            class Ipv6StaticRoutesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "prefix": {"type": str},
+                    "next_hop": {"type": str},
+                    "track_bfd": {"type": bool},
+                    "distance": {"type": int},
+                    "tag": {"type": int},
+                    "name": {"type": str},
+                    "metric": {"type": int},
+                    "interface": {"type": str},
+                }
+                prefix: str | None
+                next_hop: str | None
+                track_bfd: bool | None
+                """Track next-hop using BFD."""
+                distance: int | None
+                tag: int | None
+                name: str | None
+                """description."""
+                metric: int | None
+                interface: str | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | None | UndefinedType = Undefined,
+                        next_hop: str | None | UndefinedType = Undefined,
+                        track_bfd: bool | None | UndefinedType = Undefined,
+                        distance: int | None | UndefinedType = Undefined,
+                        tag: int | None | UndefinedType = Undefined,
+                        name: str | None | UndefinedType = Undefined,
+                        metric: int | None | UndefinedType = Undefined,
+                        interface: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ipv6StaticRoutesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: prefix
+                            next_hop: next_hop
+                            track_bfd: Track next-hop using BFD.
+                            distance: distance
+                            tag: tag
+                            name: description.
+                            metric: metric
+                            interface: interface
+
+                        """
+
+            class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+            Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
+
             class TrunkGroups(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -16856,6 +18175,7 @@ class EosDesigns(EosDesignsRootModel):
                 "name": {"type": str},
                 "enabled": {"type": bool},
                 "description": {"type": str},
+                "arp_gratuitous_accept": {"type": bool},
                 "ip_address": {"type": str},
                 "ipv6_address": {"type": str},
                 "ipv6_enable": {"type": bool},
@@ -16868,6 +18188,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv4_acl_out": {"type": str},
                 "ip_helpers": {"type": IpHelpers},
                 "static_routes": {"type": StaticRoutes},
+                "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                 "vni_override": {"type": int},
                 "rt_override": {"type": str},
                 "rd_override": {"type": str},
@@ -16894,6 +18215,8 @@ class EosDesigns(EosDesignsRootModel):
             """Enable or disable interface."""
             description: str | None
             """SVI description. By default set to VLAN name."""
+            arp_gratuitous_accept: bool | None
+            """Accept gratuitous ARP."""
             ip_address: str | None
             """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
             ipv6_address: str | None
@@ -16971,6 +18294,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdList
             with `StaticRoutesItem` items.
+            """
+            ipv6_static_routes: Ipv6StaticRoutes
+            """
+            IPv6 static routes to be configured on every device where the SVI is configured.
+
+            Subclass of
+            AvdList with `Ipv6StaticRoutesItem` items.
             """
             vni_override: int | None
             """
@@ -17082,6 +18412,7 @@ class EosDesigns(EosDesignsRootModel):
                     name: str | None | UndefinedType = Undefined,
                     enabled: bool | None | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
+                    arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
                     ipv6_address: str | None | UndefinedType = Undefined,
                     ipv6_enable: bool | None | UndefinedType = Undefined,
@@ -17094,6 +18425,7 @@ class EosDesigns(EosDesignsRootModel):
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                     static_routes: StaticRoutes | UndefinedType = Undefined,
+                    ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                     vni_override: int | None | UndefinedType = Undefined,
                     rt_override: str | None | UndefinedType = Undefined,
                     rd_override: str | None | UndefinedType = Undefined,
@@ -17123,6 +18455,7 @@ class EosDesigns(EosDesignsRootModel):
                         name: VLAN name.
                         enabled: Enable or disable interface.
                         description: SVI description. By default set to VLAN name.
+                        arp_gratuitous_accept: Accept gratuitous ARP.
                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                         ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                         ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
@@ -17180,6 +18513,11 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdList
                            with `StaticRoutesItem` items.
+                        ipv6_static_routes:
+                           IPv6 static routes to be configured on every device where the SVI is configured.
+
+                           Subclass of
+                           AvdList with `Ipv6StaticRoutesItem` items.
                         vni_override:
                            By default the VNI will be derived from "mac_vrf_vni_base".
                            The vni_override allows us to override
@@ -17381,6 +18719,67 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `StaticRoutesItem` items."""
 
         StaticRoutes._item_type = StaticRoutesItem
+
+        class Ipv6StaticRoutesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "prefix": {"type": str},
+                "next_hop": {"type": str},
+                "track_bfd": {"type": bool},
+                "distance": {"type": int},
+                "tag": {"type": int},
+                "name": {"type": str},
+                "metric": {"type": int},
+                "interface": {"type": str},
+            }
+            prefix: str | None
+            next_hop: str | None
+            track_bfd: bool | None
+            """Track next-hop using BFD."""
+            distance: int | None
+            tag: int | None
+            name: str | None
+            """description."""
+            metric: int | None
+            interface: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    prefix: str | None | UndefinedType = Undefined,
+                    next_hop: str | None | UndefinedType = Undefined,
+                    track_bfd: bool | None | UndefinedType = Undefined,
+                    distance: int | None | UndefinedType = Undefined,
+                    tag: int | None | UndefinedType = Undefined,
+                    name: str | None | UndefinedType = Undefined,
+                    metric: int | None | UndefinedType = Undefined,
+                    interface: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6StaticRoutesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        prefix: prefix
+                        next_hop: next_hop
+                        track_bfd: Track next-hop using BFD.
+                        distance: distance
+                        tag: tag
+                        name: description.
+                        metric: metric
+                        interface: interface
+
+                    """
+
+        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
         class TrunkGroups(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -17703,6 +19102,7 @@ class EosDesigns(EosDesignsRootModel):
             "name": {"type": str},
             "enabled": {"type": bool},
             "description": {"type": str},
+            "arp_gratuitous_accept": {"type": bool},
             "ip_address": {"type": str},
             "ipv6_address": {"type": str},
             "ipv6_enable": {"type": bool},
@@ -17715,6 +19115,7 @@ class EosDesigns(EosDesignsRootModel):
             "ipv4_acl_out": {"type": str},
             "ip_helpers": {"type": IpHelpers},
             "static_routes": {"type": StaticRoutes},
+            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
             "vni_override": {"type": int},
             "rt_override": {"type": str},
             "rd_override": {"type": str},
@@ -17757,6 +19158,8 @@ class EosDesigns(EosDesignsRootModel):
         """Enable or disable interface."""
         description: str | None
         """SVI description. By default set to VLAN name."""
+        arp_gratuitous_accept: bool | None
+        """Accept gratuitous ARP."""
         ip_address: str | None
         """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
         ipv6_address: str | None
@@ -17834,6 +19237,13 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList
         with `StaticRoutesItem` items.
+        """
+        ipv6_static_routes: Ipv6StaticRoutes
+        """
+        IPv6 static routes to be configured on every device where the SVI is configured.
+
+        Subclass of
+        AvdList with `Ipv6StaticRoutesItem` items.
         """
         vni_override: int | None
         """
@@ -17947,6 +19357,7 @@ class EosDesigns(EosDesignsRootModel):
                 name: str | None | UndefinedType = Undefined,
                 enabled: bool | None | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
+                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
                 ipv6_address: str | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
@@ -17959,6 +19370,7 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                 vni_override: int | None | UndefinedType = Undefined,
                 rt_override: str | None | UndefinedType = Undefined,
                 rd_override: str | None | UndefinedType = Undefined,
@@ -18000,6 +19412,7 @@ class EosDesigns(EosDesignsRootModel):
                     name: VLAN name.
                     enabled: Enable or disable interface.
                     description: SVI description. By default set to VLAN name.
+                    arp_gratuitous_accept: Accept gratuitous ARP.
                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                     ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                     ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
@@ -18057,6 +19470,11 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdList
                        with `StaticRoutesItem` items.
+                    ipv6_static_routes:
+                       IPv6 static routes to be configured on every device where the SVI is configured.
+
+                       Subclass of
+                       AvdList with `Ipv6StaticRoutesItem` items.
                     vni_override:
                        By default the VNI will be derived from "mac_vrf_vni_base".
                        The vni_override allows us to override
@@ -21003,13 +22421,31 @@ class EosDesigns(EosDesignsRootModel):
                             class Individual(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"profile": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "profile": {"type": str},
+                                    "vlans": {"type": str},
+                                    "native_vlan": {"type": int},
+                                    "mode": {"type": str},
+                                }
                                 profile: str | None
                                 """Port-profile name to inherit configuration."""
+                                vlans: str | None
+                                """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                                native_vlan: int | None
+                                """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                                mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                                """Interface mode on the port-channel member interfaces when in fallback individual."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
+                                    def __init__(
+                                        self,
+                                        *,
+                                        profile: str | None | UndefinedType = Undefined,
+                                        vlans: str | None | UndefinedType = Undefined,
+                                        native_vlan: int | None | UndefinedType = Undefined,
+                                        mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                                    ) -> None:
                                         """
                                         Individual.
 
@@ -21018,6 +22454,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             profile: Port-profile name to inherit configuration.
+                                            vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                            native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                            mode: Interface mode on the port-channel member interfaces when in fallback individual.
 
                                         """
 
@@ -21025,8 +22464,8 @@ class EosDesigns(EosDesignsRootModel):
                             mode: Literal["static", "individual"] | None
                             """
                             Either static or individual mode is supported.
-                            If the mode is set to "individual" the
-                            "individual.profile" setting must be defined.
+                            If the mode is set to "individual" either 'profile'
+                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                             """
                             individual: Individual
                             """
@@ -21060,8 +22499,8 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         mode:
                                            Either static or individual mode is supported.
-                                           If the mode is set to "individual" the
-                                           "individual.profile" setting must be defined.
+                                           If the mode is set to "individual" either 'profile'
+                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                                         individual:
                                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
                                            "individual".
@@ -21615,7 +23054,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     monitor_sessions: MonitorSessions
                     """
-                    Used to define switchports as source or destination for monitoring sessions.
+                    Used to define interfaces as source or destination for monitoring sessions.
 
                     Subclass of AvdList
                     with `MonitorSessionsItem` items.
@@ -21833,7 +23272,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 monitor_sessions:
-                                   Used to define switchports as source or destination for monitoring sessions.
+                                   Used to define interfaces as source or destination for monitoring sessions.
 
                                    Subclass of AvdList
                                    with `MonitorSessionsItem` items.
@@ -22627,13 +24066,31 @@ class EosDesigns(EosDesignsRootModel):
                             class Individual(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"profile": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "profile": {"type": str},
+                                    "vlans": {"type": str},
+                                    "native_vlan": {"type": int},
+                                    "mode": {"type": str},
+                                }
                                 profile: str | None
                                 """Port-profile name to inherit configuration."""
+                                vlans: str | None
+                                """Allowed VLANs on the port-channel member interfaces when in fallback individual."""
+                                native_vlan: int | None
+                                """Native VLAN on the port-channel member interfaces when in fallback individual."""
+                                mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                                """Interface mode on the port-channel member interfaces when in fallback individual."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
+                                    def __init__(
+                                        self,
+                                        *,
+                                        profile: str | None | UndefinedType = Undefined,
+                                        vlans: str | None | UndefinedType = Undefined,
+                                        native_vlan: int | None | UndefinedType = Undefined,
+                                        mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                                    ) -> None:
                                         """
                                         Individual.
 
@@ -22642,6 +24099,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             profile: Port-profile name to inherit configuration.
+                                            vlans: Allowed VLANs on the port-channel member interfaces when in fallback individual.
+                                            native_vlan: Native VLAN on the port-channel member interfaces when in fallback individual.
+                                            mode: Interface mode on the port-channel member interfaces when in fallback individual.
 
                                         """
 
@@ -22649,8 +24109,8 @@ class EosDesigns(EosDesignsRootModel):
                             mode: Literal["static", "individual"] | None
                             """
                             Either static or individual mode is supported.
-                            If the mode is set to "individual" the
-                            "individual.profile" setting must be defined.
+                            If the mode is set to "individual" either 'profile'
+                            or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                             """
                             individual: Individual
                             """
@@ -22684,8 +24144,8 @@ class EosDesigns(EosDesignsRootModel):
                                     Args:
                                         mode:
                                            Either static or individual mode is supported.
-                                           If the mode is set to "individual" the
-                                           "individual.profile" setting must be defined.
+                                           If the mode is set to "individual" either 'profile'
+                                           or ('mode' and 'vlans')  must be set under 'port_channel.lacp_fallback.individual'.
                                         individual:
                                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
                                            "individual".
@@ -23239,7 +24699,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     monitor_sessions: MonitorSessions
                     """
-                    Used to define switchports as source or destination for monitoring sessions.
+                    Used to define interfaces as source or destination for monitoring sessions.
 
                     Subclass of AvdList
                     with `MonitorSessionsItem` items.
@@ -23457,7 +24917,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 monitor_sessions:
-                                   Used to define switchports as source or destination for monitoring sessions.
+                                   Used to define interfaces as source or destination for monitoring sessions.
 
                                    Subclass of AvdList
                                    with `MonitorSessionsItem` items.
@@ -24593,6 +26053,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -24655,6 +26116,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -24680,6 +26143,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -24724,6 +26188,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -24766,7 +26231,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -24806,12 +26270,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -24839,7 +26297,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -24871,10 +26328,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -26021,10 +27474,212 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3PortChannels._item_type = L3PortChannelsItem
 
+                    class UnderlayMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PimSm(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                            on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if also
+                            enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_pim_sm`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable PIM sparse-mode on uplinks.
+                            Requires node setting `underlay_multicast.pim_sm.enabled:
+                            true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective only when
+                            node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PimSm.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                           on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if also
+                                           enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_pim_sm`.
+                                        uplinks:
+                                           Enable/Disable PIM sparse-mode on uplinks.
+                                           Requires node setting `underlay_multicast.pim_sm.enabled:
+                                           true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                        uplink_interfaces:
+                                           Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective only when
+                                           node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                           Subclass of AvdList with `str` items.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                    """
+
+                        class Static(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures static multicast in the
+                            underlay on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if
+                            also enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_multicast`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable static multicast on uplinks.
+                            Requires node setting
+                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
+
+                            Subclass of AvdList with `str`
+                            items.
+                            """
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Static.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures static multicast in the
+                                           underlay on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if
+                                           also enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_multicast`.
+                                        uplinks:
+                                           Enable/Disable static multicast on uplinks.
+                                           Requires node setting
+                                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                        uplink_interfaces:
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                           Subclass of AvdList with `str`
+                                           items.
+                                        mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                        pim_sm: PimSm
+                        """Subclass of AvdModel."""
+                        static: Static
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                """
+                                UnderlayMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    pim_sm: Subclass of AvdModel.
+                                    static: Subclass of AvdModel.
+
+                                """
+
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -26032,11 +27687,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -26049,6 +27718,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -26087,6 +27764,10 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -26140,6 +27821,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -26166,6 +27848,7 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "underlay_multicast": {"type": UnderlayMulticast},
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
@@ -26399,6 +28082,17 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_interfaces`."""
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                    channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -26760,13 +28454,23 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    """
+                    inband_mgmt_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
                     """
                     inband_mgmt_ip: str | None
                     """
@@ -26953,14 +28657,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -26997,6 +28698,8 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    underlay_multicast: UnderlayMulticast
+                    """Subclass of AvdModel."""
                     campus: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -27072,6 +28775,10 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -27126,6 +28833,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -27152,6 +28860,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
@@ -27328,6 +29037,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                   channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -27569,13 +29284,19 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -27710,14 +29431,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -27740,6 +29458,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                underlay_multicast: Subclass of AvdModel.
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -28872,6 +30591,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "mode_one_step": {"type": bool, "default": False},
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
+                                "forward_v1": {"type": bool},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -28934,6 +30654,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            forward_v1: bool | None
+                            """Forward dataplane PTP V1 packets."""
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -28959,6 +30681,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: bool | UndefinedType = Undefined,
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
+                                    forward_v1: bool | None | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -29003,6 +30726,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode_one_step: mode_one_step
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
+                                        forward_v1: Forward dataplane PTP V1 packets.
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -29047,7 +30771,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "mtu": {"type": int, "default": 9194},
                                 "ha_interfaces": {"type": HaInterfaces},
                                 "ha_ipv4_pool": {"type": str},
-                                "max_ha_interfaces": {"type": int},
                                 "port_channel_id": {"type": int},
                                 "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                                 "flow_tracking": {"type": FlowTracking},
@@ -29087,12 +30810,6 @@ class EosDesigns(EosDesignsRootModel):
                             first WAN router.
                             Not used for uplink interfaces.
                             """
-                            max_ha_interfaces: int | None
-                            """
-                            Number of parallel links towards HA switches.
-                            Can be used to reserve IP addresses for future
-                            parallel HA links.
-                            """
                             port_channel_id: int | None
                             """Port-channel ID to use for direct HA."""
                             use_port_channel_for_direct_ha: bool
@@ -29120,7 +30837,6 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: int | UndefinedType = Undefined,
                                     ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                     ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                    max_ha_interfaces: int | None | UndefinedType = Undefined,
                                     port_channel_id: int | None | UndefinedType = Undefined,
                                     use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -29152,10 +30868,6 @@ class EosDesigns(EosDesignsRootModel):
                                            subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                            first WAN router.
                                            Not used for uplink interfaces.
-                                        max_ha_interfaces:
-                                           Number of parallel links towards HA switches.
-                                           Can be used to reserve IP addresses for future
-                                           parallel HA links.
                                         port_channel_id: Port-channel ID to use for direct HA.
                                         use_port_channel_for_direct_ha:
                                            Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -30314,10 +32026,212 @@ class EosDesigns(EosDesignsRootModel):
 
                         L3PortChannels._item_type = L3PortChannelsItem
 
+                        class UnderlayMulticast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class PimSm(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class UplinkInterfaces(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                UplinkInterfaces._item_type = str
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "uplinks": {"type": bool, "default": True},
+                                    "uplink_interfaces": {"type": UplinkInterfaces},
+                                    "mlag": {"type": bool, "default": True},
+                                }
+                                enabled: bool | None
+                                """
+                                When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                on all:
+                                  - P2P uplink interfaces if enabled on uplink peer
+                                  - MLAG L3 peer interface if also
+                                enabled on MLAG peer
+                                  - l3_edge and core interfaces
+                                Overrides the global
+                                `underlay_multicast_pim_sm`.
+                                """
+                                uplinks: bool
+                                """
+                                Enable/Disable PIM sparse-mode on uplinks.
+                                Requires node setting `underlay_multicast.pim_sm.enabled:
+                                true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                                Default value: `True`
+                                """
+                                uplink_interfaces: UplinkInterfaces
+                                """
+                                Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                Effective only when
+                                node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                Subclass of AvdList with `str` items.
+                                """
+                                mlag: bool
+                                """
+                                Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                Default value: `True`
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        uplinks: bool | UndefinedType = Undefined,
+                                        uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                        mlag: bool | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        PimSm.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled:
+                                               When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                               on all:
+                                                 - P2P uplink interfaces if enabled on uplink peer
+                                                 - MLAG L3 peer interface if also
+                                               enabled on MLAG peer
+                                                 - l3_edge and core interfaces
+                                               Overrides the global
+                                               `underlay_multicast_pim_sm`.
+                                            uplinks:
+                                               Enable/Disable PIM sparse-mode on uplinks.
+                                               Requires node setting `underlay_multicast.pim_sm.enabled:
+                                               true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                            uplink_interfaces:
+                                               Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                               Effective only when
+                                               node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                               Subclass of AvdList with `str` items.
+                                            mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                        """
+
+                            class Static(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class UplinkInterfaces(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                UplinkInterfaces._item_type = str
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "uplinks": {"type": bool, "default": True},
+                                    "uplink_interfaces": {"type": UplinkInterfaces},
+                                    "mlag": {"type": bool, "default": True},
+                                }
+                                enabled: bool | None
+                                """
+                                When enabled, configures multicast routing and by default configures static multicast in the
+                                underlay on all:
+                                  - P2P uplink interfaces if enabled on uplink peer
+                                  - MLAG L3 peer interface if
+                                also enabled on MLAG peer
+                                  - l3_edge and core interfaces
+                                Overrides the global
+                                `underlay_multicast_multicast`.
+                                """
+                                uplinks: bool
+                                """
+                                Enable/Disable static multicast on uplinks.
+                                Requires node setting
+                                `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                                Default value: `True`
+                                """
+                                uplink_interfaces: UplinkInterfaces
+                                """
+                                Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                Effective
+                                only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                Subclass of AvdList with `str`
+                                items.
+                                """
+                                mlag: bool
+                                """
+                                Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                Default value: `True`
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        uplinks: bool | UndefinedType = Undefined,
+                                        uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                        mlag: bool | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Static.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled:
+                                               When enabled, configures multicast routing and by default configures static multicast in the
+                                               underlay on all:
+                                                 - P2P uplink interfaces if enabled on uplink peer
+                                                 - MLAG L3 peer interface if
+                                               also enabled on MLAG peer
+                                                 - l3_edge and core interfaces
+                                               Overrides the global
+                                               `underlay_multicast_multicast`.
+                                            uplinks:
+                                               Enable/Disable static multicast on uplinks.
+                                               Requires node setting
+                                               `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                            uplink_interfaces:
+                                               Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                               Effective
+                                               only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                               Subclass of AvdList with `str`
+                                               items.
+                                            mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                            pim_sm: PimSm
+                            """Subclass of AvdModel."""
+                            static: Static
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                    """
+                                    UnderlayMulticast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        pim_sm: Subclass of AvdModel.
+                                        static: Subclass of AvdModel.
+
+                                    """
+
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                             act_os_version: str | None
                             """
                             Desired ACT Digital Twin OS version.
@@ -30325,11 +32239,25 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             mgmt_ip: str | None
                             """Desired management interface IPv4 address."""
+                            act_internet_access: bool | None
+                            """
+                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                            This option
+                            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                            types.
+                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                            Overrides
+                            global `digital_twin.fabric.act_internet_access` flag.
+                            """
 
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                    self,
+                                    *,
+                                    act_os_version: str | None | UndefinedType = Undefined,
+                                    mgmt_ip: str | None | UndefinedType = Undefined,
+                                    act_internet_access: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     DigitalTwin.
@@ -30342,6 +32270,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Desired ACT Digital Twin OS version.
                                            Overrides global `digital_twin.fabric.act_os_version` flag.
                                         mgmt_ip: Desired management interface IPv4 address.
+                                        act_internet_access:
+                                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                           This option
+                                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                           types.
+                                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                           Overrides
+                                           global `digital_twin.fabric.act_internet_access` flag.
 
                                     """
 
@@ -30382,6 +32318,10 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
                             "uplink_structured_config": {"type": dict},
+                            "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                            "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                             "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -30435,6 +32375,7 @@ class EosDesigns(EosDesignsRootModel):
                             "inband_mgmt_interface": {"type": str},
                             "inband_mgmt_vlan": {"type": int, "default": 4092},
                             "inband_mgmt_subnet": {"type": str},
+                            "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                             "inband_mgmt_ip": {"type": str},
                             "inband_mgmt_gateway": {"type": str},
                             "inband_mgmt_ipv6_address": {"type": str},
@@ -30461,6 +32402,7 @@ class EosDesigns(EosDesignsRootModel):
                             "l3_port_channels": {"type": L3PortChannels},
                             "data_plane_cpu_allocation_max": {"type": int},
                             "flow_tracker_type": {"type": str},
+                            "underlay_multicast": {"type": UnderlayMulticast},
                             "campus": {"type": str},
                             "campus_pod": {"type": str},
                             "campus_access_pod": {"type": str},
@@ -30704,6 +32646,17 @@ class EosDesigns(EosDesignsRootModel):
                         "structured_config" defined on node-level.
                         Note! The content of this dictionary is _not_ validated
                         by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        """
+                        uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """Custom structured config applied to `uplink_interfaces`."""
+                        uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                        uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                        uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                        channel uplinks.
                         """
                         mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
@@ -31065,13 +33018,23 @@ class EosDesigns(EosDesignsRootModel):
                         2 (same IP on all l3leaf A)
                         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                         l2leafs       :
-                        <subnet> + 3 + <l2leaf id>
+                        <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                         GW on l2leafs : <subnet> + 1
-                        Assign range larger than total l2leafs + 5
+                        Assign range
+                        larger than total l2leafs + 5
+
                         Setting is ignored if 'inband_mgmt_ip' is set.
 
-                        This setting is applicable to L2 switches (switches
-                        using port-channel trunks as uplinks).
+                        This setting is
+                        applicable to L2 switches (switches using port-channel trunks as uplinks).
+                        """
+                        inband_mgmt_subnet_offset: int
+                        """
+                        Offset value to adjust the calculated inband management IP address within the subnet.
+                        The assigned
+                        IP will be computed by adding this offset to the device ID.
+
+                        Default value: `0`
                         """
                         inband_mgmt_ip: str | None
                         """
@@ -31258,14 +33221,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         wan_ha: WanHa
                         """
-                        PREVIEW: This key is currently not supported
+                        The key is supported only if `wan_mode` == `cv-pathfinder`.
+                        AutoVPN support is still to be
+                        determined.
 
-                        The key is supported only if `wan_mode` == `cv-
-                        pathfinder`.
-                        AutoVPN support is still to be determined.
-
-                        Maximum 2 devices supported by group for
-                        HA.
+                        Maximum 2 devices supported by group for HA.
 
                         Subclass of AvdModel.
                         """
@@ -31302,6 +33262,8 @@ class EosDesigns(EosDesignsRootModel):
                         level.
                         `default_flow_tracker_type` default value is `sampled`.
                         """
+                        underlay_multicast: UnderlayMulticast
+                        """Subclass of AvdModel."""
                         campus: str | None
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -31379,6 +33341,10 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_structured_config: dict | UndefinedType = Undefined,
+                                uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -31433,6 +33399,7 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                                 inband_mgmt_vlan: int | UndefinedType = Undefined,
                                 inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                                inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                                 inband_mgmt_ip: str | None | UndefinedType = Undefined,
                                 inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                                 inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -31459,6 +33426,7 @@ class EosDesigns(EosDesignsRootModel):
                                 l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                                 data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                                 flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                                underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                                 campus: str | None | UndefinedType = Undefined,
                                 campus_pod: str | None | UndefinedType = Undefined,
                                 campus_access_pod: str | None | UndefinedType = Undefined,
@@ -31642,6 +33610,12 @@ class EosDesigns(EosDesignsRootModel):
                                        "structured_config" defined on node-level.
                                        Note! The content of this dictionary is _not_ validated
                                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                    uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                    uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                    uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                    uplink_switch_port_channel_structured_config:
+                                       Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                       channel uplinks.
                                     mlag_port_channel_structured_config:
                                        Custom structured config applied to MLAG peer link port-channel id.
                                        Added under
@@ -31883,13 +33857,19 @@ class EosDesigns(EosDesignsRootModel):
                                        2 (same IP on all l3leaf A)
                                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                        l2leafs       :
-                                       <subnet> + 3 + <l2leaf id>
+                                       <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                        GW on l2leafs : <subnet> + 1
-                                       Assign range larger than total l2leafs + 5
+                                       Assign range
+                                       larger than total l2leafs + 5
+
                                        Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                       This setting is applicable to L2 switches (switches
-                                       using port-channel trunks as uplinks).
+                                       This setting is
+                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                    inband_mgmt_subnet_offset:
+                                       Offset value to adjust the calculated inband management IP address within the subnet.
+                                       The assigned
+                                       IP will be computed by adding this offset to the device ID.
                                     inband_mgmt_ip:
                                        IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -32024,14 +34004,11 @@ class EosDesigns(EosDesignsRootModel):
                                        For pathfinders without `cv_pathfinder_region` set,
                                        the site must be defined under `cv_pathfinder_global_sites`.
                                     wan_ha:
-                                       PREVIEW: This key is currently not supported
+                                       The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                       AutoVPN support is still to be
+                                       determined.
 
-                                       The key is supported only if `wan_mode` == `cv-
-                                       pathfinder`.
-                                       AutoVPN support is still to be determined.
-
-                                       Maximum 2 devices supported by group for
-                                       HA.
+                                       Maximum 2 devices supported by group for HA.
 
                                        Subclass of AvdModel.
                                     dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -32054,6 +34031,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Override the `default_flow_tracker_type`` set at the `node_type_key`
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
+                                    underlay_multicast: Subclass of AvdModel.
                                     campus:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
@@ -33108,6 +35086,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -33170,6 +35149,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -33195,6 +35176,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -33239,6 +35221,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -33281,7 +35264,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -33321,12 +35303,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -33354,7 +35330,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -33386,10 +35361,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -34536,10 +36507,212 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3PortChannels._item_type = L3PortChannelsItem
 
+                    class UnderlayMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PimSm(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                            on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if also
+                            enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_pim_sm`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable PIM sparse-mode on uplinks.
+                            Requires node setting `underlay_multicast.pim_sm.enabled:
+                            true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective only when
+                            node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PimSm.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                           on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if also
+                                           enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_pim_sm`.
+                                        uplinks:
+                                           Enable/Disable PIM sparse-mode on uplinks.
+                                           Requires node setting `underlay_multicast.pim_sm.enabled:
+                                           true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                        uplink_interfaces:
+                                           Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective only when
+                                           node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                           Subclass of AvdList with `str` items.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                    """
+
+                        class Static(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures static multicast in the
+                            underlay on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if
+                            also enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_multicast`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable static multicast on uplinks.
+                            Requires node setting
+                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
+
+                            Subclass of AvdList with `str`
+                            items.
+                            """
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Static.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures static multicast in the
+                                           underlay on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if
+                                           also enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_multicast`.
+                                        uplinks:
+                                           Enable/Disable static multicast on uplinks.
+                                           Requires node setting
+                                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                        uplink_interfaces:
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                           Subclass of AvdList with `str`
+                                           items.
+                                        mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                        pim_sm: PimSm
+                        """Subclass of AvdModel."""
+                        static: Static
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                """
+                                UnderlayMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    pim_sm: Subclass of AvdModel.
+                                    static: Subclass of AvdModel.
+
+                                """
+
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -34547,11 +36720,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -34564,6 +36751,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -34604,6 +36799,10 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -34657,6 +36856,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -34683,6 +36883,7 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "underlay_multicast": {"type": UnderlayMulticast},
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
@@ -34929,6 +37130,17 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_interfaces`."""
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                    channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -35290,13 +37502,23 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    """
+                    inband_mgmt_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
                     """
                     inband_mgmt_ip: str | None
                     """
@@ -35483,14 +37705,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -35527,6 +37746,8 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    underlay_multicast: UnderlayMulticast
+                    """Subclass of AvdModel."""
                     campus: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -35604,6 +37825,10 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -35658,6 +37883,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -35684,6 +37910,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
@@ -35869,6 +38096,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                   channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -36110,13 +38343,19 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -36251,14 +38490,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -36281,6 +38517,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                underlay_multicast: Subclass of AvdModel.
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -37410,6 +39647,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -37472,6 +39710,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -37497,6 +39737,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -37541,6 +39782,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -37583,7 +39825,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -37623,12 +39864,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -37656,7 +39891,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -37688,10 +39922,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -38838,10 +41068,212 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3PortChannels._item_type = L3PortChannelsItem
 
+                    class UnderlayMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PimSm(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                            on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if also
+                            enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_pim_sm`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable PIM sparse-mode on uplinks.
+                            Requires node setting `underlay_multicast.pim_sm.enabled:
+                            true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective only when
+                            node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PimSm.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                           on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if also
+                                           enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_pim_sm`.
+                                        uplinks:
+                                           Enable/Disable PIM sparse-mode on uplinks.
+                                           Requires node setting `underlay_multicast.pim_sm.enabled:
+                                           true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                        uplink_interfaces:
+                                           Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective only when
+                                           node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                           Subclass of AvdList with `str` items.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                    """
+
+                        class Static(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures static multicast in the
+                            underlay on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if
+                            also enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_multicast`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable static multicast on uplinks.
+                            Requires node setting
+                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
+
+                            Subclass of AvdList with `str`
+                            items.
+                            """
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Static.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures static multicast in the
+                                           underlay on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if
+                                           also enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_multicast`.
+                                        uplinks:
+                                           Enable/Disable static multicast on uplinks.
+                                           Requires node setting
+                                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                        uplink_interfaces:
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                           Subclass of AvdList with `str`
+                                           items.
+                                        mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                        pim_sm: PimSm
+                        """Subclass of AvdModel."""
+                        static: Static
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                """
+                                UnderlayMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    pim_sm: Subclass of AvdModel.
+                                    static: Subclass of AvdModel.
+
+                                """
+
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -38849,11 +41281,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -38866,6 +41312,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -38906,6 +41360,10 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -38959,6 +41417,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -38985,6 +41444,7 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "underlay_multicast": {"type": UnderlayMulticast},
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
@@ -39228,6 +41688,17 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_interfaces`."""
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                    channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -39589,13 +42060,23 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    """
+                    inband_mgmt_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
                     """
                     inband_mgmt_ip: str | None
                     """
@@ -39782,14 +42263,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -39826,6 +42304,8 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    underlay_multicast: UnderlayMulticast
+                    """Subclass of AvdModel."""
                     campus: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -39903,6 +42383,10 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -39957,6 +42441,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -39983,6 +42468,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
@@ -40166,6 +42652,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                   channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -40407,13 +42899,19 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -40548,14 +43046,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -40578,6 +43073,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                underlay_multicast: Subclass of AvdModel.
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -41250,6 +43746,8 @@ class EosDesigns(EosDesignsRootModel):
                         "rib_in_pre_policy_retain": {"type": RibInPrePolicyRetain},
                         "route_map_in": {"type": str},
                         "route_map_out": {"type": str},
+                        "peer_tag_in": {"type": str},
+                        "peer_tag_out_discard": {"type": str},
                         "session_tracker": {"type": str},
                         "shared_secret": {"type": SharedSecret},
                         "ttl_maximum_hops": {"type": int},
@@ -41362,6 +43860,10 @@ class EosDesigns(EosDesignsRootModel):
                     """Inbound route-map name."""
                     route_map_out: str | None
                     """Outbound route-map name."""
+                    peer_tag_in: str | None
+                    """Inbound peer tag name."""
+                    peer_tag_out_discard: str | None
+                    """Outbound discard peer tag name."""
                     session_tracker: str | None
                     shared_secret: SharedSecret
                     """Subclass of AvdModel."""
@@ -41409,6 +43911,8 @@ class EosDesigns(EosDesignsRootModel):
                             rib_in_pre_policy_retain: RibInPrePolicyRetain | UndefinedType = Undefined,
                             route_map_in: str | None | UndefinedType = Undefined,
                             route_map_out: str | None | UndefinedType = Undefined,
+                            peer_tag_in: str | None | UndefinedType = Undefined,
+                            peer_tag_out_discard: str | None | UndefinedType = Undefined,
                             session_tracker: str | None | UndefinedType = Undefined,
                             shared_secret: SharedSecret | UndefinedType = Undefined,
                             ttl_maximum_hops: int | None | UndefinedType = Undefined,
@@ -41491,6 +43995,8 @@ class EosDesigns(EosDesignsRootModel):
                                 rib_in_pre_policy_retain: Subclass of AvdModel.
                                 route_map_in: Inbound route-map name.
                                 route_map_out: Outbound route-map name.
+                                peer_tag_in: Inbound peer tag name.
+                                peer_tag_out_discard: Outbound discard peer tag name.
                                 session_tracker: session_tracker
                                 shared_secret: Subclass of AvdModel.
                                 ttl_maximum_hops: Maximum number of hops.
@@ -42598,6 +45104,67 @@ class EosDesigns(EosDesignsRootModel):
 
                             StaticRoutes._item_type = StaticRoutesItem
 
+                            class Ipv6StaticRoutesItem(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "prefix": {"type": str},
+                                    "next_hop": {"type": str},
+                                    "track_bfd": {"type": bool},
+                                    "distance": {"type": int},
+                                    "tag": {"type": int},
+                                    "name": {"type": str},
+                                    "metric": {"type": int},
+                                    "interface": {"type": str},
+                                }
+                                prefix: str | None
+                                next_hop: str | None
+                                track_bfd: bool | None
+                                """Track next-hop using BFD."""
+                                distance: int | None
+                                tag: int | None
+                                name: str | None
+                                """description."""
+                                metric: int | None
+                                interface: str | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        prefix: str | None | UndefinedType = Undefined,
+                                        next_hop: str | None | UndefinedType = Undefined,
+                                        track_bfd: bool | None | UndefinedType = Undefined,
+                                        distance: int | None | UndefinedType = Undefined,
+                                        tag: int | None | UndefinedType = Undefined,
+                                        name: str | None | UndefinedType = Undefined,
+                                        metric: int | None | UndefinedType = Undefined,
+                                        interface: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Ipv6StaticRoutesItem.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            prefix: prefix
+                                            next_hop: next_hop
+                                            track_bfd: Track next-hop using BFD.
+                                            distance: distance
+                                            tag: tag
+                                            name: description.
+                                            metric: metric
+                                            interface: interface
+
+                                        """
+
+                            class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                                """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                            Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
+
                             class TrunkGroups(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
@@ -42929,6 +45496,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "name": {"type": str},
                                 "enabled": {"type": bool},
                                 "description": {"type": str},
+                                "arp_gratuitous_accept": {"type": bool},
                                 "ip_address": {"type": str},
                                 "ipv6_address": {"type": str},
                                 "ipv6_enable": {"type": bool},
@@ -42941,6 +45509,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv4_acl_out": {"type": str},
                                 "ip_helpers": {"type": IpHelpers},
                                 "static_routes": {"type": StaticRoutes},
+                                "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                                 "vni_override": {"type": int},
                                 "rt_override": {"type": str},
                                 "rd_override": {"type": str},
@@ -42977,6 +45546,8 @@ class EosDesigns(EosDesignsRootModel):
                             """Enable or disable interface."""
                             description: str | None
                             """SVI description. By default set to VLAN name."""
+                            arp_gratuitous_accept: bool | None
+                            """Accept gratuitous ARP."""
                             ip_address: str | None
                             """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
                             ipv6_address: str | None
@@ -43054,6 +45625,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList
                             with `StaticRoutesItem` items.
+                            """
+                            ipv6_static_routes: Ipv6StaticRoutes
+                            """
+                            IPv6 static routes to be configured on every device where the SVI is configured.
+
+                            Subclass of
+                            AvdList with `Ipv6StaticRoutesItem` items.
                             """
                             vni_override: int | None
                             """
@@ -43166,6 +45744,7 @@ class EosDesigns(EosDesignsRootModel):
                                     name: str | None | UndefinedType = Undefined,
                                     enabled: bool | None | UndefinedType = Undefined,
                                     description: str | None | UndefinedType = Undefined,
+                                    arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
                                     ipv6_address: str | None | UndefinedType = Undefined,
                                     ipv6_enable: bool | None | UndefinedType = Undefined,
@@ -43178,6 +45757,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
                                     ip_helpers: IpHelpers | UndefinedType = Undefined,
                                     static_routes: StaticRoutes | UndefinedType = Undefined,
+                                    ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                     vni_override: int | None | UndefinedType = Undefined,
                                     rt_override: str | None | UndefinedType = Undefined,
                                     rd_override: str | None | UndefinedType = Undefined,
@@ -43213,6 +45793,7 @@ class EosDesigns(EosDesignsRootModel):
                                         name: VLAN name.
                                         enabled: Enable or disable interface.
                                         description: SVI description. By default set to VLAN name.
+                                        arp_gratuitous_accept: Accept gratuitous ARP.
                                         ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                                         ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                                         ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
@@ -43270,6 +45851,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass of AvdList
                                            with `StaticRoutesItem` items.
+                                        ipv6_static_routes:
+                                           IPv6 static routes to be configured on every device where the SVI is configured.
+
+                                           Subclass of
+                                           AvdList with `Ipv6StaticRoutesItem` items.
                                         vni_override:
                                            By default the VNI will be derived from "mac_vrf_vni_base".
                                            The vni_override allows us to override
@@ -43471,6 +46057,67 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `StaticRoutesItem` items."""
 
                         StaticRoutes._item_type = StaticRoutesItem
+
+                        class Ipv6StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
                         class TrunkGroups(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -43794,12 +46441,14 @@ class EosDesigns(EosDesignsRootModel):
                         _fields: ClassVar[dict] = {
                             "id": {"type": int},
                             "name": {"type": str},
+                            "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking.AddressFamily},
                             "profile": {"type": str},
                             "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                             "evpn_vlan_bundle": {"type": str},
                             "nodes": {"type": Nodes},
                             "enabled": {"type": bool},
                             "description": {"type": str},
+                            "arp_gratuitous_accept": {"type": bool},
                             "ip_address": {"type": str},
                             "ipv6_address": {"type": str},
                             "ipv6_enable": {"type": bool},
@@ -43812,6 +46461,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv4_acl_out": {"type": str},
                             "ip_helpers": {"type": IpHelpers},
                             "static_routes": {"type": StaticRoutes},
+                            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "vni_override": {"type": int},
                             "rt_override": {"type": str},
                             "rd_override": {"type": str},
@@ -43834,6 +46484,12 @@ class EosDesigns(EosDesignsRootModel):
                         """SVI interface id and VLAN id."""
                         name: str
                         """VLAN name."""
+                        address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
+                        """
+                        To configure `address_locking.ipv4/v6`, you must define either
+                        `address_locking_settings.dhcp_servers_ipv4` or
+                        `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
+                        """
                         profile: str | None
                         """
                         SVI profile name to apply.
@@ -43872,6 +46528,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Enable or disable interface."""
                         description: str | None
                         """SVI description. By default set to VLAN name."""
+                        arp_gratuitous_accept: bool | None
+                        """Accept gratuitous ARP."""
                         ip_address: str | None
                         """IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node."""
                         ipv6_address: str | None
@@ -43949,6 +46607,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList
                         with `StaticRoutesItem` items.
+                        """
+                        ipv6_static_routes: Ipv6StaticRoutes
+                        """
+                        IPv6 static routes to be configured on every device where the SVI is configured.
+
+                        Subclass of
+                        AvdList with `Ipv6StaticRoutesItem` items.
                         """
                         vni_override: int | None
                         """
@@ -44058,12 +46723,14 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 id: int | UndefinedType = Undefined,
                                 name: str | UndefinedType = Undefined,
+                                address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily | UndefinedType = Undefined,
                                 profile: str | None | UndefinedType = Undefined,
                                 tags: Tags | UndefinedType = Undefined,
                                 evpn_vlan_bundle: str | None | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 enabled: bool | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
+                                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
                                 ipv6_address: str | None | UndefinedType = Undefined,
                                 ipv6_enable: bool | None | UndefinedType = Undefined,
@@ -44076,6 +46743,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 vni_override: int | None | UndefinedType = Undefined,
                                 rt_override: str | None | UndefinedType = Undefined,
                                 rd_override: str | None | UndefinedType = Undefined,
@@ -44103,6 +46771,10 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     id: SVI interface id and VLAN id.
                                     name: VLAN name.
+                                    address_locking:
+                                       To configure `address_locking.ipv4/v6`, you must define either
+                                       `address_locking_settings.dhcp_servers_ipv4` or
+                                       `address_locking_settings.locked_address.ipv4/v6_enforcement_disabled`.
                                     profile:
                                        SVI profile name to apply.
                                        SVI can refer to one svi_profile which again can refer to another
@@ -44129,6 +46801,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdIndexedList with `NodesItem` items. Primary key is `node` (`str`).
                                     enabled: Enable or disable interface.
                                     description: SVI description. By default set to VLAN name.
+                                    arp_gratuitous_accept: Accept gratuitous ARP.
                                     ip_address: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                                     ipv6_address: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                                     ipv6_enable: Explicitly enable/disable link-local IPv6 addressing.
@@ -44186,6 +46859,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList
                                        with `StaticRoutesItem` items.
+                                    ipv6_static_routes:
+                                       IPv6 static routes to be configured on every device where the SVI is configured.
+
+                                       Subclass of
+                                       AvdList with `Ipv6StaticRoutesItem` items.
                                     vni_override:
                                        By default the VNI will be derived from "mac_vrf_vni_base".
                                        The vni_override allows us to override
@@ -44343,6 +47021,67 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `StaticRoutesItem` items."""
 
                         StaticRoutes._item_type = StaticRoutesItem
+
+                        class Ipv6StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
                         class Nodes(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -44547,6 +47286,261 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class MonitorSessionsItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class SourceSettings(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class AccessGroup(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
+                                    type: Literal["ip", "ipv6", "mac"] | None
+                                    name: str | None
+                                    """ACL name."""
+                                    priority: int | None
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                                            name: str | None | UndefinedType = Undefined,
+                                            priority: int | None | UndefinedType = Undefined,
+                                        ) -> None:
+                                            """
+                                            AccessGroup.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                type: type
+                                                name: ACL name.
+                                                priority: priority
+
+                                            """
+
+                                _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
+                                direction: Literal["rx", "tx", "both"] | None
+                                access_group: AccessGroup
+                                """
+                                This can only be set when `session_settings.access_group` is not set.
+
+                                Subclass of AvdModel.
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        direction: Literal["rx", "tx", "both"] | None | UndefinedType = Undefined,
+                                        access_group: AccessGroup | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        SourceSettings.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            direction: direction
+                                            access_group:
+                                               This can only be set when `session_settings.access_group` is not set.
+
+                                               Subclass of AvdModel.
+
+                                        """
+
+                            class SessionSettings(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class AccessGroup(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
+                                    type: Literal["ip", "ipv6", "mac"] | None
+                                    name: str | None
+                                    """ACL name."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                                            name: str | None | UndefinedType = Undefined,
+                                        ) -> None:
+                                            """
+                                            AccessGroup.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                type: type
+                                                name: ACL name.
+
+                                            """
+
+                                class Truncate(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "size": {"type": int}}
+                                    enabled: bool | None
+                                    size: int | None
+                                    """Size in bytes."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self, *, enabled: bool | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined
+                                        ) -> None:
+                                            """
+                                            Truncate.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                enabled: enabled
+                                                size: Size in bytes.
+
+                                            """
+
+                                _fields: ClassVar[dict] = {
+                                    "encapsulation_gre_metadata_tx": {"type": bool},
+                                    "header_remove_size": {"type": int},
+                                    "access_group": {"type": AccessGroup},
+                                    "rate_limit_per_ingress_chip": {"type": str},
+                                    "rate_limit_per_egress_chip": {"type": str},
+                                    "sample": {"type": int},
+                                    "truncate": {"type": Truncate},
+                                }
+                                encapsulation_gre_metadata_tx: bool | None
+                                header_remove_size: int | None
+                                """Number of bytes to remove from header."""
+                                access_group: AccessGroup
+                                """Subclass of AvdModel."""
+                                rate_limit_per_ingress_chip: str | None
+                                """
+                                Ratelimit and unit as string.
+                                Examples:
+                                  "100000 bps"
+                                  "100 kbps"
+                                  "10 mbps"
+                                """
+                                rate_limit_per_egress_chip: str | None
+                                """
+                                Ratelimit and unit as string.
+                                Examples:
+                                  "100000 bps"
+                                  "100 kbps"
+                                  "10 mbps"
+                                """
+                                sample: int | None
+                                truncate: Truncate
+                                """Subclass of AvdModel."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        encapsulation_gre_metadata_tx: bool | None | UndefinedType = Undefined,
+                                        header_remove_size: int | None | UndefinedType = Undefined,
+                                        access_group: AccessGroup | UndefinedType = Undefined,
+                                        rate_limit_per_ingress_chip: str | None | UndefinedType = Undefined,
+                                        rate_limit_per_egress_chip: str | None | UndefinedType = Undefined,
+                                        sample: int | None | UndefinedType = Undefined,
+                                        truncate: Truncate | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        SessionSettings.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            encapsulation_gre_metadata_tx: encapsulation_gre_metadata_tx
+                                            header_remove_size: Number of bytes to remove from header.
+                                            access_group: Subclass of AvdModel.
+                                            rate_limit_per_ingress_chip:
+                                               Ratelimit and unit as string.
+                                               Examples:  # fmt: skip
+                                                 "100000 bps"
+                                                 "100 kbps"
+                                                 "10 mbps"
+                                            rate_limit_per_egress_chip:
+                                               Ratelimit and unit as string.
+                                               Examples:  # fmt: skip
+                                                 "100000 bps"
+                                                 "100 kbps"
+                                                 "10 mbps"
+                                            sample: sample
+                                            truncate: Subclass of AvdModel.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "name": {"type": str},
+                                "role": {"type": str},
+                                "source_settings": {"type": SourceSettings},
+                                "session_settings": {"type": SessionSettings},
+                            }
+                            name: str
+                            """Session name."""
+                            role: Literal["source", "destination"] | None
+                            source_settings: SourceSettings
+                            """Subclass of AvdModel."""
+                            session_settings: SessionSettings
+                            """
+                            Session settings are defined per session name.
+                            Different session_settings for the same session name
+                            will be combined/merged.
+
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    name: str | UndefinedType = Undefined,
+                                    role: Literal["source", "destination"] | None | UndefinedType = Undefined,
+                                    source_settings: SourceSettings | UndefinedType = Undefined,
+                                    session_settings: SessionSettings | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    MonitorSessionsItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        name: Session name.
+                                        role: role
+                                        source_settings: Subclass of AvdModel.
+                                        session_settings:
+                                           Session settings are defined per session name.
+                                           Different session_settings for the same session name
+                                           will be combined/merged.
+
+
+                                           Subclass of AvdModel.
+
+                                    """
+
+                        class MonitorSessions(AvdList[MonitorSessionsItem]):
+                            """Subclass of AvdList with `MonitorSessionsItem` items."""
+
+                        MonitorSessions._item_type = MonitorSessionsItem
+
                         class CampusLinkType(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -44557,7 +47551,9 @@ class EosDesigns(EosDesignsRootModel):
                             "encapsulation_dot1q_vlan": {"type": EncapsulationDot1qVlan},
                             "ip_addresses": {"type": IpAddresses},
                             "static_routes": {"type": StaticRoutes},
+                            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "nodes": {"type": Nodes},
+                            "arp_gratuitous_accept": {"type": bool},
                             "description": {"type": str},
                             "descriptions": {"type": Descriptions},
                             "enabled": {"type": bool, "default": True},
@@ -44567,6 +47563,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ospf": {"type": Ospf},
                             "pim": {"type": Pim},
                             "flow_tracking": {"type": FlowTracking},
+                            "monitor_sessions": {"type": MonitorSessions},
                             "campus_link_type": {"type": CampusLinkType},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "raw_eos_cli": {"type": str},
@@ -44584,13 +47581,22 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
                         static_routes: StaticRoutes
                         """
-                        Static routes to be configured on every device when this interface is configured.
+                        Static routes to be configured on every device where this interface is configured.
 
                         Subclass of
                         AvdList with `StaticRoutesItem` items.
                         """
+                        ipv6_static_routes: Ipv6StaticRoutes
+                        """
+                        IPv6 static routes to be configured on every device where this interface is configured.
+
+                        Subclass of
+                        AvdList with `Ipv6StaticRoutesItem` items.
+                        """
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
+                        arp_gratuitous_accept: bool | None
+                        """Accept gratuitous ARP."""
                         description: str | None
                         descriptions: Descriptions
                         """
@@ -44627,6 +47633,13 @@ class EosDesigns(EosDesignsRootModel):
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                         Subclass of AvdModel.
                         """
+                        monitor_sessions: MonitorSessions
+                        """
+                        Used to define interfaces as source or destination for monitoring sessions.
+
+                        Subclass of AvdList
+                        with `MonitorSessionsItem` items.
+                        """
                         campus_link_type: CampusLinkType
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -44655,7 +47668,9 @@ class EosDesigns(EosDesignsRootModel):
                                 encapsulation_dot1q_vlan: EncapsulationDot1qVlan | UndefinedType = Undefined,
                                 ip_addresses: IpAddresses | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
+                                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 descriptions: Descriptions | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
@@ -44665,6 +47680,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ospf: Ospf | UndefinedType = Undefined,
                                 pim: Pim | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
+                                monitor_sessions: MonitorSessions | UndefinedType = Undefined,
                                 campus_link_type: CampusLinkType | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
@@ -44684,11 +47700,17 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdList with `int` items.
                                     ip_addresses: Subclass of AvdList with `str` items.
                                     static_routes:
-                                       Static routes to be configured on every device when this interface is configured.
+                                       Static routes to be configured on every device where this interface is configured.
 
                                        Subclass of
                                        AvdList with `StaticRoutesItem` items.
+                                    ipv6_static_routes:
+                                       IPv6 static routes to be configured on every device where this interface is configured.
+
+                                       Subclass of
+                                       AvdList with `Ipv6StaticRoutesItem` items.
                                     nodes: Subclass of AvdList with `str` items.
+                                    arp_gratuitous_accept: Accept gratuitous ARP.
                                     description: description
                                     descriptions:
                                        "descriptions" has precedence over "description".
@@ -44716,6 +47738,11 @@ class EosDesigns(EosDesignsRootModel):
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                                        Subclass of AvdModel.
+                                    monitor_sessions:
+                                       Used to define interfaces as source or destination for monitoring sessions.
+
+                                       Subclass of AvdList
+                                       with `MonitorSessionsItem` items.
                                     campus_link_type:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
@@ -44884,6 +47911,67 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `StaticRoutesItem` items."""
 
                         StaticRoutes._item_type = StaticRoutesItem
+
+                        class Ipv6StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class Ipv6StaticRoutes(AvdList[Ipv6StaticRoutesItem]):
+                            """Subclass of AvdList with `Ipv6StaticRoutesItem` items."""
+
+                        Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
                         class Ospf(AvdModel):
                             """Subclass of AvdModel."""
@@ -45061,6 +48149,7 @@ class EosDesigns(EosDesignsRootModel):
                         _fields: ClassVar[dict] = {
                             "name": {"type": str},
                             "node": {"type": str},
+                            "arp_gratuitous_accept": {"type": bool},
                             "description": {"type": str},
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
@@ -45073,6 +48162,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
                             "static_routes": {"type": StaticRoutes},
+                            "ipv6_static_routes": {"type": Ipv6StaticRoutes},
                             "ospf": {"type": Ospf},
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
@@ -45086,6 +48176,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         node: str
                         """Node."""
+                        arp_gratuitous_accept: bool | None
+                        """Accept gratuitous ARP."""
                         description: str | None
                         """
                         Interface description.
@@ -45132,10 +48224,13 @@ class EosDesigns(EosDesignsRootModel):
                         """Name of the IPv4 Access-list to be assigned in the egress direction."""
                         static_routes: StaticRoutes
                         """
-                        Static routes to be configured on the device when this Port-channel is configured.
-
-                        Subclass of
-                        AvdList with `StaticRoutesItem` items.
+                        Static routes to be configured on the device where this Port-channel interface is configured.
+                        Subclass of AvdList with `StaticRoutesItem` items.
+                        """
+                        ipv6_static_routes: Ipv6StaticRoutes
+                        """
+                        IPv6 static routes to be configured on the device where this Port-channel interface is configured.
+                        Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                         """
                         ospf: Ospf
                         """
@@ -45165,6 +48260,7 @@ class EosDesigns(EosDesignsRootModel):
                                 *,
                                 name: str | UndefinedType = Undefined,
                                 node: str | UndefinedType = Undefined,
+                                arp_gratuitous_accept: bool | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
@@ -45177,6 +48273,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                                 static_routes: StaticRoutes | UndefinedType = Undefined,
+                                ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
@@ -45194,6 +48291,7 @@ class EosDesigns(EosDesignsRootModel):
                                        For a
                                        Port-Channel subinterface, the parent Port-Channel interface must be defined as well.
                                     node: Node.
+                                    arp_gratuitous_accept: Accept gratuitous ARP.
                                     description:
                                        Interface description.
                                        If not set, a default description will be configured with '[<peer>[
@@ -45218,10 +48316,11 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
                                     ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
                                     static_routes:
-                                       Static routes to be configured on the device when this Port-channel is configured.
-
-                                       Subclass of
-                                       AvdList with `StaticRoutesItem` items.
+                                       Static routes to be configured on the device where this Port-channel interface is configured.
+                                       Subclass of AvdList with `StaticRoutesItem` items.
+                                    ipv6_static_routes:
+                                       IPv6 static routes to be configured on the device where this Port-channel interface is configured.
+                                       Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                                     ospf:
                                        OSPF interface configuration.
 
@@ -46385,6 +49484,8 @@ class EosDesigns(EosDesignsRootModel):
                             "rib_in_pre_policy_retain": {"type": RibInPrePolicyRetain},
                             "route_map_in": {"type": str},
                             "route_map_out": {"type": str},
+                            "peer_tag_in": {"type": str},
+                            "peer_tag_out_discard": {"type": str},
                             "session_tracker": {"type": str},
                             "shared_secret": {"type": SharedSecret},
                             "ttl_maximum_hops": {"type": int},
@@ -46497,6 +49598,10 @@ class EosDesigns(EosDesignsRootModel):
                         """Inbound route-map name."""
                         route_map_out: str | None
                         """Outbound route-map name."""
+                        peer_tag_in: str | None
+                        """Inbound peer tag name."""
+                        peer_tag_out_discard: str | None
+                        """Outbound discard peer tag name."""
                         session_tracker: str | None
                         shared_secret: SharedSecret
                         """Subclass of AvdModel."""
@@ -46544,6 +49649,8 @@ class EosDesigns(EosDesignsRootModel):
                                 rib_in_pre_policy_retain: RibInPrePolicyRetain | UndefinedType = Undefined,
                                 route_map_in: str | None | UndefinedType = Undefined,
                                 route_map_out: str | None | UndefinedType = Undefined,
+                                peer_tag_in: str | None | UndefinedType = Undefined,
+                                peer_tag_out_discard: str | None | UndefinedType = Undefined,
                                 session_tracker: str | None | UndefinedType = Undefined,
                                 shared_secret: SharedSecret | UndefinedType = Undefined,
                                 ttl_maximum_hops: int | None | UndefinedType = Undefined,
@@ -46626,6 +49733,8 @@ class EosDesigns(EosDesignsRootModel):
                                     rib_in_pre_policy_retain: Subclass of AvdModel.
                                     route_map_in: Inbound route-map name.
                                     route_map_out: Outbound route-map name.
+                                    peer_tag_in: Inbound peer tag name.
+                                    peer_tag_out_discard: Outbound discard peer tag name.
                                     session_tracker: session_tracker
                                     shared_secret: Subclass of AvdModel.
                                     ttl_maximum_hops: Maximum number of hops.
@@ -46693,6 +49802,81 @@ class EosDesigns(EosDesignsRootModel):
 
                     AdditionalRouteTargets._item_type = AdditionalRouteTargetsItem
 
+                    class AggregateAddressesItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Nodes(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        Nodes._item_type = str
+
+                        _fields: ClassVar[dict] = {
+                            "nodes": {"type": Nodes},
+                            "prefix": {"type": str},
+                            "advertise_only": {"type": bool},
+                            "as_set": {"type": bool},
+                            "summary_only": {"type": bool},
+                            "attribute_map": {"type": str},
+                            "match_map": {"type": str},
+                        }
+                        nodes: Nodes
+                        """
+                        Nodes where the aggregate should be configured.
+                        By default the aggregate will be configured all on
+                        all devices where the VRF is configured.
+
+                        Subclass of AvdList with `str` items.
+                        """
+                        prefix: str | None
+                        """IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"."""
+                        advertise_only: bool | None
+                        as_set: bool | None
+                        summary_only: bool | None
+                        attribute_map: str | None
+                        """Route-map name."""
+                        match_map: str | None
+                        """Route-map name."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                nodes: Nodes | UndefinedType = Undefined,
+                                prefix: str | None | UndefinedType = Undefined,
+                                advertise_only: bool | None | UndefinedType = Undefined,
+                                as_set: bool | None | UndefinedType = Undefined,
+                                summary_only: bool | None | UndefinedType = Undefined,
+                                attribute_map: str | None | UndefinedType = Undefined,
+                                match_map: str | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                AggregateAddressesItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    nodes:
+                                       Nodes where the aggregate should be configured.
+                                       By default the aggregate will be configured all on
+                                       all devices where the VRF is configured.
+
+                                       Subclass of AvdList with `str` items.
+                                    prefix: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                                    advertise_only: advertise_only
+                                    as_set: as_set
+                                    summary_only: summary_only
+                                    attribute_map: Route-map name.
+                                    match_map: Route-map name.
+
+                                """
+
+                    class AggregateAddresses(AvdList[AggregateAddressesItem]):
+                        """Subclass of AvdList with `AggregateAddressesItem` items."""
+
+                    AggregateAddresses._item_type = AggregateAddressesItem
+
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
                         "address_families": {"type": AddressFamilies, "default": lambda cls: coerce_type(["evpn"], target_type=cls)},
@@ -46725,6 +49909,7 @@ class EosDesigns(EosDesignsRootModel):
                         "bgp": {"type": Bgp},
                         "bgp_peer_groups": {"type": BgpPeerGroups},
                         "additional_route_targets": {"type": AdditionalRouteTargets},
+                        "aggregate_addresses": {"type": AggregateAddresses},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen},
                     }
@@ -46977,6 +50162,8 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `AdditionalRouteTargetsItem` items.
                     """
+                    aggregate_addresses: AggregateAddresses
+                    """Subclass of AvdList with `AggregateAddressesItem` items."""
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the root level of the final EOS configuration."""
                     structured_config: EosCliConfigGen
@@ -47018,6 +50205,7 @@ class EosDesigns(EosDesignsRootModel):
                             bgp: Bgp | UndefinedType = Undefined,
                             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
                             additional_route_targets: AdditionalRouteTargets | UndefinedType = Undefined,
+                            aggregate_addresses: AggregateAddresses | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen | UndefinedType = Undefined,
                         ) -> None:
@@ -47213,6 +50401,7 @@ class EosDesigns(EosDesignsRootModel):
                                    address families.
 
                                    Subclass of AvdList with `AdditionalRouteTargetsItem` items.
+                                aggregate_addresses: Subclass of AvdList with `AggregateAddressesItem` items.
                                 raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
                                 structured_config: Custom structured config for eos_cli_config_gen.
 
@@ -47406,11 +50595,13 @@ class EosDesigns(EosDesignsRootModel):
 
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
+                        "name": {"type": str},
+                        "profile": {"type": str},
+                        "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
+                        "address_locking": {"type": EosCliConfigGen.VlansItem.AddressLocking.AddressFamily},
                         "vni_override": {"type": int},
                         "rt_override": {"type": str},
                         "rd_override": {"type": str},
-                        "name": {"type": str},
-                        "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
                         "vxlan": {"type": bool, "default": True},
                         "spanning_tree_priority": {"type": int},
                         "evpn_vlan_bundle": {"type": str},
@@ -47425,6 +50616,26 @@ class EosDesigns(EosDesignsRootModel):
                     }
                     id: int
                     """VLAN ID."""
+                    name: str
+                    """VLAN name."""
+                    profile: str | None
+                    """
+                    L2VLAN profile name.
+                    The profile must be defined under `l2vlan_profiles`. The profile may refer to
+                    another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
+                    l2vlan_profile -> l2vlan_parent_profile).
+                    """
+                    tags: Tags
+                    """
+                    Tags leveraged for networks services filtering.
+                    Tags are matched against filter.tags defined under
+                    node type settings.
+                    Tags are also matched against the node_group name under node type settings.
+                    Subclass of AvdList with `str` items.
+
+                    Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+                    """
+                    address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily
                     vni_override: int | None
                     """
                     By default the VNI will be derived from mac_vrf_vni_base.
@@ -47450,23 +50661,11 @@ class EosDesigns(EosDesignsRootModel):
                     to override this value and statically define it.
                     rd_override will default to rt_override or
                     vni_override if set.
-
                     rd_override supports two formats:
-                      - A single number which will be used in
-                    the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
-                    - A full RD string with colon separator which will override the full RD.
-                    """
-                    name: str
-                    """VLAN name."""
-                    tags: Tags
-                    """
-                    Tags leveraged for networks services filtering.
-                    Tags are matched against filter.tags defined under
-                    node type settings.
-                    Tags are also matched against the node_group name under node type settings.
-                    Subclass of AvdList with `str` items.
-
-                    Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+                      - A single number which will be used in the
+                    RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+                      -
+                    A full RD string with colon separator which will override the full RD.
                     """
                     vxlan: bool
                     """
@@ -47534,11 +50733,13 @@ class EosDesigns(EosDesignsRootModel):
                             self,
                             *,
                             id: int | UndefinedType = Undefined,
+                            name: str | UndefinedType = Undefined,
+                            profile: str | None | UndefinedType = Undefined,
+                            tags: Tags | UndefinedType = Undefined,
+                            address_locking: EosCliConfigGen.VlansItem.AddressLocking.AddressFamily | UndefinedType = Undefined,
                             vni_override: int | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
                             rd_override: str | None | UndefinedType = Undefined,
-                            name: str | UndefinedType = Undefined,
-                            tags: Tags | UndefinedType = Undefined,
                             vxlan: bool | UndefinedType = Undefined,
                             spanning_tree_priority: int | None | UndefinedType = Undefined,
                             evpn_vlan_bundle: str | None | UndefinedType = Undefined,
@@ -47559,6 +50760,19 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 id: VLAN ID.
+                                name: VLAN name.
+                                profile:
+                                   L2VLAN profile name.
+                                   The profile must be defined under `l2vlan_profiles`. The profile may refer to
+                                   another l2vlan_profile as it's `parent_profile` to inherit settings in up to two levels (l2vlan ->
+                                   l2vlan_profile -> l2vlan_parent_profile).
+                                tags:
+                                   Tags leveraged for networks services filtering.
+                                   Tags are matched against filter.tags defined under
+                                   node type settings.
+                                   Tags are also matched against the node_group name under node type settings.
+                                   Subclass of AvdList with `str` items.
+                                address_locking: address_locking
                                 vni_override:
                                    By default the VNI will be derived from mac_vrf_vni_base.
                                    The vni_override, allows to override this
@@ -47579,18 +50793,11 @@ class EosDesigns(EosDesignsRootModel):
                                    to override this value and statically define it.
                                    rd_override will default to rt_override or
                                    vni_override if set.
-
                                    rd_override supports two formats:
-                                     - A single number which will be used in
-                                   the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
-                                   - A full RD string with colon separator which will override the full RD.
-                                name: VLAN name.
-                                tags:
-                                   Tags leveraged for networks services filtering.
-                                   Tags are matched against filter.tags defined under
-                                   node type settings.
-                                   Tags are also matched against the node_group name under node type settings.
-                                   Subclass of AvdList with `str` items.
+                                     - A single number which will be used in the
+                                   RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+                                     -
+                                   A full RD string with colon separator which will override the full RD.
                                 vxlan: Extend this L2VLAN over VXLAN.
                                 spanning_tree_priority:
                                    Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst`
@@ -48100,7 +51307,7 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 l2vlans: L2vlans
                 """
-                Define L2 network services organized by vlan id.
+                Define L2 network services organized by VLAN ID.
 
                 Subclass of AvdList with `L2vlansItem` items.
                 """
@@ -48286,7 +51493,7 @@ class EosDesigns(EosDesignsRootModel):
                                Subclass of AvdIndexedList with `VrfsItem` items.
                                Primary key is `name` (`str`).
                             l2vlans:
-                               Define L2 network services organized by vlan id.
+                               Define L2 network services organized by VLAN ID.
 
                                Subclass of AvdList with `L2vlansItem` items.
                             point_to_point_services:
@@ -49360,6 +52567,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -49422,6 +52630,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -49447,6 +52657,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -49491,6 +52702,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -49533,7 +52745,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -49573,12 +52784,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -49606,7 +52811,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -49638,10 +52842,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -50788,10 +53988,212 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3PortChannels._item_type = L3PortChannelsItem
 
+                    class UnderlayMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PimSm(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                            on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if also
+                            enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_pim_sm`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable PIM sparse-mode on uplinks.
+                            Requires node setting `underlay_multicast.pim_sm.enabled:
+                            true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective only when
+                            node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PimSm.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                           on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if also
+                                           enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_pim_sm`.
+                                        uplinks:
+                                           Enable/Disable PIM sparse-mode on uplinks.
+                                           Requires node setting `underlay_multicast.pim_sm.enabled:
+                                           true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                        uplink_interfaces:
+                                           Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective only when
+                                           node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                           Subclass of AvdList with `str` items.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                    """
+
+                        class Static(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures static multicast in the
+                            underlay on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if
+                            also enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_multicast`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable static multicast on uplinks.
+                            Requires node setting
+                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
+
+                            Subclass of AvdList with `str`
+                            items.
+                            """
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Static.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures static multicast in the
+                                           underlay on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if
+                                           also enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_multicast`.
+                                        uplinks:
+                                           Enable/Disable static multicast on uplinks.
+                                           Requires node setting
+                                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                        uplink_interfaces:
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                           Subclass of AvdList with `str`
+                                           items.
+                                        mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                        pim_sm: PimSm
+                        """Subclass of AvdModel."""
+                        static: Static
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                """
+                                UnderlayMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    pim_sm: Subclass of AvdModel.
+                                    static: Subclass of AvdModel.
+
+                                """
+
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -50799,11 +54201,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -50816,6 +54232,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -50854,6 +54278,10 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -50907,6 +54335,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -50933,6 +54362,7 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "underlay_multicast": {"type": UnderlayMulticast},
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
@@ -51166,6 +54596,17 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_interfaces`."""
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                    channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -51527,13 +54968,23 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    """
+                    inband_mgmt_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
                     """
                     inband_mgmt_ip: str | None
                     """
@@ -51720,14 +55171,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -51764,6 +55212,8 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    underlay_multicast: UnderlayMulticast
+                    """Subclass of AvdModel."""
                     campus: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -51839,6 +55289,10 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -51893,6 +55347,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -51919,6 +55374,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
@@ -52095,6 +55551,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                   channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -52336,13 +55798,19 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -52477,14 +55945,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -52507,6 +55972,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                underlay_multicast: Subclass of AvdModel.
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -53639,6 +57105,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "mode_one_step": {"type": bool, "default": False},
                                 "ttl": {"type": int},
                                 "forward_unicast": {"type": bool, "default": False},
+                                "forward_v1": {"type": bool},
                                 "dscp": {"type": Dscp},
                                 "monitor": {"type": Monitor},
                             }
@@ -53701,6 +57168,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Default value: `False`
                             """
+                            forward_v1: bool | None
+                            """Forward dataplane PTP V1 packets."""
                             dscp: Dscp
                             """Subclass of AvdModel."""
                             monitor: Monitor
@@ -53726,6 +57195,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: bool | UndefinedType = Undefined,
                                     ttl: int | None | UndefinedType = Undefined,
                                     forward_unicast: bool | UndefinedType = Undefined,
+                                    forward_v1: bool | None | UndefinedType = Undefined,
                                     dscp: Dscp | UndefinedType = Undefined,
                                     monitor: Monitor | UndefinedType = Undefined,
                                 ) -> None:
@@ -53770,6 +57240,7 @@ class EosDesigns(EosDesignsRootModel):
                                         mode_one_step: mode_one_step
                                         ttl: ttl
                                         forward_unicast: Enable PTP unicast forwarding.
+                                        forward_v1: Forward dataplane PTP V1 packets.
                                         dscp: Subclass of AvdModel.
                                         monitor: Subclass of AvdModel.
 
@@ -53814,7 +57285,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "mtu": {"type": int, "default": 9194},
                                 "ha_interfaces": {"type": HaInterfaces},
                                 "ha_ipv4_pool": {"type": str},
-                                "max_ha_interfaces": {"type": int},
                                 "port_channel_id": {"type": int},
                                 "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                                 "flow_tracking": {"type": FlowTracking},
@@ -53854,12 +57324,6 @@ class EosDesigns(EosDesignsRootModel):
                             first WAN router.
                             Not used for uplink interfaces.
                             """
-                            max_ha_interfaces: int | None
-                            """
-                            Number of parallel links towards HA switches.
-                            Can be used to reserve IP addresses for future
-                            parallel HA links.
-                            """
                             port_channel_id: int | None
                             """Port-channel ID to use for direct HA."""
                             use_port_channel_for_direct_ha: bool
@@ -53887,7 +57351,6 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: int | UndefinedType = Undefined,
                                     ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                     ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                    max_ha_interfaces: int | None | UndefinedType = Undefined,
                                     port_channel_id: int | None | UndefinedType = Undefined,
                                     use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -53919,10 +57382,6 @@ class EosDesigns(EosDesignsRootModel):
                                            subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                            first WAN router.
                                            Not used for uplink interfaces.
-                                        max_ha_interfaces:
-                                           Number of parallel links towards HA switches.
-                                           Can be used to reserve IP addresses for future
-                                           parallel HA links.
                                         port_channel_id: Port-channel ID to use for direct HA.
                                         use_port_channel_for_direct_ha:
                                            Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -55081,10 +58540,212 @@ class EosDesigns(EosDesignsRootModel):
 
                         L3PortChannels._item_type = L3PortChannelsItem
 
+                        class UnderlayMulticast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class PimSm(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class UplinkInterfaces(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                UplinkInterfaces._item_type = str
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "uplinks": {"type": bool, "default": True},
+                                    "uplink_interfaces": {"type": UplinkInterfaces},
+                                    "mlag": {"type": bool, "default": True},
+                                }
+                                enabled: bool | None
+                                """
+                                When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                on all:
+                                  - P2P uplink interfaces if enabled on uplink peer
+                                  - MLAG L3 peer interface if also
+                                enabled on MLAG peer
+                                  - l3_edge and core interfaces
+                                Overrides the global
+                                `underlay_multicast_pim_sm`.
+                                """
+                                uplinks: bool
+                                """
+                                Enable/Disable PIM sparse-mode on uplinks.
+                                Requires node setting `underlay_multicast.pim_sm.enabled:
+                                true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                                Default value: `True`
+                                """
+                                uplink_interfaces: UplinkInterfaces
+                                """
+                                Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                Effective only when
+                                node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                Subclass of AvdList with `str` items.
+                                """
+                                mlag: bool
+                                """
+                                Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                Default value: `True`
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        uplinks: bool | UndefinedType = Undefined,
+                                        uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                        mlag: bool | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        PimSm.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled:
+                                               When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                               on all:
+                                                 - P2P uplink interfaces if enabled on uplink peer
+                                                 - MLAG L3 peer interface if also
+                                               enabled on MLAG peer
+                                                 - l3_edge and core interfaces
+                                               Overrides the global
+                                               `underlay_multicast_pim_sm`.
+                                            uplinks:
+                                               Enable/Disable PIM sparse-mode on uplinks.
+                                               Requires node setting `underlay_multicast.pim_sm.enabled:
+                                               true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                            uplink_interfaces:
+                                               Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                               Effective only when
+                                               node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                               Subclass of AvdList with `str` items.
+                                            mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                        """
+
+                            class Static(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class UplinkInterfaces(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                UplinkInterfaces._item_type = str
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "uplinks": {"type": bool, "default": True},
+                                    "uplink_interfaces": {"type": UplinkInterfaces},
+                                    "mlag": {"type": bool, "default": True},
+                                }
+                                enabled: bool | None
+                                """
+                                When enabled, configures multicast routing and by default configures static multicast in the
+                                underlay on all:
+                                  - P2P uplink interfaces if enabled on uplink peer
+                                  - MLAG L3 peer interface if
+                                also enabled on MLAG peer
+                                  - l3_edge and core interfaces
+                                Overrides the global
+                                `underlay_multicast_multicast`.
+                                """
+                                uplinks: bool
+                                """
+                                Enable/Disable static multicast on uplinks.
+                                Requires node setting
+                                `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                                Default value: `True`
+                                """
+                                uplink_interfaces: UplinkInterfaces
+                                """
+                                Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                Effective
+                                only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                Subclass of AvdList with `str`
+                                items.
+                                """
+                                mlag: bool
+                                """
+                                Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                Default value: `True`
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        uplinks: bool | UndefinedType = Undefined,
+                                        uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                        mlag: bool | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Static.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled:
+                                               When enabled, configures multicast routing and by default configures static multicast in the
+                                               underlay on all:
+                                                 - P2P uplink interfaces if enabled on uplink peer
+                                                 - MLAG L3 peer interface if
+                                               also enabled on MLAG peer
+                                                 - l3_edge and core interfaces
+                                               Overrides the global
+                                               `underlay_multicast_multicast`.
+                                            uplinks:
+                                               Enable/Disable static multicast on uplinks.
+                                               Requires node setting
+                                               `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                            uplink_interfaces:
+                                               Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                               Effective
+                                               only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                               Subclass of AvdList with `str`
+                                               items.
+                                            mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                            pim_sm: PimSm
+                            """Subclass of AvdModel."""
+                            static: Static
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                    """
+                                    UnderlayMulticast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        pim_sm: Subclass of AvdModel.
+                                        static: Subclass of AvdModel.
+
+                                    """
+
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                             act_os_version: str | None
                             """
                             Desired ACT Digital Twin OS version.
@@ -55092,11 +58753,25 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             mgmt_ip: str | None
                             """Desired management interface IPv4 address."""
+                            act_internet_access: bool | None
+                            """
+                            Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                            This option
+                            applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                            types.
+                            ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                            Overrides
+                            global `digital_twin.fabric.act_internet_access` flag.
+                            """
 
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                    self,
+                                    *,
+                                    act_os_version: str | None | UndefinedType = Undefined,
+                                    mgmt_ip: str | None | UndefinedType = Undefined,
+                                    act_internet_access: bool | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     DigitalTwin.
@@ -55109,6 +58784,14 @@ class EosDesigns(EosDesignsRootModel):
                                            Desired ACT Digital Twin OS version.
                                            Overrides global `digital_twin.fabric.act_os_version` flag.
                                         mgmt_ip: Desired management interface IPv4 address.
+                                        act_internet_access:
+                                           Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                           This option
+                                           applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                           types.
+                                           ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                           Overrides
+                                           global `digital_twin.fabric.act_internet_access` flag.
 
                                     """
 
@@ -55149,6 +58832,10 @@ class EosDesigns(EosDesignsRootModel):
                             "uplink_port_channel_id": {"type": int},
                             "uplink_switch_port_channel_id": {"type": int},
                             "uplink_structured_config": {"type": dict},
+                            "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                            "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                             "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -55202,6 +58889,7 @@ class EosDesigns(EosDesignsRootModel):
                             "inband_mgmt_interface": {"type": str},
                             "inband_mgmt_vlan": {"type": int, "default": 4092},
                             "inband_mgmt_subnet": {"type": str},
+                            "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                             "inband_mgmt_ip": {"type": str},
                             "inband_mgmt_gateway": {"type": str},
                             "inband_mgmt_ipv6_address": {"type": str},
@@ -55228,6 +58916,7 @@ class EosDesigns(EosDesignsRootModel):
                             "l3_port_channels": {"type": L3PortChannels},
                             "data_plane_cpu_allocation_max": {"type": int},
                             "flow_tracker_type": {"type": str},
+                            "underlay_multicast": {"type": UnderlayMulticast},
                             "campus": {"type": str},
                             "campus_pod": {"type": str},
                             "campus_access_pod": {"type": str},
@@ -55471,6 +59160,17 @@ class EosDesigns(EosDesignsRootModel):
                         "structured_config" defined on node-level.
                         Note! The content of this dictionary is _not_ validated
                         by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                        """
+                        uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """Custom structured config applied to `uplink_interfaces`."""
+                        uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                        uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                        uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                        channel uplinks.
                         """
                         mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                         """
@@ -55832,13 +59532,23 @@ class EosDesigns(EosDesignsRootModel):
                         2 (same IP on all l3leaf A)
                         l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                         l2leafs       :
-                        <subnet> + 3 + <l2leaf id>
+                        <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                         GW on l2leafs : <subnet> + 1
-                        Assign range larger than total l2leafs + 5
+                        Assign range
+                        larger than total l2leafs + 5
+
                         Setting is ignored if 'inband_mgmt_ip' is set.
 
-                        This setting is applicable to L2 switches (switches
-                        using port-channel trunks as uplinks).
+                        This setting is
+                        applicable to L2 switches (switches using port-channel trunks as uplinks).
+                        """
+                        inband_mgmt_subnet_offset: int
+                        """
+                        Offset value to adjust the calculated inband management IP address within the subnet.
+                        The assigned
+                        IP will be computed by adding this offset to the device ID.
+
+                        Default value: `0`
                         """
                         inband_mgmt_ip: str | None
                         """
@@ -56025,14 +59735,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         wan_ha: WanHa
                         """
-                        PREVIEW: This key is currently not supported
+                        The key is supported only if `wan_mode` == `cv-pathfinder`.
+                        AutoVPN support is still to be
+                        determined.
 
-                        The key is supported only if `wan_mode` == `cv-
-                        pathfinder`.
-                        AutoVPN support is still to be determined.
-
-                        Maximum 2 devices supported by group for
-                        HA.
+                        Maximum 2 devices supported by group for HA.
 
                         Subclass of AvdModel.
                         """
@@ -56069,6 +59776,8 @@ class EosDesigns(EosDesignsRootModel):
                         level.
                         `default_flow_tracker_type` default value is `sampled`.
                         """
+                        underlay_multicast: UnderlayMulticast
+                        """Subclass of AvdModel."""
                         campus: str | None
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -56146,6 +59855,10 @@ class EosDesigns(EosDesignsRootModel):
                                 uplink_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                                 uplink_structured_config: dict | UndefinedType = Undefined,
+                                uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -56200,6 +59913,7 @@ class EosDesigns(EosDesignsRootModel):
                                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                                 inband_mgmt_vlan: int | UndefinedType = Undefined,
                                 inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                                inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                                 inband_mgmt_ip: str | None | UndefinedType = Undefined,
                                 inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                                 inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -56226,6 +59940,7 @@ class EosDesigns(EosDesignsRootModel):
                                 l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                                 data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                                 flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                                underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                                 campus: str | None | UndefinedType = Undefined,
                                 campus_pod: str | None | UndefinedType = Undefined,
                                 campus_access_pod: str | None | UndefinedType = Undefined,
@@ -56409,6 +60124,12 @@ class EosDesigns(EosDesignsRootModel):
                                        "structured_config" defined on node-level.
                                        Note! The content of this dictionary is _not_ validated
                                        by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                    uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                    uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                    uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                    uplink_switch_port_channel_structured_config:
+                                       Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                       channel uplinks.
                                     mlag_port_channel_structured_config:
                                        Custom structured config applied to MLAG peer link port-channel id.
                                        Added under
@@ -56650,13 +60371,19 @@ class EosDesigns(EosDesignsRootModel):
                                        2 (same IP on all l3leaf A)
                                        l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                        l2leafs       :
-                                       <subnet> + 3 + <l2leaf id>
+                                       <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                        GW on l2leafs : <subnet> + 1
-                                       Assign range larger than total l2leafs + 5
+                                       Assign range
+                                       larger than total l2leafs + 5
+
                                        Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                       This setting is applicable to L2 switches (switches
-                                       using port-channel trunks as uplinks).
+                                       This setting is
+                                       applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                    inband_mgmt_subnet_offset:
+                                       Offset value to adjust the calculated inband management IP address within the subnet.
+                                       The assigned
+                                       IP will be computed by adding this offset to the device ID.
                                     inband_mgmt_ip:
                                        IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                        This overrides
@@ -56791,14 +60518,11 @@ class EosDesigns(EosDesignsRootModel):
                                        For pathfinders without `cv_pathfinder_region` set,
                                        the site must be defined under `cv_pathfinder_global_sites`.
                                     wan_ha:
-                                       PREVIEW: This key is currently not supported
+                                       The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                       AutoVPN support is still to be
+                                       determined.
 
-                                       The key is supported only if `wan_mode` == `cv-
-                                       pathfinder`.
-                                       AutoVPN support is still to be determined.
-
-                                       Maximum 2 devices supported by group for
-                                       HA.
+                                       Maximum 2 devices supported by group for HA.
 
                                        Subclass of AvdModel.
                                     dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -56821,6 +60545,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Override the `default_flow_tracker_type`` set at the `node_type_key`
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
+                                    underlay_multicast: Subclass of AvdModel.
                                     campus:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
@@ -57875,6 +61600,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -57937,6 +61663,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -57962,6 +61690,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -58006,6 +61735,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -58048,7 +61778,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -58088,12 +61817,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -58121,7 +61844,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -58153,10 +61875,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -59303,10 +63021,212 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3PortChannels._item_type = L3PortChannelsItem
 
+                    class UnderlayMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PimSm(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                            on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if also
+                            enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_pim_sm`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable PIM sparse-mode on uplinks.
+                            Requires node setting `underlay_multicast.pim_sm.enabled:
+                            true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective only when
+                            node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PimSm.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                           on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if also
+                                           enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_pim_sm`.
+                                        uplinks:
+                                           Enable/Disable PIM sparse-mode on uplinks.
+                                           Requires node setting `underlay_multicast.pim_sm.enabled:
+                                           true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                        uplink_interfaces:
+                                           Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective only when
+                                           node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                           Subclass of AvdList with `str` items.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                    """
+
+                        class Static(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures static multicast in the
+                            underlay on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if
+                            also enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_multicast`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable static multicast on uplinks.
+                            Requires node setting
+                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
+
+                            Subclass of AvdList with `str`
+                            items.
+                            """
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Static.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures static multicast in the
+                                           underlay on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if
+                                           also enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_multicast`.
+                                        uplinks:
+                                           Enable/Disable static multicast on uplinks.
+                                           Requires node setting
+                                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                        uplink_interfaces:
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                           Subclass of AvdList with `str`
+                                           items.
+                                        mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                        pim_sm: PimSm
+                        """Subclass of AvdModel."""
+                        static: Static
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                """
+                                UnderlayMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    pim_sm: Subclass of AvdModel.
+                                    static: Subclass of AvdModel.
+
+                                """
+
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -59314,11 +63234,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -59331,6 +63265,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -59371,6 +63313,10 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -59424,6 +63370,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -59450,6 +63397,7 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "underlay_multicast": {"type": UnderlayMulticast},
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
@@ -59696,6 +63644,17 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_interfaces`."""
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                    channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -60057,13 +64016,23 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    """
+                    inband_mgmt_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
                     """
                     inband_mgmt_ip: str | None
                     """
@@ -60250,14 +64219,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -60294,6 +64260,8 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    underlay_multicast: UnderlayMulticast
+                    """Subclass of AvdModel."""
                     campus: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -60371,6 +64339,10 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -60425,6 +64397,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -60451,6 +64424,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
@@ -60636,6 +64610,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                   channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -60877,13 +64857,19 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -61018,14 +65004,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -61048,6 +65031,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                underlay_multicast: Subclass of AvdModel.
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -62177,6 +66161,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mode_one_step": {"type": bool, "default": False},
                             "ttl": {"type": int},
                             "forward_unicast": {"type": bool, "default": False},
+                            "forward_v1": {"type": bool},
                             "dscp": {"type": Dscp},
                             "monitor": {"type": Monitor},
                         }
@@ -62239,6 +66224,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Default value: `False`
                         """
+                        forward_v1: bool | None
+                        """Forward dataplane PTP V1 packets."""
                         dscp: Dscp
                         """Subclass of AvdModel."""
                         monitor: Monitor
@@ -62264,6 +66251,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mode_one_step: bool | UndefinedType = Undefined,
                                 ttl: int | None | UndefinedType = Undefined,
                                 forward_unicast: bool | UndefinedType = Undefined,
+                                forward_v1: bool | None | UndefinedType = Undefined,
                                 dscp: Dscp | UndefinedType = Undefined,
                                 monitor: Monitor | UndefinedType = Undefined,
                             ) -> None:
@@ -62308,6 +66296,7 @@ class EosDesigns(EosDesignsRootModel):
                                     mode_one_step: mode_one_step
                                     ttl: ttl
                                     forward_unicast: Enable PTP unicast forwarding.
+                                    forward_v1: Forward dataplane PTP V1 packets.
                                     dscp: Subclass of AvdModel.
                                     monitor: Subclass of AvdModel.
 
@@ -62350,7 +66339,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int, "default": 9194},
                             "ha_interfaces": {"type": HaInterfaces},
                             "ha_ipv4_pool": {"type": str},
-                            "max_ha_interfaces": {"type": int},
                             "port_channel_id": {"type": int},
                             "use_port_channel_for_direct_ha": {"type": bool, "default": True},
                             "flow_tracking": {"type": FlowTracking},
@@ -62390,12 +66378,6 @@ class EosDesigns(EosDesignsRootModel):
                         first WAN router.
                         Not used for uplink interfaces.
                         """
-                        max_ha_interfaces: int | None
-                        """
-                        Number of parallel links towards HA switches.
-                        Can be used to reserve IP addresses for future
-                        parallel HA links.
-                        """
                         port_channel_id: int | None
                         """Port-channel ID to use for direct HA."""
                         use_port_channel_for_direct_ha: bool
@@ -62423,7 +66405,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | UndefinedType = Undefined,
                                 ha_interfaces: HaInterfaces | UndefinedType = Undefined,
                                 ha_ipv4_pool: str | None | UndefinedType = Undefined,
-                                max_ha_interfaces: int | None | UndefinedType = Undefined,
                                 port_channel_id: int | None | UndefinedType = Undefined,
                                 use_port_channel_for_direct_ha: bool | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -62455,10 +66436,6 @@ class EosDesigns(EosDesignsRootModel):
                                        subnet used for direct WAN HA connectivity is derived from this pool based on the node ID of the
                                        first WAN router.
                                        Not used for uplink interfaces.
-                                    max_ha_interfaces:
-                                       Number of parallel links towards HA switches.
-                                       Can be used to reserve IP addresses for future
-                                       parallel HA links.
                                     port_channel_id: Port-channel ID to use for direct HA.
                                     use_port_channel_for_direct_ha:
                                        Enable or disable using a port-channel interface for direct HA when there is only one interface.
@@ -63605,10 +67582,212 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3PortChannels._item_type = L3PortChannelsItem
 
+                    class UnderlayMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PimSm(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                            on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if also
+                            enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_pim_sm`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable PIM sparse-mode on uplinks.
+                            Requires node setting `underlay_multicast.pim_sm.enabled:
+                            true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective only when
+                            node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PimSm.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                           on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if also
+                                           enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_pim_sm`.
+                                        uplinks:
+                                           Enable/Disable PIM sparse-mode on uplinks.
+                                           Requires node setting `underlay_multicast.pim_sm.enabled:
+                                           true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                        uplink_interfaces:
+                                           Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective only when
+                                           node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                           Subclass of AvdList with `str` items.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                    """
+
+                        class Static(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures static multicast in the
+                            underlay on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if
+                            also enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_multicast`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable static multicast on uplinks.
+                            Requires node setting
+                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
+
+                            Subclass of AvdList with `str`
+                            items.
+                            """
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Static.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures static multicast in the
+                                           underlay on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if
+                                           also enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_multicast`.
+                                        uplinks:
+                                           Enable/Disable static multicast on uplinks.
+                                           Requires node setting
+                                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                        uplink_interfaces:
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                           Subclass of AvdList with `str`
+                                           items.
+                                        mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                        pim_sm: PimSm
+                        """Subclass of AvdModel."""
+                        static: Static
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                """
+                                UnderlayMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    pim_sm: Subclass of AvdModel.
+                                    static: Subclass of AvdModel.
+
+                                """
+
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"act_os_version": {"type": str}, "mgmt_ip": {"type": str}, "act_internet_access": {"type": bool}}
                         act_os_version: str | None
                         """
                         Desired ACT Digital Twin OS version.
@@ -63616,11 +67795,25 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         mgmt_ip: str | None
                         """Desired management interface IPv4 address."""
+                        act_internet_access: bool | None
+                        """
+                        Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                        This option
+                        applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                        types.
+                        ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                        Overrides
+                        global `digital_twin.fabric.act_internet_access` flag.
+                        """
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, act_os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                self,
+                                *,
+                                act_os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                                act_internet_access: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 DigitalTwin.
@@ -63633,6 +67826,14 @@ class EosDesigns(EosDesignsRootModel):
                                        Desired ACT Digital Twin OS version.
                                        Overrides global `digital_twin.fabric.act_os_version` flag.
                                     mgmt_ip: Desired management interface IPv4 address.
+                                    act_internet_access:
+                                       Specifies if the ACT Digital Twin device is deployed with direct access to the Internet.
+                                       This option
+                                       applies only to the 'cloudeos' and 'veos' node types and will be ignored for all other ACT node
+                                       types.
+                                       ACT does not provide direct Internet access to cloudeos or veos devices by default.
+                                       Overrides
+                                       global `digital_twin.fabric.act_internet_access` flag.
 
                                 """
 
@@ -63673,6 +67874,10 @@ class EosDesigns(EosDesignsRootModel):
                         "uplink_port_channel_id": {"type": int},
                         "uplink_switch_port_channel_id": {"type": int},
                         "uplink_structured_config": {"type": dict},
+                        "uplink_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        "uplink_switch_ethernet_structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                        "uplink_switch_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_port_channel_structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                         "mlag_peer_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
                         "mlag_peer_l3_vlan_structured_config": {"type": EosCliConfigGen.VlanInterfacesItem},
@@ -63726,6 +67931,7 @@ class EosDesigns(EosDesignsRootModel):
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
                         "inband_mgmt_subnet": {"type": str},
+                        "inband_mgmt_subnet_offset": {"type": int, "default": 0},
                         "inband_mgmt_ip": {"type": str},
                         "inband_mgmt_gateway": {"type": str},
                         "inband_mgmt_ipv6_address": {"type": str},
@@ -63752,6 +67958,7 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "underlay_multicast": {"type": UnderlayMulticast},
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
@@ -63995,6 +68202,17 @@ class EosDesigns(EosDesignsRootModel):
                     "structured_config" defined on node-level.
                     Note! The content of this dictionary is _not_ validated
                     by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                    """
+                    uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_interfaces`."""
+                    uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """Custom structured config applied to the uplink Port-Channel when using port-channel uplinks."""
+                    uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`."""
+                    uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                    """
+                    Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                    channel uplinks.
                     """
                     mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem
                     """
@@ -64356,13 +68574,23 @@ class EosDesigns(EosDesignsRootModel):
                     2 (same IP on all l3leaf A)
                     l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                     l2leafs       :
-                    <subnet> + 3 + <l2leaf id>
+                    <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                     GW on l2leafs : <subnet> + 1
-                    Assign range larger than total l2leafs + 5
+                    Assign range
+                    larger than total l2leafs + 5
+
                     Setting is ignored if 'inband_mgmt_ip' is set.
 
-                    This setting is applicable to L2 switches (switches
-                    using port-channel trunks as uplinks).
+                    This setting is
+                    applicable to L2 switches (switches using port-channel trunks as uplinks).
+                    """
+                    inband_mgmt_subnet_offset: int
+                    """
+                    Offset value to adjust the calculated inband management IP address within the subnet.
+                    The assigned
+                    IP will be computed by adding this offset to the device ID.
+
+                    Default value: `0`
                     """
                     inband_mgmt_ip: str | None
                     """
@@ -64549,14 +68777,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     wan_ha: WanHa
                     """
-                    PREVIEW: This key is currently not supported
+                    The key is supported only if `wan_mode` == `cv-pathfinder`.
+                    AutoVPN support is still to be
+                    determined.
 
-                    The key is supported only if `wan_mode` == `cv-
-                    pathfinder`.
-                    AutoVPN support is still to be determined.
-
-                    Maximum 2 devices supported by group for
-                    HA.
+                    Maximum 2 devices supported by group for HA.
 
                     Subclass of AvdModel.
                     """
@@ -64593,6 +68818,8 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    underlay_multicast: UnderlayMulticast
+                    """Subclass of AvdModel."""
                     campus: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -64670,6 +68897,10 @@ class EosDesigns(EosDesignsRootModel):
                             uplink_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_switch_port_channel_id: int | None | UndefinedType = Undefined,
                             uplink_structured_config: dict | UndefinedType = Undefined,
+                            uplink_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_ethernet_structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                            uplink_switch_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_port_channel_structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
                             mlag_peer_l3_vlan_structured_config: EosCliConfigGen.VlanInterfacesItem | UndefinedType = Undefined,
@@ -64724,6 +68955,7 @@ class EosDesigns(EosDesignsRootModel):
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
                             inband_mgmt_subnet: str | None | UndefinedType = Undefined,
+                            inband_mgmt_subnet_offset: int | UndefinedType = Undefined,
                             inband_mgmt_ip: str | None | UndefinedType = Undefined,
                             inband_mgmt_gateway: str | None | UndefinedType = Undefined,
                             inband_mgmt_ipv6_address: str | None | UndefinedType = Undefined,
@@ -64750,6 +68982,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
@@ -64933,6 +69166,12 @@ class EosDesigns(EosDesignsRootModel):
                                    "structured_config" defined on node-level.
                                    Note! The content of this dictionary is _not_ validated
                                    by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                                uplink_ethernet_structured_config: Custom structured config applied to `uplink_interfaces`.
+                                uplink_port_channel_structured_config: Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+                                uplink_switch_ethernet_structured_config: Custom structured config applied to `uplink_switch_interfaces` on the `uplink_switches`.
+                                uplink_switch_port_channel_structured_config:
+                                   Custom structured config applied to the Port-Channel on the `uplink_switches` when using port-
+                                   channel uplinks.
                                 mlag_port_channel_structured_config:
                                    Custom structured config applied to MLAG peer link port-channel id.
                                    Added under
@@ -65174,13 +69413,19 @@ class EosDesigns(EosDesignsRootModel):
                                    2 (same IP on all l3leaf A)
                                    l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
                                    l2leafs       :
-                                   <subnet> + 3 + <l2leaf id>
+                                   <subnet> + 3 + <l2leaf id> + <inband_mgmt_subnet_offset>
                                    GW on l2leafs : <subnet> + 1
-                                   Assign range larger than total l2leafs + 5
+                                   Assign range
+                                   larger than total l2leafs + 5
+
                                    Setting is ignored if 'inband_mgmt_ip' is set.
 
-                                   This setting is applicable to L2 switches (switches
-                                   using port-channel trunks as uplinks).
+                                   This setting is
+                                   applicable to L2 switches (switches using port-channel trunks as uplinks).
+                                inband_mgmt_subnet_offset:
+                                   Offset value to adjust the calculated inband management IP address within the subnet.
+                                   The assigned
+                                   IP will be computed by adding this offset to the device ID.
                                 inband_mgmt_ip:
                                    IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
                                    This overrides
@@ -65315,14 +69560,11 @@ class EosDesigns(EosDesignsRootModel):
                                    For pathfinders without `cv_pathfinder_region` set,
                                    the site must be defined under `cv_pathfinder_global_sites`.
                                 wan_ha:
-                                   PREVIEW: This key is currently not supported
+                                   The key is supported only if `wan_mode` == `cv-pathfinder`.
+                                   AutoVPN support is still to be
+                                   determined.
 
-                                   The key is supported only if `wan_mode` == `cv-
-                                   pathfinder`.
-                                   AutoVPN support is still to be determined.
-
-                                   Maximum 2 devices supported by group for
-                                   HA.
+                                   Maximum 2 devices supported by group for HA.
 
                                    Subclass of AvdModel.
                                 dps_mss_ipv4: IPv4 MSS value configured under "router path-selection" on WAN Devices.
@@ -65345,6 +69587,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                underlay_multicast: Subclass of AvdModel.
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -65514,6 +69757,7 @@ class EosDesigns(EosDesignsRootModel):
 
     _fields: ClassVar[dict] = {
         "aaa_settings": {"type": AaaSettings},
+        "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_6_behaviors": {"type": Avd6Behaviors},
         "avd_data_validation_mode": {"type": str, "default": "error"},
@@ -65635,6 +69879,7 @@ class EosDesigns(EosDesignsRootModel):
         "isis_maximum_paths": {"type": int, "default": 4},
         "isis_system_id_format": {"type": str, "default": "underlay_loopback"},
         "isis_ti_lfa": {"type": IsisTiLfa},
+        "l2vlan_profiles": {"type": L2vlanProfiles},
         "l3_edge": {"type": L3Edge},
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
@@ -65913,6 +70158,8 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_l2_ethernet_description": {"type": str, "default": "L2_{peer}_{peer_interface}"},
         "underlay_l2_port_channel_description": {"type": str, "default": "L2_{peer_node_group_or_peer}_{peer_interface}"},
         "underlay_multicast": {"type": bool, "default": False},
+        "underlay_multicast_pim_sm": {"type": bool},
+        "underlay_multicast_static": {"type": bool, "default": False},
         "underlay_multicast_anycast_rp": {"type": UnderlayMulticastAnycastRp},
         "underlay_multicast_rps": {"type": UnderlayMulticastRps},
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
@@ -65920,6 +70167,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
         "underlay_ospf_graceful_restart": {"type": bool, "default": False},
         "underlay_ospf_max_lsa": {"type": int, "default": 12000},
+        "underlay_ospf_maximum_paths": {"type": int},
         "underlay_ospf_process_id": {"type": int, "default": 100},
         "underlay_rfc5549": {"type": bool, "default": False},
         "underlay_routing_protocol": {"type": str},
@@ -65947,6 +70195,8 @@ class EosDesigns(EosDesignsRootModel):
     }
     _allow_other_keys: ClassVar[bool] = True
     aaa_settings: AaaSettings
+    """Subclass of AvdModel."""
+    address_locking_settings: AddressLockingSettings
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
@@ -66418,16 +70668,16 @@ class EosDesigns(EosDesignsRootModel):
       -
     `cv_settings`
       - `logging_settings`
+      - `management_eapi`
       - `ntp_settings`
       - `sflow_settings`
-      - `snmp_settings`
-      -
-    `ssh_settings`
+    - `snmp_settings`
+      - `ssh_settings`
 
-    `oob` means the protocols will be configured with the VRF set by
-    `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
-    `inband` means the protocols will
-    be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
+    `oob` means the protocols will be configured with the VRF set
+    by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
+    `inband` means the protocols
+    will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
     interface.
     `none` means the VRF and or interface must be manually set for each protocol.
     This can be
@@ -66623,12 +70873,12 @@ class EosDesigns(EosDesignsRootModel):
     """
     General Configuration required for EVPN Multicast. "evpn_l2_multicast" or "evpn_l3_multicast" must
     also be configured under the Network Services (tenants).
-    Requires "underlay_multicast: true" and
-    IGMP snooping enabled globally (default).
-    For MLAG devices Route Distinguisher must be unique since
-    this feature will create multi-vtep configuration.
-    Warning !!! For Trident3 based platforms i.e
-    7050X3, 7300X3, 720XP.
+    Requires `underlay_multicast_pim_sm: true`
+    and IGMP snooping enabled globally (default).
+    For MLAG devices Route Distinguisher must be unique
+    since this feature will create multi-vtep configuration.
+    Warning !!! For Trident3 based platforms
+    i.e 7050X3, 7300X3, 720XP.
       The Following default platform setting will be configured on 7050X3 and
     7300X3: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304
     l3-shared 131072"
@@ -66877,6 +71127,13 @@ class EosDesigns(EosDesignsRootModel):
     """
     isis_ti_lfa: IsisTiLfa
     """Subclass of AvdModel."""
+    l2vlan_profiles: L2vlanProfiles
+    """
+    Profiles to inherit common settings for l2vlans defined under the network_services key.
+
+    Subclass of
+    AvdIndexedList with `L2vlanProfilesItem` items. Primary key is `profile` (`str`).
+    """
     l3_edge: L3Edge
     """Subclass of AvdModel."""
     l3_interface_profiles: L3InterfaceProfiles
@@ -66900,11 +71157,9 @@ class EosDesigns(EosDesignsRootModel):
     management_eapi: ManagementEapi
     """
     Default is HTTPS management eAPI enabled.
-    The VRF is set to < mgmt_interface_vrf >.
 
 
-    Subclass of
-    AvdModel.
+    Subclass of AvdModel.
     """
     mgmt_destination_networks: MgmtDestinationNetworks
     """
@@ -67706,6 +71961,31 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
+    underlay_multicast_pim_sm: bool | None
+    """
+    When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+    on all:
+      - P2P uplink interfaces if enabled on uplink peer
+      - MLAG L3 peer interface if also
+    enabled on MLAG peer
+      - l3_edge and core interfaces
+
+    Note: This changes the default behavior for
+    l3_edge / core_interfaces to automatically include the interfaces
+    in multicast, unless
+    `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
+    """
+    underlay_multicast_static: bool
+    """
+    When enabled, configures multicast routing and by default configures static multicast in the
+    underlay on all:
+      - P2P uplink interfaces if enabled on uplink peer
+      - MLAG L3 peer interface if
+    also enabled on MLAG peer
+      - l3_edge and core interfaces
+
+    Default value: `False`
+    """
     underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp
     """
     If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address,
@@ -67731,11 +72011,8 @@ class EosDesigns(EosDesignsRootModel):
     according to the
     'underlay_multicast_anycast_rp.mode' setting.
 
-    Requires 'underlay_multicast: true'.
-
-
-    Subclass of
-    AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
+    Requires 'underlay_multicast_pim_sm: true'.
+    Subclass of AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
     """
     underlay_ospf_area: str
     """Default value: `"0.0.0.0"`"""
@@ -67751,6 +72028,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     underlay_ospf_max_lsa: int
     """Default value: `12000`"""
+    underlay_ospf_maximum_paths: int | None
+    """Maximum number of next-hops in an ECMP route."""
     underlay_ospf_process_id: int
     """Default value: `100`"""
     underlay_rfc5549: bool
@@ -67822,11 +72101,7 @@ class EosDesigns(EosDesignsRootModel):
     Default value: `"path-selection"`
     """
     wan_ha: WanHa
-    """
-    PREVIEW: The `wan_ha` key is currently not supported.
-
-    Subclass of AvdModel.
-    """
+    """Subclass of AvdModel."""
     wan_ipsec_profiles: WanIpsecProfiles
     """
     Define IPsec profiles parameters for WAN configuration.
@@ -67939,6 +72214,7 @@ class EosDesigns(EosDesignsRootModel):
             self,
             *,
             aaa_settings: AaaSettings | UndefinedType = Undefined,
+            address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_6_behaviors: Avd6Behaviors | UndefinedType = Undefined,
             avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
@@ -68035,6 +72311,7 @@ class EosDesigns(EosDesignsRootModel):
             isis_maximum_paths: int | UndefinedType = Undefined,
             isis_system_id_format: Literal["node_id", "underlay_loopback"] | UndefinedType = Undefined,
             isis_ti_lfa: IsisTiLfa | UndefinedType = Undefined,
+            l2vlan_profiles: L2vlanProfiles | UndefinedType = Undefined,
             l3_edge: L3Edge | UndefinedType = Undefined,
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
@@ -68118,6 +72395,8 @@ class EosDesigns(EosDesignsRootModel):
             underlay_l2_ethernet_description: str | UndefinedType = Undefined,
             underlay_l2_port_channel_description: str | UndefinedType = Undefined,
             underlay_multicast: bool | UndefinedType = Undefined,
+            underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
+            underlay_multicast_static: bool | UndefinedType = Undefined,
             underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp | UndefinedType = Undefined,
             underlay_multicast_rps: UnderlayMulticastRps | UndefinedType = Undefined,
             underlay_ospf_area: str | UndefinedType = Undefined,
@@ -68125,6 +72404,7 @@ class EosDesigns(EosDesignsRootModel):
             underlay_ospf_bfd_enable: bool | UndefinedType = Undefined,
             underlay_ospf_graceful_restart: bool | UndefinedType = Undefined,
             underlay_ospf_max_lsa: int | UndefinedType = Undefined,
+            underlay_ospf_maximum_paths: int | None | UndefinedType = Undefined,
             underlay_ospf_process_id: int | UndefinedType = Undefined,
             underlay_rfc5549: bool | UndefinedType = Undefined,
             underlay_routing_protocol: Literal["ebgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"]
@@ -68160,6 +72440,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Args:
                 aaa_settings: Subclass of AvdModel.
+                address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
                 avd_6_behaviors:
                    Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
@@ -68508,16 +72789,16 @@ class EosDesigns(EosDesignsRootModel):
                      -
                    `cv_settings`
                      - `logging_settings`
+                     - `management_eapi`
                      - `ntp_settings`
                      - `sflow_settings`
-                     - `snmp_settings`
-                     -
-                   `ssh_settings`
+                   - `snmp_settings`
+                     - `ssh_settings`
 
-                   `oob` means the protocols will be configured with the VRF set by
-                   `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
-                   `inband` means the protocols will
-                   be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
+                   `oob` means the protocols will be configured with the VRF set
+                   by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
+                   `inband` means the protocols
+                   will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
                    interface.
                    `none` means the VRF and or interface must be manually set for each protocol.
                    This can be
@@ -68660,12 +72941,12 @@ class EosDesigns(EosDesignsRootModel):
                 evpn_multicast:
                    General Configuration required for EVPN Multicast. "evpn_l2_multicast" or "evpn_l3_multicast" must
                    also be configured under the Network Services (tenants).
-                   Requires "underlay_multicast: true" and
-                   IGMP snooping enabled globally (default).
-                   For MLAG devices Route Distinguisher must be unique since
-                   this feature will create multi-vtep configuration.
-                   Warning !!! For Trident3 based platforms i.e
-                   7050X3, 7300X3, 720XP.
+                   Requires `underlay_multicast_pim_sm: true`
+                   and IGMP snooping enabled globally (default).
+                   For MLAG devices Route Distinguisher must be unique
+                   since this feature will create multi-vtep configuration.
+                   Warning !!! For Trident3 based platforms
+                   i.e 7050X3, 7300X3, 720XP.
                      The Following default platform setting will be configured on 7050X3 and
                    7300X3: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304
                    l3-shared 131072"
@@ -68833,6 +73114,11 @@ class EosDesigns(EosDesignsRootModel):
                    If `underlay_loopback` is selected then all node `isis_system_id_prefix` settings
                    will be ignored and the loopback address will be used to generate the system-id.
                 isis_ti_lfa: Subclass of AvdModel.
+                l2vlan_profiles:
+                   Profiles to inherit common settings for l2vlans defined under the network_services key.
+
+                   Subclass of
+                   AvdIndexedList with `L2vlanProfilesItem` items. Primary key is `profile` (`str`).
                 l3_edge: Subclass of AvdModel.
                 l3_interface_profiles:
                    Profiles to inherit common settings for l3_interfaces defined under the node type key.
@@ -68850,11 +73136,9 @@ class EosDesigns(EosDesignsRootModel):
                 mac_address_table: mac_address_table
                 management_eapi:
                    Default is HTTPS management eAPI enabled.
-                   The VRF is set to < mgmt_interface_vrf >.
 
 
-                   Subclass of
-                   AvdModel.
+                   Subclass of AvdModel.
                 mgmt_destination_networks:
                    List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
                    Replaces the default route.
@@ -69436,6 +73720,25 @@ class EosDesigns(EosDesignsRootModel):
                    configuration is added, so the underlay will only support Source-Specific Multicast (SSM).
                    The
                    configuration is intended to be used as multicast underlay for EVPN OISM overlay.
+                underlay_multicast_pim_sm:
+                   When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                   on all:
+                     - P2P uplink interfaces if enabled on uplink peer
+                     - MLAG L3 peer interface if also
+                   enabled on MLAG peer
+                     - l3_edge and core interfaces
+
+                   Note: This changes the default behavior for
+                   l3_edge / core_interfaces to automatically include the interfaces
+                   in multicast, unless
+                   `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
+                underlay_multicast_static:
+                   When enabled, configures multicast routing and by default configures static multicast in the
+                   underlay on all:
+                     - P2P uplink interfaces if enabled on uplink peer
+                     - MLAG L3 peer interface if
+                   also enabled on MLAG peer
+                     - l3_edge and core interfaces
                 underlay_multicast_anycast_rp:
                    If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address,
                    they will be configured
@@ -69458,16 +73761,14 @@ class EosDesigns(EosDesignsRootModel):
                    according to the
                    'underlay_multicast_anycast_rp.mode' setting.
 
-                   Requires 'underlay_multicast: true'.
-
-
-                   Subclass of
-                   AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
+                   Requires 'underlay_multicast_pim_sm: true'.
+                   Subclass of AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
                 underlay_ospf_area: underlay_ospf_area
                 underlay_ospf_authentication: Subclass of AvdModel.
                 underlay_ospf_bfd_enable: underlay_ospf_bfd_enable
                 underlay_ospf_graceful_restart: Enable graceful restart for OSPF underlay.
                 underlay_ospf_max_lsa: underlay_ospf_max_lsa
+                underlay_ospf_maximum_paths: Maximum number of next-hops in an ECMP route.
                 underlay_ospf_process_id: underlay_ospf_process_id
                 underlay_rfc5549:
                    Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
@@ -69508,10 +73809,7 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of
                    AvdIndexedList with `WanCarriersItem` items. Primary key is `name` (`str`).
                 wan_encapsulation: Select the encapsulation to use for EVPN peerings for WAN BGP peers.
-                wan_ha:
-                   PREVIEW: The `wan_ha` key is currently not supported.
-
-                   Subclass of AvdModel.
+                wan_ha: Subclass of AvdModel.
                 wan_ipsec_profiles:
                    Define IPsec profiles parameters for WAN configuration.
 
