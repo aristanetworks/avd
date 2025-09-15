@@ -131,11 +131,11 @@
 | 47 | dc1-leaf1a | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 48 | dc1-leaf1a | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 49 | dc1-leaf1a | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 50 | dc1-leaf1a | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 50 | dc1-leaf1a | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 51 | dc1-leaf1a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 52 | dc1-leaf1a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok', 'powerLoss' | NOT RUN | - |
-| 53 | dc1-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 54 | dc1-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok', 'powerLoss' | NOT RUN | - |
+| 53 | dc1-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 54 | dc1-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok', 'powerLoss' | NOT RUN | - |
 | 55 | dc1-leaf1a | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 56 | dc1-leaf1a | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 57 | dc1-leaf1a | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -291,11 +291,11 @@
 | 207 | dc1-leaf1b | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 208 | dc1-leaf1b | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 209 | dc1-leaf1b | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 210 | dc1-leaf1b | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 210 | dc1-leaf1b | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 211 | dc1-leaf1b | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 212 | dc1-leaf1b | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 213 | dc1-leaf1b | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 214 | dc1-leaf1b | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 213 | dc1-leaf1b | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 214 | dc1-leaf1b | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 215 | dc1-leaf1b | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 216 | dc1-leaf1b | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 217 | dc1-leaf1b | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -426,11 +426,11 @@
 | 342 | dc1-leaf1c | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 343 | dc1-leaf1c | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 344 | dc1-leaf1c | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 345 | dc1-leaf1c | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 345 | dc1-leaf1c | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 346 | dc1-leaf1c | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 347 | dc1-leaf1c | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 348 | dc1-leaf1c | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 349 | dc1-leaf1c | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 348 | dc1-leaf1c | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 349 | dc1-leaf1c | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 350 | dc1-leaf1c | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 351 | dc1-leaf1c | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 352 | dc1-leaf1c | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -527,11 +527,11 @@
 | 443 | dc1-leaf2a | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 444 | dc1-leaf2a | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 445 | dc1-leaf2a | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 446 | dc1-leaf2a | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 446 | dc1-leaf2a | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 447 | dc1-leaf2a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 448 | dc1-leaf2a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 449 | dc1-leaf2a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 450 | dc1-leaf2a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 449 | dc1-leaf2a | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 450 | dc1-leaf2a | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 451 | dc1-leaf2a | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 452 | dc1-leaf2a | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 453 | dc1-leaf2a | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -663,11 +663,11 @@
 | 579 | dc1-leaf2c | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 580 | dc1-leaf2c | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 581 | dc1-leaf2c | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 582 | dc1-leaf2c | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 582 | dc1-leaf2c | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 583 | dc1-leaf2c | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 584 | dc1-leaf2c | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 585 | dc1-leaf2c | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 586 | dc1-leaf2c | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 585 | dc1-leaf2c | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 586 | dc1-leaf2c | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 587 | dc1-leaf2c | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 588 | dc1-leaf2c | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 589 | dc1-leaf2c | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -752,9 +752,9 @@
 | 668 | dc1-spine1 | AAA | VerifyTacacsServerGroups | Verifies if the provided TACACS server group(s) are configured. | - | NOT RUN | - |
 | 669 | dc1-spine1 | AAA | VerifyTacacsServers | Verifies TACACS servers are configured for a specified VRF. | - | NOT RUN | - |
 | 670 | dc1-spine1 | AAA | VerifyTacacsSourceIntf | Verifies TACACS source-interface for a specified VRF. | - | NOT RUN | - |
-| 671 | dc1-spine1 | BFD | VerifyBFDPeersHealth | Verifies the health of IPv4 BFD peers across all VRFs. | - | NOT RUN | - |
-| 672 | dc1-spine1 | BFD | VerifyBFDPeersIntervals | Verifies the timers of IPv4 BFD peer sessions. | - | NOT RUN | - |
-| 673 | dc1-spine1 | BFD | VerifyBFDSpecificPeers | Verifies the state of IPv4 BFD peer sessions. | - | NOT RUN | - |
+| 671 | dc1-spine1 | BFD | VerifyBFDPeersHealth | Verifies the health of BFD peers across all VRFs. | - | NOT RUN | - |
+| 672 | dc1-spine1 | BFD | VerifyBFDPeersIntervals | Verifies the operational timers of BFD peer sessions. | - | NOT RUN | - |
+| 673 | dc1-spine1 | BFD | VerifyBFDSpecificPeers | Verifies the state of BFD peer sessions. | - | NOT RUN | - |
 | 674 | dc1-spine1 | BGP | VerifyBGPAdvCommunities | Verifies the advertised communities of BGP peers. | - | NOT RUN | - |
 | 675 | dc1-spine1 | BGP | VerifyBGPExchangedRoutes | Verifies the advertised and received routes of BGP IPv4 peer(s). | - | NOT RUN | - |
 | 676 | dc1-spine1 | BGP | VerifyBGPPeerASNCap | Verifies the four octet ASN capability of BGP peers. | - | NOT RUN | - |
@@ -782,18 +782,18 @@
 | 698 | dc1-spine1 | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 699 | dc1-spine1 | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 700 | dc1-spine1 | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 701 | dc1-spine1 | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 701 | dc1-spine1 | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 702 | dc1-spine1 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 703 | dc1-spine1 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 704 | dc1-spine1 | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 705 | dc1-spine1 | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 704 | dc1-spine1 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 705 | dc1-spine1 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 706 | dc1-spine1 | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 707 | dc1-spine1 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 708 | dc1-spine1 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 709 | dc1-spine1 | Hardware | VerifyTransceiversManufacturers | Verifies if all the transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 710 | dc1-spine1 | Hardware | VerifyTransceiversManufacturers | Verifies if all the transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 711 | dc1-spine1 | Hardware | VerifyTransceiversTemperature | Verifies if all the transceivers are operating at an acceptable temperature. | - | NOT RUN | - |
-| 712 | dc1-spine1 | Interfaces | VerifyIllegalLACP | Verifies there are no illegal LACP packets in all port channels. | - | NOT RUN | - |
+| 712 | dc1-spine1 | Interfaces | VerifyIllegalLACP | Verifies there are no illegal LACP packets in port channels. | - | NOT RUN | - |
 | 713 | dc1-spine1 | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | - | NOT RUN | - |
 | 714 | dc1-spine1 | Interfaces | VerifyInterfaceErrDisabled | Verifies there are no interfaces in the errdisabled state. | - | NOT RUN | - |
 | 715 | dc1-spine1 | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | - | NOT RUN | - |
@@ -808,10 +808,10 @@
 | 724 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the operational states of specified interfaces to ensure they match expected configurations. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 725 | dc1-spine1 | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | - | NOT RUN | - |
 | 726 | dc1-spine1 | Interfaces | VerifyIPProxyARP | Verifies if Proxy ARP is enabled. | - | NOT RUN | - |
-| 727 | dc1-spine1 | Interfaces | VerifyL2MTU | Verifies the global L2 MTU of all L2 interfaces. | - | NOT RUN | - |
-| 728 | dc1-spine1 | Interfaces | VerifyL3MTU | Verifies the global L3 MTU of all L3 interfaces. | - | NOT RUN | - |
+| 727 | dc1-spine1 | Interfaces | VerifyL2MTU | Verifies the L2 MTU of bridged interfaces. | - | NOT RUN | - |
+| 728 | dc1-spine1 | Interfaces | VerifyL3MTU | Verifies the L3 MTU of routed interfaces. | - | NOT RUN | - |
 | 729 | dc1-spine1 | Interfaces | VerifyLoopbackCount | Verifies the number of loopback interfaces and their status. | - | NOT RUN | - |
-| 730 | dc1-spine1 | Interfaces | VerifyPortChannels | Verifies there are no inactive ports in all port channels. | - | NOT RUN | - |
+| 730 | dc1-spine1 | Interfaces | VerifyPortChannels | Verifies there are no inactive ports in port channels. | - | NOT RUN | - |
 | 731 | dc1-spine1 | Interfaces | VerifyStormControlDrops | Verifies there are no interface storm-control drop counters. | - | NOT RUN | - |
 | 732 | dc1-spine1 | Interfaces | VerifySVI | Verifies the status of all SVIs. | - | NOT RUN | - |
 | 733 | dc1-spine1 | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
@@ -869,9 +869,9 @@
 | 785 | dc1-spine2 | AAA | VerifyTacacsServerGroups | Verifies if the provided TACACS server group(s) are configured. | - | NOT RUN | - |
 | 786 | dc1-spine2 | AAA | VerifyTacacsServers | Verifies TACACS servers are configured for a specified VRF. | - | NOT RUN | - |
 | 787 | dc1-spine2 | AAA | VerifyTacacsSourceIntf | Verifies TACACS source-interface for a specified VRF. | - | NOT RUN | - |
-| 788 | dc1-spine2 | BFD | VerifyBFDPeersHealth | Verifies the health of IPv4 BFD peers across all VRFs. | - | NOT RUN | - |
-| 789 | dc1-spine2 | BFD | VerifyBFDPeersIntervals | Verifies the timers of IPv4 BFD peer sessions. | - | NOT RUN | - |
-| 790 | dc1-spine2 | BFD | VerifyBFDSpecificPeers | Verifies the state of IPv4 BFD peer sessions. | - | NOT RUN | - |
+| 788 | dc1-spine2 | BFD | VerifyBFDPeersHealth | Verifies the health of BFD peers across all VRFs. | - | NOT RUN | - |
+| 789 | dc1-spine2 | BFD | VerifyBFDPeersIntervals | Verifies the operational timers of BFD peer sessions. | - | NOT RUN | - |
+| 790 | dc1-spine2 | BFD | VerifyBFDSpecificPeers | Verifies the state of BFD peer sessions. | - | NOT RUN | - |
 | 791 | dc1-spine2 | BGP | VerifyBGPAdvCommunities | Verifies the advertised communities of BGP peers. | - | NOT RUN | - |
 | 792 | dc1-spine2 | BGP | VerifyBGPExchangedRoutes | Verifies the advertised and received routes of BGP IPv4 peer(s). | - | NOT RUN | - |
 | 793 | dc1-spine2 | BGP | VerifyBGPPeerASNCap | Verifies the four octet ASN capability of BGP peers. | - | NOT RUN | - |
@@ -899,18 +899,18 @@
 | 815 | dc1-spine2 | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 816 | dc1-spine2 | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 817 | dc1-spine2 | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 818 | dc1-spine2 | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 818 | dc1-spine2 | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 819 | dc1-spine2 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 820 | dc1-spine2 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 821 | dc1-spine2 | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 822 | dc1-spine2 | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 821 | dc1-spine2 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 822 | dc1-spine2 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 823 | dc1-spine2 | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 824 | dc1-spine2 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 825 | dc1-spine2 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 826 | dc1-spine2 | Hardware | VerifyTransceiversManufacturers | Verifies if all the transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 827 | dc1-spine2 | Hardware | VerifyTransceiversManufacturers | Verifies if all the transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 828 | dc1-spine2 | Hardware | VerifyTransceiversTemperature | Verifies if all the transceivers are operating at an acceptable temperature. | - | NOT RUN | - |
-| 829 | dc1-spine2 | Interfaces | VerifyIllegalLACP | Verifies there are no illegal LACP packets in all port channels. | - | NOT RUN | - |
+| 829 | dc1-spine2 | Interfaces | VerifyIllegalLACP | Verifies there are no illegal LACP packets in port channels. | - | NOT RUN | - |
 | 830 | dc1-spine2 | Interfaces | VerifyInterfaceDiscards | Verifies that the interfaces packet discard counters are equal to zero. | - | NOT RUN | - |
 | 831 | dc1-spine2 | Interfaces | VerifyInterfaceErrDisabled | Verifies there are no interfaces in the errdisabled state. | - | NOT RUN | - |
 | 832 | dc1-spine2 | Interfaces | VerifyInterfaceErrors | Verifies that the interfaces error counters are equal to zero. | - | NOT RUN | - |
@@ -925,10 +925,10 @@
 | 841 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the operational states of specified interfaces to ensure they match expected configurations. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 842 | dc1-spine2 | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | - | NOT RUN | - |
 | 843 | dc1-spine2 | Interfaces | VerifyIPProxyARP | Verifies if Proxy ARP is enabled. | - | NOT RUN | - |
-| 844 | dc1-spine2 | Interfaces | VerifyL2MTU | Verifies the global L2 MTU of all L2 interfaces. | - | NOT RUN | - |
-| 845 | dc1-spine2 | Interfaces | VerifyL3MTU | Verifies the global L3 MTU of all L3 interfaces. | - | NOT RUN | - |
+| 844 | dc1-spine2 | Interfaces | VerifyL2MTU | Verifies the L2 MTU of bridged interfaces. | - | NOT RUN | - |
+| 845 | dc1-spine2 | Interfaces | VerifyL3MTU | Verifies the L3 MTU of routed interfaces. | - | NOT RUN | - |
 | 846 | dc1-spine2 | Interfaces | VerifyLoopbackCount | Verifies the number of loopback interfaces and their status. | - | NOT RUN | - |
-| 847 | dc1-spine2 | Interfaces | VerifyPortChannels | Verifies there are no inactive ports in all port channels. | - | NOT RUN | - |
+| 847 | dc1-spine2 | Interfaces | VerifyPortChannels | Verifies there are no inactive ports in port channels. | - | NOT RUN | - |
 | 848 | dc1-spine2 | Interfaces | VerifyStormControlDrops | Verifies there are no interface storm-control drop counters. | - | NOT RUN | - |
 | 849 | dc1-spine2 | Interfaces | VerifySVI | Verifies the status of all SVIs. | - | NOT RUN | - |
 | 850 | dc1-spine2 | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
@@ -1020,11 +1020,11 @@
 | 936 | dc1-svc-leaf1a | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 937 | dc1-svc-leaf1a | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 938 | dc1-svc-leaf1a | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 939 | dc1-svc-leaf1a | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 939 | dc1-svc-leaf1a | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 940 | dc1-svc-leaf1a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 941 | dc1-svc-leaf1a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 942 | dc1-svc-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 943 | dc1-svc-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 942 | dc1-svc-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 943 | dc1-svc-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 944 | dc1-svc-leaf1a | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 945 | dc1-svc-leaf1a | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 946 | dc1-svc-leaf1a | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -1149,11 +1149,11 @@
 | 1065 | dc1-svc-leaf1b | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 1066 | dc1-svc-leaf1b | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 1067 | dc1-svc-leaf1b | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 1068 | dc1-svc-leaf1b | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 1068 | dc1-svc-leaf1b | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 1069 | dc1-svc-leaf1b | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 1070 | dc1-svc-leaf1b | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 1071 | dc1-svc-leaf1b | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 1072 | dc1-svc-leaf1b | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 1071 | dc1-svc-leaf1b | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 1072 | dc1-svc-leaf1b | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 1073 | dc1-svc-leaf1b | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 1074 | dc1-svc-leaf1b | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 1075 | dc1-svc-leaf1b | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -1274,11 +1274,11 @@
 | 1190 | dc1-wan1 | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 1191 | dc1-wan1 | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 1192 | dc1-wan1 | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 1193 | dc1-wan1 | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 1193 | dc1-wan1 | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 1194 | dc1-wan1 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 1195 | dc1-wan1 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 1196 | dc1-wan1 | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 1197 | dc1-wan1 | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 1196 | dc1-wan1 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 1197 | dc1-wan1 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 1198 | dc1-wan1 | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 1199 | dc1-wan1 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 1200 | dc1-wan1 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -1377,11 +1377,11 @@
 | 1293 | dc1-wan2 | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 1294 | dc1-wan2 | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 1295 | dc1-wan2 | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 1296 | dc1-wan2 | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 1296 | dc1-wan2 | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 1297 | dc1-wan2 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 1298 | dc1-wan2 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 1299 | dc1-wan2 | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 1300 | dc1-wan2 | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 1299 | dc1-wan2 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 1300 | dc1-wan2 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 1301 | dc1-wan2 | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 1302 | dc1-wan2 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 1303 | dc1-wan2 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -1484,11 +1484,11 @@
 | 1400 | dc2-leaf1a | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 1401 | dc2-leaf1a | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 1402 | dc2-leaf1a | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 1403 | dc2-leaf1a | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 1403 | dc2-leaf1a | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 1404 | dc2-leaf1a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 1405 | dc2-leaf1a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 1406 | dc2-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 1407 | dc2-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 1406 | dc2-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 1407 | dc2-leaf1a | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 1408 | dc2-leaf1a | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 1409 | dc2-leaf1a | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 1410 | dc2-leaf1a | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -1646,11 +1646,11 @@
 | 1562 | dc2-leaf1b | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 1563 | dc2-leaf1b | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 1564 | dc2-leaf1b | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 1565 | dc2-leaf1b | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 1565 | dc2-leaf1b | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 1566 | dc2-leaf1b | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 1567 | dc2-leaf1b | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 1568 | dc2-leaf1b | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 1569 | dc2-leaf1b | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 1568 | dc2-leaf1b | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 1569 | dc2-leaf1b | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 1570 | dc2-leaf1b | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 1571 | dc2-leaf1b | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 1572 | dc2-leaf1b | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -1781,11 +1781,11 @@
 | 1697 | dc2-leaf1c | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 1698 | dc2-leaf1c | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 1699 | dc2-leaf1c | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 1700 | dc2-leaf1c | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 1700 | dc2-leaf1c | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 1701 | dc2-leaf1c | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 1702 | dc2-leaf1c | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 1703 | dc2-leaf1c | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 1704 | dc2-leaf1c | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 1703 | dc2-leaf1c | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 1704 | dc2-leaf1c | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 1705 | dc2-leaf1c | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 1706 | dc2-leaf1c | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 1707 | dc2-leaf1c | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -1884,11 +1884,11 @@
 | 1800 | dc2-leaf2a | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 1801 | dc2-leaf2a | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 1802 | dc2-leaf2a | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 1803 | dc2-leaf2a | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 1803 | dc2-leaf2a | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 1804 | dc2-leaf2a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 1805 | dc2-leaf2a | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 1806 | dc2-leaf2a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 1807 | dc2-leaf2a | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 1806 | dc2-leaf2a | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 1807 | dc2-leaf2a | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 1808 | dc2-leaf2a | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 1809 | dc2-leaf2a | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 1810 | dc2-leaf2a | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -2047,11 +2047,11 @@
 | 1963 | dc2-leaf2b | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 1964 | dc2-leaf2b | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 1965 | dc2-leaf2b | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 1966 | dc2-leaf2b | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 1966 | dc2-leaf2b | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 1967 | dc2-leaf2b | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 1968 | dc2-leaf2b | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 1969 | dc2-leaf2b | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 1970 | dc2-leaf2b | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 1969 | dc2-leaf2b | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 1970 | dc2-leaf2b | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 1971 | dc2-leaf2b | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 1972 | dc2-leaf2b | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 1973 | dc2-leaf2b | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -2183,11 +2183,11 @@
 | 2099 | dc2-leaf2c | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 2100 | dc2-leaf2c | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 2101 | dc2-leaf2c | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 2102 | dc2-leaf2c | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 2102 | dc2-leaf2c | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 2103 | dc2-leaf2c | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 2104 | dc2-leaf2c | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 2105 | dc2-leaf2c | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 2106 | dc2-leaf2c | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 2105 | dc2-leaf2c | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 2106 | dc2-leaf2c | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 2107 | dc2-leaf2c | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 2108 | dc2-leaf2c | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 2109 | dc2-leaf2c | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -2282,11 +2282,11 @@
 | 2198 | dc2-leaf3a.arista.com | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 2199 | dc2-leaf3a.arista.com | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 2200 | dc2-leaf3a.arista.com | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 2201 | dc2-leaf3a.arista.com | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 2201 | dc2-leaf3a.arista.com | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 2202 | dc2-leaf3a.arista.com | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 2203 | dc2-leaf3a.arista.com | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 2204 | dc2-leaf3a.arista.com | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 2205 | dc2-leaf3a.arista.com | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 2204 | dc2-leaf3a.arista.com | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 2205 | dc2-leaf3a.arista.com | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 2206 | dc2-leaf3a.arista.com | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 2207 | dc2-leaf3a.arista.com | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 2208 | dc2-leaf3a.arista.com | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -2449,11 +2449,11 @@
 | 2365 | dc2-leaf3b.arista.com | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 2366 | dc2-leaf3b.arista.com | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 2367 | dc2-leaf3b.arista.com | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 2368 | dc2-leaf3b.arista.com | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 2368 | dc2-leaf3b.arista.com | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 2369 | dc2-leaf3b.arista.com | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 2370 | dc2-leaf3b.arista.com | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 2371 | dc2-leaf3b.arista.com | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 2372 | dc2-leaf3b.arista.com | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 2371 | dc2-leaf3b.arista.com | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 2372 | dc2-leaf3b.arista.com | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 2373 | dc2-leaf3b.arista.com | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 2374 | dc2-leaf3b.arista.com | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 2375 | dc2-leaf3b.arista.com | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -2605,11 +2605,11 @@
 | 2521 | dc2-spine1 | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 2522 | dc2-spine1 | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 2523 | dc2-spine1 | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 2524 | dc2-spine1 | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 2524 | dc2-spine1 | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 2525 | dc2-spine1 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 2526 | dc2-spine1 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 2527 | dc2-spine1 | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 2528 | dc2-spine1 | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 2527 | dc2-spine1 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 2528 | dc2-spine1 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 2529 | dc2-spine1 | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 2530 | dc2-spine1 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 2531 | dc2-spine1 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
@@ -2703,11 +2703,11 @@
 | 2619 | dc2-spine2 | Field Notices | VerifyFieldNotice72Resolution | Verifies if the device is exposed to FN0072, and if the issue has been mitigated. | - | NOT RUN | - |
 | 2620 | dc2-spine2 | Greent | VerifyGreenT | Verifies if a GreenT policy other than the default is created. | - | NOT RUN | - |
 | 2621 | dc2-spine2 | Greent | VerifyGreenTCounters | Verifies if the GreenT counters are incremented. | - | NOT RUN | - |
-| 2622 | dc2-spine2 | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches. | - | NOT RUN | - |
+| 2622 | dc2-spine2 | Hardware | VerifyAdverseDrops | Verifies there are no adverse drops exceeding defined thresholds. | - | NOT RUN | - |
 | 2623 | dc2-spine2 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | - | NOT RUN | - |
 | 2624 | dc2-spine2 | Hardware | VerifyEnvironmentCooling | Verifies the status of power supply fans and all fan trays. | Accepted States: 'ok' | NOT RUN | - |
-| 2625 | dc2-spine2 | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | - | NOT RUN | - |
-| 2626 | dc2-spine2 | Hardware | VerifyEnvironmentPower | Verifies the power supplies status. | Accepted States: 'ok' | NOT RUN | - |
+| 2625 | dc2-spine2 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | - | NOT RUN | - |
+| 2626 | dc2-spine2 | Hardware | VerifyEnvironmentPower | Verifies the power supplies state and input voltage. | Accepted States: 'ok' | NOT RUN | - |
 | 2627 | dc2-spine2 | Hardware | VerifyEnvironmentSystemCooling | Verifies the device's system cooling status. | - | NOT RUN | - |
 | 2628 | dc2-spine2 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
 | 2629 | dc2-spine2 | Hardware | VerifyTemperature | Verifies if the device temperature is within acceptable limits. | - | NOT RUN | - |
