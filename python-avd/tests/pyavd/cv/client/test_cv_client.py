@@ -64,125 +64,58 @@ async def test_get_inventory_devices_with_filter(cv_client: CVClient) -> None:
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("cv_client", [{"static_recording": True, "cv_version": "CVaaS"}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
-@pytest.mark.parametrize(("mocked_cvdevices"), [pytest.param(mocked_cvdevices(hostnames=["avd-ci-leaf2"]), id="SINGLE_STREAMING_DEVICE")])
-@pytest.mark.parametrize(("workspace_force_submission"), [pytest.param(False, id="UNFORCED"), pytest.param(True, id="FORCED")])
-async def test_deploy_to_cv(
-    caplog: pytest.LogCaptureFixture,
+async def test_verify_devices_on_cv_no_devices(cv_client: CVClient) -> None:
+    """Test an attempt to verify empty lict of targeted devices."""
+    result = await verify_devices_on_cv(devices=[], workspace_id="", skip_missing_devices=False, warnings=[], cv_client=cv_client)
+    assert len(result) == 0
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
+@pytest.mark.parametrize(
+    ("input_devices"),
+    [
+        pytest.param([CVDevice(hostname="avd-ci-leaf2", serial_number="B51AA89B6E51E89E1422107EDE3A9438")], id="SINGLE_STREAMING_DEVICE_SET_HOSTNAME_SERIAL"),
+        pytest.param([CVDevice(hostname="avd-ci-leaf2", system_mac_address="50:00:00:d5:5d:c0")], id="SINGLE_STREAMING_DEVICE_SET_HOSTNAME_SYSTEM_MAC"),
+    ],
+)
+async def test_verify_devices_in_cloudvision_inventory(
     cv_client: CVClient,
-    mocked_cvdevices: list[CVDevice],
-    workspace_force_submission: bool,
+    input_devices: list[CVDevice],
 ) -> None:
     """
-    Test full functionality of the deploy_to_cv by building and submitting (both forced and unforced) Workspace with a single streaming device.
+    Test verify_devices_in_cloudvision_inventory.
 
-    Exact test steps:
-    -   description: Fethc Workspace status
-        request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'), time=None)'
-        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/a996cf0f4bc694971e5d4069f481faaba80f68b2.json'
+    Specific use cases:
+    1. Verify device based on serial_number
+        Exact test steps:
+        -   description: Fetch device status
+            request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id='B51AA89B6E51E89E1422107EDE3A9438'),
+                hostname=None, system_mac_address=None)], time=TimeBounds(start=None, end=None))'
+            targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/76601a85f4ab2a9e434ec80eaeea2efc8dc02d71.json'
 
-    -   description: Create Workspace
-        request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
-            display_name='MOCKED_WS_NAME', description='MOCKED_WS_DESCRIPTION'))'
-        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/ce73310ec5154d57ac888fc8f93d69893962d804.json'
-
-    -   description: Fetch device status
-        request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id=None), hostname='avd-ci-leaf2', system_mac_address=None)],
-            time=TimeBounds(start=None, end=None))'
-        targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/effc85b759a4d35ba98ae7c22bcef828c070752d.json'
-
-    -   description: Fetch I&T Studio inputs
-        request: 'InputsStreamRequest(partial_eq_filter=[Inputs(key=InputsKey(studio_id='TOPOLOGY', workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))],
-            time=None)'
-        targeted_file: 'arista.studio.v1.InputsService/GetAll/www.cv-prod-us-central1-c.arista.io/0ab698a68a7f9f86eeda70fba362f57cb2f07fc4.json'
-
-    -   description: Create configlet
-        request: 'ConfigletConfigSetSomeRequest(values=[ConfigletConfig(key=ConfigletKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e',
-            configlet_id='avd-B51AA89B6E51E89E1422107EDE3A9438'), display_name='TEST_CONFIGLET_NAME', description='Configuration created and
-            uploaded by AVD for avd-ci-leaf2', body='alias test test')])'
-        targeted_file: 'arista.configlet.v1.ConfigletConfigService/SetSome/www.cv-prod-us-central1-c.arista.io/9928854663237cf59f5710079cb64befccffd7cc.json'
-
-    -   description: Fetch Configlet assignments
-        request: 'ConfigletAssignmentStreamRequest(partial_eq_filter=[ConfigletAssignment(key=ConfigletAssignmentKey(workspace_id=
-            'ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_assignment_id='avd-configlets'))], time=TimeBounds(start=None, end=None))'
-        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/0462b04aed494937b07702371f123831a4e81036.json'
-
-    -   description: Fetch configlets assignments
-        request: Too long. Please consult JSON file for details.
-        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/15b2c867c1abf9b0d425ca76fa4327294c18c376.json'
-
-    -   description: Build Workspace
-        request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
-            request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))'
-        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json'
-
-    -   description: Fetch build results
-        request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
-        targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
-
-    -   description: Submit Workspace (UNFORCED use case)
-        request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
-            request=Request.SUBMIT, request_params=RequestParams(request_id='req-b8f4e511-58de-4afe-99f0-b75abf980131')))'
-        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/ba83e98eab07691e8b079958618ab2973822bfe8.json'
-
-    -   description: Submit Workspace (FORCED use case)
-        request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
-            request=Request.SUBMIT_FORCE, request_params=RequestParams(request_id='req-b8f4e511-58de-4afe-99f0-b75abf980131')))'
-        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/47049c8a6b520f110540f81bcd892ba0e4954908.json'
-
-    -   description: Fetch submit results
-        request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
-        targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
+    2. Verify device based on system_mac_address
+        Exact test steps:
+        -   description: Fetch device status
+            request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id=None), hostname=None, system_mac_address='50:00:00:d5:5d:c0')],
+                time=TimeBounds(start=None, end=None))'
+            targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/396119d5076221da87045ff93ab5041f30e9d9e0.json'
     """
-    with (
-        caplog.at_level(INFO),
-        does_not_raise(),
-        patch(
-            "pyavd._cv.client.workspace.uuid4",
-            side_effect=[
-                MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS["id"].removeprefix("req-"),
-                MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_SUCCESS["id"].removeprefix("req-"),
-            ],
-        ),
-        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=cv_client),
-        tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", delete=True) as temp_configlet_file,
-    ):
-        temp_configlet_file.write("alias test test")
-        temp_configlet_file.flush()
-
-        result = await deploy_to_cv(
-            cloudvision=CloudVision(
-                servers="",
-                token="",
-                username="",
-                password="",
-            ),
-            workspace=CVWorkspace(
-                name=MOCKED_WORKSPACE_NAME,
-                description=MOCKED_WORKSPACE_DESCRIPTION,
-                id=MOCKED_WORKSPACE_ID,
-                requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
-                force=workspace_force_submission,
-            ),
-            configs=[CVEosConfig(file=temp_configlet_file.name, device=next(iter(mocked_cvdevices)), configlet_name="TEST_CONFIGLET_NAME")],
+    result = await verify_devices_in_cloudvision_inventory(
+        devices=input_devices,
+        skip_missing_devices=False,
+        warnings=[],
+        cv_client=cv_client,
+    )
+    assert result == [
+        CVDevice(
+            hostname="avd-ci-leaf2",
+            serial_number="B51AA89B6E51E89E1422107EDE3A9438",
+            system_mac_address="50:00:00:d5:5d:c0",
+            _exists_on_cv=True,
+            _streaming=True,
         )
-
-    # Assess result
-    assert not result.failed
-
-    # Assert number of returned warnings
-    assert len(result.warnings) == 0
-
-    # Assert number of returned errors
-    assert len(result.errors) == 0
-
-    # Assert returned workspace object
-    assert result.workspace.name == MOCKED_WORKSPACE_NAME
-    assert result.workspace.description == MOCKED_WORKSPACE_DESCRIPTION
-    assert result.workspace.id == MOCKED_WORKSPACE_ID
-    assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
-    assert result.workspace.force == workspace_force_submission
-    assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+    ]
 
 
 @pytest.mark.asyncio
@@ -201,17 +134,17 @@ async def test_create_existing_workspace_on_cv(
     Test creation of the Workspace where Workspace with this ID already exists.
 
     Specific use cases:
-        1. Attempt to create a Workspace which already exists and is in a WorkspaceState.PENDING state.
-            Exact test steps:
-            -   description: Fetch Workspace
-                request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c128560000'), time=None)'
-                targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/bd1b5fdaa11249efe21fa9479c729168b06cda69.json'
+    1. Attempt to create a Workspace which already exists and is in a WorkspaceState.PENDING state.
+        Exact test steps:
+        -   description: Fetch Workspace
+            request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c128560000'), time=None)'
+            targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/bd1b5fdaa11249efe21fa9479c729168b06cda69.json'
 
-        2. Attempt to create a Workspace which already exists and is not in a WorkspaceState.PENDING state. This raises CVResourceInvalidState.
-            Exact test steps:
-            -   description: Fetch Workspace
-                request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c128560001'), time=None)'
-                targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/e3c8d23b2dffba4c050956c45d0bda0124500f00.json'
+    2. Attempt to create a Workspace which already exists and is not in a WorkspaceState.PENDING state. This raises CVResourceInvalidState.
+        Exact test steps:
+        -   description: Fetch Workspace
+            request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c128560001'), time=None)'
+            targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/e3c8d23b2dffba4c050956c45d0bda0124500f00.json'
     """
     with expected_exception:
         result = DeployToCvResult(
@@ -332,13 +265,7 @@ async def test_finalize_workspace_on_cv_deleted_state(cv_client: CVClient) -> No
 @pytest.mark.asyncio
 @pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
 @pytest.mark.parametrize(
-    (
-        "workspace_requested_state",
-        "workspace_expected_state",
-        "workspace_abandon_id",
-        "logs_patterns",
-        "expected_exception",
-    ),
+    ("workspace_requested_state", "workspace_expected_state", "workspace_abandon_id", "logs_patterns", "expected_exception"),
     [
         pytest.param("built", "build failed", "", [], pytest.raises(CVWorkspaceBuildFailed), id="BUILT"),
         pytest.param(
@@ -418,28 +345,9 @@ async def test_finalize_workspace_on_cv_build_failure(
 @pytest.mark.asyncio
 @pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
 @pytest.mark.parametrize(("workspace_force_submission"), [pytest.param(False, id="UNFORCED"), pytest.param(True, id="FORCED")])
-@pytest.mark.parametrize(
-    ("expected"),
-    [
-        pytest.param(
-            {
-                "result_warnings_qty": 0,
-                "exception_patterns": [
-                    "Failed to submit workspace ws-cbf7c7ea-a57c-481d-b96b-97c12856395e: Response\\(status=ResponseStatus.FAIL, "
-                    "message='Unknown exception faced', code=ResponseCode.UNSPECIFIED\\)"
-                ],
-                "exception": pytest.raises(CVWorkspaceSubmitFailed),
-                "execution_failed": False,
-                "workspace_state": "submit failed",
-            },
-            id="SUBMIT_FAILURE_UNSPECIFIED",
-        ),
-    ],
-)
 async def test_finalize_workspace_on_cv_submit_failed_unspecified(
     caplog: pytest.LogCaptureFixture,
     cv_client: CVClient,
-    expected: dict[str, Any],
     workspace_force_submission: bool,
 ) -> None:
     """
@@ -471,6 +379,19 @@ async def test_finalize_workspace_on_cv_submit_failed_unspecified(
         request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
         targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
     """
+    warnings: list[Any] = []
+    exception_patterns = [
+        "Failed to submit workspace ws-cbf7c7ea-a57c-481d-b96b-97c12856395e: Response\\(status=ResponseStatus.FAIL, "
+        "message='Unknown exception faced', code=ResponseCode.UNSPECIFIED\\)"
+    ]
+    cv_workspace = CVWorkspace(
+        name=MOCKED_WORKSPACE_NAME,
+        description=MOCKED_WORKSPACE_DESCRIPTION,
+        id=MOCKED_WORKSPACE_ID,
+        requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+        force=workspace_force_submission,
+    )
+
     with (
         caplog.at_level(INFO),
         patch(
@@ -480,16 +401,8 @@ async def test_finalize_workspace_on_cv_submit_failed_unspecified(
                 MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_FAILURE_OTHER_EXCEPTION["id"].removeprefix("req-"),
             ],
         ),
-        expected["exception"] as exception_info,
+        pytest.raises(CVWorkspaceSubmitFailed) as exception_info,
     ):
-        warnings: list[Any] = []
-        cv_workspace = CVWorkspace(
-            name=MOCKED_WORKSPACE_NAME,
-            description=MOCKED_WORKSPACE_DESCRIPTION,
-            id=MOCKED_WORKSPACE_ID,
-            requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
-            force=workspace_force_submission,
-        )
         await finalize_workspace_on_cv(
             workspace=cv_workspace,
             cv_client=cv_client,
@@ -506,98 +419,26 @@ async def test_finalize_workspace_on_cv_submit_failed_unspecified(
         )
 
     # Assert that exception value contains all expected exception patterns
-    for expected_pattern in expected["exception_patterns"]:
+    for expected_pattern in exception_patterns:
         assert re.search(re.compile(expected_pattern), str(exception_info.value))
 
     # Assert number of returned warnings
-    assert len(warnings) == expected["result_warnings_qty"]
+    assert len(warnings) == 0
 
     # Assert returned workspace object
     assert cv_workspace.name == MOCKED_WORKSPACE_NAME
     assert cv_workspace.description == MOCKED_WORKSPACE_DESCRIPTION
     assert cv_workspace.id == MOCKED_WORKSPACE_ID
     assert cv_workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
-    assert cv_workspace.state == (expected["workspace_state"] or MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED)
-
-
-@pytest.mark.asyncio
-async def test_verify_devices_on_cv_no_devices(cv_client: CVClient) -> None:
-    """Test an attempt to verify empty lict of targeted devices."""
-    result = await verify_devices_on_cv(devices=[], workspace_id="", skip_missing_devices=False, warnings=[], cv_client=cv_client)
-    assert len(result) == 0
-
-
-@pytest.mark.asyncio
-@pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
-@pytest.mark.parametrize(
-    ("input_devices"),
-    [
-        pytest.param([CVDevice(hostname="avd-ci-leaf2", serial_number="B51AA89B6E51E89E1422107EDE3A9438")], id="SINGLE_STREAMING_DEVICE_SET_HOSTNAME_SERIAL"),
-        pytest.param([CVDevice(hostname="avd-ci-leaf2", system_mac_address="50:00:00:d5:5d:c0")], id="SINGLE_STREAMING_DEVICE_SET_HOSTNAME_SYSTEM_MAC"),
-    ],
-)
-async def test_verify_devices_in_cloudvision_inventory(
-    cv_client: CVClient,
-    input_devices: list[CVDevice],
-) -> None:
-    """
-    Test verify_devices_in_cloudvision_inventory.
-
-    Specific use cases:
-    1. Verify device based on serial_number
-        Exact test steps:
-        -   description: Fetch device status
-            request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id='B51AA89B6E51E89E1422107EDE3A9438'),
-                hostname=None, system_mac_address=None)], time=TimeBounds(start=None, end=None))'
-            targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/76601a85f4ab2a9e434ec80eaeea2efc8dc02d71.json'
-
-    2. Verify device based on system_mac_address
-        Exact test steps:
-        -   description: Fetch device status
-            request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id=None), hostname=None, system_mac_address='50:00:00:d5:5d:c0')],
-                time=TimeBounds(start=None, end=None))'
-            targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/396119d5076221da87045ff93ab5041f30e9d9e0.json'
-    """
-    expected_result = [
-        CVDevice(
-            hostname="avd-ci-leaf2",
-            serial_number="B51AA89B6E51E89E1422107EDE3A9438",
-            system_mac_address="50:00:00:d5:5d:c0",
-            _exists_on_cv=True,
-            _streaming=True,
-        )
-    ]
-    result = await verify_devices_in_cloudvision_inventory(
-        devices=input_devices,
-        skip_missing_devices=False,
-        warnings=[],
-        cv_client=cv_client,
-    )
-    assert result == expected_result
+    assert cv_workspace.state == "submit failed"
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
 @pytest.mark.parametrize(("workspace_force_submission"), [pytest.param(False, id="UNFORCED"), pytest.param(True, id="FORCED")])
-@pytest.mark.parametrize(
-    ("expected"),
-    [
-        pytest.param(
-            {
-                "result_warnings_qty": 0,
-                "exception_patterns": ["Failed to submit CloudVision Workspace due to the presence of inactive devices. "],
-                "exception": pytest.raises(CVWorkspaceSubmitFailedInactiveDevices),
-                "execution_failed": False,
-                "workspace_state": "submit failed",
-            },
-            id="SUBMIT_FAILURE_INACTIVE",
-        ),
-    ],
-)
 async def test_deploy_to_cv_streaming_device_failure(
     caplog: pytest.LogCaptureFixture,
     cv_client: CVClient,
-    expected: dict[str, Any],
     workspace_force_submission: bool,
 ) -> None:
     """
@@ -629,6 +470,16 @@ async def test_deploy_to_cv_streaming_device_failure(
         request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
         targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
     """
+    result = DeployToCvResult(
+        workspace=CVWorkspace(
+            name=MOCKED_WORKSPACE_NAME,
+            description=MOCKED_WORKSPACE_DESCRIPTION,
+            id=MOCKED_WORKSPACE_ID,
+            requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+            force=workspace_force_submission,
+        )
+    )
+
     with (
         caplog.at_level(INFO),
         patch(
@@ -638,18 +489,8 @@ async def test_deploy_to_cv_streaming_device_failure(
                 MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_FAILURE_INACTIVE_DEVICES["id"].removeprefix("req-"),
             ],
         ),
-        expected["exception"] as exception_info,
+        pytest.raises(CVWorkspaceSubmitFailedInactiveDevices) as exception_info,
     ):
-        result = DeployToCvResult(
-            workspace=CVWorkspace(
-                name=MOCKED_WORKSPACE_NAME,
-                description=MOCKED_WORKSPACE_DESCRIPTION,
-                id=MOCKED_WORKSPACE_ID,
-                requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
-                force=workspace_force_submission,
-            )
-        )
-
         await finalize_workspace_on_cv(
             workspace=result.workspace,
             cv_client=cv_client,
@@ -666,14 +507,13 @@ async def test_deploy_to_cv_streaming_device_failure(
         )
 
     # Assert that exception value contains all expected exception patterns
-    for expected_pattern in expected["exception_patterns"]:
-        assert re.search(re.compile(expected_pattern), str(exception_info.value))
+    assert re.search(re.compile("Failed to submit CloudVision Workspace due to the presence of inactive devices. "), str(exception_info.value))
 
     # Assess result
-    assert result.failed == expected["execution_failed"]
+    assert not result.failed
 
     # Assert number of returned warnings
-    assert len(result.warnings) == expected["result_warnings_qty"]
+    assert len(result.warnings) == 0
 
     # Assert returned workspace object
     assert result.workspace.name == MOCKED_WORKSPACE_NAME
@@ -681,33 +521,14 @@ async def test_deploy_to_cv_streaming_device_failure(
     assert result.workspace.id == MOCKED_WORKSPACE_ID
     assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
     assert result.workspace.force == workspace_force_submission
-    assert result.workspace.state == (expected["workspace_state"] or MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED)
+    assert result.workspace.state == "submit failed"
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
-@pytest.mark.parametrize(("workspace_force_submission"), [pytest.param(False, id="UNFORCED")])
-@pytest.mark.parametrize(
-    ("expected"),
-    [
-        pytest.param(
-            {
-                "result_warnings_qty": 1,
-                "result_warnings_patterns": ["Inactive devices present: \\['avd-ci-leaf1.*"],
-                "exception_patterns": ["Failed to submit CloudVision Workspace due to the presence of inactive devices: \\['avd-ci-leaf1.*"],
-                "exception": pytest.raises(CVWorkspaceSubmitFailedInactiveDevices),
-                "execution_failed": False,
-                "workspace_state": "submit failed",
-            },
-            id="SINGLE_NON_STREAMING_DEVICE",
-        ),
-    ],
-)
 async def test_deploy_to_cv_non_streaming_device_unforced(
     caplog: pytest.LogCaptureFixture,
     cv_client: CVClient,
-    expected: dict[str, Any],
-    workspace_force_submission: bool,
 ) -> None:
     """
     Test building and submitting Workspace with non-streaming device without forcing.
@@ -731,6 +552,16 @@ async def test_deploy_to_cv_non_streaming_device_unforced(
         request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
         targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
     """
+    result = DeployToCvResult(
+        workspace=CVWorkspace(
+            name=MOCKED_WORKSPACE_NAME,
+            description=MOCKED_WORKSPACE_DESCRIPTION,
+            id=MOCKED_WORKSPACE_ID,
+            requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+            force=False,
+        )
+    )
+
     with (
         caplog.at_level(INFO),
         patch(
@@ -740,18 +571,8 @@ async def test_deploy_to_cv_non_streaming_device_unforced(
                 MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_FAILURE_INACTIVE_DEVICES["id"].removeprefix("req-"),
             ],
         ),
-        expected["exception"] as exception_info,
+        pytest.raises(CVWorkspaceSubmitFailedInactiveDevices) as exception_info,
     ):
-        result = DeployToCvResult(
-            workspace=CVWorkspace(
-                name=MOCKED_WORKSPACE_NAME,
-                description=MOCKED_WORKSPACE_DESCRIPTION,
-                id=MOCKED_WORKSPACE_ID,
-                requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
-                force=workspace_force_submission,
-            )
-        )
-
         await finalize_workspace_on_cv(
             workspace=result.workspace,
             cv_client=cv_client,
@@ -768,16 +589,16 @@ async def test_deploy_to_cv_non_streaming_device_unforced(
         )
 
     # Assert that exception value contains all expected exception patterns
-    for expected_pattern in expected["exception_patterns"]:
+    for expected_pattern in ["Failed to submit CloudVision Workspace due to the presence of inactive devices: \\['avd-ci-leaf1.*"]:
         assert re.search(re.compile(expected_pattern), str(exception_info.value))
 
     # Assess result
-    assert result.failed == expected["execution_failed"]
+    assert not result.failed
 
     # Assert number of returned warnings
-    assert len(result.warnings) == expected["result_warnings_qty"]
+    assert len(result.warnings) == 1
     # Assert that updated warnings match expected warning patterns
-    for expected_pattern in expected["result_warnings_patterns"]:
+    for expected_pattern in ["Inactive devices present: \\['avd-ci-leaf1.*"]:
         assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
 
     # Assert returned workspace object
@@ -785,34 +606,15 @@ async def test_deploy_to_cv_non_streaming_device_unforced(
     assert result.workspace.description == MOCKED_WORKSPACE_DESCRIPTION
     assert result.workspace.id == MOCKED_WORKSPACE_ID
     assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
-    assert result.workspace.force == workspace_force_submission
-    assert result.workspace.state == (expected["workspace_state"] or MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED)
+    assert not result.workspace.force
+    assert result.workspace.state == "submit failed"
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
-@pytest.mark.parametrize(("workspace_force_submission"), [pytest.param(True, id="FORCED")])
-@pytest.mark.parametrize(
-    ("expected"),
-    [
-        pytest.param(
-            {
-                "result_warnings_qty": 1,
-                "result_warnings_patterns": ["Inactive devices present: \\['avd-ci-leaf1.*"],
-                "result_errors_qty": 0,
-                "exception": does_not_raise(),
-                "execution_failed": False,
-                "workspace_state": None,
-            },
-            id="SINGLE_NON_STREAMING_DEVICE",
-        ),
-    ],
-)
 async def test_deploy_to_cv_non_streaming_device_forced(
     caplog: pytest.LogCaptureFixture,
     cv_client: CVClient,
-    expected: dict[str, Any],
-    workspace_force_submission: bool,
 ) -> None:
     """
     Test building and submitting Workspace with non-streaming device with forcing.
@@ -846,7 +648,7 @@ async def test_deploy_to_cv_non_streaming_device_forced(
                 MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_SUCCESS["id"].removeprefix("req-"),
             ],
         ),
-        expected["exception"],
+        does_not_raise(),
     ):
         result = DeployToCvResult(
             workspace=CVWorkspace(
@@ -854,7 +656,7 @@ async def test_deploy_to_cv_non_streaming_device_forced(
                 description=MOCKED_WORKSPACE_DESCRIPTION,
                 id=MOCKED_WORKSPACE_ID,
                 requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
-                force=workspace_force_submission,
+                force=True,
             )
         )
 
@@ -874,12 +676,11 @@ async def test_deploy_to_cv_non_streaming_device_forced(
         )
 
     # Assess result
-    assert result.failed == expected["execution_failed"]
-
+    assert not result.failed
     # Assert number of returned warnings
-    assert len(result.warnings) == expected["result_warnings_qty"]
+    assert len(result.warnings) == 1
     # Assert that updated warnings match expected warning patterns
-    for expected_pattern in expected["result_warnings_patterns"]:
+    for expected_pattern in ["Inactive devices present: \\['avd-ci-leaf1.*"]:
         assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
 
     # Assert returned workspace object
@@ -887,5 +688,129 @@ async def test_deploy_to_cv_non_streaming_device_forced(
     assert result.workspace.description == MOCKED_WORKSPACE_DESCRIPTION
     assert result.workspace.id == MOCKED_WORKSPACE_ID
     assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+    assert result.workspace.force
+    assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("cv_client", [{"static_recording": True, "cv_version": "CVaaS"}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
+@pytest.mark.parametrize(("workspace_force_submission"), [pytest.param(False, id="UNFORCED"), pytest.param(True, id="FORCED")])
+async def test_deploy_to_cv(
+    caplog: pytest.LogCaptureFixture,
+    cv_client: CVClient,
+    workspace_force_submission: bool,
+) -> None:
+    """
+    Test full functionality of the deploy_to_cv by building and submitting (both forced and unforced) Workspace with a single streaming device.
+
+    Exact test steps:
+    -   description: Fethc Workspace status
+        request: 'WorkspaceRequest(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'), time=None)'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/GetOne/www.cv-prod-us-central1-c.arista.io/a996cf0f4bc694971e5d4069f481faaba80f68b2.json'
+
+    -   description: Create Workspace
+        request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+            display_name='MOCKED_WS_NAME', description='MOCKED_WS_DESCRIPTION'))'
+        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/ce73310ec5154d57ac888fc8f93d69893962d804.json'
+
+    -   description: Fetch device status
+        request: 'DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id=None), hostname='avd-ci-leaf2', system_mac_address=None)],
+            time=TimeBounds(start=None, end=None))'
+        targeted_file: 'arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/effc85b759a4d35ba98ae7c22bcef828c070752d.json'
+
+    -   description: Fetch I&T Studio inputs
+        request: 'InputsStreamRequest(partial_eq_filter=[Inputs(key=InputsKey(studio_id='TOPOLOGY', workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))],
+            time=None)'
+        targeted_file: 'arista.studio.v1.InputsService/GetAll/www.cv-prod-us-central1-c.arista.io/0ab698a68a7f9f86eeda70fba362f57cb2f07fc4.json'
+
+    -   description: Create configlet
+        request: 'ConfigletConfigSetSomeRequest(values=[ConfigletConfig(key=ConfigletKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e',
+            configlet_id='avd-B51AA89B6E51E89E1422107EDE3A9438'), display_name='TEST_CONFIGLET_NAME', description='Configuration created and
+            uploaded by AVD for avd-ci-leaf2', body='alias test test')])'
+        targeted_file: 'arista.configlet.v1.ConfigletConfigService/SetSome/www.cv-prod-us-central1-c.arista.io/9928854663237cf59f5710079cb64befccffd7cc.json'
+
+    -   description: Fetch Configlet assignments
+        request: 'ConfigletAssignmentStreamRequest(partial_eq_filter=[ConfigletAssignment(key=ConfigletAssignmentKey(workspace_id=
+            'ws-cbf7c7ea-a57c-481d-b96b-97c12856395e', configlet_assignment_id='avd-configlets'))], time=TimeBounds(start=None, end=None))'
+        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/0462b04aed494937b07702371f123831a4e81036.json'
+
+    -   description: Fetch configlets assignments
+        request: Too long. Please consult JSON file for details.
+        targeted_file: 'arista.configlet.v1.ConfigletAssignmentService/GetAll/www.cv-prod-us-central1-c.arista.io/15b2c867c1abf9b0d425ca76fa4327294c18c376.json'
+
+    -   description: Build Workspace
+        request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+            request=Request.START_BUILD, request_params=RequestParams(request_id='req-914310f3-08dd-4239-bd42-6d78bf781229')))'
+        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/1fdd6fcd02728621447eeb8a1d8c9cbfdd9201c9.json'
+
+    -   description: Fetch build results
+        request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
+
+    -   description: Submit Workspace (UNFORCED use case)
+        request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+            request=Request.SUBMIT, request_params=RequestParams(request_id='req-b8f4e511-58de-4afe-99f0-b75abf980131')))'
+        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/ba83e98eab07691e8b079958618ab2973822bfe8.json'
+
+    -   description: Submit Workspace (FORCED use case)
+        request: 'WorkspaceConfigSetRequest(value=WorkspaceConfig(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'),
+            request=Request.SUBMIT_FORCE, request_params=RequestParams(request_id='req-b8f4e511-58de-4afe-99f0-b75abf980131')))'
+        targeted_file: 'arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/47049c8a6b520f110540f81bcd892ba0e4954908.json'
+
+    -   description: Fetch submit results
+        request: 'WorkspaceStreamRequest(partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id='ws-cbf7c7ea-a57c-481d-b96b-97c12856395e'))])'
+        targeted_file: 'arista.workspace.v1.WorkspaceService/Subscribe/www.cv-prod-us-central1-c.arista.io/1560c66d73da2be39448d710f15853fb124b2548.json'
+    """
+    with (
+        caplog.at_level(INFO),
+        does_not_raise(),
+        patch(
+            "pyavd._cv.client.workspace.uuid4",
+            side_effect=[
+                MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS["id"].removeprefix("req-"),
+                MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_SUCCESS["id"].removeprefix("req-"),
+            ],
+        ),
+        patch("pyavd._cv.workflows.deploy_to_cv.CVClient", return_value=cv_client),
+        tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", delete=True) as temp_configlet_file,
+    ):
+        temp_configlet_file.write("alias test test")
+        temp_configlet_file.flush()
+
+        result = await deploy_to_cv(
+            cloudvision=CloudVision(
+                servers="",
+                token="",
+                username="",
+                password="",
+            ),
+            workspace=CVWorkspace(
+                name=MOCKED_WORKSPACE_NAME,
+                description=MOCKED_WORKSPACE_DESCRIPTION,
+                id=MOCKED_WORKSPACE_ID,
+                requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
+                force=workspace_force_submission,
+            ),
+            configs=[
+                CVEosConfig(
+                    file=temp_configlet_file.name, device=next(iter(mocked_cvdevices(hostnames=["avd-ci-leaf2"]))), configlet_name="TEST_CONFIGLET_NAME"
+                )
+            ],
+        )
+
+    # Assess result
+    assert not result.failed
+
+    # Assert number of returned warnings
+    assert len(result.warnings) == 0
+
+    # Assert number of returned errors
+    assert len(result.errors) == 0
+
+    # Assert returned workspace object
+    assert result.workspace.name == MOCKED_WORKSPACE_NAME
+    assert result.workspace.description == MOCKED_WORKSPACE_DESCRIPTION
+    assert result.workspace.id == MOCKED_WORKSPACE_ID
+    assert result.workspace.requested_state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
     assert result.workspace.force == workspace_force_submission
-    assert result.workspace.state == (expected["workspace_state"] or MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED)
+    assert result.workspace.state == MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED
