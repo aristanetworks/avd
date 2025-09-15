@@ -831,17 +831,6 @@ keys:
                     - igp
                     - incomplete
                     default: any
-  avd_data_conversion_mode:
-    documentation_options:
-      table: role-input-validation
-    type: str
-    deprecation:
-      warning: true
-      removed: true
-      remove_in_version: 5.0.0
-    description: 'Conversion Mode for AVD input data conversion.
-
-      '
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -1641,18 +1630,6 @@ keys:
         type: bool
         description: 'Subscribe to dynamic device configuration from CloudVision (TerminAttr
           default is false).
-
-          '
-      cvcompression:
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: v5.0.0
-        type: str
-        description: 'The default compression scheme when streaming to CloudVision
-          is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
-
-          There is no need to change the compression scheme.
 
           '
   daemons:
@@ -5256,38 +5233,6 @@ keys:
           description: 'Set the action to be non-blocking.
 
             '
-        action_type:
-          type: str
-          valid_values:
-          - bash
-          - increment
-          - log
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: 5.0.0
-            new_key: event_handlers.actions
-        action:
-          type: str
-          description: 'Command to execute.
-
-            '
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: 5.0.0
-            new_key: event_handlers.actions.bash_command
-        regex:
-          type: str
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: 5.0.0
-            new_key: event_handlers.trigger_on_logging.regex
-          description: 'Regular expression to use for searching log messages. Required
-            for on-logging trigger.
-
-            '
   event_monitor:
     type: dict
     keys:
@@ -5435,111 +5380,6 @@ keys:
                         - str
           shutdown:
             type: bool
-  flow_trackings:
-    documentation_options:
-      table: flow-tracking
-    deprecation:
-      removed: true
-      warning: true
-      new_key: flow_tracking
-      remove_in_version: v5.0.0
-    type: list
-    primary_key: type
-    items:
-      type: dict
-      keys:
-        type:
-          type: str
-          valid_values:
-          - sampled
-          description: Flow Tracking Type - only 'sampled' supported for now.
-        sample:
-          type: int
-          convert_types:
-          - str
-          min: 1
-          max: 4294967295
-        trackers:
-          type: list
-          primary_key: name
-          items:
-            type: dict
-            keys:
-              name:
-                type: str
-                description: Tracker Name.
-              record_export:
-                type: dict
-                keys:
-                  on_inactive_timeout:
-                    type: int
-                    convert_types:
-                    - str
-                    min: 3000
-                    max: 900000
-                    description: Flow record inactive export timeout in milliseconds.
-                  on_interval:
-                    type: int
-                    convert_types:
-                    - str
-                    min: 1000
-                    max: 36000000
-                    description: Flow record export interval in milliseconds.
-                  mpls:
-                    type: bool
-                    description: Export MPLS forwarding information.
-              exporters:
-                type: list
-                primary_key: name
-                items:
-                  type: dict
-                  keys:
-                    name:
-                      type: str
-                      description: Exporter Name.
-                    collector:
-                      type: dict
-                      keys:
-                        host:
-                          type: str
-                          description: Collector IPv4 address or IPv6 address or fully
-                            qualified domain name.
-                        port:
-                          type: int
-                          description: Collector Port Number.
-                          min: 1
-                          max: 65535
-                          convert_types:
-                          - str
-                    format:
-                      type: dict
-                      keys:
-                        ipfix_version:
-                          type: int
-                          convert_types:
-                          - str
-                    local_interface:
-                      type: str
-                      description: Local Source Interface.
-                    template_interval:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 5000
-                      max: 3600000
-                      description: Template interval in milliseconds.
-              table_size:
-                type: int
-                convert_types:
-                - str
-                min: 1
-                max: 614400
-                description: 'Maximum number of entries in flow table.
-
-                  '
-        shutdown:
-          type: bool
-          default: false
   generate_default_config:
     type: bool
     default: false
@@ -8508,20 +8348,6 @@ keys:
                         '
                       items:
                         type: str
-      enable_vrfs:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: transport.grpc
-          remove_in_version: 5.0.0
-      octa:
-        type: dict
-        deprecation:
-          warning: true
-          removed: true
-          new_key: provider
-          remove_in_version: 5.0.0
   management_api_http:
     type: dict
     keys:
@@ -9093,13 +8919,6 @@ keys:
                     type: bool
                     description: Configuring secret using the local timezone from
                       system clock. Default is UTC.
-      entropy_source:
-        type: str
-        deprecation:
-          warning: true
-          removed: true
-          remove_in_version: v5.0.0
-          new_key: entropy_sources
   management_ssh:
     type: dict
     keys:
@@ -10781,15 +10600,6 @@ keys:
                     valid_values:
                     - pipe
                     - uniform
-  name_server:
-    documentation_options:
-      table: ip-name-servers
-    deprecation:
-      removed: true
-      warning: true
-      new_key: ip_name_servers
-      remove_in_version: v5.0.0
-    type: dict
   ntp:
     type: dict
     keys:
@@ -13311,26 +13121,6 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface
             in the final EOS configuration.
-        esi:
-          type: str
-          description: 'EVPN Ethernet Segment Identifier (Type 1 format).
-
-            '
-          deprecation:
-            removed: true
-            warning: true
-            new_key: evpn_ethernet_segment.identifier
-            remove_in_version: 5.0.0
-        rt:
-          type: str
-          description: 'EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
-
-            '
-          deprecation:
-            removed: true
-            warning: true
-            new_key: evpn_ethernet_segment.route_target
-            remove_in_version: 5.0.0
   prefix_lists:
     type: list
     primary_key: name
@@ -14490,15 +14280,6 @@ keys:
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.
-  radius_servers:
-    documentation_options:
-      table: radius-server
-    deprecation:
-      warning: true
-      removed: true
-      new_key: radius_server.hosts
-      remove_in_version: v5.0.0
-    type: list
   redundancy:
     type: dict
     keys:
@@ -15399,20 +15180,6 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
-            peer_filter:
-              type: str
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: router_bgp.listen_ranges[].peer_filter
-            bgp_listen_range_prefix:
-              type: str
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: router_bgp.listen_ranges[].bgp_listen_range_prefix
       neighbors:
         type: list
         primary_key: ip_address
@@ -16659,13 +16426,6 @@ keys:
                           required: true
                         originate:
                           type: bool
-                    address_family_ipv6_originate:
-                      type: bool
-                      deprecation:
-                        warning: true
-                        removed: true
-                        new_key: address_family_ipv6
-                        remove_in_version: 5.0.0
           neighbors:
             type: list
             primary_key: ip_address
@@ -17206,12 +16966,6 @@ keys:
                             policy decision.
                 multi_path:
                   type: bool
-                next_hop_resolution:
-                  type: dict
-                  deprecation:
-                    warning: true
-                    removed: true
-                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -17340,12 +17094,6 @@ keys:
                             policy decision.
                 multi_path:
                   type: bool
-                next_hop_resolution:
-                  type: dict
-                  deprecation:
-                    warning: true
-                    removed: true
-                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -19268,24 +19016,6 @@ keys:
                   additional_paths:
                     type: dict
                     $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
-                  prefix_list_in:
-                    type: str
-                    description: Inbound prefix-list name.
-                    deprecation:
-                      warning: true
-                      removed: true
-                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in
-                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in
-                      remove_in_version: 5.0.0
-                  prefix_list_out:
-                    type: str
-                    description: Outbound prefix-list name.
-                    deprecation:
-                      warning: true
-                      removed: true
-                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out
-                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out
-                      remove_in_version: 5.0.0
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -20907,14 +20637,6 @@ keys:
                 VRF definition in the final EOS configuration.
 
                 '
-            address_families:
-              type: list
-              primary_key: address_family
-              deprecation:
-                warning: true
-                removed: true
-                new_key: address_family_*
-                remove_in_version: 5.0.0
       session_trackers:
         type: list
         primary_key: name
@@ -21577,20 +21299,6 @@ keys:
         type: str
         description: Multiline EOS CLI rendered directly on the router isis in the
           final EOS configuration.
-      address_family:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: address_family_ipv4.enabled or address_family_ipv6.enabled
-          remove_in_version: 5.0.0
-      isis_af_defaults:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: address_family_ipv4/address_family_ipv6
-          remove_in_version: 5.0.0
   router_l2_vpn:
     type: dict
     keys:
@@ -23366,13 +23074,6 @@ keys:
               type: str
             included:
               type: bool
-            MIB_family_name:
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: mib_family_name
-              type: str
       groups:
         type: list
         items:
@@ -23837,13 +23538,6 @@ keys:
             max: 65535
             convert_types:
             - str
-          local_interface:
-            type: str
-            deprecation:
-              removed: true
-              warning: true
-              new_key: local_interfaces
-              remove_in_version: v5.0.0
   switchport_default:
     type: dict
     keys:
@@ -25297,30 +24991,6 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in
             the final EOS configuration.
-        ipv6_address_virtual:
-          type: str
-          description: 'IPv6_address/Mask.
-
-            '
-          deprecation:
-            removed: true
-            warning: true
-            new_key: ipv6_address_virtuals
-            remove_in_version: 5.0.0
-        ipv6_virtual_router_address:
-          type: str
-          deprecation:
-            removed: true
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: ipv6_virtual_router_addresses
-        vrrp:
-          type: dict
-          deprecation:
-            removed: true
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: vrrp_ids
   vlan_internal_order:
     type: dict
     keys:
