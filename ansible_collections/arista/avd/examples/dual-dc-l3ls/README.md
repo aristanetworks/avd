@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: AVD example for a dual data center using L3LS
+title: Dual Data Center - L3LS
 ---
 <!--
   ~ Copyright (c) 2023-2025 Arista Networks, Inc.
@@ -8,7 +8,7 @@ title: AVD example for a dual data center using L3LS
   ~ that can be found in the LICENSE file.
   -->
 
-# AVD example for a dual data center using L3LS
+# Dual Data Center - L3LS
 
 ## Introduction
 

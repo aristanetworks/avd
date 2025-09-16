@@ -23,7 +23,7 @@ The **eos_designs** role:
   - [eos_config_deploy_eapi](../eos_config_deploy_eapi/README.md) role.
   - [eos_config_deploy_cvp](../eos_config_deploy_cvp/README.md)  role.
 - Designed to generate the intended configuration offline, without relying on switch current state information.
-- Facilitates the evaluation of the configuration post-deployment with [eos_validate_state](../eos_validate_state/README.md) role.
+- Facilitates the evaluation of the configuration post-deployment with the [anta_runner](../anta_runner/README.md) role.
 - Facilitates the evaluation of the configuration prior to deployment with tools like [Batfish](https://www.batfish.org/)
 
 ## Role Inputs and Outputs

@@ -11105,11 +11105,11 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_state: bool | None
         """
-        Set to false to disable interface state and LLDP topology validation performed by the
-        `eos_validate_state` role.
+        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+        role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         campus_link_type: CampusLinkType
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -11320,9 +11320,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the
-                       `eos_validate_state` role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                       role.
+                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     campus_link_type:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
@@ -15729,11 +15729,11 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_state: bool | None
         """
-        Set to false to disable interface state and LLDP topology validation performed by the
-        `eos_validate_state` role.
+        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+        role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         campus_link_type: CampusLinkType
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -15903,9 +15903,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the
-                       `eos_validate_state` role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                       role.
+                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     campus_link_type:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
@@ -23073,11 +23073,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_state: bool | None
                     """
-                    Set to false to disable interface state and LLDP topology validation performed by the
-                    `eos_validate_state` role.
+                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                    role.
                     """
                     validate_lldp: bool | None
-                    """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
                     campus_link_type: CampusLinkType
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -23285,9 +23285,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 validate_state:
-                                   Set to false to disable interface state and LLDP topology validation performed by the
-                                   `eos_validate_state` role.
-                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                                   Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                                   role.
+                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                                 campus_link_type:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -24718,11 +24718,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_state: bool | None
                     """
-                    Set to false to disable interface state and LLDP topology validation performed by the
-                    `eos_validate_state` role.
+                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                    role.
                     """
                     validate_lldp: bool | None
-                    """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
                     campus_link_type: CampusLinkType
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -24930,9 +24930,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 validate_state:
-                                   Set to false to disable interface state and LLDP topology validation performed by the
-                                   `eos_validate_state` role.
-                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                                   Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                                   role.
+                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                                 campus_link_type:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
