@@ -8773,12 +8773,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Pae(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"mode": {"type": str}}
-                mode: Literal["authenticator"] | None
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "supplicant_profile": {"type": str}}
+                mode: Literal["authenticator", "supplicant"] | None
+                supplicant_profile: str | None
+                """Supplicant profile name."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, mode: Literal["authenticator"] | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        mode: Literal["authenticator", "supplicant"] | None | UndefinedType = Undefined,
+                        supplicant_profile: str | None | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Pae.
 
@@ -8787,6 +8794,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             mode: mode
+                            supplicant_profile: Supplicant profile name.
 
                         """
 
@@ -12687,11 +12695,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         validate_state: bool | None
         """
-        Set to false to disable interface state and LLDP topology validation performed by the
-        `eos_validate_state` role.
+        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+        role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         switchport: Switchport
         """
         This should not be combined with `ethernet_interfaces[].type = switched/routed`.
@@ -12996,9 +13004,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                        Subclass of AvdIndexedList with `VrrpIdsItem` items. Primary key is `id` (`int`).
                     validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the
-                       `eos_validate_state` role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                       role.
+                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     switchport:
                        This should not be combined with `ethernet_interfaces[].type = switched/routed`.
 
@@ -21460,13 +21468,182 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Providers._item_type = ProvidersItem
 
-        _fields: ClassVar[dict] = {"providers": {"type": Providers}}
+        class Provider(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Sysdb(AvdModel):
+                """Subclass of AvdModel."""
+
+                class DisabledPaths(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                DisabledPaths._item_type = str
+
+                _fields: ClassVar[dict] = {"disabled_paths": {"type": DisabledPaths}}
+                disabled_paths: DisabledPaths
+                """
+                List of disabled Sysdb paths for Octa.
+
+                Subclass of AvdList with `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, disabled_paths: DisabledPaths | UndefinedType = Undefined) -> None:
+                        """
+                        Sysdb.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            disabled_paths:
+                               List of disabled Sysdb paths for Octa.
+
+                               Subclass of AvdList with `str` items.
+
+                        """
+
+            class Smash(AvdModel):
+                """Subclass of AvdModel."""
+
+                class PathsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"path": {"type": str}, "disabled": {"type": bool}}
+                    path: str
+                    disabled: bool | None
+                    """Disabled Smash path for Octa."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, path: str | UndefinedType = Undefined, disabled: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            PathsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                path: path
+                                disabled: Disabled Smash path for Octa.
+
+                            """
+
+                class Paths(AvdIndexedList[str, PathsItem]):
+                    """Subclass of AvdIndexedList with `PathsItem` items. Primary key is `path` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "path"
+
+                Paths._item_type = PathsItem
+
+                _fields: ClassVar[dict] = {"paths": {"type": Paths}}
+                paths: Paths
+                """
+                List of Smash paths.
+
+                Subclass of AvdIndexedList with `PathsItem` items. Primary key is `path`
+                (`str`).
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, paths: Paths | UndefinedType = Undefined) -> None:
+                        """
+                        Smash.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            paths:
+                               List of Smash paths.
+
+                               Subclass of AvdIndexedList with `PathsItem` items. Primary key is `path`
+                               (`str`).
+
+                        """
+
+            class Macsec(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"interfaces": {"type": bool}, "mka": {"type": bool}}
+                interfaces: bool | None
+                """Enable MACsec for interfaces."""
+                mka: bool | None
+                """Enable MKA for MACsec."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, interfaces: bool | None | UndefinedType = Undefined, mka: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Macsec.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            interfaces: Enable MACsec for interfaces.
+                            mka: Enable MKA for MACsec.
+
+                        """
+
+            _fields: ClassVar[dict] = {"sysdb": {"type": Sysdb}, "smash": {"type": Smash}, "macsec": {"type": Macsec}}
+            sysdb: Sysdb
+            """
+            Sysdb provider configuration.
+
+            Subclass of AvdModel.
+            """
+            smash: Smash
+            """
+            Smash provider configuration.
+
+            Subclass of AvdModel.
+            """
+            macsec: Macsec
+            """
+            MACsec provider configuration.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, sysdb: Sysdb | UndefinedType = Undefined, smash: Smash | UndefinedType = Undefined, macsec: Macsec | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    Provider.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        sysdb:
+                           Sysdb provider configuration.
+
+                           Subclass of AvdModel.
+                        smash:
+                           Smash provider configuration.
+
+                           Subclass of AvdModel.
+                        macsec:
+                           MACsec provider configuration.
+
+                           Subclass of AvdModel.
+
+                    """
+
+        _fields: ClassVar[dict] = {"providers": {"type": Providers}, "provider": {"type": Provider}}
         providers: Providers
         """Subclass of AvdList with `ProvidersItem` items."""
+        provider: Provider
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, providers: Providers | UndefinedType = Undefined) -> None:
+            def __init__(self, *, providers: Providers | UndefinedType = Undefined, provider: Provider | UndefinedType = Undefined) -> None:
                 """
                 ManagementApiModels.
 
@@ -21475,6 +21652,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     providers: Subclass of AvdList with `ProvidersItem` items.
+                    provider: Subclass of AvdModel.
 
                 """
 
@@ -22796,64 +22974,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        class AccessGroupsItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-            name: str | None
-            """Standard ACL Name."""
-            vrf: str | None
-            """VRF Name."""
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    AccessGroupsItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: Standard ACL Name.
-                        vrf: VRF Name.
-
-                    """
-
-        class AccessGroups(AvdList[AccessGroupsItem]):
-            """Subclass of AvdList with `AccessGroupsItem` items."""
-
-        AccessGroups._item_type = AccessGroupsItem
-
-        class Ipv6AccessGroupsItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-            name: str | None
-            """Standard ACL Name."""
-            vrf: str | None
-            """VRF Name."""
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    Ipv6AccessGroupsItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: Standard ACL Name.
-                        vrf: VRF Name.
-
-                    """
-
-        class Ipv6AccessGroups(AvdList[Ipv6AccessGroupsItem]):
-            """Subclass of AvdList with `Ipv6AccessGroupsItem` items."""
-
-        Ipv6AccessGroups._item_type = Ipv6AccessGroupsItem
-
         class Cipher(AvdList[str]):
             """Subclass of AvdList with `str` items."""
 
@@ -23032,8 +23152,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "authentication": {"type": Authentication},
-            "access_groups": {"type": AccessGroups},
-            "ipv6_access_groups": {"type": Ipv6AccessGroups},
             "ip_access_group_in": {"type": str},
             "ipv6_access_group_in": {"type": str},
             "idle_timeout": {"type": int},
@@ -23050,10 +23168,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         authentication: Authentication
         """Subclass of AvdModel."""
-        access_groups: AccessGroups
-        """Subclass of AvdList with `AccessGroupsItem` items."""
-        ipv6_access_groups: Ipv6AccessGroups
-        """Subclass of AvdList with `Ipv6AccessGroupsItem` items."""
         ip_access_group_in: str | None
         """Standard ACL Name."""
         ipv6_access_group_in: str | None
@@ -23099,8 +23213,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 authentication: Authentication | UndefinedType = Undefined,
-                access_groups: AccessGroups | UndefinedType = Undefined,
-                ipv6_access_groups: Ipv6AccessGroups | UndefinedType = Undefined,
                 ip_access_group_in: str | None | UndefinedType = Undefined,
                 ipv6_access_group_in: str | None | UndefinedType = Undefined,
                 idle_timeout: int | None | UndefinedType = Undefined,
@@ -23123,8 +23235,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     authentication: Subclass of AvdModel.
-                    access_groups: Subclass of AvdList with `AccessGroupsItem` items.
-                    ipv6_access_groups: Subclass of AvdList with `Ipv6AccessGroupsItem` items.
                     ip_access_group_in: Standard ACL Name.
                     ipv6_access_group_in: Standard IPv6 ACL Name.
                     idle_timeout: Idle timeout in minutes.
@@ -33952,11 +34062,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         validate_state: bool | None
         """
-        Set to false to disable interface state and LLDP topology validation performed by the
-        `eos_validate_state` role.
+        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+        role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         eos_cli: str | None
         """Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
 
@@ -34152,9 +34262,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     switchport: Subclass of AvdModel.
                     traffic_engineering: Subclass of AvdModel.
                     validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the
-                       `eos_validate_state` role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                       role.
+                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     eos_cli: Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
 
                 """
