@@ -42,7 +42,6 @@ ignore = [
   "BLE001",   # Do not catch blind exception: `Exception - TODO: Improve code
   "PLR2004",  # Magic value used in comparison - TODO: Evaluate
   "DTZ005",   # `datetime.datetime.now()` called without a `tz` argument - TODO: Improve code
-  "UP038",    # UP038 Use `X | Y` in `isinstance` call instead of `(X, Y)` - Why would I? It impacts performance.
   "ASYNC109", # async-function-with-timeout: Our async functions call several other async functions and we need each of those calls to be governed by the configurable timeout.
 ]
 
