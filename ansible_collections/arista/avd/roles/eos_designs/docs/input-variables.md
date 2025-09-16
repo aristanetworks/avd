@@ -769,7 +769,7 @@ Make sure to configure the variables in a group_vars file covering all devices m
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/core-interfaces.md
 --8<--
 
-## Flagging a device as not deployed
+## Setting a device as not deployed
 
 You can provision configurations for an entire network topology while flagging specific devices as undeployed by setting the host-level variable `is_deployed: false`.
 
