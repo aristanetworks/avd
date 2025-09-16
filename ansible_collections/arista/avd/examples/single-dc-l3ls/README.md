@@ -345,6 +345,8 @@ ansible_collections/arista/avd/examples/single-dc-l3ls/deploy-cvp.yml
 
 1. At the highest level, the name and scope of the playbook are set, which in this example is `FABRIC`.
 2. This task uses the `arista.avd.cv_deploy` role to deploy and manage the Fabric with CloudVision.
+3. Sets `cv_server` with an ip address, you can also specify a FQDN.
+4. `cv_token` is a service account token as defined on CloudVision.
 
 ### Testing AVD output without a lab
 
