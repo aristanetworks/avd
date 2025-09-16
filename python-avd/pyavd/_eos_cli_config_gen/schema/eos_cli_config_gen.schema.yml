@@ -2714,6 +2714,7 @@ keys:
                     warning: true
                     removed: true
                     remove_in_version: 6.0.0
+                    new_key: encapsulation
                   type: dict
                 unmatched:
                   type: bool
@@ -2721,6 +2722,7 @@ keys:
                     warning: true
                     removed: true
                     remove_in_version: 6.0.0
+                    new_key: encapsulation
             network:
               type: dict
               description: Network encapsulations are all optional and skipped if
@@ -2774,6 +2776,7 @@ keys:
                     warning: true
                     removed: true
                     remove_in_version: 6.0.0
+                    new_key: encapsulation
                   type: dict
                 client:
                   type: bool
@@ -2781,6 +2784,7 @@ keys:
                     warning: true
                     removed: true
                     remove_in_version: 6.0.0
+                    new_key: encapsulation
         vlan_id:
           description: This setting can only be applied to sub-interfaces on EOS.
           type: int
