@@ -77,6 +77,8 @@ repos:
           - --use-current-year
           - --allow-past-years
           - --fuzzy-match-generates-todo
+          - --detect-license-in-X-top-lines
+          - '10'
           - --comment-style
           - '<!--|  ~|  -->'
 
