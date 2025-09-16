@@ -26,7 +26,7 @@ class StandardAccessListsMixin(Protocol):
 
         Used for to configure ACLs used by multicast RPs for the underlay
         """
-        if not self.shared_utils.underlay_multicast or not self.inputs.underlay_multicast_rps:
+        if not self.shared_utils.underlay_multicast_pim_sm_enabled or not self.inputs.underlay_multicast_rps:
             return
 
         for rp_entry in self.inputs.underlay_multicast_rps:
