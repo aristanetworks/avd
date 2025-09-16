@@ -62,9 +62,6 @@ jobs:
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/**/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/**/*'
-            validate_state:
-              - 'ansible_collections/arista/avd/roles/eos_validate_state/*'
-              - 'ansible_collections/arista/avd/roles/eos_validate_state/**/*'
             cloudvision:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
@@ -407,42 +404,6 @@ jobs:
             ansible_version: "ansible-core==2.16.0"
     needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true'
-    steps:
-      - uses: actions/checkout@v5
-      - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: pyavd
-          path: /tmp/pyavd/
-      - name: Install pyavd and Ansible requirements
-        run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
-      - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
-        run: |
-          molecule test --scenario-name ${{ matrix.avd_scenario }}
-      - name: Check GIT status
-        run: |
-          sh .github/check-git-status.sh
-
-  # ----------------------------------- #
-  # EOS Validate State MOLECULE
-  # ----------------------------------- #
-  molecule_eos_validate_state:
-    name: Validate eos_validate_state
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        avd_scenario:
-          - "eos_validate_state"
-        ansible_version:
-          - "ansible-core<2.19.0"
-        include:
-          - avd_scenario: "eos_validate_state"
-            ansible_version: "ansible-core==2.16.0"
-    needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.validate_state == 'true'
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact
