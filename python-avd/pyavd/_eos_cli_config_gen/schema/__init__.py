@@ -60034,16 +60034,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"ipv4_segment_size": {"type": str}, "ipv4": {"type": str}, "direction": {"type": str, "default": "ingress"}}
-            ipv4_segment_size: str | None
-            """
-            Segment Size for IPv4.
-            Can be an integer in the range 64-65515 or "auto".
-            "auto" will enable auto-
-            discovery which clamps the TCP MSS value to the minimum of all the direct paths
-            and multi-hop path
-            MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
-            """
+            _fields: ClassVar[dict] = {"ipv4": {"type": str}, "direction": {"type": str, "default": "ingress"}}
             ipv4: str | None
             """
             Segment Size for IPv4.
@@ -60064,13 +60055,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    ipv4_segment_size: str | None | UndefinedType = Undefined,
-                    ipv4: str | None | UndefinedType = Undefined,
-                    direction: Literal["ingress"] | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, ipv4: str | None | UndefinedType = Undefined, direction: Literal["ingress"] | UndefinedType = Undefined) -> None:
                     """
                     TcpMssCeiling.
 
@@ -60078,13 +60063,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        ipv4_segment_size:
-                           Segment Size for IPv4.
-                           Can be an integer in the range 64-65515 or "auto".
-                           "auto" will enable auto-
-                           discovery which clamps the TCP MSS value to the minimum of all the direct paths
-                           and multi-hop path
-                           MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
                         ipv4:
                            Segment Size for IPv4.
                            Can be an integer in the range 64-65515 or "auto".
