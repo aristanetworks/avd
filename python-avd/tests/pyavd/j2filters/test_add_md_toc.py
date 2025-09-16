@@ -37,7 +37,7 @@ class TestAddMdTocFilter:
         """Test add_md_toc with invalid skip_lines."""
         with (
             Path(MD_INPUT_VALID).open("r", encoding="UTF-8") as input_file,
-            pytest.raises(TypeError, match="add_md_toc 'skip_lines' argument must be an integer."),
+            pytest.raises(TypeError, match=r"add_md_toc 'skip_lines' argument must be an integer."),
         ):
             add_md_toc(input_file.read(), skip_lines="Not an int")
 
@@ -50,13 +50,13 @@ class TestAddMdTocFilter:
         """Test add_md_toc with invalid toc_marker."""
         with (
             Path(MD_INPUT_VALID).open("r", encoding="UTF-8") as input_file,
-            pytest.raises(TypeError, match="add_md_toc 'toc_marker' argument must be a non-empty string."),
+            pytest.raises(TypeError, match=r"add_md_toc 'toc_marker' argument must be a non-empty string."),
         ):
             add_md_toc(input_file.read(), toc_marker=["Not_as_string"])
 
     def test_add_md_toc_invalid_md_input_type(self) -> None:
         """Test add_md_toc with invalid md_inpuT_type."""
-        with pytest.raises(TypeError, match="add_md_toc expects a string."):
+        with pytest.raises(TypeError, match=r"add_md_toc expects a string."):
             add_md_toc(["not_as_string"])
 
     def test_add_md_toc_invalid(self) -> None:
