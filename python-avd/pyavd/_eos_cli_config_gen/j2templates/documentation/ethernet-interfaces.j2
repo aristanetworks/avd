@@ -20,8 +20,6 @@
 {%             set port_channel_interface = port_channel_interfaces | arista.avd.default([]) |
                                                                       selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
                                                                       first %}
-{#  Below if condition is added to keep the existing support for rendering switchport attributes on the basis of port_channel_interface.type == switched #}
-{#  TODO: AVD6.0 this if condition should be removed once the port_channel_interface.type key is removed in AVD6.0 #}
 {%             if (port_channel_interface.switchport.mode is arista.avd.defined or
                 port_channel_interface.switchport.access_vlan is arista.avd.defined or
                 port_channel_interface.switchport.trunk.allowed_vlan is arista.avd.defined or

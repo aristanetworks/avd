@@ -375,29 +375,25 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ip_igmp_host_proxy.enabled is arista.avd.defined(true) %}
 {%         set host_proxy_cli =  "ip igmp host-proxy" %}
    {{ host_proxy_cli }}
-{%         if ethernet_interface.ip_igmp_host_proxy.groups is arista.avd.defined %}
-{%             for proxy_group in ethernet_interface.ip_igmp_host_proxy.groups %}
-{%                 if proxy_group.exclude is arista.avd.defined or proxy_group.include is arista.avd.defined %}
-{%                     if proxy_group.include is arista.avd.defined %}
-{%                         for include_source in proxy_group.include %}
+{%         for proxy_group in ethernet_interface.ip_igmp_host_proxy.groups | arista.avd.default([]) %}
+{%             if proxy_group.exclude is arista.avd.defined or proxy_group.include is arista.avd.defined %}
+{%                 if proxy_group.include is arista.avd.defined %}
+{%                     for include_source in proxy_group.include %}
    {{ host_proxy_cli }} {{ proxy_group.group }} include {{ include_source.source }}
-{%                         endfor %}
-{%                     endif %}
-{%                     if proxy_group.exclude is arista.avd.defined %}
-{%                         for exclude_source in proxy_group.exclude %}
-   {{ host_proxy_cli }} {{ proxy_group.group }} exclude {{ exclude_source.source }}
-{%                         endfor %}
-{%                     endif %}
-{%                 elif proxy_group.group is arista.avd.defined %}
-   {{ host_proxy_cli }} {{ proxy_group.group }}
+{%                     endfor %}
 {%                 endif %}
-{%             endfor %}
-{%         endif %}
-{%         if ethernet_interface.ip_igmp_host_proxy.access_lists is arista.avd.defined %}
-{%             for access_list in ethernet_interface.ip_igmp_host_proxy.access_lists %}
+{%                 if proxy_group.exclude is arista.avd.defined %}
+{%                     for exclude_source in proxy_group.exclude %}
+   {{ host_proxy_cli }} {{ proxy_group.group }} exclude {{ exclude_source.source }}
+{%                     endfor %}
+{%                 endif %}
+{%             elif proxy_group.group is arista.avd.defined %}
+   {{ host_proxy_cli }} {{ proxy_group.group }}
+{%             endif %}
+{%         endfor %}
+{%         for access_list in ethernet_interface.ip_igmp_host_proxy.access_lists | arista.avd.default([]) %}
    {{ host_proxy_cli }} access-list {{ access_list.name }}
-{%             endfor %}
-{%         endif %}
+{%         endfor %}
 {%         if ethernet_interface.ip_igmp_host_proxy.report_interval is arista.avd.defined %}
    {{ host_proxy_cli }} report-interval {{ ethernet_interface.ip_igmp_host_proxy.report_interval }}
 {%         endif %}
@@ -499,20 +495,16 @@ interface {{ ethernet_interface.name }}
    mac security profile {{ ethernet_interface.mac_security.profile }}
 {%     endif %}
 {%     if ethernet_interface.multicast is arista.avd.defined %}
-{%         if ethernet_interface.multicast.ipv4.boundaries is arista.avd.defined %}
-{%             for boundary in ethernet_interface.multicast.ipv4.boundaries %}
-{%                 set boundary_cli = "multicast ipv4 boundary " ~ boundary.boundary %}
-{%                 if boundary.out is arista.avd.defined(true) %}
-{%                     set boundary_cli = boundary_cli ~ " out" %}
-{%                 endif %}
+{%         for boundary in ethernet_interface.multicast.ipv4.boundaries | arista.avd.default([]) %}
+{%             set boundary_cli = "multicast ipv4 boundary " ~ boundary.boundary %}
+{%             if boundary.out is arista.avd.defined(true) %}
+{%                 set boundary_cli = boundary_cli ~ " out" %}
+{%             endif %}
    {{ boundary_cli }}
-{%             endfor %}
-{%         endif %}
-{%         if ethernet_interface.multicast.ipv6.boundaries is arista.avd.defined %}
-{%             for boundary in ethernet_interface.multicast.ipv6.boundaries %}
+{%         endfor %}
+{%         for boundary in ethernet_interface.multicast.ipv6.boundaries | arista.avd.default([]) %}
    multicast ipv6 boundary {{ boundary.boundary }} out
-{%             endfor %}
-{%         endif %}
+{%         endfor %}
 {%         if ethernet_interface.multicast.ipv4.static is arista.avd.defined(true) %}
    multicast ipv4 static
 {%         endif %}
@@ -1141,11 +1133,9 @@ interface {{ ethernet_interface.name }}
 {%         if vrid.ipv4.version is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv4 version {{ vrid.ipv4.version }}
 {%         endif %}
-{%         if vrid.ipv6.addresses is arista.avd.defined %}
-{%             for ipv6_address in vrid.ipv6.addresses | arista.avd.natural_sort %}
+{%         for ipv6_address in vrid.ipv6.addresses | arista.avd.natural_sort %}
    vrrp {{ vrid.id }} ipv6 {{ ipv6_address }}
-{%             endfor %}
-{%         endif %}
+{%         endfor %}
 {%         for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}
 {%             if tracked_obj.name is arista.avd.defined %}
 {%                 set tracked_obj_cli = "vrrp " ~ vrid.id ~ " tracked-object " ~ tracked_obj.name %}
