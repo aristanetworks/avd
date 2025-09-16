@@ -933,3 +933,19 @@
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts' - FABRIC_MISSING_UNDERLAY_MULTICAST_FOR_EVPN_MULTICAST
+  hosts: evpn-multicast-missing-underlay-multicast
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message

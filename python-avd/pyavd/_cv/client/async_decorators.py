@@ -11,7 +11,7 @@ from logging import getLogger
 from re import compile as re_compile
 from re import fullmatch
 from types import UnionType
-from typing import TYPE_CHECKING, Any, ClassVar, get_args, get_origin
+from typing import TYPE_CHECKING, Any, ClassVar, ParamSpec, TypeVar, get_args, get_origin
 
 from grpclib import Status
 from grpclib.exceptions import GRPCError
@@ -28,6 +28,9 @@ if TYPE_CHECKING:
     from inspect import BoundArguments, Signature
 
 LOGGER = getLogger(__name__)
+
+P = ParamSpec("P")
+T = TypeVar("T")
 
 
 MSG_SIZE_EXCEEDED_REGEX = re_compile(r"grpc: received message larger than max \((?P<size>\d+) vs\. (?P<max>\d+)\)")
@@ -67,7 +70,7 @@ class LimitCvVersion:
             )
             raise ValueError(msg)
 
-    def __call__(self, func: Callable) -> Callable:
+    def __call__(self, func: Callable[P, T]) -> Callable[P, T]:
         """
         Store the method in the map of versioned functions after checking for overlapping decorators for the same method.
 
@@ -84,7 +87,7 @@ class LimitCvVersion:
         LimitCvVersion.versioned_funcs.setdefault(func.__name__, {})[(self.min_version, self.max_version)] = func
 
         @wraps(func)
-        async def wrapper_cv_version(*args: Any, **kwargs: Any) -> list:
+        async def wrapper_cv_version(*args: P.args, **kwargs: P.kwargs) -> T:
             """
             Call the appropriate original method depending on the _cv_version attribute of 'self'.
 
@@ -146,7 +149,7 @@ class GRPCRequestHandler:
         self.list_field = list_field
         self.min_items_for_splitting_attempt = max(2, min_items_for_splitting_attempt)
 
-    def __call__(self, func: Callable) -> Callable:
+    def __call__(self, func: Callable[P, T]) -> Callable[P, T]:
         self.func = func
         self.func_signature = signature(func)
 
@@ -175,7 +178,7 @@ class GRPCRequestHandler:
                 raise TypeError(msg)
 
         @wraps(func)
-        async def wrapper(*args: Any, **kwargs: Any) -> Callable:
+        async def wrapper(*args: P.args, **kwargs: P.kwargs) -> T:
             return await self._execute_with_splitting(args, kwargs)
 
         return wrapper
@@ -264,7 +267,7 @@ class GRPCRequestHandler:
         bound_arguments = self.func_signature.bind(*original_call_args, **original_call_kwargs)
         current_arguments_dict = bound_arguments.arguments
 
-        list_value: list = current_arguments_dict[self.list_field]
+        list_value: list = current_arguments_dict.get(self.list_field, [])
         if not isinstance(list_value, list):
             msg = (
                 f"{self.__class__.__name__} decorator expected the value of the list_field '{self.list_field}' for function '{func_name}' "

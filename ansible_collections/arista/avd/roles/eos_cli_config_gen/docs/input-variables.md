@@ -12,7 +12,7 @@ title: Input variables for eos_cli_config_gen
 
 This document describes the supported input variables for the role `arista.avd.eos_cli_config_gen`.
 
-Since several data models have changed between AVD versions 4.x and 5.x, it is recommended to study the [Porting Guide for AVD 5.x.x](../../../../../../docs/porting-guides/5.x.x.md) for existing deployments.
+Since several data models have changed between AVD versions 5.x and 6.x, it is recommended to study the [Porting Guide for AVD 6.x.x](../../../../../../docs/porting-guides/6.x.x.md) for existing deployments.
 
 The input variables are documented below in tables and YAML.
 
@@ -725,6 +725,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-tele
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/monitor-twamp.md
 --8<--
 
+### Connectivity Fault Management
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/cfm.md
+--8<--
+
 ### SFLOW
 
 --8<--
@@ -971,6 +977,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-l2-vp
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-ospf.md
+--8<--
+
+### Router RIP
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-rip.md
 --8<--
 
 ### IP OSPF router-id output-format hostnames
