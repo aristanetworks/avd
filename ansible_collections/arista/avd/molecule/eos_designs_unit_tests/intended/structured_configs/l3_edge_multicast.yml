@@ -5,7 +5,7 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: ethernet1
-  description: P2P_peer1_ethernet1
+  description: P2P link, included in underlay protocol, PIM SM disabled.
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.4/31
@@ -17,7 +17,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: ethernet2
-  description: P2P_peer2_ethernet2
+  description: P2P link, included in underlay protocol, PIM SM default, expect enabled.
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.2/31
@@ -28,6 +28,59 @@ ethernet_interfaces:
       sparse_mode: true
   peer: peer2
   peer_interface: ethernet2
+  peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet3
+  description: P2P link, NOT included in underlay protocol, PIM SM enabled.
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.6/31
+  pim:
+    ipv4:
+      sparse_mode: true
+  peer: peer3
+  peer_interface: ethernet3
+  peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet4
+  description: P2P link, included in underlay protocol, static multicast disabled.
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.8/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  peer: peer4
+  peer_interface: ethernet4
+  peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet5
+  description: P2P link, included in underlay protocol, static multicast default, expect enabled.
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.10/31
+  multicast:
+    ipv4:
+      static: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  peer: peer5
+  peer_interface: ethernet5
+  peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet6
+  description: P2P link, NOT included in underlay protocol, static multicast enabled.
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.12/31
+  multicast:
+    ipv4:
+      static: true
+  peer: peer6
+  peer_interface: ethernet6
   peer_type: other
   switchport:
     enabled: false
@@ -58,6 +111,8 @@ router_ospf:
     no_passive_interfaces:
     - ethernet1
     - ethernet2
+    - ethernet4
+    - ethernet5
     max_lsa: 12000
     graceful_restart:
       enabled: true
