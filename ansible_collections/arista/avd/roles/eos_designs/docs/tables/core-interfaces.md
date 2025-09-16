@@ -47,7 +47,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].ptp.roles.[]") | String |  | `dynamic` | Valid Values:<br>- <code>dynamic</code><br>- <code>master</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "core_interfaces.p2p_links_profiles.[].ptp.profile") | String |  | `aes67-r16-2016` |  | Default available profiles are:<br>  - "aes67"<br>  - "aes67-r16-2016"<br>  - "smpte2059-2" |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "core_interfaces.p2p_links_profiles.[].sflow") | Boolean |  |  |  | Enable sFlow. Overrides `fabric_sflow` setting. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "core_interfaces.p2p_links_profiles.[].underlay_multicast") | Boolean |  | `False` |  | Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "core_interfaces.p2p_links_profiles.[].underlay_multicast") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.<br><br>Note: The default value for this key is `false` when using either the new key `underlay_multicast.pim_sm.enabled: true<br>or, if unset, global `underlay_multicast_pim_sm: true`<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>multicast_pim_sm</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_pim_sm</samp>](## "core_interfaces.p2p_links_profiles.[].multicast_pim_sm") | Boolean |  |  |  | Configure PIM sparse-mode on the P2P links.<br>Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`<br>The default value depends on the value of `include_in_underlay_protocol`:<br>* when `include_in_underlay_protocol: true`, the default value is `true`<br>* when `include_in_underlay_protocol: false`, the default value is `false`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_static</samp>](## "core_interfaces.p2p_links_profiles.[].multicast_static") | Boolean |  |  |  | Configure static multicast on the P2P links.<br>Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`<br>The default value depends on the value of `include_in_underlay_protocol`:<br>* when `include_in_underlay_protocol: true`, the default value is `true`<br>* when `include_in_underlay_protocol: false`, the default value is `false`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "core_interfaces.p2p_links_profiles.[].flow_tracking") | Dictionary |  |  |  | Enable flow-tracking. Overrides `fabric_flow_tracking` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "core_interfaces.p2p_links_profiles.[].flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "core_interfaces.p2p_links_profiles.[].flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
@@ -105,7 +107,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].ptp.roles.[]") | String |  | `dynamic` | Valid Values:<br>- <code>dynamic</code><br>- <code>master</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "core_interfaces.p2p_links.[].ptp.profile") | String |  | `aes67-r16-2016` |  | Default available profiles are:<br>  - "aes67"<br>  - "aes67-r16-2016"<br>  - "smpte2059-2" |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "core_interfaces.p2p_links.[].sflow") | Boolean |  |  |  | Enable sFlow. Overrides `fabric_sflow` setting. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "core_interfaces.p2p_links.[].underlay_multicast") | Boolean |  | `False` |  | Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "core_interfaces.p2p_links.[].underlay_multicast") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.<br><br>Note: The default value for this key is `false` when using either the new key `underlay_multicast.pim_sm.enabled: true<br>or, if unset, global `underlay_multicast_pim_sm: true`<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>multicast_pim_sm</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_pim_sm</samp>](## "core_interfaces.p2p_links.[].multicast_pim_sm") | Boolean |  |  |  | Configure PIM sparse-mode on the P2P links.<br>Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`<br>The default value depends on the value of `include_in_underlay_protocol`:<br>* when `include_in_underlay_protocol: true`, the default value is `true`<br>* when `include_in_underlay_protocol: false`, the default value is `false`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_static</samp>](## "core_interfaces.p2p_links.[].multicast_static") | Boolean |  |  |  | Configure static multicast on the P2P links.<br>Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`<br>The default value depends on the value of `include_in_underlay_protocol`:<br>* when `include_in_underlay_protocol: true`, the default value is `true`<br>* when `include_in_underlay_protocol: false`, the default value is `false`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "core_interfaces.p2p_links.[].flow_tracking") | Dictionary |  |  |  | Enable flow-tracking. Overrides `fabric_flow_tracking` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "core_interfaces.p2p_links.[].flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "core_interfaces.p2p_links.[].flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
@@ -256,7 +260,27 @@
           sflow: <bool>
 
           # Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
-          underlay_multicast: <bool; default=False>
+          #
+          # Note: The default value for this key is `false` when using either the new key `underlay_multicast.pim_sm.enabled: true
+          # or, if unset, global `underlay_multicast_pim_sm: true`
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use `multicast_pim_sm` instead.
+          underlay_multicast: <bool>
+
+          # Configure PIM sparse-mode on the P2P links.
+          # Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+          # The default value depends on the value of `include_in_underlay_protocol`:
+          # * when `include_in_underlay_protocol: true`, the default value is `true`
+          # * when `include_in_underlay_protocol: false`, the default value is `false`.
+          multicast_pim_sm: <bool>
+
+          # Configure static multicast on the P2P links.
+          # Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+          # The default value depends on the value of `include_in_underlay_protocol`:
+          # * when `include_in_underlay_protocol: true`, the default value is `true`
+          # * when `include_in_underlay_protocol: false`, the default value is `false`.
+          multicast_static: <bool>
 
           # Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
           flow_tracking:
@@ -444,7 +468,27 @@
           sflow: <bool>
 
           # Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
-          underlay_multicast: <bool; default=False>
+          #
+          # Note: The default value for this key is `false` when using either the new key `underlay_multicast.pim_sm.enabled: true
+          # or, if unset, global `underlay_multicast_pim_sm: true`
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use `multicast_pim_sm` instead.
+          underlay_multicast: <bool>
+
+          # Configure PIM sparse-mode on the P2P links.
+          # Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+          # The default value depends on the value of `include_in_underlay_protocol`:
+          # * when `include_in_underlay_protocol: true`, the default value is `true`
+          # * when `include_in_underlay_protocol: false`, the default value is `false`.
+          multicast_pim_sm: <bool>
+
+          # Configure static multicast on the P2P links.
+          # Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+          # The default value depends on the value of `include_in_underlay_protocol`:
+          # * when `include_in_underlay_protocol: true`, the default value is `true`
+          # * when `include_in_underlay_protocol: false`, the default value is `false`.
+          multicast_static: <bool>
 
           # Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
           flow_tracking:

@@ -7,11 +7,29 @@
 {% if management_api_models is arista.avd.defined %}
 !
 management api models
-{%     for provider in management_api_models.providers | arista.avd.natural_sort('name') %}
-{%         if provider.name is arista.avd.defined and provider.name | lower in ['smash', 'sysdb'] %}
+{%     if management_api_models.provider is arista.avd.defined %}
+{%         if management_api_models.provider.macsec.interfaces is arista.avd.defined(true) or management_api_models.provider.macsec.mka is arista.avd.defined(true) %}
+   provider macsec
+{%             if management_api_models.provider.macsec.interfaces is arista.avd.defined(true) %}
+      interfaces
+{%             endif %}
+{%             if management_api_models.provider.macsec.mka is arista.avd.defined(true) %}
+      mka
+{%             endif %}
+{%         endif %}
+{%         if management_api_models.provider.smash.paths is arista.avd.defined %}
    !
-   provider {{ provider.name }}
-{%             for path in provider.paths | arista.avd.natural_sort('path') %}
+   provider smash
+{%             set enabled_paths = [] %}
+{%             set disabled_paths = [] %}
+{%             for path in management_api_models.provider.smash.paths %}
+{%                 if path.disabled is arista.avd.defined(true) %}
+{%                     do disabled_paths.append(path) %}
+{%                 else %}
+{%                     do enabled_paths.append(path) %}
+{%                 endif %}
+{%             endfor %}
+{%             for path in (enabled_paths | sort(attribute='path')) + (disabled_paths | sort(attribute='path')) %}
 {%                 set provider_cli = "path " ~ path.path %}
 {%                 if path.disabled is arista.avd.defined(true) %}
 {%                     set provider_cli = provider_cli ~ " disabled" %}
@@ -19,5 +37,26 @@ management api models
       {{ provider_cli }}
 {%             endfor %}
 {%         endif %}
-{%     endfor %}
+{%         if management_api_models.provider.sysdb.disabled_paths is arista.avd.defined %}
+   !
+   provider sysdb
+{%             for path in management_api_models.provider.sysdb.disabled_paths | arista.avd.natural_sort() %}
+      path {{ path }} disabled
+{%             endfor %}
+{%         endif %}
+{%     elif management_api_models.providers is arista.avd.defined %}
+{%         for provider in management_api_models.providers | arista.avd.natural_sort('name') %}
+{%             if provider.name is arista.avd.defined and provider.name | lower in ['smash', 'sysdb'] %}
+   !
+   provider {{ provider.name }}
+{%                 for path in provider.paths | arista.avd.natural_sort('path') %}
+{%                     set provider_cli = "path " ~ path.path %}
+{%                     if path.disabled is arista.avd.defined(true) %}
+{%                         set provider_cli = provider_cli ~ " disabled" %}
+{%                     endif %}
+      {{ provider_cli }}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {% endif %}

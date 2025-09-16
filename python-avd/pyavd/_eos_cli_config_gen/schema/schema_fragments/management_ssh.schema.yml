@@ -23,40 +23,6 @@ keys:
               type: str
               valid_values: ["keyboard-interactive", "password", "public-key"]
             description: Allowed SSH authentication methods.
-      access_groups:
-        type: list
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: ip_access_group_in or vrfs.ip_access_group_in
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Standard ACL Name.
-            vrf:
-              type: str
-              description: VRF Name.
-              convert_types:
-                - int
-      ipv6_access_groups:
-        type: list
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: ipv6_access_group_in or vrfs.ipv6_access_group_in
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Standard ACL Name.
-            vrf:
-              type: str
-              description: VRF Name.
-              convert_types:
-                - int
       ip_access_group_in:
         type: str
         description: Standard ACL Name.
@@ -176,3 +142,17 @@ keys:
             min: 1
             max: 1000
             description: Time period (in seconds) to send SSH keep-alive packets.
+      access_groups:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: ip_access_group_in or vrfs.ip_access_group_in
+      ipv6_access_groups:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: ipv6_access_group_in or vrfs.ipv6_access_group_in
