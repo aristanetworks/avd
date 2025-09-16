@@ -575,20 +575,20 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 ##### EVPN Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
 {%             for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort('name') %}
-| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} |  {{ peer_group.route_map_in | arista.avd.default("-") }} | {{ peer_group.route_map_out | arista.avd.default("-") }} | {{ peer_group.encapsulation | arista.avd.default("default") }} | {{ peer_group.next_hop_self_source_interface | arista.avd.default("-") }} |
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ peer_group.route_map_in | arista.avd.default("-") }} | {{ peer_group.route_map_out | arista.avd.default("-") }} | {{ peer_group.peer_tag_in | arista.avd.default("-") }} | {{ peer_group.peer_tag_out_discard | arista.avd.default("-") }} | {{ peer_group.encapsulation | arista.avd.default("default") }} | {{ peer_group.next_hop_self_source_interface | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.neighbors is arista.avd.defined %}
 
 ##### EVPN Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| -------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
+| Neighbor | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out | Encapsulation | Next-hop-self Source Interface |
+| -------- | -------- | ------------ | ------------- | ----------- | ------------ | ------------- | ------------------------------ |
 {%             for neighbor in router_bgp.address_family_evpn.neighbors | arista.avd.natural_sort('ip_address') %}
-| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ neighbor.route_map_in | arista.avd.default("-") }} | {{ neighbor.route_map_out | arista.avd.default("-") }} | {{ neighbor.encapsulation | arista.avd.default("default") }} | {{ neighbor.next_hop_self_source_interface | arista.avd.default("-") }} |
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ neighbor.route_map_in | arista.avd.default("-") }} | {{ neighbor.route_map_out | arista.avd.default("-") }} | {{ neighbor.peer_tag_in | arista.avd.default("-") }} | {{ neighbor.peer_tag_out_discard | arista.avd.default("-") }} | {{ neighbor.encapsulation | arista.avd.default("default") }} | {{ neighbor.next_hop_self_source_interface | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.neighbor_default.encapsulation is arista.avd.defined %}
@@ -702,28 +702,32 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 ##### IPv4 BGP-LU Peer-groups
 
-| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| Peer-group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
 {%             for peer in router_bgp.address_family_ipv4_labeled_unicast.peer_groups | arista.avd.natural_sort('name') %}
 {%                 set route_map_in = peer.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = peer.route_map_out | arista.avd.default("-") %}
 {%                 set rcf_in = peer.rcf_in | arista.avd.default("-") %}
 {%                 set rcf_out = peer.rcf_out | arista.avd.default("-") %}
-| {{ peer.name }} | {{ peer.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} |
+{%                 set peer_tag_in = peer.peer_tag_in | arista.avd.default("-") %}
+{%                 set peer_tag_out = peer.peer_tag_out_discard | arista.avd.default("-") %}
+| {{ peer.name }} | {{ peer.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} | {{ peer_tag_in }} | {{ peer_tag_out }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.neighbors is arista.avd.defined %}
 
 ##### IPv4 BGP-LU Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| -------- | -------- | ------------ | ------------- | ------ | ------- |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
 {%             for neighbor in router_bgp.address_family_ipv4_labeled_unicast.neighbors | arista.avd.natural_sort('ip_address') %}
 {%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
 {%                 set rcf_in = neighbor.rcf_in | arista.avd.default("-") %}
 {%                 set rcf_out = neighbor.rcf_out | arista.avd.default("-") %}
-| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} |
+{%                 set peer_tag_in = neighbor.peer_tag_in | arista.avd.default("-") %}
+{%                 set peer_tag_out = neighbor.peer_tag_out_discard | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} | {{ peer_tag_in }} | {{ peer_tag_out }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -734,24 +738,28 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 ##### IPv4 SR-TE Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
+| Neighbor | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ----------- | ------------ |
 {%             for neighbor in router_bgp.address_family_ipv4_sr_te.neighbors | arista.avd.natural_sort('ip_address') %}
 {%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
-| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%                 set peer_tag_in = neighbor.peer_tag_in | arista.avd.default("-") %}
+{%                 set peer_tag_out = neighbor.peer_tag_out_discard | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ peer_tag_in }} | {{ peer_tag_out }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_ipv4_sr_te.peer_groups is arista.avd.defined %}
 
 ##### IPv4 SR-TE Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ |
 {%             for peer_group in router_bgp.address_family_ipv4_sr_te.peer_groups | arista.avd.natural_sort('name') %}
 {%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
-| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%                 set peer_tag_in = peer_group.peer_tag_in | arista.avd.default("-") %}
+{%                 set peer_tag_out = peer_group.peer_tag_out_discard | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ peer_tag_in }} | {{ peer_tag_out }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -762,24 +770,28 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 ##### IPv6 SR-TE Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out |
-| -------- | -------- | ------------ | ------------- |
+| Neighbor | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ----------- | ------------ |
 {%             for neighbor in router_bgp.address_family_ipv6_sr_te.neighbors | arista.avd.natural_sort('ip_address') %}
 {%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
-| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%                 set peer_tag_in = neighbor.peer_tag_in | arista.avd.default("-") %}
+{%                 set peer_tag_out = neighbor.peer_tag_out_discard | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ peer_tag_in }} | {{ peer_tag_out }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_ipv6_sr_te.peer_groups is arista.avd.defined %}
 
 ##### IPv6 SR-TE Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
+| Peer Group | Activate | Route-map In | Route-map Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ----------- | ------------ |
 {%             for peer_group in router_bgp.address_family_ipv6_sr_te.peer_groups | arista.avd.natural_sort('name') %}
 {%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
-| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%                 set peer_tag_in = peer_group.peer_tag_in | arista.avd.default("-") %}
+{%                 set peer_tag_out = peer_group.peer_tag_out_discard | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ peer_tag_in }} | {{ peer_tag_out }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -842,28 +854,32 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 ##### VPN-IPv4 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| -------- | -------- | ------------ | ------------- | ------ | ------- |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
 {%             for neighbor in router_bgp.address_family_vpn_ipv4.neighbors | arista.avd.natural_sort('ip_address') %}
 {%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
 {%                 set rcf_in = neighbor.rcf_in | arista.avd.default("-") %}
 {%                 set rcf_out = neighbor.rcf_out | arista.avd.default("-") %}
-| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} |
+{%                 set peer_tag_in = neighbor.peer_tag_in | arista.avd.default("-") %}
+{%                 set peer_tag_out = neighbor.peer_tag_out_discard | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} | {{ peer_tag_in }} | {{ peer_tag_out }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv4.peer_groups is arista.avd.defined %}
 
 ##### VPN-IPv4 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
 {%             for peer_group in router_bgp.address_family_vpn_ipv4.peer_groups | arista.avd.natural_sort('name') %}
 {%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
 {%                 set rcf_in = peer_group.rcf_in | arista.avd.default("-") %}
 {%                 set rcf_out = peer_group.rcf_out | arista.avd.default("-") %}
-| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} |
+{%                 set peer_tag_in = peer_group.peer_tag_in | arista.avd.default("-") %}
+{%                 set peer_tag_out = peer_group.peer_tag_out_discard | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} | {{ peer_tag_in }} | {{ peer_tag_out }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -878,28 +894,32 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 ##### VPN-IPv6 Neighbors
 
-| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| -------- | -------- | ------------ | ------------- | ------ | ------- |
+| Neighbor | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| -------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
 {%             for neighbor in router_bgp.address_family_vpn_ipv6.neighbors | arista.avd.natural_sort('ip_address') %}
 {%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
 {%                 set rcf_in = neighbor.rcf_in | arista.avd.default("-") %}
 {%                 set rcf_out = neighbor.rcf_out | arista.avd.default("-") %}
-| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} |
+{%                 set peer_tag_in = neighbor.peer_tag_in | arista.avd.default("-") %}
+{%                 set peer_tag_out = neighbor.peer_tag_out_discard | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} | {{ peer_tag_in }} | {{ peer_tag_out }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv6.peer_groups is arista.avd.defined %}
 
 ##### VPN-IPv6 Peer Groups
 
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out | Peer-tag In | Peer-tag Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- | ----------- | ------------ |
 {%             for peer_group in router_bgp.address_family_vpn_ipv6.peer_groups | arista.avd.natural_sort('name') %}
 {%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
 {%                 set rcf_in = peer_group.rcf_in | arista.avd.default("-") %}
 {%                 set rcf_out = peer_group.rcf_out | arista.avd.default("-") %}
-| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} |
+{%                 set peer_tag_in = peer_group.peer_tag_in | arista.avd.default("-") %}
+{%                 set peer_tag_out = peer_group.peer_tag_out_discard | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} | {{ rcf_in }} | {{ rcf_out }} | {{ peer_tag_in }} | {{ peer_tag_out }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}

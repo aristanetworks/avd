@@ -1,0 +1,34 @@
+---
+type: l3leaf
+
+l2vlan_profiles:
+  - profile: research1
+    private_vlan:
+      type: isolated
+      primary_vlan: 120
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+    evpn_services_l2_only: false
+  nodes:
+    - name: failure-l2vlan-profile-does-not-exist
+      id: 3
+      bgp_as: 65101
+      filter:
+        tags: [research]
+
+tenants:
+  - name: research
+    vlan_aware_bundle_number_base: 400
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 110
+        name: research1
+        tags: ['research']
+        profile: THIS-PROFILE-DOES-NOT-EXIST
+
+expected_error_message: >-
+  Profile 'THIS-PROFILE-DOES-NOT-EXIST' applied under l2vlan 'research1' does not exist in 'l2vlan_profiles'.

@@ -7,7 +7,7 @@ wan_router: # dynamic_key: node_type
     loopback_ipv4_pool: 192.168.1.0/24
     vtep_loopback_ipv4_pool: 192.168.2.0/24
     uplink_type: lan
-    uplink_switches: [tenant-default-vrf-static-routes]
+    uplink_switches: [tenant-default-vrf-settings]
     uplink_interfaces: [Ethernet2]
     uplink_mtu: 9216
     filter:

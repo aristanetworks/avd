@@ -831,17 +831,6 @@ keys:
                     - igp
                     - incomplete
                     default: any
-  avd_data_conversion_mode:
-    documentation_options:
-      table: role-input-validation
-    type: str
-    deprecation:
-      warning: true
-      removed: true
-      remove_in_version: 5.0.0
-    description: 'Conversion Mode for AVD input data conversion.
-
-      '
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -1630,18 +1619,6 @@ keys:
         type: bool
         description: 'Subscribe to dynamic device configuration from CloudVision (TerminAttr
           default is false).
-
-          '
-      cvcompression:
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: v5.0.0
-        type: str
-        description: 'The default compression scheme when streaming to CloudVision
-          is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
-
-          There is no need to change the compression scheme.
 
           '
   daemons:
@@ -3606,6 +3583,10 @@ keys:
                   type: str
                   valid_values:
                   - authenticator
+                  - supplicant
+                supplicant_profile:
+                  type: str
+                  description: Supplicant profile name.
             authentication_failure:
               type: dict
               keys:
@@ -4374,11 +4355,11 @@ keys:
         validate_state:
           type: bool
           description: Set to false to disable interface state and LLDP topology validation
-            performed by the `eos_validate_state` role.
+            performed by the `anta_runner` role.
         validate_lldp:
           type: bool
           description: Set to false to disable the LLDP topology validation performed
-            by the `eos_validate_state` role.
+            by the `anta_runner` role.
         switchport:
           type: dict
           description: This should not be combined with `ethernet_interfaces[].type
@@ -5241,38 +5222,6 @@ keys:
           description: 'Set the action to be non-blocking.
 
             '
-        action_type:
-          type: str
-          valid_values:
-          - bash
-          - increment
-          - log
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: 5.0.0
-            new_key: event_handlers.actions
-        action:
-          type: str
-          description: 'Command to execute.
-
-            '
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: 5.0.0
-            new_key: event_handlers.actions.bash_command
-        regex:
-          type: str
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: 5.0.0
-            new_key: event_handlers.trigger_on_logging.regex
-          description: 'Regular expression to use for searching log messages. Required
-            for on-logging trigger.
-
-            '
   event_monitor:
     type: dict
     keys:
@@ -5420,111 +5369,6 @@ keys:
                         - str
           shutdown:
             type: bool
-  flow_trackings:
-    documentation_options:
-      table: flow-tracking
-    deprecation:
-      removed: true
-      warning: true
-      new_key: flow_tracking
-      remove_in_version: v5.0.0
-    type: list
-    primary_key: type
-    items:
-      type: dict
-      keys:
-        type:
-          type: str
-          valid_values:
-          - sampled
-          description: Flow Tracking Type - only 'sampled' supported for now.
-        sample:
-          type: int
-          convert_types:
-          - str
-          min: 1
-          max: 4294967295
-        trackers:
-          type: list
-          primary_key: name
-          items:
-            type: dict
-            keys:
-              name:
-                type: str
-                description: Tracker Name.
-              record_export:
-                type: dict
-                keys:
-                  on_inactive_timeout:
-                    type: int
-                    convert_types:
-                    - str
-                    min: 3000
-                    max: 900000
-                    description: Flow record inactive export timeout in milliseconds.
-                  on_interval:
-                    type: int
-                    convert_types:
-                    - str
-                    min: 1000
-                    max: 36000000
-                    description: Flow record export interval in milliseconds.
-                  mpls:
-                    type: bool
-                    description: Export MPLS forwarding information.
-              exporters:
-                type: list
-                primary_key: name
-                items:
-                  type: dict
-                  keys:
-                    name:
-                      type: str
-                      description: Exporter Name.
-                    collector:
-                      type: dict
-                      keys:
-                        host:
-                          type: str
-                          description: Collector IPv4 address or IPv6 address or fully
-                            qualified domain name.
-                        port:
-                          type: int
-                          description: Collector Port Number.
-                          min: 1
-                          max: 65535
-                          convert_types:
-                          - str
-                    format:
-                      type: dict
-                      keys:
-                        ipfix_version:
-                          type: int
-                          convert_types:
-                          - str
-                    local_interface:
-                      type: str
-                      description: Local Source Interface.
-                    template_interval:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 5000
-                      max: 3600000
-                      description: Template interval in milliseconds.
-              table_size:
-                type: int
-                convert_types:
-                - str
-                min: 1
-                max: 614400
-                description: 'Maximum number of entries in flow table.
-
-                  '
-        shutdown:
-          type: bool
-          default: false
   generate_default_config:
     type: bool
     default: false
@@ -8493,20 +8337,6 @@ keys:
                         '
                       items:
                         type: str
-      enable_vrfs:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: transport.grpc
-          remove_in_version: 5.0.0
-      octa:
-        type: dict
-        deprecation:
-          warning: true
-          removed: true
-          new_key: provider
-          remove_in_version: 5.0.0
   management_api_http:
     type: dict
     keys:
@@ -8553,6 +8383,10 @@ keys:
     keys:
       providers:
         type: list
+        deprecation:
+          warning: true
+          new_key: provider
+          remove_in_version: 6.0.0
         items:
           type: dict
           keys:
@@ -8571,6 +8405,44 @@ keys:
                   disabled:
                     type: bool
                     default: false
+      provider:
+        type: dict
+        keys:
+          sysdb:
+            type: dict
+            description: Sysdb provider configuration.
+            keys:
+              disabled_paths:
+                type: list
+                description: List of disabled Sysdb paths for Octa.
+                items:
+                  type: str
+          smash:
+            type: dict
+            description: Smash provider configuration.
+            keys:
+              paths:
+                type: list
+                description: List of Smash paths.
+                primary_key: path
+                items:
+                  type: dict
+                  keys:
+                    path:
+                      type: str
+                    disabled:
+                      type: bool
+                      description: Disabled Smash path for Octa.
+          macsec:
+            type: dict
+            description: MACsec provider configuration.
+            keys:
+              interfaces:
+                type: bool
+                description: Enable MACsec for interfaces.
+              mka:
+                type: bool
+                description: Enable MKA for MACsec.
   management_console:
     type: dict
     keys:
@@ -9036,13 +8908,6 @@ keys:
                     type: bool
                     description: Configuring secret using the local timezone from
                       system clock. Default is UTC.
-      entropy_source:
-        type: str
-        deprecation:
-          warning: true
-          removed: true
-          remove_in_version: v5.0.0
-          new_key: entropy_sources
   management_ssh:
     type: dict
     keys:
@@ -9065,40 +8930,6 @@ keys:
               - password
               - public-key
             description: Allowed SSH authentication methods.
-      access_groups:
-        type: list
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: ip_access_group_in or vrfs.ip_access_group_in
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Standard ACL Name.
-            vrf:
-              type: str
-              description: VRF Name.
-              convert_types:
-              - int
-      ipv6_access_groups:
-        type: list
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: ipv6_access_group_in or vrfs.ipv6_access_group_in
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Standard ACL Name.
-            vrf:
-              type: str
-              description: VRF Name.
-              convert_types:
-              - int
       ip_access_group_in:
         type: str
         description: Standard ACL Name.
@@ -9219,6 +9050,20 @@ keys:
             min: 1
             max: 1000
             description: Time period (in seconds) to send SSH keep-alive packets.
+      access_groups:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: ip_access_group_in or vrfs.ip_access_group_in
+      ipv6_access_groups:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: ipv6_access_group_in or vrfs.ipv6_access_group_in
   management_tech_support:
     type: dict
     keys:
@@ -10724,15 +10569,6 @@ keys:
                     valid_values:
                     - pipe
                     - uniform
-  name_server:
-    documentation_options:
-      table: ip-name-servers
-    deprecation:
-      removed: true
-      warning: true
-      new_key: ip_name_servers
-      remove_in_version: v5.0.0
-    type: dict
   ntp:
     type: dict
     keys:
@@ -13245,35 +13081,15 @@ keys:
         validate_state:
           type: bool
           description: Set to false to disable interface state and LLDP topology validation
-            performed by the `eos_validate_state` role.
+            performed by the `anta_runner` role.
         validate_lldp:
           type: bool
           description: Set to false to disable the LLDP topology validation performed
-            by the `eos_validate_state` role.
+            by the `anta_runner` role.
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface
             in the final EOS configuration.
-        esi:
-          type: str
-          description: 'EVPN Ethernet Segment Identifier (Type 1 format).
-
-            '
-          deprecation:
-            removed: true
-            warning: true
-            new_key: evpn_ethernet_segment.identifier
-            remove_in_version: 5.0.0
-        rt:
-          type: str
-          description: 'EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
-
-            '
-          deprecation:
-            removed: true
-            warning: true
-            new_key: evpn_ethernet_segment.route_target
-            remove_in_version: 5.0.0
   prefix_lists:
     type: list
     primary_key: name
@@ -14433,15 +14249,6 @@ keys:
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.
-  radius_servers:
-    documentation_options:
-      table: radius-server
-    deprecation:
-      warning: true
-      removed: true
-      new_key: radius_server.hosts
-      remove_in_version: v5.0.0
-    type: list
   redundancy:
     type: dict
     keys:
@@ -15311,6 +15118,12 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            peer_tag_in:
+              type: str
+              description: Inbound peer tag name.
+            peer_tag_out_discard:
+              type: str
+              description: Outbound discard peer tag name.
             session_tracker:
               type: str
             shared_secret:
@@ -15336,20 +15149,6 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
-            peer_filter:
-              type: str
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: router_bgp.listen_ranges[].peer_filter
-            bgp_listen_range_prefix:
-              type: str
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: router_bgp.listen_ranges[].bgp_listen_range_prefix
       neighbors:
         type: list
         primary_key: ip_address
@@ -15449,6 +15248,12 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            peer_tag_in:
+              type: str
+              description: Inbound peer tag name.
+            peer_tag_out_discard:
+              type: str
+              description: Outbound discard peer tag name.
             default_originate:
               type: dict
               keys:
@@ -16245,6 +16050,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16298,6 +16109,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16529,6 +16346,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16572,13 +16395,6 @@ keys:
                           required: true
                         originate:
                           type: bool
-                    address_family_ipv6_originate:
-                      type: bool
-                      deprecation:
-                        warning: true
-                        removed: true
-                        new_key: address_family_ipv6
-                        remove_in_version: 5.0.0
           neighbors:
             type: list
             primary_key: ip_address
@@ -16595,6 +16411,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17113,12 +16935,6 @@ keys:
                             policy decision.
                 multi_path:
                   type: bool
-                next_hop_resolution:
-                  type: dict
-                  deprecation:
-                    warning: true
-                    removed: true
-                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -17146,6 +16962,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           neighbors:
             type: list
             primary_key: ip_address
@@ -17241,12 +17063,6 @@ keys:
                             policy decision.
                 multi_path:
                   type: bool
-                next_hop_resolution:
-                  type: dict
-                  deprecation:
-                    warning: true
-                    removed: true
-                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -17274,6 +17090,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           networks:
             type: list
             primary_key: prefix
@@ -17369,6 +17191,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -17390,6 +17218,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -17600,6 +17434,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           peer_groups:
             type: list
             primary_key: name
@@ -17617,6 +17457,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
       address_family_ipv6:
         type: dict
         keys:
@@ -17666,6 +17512,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17706,6 +17558,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17993,6 +17851,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -18228,6 +18092,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           peer_groups:
             type: list
             primary_key: name
@@ -18245,6 +18115,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
       address_family_link_state:
         type: dict
         keys:
@@ -18471,6 +18347,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18516,6 +18398,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18565,6 +18453,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18610,6 +18504,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -19076,27 +18976,15 @@ keys:
                   route_map_out:
                     type: str
                     description: Outbound route-map name.
+                  peer_tag_in:
+                    type: str
+                    description: Inbound peer tag name.
+                  peer_tag_out_discard:
+                    type: str
+                    description: Outbound discard peer tag name.
                   additional_paths:
                     type: dict
                     $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
-                  prefix_list_in:
-                    type: str
-                    description: Inbound prefix-list name.
-                    deprecation:
-                      warning: true
-                      removed: true
-                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in
-                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in
-                      remove_in_version: 5.0.0
-                  prefix_list_out:
-                    type: str
-                    description: Outbound prefix-list name.
-                    deprecation:
-                      warning: true
-                      removed: true
-                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out
-                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out
-                      remove_in_version: 5.0.0
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -19473,6 +19361,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       rcf_in:
                         type: str
                         description: 'Inbound RCF function name with parenthesis.
@@ -19856,6 +19750,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       rcf_in:
                         type: str
                         description: 'Inbound RCF function name with parenthesis.
@@ -20159,6 +20059,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       additional_paths:
                         type: dict
                         keys:
@@ -20424,6 +20330,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       additional_paths:
                         type: dict
                         keys:
@@ -20694,14 +20606,6 @@ keys:
                 VRF definition in the final EOS configuration.
 
                 '
-            address_families:
-              type: list
-              primary_key: address_family
-              deprecation:
-                warning: true
-                removed: true
-                new_key: address_family_*
-                remove_in_version: 5.0.0
       session_trackers:
         type: list
         primary_key: name
@@ -21364,20 +21268,6 @@ keys:
         type: str
         description: Multiline EOS CLI rendered directly on the router isis in the
           final EOS configuration.
-      address_family:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: address_family_ipv4.enabled or address_family_ipv6.enabled
-          remove_in_version: 5.0.0
-      isis_af_defaults:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: address_family_ipv4/address_family_ipv6
-          remove_in_version: 5.0.0
   router_l2_vpn:
     type: dict
     keys:
@@ -23153,13 +23043,6 @@ keys:
               type: str
             included:
               type: bool
-            MIB_family_name:
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: mib_family_name
-              type: str
       groups:
         type: list
         items:
@@ -23624,13 +23507,6 @@ keys:
             max: 65535
             convert_types:
             - str
-          local_interface:
-            type: str
-            deprecation:
-              removed: true
-              warning: true
-              new_key: local_interfaces
-              remove_in_version: v5.0.0
   switchport_default:
     type: dict
     keys:
@@ -23653,6 +23529,8 @@ keys:
             valid_values:
             - tagged
             - untagged
+            - tagged phone
+            - untagged phone
           vlan:
             type: int
             description: VLAN ID.
@@ -23663,6 +23541,13 @@ keys:
           access_list_bypass:
             description: Bypass phone traffic from configured access-list.
             type: bool
+          qos_trust:
+            type: str
+            description: Quality of Service (QoS) trust mode. Outgoing traffic class
+              being derived from the ingress COS/DSCP value.
+            valid_values:
+            - cos
+            - dscp
   switchport_port_security:
     type: dict
     keys:
@@ -25075,30 +24960,6 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in
             the final EOS configuration.
-        ipv6_address_virtual:
-          type: str
-          description: 'IPv6_address/Mask.
-
-            '
-          deprecation:
-            removed: true
-            warning: true
-            new_key: ipv6_address_virtuals
-            remove_in_version: 5.0.0
-        ipv6_virtual_router_address:
-          type: str
-          deprecation:
-            removed: true
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: ipv6_virtual_router_addresses
-        vrrp:
-          type: dict
-          deprecation:
-            removed: true
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: vrrp_ids
   vlan_internal_order:
     type: dict
     keys:
