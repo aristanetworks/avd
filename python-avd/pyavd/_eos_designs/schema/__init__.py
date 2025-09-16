@@ -647,60 +647,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    class Avd6Behaviors(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}, "inband_mgmt_attached_hosts": {"type": bool, "default": False}}
-        snmp_settings_vrfs: bool
-        """
-        Opt-in to the new behavior for snmp_settings:
-        - SNMP will only be enabled for VRFs specifically
-        enabled under `snmp_settings.vrfs`.
-          Note this means SNMP will be disabled for VRF "default" unless
-        it is defined there.
-        - `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.
-          If
-        `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
-        "default".
-
-        Default value: `False`
-        """
-        inband_mgmt_attached_hosts: bool
-        """
-        Opt-in to the new behavior for inband management route export:
-        - `ip attached-host route export`
-        will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
-
-        Default value: `False`
-        """
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined, inband_mgmt_attached_hosts: bool | UndefinedType = Undefined) -> None:
-                """
-                Avd6Behaviors.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    snmp_settings_vrfs:
-                       Opt-in to the new behavior for snmp_settings:
-                       - SNMP will only be enabled for VRFs specifically
-                       enabled under `snmp_settings.vrfs`.
-                         Note this means SNMP will be disabled for VRF "default" unless
-                       it is defined there.
-                       - `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.
-                         If
-                       `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
-                       "default".
-                    inband_mgmt_attached_hosts:
-                       Opt-in to the new behavior for inband management route export:
-                       - `ip attached-host route export`
-                       will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
-
-                """
-
     class BfdMultihop(AvdModel):
         """Subclass of AvdModel."""
 
@@ -2134,7 +2080,9 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool, "default": False},
+                "underlay_multicast": {"type": bool},
+                "multicast_pim_sm": {"type": bool},
+                "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
@@ -2253,12 +2201,38 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool
+            underlay_multicast: bool | None
             """
             Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
             to be `true`.
 
-            Default value: `False`
+            Note: The default value for this key is `false` when using either the new key
+            `underlay_multicast.pim_sm.enabled: true
+            or, if unset, global `underlay_multicast_pim_sm: true`
+            """
+            multicast_pim_sm: bool | None
+            """
+            Configure PIM sparse-mode on the P2P links.
+            Requires node setting
+            `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
+            """
+            multicast_static: bool | None
+            """
+            Configure static multicast on the P2P links.
+            Requires node setting
+            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
             """
             flow_tracking: FlowTracking
             """
@@ -2340,7 +2314,9 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | UndefinedType = Undefined,
+                    underlay_multicast: bool | None | UndefinedType = Undefined,
+                    multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                    multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
@@ -2427,6 +2403,30 @@ class EosDesigns(EosDesignsRootModel):
                         underlay_multicast:
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
+
+                           Note: The default value for this key is `false` when using either the new key
+                           `underlay_multicast.pim_sm.enabled: true
+                           or, if unset, global `underlay_multicast_pim_sm: true`
+                        multicast_pim_sm:
+                           Configure PIM sparse-mode on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
+                        multicast_static:
+                           Configure static multicast on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -2779,7 +2779,9 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool, "default": False},
+                "underlay_multicast": {"type": bool},
+                "multicast_pim_sm": {"type": bool},
+                "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
@@ -2898,12 +2900,38 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool
+            underlay_multicast: bool | None
             """
             Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
             to be `true`.
 
-            Default value: `False`
+            Note: The default value for this key is `false` when using either the new key
+            `underlay_multicast.pim_sm.enabled: true
+            or, if unset, global `underlay_multicast_pim_sm: true`
+            """
+            multicast_pim_sm: bool | None
+            """
+            Configure PIM sparse-mode on the P2P links.
+            Requires node setting
+            `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
+            """
+            multicast_static: bool | None
+            """
+            Configure static multicast on the P2P links.
+            Requires node setting
+            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
             """
             flow_tracking: FlowTracking
             """
@@ -2985,7 +3013,9 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | UndefinedType = Undefined,
+                    underlay_multicast: bool | None | UndefinedType = Undefined,
+                    multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                    multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
@@ -3072,6 +3102,30 @@ class EosDesigns(EosDesignsRootModel):
                         underlay_multicast:
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
+
+                           Note: The default value for this key is `false` when using either the new key
+                           `underlay_multicast.pim_sm.enabled: true
+                           or, if unset, global `underlay_multicast_pim_sm: true`
+                        multicast_pim_sm:
+                           Configure PIM sparse-mode on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
+                        multicast_static:
+                           Configure static multicast on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -7551,7 +7605,9 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool, "default": False},
+                "underlay_multicast": {"type": bool},
+                "multicast_pim_sm": {"type": bool},
+                "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
@@ -7670,12 +7726,38 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool
+            underlay_multicast: bool | None
             """
             Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
             to be `true`.
 
-            Default value: `False`
+            Note: The default value for this key is `false` when using either the new key
+            `underlay_multicast.pim_sm.enabled: true
+            or, if unset, global `underlay_multicast_pim_sm: true`
+            """
+            multicast_pim_sm: bool | None
+            """
+            Configure PIM sparse-mode on the P2P links.
+            Requires node setting
+            `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
+            """
+            multicast_static: bool | None
+            """
+            Configure static multicast on the P2P links.
+            Requires node setting
+            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
             """
             flow_tracking: FlowTracking
             """
@@ -7757,7 +7839,9 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | UndefinedType = Undefined,
+                    underlay_multicast: bool | None | UndefinedType = Undefined,
+                    multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                    multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
@@ -7844,6 +7928,30 @@ class EosDesigns(EosDesignsRootModel):
                         underlay_multicast:
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
+
+                           Note: The default value for this key is `false` when using either the new key
+                           `underlay_multicast.pim_sm.enabled: true
+                           or, if unset, global `underlay_multicast_pim_sm: true`
+                        multicast_pim_sm:
+                           Configure PIM sparse-mode on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
+                        multicast_static:
+                           Configure static multicast on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -8196,7 +8304,9 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool, "default": False},
+                "underlay_multicast": {"type": bool},
+                "multicast_pim_sm": {"type": bool},
+                "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
@@ -8315,12 +8425,38 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool
+            underlay_multicast: bool | None
             """
             Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
             to be `true`.
 
-            Default value: `False`
+            Note: The default value for this key is `false` when using either the new key
+            `underlay_multicast.pim_sm.enabled: true
+            or, if unset, global `underlay_multicast_pim_sm: true`
+            """
+            multicast_pim_sm: bool | None
+            """
+            Configure PIM sparse-mode on the P2P links.
+            Requires node setting
+            `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
+            """
+            multicast_static: bool | None
+            """
+            Configure static multicast on the P2P links.
+            Requires node setting
+            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+            The
+            default value depends on the value of `include_in_underlay_protocol`:
+            * when
+            `include_in_underlay_protocol: true`, the default value is `true`
+            * when
+            `include_in_underlay_protocol: false`, the default value is `false`.
             """
             flow_tracking: FlowTracking
             """
@@ -8402,7 +8538,9 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | UndefinedType = Undefined,
+                    underlay_multicast: bool | None | UndefinedType = Undefined,
+                    multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                    multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
@@ -8489,6 +8627,30 @@ class EosDesigns(EosDesignsRootModel):
                         underlay_multicast:
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
+
+                           Note: The default value for this key is `false` when using either the new key
+                           `underlay_multicast.pim_sm.enabled: true
+                           or, if unset, global `underlay_multicast_pim_sm: true`
+                        multicast_pim_sm:
+                           Configure PIM sparse-mode on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.pim_sm.enabled: true` or, if unset, global `underlay_multicast_pim_sm: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
+                        multicast_static:
+                           Configure static multicast on the P2P links.
+                           Requires node setting
+                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                           The
+                           default value depends on the value of `include_in_underlay_protocol`:
+                           * when
+                           `include_in_underlay_protocol: true`, the default value is `true`
+                           * when
+                           `include_in_underlay_protocol: false`, the default value is `false`.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -10889,11 +11051,11 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_state: bool | None
         """
-        Set to false to disable interface state and LLDP topology validation performed by the
-        `eos_validate_state` role.
+        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+        role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         campus_link_type: CampusLinkType
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -11104,9 +11266,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the
-                       `eos_validate_state` role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                       role.
+                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     campus_link_type:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
@@ -15513,11 +15675,11 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_state: bool | None
         """
-        Set to false to disable interface state and LLDP topology validation performed by the
-        `eos_validate_state` role.
+        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+        role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         campus_link_type: CampusLinkType
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -15687,9 +15849,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the
-                       `eos_validate_state` role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                       role.
+                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     campus_link_type:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
@@ -22857,11 +23019,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_state: bool | None
                     """
-                    Set to false to disable interface state and LLDP topology validation performed by the
-                    `eos_validate_state` role.
+                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                    role.
                     """
                     validate_lldp: bool | None
-                    """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
                     campus_link_type: CampusLinkType
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -23069,9 +23231,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 validate_state:
-                                   Set to false to disable interface state and LLDP topology validation performed by the
-                                   `eos_validate_state` role.
-                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                                   Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                                   role.
+                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                                 campus_link_type:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -24502,11 +24664,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_state: bool | None
                     """
-                    Set to false to disable interface state and LLDP topology validation performed by the
-                    `eos_validate_state` role.
+                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                    role.
                     """
                     validate_lldp: bool | None
-                    """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
                     campus_link_type: CampusLinkType
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -24714,9 +24876,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 validate_state:
-                                   Set to false to disable interface state and LLDP topology validation performed by the
-                                   `eos_validate_state` role.
-                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                                   Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                                   role.
+                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                                 campus_link_type:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -27258,6 +27420,208 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3PortChannels._item_type = L3PortChannelsItem
 
+                    class UnderlayMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PimSm(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                            on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if also
+                            enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_pim_sm`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable PIM sparse-mode on uplinks.
+                            Requires node setting `underlay_multicast.pim_sm.enabled:
+                            true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective only when
+                            node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PimSm.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                           on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if also
+                                           enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_pim_sm`.
+                                        uplinks:
+                                           Enable/Disable PIM sparse-mode on uplinks.
+                                           Requires node setting `underlay_multicast.pim_sm.enabled:
+                                           true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                        uplink_interfaces:
+                                           Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective only when
+                                           node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                           Subclass of AvdList with `str` items.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                    """
+
+                        class Static(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures static multicast in the
+                            underlay on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if
+                            also enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_multicast`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable static multicast on uplinks.
+                            Requires node setting
+                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
+
+                            Subclass of AvdList with `str`
+                            items.
+                            """
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Static.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures static multicast in the
+                                           underlay on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if
+                                           also enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_multicast`.
+                                        uplinks:
+                                           Enable/Disable static multicast on uplinks.
+                                           Requires node setting
+                                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                        uplink_interfaces:
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                           Subclass of AvdList with `str`
+                                           items.
+                                        mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                        pim_sm: PimSm
+                        """Subclass of AvdModel."""
+                        static: Static
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                """
+                                UnderlayMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    pim_sm: Subclass of AvdModel.
+                                    static: Subclass of AvdModel.
+
+                                """
+
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -27430,6 +27794,7 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "underlay_multicast": {"type": UnderlayMulticast},
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
@@ -28279,6 +28644,8 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    underlay_multicast: UnderlayMulticast
+                    """Subclass of AvdModel."""
                     campus: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -28439,6 +28806,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
@@ -29036,6 +29404,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                underlay_multicast: Subclass of AvdModel.
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -31603,6 +31972,208 @@ class EosDesigns(EosDesignsRootModel):
 
                         L3PortChannels._item_type = L3PortChannelsItem
 
+                        class UnderlayMulticast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class PimSm(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class UplinkInterfaces(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                UplinkInterfaces._item_type = str
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "uplinks": {"type": bool, "default": True},
+                                    "uplink_interfaces": {"type": UplinkInterfaces},
+                                    "mlag": {"type": bool, "default": True},
+                                }
+                                enabled: bool | None
+                                """
+                                When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                on all:
+                                  - P2P uplink interfaces if enabled on uplink peer
+                                  - MLAG L3 peer interface if also
+                                enabled on MLAG peer
+                                  - l3_edge and core interfaces
+                                Overrides the global
+                                `underlay_multicast_pim_sm`.
+                                """
+                                uplinks: bool
+                                """
+                                Enable/Disable PIM sparse-mode on uplinks.
+                                Requires node setting `underlay_multicast.pim_sm.enabled:
+                                true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                                Default value: `True`
+                                """
+                                uplink_interfaces: UplinkInterfaces
+                                """
+                                Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                Effective only when
+                                node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                Subclass of AvdList with `str` items.
+                                """
+                                mlag: bool
+                                """
+                                Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                Default value: `True`
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        uplinks: bool | UndefinedType = Undefined,
+                                        uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                        mlag: bool | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        PimSm.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled:
+                                               When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                               on all:
+                                                 - P2P uplink interfaces if enabled on uplink peer
+                                                 - MLAG L3 peer interface if also
+                                               enabled on MLAG peer
+                                                 - l3_edge and core interfaces
+                                               Overrides the global
+                                               `underlay_multicast_pim_sm`.
+                                            uplinks:
+                                               Enable/Disable PIM sparse-mode on uplinks.
+                                               Requires node setting `underlay_multicast.pim_sm.enabled:
+                                               true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                            uplink_interfaces:
+                                               Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                               Effective only when
+                                               node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                               Subclass of AvdList with `str` items.
+                                            mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                        """
+
+                            class Static(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class UplinkInterfaces(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                UplinkInterfaces._item_type = str
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "uplinks": {"type": bool, "default": True},
+                                    "uplink_interfaces": {"type": UplinkInterfaces},
+                                    "mlag": {"type": bool, "default": True},
+                                }
+                                enabled: bool | None
+                                """
+                                When enabled, configures multicast routing and by default configures static multicast in the
+                                underlay on all:
+                                  - P2P uplink interfaces if enabled on uplink peer
+                                  - MLAG L3 peer interface if
+                                also enabled on MLAG peer
+                                  - l3_edge and core interfaces
+                                Overrides the global
+                                `underlay_multicast_multicast`.
+                                """
+                                uplinks: bool
+                                """
+                                Enable/Disable static multicast on uplinks.
+                                Requires node setting
+                                `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                                Default value: `True`
+                                """
+                                uplink_interfaces: UplinkInterfaces
+                                """
+                                Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                Effective
+                                only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                Subclass of AvdList with `str`
+                                items.
+                                """
+                                mlag: bool
+                                """
+                                Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                Default value: `True`
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        uplinks: bool | UndefinedType = Undefined,
+                                        uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                        mlag: bool | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Static.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled:
+                                               When enabled, configures multicast routing and by default configures static multicast in the
+                                               underlay on all:
+                                                 - P2P uplink interfaces if enabled on uplink peer
+                                                 - MLAG L3 peer interface if
+                                               also enabled on MLAG peer
+                                                 - l3_edge and core interfaces
+                                               Overrides the global
+                                               `underlay_multicast_multicast`.
+                                            uplinks:
+                                               Enable/Disable static multicast on uplinks.
+                                               Requires node setting
+                                               `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                            uplink_interfaces:
+                                               Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                               Effective
+                                               only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                               Subclass of AvdList with `str`
+                                               items.
+                                            mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                            pim_sm: PimSm
+                            """Subclass of AvdModel."""
+                            static: Static
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                    """
+                                    UnderlayMulticast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        pim_sm: Subclass of AvdModel.
+                                        static: Subclass of AvdModel.
+
+                                    """
+
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -31777,6 +32348,7 @@ class EosDesigns(EosDesignsRootModel):
                             "l3_port_channels": {"type": L3PortChannels},
                             "data_plane_cpu_allocation_max": {"type": int},
                             "flow_tracker_type": {"type": str},
+                            "underlay_multicast": {"type": UnderlayMulticast},
                             "campus": {"type": str},
                             "campus_pod": {"type": str},
                             "campus_access_pod": {"type": str},
@@ -32636,6 +33208,8 @@ class EosDesigns(EosDesignsRootModel):
                         level.
                         `default_flow_tracker_type` default value is `sampled`.
                         """
+                        underlay_multicast: UnderlayMulticast
+                        """Subclass of AvdModel."""
                         campus: str | None
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -32798,6 +33372,7 @@ class EosDesigns(EosDesignsRootModel):
                                 l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                                 data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                                 flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                                underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                                 campus: str | None | UndefinedType = Undefined,
                                 campus_pod: str | None | UndefinedType = Undefined,
                                 campus_access_pod: str | None | UndefinedType = Undefined,
@@ -33402,6 +33977,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Override the `default_flow_tracker_type`` set at the `node_type_key`
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
+                                    underlay_multicast: Subclass of AvdModel.
                                     campus:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
@@ -35877,6 +36453,208 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3PortChannels._item_type = L3PortChannelsItem
 
+                    class UnderlayMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PimSm(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                            on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if also
+                            enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_pim_sm`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable PIM sparse-mode on uplinks.
+                            Requires node setting `underlay_multicast.pim_sm.enabled:
+                            true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective only when
+                            node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PimSm.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                           on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if also
+                                           enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_pim_sm`.
+                                        uplinks:
+                                           Enable/Disable PIM sparse-mode on uplinks.
+                                           Requires node setting `underlay_multicast.pim_sm.enabled:
+                                           true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                        uplink_interfaces:
+                                           Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective only when
+                                           node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                           Subclass of AvdList with `str` items.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                    """
+
+                        class Static(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures static multicast in the
+                            underlay on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if
+                            also enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_multicast`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable static multicast on uplinks.
+                            Requires node setting
+                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
+
+                            Subclass of AvdList with `str`
+                            items.
+                            """
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Static.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures static multicast in the
+                                           underlay on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if
+                                           also enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_multicast`.
+                                        uplinks:
+                                           Enable/Disable static multicast on uplinks.
+                                           Requires node setting
+                                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                        uplink_interfaces:
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                           Subclass of AvdList with `str`
+                                           items.
+                                        mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                        pim_sm: PimSm
+                        """Subclass of AvdModel."""
+                        static: Static
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                """
+                                UnderlayMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    pim_sm: Subclass of AvdModel.
+                                    static: Subclass of AvdModel.
+
+                                """
+
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -36051,6 +36829,7 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "underlay_multicast": {"type": UnderlayMulticast},
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
@@ -36913,6 +37692,8 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    underlay_multicast: UnderlayMulticast
+                    """Subclass of AvdModel."""
                     campus: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -37075,6 +37856,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
@@ -37681,6 +38463,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                underlay_multicast: Subclass of AvdModel.
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -40231,6 +41014,208 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3PortChannels._item_type = L3PortChannelsItem
 
+                    class UnderlayMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PimSm(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                            on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if also
+                            enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_pim_sm`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable PIM sparse-mode on uplinks.
+                            Requires node setting `underlay_multicast.pim_sm.enabled:
+                            true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective only when
+                            node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PimSm.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                           on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if also
+                                           enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_pim_sm`.
+                                        uplinks:
+                                           Enable/Disable PIM sparse-mode on uplinks.
+                                           Requires node setting `underlay_multicast.pim_sm.enabled:
+                                           true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                        uplink_interfaces:
+                                           Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective only when
+                                           node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                           Subclass of AvdList with `str` items.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                    """
+
+                        class Static(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures static multicast in the
+                            underlay on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if
+                            also enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_multicast`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable static multicast on uplinks.
+                            Requires node setting
+                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
+
+                            Subclass of AvdList with `str`
+                            items.
+                            """
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Static.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures static multicast in the
+                                           underlay on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if
+                                           also enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_multicast`.
+                                        uplinks:
+                                           Enable/Disable static multicast on uplinks.
+                                           Requires node setting
+                                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                        uplink_interfaces:
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                           Subclass of AvdList with `str`
+                                           items.
+                                        mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                        pim_sm: PimSm
+                        """Subclass of AvdModel."""
+                        static: Static
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                """
+                                UnderlayMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    pim_sm: Subclass of AvdModel.
+                                    static: Subclass of AvdModel.
+
+                                """
+
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -40405,6 +41390,7 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "underlay_multicast": {"type": UnderlayMulticast},
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
@@ -41264,6 +42250,8 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    underlay_multicast: UnderlayMulticast
+                    """Subclass of AvdModel."""
                     campus: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -41426,6 +42414,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
@@ -42030,6 +43019,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                underlay_multicast: Subclass of AvdModel.
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -52944,6 +53934,208 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3PortChannels._item_type = L3PortChannelsItem
 
+                    class UnderlayMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PimSm(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                            on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if also
+                            enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_pim_sm`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable PIM sparse-mode on uplinks.
+                            Requires node setting `underlay_multicast.pim_sm.enabled:
+                            true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective only when
+                            node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PimSm.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                           on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if also
+                                           enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_pim_sm`.
+                                        uplinks:
+                                           Enable/Disable PIM sparse-mode on uplinks.
+                                           Requires node setting `underlay_multicast.pim_sm.enabled:
+                                           true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                        uplink_interfaces:
+                                           Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective only when
+                                           node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                           Subclass of AvdList with `str` items.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                    """
+
+                        class Static(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures static multicast in the
+                            underlay on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if
+                            also enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_multicast`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable static multicast on uplinks.
+                            Requires node setting
+                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
+
+                            Subclass of AvdList with `str`
+                            items.
+                            """
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Static.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures static multicast in the
+                                           underlay on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if
+                                           also enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_multicast`.
+                                        uplinks:
+                                           Enable/Disable static multicast on uplinks.
+                                           Requires node setting
+                                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                        uplink_interfaces:
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                           Subclass of AvdList with `str`
+                                           items.
+                                        mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                        pim_sm: PimSm
+                        """Subclass of AvdModel."""
+                        static: Static
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                """
+                                UnderlayMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    pim_sm: Subclass of AvdModel.
+                                    static: Subclass of AvdModel.
+
+                                """
+
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -53116,6 +54308,7 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "underlay_multicast": {"type": UnderlayMulticast},
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
@@ -53965,6 +55158,8 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    underlay_multicast: UnderlayMulticast
+                    """Subclass of AvdModel."""
                     campus: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -54125,6 +55320,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
@@ -54722,6 +55918,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                underlay_multicast: Subclass of AvdModel.
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -57289,6 +58486,208 @@ class EosDesigns(EosDesignsRootModel):
 
                         L3PortChannels._item_type = L3PortChannelsItem
 
+                        class UnderlayMulticast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class PimSm(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class UplinkInterfaces(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                UplinkInterfaces._item_type = str
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "uplinks": {"type": bool, "default": True},
+                                    "uplink_interfaces": {"type": UplinkInterfaces},
+                                    "mlag": {"type": bool, "default": True},
+                                }
+                                enabled: bool | None
+                                """
+                                When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                on all:
+                                  - P2P uplink interfaces if enabled on uplink peer
+                                  - MLAG L3 peer interface if also
+                                enabled on MLAG peer
+                                  - l3_edge and core interfaces
+                                Overrides the global
+                                `underlay_multicast_pim_sm`.
+                                """
+                                uplinks: bool
+                                """
+                                Enable/Disable PIM sparse-mode on uplinks.
+                                Requires node setting `underlay_multicast.pim_sm.enabled:
+                                true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                                Default value: `True`
+                                """
+                                uplink_interfaces: UplinkInterfaces
+                                """
+                                Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                Effective only when
+                                node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                Subclass of AvdList with `str` items.
+                                """
+                                mlag: bool
+                                """
+                                Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                Default value: `True`
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        uplinks: bool | UndefinedType = Undefined,
+                                        uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                        mlag: bool | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        PimSm.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled:
+                                               When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                               on all:
+                                                 - P2P uplink interfaces if enabled on uplink peer
+                                                 - MLAG L3 peer interface if also
+                                               enabled on MLAG peer
+                                                 - l3_edge and core interfaces
+                                               Overrides the global
+                                               `underlay_multicast_pim_sm`.
+                                            uplinks:
+                                               Enable/Disable PIM sparse-mode on uplinks.
+                                               Requires node setting `underlay_multicast.pim_sm.enabled:
+                                               true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                            uplink_interfaces:
+                                               Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                               Effective only when
+                                               node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                               Subclass of AvdList with `str` items.
+                                            mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                        """
+
+                            class Static(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class UplinkInterfaces(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                UplinkInterfaces._item_type = str
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "uplinks": {"type": bool, "default": True},
+                                    "uplink_interfaces": {"type": UplinkInterfaces},
+                                    "mlag": {"type": bool, "default": True},
+                                }
+                                enabled: bool | None
+                                """
+                                When enabled, configures multicast routing and by default configures static multicast in the
+                                underlay on all:
+                                  - P2P uplink interfaces if enabled on uplink peer
+                                  - MLAG L3 peer interface if
+                                also enabled on MLAG peer
+                                  - l3_edge and core interfaces
+                                Overrides the global
+                                `underlay_multicast_multicast`.
+                                """
+                                uplinks: bool
+                                """
+                                Enable/Disable static multicast on uplinks.
+                                Requires node setting
+                                `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                                Default value: `True`
+                                """
+                                uplink_interfaces: UplinkInterfaces
+                                """
+                                Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                Effective
+                                only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                Subclass of AvdList with `str`
+                                items.
+                                """
+                                mlag: bool
+                                """
+                                Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                Default value: `True`
+                                """
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        uplinks: bool | UndefinedType = Undefined,
+                                        uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                        mlag: bool | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Static.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled:
+                                               When enabled, configures multicast routing and by default configures static multicast in the
+                                               underlay on all:
+                                                 - P2P uplink interfaces if enabled on uplink peer
+                                                 - MLAG L3 peer interface if
+                                               also enabled on MLAG peer
+                                                 - l3_edge and core interfaces
+                                               Overrides the global
+                                               `underlay_multicast_multicast`.
+                                            uplinks:
+                                               Enable/Disable static multicast on uplinks.
+                                               Requires node setting
+                                               `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                            uplink_interfaces:
+                                               Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                               Effective
+                                               only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                               Subclass of AvdList with `str`
+                                               items.
+                                            mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                            pim_sm: PimSm
+                            """Subclass of AvdModel."""
+                            static: Static
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                    """
+                                    UnderlayMulticast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        pim_sm: Subclass of AvdModel.
+                                        static: Subclass of AvdModel.
+
+                                    """
+
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -57463,6 +58862,7 @@ class EosDesigns(EosDesignsRootModel):
                             "l3_port_channels": {"type": L3PortChannels},
                             "data_plane_cpu_allocation_max": {"type": int},
                             "flow_tracker_type": {"type": str},
+                            "underlay_multicast": {"type": UnderlayMulticast},
                             "campus": {"type": str},
                             "campus_pod": {"type": str},
                             "campus_access_pod": {"type": str},
@@ -58322,6 +59722,8 @@ class EosDesigns(EosDesignsRootModel):
                         level.
                         `default_flow_tracker_type` default value is `sampled`.
                         """
+                        underlay_multicast: UnderlayMulticast
+                        """Subclass of AvdModel."""
                         campus: str | None
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -58484,6 +59886,7 @@ class EosDesigns(EosDesignsRootModel):
                                 l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                                 data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                                 flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                                underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                                 campus: str | None | UndefinedType = Undefined,
                                 campus_pod: str | None | UndefinedType = Undefined,
                                 campus_access_pod: str | None | UndefinedType = Undefined,
@@ -59088,6 +60491,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Override the `default_flow_tracker_type`` set at the `node_type_key`
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
+                                    underlay_multicast: Subclass of AvdModel.
                                     campus:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
@@ -61563,6 +62967,208 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3PortChannels._item_type = L3PortChannelsItem
 
+                    class UnderlayMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PimSm(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                            on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if also
+                            enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_pim_sm`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable PIM sparse-mode on uplinks.
+                            Requires node setting `underlay_multicast.pim_sm.enabled:
+                            true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective only when
+                            node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PimSm.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                           on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if also
+                                           enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_pim_sm`.
+                                        uplinks:
+                                           Enable/Disable PIM sparse-mode on uplinks.
+                                           Requires node setting `underlay_multicast.pim_sm.enabled:
+                                           true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                        uplink_interfaces:
+                                           Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective only when
+                                           node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                           Subclass of AvdList with `str` items.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                    """
+
+                        class Static(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures static multicast in the
+                            underlay on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if
+                            also enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_multicast`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable static multicast on uplinks.
+                            Requires node setting
+                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
+
+                            Subclass of AvdList with `str`
+                            items.
+                            """
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Static.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures static multicast in the
+                                           underlay on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if
+                                           also enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_multicast`.
+                                        uplinks:
+                                           Enable/Disable static multicast on uplinks.
+                                           Requires node setting
+                                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                        uplink_interfaces:
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                           Subclass of AvdList with `str`
+                                           items.
+                                        mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                        pim_sm: PimSm
+                        """Subclass of AvdModel."""
+                        static: Static
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                """
+                                UnderlayMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    pim_sm: Subclass of AvdModel.
+                                    static: Subclass of AvdModel.
+
+                                """
+
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -61737,6 +63343,7 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "underlay_multicast": {"type": UnderlayMulticast},
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
@@ -62599,6 +64206,8 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    underlay_multicast: UnderlayMulticast
+                    """Subclass of AvdModel."""
                     campus: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -62761,6 +64370,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
@@ -63367,6 +64977,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                underlay_multicast: Subclass of AvdModel.
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -65917,6 +67528,208 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3PortChannels._item_type = L3PortChannelsItem
 
+                    class UnderlayMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PimSm(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                            on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if also
+                            enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_pim_sm`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable PIM sparse-mode on uplinks.
+                            Requires node setting `underlay_multicast.pim_sm.enabled:
+                            true` or, if unset, global `underlay_multicast_pim_sm: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective only when
+                            node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                            Subclass of AvdList with `str` items.
+                            """
+                            mlag: bool
+                            """
+                            Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PimSm.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                                           on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if also
+                                           enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_pim_sm`.
+                                        uplinks:
+                                           Enable/Disable PIM sparse-mode on uplinks.
+                                           Requires node setting `underlay_multicast.pim_sm.enabled:
+                                           true` or, if unset, global `underlay_multicast_pim_sm: true`
+                                        uplink_interfaces:
+                                           Limit PIM SM to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective only when
+                                           node settings `underlay_multicast.pim_sm.uplinks: true`.
+
+                                           Subclass of AvdList with `str` items.
+                                        mlag: Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface.
+
+                                    """
+
+                        class Static(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class UplinkInterfaces(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            UplinkInterfaces._item_type = str
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "uplinks": {"type": bool, "default": True},
+                                "uplink_interfaces": {"type": UplinkInterfaces},
+                                "mlag": {"type": bool, "default": True},
+                            }
+                            enabled: bool | None
+                            """
+                            When enabled, configures multicast routing and by default configures static multicast in the
+                            underlay on all:
+                              - P2P uplink interfaces if enabled on uplink peer
+                              - MLAG L3 peer interface if
+                            also enabled on MLAG peer
+                              - l3_edge and core interfaces
+                            Overrides the global
+                            `underlay_multicast_multicast`.
+                            """
+                            uplinks: bool
+                            """
+                            Enable/Disable static multicast on uplinks.
+                            Requires node setting
+                            `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+
+                            Default value: `True`
+                            """
+                            uplink_interfaces: UplinkInterfaces
+                            """
+                            Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                            Effective
+                            only when node settings `underlay_multicast.static.uplinks: true`.
+
+                            Subclass of AvdList with `str`
+                            items.
+                            """
+                            mlag: bool
+                            """
+                            Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                            Default value: `True`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    uplinks: bool | UndefinedType = Undefined,
+                                    uplink_interfaces: UplinkInterfaces | UndefinedType = Undefined,
+                                    mlag: bool | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Static.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled:
+                                           When enabled, configures multicast routing and by default configures static multicast in the
+                                           underlay on all:
+                                             - P2P uplink interfaces if enabled on uplink peer
+                                             - MLAG L3 peer interface if
+                                           also enabled on MLAG peer
+                                             - l3_edge and core interfaces
+                                           Overrides the global
+                                           `underlay_multicast_multicast`.
+                                        uplinks:
+                                           Enable/Disable static multicast on uplinks.
+                                           Requires node setting
+                                           `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true`
+                                        uplink_interfaces:
+                                           Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.
+                                           Effective
+                                           only when node settings `underlay_multicast.static.uplinks: true`.
+
+                                           Subclass of AvdList with `str`
+                                           items.
+                                        mlag: Configure static multicast in the underlay on MLAG L3 peer interfacee.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"pim_sm": {"type": PimSm}, "static": {"type": Static}}
+                        pim_sm: PimSm
+                        """Subclass of AvdModel."""
+                        static: Static
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, pim_sm: PimSm | UndefinedType = Undefined, static: Static | UndefinedType = Undefined) -> None:
+                                """
+                                UnderlayMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    pim_sm: Subclass of AvdModel.
+                                    static: Subclass of AvdModel.
+
+                                """
+
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -66091,6 +67904,7 @@ class EosDesigns(EosDesignsRootModel):
                         "l3_port_channels": {"type": L3PortChannels},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
+                        "underlay_multicast": {"type": UnderlayMulticast},
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
@@ -66950,6 +68764,8 @@ class EosDesigns(EosDesignsRootModel):
                     level.
                     `default_flow_tracker_type` default value is `sampled`.
                     """
+                    underlay_multicast: UnderlayMulticast
+                    """Subclass of AvdModel."""
                     campus: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -67112,6 +68928,7 @@ class EosDesigns(EosDesignsRootModel):
                             l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: Literal["sampled", "hardware"] | None | UndefinedType = Undefined,
+                            underlay_multicast: UnderlayMulticast | UndefinedType = Undefined,
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
@@ -67716,6 +69533,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
+                                underlay_multicast: Subclass of AvdModel.
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -67887,7 +69705,6 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
-        "avd_6_behaviors": {"type": Avd6Behaviors},
         "avd_data_validation_mode": {"type": str, "default": "error"},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_debug": {"type": bool, "default": False},
@@ -67967,7 +69784,6 @@ class EosDesigns(EosDesignsRootModel):
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
         "event_handlers": {"type": EosCliConfigGen.EventHandlers},
         "event_monitor": {"type": EosCliConfigGen.EventMonitor},
-        "evpn_ebgp_gateway_inter_domain": {"type": bool},
         "evpn_ebgp_gateway_multihop": {"type": int, "default": 15},
         "evpn_ebgp_multihop": {"type": int, "default": 3},
         "evpn_hostflap_detection": {"type": EvpnHostflapDetection},
@@ -68286,6 +70102,8 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_l2_ethernet_description": {"type": str, "default": "L2_{peer}_{peer_interface}"},
         "underlay_l2_port_channel_description": {"type": str, "default": "L2_{peer_node_group_or_peer}_{peer_interface}"},
         "underlay_multicast": {"type": bool, "default": False},
+        "underlay_multicast_pim_sm": {"type": bool},
+        "underlay_multicast_static": {"type": bool, "default": False},
         "underlay_multicast_anycast_rp": {"type": UnderlayMulticastAnycastRp},
         "underlay_multicast_rps": {"type": UnderlayMulticastRps},
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
@@ -68326,13 +70144,6 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
-    avd_6_behaviors: Avd6Behaviors
-    """
-    Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
-
-    Subclass of
-    AvdModel.
-    """
     avd_data_validation_mode: Literal["error", "warning"]
     """
     Validation Mode for AVD input data validation.
@@ -68966,7 +70777,6 @@ class EosDesigns(EosDesignsRootModel):
     implement workarounds to problems discovered in the field.
     """
     event_monitor: EosCliConfigGen.EventMonitor
-    evpn_ebgp_gateway_inter_domain: bool | None
     evpn_ebgp_gateway_multihop: int
     """
     Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI
@@ -68999,12 +70809,12 @@ class EosDesigns(EosDesignsRootModel):
     """
     General Configuration required for EVPN Multicast. "evpn_l2_multicast" or "evpn_l3_multicast" must
     also be configured under the Network Services (tenants).
-    Requires "underlay_multicast: true" and
-    IGMP snooping enabled globally (default).
-    For MLAG devices Route Distinguisher must be unique since
-    this feature will create multi-vtep configuration.
-    Warning !!! For Trident3 based platforms i.e
-    7050X3, 7300X3, 720XP.
+    Requires `underlay_multicast_pim_sm: true`
+    and IGMP snooping enabled globally (default).
+    For MLAG devices Route Distinguisher must be unique
+    since this feature will create multi-vtep configuration.
+    Warning !!! For Trident3 based platforms
+    i.e 7050X3, 7300X3, 720XP.
       The Following default platform setting will be configured on 7050X3 and
     7300X3: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304
     l3-shared 131072"
@@ -70087,6 +71897,31 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
+    underlay_multicast_pim_sm: bool | None
+    """
+    When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+    on all:
+      - P2P uplink interfaces if enabled on uplink peer
+      - MLAG L3 peer interface if also
+    enabled on MLAG peer
+      - l3_edge and core interfaces
+
+    Note: This changes the default behavior for
+    l3_edge / core_interfaces to automatically include the interfaces
+    in multicast, unless
+    `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
+    """
+    underlay_multicast_static: bool
+    """
+    When enabled, configures multicast routing and by default configures static multicast in the
+    underlay on all:
+      - P2P uplink interfaces if enabled on uplink peer
+      - MLAG L3 peer interface if
+    also enabled on MLAG peer
+      - l3_edge and core interfaces
+
+    Default value: `False`
+    """
     underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp
     """
     If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address,
@@ -70112,11 +71947,8 @@ class EosDesigns(EosDesignsRootModel):
     according to the
     'underlay_multicast_anycast_rp.mode' setting.
 
-    Requires 'underlay_multicast: true'.
-
-
-    Subclass of
-    AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
+    Requires 'underlay_multicast_pim_sm: true'.
+    Subclass of AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
     """
     underlay_ospf_area: str
     """Default value: `"0.0.0.0"`"""
@@ -70320,7 +72152,6 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
-            avd_6_behaviors: Avd6Behaviors | UndefinedType = Undefined,
             avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
@@ -70378,7 +72209,6 @@ class EosDesigns(EosDesignsRootModel):
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
             event_handlers: EosCliConfigGen.EventHandlers | UndefinedType = Undefined,
             event_monitor: EosCliConfigGen.EventMonitor | UndefinedType = Undefined,
-            evpn_ebgp_gateway_inter_domain: bool | None | UndefinedType = Undefined,
             evpn_ebgp_gateway_multihop: int | UndefinedType = Undefined,
             evpn_ebgp_multihop: int | UndefinedType = Undefined,
             evpn_hostflap_detection: EvpnHostflapDetection | UndefinedType = Undefined,
@@ -70499,6 +72329,8 @@ class EosDesigns(EosDesignsRootModel):
             underlay_l2_ethernet_description: str | UndefinedType = Undefined,
             underlay_l2_port_channel_description: str | UndefinedType = Undefined,
             underlay_multicast: bool | UndefinedType = Undefined,
+            underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
+            underlay_multicast_static: bool | UndefinedType = Undefined,
             underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp | UndefinedType = Undefined,
             underlay_multicast_rps: UnderlayMulticastRps | UndefinedType = Undefined,
             underlay_ospf_area: str | UndefinedType = Undefined,
@@ -70544,11 +72376,6 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
-                avd_6_behaviors:
-                   Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
-
-                   Subclass of
-                   AvdModel.
                 avd_data_validation_mode:
                    Validation Mode for AVD input data validation.
                    Input data validation will validate the input
@@ -71024,7 +72851,6 @@ class EosDesigns(EosDesignsRootModel):
                    customize the system behavior, and
                    implement workarounds to problems discovered in the field.
                 event_monitor: event_monitor
-                evpn_ebgp_gateway_inter_domain: evpn_ebgp_gateway_inter_domain
                 evpn_ebgp_gateway_multihop:
                    Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI
                    networks.
@@ -71043,12 +72869,12 @@ class EosDesigns(EosDesignsRootModel):
                 evpn_multicast:
                    General Configuration required for EVPN Multicast. "evpn_l2_multicast" or "evpn_l3_multicast" must
                    also be configured under the Network Services (tenants).
-                   Requires "underlay_multicast: true" and
-                   IGMP snooping enabled globally (default).
-                   For MLAG devices Route Distinguisher must be unique since
-                   this feature will create multi-vtep configuration.
-                   Warning !!! For Trident3 based platforms i.e
-                   7050X3, 7300X3, 720XP.
+                   Requires `underlay_multicast_pim_sm: true`
+                   and IGMP snooping enabled globally (default).
+                   For MLAG devices Route Distinguisher must be unique
+                   since this feature will create multi-vtep configuration.
+                   Warning !!! For Trident3 based platforms
+                   i.e 7050X3, 7300X3, 720XP.
                      The Following default platform setting will be configured on 7050X3 and
                    7300X3: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304
                    l3-shared 131072"
@@ -71822,6 +73648,25 @@ class EosDesigns(EosDesignsRootModel):
                    configuration is added, so the underlay will only support Source-Specific Multicast (SSM).
                    The
                    configuration is intended to be used as multicast underlay for EVPN OISM overlay.
+                underlay_multicast_pim_sm:
+                   When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                   on all:
+                     - P2P uplink interfaces if enabled on uplink peer
+                     - MLAG L3 peer interface if also
+                   enabled on MLAG peer
+                     - l3_edge and core interfaces
+
+                   Note: This changes the default behavior for
+                   l3_edge / core_interfaces to automatically include the interfaces
+                   in multicast, unless
+                   `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
+                underlay_multicast_static:
+                   When enabled, configures multicast routing and by default configures static multicast in the
+                   underlay on all:
+                     - P2P uplink interfaces if enabled on uplink peer
+                     - MLAG L3 peer interface if
+                   also enabled on MLAG peer
+                     - l3_edge and core interfaces
                 underlay_multicast_anycast_rp:
                    If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address,
                    they will be configured
@@ -71844,11 +73689,8 @@ class EosDesigns(EosDesignsRootModel):
                    according to the
                    'underlay_multicast_anycast_rp.mode' setting.
 
-                   Requires 'underlay_multicast: true'.
-
-
-                   Subclass of
-                   AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
+                   Requires 'underlay_multicast_pim_sm: true'.
+                   Subclass of AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
                 underlay_ospf_area: underlay_ospf_area
                 underlay_ospf_authentication: Subclass of AvdModel.
                 underlay_ospf_bfd_enable: underlay_ospf_bfd_enable
