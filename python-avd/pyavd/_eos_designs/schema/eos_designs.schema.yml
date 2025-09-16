@@ -1918,10 +1918,6 @@ keys:
   event_monitor:
     type: dict
     $ref: eos_cli_config_gen#/keys/event_monitor
-  evpn_ebgp_gateway_inter_domain:
-    documentation_options:
-      table: evpn-settings
-    type: bool
   evpn_ebgp_gateway_multihop:
     documentation_options:
       table: evpn-settings
