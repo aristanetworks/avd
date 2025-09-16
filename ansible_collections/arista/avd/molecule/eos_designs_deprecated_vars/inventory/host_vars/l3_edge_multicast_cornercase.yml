@@ -1,0 +1,44 @@
+---
+# underlay multicast corner case
+# TODO: Remove in AVD 6.0
+# Testing that the combination of:
+# * global `underlay_multicast: true`
+# * node config: `underlay_multicast.pim_sm.enabled: false`
+# * l3_edge: `include_in_underlay_protocol: true` and `multicast_pim_sm: true`
+# does NOT render pim sm configuration under l3_edge
+#
+# the reason is that AVD cannot catch a conflict between legacy global key and node_config.
+
+type: l3leaf
+
+# purposely use legacy variable, overridden at node level.
+underlay_multicast: true
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    bgp_as: 65101
+  nodes:
+    - name: l3_edge_multicast_cornercase
+      id: 1
+      mgmt_ip: 192.168.200.106/24
+      # disable PIM SM multicast here
+      underlay_multicast:
+        pim_sm:
+          enabled: false
+
+l3_edge:
+  p2p_links:
+    - nodes: [l3_edge_multicast_cornercase, peer1]
+      descriptions:
+        - PIM SM should NOT be configured
+        - dummy
+      interfaces: [ethernet22, ethernet22]
+      as: [666, 666]
+      ip: [192.168.0.2/31, 192.168.0.3/31]
+      # enabling both include_in_underlay_protocol and multicast_pim_sm
+      # and making sure PIM SM is not enabled on ethernet 22
+      include_in_underlay_protocol: true
+      multicast_pim_sm: true

@@ -23,6 +23,28 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  required-checks:  # Added in github settings as a required check before merge. This ensures that CI finishes before merge queue is merged.
+    needs:
+      - python_type_checking
+      - python_requirements
+      - molecule_eos_cli_config_gen
+      - molecule_eos_designs
+      - molecule_eos_designs_minimum_requirements
+      - molecule_anta_runner
+      - ansible_test_sanity
+      - ansible_test_units
+      - ansible_test_integration
+      - galaxy_importer
+      - ansible_lint
+      - test_pyavd
+      - cargo_build_and_test
+      - python_rust_bindings_build_and_test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo '${{ toJSON(needs) }}' | jq -e 'to_entries | all(.value.result == "success")'
+
   file-changes:
     runs-on: ubuntu-latest
     outputs:
@@ -62,9 +84,6 @@ jobs:
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/**/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/**/*'
-            validate_state:
-              - 'ansible_collections/arista/avd/roles/eos_validate_state/*'
-              - 'ansible_collections/arista/avd/roles/eos_validate_state/**/*'
             cloudvision:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
@@ -407,42 +426,6 @@ jobs:
             ansible_version: "ansible-core==2.16.0"
     needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true'
-    steps:
-      - uses: actions/checkout@v5
-      - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: pyavd
-          path: /tmp/pyavd/
-      - name: Install pyavd and Ansible requirements
-        run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
-      - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
-        run: |
-          molecule test --scenario-name ${{ matrix.avd_scenario }}
-      - name: Check GIT status
-        run: |
-          sh .github/check-git-status.sh
-
-  # ----------------------------------- #
-  # EOS Validate State MOLECULE
-  # ----------------------------------- #
-  molecule_eos_validate_state:
-    name: Validate eos_validate_state
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        avd_scenario:
-          - "eos_validate_state"
-        ansible_version:
-          - "ansible-core<2.19.0"
-        include:
-          - avd_scenario: "eos_validate_state"
-            ansible_version: "ansible-core==2.16.0"
-    needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.validate_state == 'true'
     steps:
       - uses: actions/checkout@v5
       - name: Download pyavd Artifact

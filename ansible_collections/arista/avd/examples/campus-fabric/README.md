@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Example for Campus Fabric
+title: Campus Fabric
 ---
 <!--
   ~ Copyright (c) 2023-2025 Arista Networks, Inc.
@@ -8,7 +8,7 @@ title: Example for Campus Fabric
   ~ that can be found in the LICENSE file.
   -->
 
-# Example for Campus Fabric
+# Campus Fabric
 
 ## Introduction
 
