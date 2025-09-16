@@ -69768,6 +69768,7 @@ class EosDesigns(EosDesignsRootModel):
         "avd_eos_designs_unset_facts": {"type": bool, "default": True},
         "bfd_multihop": {"type": BfdMultihop, "default": lambda cls: coerce_type({"interval": 300, "min_rx": 300, "multiplier": 3}, target_type=cls)},
         "bgp_as": {"type": str},
+        "bgp_as_notation": {"type": str, "default": "auto"},
         "bgp_default_ipv4_unicast": {"type": bool, "default": False},
         "bgp_distance": {"type": EosCliConfigGen.RouterBgp.Distance},
         "bgp_ecmp": {"type": int},
@@ -70287,6 +70288,8 @@ class EosDesigns(EosDesignsRootModel):
     For asdot notation in YAML inputs, the value must
     be put in quotes, to prevent it from being interpreted as a float number.
     """
+    bgp_as_notation: Literal["auto", "asdot", "asplain"]
+    """Default value: `"auto"`"""
     bgp_default_ipv4_unicast: bool
     """
     Default activation of IPv4 unicast address-family on all IPv4 neighbors.
@@ -72225,6 +72228,7 @@ class EosDesigns(EosDesignsRootModel):
             avd_eos_designs_unset_facts: bool | UndefinedType = Undefined,
             bfd_multihop: BfdMultihop | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
+            bgp_as_notation: Literal["auto", "asdot", "asplain"] | UndefinedType = Undefined,
             bgp_default_ipv4_unicast: bool | UndefinedType = Undefined,
             bgp_distance: EosCliConfigGen.RouterBgp.Distance | UndefinedType = Undefined,
             bgp_ecmp: int | None | UndefinedType = Undefined,
@@ -72495,6 +72499,7 @@ class EosDesigns(EosDesignsRootModel):
                    overlay when "overlay_routing_protocol" == ibgp.
                    For asdot notation in YAML inputs, the value must
                    be put in quotes, to prevent it from being interpreted as a float number.
+                bgp_as_notation: bgp_as_notation
                 bgp_default_ipv4_unicast:
                    Default activation of IPv4 unicast address-family on all IPv4 neighbors.
                    It is best practice to

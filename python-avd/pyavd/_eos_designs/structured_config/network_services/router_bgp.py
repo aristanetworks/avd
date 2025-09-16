@@ -314,7 +314,7 @@ class RouterBgpMixin(Protocol):
             bgp_vrf.neighbor_interfaces.append_new(
                 name=interface_name,
                 peer_group=self.shared_utils.mlag_vrfs_peer_group_name,
-                remote_as=self.shared_utils.bgp_as,
+                remote_as=self.shared_utils.get_asn(self.shared_utils.bgp_as),
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
                     mlag_peer=self.shared_utils.mlag_peer,

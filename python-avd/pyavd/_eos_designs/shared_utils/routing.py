@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils import default
 from pyavd._utils.password_utils.password import bgp_encrypt
 from pyavd.j2filters import range_expand
 
@@ -98,6 +99,29 @@ class RoutingMixin(Protocol):
             return self.inputs.underlay_isis_instance_name or default_isis_instance_name
         # This point cannot be reached because the function won't be called if either of the conditions in the if-block is not satisfied.
         return None
+
+    @cached_property
+    def bgp_as_notation(self: SharedUtilsProtocol) -> str:
+        bgp_as_notation = default(self.inputs.bgp_as_notation, "auto")
+        if bgp_as_notation == "asdot" or (bgp_as_notation == "auto" and "." in str(self.bgp_as)):
+            return "asdot"
+        return "asplain"
+
+    def get_asn(self: SharedUtilsProtocol, asn: str | int | None) -> str | None:
+        if asn is None:
+            return None
+
+        bgp_as_notation = self.bgp_as_notation
+        if bgp_as_notation == "asdot" and "." not in str(asn):
+            if prefix := int(asn) % 65536 != 0:
+                return f"{int(asn) // 65536}.{prefix}"
+            return f"{int(asn) // 65536}"
+
+        if bgp_as_notation == "asplain" and "." in str(asn):
+            suffix, prefix = map(int, str(asn).split("."))
+            return str(int(suffix) * 65536 + int(prefix))
+
+        return str(asn)
 
     @cached_property
     def bgp_as(self: SharedUtilsProtocol) -> str | None:

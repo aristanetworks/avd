@@ -122,7 +122,7 @@ class UtilsMixin(Protocol):
             msg = f"switch.overlay.peering_address for {peer_name} is required."
             raise AristaAvdInvalidInputsError(msg)
         peers_dict[peer_name] = {
-            "bgp_as": str(bgp_as) if bgp_as is not None else None,
+            "bgp_as": self.shared_utils.get_asn(str(bgp_as)) if bgp_as is not None else None,
             "ip_address": ip_address,
             "overlay_peering_interface": "Loopback0",
         }

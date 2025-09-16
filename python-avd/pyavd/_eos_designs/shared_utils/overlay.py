@@ -66,7 +66,7 @@ class OverlayMixin(Protocol):
             return self.vtep_ip
 
         if admin_subfield == "bgp_as":
-            return cast("str", self.bgp_as)
+            return cast("str", self.get_asn(self.bgp_as))
 
         if admin_subfield == "vrf_router_id":
             return "vrf_router_id"

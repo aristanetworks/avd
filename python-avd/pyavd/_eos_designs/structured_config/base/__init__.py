@@ -72,6 +72,9 @@ class AvdStructuredConfigBaseProtocol(
         if self.shared_utils.bgp_as is None:
             return
 
+        # Keeping None since EOS default is asplain.
+        self.structured_config.router_bgp.as_notation = "asdot" if self.shared_utils.bgp_as_notation == "asdot" else None
+
         platform_bgp_update_wait_for_convergence = self.shared_utils.platform_settings.feature_support.bgp_update_wait_for_convergence
         platform_bgp_update_wait_install = self.shared_utils.platform_settings.feature_support.bgp_update_wait_install
 
@@ -84,8 +87,10 @@ class AvdStructuredConfigBaseProtocol(
             default_ecmp = 4
 
         self.structured_config.router_bgp._update(
-            router_id=self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None, field_as=self.shared_utils.bgp_as
+            router_id=self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None,
+            field_as=self.shared_utils.get_asn(self.shared_utils.bgp_as),
         )
+
         if bgp_defaults := self.shared_utils.node_config.bgp_defaults:
             self.structured_config.router_bgp.bgp_defaults = bgp_defaults._cast_as(EosCliConfigGen.RouterBgp.BgpDefaults)
 
