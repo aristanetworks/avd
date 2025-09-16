@@ -23,6 +23,28 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  required-checks:  # Added in github settings as a required check before merge. This ensures that CI finishes before merge queue is merged.
+    needs:
+      - python_type_checking
+      - python_requirements
+      - molecule_eos_cli_config_gen
+      - molecule_eos_designs
+      - molecule_eos_designs_minimum_requirements
+      - molecule_anta_runner
+      - ansible_test_sanity
+      - ansible_test_units
+      - ansible_test_integration
+      - galaxy_importer
+      - ansible_lint
+      - test_pyavd
+      - cargo_build_and_test
+      - python_rust_bindings_build_and_test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo '${{ toJSON(needs) }}' | jq -e 'to_entries | all(.value.result == "success")'
+
   file-changes:
     runs-on: ubuntu-latest
     outputs:
