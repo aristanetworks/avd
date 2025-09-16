@@ -71,7 +71,6 @@ jobs:
             eos_config_deploy_eapi
             eos_designs
             eos_snapshot
-            eos_validate_state
             plugins
             requirements
             pyavd
