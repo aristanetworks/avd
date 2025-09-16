@@ -113,13 +113,13 @@ class RoutingMixin(Protocol):
 
         bgp_as_notation = self.bgp_as_notation
         if bgp_as_notation == "asdot" and "." not in str(asn):
-            if prefix := int(asn) % 65536 != 0:
-                return f"{int(asn) // 65536}.{prefix}"
-            return f"{int(asn) // 65536}"
+            if (prefix := int(asn) // 65536) != 0:
+                return f"{prefix}.{int(asn) % 65536}"
+            return f"{int(asn) % 65536}"
 
         if bgp_as_notation == "asplain" and "." in str(asn):
-            suffix, prefix = map(int, str(asn).split("."))
-            return str(int(suffix) * 65536 + int(prefix))
+            prefix, suffix = map(int, str(asn).split("."))
+            return str(int(prefix) * 65536 + int(suffix))
 
         return str(asn)
 
