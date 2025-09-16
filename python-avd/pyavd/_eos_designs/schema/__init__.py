@@ -647,60 +647,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    class Avd6Behaviors(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}, "inband_mgmt_attached_hosts": {"type": bool, "default": False}}
-        snmp_settings_vrfs: bool
-        """
-        Opt-in to the new behavior for snmp_settings:
-        - SNMP will only be enabled for VRFs specifically
-        enabled under `snmp_settings.vrfs`.
-          Note this means SNMP will be disabled for VRF "default" unless
-        it is defined there.
-        - `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.
-          If
-        `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
-        "default".
-
-        Default value: `False`
-        """
-        inband_mgmt_attached_hosts: bool
-        """
-        Opt-in to the new behavior for inband management route export:
-        - `ip attached-host route export`
-        will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
-
-        Default value: `False`
-        """
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined, inband_mgmt_attached_hosts: bool | UndefinedType = Undefined) -> None:
-                """
-                Avd6Behaviors.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    snmp_settings_vrfs:
-                       Opt-in to the new behavior for snmp_settings:
-                       - SNMP will only be enabled for VRFs specifically
-                       enabled under `snmp_settings.vrfs`.
-                         Note this means SNMP will be disabled for VRF "default" unless
-                       it is defined there.
-                       - `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.
-                         If
-                       `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
-                       "default".
-                    inband_mgmt_attached_hosts:
-                       Opt-in to the new behavior for inband management route export:
-                       - `ip attached-host route export`
-                       will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
-
-                """
-
     class BfdMultihop(AvdModel):
         """Subclass of AvdModel."""
 
@@ -69759,7 +69705,6 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
-        "avd_6_behaviors": {"type": Avd6Behaviors},
         "avd_data_validation_mode": {"type": str, "default": "error"},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_debug": {"type": bool, "default": False},
@@ -69839,7 +69784,6 @@ class EosDesigns(EosDesignsRootModel):
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
         "event_handlers": {"type": EosCliConfigGen.EventHandlers},
         "event_monitor": {"type": EosCliConfigGen.EventMonitor},
-        "evpn_ebgp_gateway_inter_domain": {"type": bool},
         "evpn_ebgp_gateway_multihop": {"type": int, "default": 15},
         "evpn_ebgp_multihop": {"type": int, "default": 3},
         "evpn_hostflap_detection": {"type": EvpnHostflapDetection},
@@ -70200,13 +70144,6 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
-    avd_6_behaviors: Avd6Behaviors
-    """
-    Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
-
-    Subclass of
-    AvdModel.
-    """
     avd_data_validation_mode: Literal["error", "warning"]
     """
     Validation Mode for AVD input data validation.
@@ -70840,7 +70777,6 @@ class EosDesigns(EosDesignsRootModel):
     implement workarounds to problems discovered in the field.
     """
     event_monitor: EosCliConfigGen.EventMonitor
-    evpn_ebgp_gateway_inter_domain: bool | None
     evpn_ebgp_gateway_multihop: int
     """
     Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI
@@ -72216,7 +72152,6 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
-            avd_6_behaviors: Avd6Behaviors | UndefinedType = Undefined,
             avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
@@ -72274,7 +72209,6 @@ class EosDesigns(EosDesignsRootModel):
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
             event_handlers: EosCliConfigGen.EventHandlers | UndefinedType = Undefined,
             event_monitor: EosCliConfigGen.EventMonitor | UndefinedType = Undefined,
-            evpn_ebgp_gateway_inter_domain: bool | None | UndefinedType = Undefined,
             evpn_ebgp_gateway_multihop: int | UndefinedType = Undefined,
             evpn_ebgp_multihop: int | UndefinedType = Undefined,
             evpn_hostflap_detection: EvpnHostflapDetection | UndefinedType = Undefined,
@@ -72442,11 +72376,6 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
-                avd_6_behaviors:
-                   Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
-
-                   Subclass of
-                   AvdModel.
                 avd_data_validation_mode:
                    Validation Mode for AVD input data validation.
                    Input data validation will validate the input
@@ -72922,7 +72851,6 @@ class EosDesigns(EosDesignsRootModel):
                    customize the system behavior, and
                    implement workarounds to problems discovered in the field.
                 event_monitor: event_monitor
-                evpn_ebgp_gateway_inter_domain: evpn_ebgp_gateway_inter_domain
                 evpn_ebgp_gateway_multihop:
                    Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI
                    networks.

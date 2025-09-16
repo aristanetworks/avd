@@ -141,7 +141,7 @@ async def test_invalid_versions(version: str, expected_exception: Exception) -> 
 
 @pytest.mark.asyncio
 async def test_invalid_versions_min_max_swapped() -> None:
-    with pytest.raises(ValueError, match="Invalid min and max versions passed to 'cv_version' decorator. Min version must be larger than max version"):
+    with pytest.raises(ValueError, match=r"Invalid min and max versions passed to 'cv_version' decorator. Min version must be larger than max version"):
 
         @LimitCvVersion(min_ver="2024.1.99", max_ver="2024.1.0")
         async def version_limited_method() -> None:
@@ -180,7 +180,7 @@ async def test_msg_size_handler_invalid_function_return_type() -> None:
     def function_not_returning_list(_field: list) -> str:
         return "foo"
 
-    with pytest.raises(TypeError, match="GRPCRequestHandler decorator is unable to bind to the function .+"):
+    with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator is unable to bind to the function .+"):
         await GRPCRequestHandler(list_field="_field")(function_not_returning_list)(["foo", "bar"])
 
 
@@ -191,7 +191,7 @@ async def test_msg_size_handler_invalid_function_return_type_union() -> None:
             return _field
         return "foo"
 
-    with pytest.raises(TypeError, match="GRPCRequestHandler decorator is unable to bind to the function .+"):
+    with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator is unable to bind to the function .+"):
         await GRPCRequestHandler(list_field="_field")(function_returning_union_of_list_and_string)(["foo", "bar"])
 
 
@@ -200,7 +200,7 @@ async def test_msg_size_handler_invalid_function_list_field() -> None:
     def function_with_wrong_arg(_wrong_field: list) -> list:
         return ["foo"]
 
-    with pytest.raises(KeyError, match="GRPCRequestHandler decorator is unable to find the list_field .+"):
+    with pytest.raises(KeyError, match=r"GRPCRequestHandler decorator is unable to find the list_field .+"):
         await GRPCRequestHandler(list_field="_field")(function_with_wrong_arg)(["foo", "bar"])
 
 
@@ -209,7 +209,7 @@ async def test_msg_size_handler_invalid_function_list_field_annotation_type() ->
     def function_with_wrong_arg_type(_field: str) -> list:
         return ["foo"]
 
-    with pytest.raises(TypeError, match="GRPCRequestHandler decorator expected the type of the list_field.*to be defined as a list. Got"):
+    with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator expected the type of the list_field.*to be defined as a list. Got"):
         await GRPCRequestHandler(list_field="_field")(function_with_wrong_arg_type)(["foo", "bar"])
 
 
@@ -218,7 +218,7 @@ async def test_msg_size_handler_invalid_function_list_field_value_type() -> None
     def function_with_wrong_value_type_of_field(_field: list) -> list:
         return ["foo"]
 
-    with pytest.raises(TypeError, match="GRPCRequestHandler decorator expected the value of the list_field.*to be a list. Got"):
+    with pytest.raises(TypeError, match=r"GRPCRequestHandler decorator expected the value of the list_field.*to be a list. Got"):
         await GRPCRequestHandler(list_field="_field")(function_with_wrong_value_type_of_field)("foo")
 
 
@@ -576,7 +576,7 @@ async def test_grpc_request_handler_unlimited_success(
         pytest.param(
             ["Preparing call.*with 1 item"],
             CVResourceNotFound("Raising the same CV exception."),
-            pytest.raises(CVResourceNotFound, match="Raising the same CV exception."),
+            pytest.raises(CVResourceNotFound, match=r"Raising the same CV exception."),
             id="GRPC_DEADLINE_EXCEEDED_DEADLINE_EXCEEDED",
         ),
     ],
