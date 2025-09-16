@@ -22,14 +22,11 @@ theme:
     - content.code.copy
     - content.tabs.link
     - header.autohide
-    - navigation.expand
-    - navigation.instant
     - navigation.prune
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.top
     - search.highlight
-    # - toc.integrate
     - toc.follow
   highlightjs: true
   icon:
