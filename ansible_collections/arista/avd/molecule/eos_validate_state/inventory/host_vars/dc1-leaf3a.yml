@@ -1,6 +1,0 @@
-# ---
-# Test that deprecated toplevel is_deployed in structured_config still works for anta_runner
-# TODO: Remove in AVD 6.0.0
-custom_structured_configuration_is_deployed: false
-custom_structured_configuration_metadata:
-  is_deployed: null
