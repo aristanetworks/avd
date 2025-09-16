@@ -95,6 +95,8 @@ router_bgp:
     maximum_routes: 0
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
+    send_community: all
+    maximum_routes: 12000
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   aggregate_addresses:
   - prefix: 10.1.1.0/8

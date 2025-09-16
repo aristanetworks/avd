@@ -262,6 +262,8 @@ router_bgp:
     ttl_maximum_hops: 1
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
+    send_community: all
+    maximum_routes: 12000
     route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   redistribute:
     connected:

@@ -119,6 +119,8 @@ class RouterBgpMixin(Protocol):
             self.structured_config.router_bgp.peer_groups.append_new(
                 name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                 type="ipv4",
+                send_community="all",
+                maximum_routes=12000,
                 route_map_out="RM-BGP-UNDERLAY-PEERS-OUT",
             )
 
