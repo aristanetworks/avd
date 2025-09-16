@@ -148,18 +148,19 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def address_family_ipv4_peer_group(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem | None:
-        if not self.underlay_ipv6_numbered:
-            address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
-                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-            )
-            if self.inputs.underlay_rfc5549 is True:
-                address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
+        if self.underlay_ipv6_numbered:
+            return None
 
-            return address_family_ipv4_peer_group
-        return None
+        address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
+            name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
+        )
+        if self.inputs.underlay_rfc5549 is True:
+            address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
+
+        return address_family_ipv4_peer_group
 
     @cached_property
     def address_family_ipv6_peer_group(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.AddressFamilyIpv6.PeerGroupsItem | None:
-        if self.underlay_ipv6:
-            return EosCliConfigGen.RouterBgp.AddressFamilyIpv6.PeerGroupsItem(name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True)
-        return None
+        if not self.underlay_ipv6:
+            return None
+        return EosCliConfigGen.RouterBgp.AddressFamilyIpv6.PeerGroupsItem(name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True)
