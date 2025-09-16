@@ -221,34 +221,6 @@ keys:
       warning: false
       removed: true
       remove_in_version: 6.0.0
-  avd_data_conversion_mode:
-    documentation_options:
-      table: role-input-validation
-    type: str
-    deprecation:
-      warning: true
-      removed: true
-      remove_in_version: 5.0.0
-    description: 'Conversion Mode for AVD input data conversion.
-
-      '
-    keys:
-      snmp_settings_vrfs:
-        type: bool
-        default: false
-        description: "Opt-in to the new behavior for snmp_settings:\n- SNMP will only
-          be enabled for VRFs specifically enabled under `snmp_settings.vrfs`.\n  Note
-          this means SNMP will be disabled for VRF \"default\" unless it is defined
-          there.\n- `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.\n
-          \ If `default_mgmt_method` is 'none', the VRF must be specified. For VRF
-          default set the string \"default\"."
-      inband_mgmt_attached_hosts:
-        type: bool
-        default: false
-        description: 'Opt-in to the new behavior for inband management route export:
-
-          - `ip attached-host route export` will only be rendered for inband management
-          VLAN interfaces if the underlay protocol is BGP.'
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
