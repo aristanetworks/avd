@@ -37,8 +37,6 @@ documentation_dir_name: 'documentation'
 fabric_dir_name: 'fabric'
 # Device documentation
 devices_dir_name: 'devices'
-# EOS state validation directory name
-eos_validate_state_name: 'reports'
 # EOS config deploy eapi running config backup directory
 post_running_config_backup_dir_name: 'config_backup'
 pre_running_config_backup_dir_name: 'config_backup'

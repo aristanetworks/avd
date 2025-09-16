@@ -167,7 +167,7 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def router_multicast(self) -> None:
         """router_multicast set based on underlay_multicast, underlay_router and switch.evpn_multicast facts."""
-        if not self.shared_utils.underlay_multicast:
+        if not self.shared_utils.any_multicast_enabled:
             return
 
         self.structured_config.router_multicast.ipv4.routing = True

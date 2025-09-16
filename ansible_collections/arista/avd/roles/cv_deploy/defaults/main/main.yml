@@ -64,3 +64,29 @@ cv_register_detailed_results: false
 
 # Time to wait for a Workspace to build. Depending on the scale this can be adjusted.
 cv_workspace_build_timeout: 300
+
+# cv_static_config_manifest:
+#
+#   A list of dictionaries defining static configlets to be created in the Configlet Library.
+#   Configlet names must be unique across all defined configlets.
+#   configlets:
+#     - name: <str>
+#       file: <str>
+
+#   A list of dictionaries defining the root containers in the Static Configuration hierarchy.
+#   Container names must be unique among sibling containers (at the same level).
+#   containers:
+#     - name: <str>
+#       description: <str, optional>
+#       tag_query: <str>
+#       match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+#       configlets:
+#         - name: <str>
+#       sub_containers:
+#         - name: <str>
+#           description: <str, optional>
+#           tag_query: <str>
+#           match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+#           configlets:
+#             - name: <str>
+#           sub_containers: <list of containers>

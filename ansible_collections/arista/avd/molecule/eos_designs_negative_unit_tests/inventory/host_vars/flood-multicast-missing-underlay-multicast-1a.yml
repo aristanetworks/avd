@@ -18,10 +18,11 @@ tenants:
     l2vlans:
       - id: 256
         name: "flood-multicast-missing-underlay-multicast-1a"
-        tags: ['test_l2']
+        tags: [test_l2]
         vxlan_flood_multicast:
           enabled: true
           underlay_multicast_group: 232.1.0.10
 
 expected_error_message: >-
-  'vxlan_flood_multicast' is only supported in combination with 'underlay_multicast: True'.
+  'vxlan_flood_multicast' is only supported in combination with either node_settings 'underlay_multicast.pim_sm.enabled: true'
+  or 'underlay_multicast_pim_sm: true'.
