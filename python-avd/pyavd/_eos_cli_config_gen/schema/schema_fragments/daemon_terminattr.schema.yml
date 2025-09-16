@@ -211,12 +211,3 @@ keys:
         type: bool
         description: |
           Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
-      cvcompression:
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: v5.0.0
-        type: str
-        description: |
-          The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
-          There is no need to change the compression scheme.

@@ -232,6 +232,23 @@ keys:
     description: 'Conversion Mode for AVD input data conversion.
 
       '
+    keys:
+      snmp_settings_vrfs:
+        type: bool
+        default: false
+        description: "Opt-in to the new behavior for snmp_settings:\n- SNMP will only
+          be enabled for VRFs specifically enabled under `snmp_settings.vrfs`.\n  Note
+          this means SNMP will be disabled for VRF \"default\" unless it is defined
+          there.\n- `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.\n
+          \ If `default_mgmt_method` is 'none', the VRF must be specified. For VRF
+          default set the string \"default\"."
+      inband_mgmt_attached_hosts:
+        type: bool
+        default: false
+        description: 'Opt-in to the new behavior for inband management route export:
+
+          - `ip attached-host route export` will only be rendered for inband management
+          VLAN interfaces if the underlay protocol is BGP.'
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -1445,21 +1462,6 @@ keys:
     deprecation:
       warning: true
       remove_in_version: 6.0.0
-  cvp_instance_ip:
-    documentation_options:
-      table: cloudvision-settings
-    deprecation:
-      warning: true
-      new_key: cv_settings
-      remove_in_version: 5.0.0
-      removed: true
-    type: str
-    description: 'IPv4 address or DNS name for CloudVision.
-
-      This variable only supports an on-premise single-node cluster or the DNS name
-      of a CloudVision as a Service instance.
-
-      '
   cvp_instance_ips:
     documentation_options:
       table: cloudvision-settings
@@ -2020,7 +2022,7 @@ keys:
     type: bool
     description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"
       or \"evpn_l3_multicast\" must also be configured under the Network Services
-      (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled
+      (tenants).\nRequires `underlay_multicast_pim_sm: true` and IGMP snooping enabled
       globally (default).\nFor MLAG devices Route Distinguisher must be unique since
       this feature will create multi-vtep configuration.\nWarning !!! For Trident3
       based platforms i.e 7050X3, 7300X3, 720XP.\n  The Following default platform
@@ -2031,7 +2033,7 @@ keys:
       when this configuration is applied.\n  You can tune the settings by overriding
       the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
       \ Please contact an Arista representative for help with determining the appropriate
-      values for your environment.\n"
+      values for your environment."
     default: false
   evpn_overlay_bgp_rtc:
     documentation_options:
@@ -3404,19 +3406,6 @@ keys:
           type: str
     default:
     - name: tenants
-  new_network_services_bgp_vrf_config:
-    type: bool
-    default: true
-    description: 'This key was used to generate BGP configuration for network services
-      even when `evpn` is not in the address families for the node as well as the
-      VRF.
-
-      This is now part of the default behavior so this key has been removed.'
-    deprecation:
-      warning: true
-      removed: true
-      remove_in_version: 5.0.0
-      url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#bgp-is-now-configured-for-network-services-vrfs-even-if-evpn-is-not-part-of-the-address-families
   custom_node_type_keys:
     $ref: eos_designs#/keys/node_type_keys
     default: null
@@ -4916,15 +4905,6 @@ keys:
             up to two levels (adapter->profile->parent_profile).
 
             '
-  ptp:
-    deprecation:
-      warning: true
-      removed: true
-      new_key: ptp_settings
-      remove_in_version: v5.0.0
-    documentation_options:
-      table: ptp_settings
-    type: dict
   ptp_profiles:
     documentation_options:
       table: ptp_settings
@@ -5920,6 +5900,30 @@ keys:
 
       '
     default: false
+    deprecation:
+      removed: false
+      warning: true
+      new_key: underlay_multicast_pim_sm
+      remove_in_version: 6.0.0
+  underlay_multicast_pim_sm:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    description: "When enabled, configures multicast routing and by default configures
+      PIM sparse-mode in the underlay on all:\n  - P2P uplink interfaces if enabled
+      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
+      l3_edge and core interfaces\n\nNote: This changes the default behavior for l3_edge
+      / core_interfaces to automatically include the interfaces\nin multicast, unless
+      `include_in_underlay_protocol: false` or `multicast_pim_sm: false`."
+  underlay_multicast_static:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    default: false
+    description: "When enabled, configures multicast routing and by default configures
+      static multicast in the underlay on all:\n  - P2P uplink interfaces if enabled
+      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
+      l3_edge and core interfaces"
   underlay_multicast_anycast_rp:
     documentation_options:
       table: fabric-settings
@@ -5960,7 +5964,7 @@ keys:
       according to the ''underlay_multicast_anycast_rp.mode'' setting.
 
 
-      Requires ''underlay_multicast: true''.
+      Requires ''underlay_multicast_pim_sm: true''.
 
       '
     type: list
@@ -7248,22 +7252,14 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
-          short_esi:
-            type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
-            deprecation:
-              removed: true
-              warning: true
-              remove_in_version: 5.0.0
-              new_key: ethernet_segment.short_esi
       validate_state:
         type: bool
         description: Set to false to disable interface state and LLDP topology validation
-          performed by the `eos_validate_state` role.
+          performed by the `anta_runner` role.
       validate_lldp:
         type: bool
         description: Set to false to disable the LLDP topology validation performed
-          by the `eos_validate_state` role.
+          by the `anta_runner` role.
       campus_link_type:
         type: list
         $ref: eos_designs#/$defs/campus_link_type
@@ -11743,24 +11739,73 @@ $defs:
               level.
 
               `default_flow_tracker_type` default value is `sampled`.'
-          inband_management_subnet:
+          underlay_multicast:
+            type: dict
             documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              removed: true
-              warning: true
-              new_key: inband_mgmt_subnet
-              remove_in_version: 5.0.0
-            type: str
-          inband_management_vlan:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              removed: true
-              warning: true
-              new_key: inband_mgmt_vlan
-              remove_in_version: 5.0.0
-            type: int
+              table: node-type-multicast
+            keys:
+              pim_sm:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: "When enabled, configures multicast routing and by
+                      default configures PIM sparse-mode in the underlay on all:\n
+                      \ - P2P uplink interfaces if enabled on uplink peer\n  - MLAG
+                      L3 peer interface if also enabled on MLAG peer\n  - l3_edge
+                      and core interfaces\nOverrides the global `underlay_multicast_pim_sm`."
+                  uplinks:
+                    type: bool
+                    default: true
+                    description: 'Enable/Disable PIM sparse-mode on uplinks.
+
+                      Requires node setting `underlay_multicast.pim_sm.enabled: true`
+                      or, if unset, global `underlay_multicast_pim_sm: true`'
+                  uplink_interfaces:
+                    description: 'Limit PIM SM to the uplink_interfaces in this list.
+                      All interfaces if unset.
+
+                      Effective only when node settings `underlay_multicast.pim_sm.uplinks:
+                      true`.'
+                    type: list
+                    items:
+                      type: str
+                  mlag:
+                    description: Configure PIM sparse-mode in the underlay on the
+                      MLAG L3 peer VLAN interface.
+                    type: bool
+                    default: true
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: "When enabled, configures multicast routing and by
+                      default configures static multicast in the underlay on all:\n
+                      \ - P2P uplink interfaces if enabled on uplink peer\n  - MLAG
+                      L3 peer interface if also enabled on MLAG peer\n  - l3_edge
+                      and core interfaces\nOverrides the global `underlay_multicast_multicast`."
+                  uplinks:
+                    type: bool
+                    default: true
+                    description: 'Enable/Disable static multicast on uplinks.
+
+                      Requires node setting `underlay_multicast.static.enabled: true`
+                      or, if unset, global `underlay_multicast_static: true`'
+                  uplink_interfaces:
+                    description: 'Limit static multicast to the uplink_interfaces
+                      in this list. All interfaces if unset.
+
+                      Effective only when node settings `underlay_multicast.static.uplinks:
+                      true`.'
+                    type: list
+                    items:
+                      type: str
+                  mlag:
+                    description: Configure static multicast in the underlay on MLAG
+                      L3 peer interfacee.
+                    type: bool
+                    default: true
           campus:
             documentation_options:
               table: node-type-common-configuration
@@ -12506,9 +12551,43 @@ $defs:
           description: Enable sFlow. Overrides `fabric_sflow` setting.
         underlay_multicast:
           type: bool
-          description: Enable PIM sparse mode. Requires `include_in_underlay_protocol`
+          description: 'Enable PIM sparse mode. Requires `include_in_underlay_protocol`
             and the global `underlay_multicast` to be `true`.
-          default: false
+
+
+            Note: The default value for this key is `false` when using either the
+            new key `underlay_multicast.pim_sm.enabled: true
+
+            or, if unset, global `underlay_multicast_pim_sm: true`'
+          deprecation:
+            removed: false
+            warning: true
+            new_key: multicast_pim_sm
+            remove_in_version: 6.0.0
+        multicast_pim_sm:
+          type: bool
+          description: 'Configure PIM sparse-mode on the P2P links.
+
+            Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if
+            unset, global `underlay_multicast_pim_sm: true`
+
+            The default value depends on the value of `include_in_underlay_protocol`:
+
+            * when `include_in_underlay_protocol: true`, the default value is `true`
+
+            * when `include_in_underlay_protocol: false`, the default value is `false`.'
+        multicast_static:
+          type: bool
+          description: 'Configure static multicast on the P2P links.
+
+            Requires node setting `underlay_multicast.static.enabled: true` or, if
+            unset, global `underlay_multicast_static: true`
+
+            The default value depends on the value of `include_in_underlay_protocol`:
+
+            * when `include_in_underlay_protocol: true`, the default value is `true`
+
+            * when `include_in_underlay_protocol: false`, the default value is `false`.'
         flow_tracking:
           type: dict
           $ref: eos_designs#/$defs/flow_tracking_link
@@ -13109,18 +13188,6 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/vlan_interfaces/items
-      ipv6_address_virtual:
-        type: str
-        description: 'IPv6_address/Mask.
-
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
-
-          '
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: 5.0.0
-          new_key: ipv6_address_virtuals
       evpn_l2_multi_domain:
         type: bool
         description: 'Explicitly extend SVI to remote EVPN domains.
