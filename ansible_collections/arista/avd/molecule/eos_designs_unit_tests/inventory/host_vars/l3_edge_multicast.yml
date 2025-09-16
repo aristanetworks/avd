@@ -1,6 +1,9 @@
+---
 underlay_routing_protocol: ospf
-underlay_multicast: true
 underlay_ospf_graceful_restart: true
+
+underlay_multicast_pim_sm: true
+underlay_multicast_static: true
 
 type: spine
 spine:
@@ -28,15 +31,63 @@ l3_edge:
       ipv4_pool: 192.168.0.0/24
 
   p2p_links:
-      # P2P link with underlay multicast(pim-sparse) disabled.
     - nodes: [l3_edge_multicast, peer1]
+      descriptions:
+        - P2P link, included in underlay protocol, PIM SM disabled.
+        - dummy
       interfaces: [ethernet1, ethernet1]
       ip: [192.168.0.4/31, 192.168.0.5/31]
       include_in_underlay_protocol: true
-      underlay_multicast: false
-      # P2P link with underlay multicast(pim-sparse) enabled.
+      multicast_pim_sm: false
+      # added to not pollute the test
+      multicast_static: false
     - nodes: [l3_edge_multicast, peer2]
+      descriptions:
+        - P2P link, included in underlay protocol, PIM SM default, expect enabled.
+        - dummy
       interfaces: [ethernet2, ethernet2]
       ip: [192.168.0.2/31, 192.168.0.3/31]
       include_in_underlay_protocol: true
-      underlay_multicast: true
+      # by default, use the node type setting when included in in underlay
+      # added to not pollute the test
+      multicast_static: false
+    - nodes: [l3_edge_multicast, peer3]
+      descriptions:
+        - P2P link, NOT included in underlay protocol, PIM SM enabled.
+        - dummy
+      interfaces: [ethernet3, ethernet3]
+      ip: [192.168.0.6/31, 192.168.0.7/31]
+      include_in_underlay_protocol: false
+      multicast_pim_sm: true
+      # added to not pollute the test
+      multicast_static: false
+    - nodes: [l3_edge_multicast, peer4]
+      descriptions:
+        - P2P link, included in underlay protocol, static multicast disabled.
+        - dummy
+      interfaces: [ethernet4, ethernet4]
+      ip: [192.168.0.8/31, 192.168.0.9/31]
+      include_in_underlay_protocol: true
+      multicast_static: false
+      # added to not pollute the test
+      multicast_pim_sm: false
+    - nodes: [l3_edge_multicast, peer5]
+      descriptions:
+        - P2P link, included in underlay protocol, static multicast default, expect enabled.
+        - dummy
+      interfaces: [ethernet5, ethernet5]
+      ip: [192.168.0.10/31, 192.168.0.11/31]
+      include_in_underlay_protocol: true
+      # by default, use the node type setting when included in in underlay
+      # added to not pollute the test
+      multicast_pim_sm: false
+    - nodes: [l3_edge_multicast, peer6]
+      descriptions:
+        - P2P link, NOT included in underlay protocol, static multicast enabled.
+        - dummy
+      interfaces: [ethernet6, ethernet6]
+      ip: [192.168.0.12/31, 192.168.0.13/31]
+      include_in_underlay_protocol: false
+      multicast_static: true
+      # added to not pollute the test
+      multicast_pim_sm: false
