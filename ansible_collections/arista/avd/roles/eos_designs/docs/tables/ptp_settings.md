@@ -7,7 +7,6 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ptp</samp>](## "ptp") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version v5.0.0. Use <samp>ptp_settings</samp> instead.</span> |
     | [<samp>ptp_profiles</samp>](## "ptp_profiles") | List, items: Dictionary |  | See (+) on YAML tab |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "ptp_profiles.[].profile") | String | Required, Unique |  |  | PTP profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;announce</samp>](## "ptp_profiles.[].announce") | Dictionary |  |  |  | PTP announce interval. |
