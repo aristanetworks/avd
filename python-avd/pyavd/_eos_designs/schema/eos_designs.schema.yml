@@ -6024,22 +6024,9 @@ keys:
               - sha384
               - sha512
               default: sha512
-            key:
-              type: str
-              min_length: 1
-              max_length: 16
-              convert_types:
-              - int
-              description: 'Cleartext key.
-
-                To protect the password at rest it is strongly recommended to make
-                use of a vault or similar.'
-              deprecation:
-                warning: true
-                remove_in_version: 6.0.0
-                new_key: cleartext_key
             cleartext_key:
               type: str
+              required: true
               convert_types:
               - int
               description: 'Cleartext key for OSPF message-digest authentication
@@ -6048,6 +6035,13 @@ keys:
                 use of a vault or similar.'
               min_length: 1
               max_length: 16
+            key:
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: cleartext_key
   underlay_ospf_bfd_enable:
     documentation_options:
       table: ospf-settings

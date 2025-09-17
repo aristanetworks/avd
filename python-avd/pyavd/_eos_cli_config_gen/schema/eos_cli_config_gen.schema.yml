@@ -5324,6 +5324,7 @@ keys:
       '
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
       url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#default-eos-configuration-is-no-longer-automatically-generated
   generate_device_documentation:
@@ -5333,7 +5334,7 @@ keys:
     default: true
     deprecation:
       warning: true
-      removed: false
+      removed: true
       remove_in_version: 6.0.0
       new_key: eos_cli_config_gen_documentation.enable
   hardware:
@@ -6122,18 +6123,19 @@ keys:
                 max: 15
         dns_domain:
           type: str
-        ip_domain_list:
-          type: str
-          description: Set domain names to complete unqualified host names.
-          deprecation:
-            warning: true
-            new_key: ip_domain_lists
-            remove_in_version: 6.0.0
         ip_domain_lists:
           type: list
           description: Set domain names to complete unqualified host names.
           items:
             type: str
+        ip_domain_list:
+          type: str
+          description: Set domain names to complete unqualified host names.
+          deprecation:
+            removed: true
+            warning: true
+            new_key: ip_domain_lists
+            remove_in_version: 6.0.0
   ip_name_servers:
     type: list
     items:
@@ -8307,30 +8309,6 @@ keys:
   management_api_models:
     type: dict
     keys:
-      providers:
-        type: list
-        deprecation:
-          warning: true
-          new_key: provider
-          remove_in_version: 6.0.0
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              valid_values:
-              - sysdb
-              - smash
-            paths:
-              type: list
-              items:
-                type: dict
-                keys:
-                  path:
-                    type: str
-                  disabled:
-                    type: bool
-                    default: false
       provider:
         type: dict
         keys:
@@ -8369,6 +8347,13 @@ keys:
               mka:
                 type: bool
                 description: Enable MKA for MACsec.
+      providers:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          new_key: provider
+          remove_in_version: 6.0.0
   management_console:
     type: dict
     keys:
@@ -24337,18 +24322,20 @@ keys:
               ipv6:
                 type: dict
                 keys:
+                  addresses:
+                    type: list
+                    required: true
+                    items:
+                      type: str
+                    description: Virtual IPv6 addresses.
                   address:
                     type: str
                     description: Virtual IPv6 address.
                     deprecation:
                       warning: true
+                      removed: true
                       remove_in_version: 6.0.0
                       new_key: addresses
-                  addresses:
-                    type: list
-                    items:
-                      type: str
-                    description: Virtual IPv6 addresses.
               peer_authentication:
                 type: dict
                 $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids/items/keys/peer_authentication
