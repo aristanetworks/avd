@@ -44,7 +44,6 @@ ethernet_interfaces:
     enabled: false
 - name: Ethernet11
   description: dc2-leaf3-fw1_e1
-  type: port-channel-member
   channel_group:
     id: 11
     mode: active

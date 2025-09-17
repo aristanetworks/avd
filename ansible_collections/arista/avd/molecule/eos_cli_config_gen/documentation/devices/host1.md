@@ -11533,6 +11533,8 @@ ip access-list ACL_SEQUENCE_AND_COUNTERS
    50 permit tcp any range 1000 1100 any range 10 20
    4294967295 deny ip any any
    permit response traffic nat
+!
+ip access-list ACL_WITHOUT_ENTRIES
 ```
 
 ### IPv6 Standard Access-lists
