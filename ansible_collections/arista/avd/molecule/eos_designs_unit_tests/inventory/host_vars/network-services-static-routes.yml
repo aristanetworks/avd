@@ -55,6 +55,9 @@ tenants:
             static_routes:
               - prefix: 10.10.10.0/24
                 next_hop: 10.10.10.10
+            # Test for ip_address_secondaries
+            ip_address_secondaries:
+              - 10.10.10.2/24
       - name: TESTING
         vrf_id: 2
         static_routes:

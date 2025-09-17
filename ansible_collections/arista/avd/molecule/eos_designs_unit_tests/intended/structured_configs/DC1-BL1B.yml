@@ -124,6 +124,8 @@ ethernet_interfaces:
   mtu: 9000
   vrf: Tenant_A_WAN_Zone
   ip_address: 10.10.20.20/24
+  ip_address_secondaries:
+  - 10.10.20.22/24
   peer_type: l3_interface
   switchport:
     enabled: false

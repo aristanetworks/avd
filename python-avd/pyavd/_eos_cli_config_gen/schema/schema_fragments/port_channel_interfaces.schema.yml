@@ -820,6 +820,11 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask or "dhcp".
+        ip_address_secondaries:
+          type: list
+          items:
+            type: str
+            description: IPv4 address/mask or "dhcp".
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP.

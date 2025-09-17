@@ -71,6 +71,7 @@ class VlanInterfacesMixin(Protocol):
             description=default(svi.description, svi.name),
             shutdown=not default(svi.enabled, False),  # noqa: FBT003
             ip_address=svi.ip_address,
+            ip_address_secondaries=svi.ip_address_secondaries._cast_as(EosCliConfigGen.VlanInterfacesItem.IpAddressSecondaries),
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
             arp_gratuitous_accept=svi.arp_gratuitous_accept,

@@ -175,6 +175,13 @@ class UtilsMixin(Protocol):
         if l3_generic_interface.ip_address == "dhcp" and l3_generic_interface.dhcp_accept_default_route:
             interface.dhcp_client_accept_default_route = True
 
+        if isinstance(interface, EosCliConfigGen.EthernetInterfacesItem):
+            interface.ip_address_secondaries = l3_generic_interface.ip_address_secondaries._cast_as(EosCliConfigGen.EthernetInterfacesItem.IpAddressSecondaries)
+        elif isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
+            interface.ip_address_secondaries = l3_generic_interface.ip_address_secondaries._cast_as(
+                EosCliConfigGen.PortChannelInterfacesItem.IpAddressSecondaries
+            )
+
         return interface
 
     def _get_l3_uplink_with_l2_as_subint(
@@ -245,6 +252,7 @@ class UtilsMixin(Protocol):
             encapsulation_dot1q=EosCliConfigGen.EthernetInterfacesItem.EncapsulationDot1q(vlan=svi.id) if not is_native else Undefined,
             vrf=vrf.name if vrf.name != "default" else None,
             ip_address=svi.ip_address,
+            ip_address_secondaries=svi.ip_address_secondaries._cast_as(EosCliConfigGen.EthernetInterfacesItem.IpAddressSecondaries),
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
             mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),

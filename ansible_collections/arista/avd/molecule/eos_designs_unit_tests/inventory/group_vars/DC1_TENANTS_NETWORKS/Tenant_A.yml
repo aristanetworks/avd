@@ -193,6 +193,9 @@ tenant_a:
                     priority: 5
           - interfaces: [Ethernet7]
             ip_addresses: [10.10.20.20/24]
+            # Test for ip_address_secondaries
+            ip_address_secondaries:
+              - 10.10.20.22/24
             nodes: [DC1-BL1B]
             mtu: 9000
             enabled: true

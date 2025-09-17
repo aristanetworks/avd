@@ -119,6 +119,8 @@ port_channel_interfaces:
 - name: Port-Channel1
   description: Po1
   shutdown: false
+  ip_address_secondaries:
+  - 10.10.10.2/24
   peer_interface: Po1
   peer_type: l3_port_channel
   switchport:

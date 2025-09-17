@@ -132,6 +132,7 @@ class EthernetInterfacesMixin(Protocol):
                     name=interface_name,
                     peer_type="l3_interface",
                     ip_address=l3_interface.ip_addresses[node_index],
+                    ip_address_secondaries=l3_interface.ip_address_secondaries._cast_as(EosCliConfigGen.EthernetInterfacesItem.IpAddressSecondaries),
                     mtu=self.shared_utils.get_interface_mtu(interface_name, l3_interface.mtu),
                     shutdown=not l3_interface.enabled,
                     arp_gratuitous_accept=l3_interface.arp_gratuitous_accept,
