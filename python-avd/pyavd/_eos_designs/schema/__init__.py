@@ -19754,22 +19754,11 @@ class EosDesigns(EosDesignsRootModel):
         class MessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "id": {"type": int},
-                "hash_algorithm": {"type": str, "default": "sha512"},
-                "key": {"type": str},
-                "cleartext_key": {"type": str},
-            }
+            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "cleartext_key": {"type": str}}
             id: int
             hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
             """Default value: `"sha512"`"""
-            key: str | None
-            """
-            Cleartext key.
-            To protect the password at rest it is strongly recommended to make use of a vault or
-            similar.
-            """
-            cleartext_key: str | None
+            cleartext_key: str
             """
             Cleartext key for OSPF message-digest authentication
             To protect the password at rest it is strongly
@@ -19783,8 +19772,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
-                    key: str | None | UndefinedType = Undefined,
-                    cleartext_key: str | None | UndefinedType = Undefined,
+                    cleartext_key: str | UndefinedType = Undefined,
                 ) -> None:
                     """
                     MessageDigestKeysItem.
@@ -19795,10 +19783,6 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         id: id
                         hash_algorithm: hash_algorithm
-                        key:
-                           Cleartext key.
-                           To protect the password at rest it is strongly recommended to make use of a vault or
-                           similar.
                         cleartext_key:
                            Cleartext key for OSPF message-digest authentication
                            To protect the password at rest it is strongly
