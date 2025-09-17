@@ -144,7 +144,7 @@ class TestCVManifestGeneration:
         container = AvdContainer(name="C1", tag_query="q1", configlets=("missing_configlet",))
         avd_manifest = AvdManifest(configlets=(), containers=(container,))
 
-        with pytest.raises(CVManifestError, match="Configlet 'missing_configlet' is assigned to a container but is not found in the input definition."):
+        with pytest.raises(CVManifestError, match=r"Configlet 'missing_configlet' is assigned to a container but is not found in the input definition."):
             CVManifest.from_avd_manifest(avd_manifest)
 
     def test_manifest_with_configlets_only(self) -> None:

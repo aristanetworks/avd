@@ -215,30 +215,12 @@ keys:
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
   avd_6_behaviors:
     type: dict
-    description: Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors
-      in AVD 6.0.
     documentation_options:
       table: role-settings
     deprecation:
       warning: false
+      removed: true
       remove_in_version: 6.0.0
-    keys:
-      snmp_settings_vrfs:
-        type: bool
-        default: false
-        description: "Opt-in to the new behavior for snmp_settings:\n- SNMP will only
-          be enabled for VRFs specifically enabled under `snmp_settings.vrfs`.\n  Note
-          this means SNMP will be disabled for VRF \"default\" unless it is defined
-          there.\n- `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.\n
-          \ If `default_mgmt_method` is 'none', the VRF must be specified. For VRF
-          default set the string \"default\"."
-      inband_mgmt_attached_hosts:
-        type: bool
-        default: false
-        description: 'Opt-in to the new behavior for inband management route export:
-
-          - `ip attached-host route export` will only be rendered for inband management
-          VLAN interfaces if the underlay protocol is BGP.'
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -1936,10 +1918,6 @@ keys:
   event_monitor:
     type: dict
     $ref: eos_cli_config_gen#/keys/event_monitor
-  evpn_ebgp_gateway_inter_domain:
-    documentation_options:
-      table: evpn-settings
-    type: bool
   evpn_ebgp_gateway_multihop:
     documentation_options:
       table: evpn-settings
@@ -3705,9 +3683,9 @@ keys:
               description: Path to Custom J2 template.
             overlay_loopback_interface:
               type: str
-              description: Path to Custom J2 template.
               deprecation:
                 warning: true
+                removed: true
                 remove_in_version: 6.0.0
                 new_key: router_id_loopback_interface
         cv_tags_topology_type:
@@ -5494,8 +5472,7 @@ keys:
           warning: true
           remove_in_version: 6.0.0
           new_key: 'snmp_settings.vrfs[].source_interface or snmp_settings.hosts[].vrf:
-            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf
-            or avd_6_behaviors.snmp_settings_vrfs'
+            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf'
         keys:
           mgmt_interface:
             type: bool
@@ -6044,22 +6021,9 @@ keys:
               - sha384
               - sha512
               default: sha512
-            key:
-              type: str
-              min_length: 1
-              max_length: 16
-              convert_types:
-              - int
-              description: 'Cleartext key.
-
-                To protect the password at rest it is strongly recommended to make
-                use of a vault or similar.'
-              deprecation:
-                warning: true
-                remove_in_version: 6.0.0
-                new_key: cleartext_key
             cleartext_key:
               type: str
+              required: true
               convert_types:
               - int
               description: 'Cleartext key for OSPF message-digest authentication
@@ -6068,6 +6032,13 @@ keys:
                 use of a vault or similar.'
               min_length: 1
               max_length: 16
+            key:
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: cleartext_key
   underlay_ospf_bfd_enable:
     documentation_options:
       table: ospf-settings
