@@ -134,11 +134,6 @@ ip_domain_lookup:
     vrf: INBANDMGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: default
-- ip_address: 8.8.8.8
-  vrf: default
 ip_radius_source_interfaces:
 - name: Management1
 - name: Vlan10

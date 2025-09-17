@@ -310,9 +310,6 @@ class AvdStructuredConfigBaseProtocol(
     @structured_config_contributor
     def ip_name_servers(self) -> None:
         """Set ip name servers using old name_servers model and new dns_settings model. Results will be combined."""
-        for name_server in self.inputs.name_servers:
-            self.structured_config.ip_name_servers.append_new(ip_address=name_server, vrf=self.inputs.mgmt_interface_vrf)
-
         if not self.inputs.dns_settings:
             return
 
