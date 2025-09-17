@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: AVD example for CV Pathfinder
+title: CV Pathfinder
 ---
 <!--
   ~ Copyright (c) 2023-2025 Arista Networks, Inc.
@@ -8,7 +8,7 @@ title: AVD example for CV Pathfinder
   ~ that can be found in the LICENSE file.
   -->
 
-# AVD example for CV Pathfinder
+# CV Pathfinder
 
 ## Introduction
 

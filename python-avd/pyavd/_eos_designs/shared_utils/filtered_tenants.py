@@ -271,6 +271,9 @@ class FilteredTenantsMixin(Protocol):
             vrf.l3_interfaces = self.filtered_l3_interfaces(vrf)
             vrf.l3_port_channels = self.filtered_l3_port_channels(vrf)
             vrf.loopbacks = vrf.loopbacks._filtered(lambda loopback: loopback.node == self.hostname)
+            vrf.aggregate_addresses = vrf.aggregate_addresses._filtered(lambda aggregate_address: self.match_nodes(aggregate_address.nodes))._natural_sorted(
+                sort_key="prefix"
+            )
 
             if self.vtep is True:
                 evpn_l3_multicast_enabled = default(vrf.evpn_l3_multicast.enabled, tenant.evpn_l3_multicast.enabled)
