@@ -287,11 +287,6 @@ $defs:
             hide_keys: true
         underlay_multicast:
           type: bool
-          description: |-
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
           deprecation:
             removed: true
             warning: true
