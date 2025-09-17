@@ -183,8 +183,7 @@ class SnmpServerMixin(Protocol):
         """
         Set list of dicts for enabling/disabling SNMP for VRFs.
 
-        Requires one of the following options to be set under snmp_settings:
-        - vrfs
+        Requires snmp_settings.vrfs to be set
         """
         vrfs = EosCliConfigGen.SnmpServer.Vrfs()
 
