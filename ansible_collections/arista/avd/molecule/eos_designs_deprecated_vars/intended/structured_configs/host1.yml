@@ -34,13 +34,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.42.201/31
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  ospf_authentication: message-digest
-  ospf_message_digest_keys:
-  - id: 1
-    hash_algorithm: sha512
-    key: cJ25Oy2bNyqRwTqh1A2FXmcCqBSvRAvV
   storm_control:
     broadcast:
       level: '25'
@@ -58,13 +51,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.42.42.204/31
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  ospf_authentication: message-digest
-  ospf_message_digest_keys:
-  - id: 1
-    hash_algorithm: sha512
-    key: cJ25Oy2bNyqRwTqh1A2FXmcCqBSvRAvV
   pim:
     ipv4:
       sparse_mode: true
@@ -77,8 +63,7 @@ ethernet_interfaces:
   description: P2P_peer1_Ethernet3
   shutdown: false
   mtu: 9214
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
+  ip_address: 192.168.0.18/31
   pim:
     ipv4:
       sparse_mode: true
@@ -91,8 +76,7 @@ ethernet_interfaces:
   description: P2P_peer2_Ethernet6
   shutdown: false
   mtu: 9214
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
+  ip_address: 192.168.0.20/31
   peer: peer2
   peer_interface: Ethernet6
   peer_type: other
@@ -102,8 +86,7 @@ ethernet_interfaces:
   description: P2P_peer3_Ethernet7
   shutdown: false
   mtu: 9214
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
+  ip_address: 192.168.0.22/31
   peer: peer3
   peer_interface: Ethernet7
   peer_type: other
@@ -189,12 +172,10 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.101/32
-  ospf_area: 0.0.0.0
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.101/32
-  ospf_area: 0.0.0.0
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -244,6 +225,20 @@ port_channel_interfaces:
     transport: ipv4
   switchport:
     enabled: true
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 300
@@ -261,6 +256,10 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
@@ -268,7 +267,39 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.42.200
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '102'
+    peer: host2
+    description: host2_Ethernet42
+  - ip_address: 10.42.42.205
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '101'
+    peer: host4
+    description: host4_Ethernet43
+  - ip_address: 192.168.0.19
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65002'
+    local_as: '65001'
+    peer: peer1
+    description: peer1
+  - ip_address: 192.168.0.21
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65003'
+    local_as: '65001'
+    peer: peer2
+    description: peer2
+  - ip_address: 192.168.0.23
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65004'
+    local_as: '65001'
+    peer: peer3
+    description: peer3
   redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
     static:
       enabled: true
   address_family_evpn:
@@ -277,24 +308,13 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
 router_multicast:
   ipv4:
     routing: true
-router_ospf:
-  process_ids:
-  - id: 100
-    passive_interface_default: true
-    router_id: 192.168.255.101
-    bfd_enable: false
-    no_passive_interfaces:
-    - Ethernet42
-    - Ethernet43
-    - Ethernet5
-    - Ethernet6
-    - Ethernet7
-    max_lsa: 12000
 service_routing_protocols_model: multi-agent
 snmp_server:
   ipv4_acls:
