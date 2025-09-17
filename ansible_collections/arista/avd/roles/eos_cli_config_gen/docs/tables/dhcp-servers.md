@@ -27,7 +27,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tftp_server</samp>](## "dhcp_servers.[].tftp_server") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file_ipv4</samp>](## "dhcp_servers.[].tftp_server.file_ipv4") | String |  |  | Min Length: 1<br>Max Length: 255 | Name of TFTP file for IPv4 clients. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file_ipv6</samp>](## "dhcp_servers.[].tftp_server.file_ipv6") | String |  |  | Min Length: 1<br>Max Length: 255 | Name of TFTP file for IPv6 clients. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;option_66_ipv4</samp>](## "dhcp_servers.[].tftp_server.option_66_ipv4") | String |  |  |  | IPv4 address for TFTP option 66. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;option_66_ipv4</samp>](## "dhcp_servers.[].tftp_server.option_66_ipv4") | String |  |  |  | IPv4 address or TFTP server name option 66. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;option_150_ipv4</samp>](## "dhcp_servers.[].tftp_server.option_150_ipv4") | List, items: String |  |  | Min Length: 1 | List of IPv4 addresses for TFTP option 150. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].tftp_server.option_150_ipv4.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_vendor_options</samp>](## "dhcp_servers.[].ipv4_vendor_options") | List, items: Dictionary |  |  |  |  |
@@ -96,7 +96,7 @@
           # Name of TFTP file for IPv6 clients.
           file_ipv6: <str; length 1-255>
 
-          # IPv4 address for TFTP option 66.
+          # IPv4 address or TFTP server name option 66.
           option_66_ipv4: <str>
 
           # List of IPv4 addresses for TFTP option 150.

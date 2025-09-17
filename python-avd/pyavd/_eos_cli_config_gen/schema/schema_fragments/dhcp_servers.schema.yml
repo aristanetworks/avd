@@ -102,7 +102,7 @@ keys:
               description: Name of TFTP file for IPv6 clients.
             option_66_ipv4:
               type: str
-              description: IPv4 address for TFTP option 66.
+              description: IPv4 address or TFTP server name option 66.
             option_150_ipv4:
               type: list
               min_length: 1

@@ -4359,7 +4359,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             file_ipv6: str | None
             """Name of TFTP file for IPv6 clients."""
             option_66_ipv4: str | None
-            """IPv4 address for TFTP option 66."""
+            """IPv4 address or TFTP server name option 66."""
             option_150_ipv4: Option150Ipv4
             """
             List of IPv4 addresses for TFTP option 150.
@@ -4386,7 +4386,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         file_ipv4: Name of TFTP file for IPv4 clients.
                         file_ipv6: Name of TFTP file for IPv6 clients.
-                        option_66_ipv4: IPv4 address for TFTP option 66.
+                        option_66_ipv4: IPv4 address or TFTP server name option 66.
                         option_150_ipv4:
                            List of IPv4 addresses for TFTP option 150.
 
