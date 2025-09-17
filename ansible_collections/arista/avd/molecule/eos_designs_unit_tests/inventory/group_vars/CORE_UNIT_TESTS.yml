@@ -93,18 +93,17 @@ core_interfaces:
         l2_mtu: 2222
 
   p2p_links:
-
     # Unnumbered link
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 1
-      interfaces: [ Ethernet1, Ethernet1 ]
+      interfaces: [Ethernet1, Ethernet1]
       profile: isis_bb_profile
       ip: ["unnumbered loopback0", "unnumbered loopback0"]
 
     # Link w/o bb profile
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 2
-      interfaces: [ Ethernet2, Ethernet2 ]
+      interfaces: [Ethernet2, Ethernet2]
       ip_pool: some_other_pool
       speed: 100full
       mtu: 1601
@@ -115,29 +114,29 @@ core_interfaces:
       qos_profile: test_qos_profile
 
     # Normal link with profile
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 3
-      interfaces: [ Ethernet3, Ethernet3 ]
+      interfaces: [Ethernet3, Ethernet3]
       profile: isis_bb_profile
 
     # Profile link with no mpls_ip
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 4
-      interfaces: [ Ethernet4, Ethernet4 ]
+      interfaces: [Ethernet4, Ethernet4]
       profile: isis_bb_profile
       mpls_ip: false
 
     # Profile link with no mpls_ldp
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 5
-      interfaces: [ Ethernet5, Ethernet5 ]
+      interfaces: [Ethernet5, Ethernet5]
       profile: isis_bb_profile
       mpls_ldp: false
 
     # Profile link with overrides
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 6
-      interfaces: [ Ethernet6, Ethernet6 ]
+      interfaces: [Ethernet6, Ethernet6]
       profile: isis_bb_profile
       ip: ["unnumbered loopback0", "unnumbered loopback0"]
       speed: 100full
@@ -146,112 +145,120 @@ core_interfaces:
       isis_circuit_type: level-1-2
       isis_metric: 70
       qos_profile: test_qos_profile
-      descriptions: ["Custom description on core-1-isis-sr-ldp eth6", "Custom description on core-2-ospf-ldp eth6"]
+      descriptions:
+        - Custom description on core-1-isis-sr-ldp eth6
+        - Custom description on core-2-ospf-ldp eth6
 
     # Different link profile
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 7
-      interfaces: [ Ethernet10, Ethernet10 ]
+      interfaces: [Ethernet10, Ethernet10]
       profile: ospf_bb_profile
       # Testing merge of structured config on profile and link.
       ethernet_structured_config:
         l2_mru: 2222
 
     # core Port-Channel
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 9
       port_channel:
         mode: active
         channel_id_algorithm: first_port
         nodes_child_interfaces:
           - node: core-1-isis-sr-ldp
-            interfaces: [ Ethernet12, Ethernet13 ]
+            interfaces: [Ethernet12, Ethernet13]
           - node: core-2-ospf-ldp
-            interfaces: [ Ethernet12, Ethernet13 ]
+            interfaces: [Ethernet12, Ethernet13]
       profile: isis_bb_profile
 
     # core Port-Channel with custom description
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 9
-      descriptions: [CUSTOM_DESCRIPTION_ON_P2P_LINK_A, CUSTOM_DESCRIPTION_ON_P2P_LINK_B]
+      descriptions:
+        - CUSTOM_DESCRIPTION_ON_P2P_LINK_A
+        - CUSTOM_DESCRIPTION_ON_P2P_LINK_B
       port_channel:
         description: "CUSTOM_DESCRIPTION_ON_P2P_PORT_CHANNEL_{port_channel_id}"
         mode: active
         nodes_child_interfaces:
           - node: core-1-isis-sr-ldp
-            interfaces: [ Ethernet14, Ethernet15 ]
+            interfaces: [Ethernet14, Ethernet15]
           - node: core-2-ospf-ldp
-            interfaces: [ Ethernet14, Ethernet15 ]
+            interfaces: [Ethernet14, Ethernet15]
       profile: isis_bb_profile
 
     # core Port-Channel with custom description on p2p reusing the same on port-channel
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 9
-      descriptions: [CUSTOM_DESCRIPTION_ON_P2P_LINK_A, CUSTOM_DESCRIPTION_ON_P2P_LINK_B]
+      descriptions:
+        - CUSTOM_DESCRIPTION_ON_P2P_LINK_A
+        - CUSTOM_DESCRIPTION_ON_P2P_LINK_B
       port_channel:
         mode: active
         channel_id_offset: 100
         nodes_child_interfaces:
           - node: core-1-isis-sr-ldp
-            interfaces: [ Ethernet16, Ethernet17 ]
+            interfaces: [Ethernet16, Ethernet17]
           - node: core-2-ospf-ldp
-            interfaces: [ Ethernet16, Ethernet17 ]
+            interfaces: [Ethernet16, Ethernet17]
       profile: isis_bb_profile
       ptp:
         enabled: true
 
     # P2P core links with underlay_multicast(pim-sparse) enabled.
-    - nodes: [ core-4-multicast, peer1 ]
+    - nodes: [core-4-multicast, peer1]
       id: 10
       as: [65001, 65002]
-      interfaces: [ Ethernet1, Ethernet1 ]
+      interfaces: [Ethernet1, Ethernet1]
       include_in_underlay_protocol: true
-      underlay_multicast: true
+      multicast_pim_sm: true
       ip_pool: underlay_pool
 
-     # P2P core links with underlay_multicast(pim-sparse) disabled.
-    - nodes: [ core-4-multicast, peer2 ]
+      # P2P core links with underlay_multicast(pim-sparse) disabled.
+    - nodes: [core-4-multicast, peer2]
       id: 11
       as: [65001, 65003]
-      interfaces: [ Ethernet2, Ethernet2 ]
+      interfaces: [Ethernet2, Ethernet2]
       include_in_underlay_protocol: true
-      underlay_multicast: false
+      multicast_pim_sm: false
       ip_pool: underlay_pool
 
     # P2P core links with underlay_multicast(pim-sparse) default.
-    - nodes: [ core-4-multicast, peer3 ]
+    # Expects to follow the node or global setting for PIM SM because include_in_underlay_protocol is true
+    - nodes: [core-4-multicast, peer3]
       id: 12
       as: [65001, 65004]
-      interfaces: [ Ethernet3, Ethernet3 ]
+      interfaces: [Ethernet3, Ethernet3]
       include_in_underlay_protocol: true
+      # multicast_pim_sm: None
       ip_pool: underlay_pool
 
     # core Port-Channel with specified channel_id
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 13
       port_channel:
         mode: active
         channel_id_algorithm: first_port
         nodes_child_interfaces:
           - node: core-1-isis-sr-ldp
-            interfaces: [ Ethernet18, Ethernet19 ]
+            interfaces: [Ethernet18, Ethernet19]
             channel_id: 12345
           - node: core-2-ospf-ldp
-            interfaces: [ Ethernet18, Ethernet19 ]
+            interfaces: [Ethernet18, Ethernet19]
       profile: isis_bb_profile
 
     # core Port-Channel with custom structured configs
-    - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
+    - nodes: [core-1-isis-sr-ldp, core-2-ospf-ldp]
       id: 14
       port_channel:
         mode: active
         channel_id_algorithm: first_port
         nodes_child_interfaces:
           - node: core-1-isis-sr-ldp
-            interfaces: [ Ethernet20, Ethernet21 ]
+            interfaces: [Ethernet20, Ethernet21]
             channel_id: 12346
           - node: core-2-ospf-ldp
-            interfaces: [ Ethernet20, Ethernet21 ]
+            interfaces: [Ethernet20, Ethernet21]
       # Structured config applied to generated port-channel.
       port_channel_structured_config:
         description: Description set via port_channel_structured_config(core_interfaces)
@@ -267,7 +274,7 @@ l3_edge:
       ipv4_pool: 172.16.1.0/24
       prefix_size: 29
   p2p_links:
-      # P2P link with mpls_ip and mpls_ldp set to false.
+    # P2P link with mpls_ip and mpls_ldp set to false.
     - nodes: [core-1-isis-sr-ldp, peer2]
       interfaces: [ethernet21, ethernet21]
       ip: [192.168.0.2/31, 192.168.0.3/31]

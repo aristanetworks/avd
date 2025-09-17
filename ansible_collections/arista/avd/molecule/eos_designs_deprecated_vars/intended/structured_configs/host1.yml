@@ -73,6 +73,42 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet5
+  description: P2P_peer1_Ethernet3
+  shutdown: false
+  mtu: 9214
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  pim:
+    ipv4:
+      sparse_mode: true
+  peer: peer1
+  peer_interface: Ethernet3
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Ethernet6
+  description: P2P_peer2_Ethernet6
+  shutdown: false
+  mtu: 9214
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  peer: peer2
+  peer_interface: Ethernet6
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: P2P_peer3_Ethernet7
+  shutdown: false
+  mtu: 9214
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  peer: peer3
+  peer_interface: Ethernet7
+  peer_type: other
+  switchport:
+    enabled: false
 - name: Ethernet47
   shutdown: false
   ip_address: 10.10.1.1/30
@@ -243,6 +279,9 @@ router_bgp:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: false
+router_multicast:
+  ipv4:
+    routing: true
 router_ospf:
   process_ids:
   - id: 100
@@ -252,6 +291,9 @@ router_ospf:
     no_passive_interfaces:
     - Ethernet42
     - Ethernet43
+    - Ethernet5
+    - Ethernet6
+    - Ethernet7
     max_lsa: 12000
 service_routing_protocols_model: multi-agent
 snmp_server:

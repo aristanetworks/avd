@@ -36,6 +36,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1600
   ip_address: 100.64.48.22/31
+  pim:
+    ipv4:
+      sparse_mode: true
   mpls:
     ip: true
   peer: peer3
