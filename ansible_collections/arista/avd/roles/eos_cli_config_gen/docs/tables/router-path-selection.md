@@ -64,9 +64,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_selection_policy</samp>](## "router_path_selection.vrfs.[].path_selection_policy") | String |  |  |  | DPS policy name to use for this VRF. |
     | [<samp>&nbsp;&nbsp;tcp_mss_ceiling</samp>](## "router_path_selection.tcp_mss_ceiling") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_segment_size</samp>](## "router_path_selection.tcp_mss_ceiling.ipv4_segment_size") <span style="color:red">deprecated</span> | String |  |  |  | Segment Size for IPv4.<br>Can be an integer in the range 64-65515 or "auto".<br>"auto" will enable auto-discovery which clamps the TCP MSS value to the minimum of all the direct paths<br>and multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ipv4</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "router_path_selection.tcp_mss_ceiling.ipv4") | String |  |  |  | Segment Size for IPv4.<br>Can be an integer in the range 64-65515 or "auto".<br>"auto" will enable auto-discovery which clamps the TCP MSS value to the minimum of all the direct paths<br>and multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "router_path_selection.tcp_mss_ceiling.direction") | String |  | `ingress` | Valid Values:<br>- <code>ingress</code> | Enforce on packets through DPS tunnel for a specific direction.<br>Only 'ingress' direction is supported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_segment_size</samp>](## "router_path_selection.tcp_mss_ceiling.ipv4_segment_size") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ipv4</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;interfaces</samp>](## "router_path_selection.interfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.interfaces.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric_bandwidth</samp>](## "router_path_selection.interfaces.[].metric_bandwidth") | Dictionary |  |  |  |  |
@@ -210,15 +210,6 @@
           # DPS policy name to use for this VRF.
           path_selection_policy: <str>
       tcp_mss_ceiling:
-
-        # Segment Size for IPv4.
-        # Can be an integer in the range 64-65515 or "auto".
-        # "auto" will enable auto-discovery which clamps the TCP MSS value to the minimum of all the direct paths
-        # and multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
-        # This key is deprecated.
-        # Support will be removed in AVD version 6.0.0.
-        # Use `ipv4` instead.
-        ipv4_segment_size: <str>
 
         # Segment Size for IPv4.
         # Can be an integer in the range 64-65515 or "auto".

@@ -647,60 +647,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    class Avd6Behaviors(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}, "inband_mgmt_attached_hosts": {"type": bool, "default": False}}
-        snmp_settings_vrfs: bool
-        """
-        Opt-in to the new behavior for snmp_settings:
-        - SNMP will only be enabled for VRFs specifically
-        enabled under `snmp_settings.vrfs`.
-          Note this means SNMP will be disabled for VRF "default" unless
-        it is defined there.
-        - `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.
-          If
-        `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
-        "default".
-
-        Default value: `False`
-        """
-        inband_mgmt_attached_hosts: bool
-        """
-        Opt-in to the new behavior for inband management route export:
-        - `ip attached-host route export`
-        will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
-
-        Default value: `False`
-        """
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined, inband_mgmt_attached_hosts: bool | UndefinedType = Undefined) -> None:
-                """
-                Avd6Behaviors.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    snmp_settings_vrfs:
-                       Opt-in to the new behavior for snmp_settings:
-                       - SNMP will only be enabled for VRFs specifically
-                       enabled under `snmp_settings.vrfs`.
-                         Note this means SNMP will be disabled for VRF "default" unless
-                       it is defined there.
-                       - `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.
-                         If
-                       `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
-                       "default".
-                    inband_mgmt_attached_hosts:
-                       Opt-in to the new behavior for inband management route export:
-                       - `ip attached-host route export`
-                       will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
-
-                """
-
     class BfdMultihop(AvdModel):
         """Subclass of AvdModel."""
 
@@ -9720,11 +9666,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    class NameServers(AvdList[str]):
-        """Subclass of AvdList with `str` items."""
-
-    NameServers._item_type = str
-
     class NetworkPortsItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -11033,11 +10974,11 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_state: bool | None
         """
-        Set to false to disable interface state and LLDP topology validation performed by the
-        `eos_validate_state` role.
+        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+        role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         campus_link_type: CampusLinkType
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -11248,9 +11189,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the
-                       `eos_validate_state` role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                       role.
+                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     campus_link_type:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
@@ -11460,7 +11401,6 @@ class EosDesigns(EosDesignsRootModel):
                 "connected_endpoints_port_channel_interfaces": {"type": str},
                 "router_id_loopback_interface": {"type": str},
                 "vtep_loopback_interface": {"type": str},
-                "overlay_loopback_interface": {"type": str},
             }
             python_module: str | None
             """Custom Python Module to import for interface descriptions."""
@@ -11486,8 +11426,6 @@ class EosDesigns(EosDesignsRootModel):
             """Path to Custom J2 template."""
             vtep_loopback_interface: str | None
             """Path to Custom J2 template."""
-            overlay_loopback_interface: str | None
-            """Path to Custom J2 template."""
 
             if TYPE_CHECKING:
 
@@ -11504,7 +11442,6 @@ class EosDesigns(EosDesignsRootModel):
                     connected_endpoints_port_channel_interfaces: str | None | UndefinedType = Undefined,
                     router_id_loopback_interface: str | None | UndefinedType = Undefined,
                     vtep_loopback_interface: str | None | UndefinedType = Undefined,
-                    overlay_loopback_interface: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     InterfaceDescriptions.
@@ -11523,7 +11460,6 @@ class EosDesigns(EosDesignsRootModel):
                         connected_endpoints_port_channel_interfaces: Path to Custom J2 template.
                         router_id_loopback_interface: Path to Custom J2 template.
                         vtep_loopback_interface: Path to Custom J2 template.
-                        overlay_loopback_interface: Path to Custom J2 template.
 
                     """
 
@@ -11982,7 +11918,6 @@ class EosDesigns(EosDesignsRootModel):
                 "connected_endpoints_port_channel_interfaces": {"type": str},
                 "router_id_loopback_interface": {"type": str},
                 "vtep_loopback_interface": {"type": str},
-                "overlay_loopback_interface": {"type": str},
             }
             python_module: str | None
             """Custom Python Module to import for interface descriptions."""
@@ -12008,8 +11943,6 @@ class EosDesigns(EosDesignsRootModel):
             """Path to Custom J2 template."""
             vtep_loopback_interface: str | None
             """Path to Custom J2 template."""
-            overlay_loopback_interface: str | None
-            """Path to Custom J2 template."""
 
             if TYPE_CHECKING:
 
@@ -12026,7 +11959,6 @@ class EosDesigns(EosDesignsRootModel):
                     connected_endpoints_port_channel_interfaces: str | None | UndefinedType = Undefined,
                     router_id_loopback_interface: str | None | UndefinedType = Undefined,
                     vtep_loopback_interface: str | None | UndefinedType = Undefined,
-                    overlay_loopback_interface: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     InterfaceDescriptions.
@@ -12045,7 +11977,6 @@ class EosDesigns(EosDesignsRootModel):
                         connected_endpoints_port_channel_interfaces: Path to Custom J2 template.
                         router_id_loopback_interface: Path to Custom J2 template.
                         vtep_loopback_interface: Path to Custom J2 template.
-                        overlay_loopback_interface: Path to Custom J2 template.
 
                     """
 
@@ -15657,11 +15588,11 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_state: bool | None
         """
-        Set to false to disable interface state and LLDP topology validation performed by the
-        `eos_validate_state` role.
+        Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+        role.
         """
         validate_lldp: bool | None
-        """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
         campus_link_type: CampusLinkType
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -15831,9 +15762,9 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     validate_state:
-                       Set to false to disable interface state and LLDP topology validation performed by the
-                       `eos_validate_state` role.
-                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                       Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                       role.
+                    validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                     campus_link_type:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
@@ -19746,22 +19677,11 @@ class EosDesigns(EosDesignsRootModel):
         class MessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "id": {"type": int},
-                "hash_algorithm": {"type": str, "default": "sha512"},
-                "key": {"type": str},
-                "cleartext_key": {"type": str},
-            }
+            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "cleartext_key": {"type": str}}
             id: int
             hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
             """Default value: `"sha512"`"""
-            key: str | None
-            """
-            Cleartext key.
-            To protect the password at rest it is strongly recommended to make use of a vault or
-            similar.
-            """
-            cleartext_key: str | None
+            cleartext_key: str
             """
             Cleartext key for OSPF message-digest authentication
             To protect the password at rest it is strongly
@@ -19775,8 +19695,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
-                    key: str | None | UndefinedType = Undefined,
-                    cleartext_key: str | None | UndefinedType = Undefined,
+                    cleartext_key: str | UndefinedType = Undefined,
                 ) -> None:
                     """
                     MessageDigestKeysItem.
@@ -19787,10 +19706,6 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         id: id
                         hash_algorithm: hash_algorithm
-                        key:
-                           Cleartext key.
-                           To protect the password at rest it is strongly recommended to make use of a vault or
-                           similar.
                         cleartext_key:
                            Cleartext key for OSPF message-digest authentication
                            To protect the password at rest it is strongly
@@ -23001,11 +22916,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_state: bool | None
                     """
-                    Set to false to disable interface state and LLDP topology validation performed by the
-                    `eos_validate_state` role.
+                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                    role.
                     """
                     validate_lldp: bool | None
-                    """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
                     campus_link_type: CampusLinkType
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -23213,9 +23128,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 validate_state:
-                                   Set to false to disable interface state and LLDP topology validation performed by the
-                                   `eos_validate_state` role.
-                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                                   Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                                   role.
+                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                                 campus_link_type:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -24646,11 +24561,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_state: bool | None
                     """
-                    Set to false to disable interface state and LLDP topology validation performed by the
-                    `eos_validate_state` role.
+                    Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                    role.
                     """
                     validate_lldp: bool | None
-                    """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+                    """Set to false to disable the LLDP topology validation performed by the `anta_runner` role."""
                     campus_link_type: CampusLinkType
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -24858,9 +24773,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 validate_state:
-                                   Set to false to disable interface state and LLDP topology validation performed by the
-                                   `eos_validate_state` role.
-                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                                   Set to false to disable interface state and LLDP topology validation performed by the `anta_runner`
+                                   role.
+                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `anta_runner` role.
                                 campus_link_type:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
@@ -69687,7 +69602,6 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
-        "avd_6_behaviors": {"type": Avd6Behaviors},
         "avd_data_validation_mode": {"type": str, "default": "error"},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_debug": {"type": bool, "default": False},
@@ -69767,7 +69681,6 @@ class EosDesigns(EosDesignsRootModel):
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
         "event_handlers": {"type": EosCliConfigGen.EventHandlers},
         "event_monitor": {"type": EosCliConfigGen.EventMonitor},
-        "evpn_ebgp_gateway_inter_domain": {"type": bool},
         "evpn_ebgp_gateway_multihop": {"type": int, "default": 15},
         "evpn_ebgp_multihop": {"type": int, "default": 3},
         "evpn_hostflap_detection": {"type": EvpnHostflapDetection},
@@ -69833,7 +69746,6 @@ class EosDesigns(EosDesignsRootModel):
         "mlag_peer_svi_description": {"type": str, "default": "MLAG"},
         "mlag_peer_vlan_name": {"type": str, "default": "MLAG"},
         "mlag_port_channel_description": {"type": str, "default": "MLAG_{mlag_peer}_{peer_interface}"},
-        "name_servers": {"type": NameServers},
         "network_ports": {"type": NetworkPorts},
         "network_services_keys": {"type": NetworkServicesKeys, "default": lambda cls: coerce_type([{"name": "tenants"}], target_type=cls)},
         "custom_node_type_keys": {"type": CustomNodeTypeKeys},
@@ -70127,13 +70039,6 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
-    avd_6_behaviors: Avd6Behaviors
-    """
-    Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
-
-    Subclass of
-    AvdModel.
-    """
     avd_data_validation_mode: Literal["error", "warning"]
     """
     Validation Mode for AVD input data validation.
@@ -70767,7 +70672,6 @@ class EosDesigns(EosDesignsRootModel):
     implement workarounds to problems discovered in the field.
     """
     event_monitor: EosCliConfigGen.EventMonitor
-    evpn_ebgp_gateway_inter_domain: bool | None
     evpn_ebgp_gateway_multihop: int
     """
     Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI
@@ -71320,13 +71224,6 @@ class EosDesigns(EosDesignsRootModel):
     default the description is templated from the name and port-channel interface of the MLAG peer.
 
     Default value: `"MLAG_{mlag_peer}_{peer_interface}"`
-    """
-    name_servers: NameServers
-    """
-    List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
-
-    Subclass of AvdList with `str`
-    items.
     """
     network_ports: NetworkPorts
     """Subclass of AvdList with `NetworkPortsItem` items."""
@@ -72134,7 +72031,6 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
-            avd_6_behaviors: Avd6Behaviors | UndefinedType = Undefined,
             avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
@@ -72192,7 +72088,6 @@ class EosDesigns(EosDesignsRootModel):
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
             event_handlers: EosCliConfigGen.EventHandlers | UndefinedType = Undefined,
             event_monitor: EosCliConfigGen.EventMonitor | UndefinedType = Undefined,
-            evpn_ebgp_gateway_inter_domain: bool | None | UndefinedType = Undefined,
             evpn_ebgp_gateway_multihop: int | UndefinedType = Undefined,
             evpn_ebgp_multihop: int | UndefinedType = Undefined,
             evpn_hostflap_detection: EvpnHostflapDetection | UndefinedType = Undefined,
@@ -72255,7 +72150,6 @@ class EosDesigns(EosDesignsRootModel):
             mlag_peer_svi_description: str | UndefinedType = Undefined,
             mlag_peer_vlan_name: str | UndefinedType = Undefined,
             mlag_port_channel_description: str | UndefinedType = Undefined,
-            name_servers: NameServers | UndefinedType = Undefined,
             network_ports: NetworkPorts | UndefinedType = Undefined,
             network_services_keys: NetworkServicesKeys | UndefinedType = Undefined,
             custom_node_type_keys: CustomNodeTypeKeys | UndefinedType = Undefined,
@@ -72359,11 +72253,6 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
-                avd_6_behaviors:
-                   Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
-
-                   Subclass of
-                   AvdModel.
                 avd_data_validation_mode:
                    Validation Mode for AVD input data validation.
                    Input data validation will validate the input
@@ -72839,7 +72728,6 @@ class EosDesigns(EosDesignsRootModel):
                    customize the system behavior, and
                    implement workarounds to problems discovered in the field.
                 event_monitor: event_monitor
-                evpn_ebgp_gateway_inter_domain: evpn_ebgp_gateway_inter_domain
                 evpn_ebgp_gateway_multihop:
                    Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI
                    networks.
@@ -73219,11 +73107,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    By
                    default the description is templated from the name and port-channel interface of the MLAG peer.
-                name_servers:
-                   List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
-
-                   Subclass of AvdList with `str`
-                   items.
                 network_ports: Subclass of AvdList with `NetworkPortsItem` items.
                 network_services_keys:
                    Network Services can be grouped by using separate keys.
