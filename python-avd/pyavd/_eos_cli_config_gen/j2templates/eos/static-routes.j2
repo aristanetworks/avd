@@ -17,9 +17,7 @@
 {%         if static_route.vrf is arista.avd.defined and static_route.vrf != 'default' %}
 {%             set static_route_cli = static_route_cli ~ " vrf " ~ static_route.vrf %}
 {%         endif %}
-{%         if static_route.prefix is arista.avd.defined %}
-{%             set static_route_cli = static_route_cli ~ " " ~ static_route.prefix %}
-{%         endif %}
+{%         set static_route_cli = static_route_cli ~ " " ~ static_route.prefix %}
 {%         if  static_route.interface is arista.avd.defined %}
 {%             set static_route_cli = static_route_cli ~ " " ~ static_route.interface | capitalize %}
 {%         endif %}

@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>static_routes</samp>](## "static_routes") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;vrf</samp>](## "static_routes.[].vrf") | String |  |  |  | VRF Name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix</samp>](## "static_routes.[].prefix") | String |  |  |  | IPv4_network/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix</samp>](## "static_routes.[].prefix") | String | Required |  |  | IPv4_network/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "static_routes.[].interface") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "static_routes.[].next_hop") | String |  |  |  | IPv4 Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;track_bfd</samp>](## "static_routes.[].track_bfd") | Boolean |  |  |  | Track next-hop using BFD. |
@@ -29,7 +29,7 @@
       - vrf: <str>
 
         # IPv4_network/Mask.
-        prefix: <str>
+        prefix: <str; required>
         interface: <str>
 
         # IPv4 Address.

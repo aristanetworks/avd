@@ -13,9 +13,7 @@
 {%                 set ipv6_static_route_cli = ipv6_static_route_cli ~ " vrf " ~ ipv6_static_route.vrf %}
 {%             endif %}
 {%         endif %}
-{%         if ipv6_static_route.prefix is arista.avd.defined %}
-{%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.prefix %}
-{%         endif %}
+{%         set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.prefix %}
 {%         if ipv6_static_route.interface is arista.avd.defined %}
 {%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.interface | capitalize %}
 {%         endif %}

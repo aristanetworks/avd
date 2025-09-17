@@ -17870,7 +17870,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "metric": {"type": int},
         }
         vrf: str | None
-        prefix: str | None
+        prefix: str
         """IPv6 Network/Mask."""
         interface: str | None
         next_hop: str | None
@@ -17889,7 +17889,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 vrf: str | None | UndefinedType = Undefined,
-                prefix: str | None | UndefinedType = Undefined,
+                prefix: str | UndefinedType = Undefined,
                 interface: str | None | UndefinedType = Undefined,
                 next_hop: str | None | UndefinedType = Undefined,
                 track_bfd: bool | None | UndefinedType = Undefined,
@@ -62513,7 +62513,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         vrf: str | None
         """VRF Name."""
-        prefix: str | None
+        prefix: str
         """IPv4_network/Mask."""
         interface: str | None
         next_hop: str | None
@@ -62532,7 +62532,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 vrf: str | None | UndefinedType = Undefined,
-                prefix: str | None | UndefinedType = Undefined,
+                prefix: str | UndefinedType = Undefined,
                 interface: str | None | UndefinedType = Undefined,
                 next_hop: str | None | UndefinedType = Undefined,
                 track_bfd: bool | None | UndefinedType = Undefined,

@@ -27,9 +27,7 @@
 {%         set tag = static_route.tag | arista.avd.default('-') %}
 {%         set name = static_route.name | arista.avd.default('-') %}
 {%         set metric = static_route.metric | arista.avd.default('-') %}
-{%         if static_route.prefix is arista.avd.defined %}
-{%             set prefix = static_route.prefix %}
-{%         endif %}
+{%         set prefix = static_route.prefix %}
 | {{ vrf }} | {{ prefix }} | {{ next_hop }} | {{ interface }} | {{ distance }} | {{ tag }} | {{ name }} | {{ metric }} |
 {%     endfor %}
 

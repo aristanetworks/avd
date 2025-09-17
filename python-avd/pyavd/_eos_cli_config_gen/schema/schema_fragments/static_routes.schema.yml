@@ -19,6 +19,7 @@ keys:
         prefix:
           type: str
           description: IPv4_network/Mask.
+          required: true
         interface:
           type: str
         next_hop:

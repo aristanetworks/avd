@@ -18,6 +18,7 @@ keys:
         prefix:
           type: str
           description: IPv6 Network/Mask.
+          required: true
         interface:
           type: str
         next_hop:

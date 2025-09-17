@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>ipv6_static_routes</samp>](## "ipv6_static_routes") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;vrf</samp>](## "ipv6_static_routes.[].vrf") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix</samp>](## "ipv6_static_routes.[].prefix") | String |  |  |  | IPv6 Network/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix</samp>](## "ipv6_static_routes.[].prefix") | String | Required |  |  | IPv6 Network/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "ipv6_static_routes.[].interface") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "ipv6_static_routes.[].next_hop") | String |  |  |  | IPv6 Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;track_bfd</samp>](## "ipv6_static_routes.[].track_bfd") | Boolean |  |  |  | Track next-hop using BFD. |
@@ -27,7 +27,7 @@
       - vrf: <str>
 
         # IPv6 Network/Mask.
-        prefix: <str>
+        prefix: <str; required>
         interface: <str>
 
         # IPv6 Address.

@@ -6998,6 +6998,7 @@ keys:
         prefix:
           type: str
           description: IPv6 Network/Mask.
+          required: true
         interface:
           type: str
         next_hop:
@@ -23287,6 +23288,7 @@ keys:
         prefix:
           type: str
           description: IPv4_network/Mask.
+          required: true
         interface:
           type: str
         next_hop:
