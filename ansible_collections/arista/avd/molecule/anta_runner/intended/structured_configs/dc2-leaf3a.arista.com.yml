@@ -46,7 +46,6 @@ ethernet_interfaces:
     enabled: false
 - name: Ethernet11
   description: dc2-leaf3-fw1_e1
-  type: port-channel-member
   channel_group:
     id: 11
     mode: active
@@ -54,32 +53,37 @@ ethernet_interfaces:
   peer_interface: e1
   peer_type: firewall
 - name: Ethernet12
-  description: Test_mode_and_vlans
-  vlans: '100'
-  mode: access
-  type: switched
+  description: Test_switchport_access_vlan
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 100
 - name: Ethernet13
   description: Test_native_vlan_and_trunk_groups
-  native_vlan: 4092
-  native_vlan_tag: true
-  mode: trunk
-  trunk_groups:
-  - MLAG
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      native_vlan: 4092
+      native_vlan_tag: true
+      groups:
+      - MLAG
 - name: Ethernet14
   description: Test_phone
-  mode: trunk phone
-  phone:
-    trunk: tagged
-    vlan: 20
-  type: switched
+  switchport:
+    enabled: true
+    mode: trunk phone
+    phone:
+      vlan: 20
+      trunk: tagged
 - name: Ethernet15
-  description: Test_type_routed
+  description: Test_switchport_disabled
   shutdown: false
-  type: routed
   ip_address: 1.1.1.1/24
   peer: dc2-leaf2b
   peer_interface: Ethernet2
+  switchport:
+    enabled: false
 - name: Ethernet16
   description: Test_dhcp_interface_connectivity
   ip_address: dhcp
