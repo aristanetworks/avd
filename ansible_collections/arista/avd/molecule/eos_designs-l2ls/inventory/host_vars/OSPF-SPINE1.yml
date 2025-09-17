@@ -1,4 +1,0 @@
-# Test case to ensure `ip attached-host route export` is only rendered when the underlay protocol is BGP,
-# controlled by the `inband_mgmt_attached_hosts` flag under `avd_6_behaviors`.
-avd_6_behaviors:
-  inband_mgmt_attached_hosts: true

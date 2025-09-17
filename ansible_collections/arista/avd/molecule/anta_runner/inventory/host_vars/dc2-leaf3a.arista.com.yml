@@ -9,38 +9,41 @@ custom_structured_configuration_ethernet_interfaces:
     peer_type: firewall
     description: dc2-leaf3-fw1_e1
     # shutdown: false
-    type: port-channel-member
     channel_group:
       id: 11
       mode: active
 
   - name: Ethernet12
-    description: Test_mode_and_vlans
-    # test for type `switched`
-    type: switched
-    mode: access
-    vlans: 100
+    description: Test_switchport_access_vlan
+    switchport:
+      enabled: true
+      mode: access
+      access_vlan: 100
 
   - name: Ethernet13
     description: Test_native_vlan_and_trunk_groups
-    type: switched
-    native_vlan: 4092
-    native_vlan_tag: true
-    mode: trunk
-    trunk_groups:
-      - MLAG
+    switchport:
+      enabled: true
+      mode: trunk
+      trunk:
+        native_vlan: 4092
+        native_vlan_tag: true
+        groups:
+          - MLAG
 
   - name: Ethernet14
     description: Test_phone
-    type: switched
-    mode: trunk phone
-    phone:
-      vlan: 20
-      trunk: tagged
+    switchport:
+      enabled: true
+      mode: trunk phone
+      phone:
+        vlan: 20
+        trunk: tagged
 
   - name: Ethernet15
-    description: Test_type_routed
-    type: routed
+    description: Test_switchport_disabled
+    switchport:
+      enabled: false
     ip_address: 1.1.1.1/24
     peer: dc2-leaf2b
     peer_interface: Ethernet2
