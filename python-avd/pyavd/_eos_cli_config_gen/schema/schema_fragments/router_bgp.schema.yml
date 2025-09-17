@@ -494,20 +494,6 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
-            peer_filter:
-              type: str
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: router_bgp.listen_ranges[].peer_filter
-            bgp_listen_range_prefix:
-              type: str
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: router_bgp.listen_ranges[].bgp_listen_range_prefix
       neighbors:
         type: list
         primary_key: ip_address
@@ -1712,13 +1698,6 @@ keys:
                           required: true
                         originate:
                           type: bool
-                    address_family_ipv6_originate:
-                      type: bool
-                      deprecation:
-                        warning: true
-                        removed: true
-                        new_key: address_family_ipv6
-                        remove_in_version: 5.0.0
           neighbors:
             type: list
             primary_key: ip_address
@@ -2218,12 +2197,6 @@ keys:
                           description: Include sub-route-map references in missing policy decision.
                 multi_path:
                   type: bool
-                next_hop_resolution:
-                  type: dict
-                  deprecation:
-                    warning: true
-                    removed: true
-                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -2340,12 +2313,6 @@ keys:
                           description: Include sub-route-map references in missing policy decision.
                 multi_path:
                   type: bool
-                next_hop_resolution:
-                  type: dict
-                  deprecation:
-                    warning: true
-                    removed: true
-                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -4179,22 +4146,6 @@ keys:
                   additional_paths:
                     type: dict
                     $ref: "eos_cli_config_gen#/$defs/bgp_additional_paths"
-                  prefix_list_in:
-                    type: str
-                    description: Inbound prefix-list name.
-                    deprecation:
-                      warning: true
-                      removed: true
-                      new_key: "router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in"
-                      remove_in_version: 5.0.0
-                  prefix_list_out:
-                    type: str
-                    description: Outbound prefix-list name.
-                    deprecation:
-                      warning: true
-                      removed: true
-                      new_key: "router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out"
-                      remove_in_version: 5.0.0
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -5717,14 +5668,6 @@ keys:
               type: str
               description: |
                 Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
-            address_families:
-              type: list
-              primary_key: address_family
-              deprecation:
-                warning: true
-                removed: true
-                new_key: address_family_*
-                remove_in_version: 5.0.0
       session_trackers:
         type: list
         primary_key: name

@@ -12,7 +12,7 @@ all:
                   ansible_host: 172.16.1.11
                 dc1-spine2:
                   ansible_host: 172.16.1.12
-            DC1_L3_LEAVES:
+            DC1_L3_LEAFS:
               hosts:
                 dc1-leaf1a:
                   ansible_host: 172.16.1.101
@@ -22,7 +22,7 @@ all:
                   ansible_host: 172.16.1.103
                 dc1-leaf2b:
                   ansible_host: 172.16.1.104
-            DC1_L2_LEAVES:
+            DC1_L2_LEAFS:
               hosts:
                 dc1-leaf1c:
                   ansible_host: 172.16.1.151
@@ -36,7 +36,7 @@ all:
                   ansible_host: 172.16.1.21
                 dc2-spine2:
                   ansible_host: 172.16.1.22
-            DC2_L3_LEAVES:
+            DC2_L3_LEAFS:
               hosts:
                 dc2-leaf1a:
                   ansible_host: 172.16.1.111
@@ -46,7 +46,7 @@ all:
                   ansible_host: 172.16.1.113
                 dc2-leaf2b:
                   ansible_host: 172.16.1.114
-            DC2_L2_LEAVES:
+            DC2_L2_LEAFS:
               hosts:
                 dc2-leaf1c:
                   ansible_host: 172.16.1.161
@@ -55,13 +55,13 @@ all:
 
     NETWORK_SERVICES:
       children:
-        DC1_L3_LEAVES:
-        DC1_L2_LEAVES:
-        DC2_L3_LEAVES:
-        DC2_L2_LEAVES:
+        DC1_L3_LEAFS:
+        DC1_L2_LEAFS:
+        DC2_L3_LEAFS:
+        DC2_L2_LEAFS:
     CONNECTED_ENDPOINTS:
       children:
-        DC1_L3_LEAVES:
-        DC1_L2_LEAVES:
-        DC2_L3_LEAVES:
-        DC2_L2_LEAVES:
+        DC1_L3_LEAFS:
+        DC1_L2_LEAFS:
+        DC2_L3_LEAFS:
+        DC2_L2_LEAFS:
