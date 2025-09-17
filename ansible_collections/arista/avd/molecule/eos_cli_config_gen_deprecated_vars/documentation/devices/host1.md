@@ -4,11 +4,10 @@
 
 - [Management](#management)
   - [IP Name Server Groups](#ip-name-server-groups)
-  - [Management SSH](#management-ssh)
+  - [Management API Models](#management-api-models)
 - [Monitoring](#monitoring)
   - [Flow Tracking](#flow-tracking)
 - [Interfaces](#interfaces)
-  - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
@@ -17,7 +16,6 @@
   - [Router BGP](#router-bgp)
 - [Filters](#filters)
   - [Community-lists](#community-lists)
-  - [Router Path-selection](#router-path-selection)
 
 ## Management
 
@@ -44,34 +42,38 @@ ip name-server group mynameserver1
    ip domain-list domain-list1
 ```
 
-### Management SSH
+### Management API Models
 
-#### VRFs
+#### Management API Models Summary
 
-| VRF | Enabled | IPv4 ACL | IPv6 ACL |
-| --- | ------- | -------- | -------- |
-| mgt | True | ACL-SSH-VRF | ACL-SSH-VRF6 |
-| default | True | ACL-SSH | ACL-SSH6 |
+| Provider | Path | Disabled |
+| -------- | ---- | -------- |
+| smash | flexCounters | False |
+| smash | forwarding/srte/status/fec | False |
+| smash | routing6/status | False |
+| smash | routing/bgp/export/allPeerAdjRibIn | False |
+| smash | routing/status | True |
+| smash | tunnel/tunnelFib/entry | False |
+| sysdb | /Sysdb/sys/logging/config/vrfLoggingHost/mgmt | True |
+| sysdb | cell/1/agent | True |
 
-#### Other SSH Settings
-
-| Idle Timeout | Connection Limit | Max from a single Host | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
-| ------------ | ---------------- | ---------------------- | ------- | -------------------- | -------------- | ------------------------- |
-| default | - | - | default | default | default | default |
-
-#### Management SSH Device Configuration
+#### Management API Models Device Configuration
 
 ```eos
 !
-management ssh
-   ip access-group ACL-SSH in
-   ip access-group ACL-SSH-VRF vrf mgt in
-   ipv6 access-group ACL-SSH6 in
-   ipv6 access-group ACL-SSH-VRF6 vrf mgt in
-   no shutdown
+management api models
    !
-   vrf mgt
-      no shutdown
+   provider smash
+      path flexCounters
+      path forwarding/srte/status/fec
+      path routing6/status
+      path routing/bgp/export/allPeerAdjRibIn
+      path routing/status disabled
+      path tunnel/tunnelFib/entry
+   !
+   provider sysdb
+      path /Sysdb/sys/logging/config/vrfLoggingHost/mgmt disabled
+      path cell/1/agent disabled
 ```
 
 ## Monitoring
@@ -156,158 +158,6 @@ flow tracking sampled
 ```
 
 ## Interfaces
-
-### Ethernet Interfaces
-
-#### Ethernet Interfaces Summary
-
-##### L2
-
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | Test_mode_and_vlans | access | 100 | - | - | - |
-| Ethernet2 | Test_trunk_groups_and_native_vlan | trunk | 110 | 10 | group1, group2 | - |
-| Ethernet3 | Test_native_vlan_tag_and_phone | trunk phone | - | tag | - | - |
-| Ethernet4 | Test_vlan_translations | - | - | - | - | - |
-
-*Inherited from Port-Channel Interface
-
-##### Encapsulation Dot1q Interfaces
-
-| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
-| --------- | ----------- | ------- | -------------- | -------------------- |
-| Ethernet5 | Test_encapsulation_dot1q_vlan | - | 20 | - |
-
-##### Flexible Encapsulation Interfaces
-
-| Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
-| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- |------------ | ---------------------- | ---------------------- |
-| Ethernet6 | Test_encapsulation_vlan1 | - | dot1q | - | 10 | - | - | dot1q | - | 20 | - | - |
-| Ethernet7 | Test_encapsulation_vlan2 | - | dot1q | - | - | 10 | 12 | client | - | - | - | - |
-| Ethernet8 | Test_encapsulation_vlan3 | - | unmatched | - | - | - | - | - | - | - | - | - |
-| Ethernet9 | Test_encapsulation_vlan4 | 100 | dot1q | - | - | 10 | 12 | dot1q | - | - | 20 | 22 |
-
-##### Private VLAN
-
-| Interface | PVLAN Mapping | Secondary Trunk |
-| --------- | ------------- | ----------------|
-| Ethernet4 | 2,3,4 | True |
-
-##### VLAN Translations
-
-| Interface | Direction | From VLAN ID(s) | To VLAN ID | From Inner VLAN ID | To Inner VLAN ID | Network | Dot1q-tunnel |
-| --------- | --------- | --------------- | ---------- | ------------------ | ---------------- | ------- | ------------ |
-| Ethernet4 | in | 23 | 50 | - | - | - | - |
-| Ethernet4 | out | 25 | 49 | - | - | - | - |
-| Ethernet4 | both | 34 | 60 | - | - | - | - |
-
-##### TCP MSS Clamping
-
-| Interface | Ipv4 Segment Size | Ipv6 Segment Size | Direction |
-| --------- | ----------------- | ----------------- | --------- |
-| Ethernet1 | 200 | 201 | - |
-
-##### Phone Interfaces
-
-| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
-| --------- | ---- | ----------- | ---------- | --------------- |
-| Ethernet3 | trunk phone | 20 | 20 | tagged |
-| Port-Channel4 | trunk phone | 20 | 20 | tagged |
-
-##### VRRP Details
-
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
-| Ethernet1 | 3 | - | - | Enabled | - | - |  | 2 | 2, 0, 0, 1, :, d, b, 8, :, :, 1 | - |
-
-##### ISIS
-
-| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
-| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
-| Ethernet12 | - | ISIS_TEST | - | - | - | - | - | md5 |
-
-*Inherited from Port-Channel Interface
-
-#### Ethernet Interfaces Device Configuration
-
-```eos
-!
-interface Ethernet1
-   description Test_mode_and_vlans
-   switchport access vlan 100
-   switchport mode access
-   switchport
-   tcp mss ceiling ipv4 200 ipv6 201
-   vrrp 3 ipv6 2001:db8::1
-!
-interface Ethernet2
-   description Test_trunk_groups_and_native_vlan
-   switchport trunk native vlan 10
-   switchport trunk allowed vlan 110
-   switchport mode trunk
-   switchport trunk group group1
-   switchport trunk group group2
-   switchport
-!
-interface Ethernet3
-   description Test_native_vlan_tag_and_phone
-   switchport trunk native vlan tag
-   switchport phone vlan 20
-   switchport phone trunk tagged
-   switchport mode trunk phone
-   switchport
-!
-interface Ethernet4
-   description Test_vlan_translations
-   switchport
-   switchport vlan translation in 23 50
-   switchport vlan translation out 25 49
-   switchport vlan translation 34 60
-   switchport trunk private-vlan secondary
-   switchport pvlan mapping 2,3,4
-!
-interface Ethernet5
-   description Test_encapsulation_dot1q_vlan
-   encapsulation dot1q vlan 20
-!
-interface Ethernet6
-   description Test_encapsulation_vlan1
-   encapsulation vlan
-      client dot1q 10 network dot1q 20
-!
-interface Ethernet7
-   description Test_encapsulation_vlan2
-   encapsulation vlan
-      client dot1q outer 10 inner 12
-!
-interface Ethernet8
-   description Test_encapsulation_vlan3
-   encapsulation vlan
-      client unmatched
-!
-interface Ethernet9
-   description Test_encapsulation_vlan4
-   vlan id 100
-   encapsulation vlan
-      client dot1q outer 10 inner 12 network dot1q outer 20 inner 22
-!
-interface Ethernet10
-   description Test_for_type_routed
-   no switchport
-!
-interface Ethernet11
-   channel-group 16 mode active
-!
-interface Ethernet12
-   description isis_authentication_mode and isis_authentication_key deprecated
-   isis enable ISIS_TEST
-   isis authentication mode md5
-   isis authentication key 7 <removed>
-!
-interface Ethernet13
-   description Traffic Engineering Interface
-   traffic-engineering srlg TEST
-```
 
 ### Port-Channel Interfaces
 
@@ -617,20 +467,4 @@ router bgp 65101
 !
 ip community-list TEST1 permit 1000:1000
 ip community-list TEST2 permit 2000:3000
-```
-
-### Router Path-selection
-
-#### TCP MSS Ceiling Configuration
-
-| IPV4 segment size | Direction |
-| ----------------- | --------- |
-| 200 | ingress |
-
-#### Router Path-selection Device Configuration
-
-```eos
-!
-router path-selection
-   tcp mss ceiling ipv4 200 ingress
 ```
