@@ -6,6 +6,9 @@
 underlay_multicast: true
 
 core_interfaces:
+  p2p_links_ip_pools:
+    - name: underlay_pool
+      ipv4_pool: 192.168.0.0/24
   p2p_links:
     # P2P core links with underlay_multicast(pim-sparse) enabled.
     - nodes: [host1, peer1]
