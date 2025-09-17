@@ -459,12 +459,11 @@ This will:
 
 At this point, the changes can be reviewed, approved, and executed following existing company requirements through CloudVision.
 
-Once the configuration has been deployed, automated validation of the designed configuration versus the running configuration can be executed using the included `eos_validate_state` role to ensure that:
+Once the configuration has been deployed, automated validation of the designed configuration versus the running configuration can be executed using the included `anta_runner` role to ensure that:
 
 - All links are operational and cabled as desired.
 - BGP adjacencies are operational.
 - There are no device hardware issues (for example, PSU or fan).
-- That VTEPs can all reach each other using their loopback IPs.
 
 This quickly identifies any issues that we could otherwise overlook. For example, a redundant link could sit non-operational for months unless cumbersome manual testing is executed per device throughout the fabric.
 

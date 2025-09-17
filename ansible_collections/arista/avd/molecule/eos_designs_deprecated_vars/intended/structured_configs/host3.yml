@@ -58,11 +58,8 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: none
-service_routing_protocols_model: multi-agent
+servichttps://github.com/aristanetworks/avd/pull/5830/conflict?name=ansible_collections%252Farista%252Favd%252Fmolecule%252Feos_designs_deprecated_vars%252Fintended%252Fstructured_configs%252Fhost3.yml&ancestor_oid=ec047de48c81de25693607d7cd71c0cd47c53199&base_oid=32bd9ac8b6a0adb4b3a8a70ba3a7c72fdefa56bd&head_oid=b246eb262b0be1c25266f8e78d68b60e34006775e_routing_protocols_model: multi-agent
 snmp_server:
-  local_interfaces:
-  - name: Management1
-    vrf: MGMT
   hosts:
   - host: 10.6.75.124
     version: '3'
@@ -70,12 +67,8 @@ snmp_server:
     - username: USER-WRITE
       authentication_level: auth
   - host: 10.6.75.130
-    vrf: MGMT
     version: 2c
     community: SNMP-COMMUNITY-2
-  vrfs:
-  - name: default
-    enable: false
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0

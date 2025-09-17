@@ -147,7 +147,7 @@ class ActionModule(ActionBase):
 
     def validate_args(self) -> dict:
         """Get task arguments and validate them."""
-        validation_result, validated_args = self.validate_argument_spec(
+        _validation_result, validated_args = self.validate_argument_spec(
             ARGUMENT_SPEC,
             required_if=[
                 ("read_structured_config_from_file", True, ("structured_config_filename",)),

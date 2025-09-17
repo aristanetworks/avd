@@ -146,8 +146,7 @@ class SnmpServerMixin(Protocol):
         for host in natural_sort(hosts, "host"):
             host: EosDesigns.SnmpSettings.HostsItem
             vrfs = set()
-            # TODO: 6.0 remove the if condition since we have a default value for VRF.
-            if (vrf := host.vrf) or self.inputs.avd_6_behaviors.snmp_settings_vrfs:
+            if vrf := host.vrf:
                 host_vrf, source_interface = self._get_vrf_and_source_interface(
                     vrf_input=vrf,
                     vrfs=snmp_settings.vrfs,
@@ -189,10 +188,6 @@ class SnmpServerMixin(Protocol):
         - vrfs
         """
         vrfs = EosCliConfigGen.SnmpServer.Vrfs()
-
-        # TODO: 6.0 remove the if condition.
-        if self.inputs.avd_6_behaviors.snmp_settings_vrfs:
-            vrfs.append_new(name="default", enable=False)
 
         for vrf in snmp_settings.vrfs:
             if vrf.enable is None:
