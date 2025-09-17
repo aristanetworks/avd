@@ -1610,7 +1610,7 @@ $defs:
                         - P2P uplink interfaces if enabled on uplink peer
                         - MLAG L3 peer interface if also enabled on MLAG peer
                         - l3_edge and core interfaces
-                      Overrides the global `underlay_multicast_multicast`.
+                      Overrides the global `underlay_multicast_static`.
                   uplinks:
                     type: bool
                     default: true

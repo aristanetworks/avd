@@ -11731,7 +11731,7 @@ $defs:
                       default configures static multicast in the underlay on all:\n
                       \ - P2P uplink interfaces if enabled on uplink peer\n  - MLAG
                       L3 peer interface if also enabled on MLAG peer\n  - l3_edge
-                      and core interfaces\nOverrides the global `underlay_multicast_multicast`."
+                      and core interfaces\nOverrides the global `underlay_multicast_static`."
                   uplinks:
                     type: bool
                     default: true

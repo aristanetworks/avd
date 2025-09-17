@@ -27431,7 +27431,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -27482,7 +27482,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -31983,7 +31983,7 @@ class EosDesigns(EosDesignsRootModel):
                                 also enabled on MLAG peer
                                   - l3_edge and core interfaces
                                 Overrides the global
-                                `underlay_multicast_multicast`.
+                                `underlay_multicast_static`.
                                 """
                                 uplinks: bool
                                 """
@@ -32034,7 +32034,7 @@ class EosDesigns(EosDesignsRootModel):
                                                also enabled on MLAG peer
                                                  - l3_edge and core interfaces
                                                Overrides the global
-                                               `underlay_multicast_multicast`.
+                                               `underlay_multicast_static`.
                                             uplinks:
                                                Enable/Disable static multicast on uplinks.
                                                Requires node setting
@@ -36464,7 +36464,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -36515,7 +36515,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -41025,7 +41025,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -41076,7 +41076,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -53945,7 +53945,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -53996,7 +53996,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -58497,7 +58497,7 @@ class EosDesigns(EosDesignsRootModel):
                                 also enabled on MLAG peer
                                   - l3_edge and core interfaces
                                 Overrides the global
-                                `underlay_multicast_multicast`.
+                                `underlay_multicast_static`.
                                 """
                                 uplinks: bool
                                 """
@@ -58548,7 +58548,7 @@ class EosDesigns(EosDesignsRootModel):
                                                also enabled on MLAG peer
                                                  - l3_edge and core interfaces
                                                Overrides the global
-                                               `underlay_multicast_multicast`.
+                                               `underlay_multicast_static`.
                                             uplinks:
                                                Enable/Disable static multicast on uplinks.
                                                Requires node setting
@@ -62978,7 +62978,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -63029,7 +63029,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -67539,7 +67539,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -67590,7 +67590,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting

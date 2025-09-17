@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.pim_sm.uplink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.pim_sm.mlag") | Boolean |  | `True` |  | Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.static") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.static.enabled") | Boolean |  |  |  | When enabled, configures multicast routing and by default configures static multicast in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces<br>Overrides the global `underlay_multicast_multicast`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.static.enabled") | Boolean |  |  |  | When enabled, configures multicast routing and by default configures static multicast in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces<br>Overrides the global `underlay_multicast_static`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.static.uplinks") | Boolean |  | `True` |  | Enable/Disable static multicast on uplinks.<br>Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true` |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.static.uplink_interfaces") | List, items: String |  |  |  | Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.<br>Effective only when node settings `underlay_multicast.static.uplinks: true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.static.uplink_interfaces.[]") | String |  |  |  |  |
@@ -34,7 +34,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.pim_sm.uplink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.pim_sm.mlag") | Boolean |  | `True` |  | Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.static") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.static.enabled") | Boolean |  |  |  | When enabled, configures multicast routing and by default configures static multicast in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces<br>Overrides the global `underlay_multicast_multicast`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.static.enabled") | Boolean |  |  |  | When enabled, configures multicast routing and by default configures static multicast in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces<br>Overrides the global `underlay_multicast_static`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.static.uplinks") | Boolean |  | `True` |  | Enable/Disable static multicast on uplinks.<br>Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true` |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.static.uplink_interfaces") | List, items: String |  |  |  | Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.<br>Effective only when node settings `underlay_multicast.static.uplinks: true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.static.uplink_interfaces.[]") | String |  |  |  |  |
@@ -47,7 +47,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.pim_sm.uplink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.pim_sm.mlag") | Boolean |  | `True` |  | Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.static") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.static.enabled") | Boolean |  |  |  | When enabled, configures multicast routing and by default configures static multicast in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces<br>Overrides the global `underlay_multicast_multicast`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.static.enabled") | Boolean |  |  |  | When enabled, configures multicast routing and by default configures static multicast in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces<br>Overrides the global `underlay_multicast_static`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.static.uplinks") | Boolean |  | `True` |  | Enable/Disable static multicast on uplinks.<br>Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true` |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.static.uplink_interfaces") | List, items: String |  |  |  | Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.<br>Effective only when node settings `underlay_multicast.static.uplinks: true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.static.uplink_interfaces.[]") | String |  |  |  |  |
@@ -62,7 +62,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.pim_sm.uplink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.pim_sm.mlag") | Boolean |  | `True` |  | Configure PIM sparse-mode in the underlay on the MLAG L3 peer VLAN interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.static") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.static.enabled") | Boolean |  |  |  | When enabled, configures multicast routing and by default configures static multicast in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces<br>Overrides the global `underlay_multicast_multicast`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.static.enabled") | Boolean |  |  |  | When enabled, configures multicast routing and by default configures static multicast in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces<br>Overrides the global `underlay_multicast_static`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.static.uplinks") | Boolean |  | `True` |  | Enable/Disable static multicast on uplinks.<br>Requires node setting `underlay_multicast.static.enabled: true` or, if unset, global `underlay_multicast_static: true` |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.static.uplink_interfaces") | List, items: String |  |  |  | Limit static multicast to the uplink_interfaces in this list. All interfaces if unset.<br>Effective only when node settings `underlay_multicast.static.uplinks: true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.static.uplink_interfaces.[]") | String |  |  |  |  |
@@ -102,7 +102,7 @@
             #   - P2P uplink interfaces if enabled on uplink peer
             #   - MLAG L3 peer interface if also enabled on MLAG peer
             #   - l3_edge and core interfaces
-            # Overrides the global `underlay_multicast_multicast`.
+            # Overrides the global `underlay_multicast_static`.
             enabled: <bool>
 
             # Enable/Disable static multicast on uplinks.
@@ -156,7 +156,7 @@
                   #   - P2P uplink interfaces if enabled on uplink peer
                   #   - MLAG L3 peer interface if also enabled on MLAG peer
                   #   - l3_edge and core interfaces
-                  # Overrides the global `underlay_multicast_multicast`.
+                  # Overrides the global `underlay_multicast_static`.
                   enabled: <bool>
 
                   # Enable/Disable static multicast on uplinks.
@@ -197,7 +197,7 @@
               #   - P2P uplink interfaces if enabled on uplink peer
               #   - MLAG L3 peer interface if also enabled on MLAG peer
               #   - l3_edge and core interfaces
-              # Overrides the global `underlay_multicast_multicast`.
+              # Overrides the global `underlay_multicast_static`.
               enabled: <bool>
 
               # Enable/Disable static multicast on uplinks.
@@ -244,7 +244,7 @@
               #   - P2P uplink interfaces if enabled on uplink peer
               #   - MLAG L3 peer interface if also enabled on MLAG peer
               #   - l3_edge and core interfaces
-              # Overrides the global `underlay_multicast_multicast`.
+              # Overrides the global `underlay_multicast_static`.
               enabled: <bool>
 
               # Enable/Disable static multicast on uplinks.
