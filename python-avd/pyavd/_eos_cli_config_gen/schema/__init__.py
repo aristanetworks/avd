@@ -64,23 +64,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Methods._item_type = MethodsItem
 
-                _fields: ClassVar[dict] = {"type": {"type": str}, "group": {"type": str}, "logging": {"type": bool}, "methods": {"type": Methods}}
+                _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
                 type: Literal["none", "start-stop", "stop-only"]
-                group: str | None
-                """Group Name."""
-                logging: bool | None
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined,
-                        group: str | None | UndefinedType = Undefined,
-                        logging: bool | None | UndefinedType = Undefined,
-                        methods: Methods | UndefinedType = Undefined,
+                        self, *, type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
                     ) -> None:
                         """
                         Console.
@@ -90,8 +82,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             type: type
-                            group: Group Name.
-                            logging: logging
                             methods: Subclass of AvdList with `MethodsItem` items.
 
                         """
@@ -136,11 +126,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Methods._item_type = MethodsItem
 
-                _fields: ClassVar[dict] = {"type": {"type": str}, "group": {"type": str}, "logging": {"type": bool}, "methods": {"type": Methods}}
+                _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
                 type: Literal["none", "start-stop", "stop-only"] | None
-                group: str | None
-                """Group Name."""
-                logging: bool | None
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
@@ -150,8 +137,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         type: Literal["none", "start-stop", "stop-only"] | None | UndefinedType = Undefined,
-                        group: str | None | UndefinedType = Undefined,
-                        logging: bool | None | UndefinedType = Undefined,
                         methods: Methods | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -162,8 +147,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             type: type
-                            group: Group Name.
-                            logging: logging
                             methods: Subclass of AvdList with `MethodsItem` items.
 
                         """
@@ -232,10 +215,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Methods._item_type = MethodsItem
 
-                _fields: ClassVar[dict] = {"type": {"type": str}, "group": {"type": str}, "methods": {"type": Methods}}
+                _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
                 type: Literal["none", "start-stop", "stop-only"] | None
-                group: str | None
-                """Group Name."""
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
@@ -245,7 +226,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         type: Literal["none", "start-stop", "stop-only"] | None | UndefinedType = Undefined,
-                        group: str | None | UndefinedType = Undefined,
                         methods: Methods | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -256,7 +236,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             type: type
-                            group: Group Name.
                             methods: Subclass of AvdList with `MethodsItem` items.
 
                         """
@@ -336,21 +315,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Methods._item_type = MethodsItem
 
-                _fields: ClassVar[dict] = {"type": {"type": str}, "group": {"type": str}, "methods": {"type": Methods}}
+                _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
                 type: Literal["start-stop", "stop-only"] | None
-                group: str | None
-                """Group Name."""
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        type: Literal["start-stop", "stop-only"] | None | UndefinedType = Undefined,
-                        group: str | None | UndefinedType = Undefined,
-                        methods: Methods | UndefinedType = Undefined,
+                        self, *, type: Literal["start-stop", "stop-only"] | None | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
                     ) -> None:
                         """
                         Default.
@@ -360,7 +333,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             type: type
-                            group: Group Name.
                             methods: Subclass of AvdList with `MethodsItem` items.
 
                         """
@@ -426,19 +398,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Methods._item_type = MethodsItem
 
-                _fields: ClassVar[dict] = {
-                    "commands": {"type": str},
-                    "type": {"type": str},
-                    "group": {"type": str},
-                    "logging": {"type": bool},
-                    "methods": {"type": Methods},
-                }
+                _fields: ClassVar[dict] = {"commands": {"type": str}, "type": {"type": str}, "methods": {"type": Methods}}
                 commands: str | None
                 """Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another."""
                 type: Literal["none", "start-stop", "stop-only"] | None
-                group: str | None
-                """Group Name."""
-                logging: bool | None
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
@@ -449,8 +412,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         commands: str | None | UndefinedType = Undefined,
                         type: Literal["none", "start-stop", "stop-only"] | None | UndefinedType = Undefined,
-                        group: str | None | UndefinedType = Undefined,
-                        logging: bool | None | UndefinedType = Undefined,
                         methods: Methods | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -462,8 +423,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             commands: Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another.
                             type: type
-                            group: Group Name.
-                            logging: logging
                             methods: Subclass of AvdList with `MethodsItem` items.
 
                         """
@@ -513,19 +472,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Methods._item_type = MethodsItem
 
-                _fields: ClassVar[dict] = {
-                    "commands": {"type": str},
-                    "type": {"type": str},
-                    "group": {"type": str},
-                    "logging": {"type": bool},
-                    "methods": {"type": Methods},
-                }
+                _fields: ClassVar[dict] = {"commands": {"type": str}, "type": {"type": str}, "methods": {"type": Methods}}
                 commands: str | None
                 """Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another."""
                 type: Literal["none", "start-stop", "stop-only"] | None
-                group: str | None
-                """Group Name."""
-                logging: bool | None
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
@@ -536,8 +486,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         commands: str | None | UndefinedType = Undefined,
                         type: Literal["none", "start-stop", "stop-only"] | None | UndefinedType = Undefined,
-                        group: str | None | UndefinedType = Undefined,
-                        logging: bool | None | UndefinedType = Undefined,
                         methods: Methods | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -549,8 +497,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             commands: Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another.
                             type: type
-                            group: Group Name.
-                            logging: logging
                             methods: Subclass of AvdList with `MethodsItem` items.
 
                         """
@@ -59685,16 +59631,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"ipv4_segment_size": {"type": str}, "ipv4": {"type": str}, "direction": {"type": str, "default": "ingress"}}
-            ipv4_segment_size: str | None
-            """
-            Segment Size for IPv4.
-            Can be an integer in the range 64-65515 or "auto".
-            "auto" will enable auto-
-            discovery which clamps the TCP MSS value to the minimum of all the direct paths
-            and multi-hop path
-            MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
-            """
+            _fields: ClassVar[dict] = {"ipv4": {"type": str}, "direction": {"type": str, "default": "ingress"}}
             ipv4: str | None
             """
             Segment Size for IPv4.
@@ -59715,13 +59652,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    ipv4_segment_size: str | None | UndefinedType = Undefined,
-                    ipv4: str | None | UndefinedType = Undefined,
-                    direction: Literal["ingress"] | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, ipv4: str | None | UndefinedType = Undefined, direction: Literal["ingress"] | UndefinedType = Undefined) -> None:
                     """
                     TcpMssCeiling.
 
@@ -59729,13 +59660,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        ipv4_segment_size:
-                           Segment Size for IPv4.
-                           Can be an integer in the range 64-65515 or "auto".
-                           "auto" will enable auto-
-                           discovery which clamps the TCP MSS value to the minimum of all the direct paths
-                           and multi-hop path
-                           MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
                         ipv4:
                            Segment Size for IPv4.
                            Can be an integer in the range 64-65515 or "auto".
