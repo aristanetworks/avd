@@ -197,6 +197,16 @@ servers:
         mode: trunk
         vlans: 1-4096
 
+  - name: DOT1X_SUPPLICANT_PORT_CHANNEL
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet32, Ethernet33]
+        dot1x:
+          pae:
+            mode: supplicant
+            supplicant_profile: test_profile_network_ports
+        port_channel:
+          mode: active
 port_profiles:
   - profile: INDIVIDUAL_TRUNK
     mode: trunk
@@ -222,6 +232,11 @@ port_profiles:
     phone_vlan: 321
     link_tracking:
       enabled: true
+    # Testing for dot1x mode supplicant.
+    dot1x:
+      pae:
+        mode: supplicant
+        supplicant_profile: test_profile_port_profile
 
 monitor:
   - name: custom_connected_endpoint

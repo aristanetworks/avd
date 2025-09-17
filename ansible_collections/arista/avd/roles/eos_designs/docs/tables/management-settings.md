@@ -71,50 +71,50 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exec</samp>](## "aaa_settings.accounting.exec") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console</samp>](## "aaa_settings.accounting.exec.console") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "aaa_settings.accounting.exec.console.type") | String | Required |  | Valid Values:<br>- <code>none</code><br>- <code>start-stop</code><br>- <code>stop-only</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.exec.console.group") <span style="color:red">deprecated</span> | String |  |  |  | Group Name.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "aaa_settings.accounting.exec.console.logging") <span style="color:red">deprecated</span> | Boolean |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>methods.method</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;methods</samp>](## "aaa_settings.accounting.exec.console.methods") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;method</samp>](## "aaa_settings.accounting.exec.console.methods.[].method") | String | Required |  | Valid Values:<br>- <code>logging</code><br>- <code>group</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.exec.console.methods.[].group") | String |  |  |  | Specify the server group to be used.<br>This option is applicable only when the `method` key is explicitly set to `group`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.exec.console.group") <span style="color:red">removed</span> | String |  |  |  | Group Name.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "aaa_settings.accounting.exec.console.logging") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>methods.method</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_settings.accounting.exec.default") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "aaa_settings.accounting.exec.default.type") | String |  |  | Valid Values:<br>- <code>none</code><br>- <code>start-stop</code><br>- <code>stop-only</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.exec.default.group") <span style="color:red">deprecated</span> | String |  |  |  | Group Name.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "aaa_settings.accounting.exec.default.logging") <span style="color:red">deprecated</span> | Boolean |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>methods.method</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;methods</samp>](## "aaa_settings.accounting.exec.default.methods") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;method</samp>](## "aaa_settings.accounting.exec.default.methods.[].method") | String | Required |  | Valid Values:<br>- <code>logging</code><br>- <code>group</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.exec.default.methods.[].group") | String |  |  |  | Specify the server group to be used.<br>This option is applicable only when the `method` key is explicitly set to `group`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.exec.default.group") <span style="color:red">removed</span> | String |  |  |  | Group Name.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "aaa_settings.accounting.exec.default.logging") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>methods.method</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system</samp>](## "aaa_settings.accounting.system") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_settings.accounting.system.default") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "aaa_settings.accounting.system.default.type") | String |  |  | Valid Values:<br>- <code>none</code><br>- <code>start-stop</code><br>- <code>stop-only</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.system.default.group") <span style="color:red">deprecated</span> | String |  |  |  | Group Name.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;methods</samp>](## "aaa_settings.accounting.system.default.methods") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;method</samp>](## "aaa_settings.accounting.system.default.methods.[].method") | String | Required |  | Valid Values:<br>- <code>logging</code><br>- <code>group</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.system.default.methods.[].group") | String |  |  |  | Specify the server group to be used.<br>This option is applicable only when the `method` key is explicitly set to `group`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.system.default.group") <span style="color:red">removed</span> | String |  |  |  | Group Name.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "aaa_settings.accounting.dot1x") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_settings.accounting.dot1x.default") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "aaa_settings.accounting.dot1x.default.type") | String |  |  | Valid Values:<br>- <code>start-stop</code><br>- <code>stop-only</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.dot1x.default.group") <span style="color:red">deprecated</span> | String |  |  |  | Group Name.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;methods</samp>](## "aaa_settings.accounting.dot1x.default.methods") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;multicast</samp>](## "aaa_settings.accounting.dot1x.default.methods.[].multicast") | Boolean |  |  |  | Forward accounting packets to all servers within the specified group.<br>This option is applicable only when the `method` key is explicitly set to `group`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method</samp>](## "aaa_settings.accounting.dot1x.default.methods.[].method") | String | Required |  | Valid Values:<br>- <code>logging</code><br>- <code>group</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.dot1x.default.methods.[].group") | String |  |  |  | Specify the server group to be used.<br>This option is applicable only when the `method` key is explicitly set to `group`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.dot1x.default.group") <span style="color:red">removed</span> | String |  |  |  | Group Name.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;commands</samp>](## "aaa_settings.accounting.commands") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console</samp>](## "aaa_settings.accounting.commands.console") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;commands</samp>](## "aaa_settings.accounting.commands.console.[].commands") | String |  |  |  | Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "aaa_settings.accounting.commands.console.[].type") | String |  |  | Valid Values:<br>- <code>none</code><br>- <code>start-stop</code><br>- <code>stop-only</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.commands.console.[].group") <span style="color:red">deprecated</span> | String |  |  |  | Group Name.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "aaa_settings.accounting.commands.console.[].logging") <span style="color:red">deprecated</span> | Boolean |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>methods.method</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;methods</samp>](## "aaa_settings.accounting.commands.console.[].methods") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;method</samp>](## "aaa_settings.accounting.commands.console.[].methods.[].method") | String | Required |  | Valid Values:<br>- <code>logging</code><br>- <code>group</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.commands.console.[].methods.[].group") | String |  |  |  | Specify the server group to be used.<br>This option is applicable only when the `method` key is explicitly set to `group`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.commands.console.[].group") <span style="color:red">removed</span> | String |  |  |  | Group Name.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "aaa_settings.accounting.commands.console.[].logging") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>methods.method</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_settings.accounting.commands.default") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;commands</samp>](## "aaa_settings.accounting.commands.default.[].commands") | String |  |  |  | Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "aaa_settings.accounting.commands.default.[].type") | String |  |  | Valid Values:<br>- <code>none</code><br>- <code>start-stop</code><br>- <code>stop-only</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.commands.default.[].group") <span style="color:red">deprecated</span> | String |  |  |  | Group Name.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "aaa_settings.accounting.commands.default.[].logging") <span style="color:red">deprecated</span> | Boolean |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>methods.method</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;methods</samp>](## "aaa_settings.accounting.commands.default.[].methods") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;method</samp>](## "aaa_settings.accounting.commands.default.[].methods.[].method") | String | Required |  | Valid Values:<br>- <code>logging</code><br>- <code>group</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.commands.default.[].methods.[].group") | String |  |  |  | Specify the server group to be used.<br>This option is applicable only when the `method` key is explicitly set to `group`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_settings.accounting.commands.default.[].group") <span style="color:red">removed</span> | String |  |  |  | Group Name.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>methods.group</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "aaa_settings.accounting.commands.default.[].logging") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>methods.method</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;root_login</samp>](## "aaa_settings.root_login") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "aaa_settings.root_login.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sha512_password</samp>](## "aaa_settings.root_login.sha512_password") | String |  |  |  |  |
@@ -167,9 +167,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "event_handlers.[].trigger_on_maintenance.interface") | String |  |  |  | Trigger condition occurs on maintenance operation of specified interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "event_handlers.[].trigger_on_maintenance.unit") | String |  |  |  | Name of unit. Trigger condition occurs on maintenance operation of specified unit |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous</samp>](## "event_handlers.[].asynchronous") | Boolean |  | `False` |  | Set the action to be non-blocking.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") <span style="color:red">removed</span> | String |  |  | Valid Values:<br>- <code>bash</code><br>- <code>increment</code><br>- <code>log</code> | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>event_handlers.actions</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") <span style="color:red">removed</span> | String |  |  |  | Command to execute.<br><span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>event_handlers.actions.bash_command</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;regex</samp>](## "event_handlers.[].regex") <span style="color:red">removed</span> | String |  |  |  | Regular expression to use for searching log messages. Required for on-logging trigger.<br><span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>event_handlers.trigger_on_logging.regex</samp> instead.</span> |
     | [<samp>inband_ztp_bootstrap_file</samp>](## "inband_ztp_bootstrap_file") | String |  |  |  | Bootstrap URL configured in DHCP to use for inband ZTP.<br>If not set and `cvp_instance_ips` is set then the bootstrap value will be set to:<br>    `https://{cvp_instance_ips[0]}/ztp/bootstrap`<br>Otherwise no value will be configured. |
     | [<samp>ipv6_mgmt_destination_networks</samp>](## "ipv6_mgmt_destination_networks") | List, items: String |  |  |  | List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.<br>Replaces the default route.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv6_mgmt_destination_networks.[]") | String |  |  |  | IPv6_network/Mask. |
@@ -436,16 +433,6 @@
         exec:
           console:
             type: <str; "none" | "start-stop" | "stop-only"; required>
-
-            # Group Name.
-            # This key is deprecated.
-            # Support will be removed in AVD version 6.0.0.
-            # Use `methods.group` instead.
-            group: <str>
-            # This key is deprecated.
-            # Support will be removed in AVD version 6.0.0.
-            # Use `methods.method` instead.
-            logging: <bool>
             methods: # >=1 items
               - method: <str; "logging" | "group"; required>
 
@@ -454,16 +441,6 @@
                 group: <str>
           default:
             type: <str; "none" | "start-stop" | "stop-only">
-
-            # Group Name.
-            # This key is deprecated.
-            # Support will be removed in AVD version 6.0.0.
-            # Use `methods.group` instead.
-            group: <str>
-            # This key is deprecated.
-            # Support will be removed in AVD version 6.0.0.
-            # Use `methods.method` instead.
-            logging: <bool>
             methods: # >=1 items
               - method: <str; "logging" | "group"; required>
 
@@ -473,12 +450,6 @@
         system:
           default:
             type: <str; "none" | "start-stop" | "stop-only">
-
-            # Group Name.
-            # This key is deprecated.
-            # Support will be removed in AVD version 6.0.0.
-            # Use `methods.group` instead.
-            group: <str>
             methods: # >=1 items
               - method: <str; "logging" | "group"; required>
 
@@ -488,12 +459,6 @@
         dot1x:
           default:
             type: <str; "start-stop" | "stop-only">
-
-            # Group Name.
-            # This key is deprecated.
-            # Support will be removed in AVD version 6.0.0.
-            # Use `methods.group` instead.
-            group: <str>
             methods: # >=1 items
 
                 # Forward accounting packets to all servers within the specified group.
@@ -510,16 +475,6 @@
               # Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another.
             - commands: <str>
               type: <str; "none" | "start-stop" | "stop-only">
-
-              # Group Name.
-              # This key is deprecated.
-              # Support will be removed in AVD version 6.0.0.
-              # Use `methods.group` instead.
-              group: <str>
-              # This key is deprecated.
-              # Support will be removed in AVD version 6.0.0.
-              # Use `methods.method` instead.
-              logging: <bool>
               methods: # >=1 items
                 - method: <str; "logging" | "group"; required>
 
@@ -531,16 +486,6 @@
               # Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another.
             - commands: <str>
               type: <str; "none" | "start-stop" | "stop-only">
-
-              # Group Name.
-              # This key is deprecated.
-              # Support will be removed in AVD version 6.0.0.
-              # Use `methods.group` instead.
-              group: <str>
-              # This key is deprecated.
-              # Support will be removed in AVD version 6.0.0.
-              # Use `methods.method` instead.
-              logging: <bool>
               methods: # >=1 items
                 - method: <str; "logging" | "group"; required>
 
