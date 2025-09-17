@@ -215,41 +215,12 @@ keys:
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
   avd_6_behaviors:
     type: dict
-    description: Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors
-      in AVD 6.0.
     documentation_options:
       table: role-settings
     deprecation:
       warning: false
-      remove_in_version: 6.0.0
-    keys:
-      snmp_settings_vrfs:
-        type: bool
-        default: false
-        description: "Opt-in to the new behavior for snmp_settings:\n- SNMP will only
-          be enabled for VRFs specifically enabled under `snmp_settings.vrfs`.\n  Note
-          this means SNMP will be disabled for VRF \"default\" unless it is defined
-          there.\n- `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.\n
-          \ If `default_mgmt_method` is 'none', the VRF must be specified. For VRF
-          default set the string \"default\"."
-      inband_mgmt_attached_hosts:
-        type: bool
-        default: false
-        description: 'Opt-in to the new behavior for inband management route export:
-
-          - `ip attached-host route export` will only be rendered for inband management
-          VLAN interfaces if the underlay protocol is BGP.'
-  avd_data_conversion_mode:
-    documentation_options:
-      table: role-input-validation
-    type: str
-    deprecation:
-      warning: true
       removed: true
-      remove_in_version: 5.0.0
-    description: 'Conversion Mode for AVD input data conversion.
-
-      '
+      remove_in_version: 6.0.0
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -1463,21 +1434,6 @@ keys:
     deprecation:
       warning: true
       remove_in_version: 6.0.0
-  cvp_instance_ip:
-    documentation_options:
-      table: cloudvision-settings
-    deprecation:
-      warning: true
-      new_key: cv_settings
-      remove_in_version: 5.0.0
-      removed: true
-    type: str
-    description: 'IPv4 address or DNS name for CloudVision.
-
-      This variable only supports an on-premise single-node cluster or the DNS name
-      of a CloudVision as a Service instance.
-
-      '
   cvp_instance_ips:
     documentation_options:
       table: cloudvision-settings
@@ -1962,10 +1918,6 @@ keys:
   event_monitor:
     type: dict
     $ref: eos_cli_config_gen#/keys/event_monitor
-  evpn_ebgp_gateway_inter_domain:
-    documentation_options:
-      table: evpn-settings
-    type: bool
   evpn_ebgp_gateway_multihop:
     documentation_options:
       table: evpn-settings
@@ -2038,7 +1990,7 @@ keys:
     type: bool
     description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"
       or \"evpn_l3_multicast\" must also be configured under the Network Services
-      (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled
+      (tenants).\nRequires `underlay_multicast_pim_sm: true` and IGMP snooping enabled
       globally (default).\nFor MLAG devices Route Distinguisher must be unique since
       this feature will create multi-vtep configuration.\nWarning !!! For Trident3
       based platforms i.e 7050X3, 7300X3, 720XP.\n  The Following default platform
@@ -2049,7 +2001,7 @@ keys:
       when this configuration is applied.\n  You can tune the settings by overriding
       the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
       \ Please contact an Arista representative for help with determining the appropriate
-      values for your environment.\n"
+      values for your environment."
     default: false
   evpn_overlay_bgp_rtc:
     documentation_options:
@@ -2937,6 +2889,28 @@ keys:
         convert_types:
         - str
         default: 10000
+  l2vlan_profiles:
+    type: list
+    documentation_options:
+      table: network-services-l2vlans-settings
+    description: Profiles to inherit common settings for l2vlans defined under the
+      network_services key.
+    primary_key: profile
+    $ref: eos_designs#/$defs/l2vlans
+    items:
+      type: dict
+      keys:
+        profile:
+          type: str
+          description: Profile name.
+        parent_profile:
+          type: str
+          description: 'Name of parent L2VLAN profile to apply.
+
+            l2vlan_profiles can refer to another l2vlan_profile to inherit settings
+            in up to two levels (l2vlan -> l2vlan_profile -> l2vlan_parent_profile).
+
+            '
   l3_edge:
     type: dict
     $ref: eos_designs#/$defs/l3_edge
@@ -3400,19 +3374,6 @@ keys:
           type: str
     default:
     - name: tenants
-  new_network_services_bgp_vrf_config:
-    type: bool
-    default: true
-    description: 'This key was used to generate BGP configuration for network services
-      even when `evpn` is not in the address families for the node as well as the
-      VRF.
-
-      This is now part of the default behavior so this key has been removed.'
-    deprecation:
-      warning: true
-      removed: true
-      remove_in_version: 5.0.0
-      url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#bgp-is-now-configured-for-network-services-vrfs-even-if-evpn-is-not-part-of-the-address-families
   custom_node_type_keys:
     $ref: eos_designs#/keys/node_type_keys
     default: null
@@ -3725,9 +3686,9 @@ keys:
               description: Path to Custom J2 template.
             overlay_loopback_interface:
               type: str
-              description: Path to Custom J2 template.
               deprecation:
                 warning: true
+                removed: true
                 remove_in_version: 6.0.0
                 new_key: router_id_loopback_interface
         cv_tags_topology_type:
@@ -4912,15 +4873,6 @@ keys:
             up to two levels (adapter->profile->parent_profile).
 
             '
-  ptp:
-    deprecation:
-      warning: true
-      removed: true
-      new_key: ptp_settings
-      remove_in_version: v5.0.0
-    documentation_options:
-      table: ptp_settings
-    type: dict
   ptp_profiles:
     documentation_options:
       table: ptp_settings
@@ -5523,8 +5475,7 @@ keys:
           warning: true
           remove_in_version: 6.0.0
           new_key: 'snmp_settings.vrfs[].source_interface or snmp_settings.hosts[].vrf:
-            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf
-            or avd_6_behaviors.snmp_settings_vrfs'
+            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf'
         keys:
           mgmt_interface:
             type: bool
@@ -5917,6 +5868,30 @@ keys:
 
       '
     default: false
+    deprecation:
+      removed: false
+      warning: true
+      new_key: underlay_multicast_pim_sm
+      remove_in_version: 6.0.0
+  underlay_multicast_pim_sm:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    description: "When enabled, configures multicast routing and by default configures
+      PIM sparse-mode in the underlay on all:\n  - P2P uplink interfaces if enabled
+      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
+      l3_edge and core interfaces\n\nNote: This changes the default behavior for l3_edge
+      / core_interfaces to automatically include the interfaces\nin multicast, unless
+      `include_in_underlay_protocol: false` or `multicast_pim_sm: false`."
+  underlay_multicast_static:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    default: false
+    description: "When enabled, configures multicast routing and by default configures
+      static multicast in the underlay on all:\n  - P2P uplink interfaces if enabled
+      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
+      l3_edge and core interfaces"
   underlay_multicast_anycast_rp:
     documentation_options:
       table: fabric-settings
@@ -5957,7 +5932,7 @@ keys:
       according to the ''underlay_multicast_anycast_rp.mode'' setting.
 
 
-      Requires ''underlay_multicast: true''.
+      Requires ''underlay_multicast_pim_sm: true''.
 
       '
     type: list
@@ -6049,22 +6024,9 @@ keys:
               - sha384
               - sha512
               default: sha512
-            key:
-              type: str
-              min_length: 1
-              max_length: 16
-              convert_types:
-              - int
-              description: 'Cleartext key.
-
-                To protect the password at rest it is strongly recommended to make
-                use of a vault or similar.'
-              deprecation:
-                warning: true
-                remove_in_version: 6.0.0
-                new_key: cleartext_key
             cleartext_key:
               type: str
+              required: true
               convert_types:
               - int
               description: 'Cleartext key for OSPF message-digest authentication
@@ -6073,6 +6035,13 @@ keys:
                 use of a vault or similar.'
               min_length: 1
               max_length: 16
+            key:
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: cleartext_key
   underlay_ospf_bfd_enable:
     documentation_options:
       table: ospf-settings
@@ -7111,8 +7080,8 @@ $defs:
                 - individual
                 description: 'Either static or individual mode is supported.
 
-                  If the mode is set to "individual" the "individual.profile" setting
-                  must be defined.
+                  If the mode is set to "individual" either ''profile'' or (''mode''
+                  and ''vlans'')  must be set under ''port_channel.lacp_fallback.individual''.
 
                   '
               individual:
@@ -7123,6 +7092,27 @@ $defs:
                   profile:
                     type: str
                     description: Port-profile name to inherit configuration.
+                  vlans:
+                    type: str
+                    description: Allowed VLANs on the port-channel member interfaces
+                      when in fallback individual.
+                    convert_types:
+                    - int
+                  native_vlan:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Native VLAN on the port-channel member interfaces
+                      when in fallback individual.
+                  mode:
+                    type: str
+                    valid_values:
+                    - access
+                    - dot1q-tunnel
+                    - trunk
+                    - trunk phone
+                    description: Interface mode on the port-channel member interfaces
+                      when in fallback individual.
               timeout:
                 type: int
                 convert_types:
@@ -7224,22 +7214,14 @@ $defs:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
-          short_esi:
-            type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
-            deprecation:
-              removed: true
-              warning: true
-              remove_in_version: 5.0.0
-              new_key: ethernet_segment.short_esi
       validate_state:
         type: bool
         description: Set to false to disable interface state and LLDP topology validation
-          performed by the `eos_validate_state` role.
+          performed by the `anta_runner` role.
       validate_lldp:
         type: bool
         description: Set to false to disable the LLDP topology validation performed
-          by the `eos_validate_state` role.
+          by the `anta_runner` role.
       campus_link_type:
         type: list
         $ref: eos_designs#/$defs/campus_link_type
@@ -7384,6 +7366,189 @@ $defs:
         description: 'Cleartext IPSec shared key.
 
           This variable is sensitive and SHOULD be configured using some vault mechanism.'
+  l2vlans:
+    type: list
+    items:
+      type: dict
+      keys:
+        address_locking:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family
+        vni_override:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 16777215
+          description: 'By default the VNI will be derived from mac_vrf_vni_base.
+
+            The vni_override, allows to override this value and statically define
+            it.
+
+            '
+        rt_override:
+          type: str
+          convert_types:
+          - int
+          description: "By default the MAC VRF RT will be derived from mac_vrf_id_base
+            + vlan_id.\nThe rt_override allows us to override this value and statically
+            define it.\nrt_override will default to vni_override if set.\nrt_override
+            supports two formats:\n  - A single number which will be used in the RT
+            fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).\n
+            \ - A full RT string with colon separator which will override the full
+            RT.\n"
+        rd_override:
+          type: str
+          convert_types:
+          - int
+          description: "By default the MAC VRF RD will be derived from mac_vrf_id_base
+            + vlan_id.\nThe rt_override allows us to override this value and statically
+            define it.\nrd_override will default to rt_override or vni_override if
+            set.\nrd_override supports two formats:\n  - A single number which will
+            be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni
+            (see 'overlay_rd_type' for details).\n  - A full RD string with colon
+            separator which will override the full RD.\n"
+        vxlan:
+          type: bool
+          default: true
+          description: Extend this L2VLAN over VXLAN.
+        spanning_tree_priority:
+          type: int
+          convert_types:
+          - str
+          description: 'Setting spanning-tree priority per VLAN is only supported
+            with `spanning_tree_mode: rapid-pvst` under node type settings.
+
+            The default priority for rapid-PVST is set under the node type settings
+            with `spanning_tree_priority` (default=32768).'
+        evpn_vlan_bundle:
+          type: str
+          description: 'Name of a bundle defined under ''evpn_vlan_bundles'' to inherit
+            configuration.
+
+            This setting overrides "evpn_vlan_bundle" set at tenant level.
+
+            The common option "evpn_vlan_aware_bundles" is disregarded for this option.
+
+            '
+        trunk_groups:
+          type: list
+          items:
+            type: str
+            description: 'Trunk groups are used for limiting vlans to trunk ports
+              assigned to the same trunk group.
+
+              Requires enable_trunk_groups: true.
+
+              '
+        evpn_l2_multi_domain:
+          type: bool
+          description: 'Explicitly extend this VLAN to remote EVPN domains.
+
+            Overrides `<network_services_key>[].evpn_l2_multi_domain`.
+
+            '
+        evpn_l2_multicast:
+          documentation_options:
+            table: network-services-multicast-settings
+          type: dict
+          description: 'Explicitly enable or disable evpn_l2_multicast to override
+            setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
+
+            When evpn_l2_multicast.enabled is set to true for a vlan or a tenant,
+            igmp snooping and igmp snooping querier will always be enabled, overriding
+            those individual settings.
+
+            Requires `evpn_multicast` to also be set to `true`.
+
+            '
+          keys:
+            enabled:
+              type: bool
+        vxlan_flood_multicast:
+          documentation_options:
+            table: network-services-multicast-settings
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              description: Explicitly enable or disable vxlan_flood_multicast to override
+                setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+            underlay_multicast_group:
+              description: Specific multicast group to use for this VLAN.
+              type: str
+        igmp_snooping_enabled:
+          documentation_options:
+            table: network-services-multicast-settings
+          type: bool
+          description: Enable or disable IGMP snooping (Enabled by default on EOS).
+        igmp_snooping_querier:
+          documentation_options:
+            table: network-services-multicast-settings
+          type: dict
+          description: 'Enable igmp snooping querier, by default using IP address
+            of Loopback 0.
+
+            When enabled, igmp snooping querier will only be configured on l3 devices,
+            i.e., uplink_type: p2p.
+
+            '
+          keys:
+            enabled:
+              type: bool
+              description: Will be enabled automatically if evpn_l2_multicast is enabled.
+            source_address:
+              type: str
+              description: 'IPv4_address
+
+                If not set, IP address of "Loopback0" will be used.
+
+                '
+            version:
+              type: int
+              description: IGMP Version (By default EOS uses IGMP version 2 for IGMP
+                querier).
+              convert_types:
+              - str
+              valid_values:
+              - 1
+              - 2
+              - 3
+            fast_leave:
+              type: bool
+              description: Enable IGMP snooping fast-leave feature.
+        bgp:
+          type: dict
+          keys:
+            structured_config:
+              type: dict
+              relaxed_validation: true
+              description: 'Custom structured config added under router_bgp.vlans.[id=<vlan>]
+                for eos_cli_config_gen.
+
+                This configuration will not be applied to vlan aware bundles.
+
+                '
+              documentation_options:
+                hide_keys: true
+              $ref: eos_cli_config_gen#/keys/router_bgp/keys/vlans/items
+            raw_eos_cli:
+              type: str
+              description: 'EOS cli commands rendered on router_bgp.vlans.
+
+                This configuration will not be applied to vlan aware bundles.
+
+                '
+        private_vlan:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/vlans/items/keys/private_vlan
+          keys:
+            type:
+              type: str
+              required: true
+            primary_vlan:
+              type: int
+              required: true
   l3_edge:
     type: dict
     keys:
@@ -9441,6 +9606,22 @@ $defs:
                         type: str
                       description: Nodes is required to restrict configuration of
                         BGP neighbors to certain nodes in the network.
+              aggregate_addresses:
+                type: list
+                items:
+                  type: dict
+                  $ref: eos_cli_config_gen#/keys/router_bgp/keys/aggregate_addresses/items
+                  keys:
+                    nodes:
+                      type: list
+                      description: 'Nodes where the aggregate should be configured.
+
+                        By default the aggregate will be configured all on all devices
+                        where the VRF is configured.'
+                      items:
+                        type: str
+                        description: Node name or regex pattern matching the full
+                          hostname.
               raw_eos_cli:
                 type: str
                 description: EOS CLI rendered directly on the root level of the final
@@ -9453,12 +9634,13 @@ $defs:
                   hide_keys: true
                 $ref: eos_cli_config_gen#
         l2vlans:
+          type: list
+          $ref: eos_designs#/$defs/l2vlans
           documentation_options:
             table: network-services-l2vlans-settings
-          type: list
+          description: Define L2 network services organized by VLAN ID.
           primary_key: id
           allow_duplicate_primary_key: true
-          description: Define L2 network services organized by vlan id.
           items:
             type: dict
             keys:
@@ -9469,48 +9651,18 @@ $defs:
                 min: 1
                 max: 4094
                 description: VLAN ID.
-              address_locking:
-                type: dict
-                $ref: eos_cli_config_gen#/keys/vlans/items/keys/address_locking/keys/address_family
-              vni_override:
-                type: int
-                convert_types:
-                - str
-                min: 1
-                max: 16777215
-                description: 'By default the VNI will be derived from mac_vrf_vni_base.
-
-                  The vni_override, allows to override this value and statically define
-                  it.
-
-                  '
-              rt_override:
-                type: str
-                convert_types:
-                - int
-                description: "By default the MAC VRF RT will be derived from mac_vrf_id_base
-                  + vlan_id.\nThe rt_override allows us to override this value and
-                  statically define it.\nrt_override will default to vni_override
-                  if set.\n\nrt_override supports two formats:\n  - A single number
-                  which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni
-                  (see 'overlay_rt_type' for details).\n  - A full RT string with
-                  colon separator which will override the full RT.\n"
-              rd_override:
-                type: str
-                convert_types:
-                - int
-                description: "By default the MAC VRF RD will be derived from mac_vrf_id_base
-                  + vlan_id.\nThe rt_override allows us to override this value and
-                  statically define it.\nrd_override will default to rt_override or
-                  vni_override if set.\n\nrd_override supports two formats:\n  - A
-                  single number which will be used in the RD assigned number field
-                  instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).\n
-                  \ - A full RD string with colon separator which will override the
-                  full RD.\n"
               name:
                 type: str
                 required: true
                 description: VLAN name.
+              profile:
+                type: str
+                description: 'L2VLAN profile name.
+
+                  The profile must be defined under `l2vlan_profiles`. The profile
+                  may refer to another l2vlan_profile as it''s `parent_profile` to
+                  inherit settings in up to two levels (l2vlan -> l2vlan_profile ->
+                  l2vlan_parent_profile).'
               tags:
                 type: list
                 description: 'Tags leveraged for networks services filtering.
@@ -9526,150 +9678,6 @@ $defs:
                 items:
                   type: str
                   default: all
-              vxlan:
-                type: bool
-                default: true
-                description: Extend this L2VLAN over VXLAN.
-              spanning_tree_priority:
-                type: int
-                convert_types:
-                - str
-                description: 'Setting spanning-tree priority per VLAN is only supported
-                  with `spanning_tree_mode: rapid-pvst` under node type settings.
-
-                  The default priority for rapid-PVST is set under the node type settings
-                  with `spanning_tree_priority` (default=32768).'
-              evpn_vlan_bundle:
-                type: str
-                description: 'Name of a bundle defined under ''evpn_vlan_bundles''
-                  to inherit configuration.
-
-                  This setting overrides "evpn_vlan_bundle" set at tenant level.
-
-                  The common option "evpn_vlan_aware_bundles" is disregarded for this
-                  option.
-
-                  '
-              trunk_groups:
-                type: list
-                items:
-                  type: str
-                  description: 'Trunk groups are used for limiting vlans to trunk
-                    ports assigned to the same trunk group.
-
-                    Requires enable_trunk_groups: true.
-
-                    '
-              evpn_l2_multi_domain:
-                type: bool
-                description: 'Explicitly extend this VLAN to remote EVPN domains.
-
-                  Overrides `<network_services_key>[].evpn_l2_multi_domain`.
-
-                  '
-              evpn_l2_multicast:
-                documentation_options:
-                  table: network-services-multicast-settings
-                type: dict
-                description: 'Explicitly enable or disable evpn_l2_multicast to override
-                  setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
-
-                  When evpn_l2_multicast.enabled is set to true for a vlan or a tenant,
-                  igmp snooping and igmp snooping querier will always be enabled,
-                  overriding those individual settings.
-
-                  Requires `evpn_multicast` to also be set to `true`.
-
-                  '
-                keys:
-                  enabled:
-                    type: bool
-              vxlan_flood_multicast:
-                documentation_options:
-                  table: network-services-multicast-settings
-                type: dict
-                keys:
-                  enabled:
-                    type: bool
-                    description: Explicitly enable or disable vxlan_flood_multicast
-                      to override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.
-                  underlay_multicast_group:
-                    description: Specific multicast group to use for this VLAN.
-                    type: str
-              igmp_snooping_enabled:
-                documentation_options:
-                  table: network-services-multicast-settings
-                type: bool
-                description: Enable or disable IGMP snooping (Enabled by default on
-                  EOS).
-              igmp_snooping_querier:
-                documentation_options:
-                  table: network-services-multicast-settings
-                type: dict
-                description: 'Enable igmp snooping querier, by default using IP address
-                  of Loopback 0.
-
-                  When enabled, igmp snooping querier will only be configured on l3
-                  devices, i.e., uplink_type: p2p.
-
-                  '
-                keys:
-                  enabled:
-                    type: bool
-                    description: Will be enabled automatically if evpn_l2_multicast
-                      is enabled.
-                  source_address:
-                    type: str
-                    description: 'IPv4_address
-
-                      If not set, IP address of "Loopback0" will be used.
-
-                      '
-                  version:
-                    type: int
-                    description: IGMP Version (By default EOS uses IGMP version 2
-                      for IGMP querier).
-                    convert_types:
-                    - str
-                    valid_values:
-                    - 1
-                    - 2
-                    - 3
-                  fast_leave:
-                    type: bool
-                    description: Enable IGMP snooping fast-leave feature.
-              bgp:
-                type: dict
-                keys:
-                  structured_config:
-                    type: dict
-                    relaxed_validation: true
-                    description: 'Custom structured config added under router_bgp.vlans.[id=<vlan>]
-                      for eos_cli_config_gen.
-
-                      This configuration will not be applied to vlan aware bundles.
-
-                      '
-                    documentation_options:
-                      hide_keys: true
-                    $ref: eos_cli_config_gen#/keys/router_bgp/keys/vlans/items
-                  raw_eos_cli:
-                    type: str
-                    description: 'EOS cli commands rendered on router_bgp.vlans.
-
-                      This configuration will not be applied to vlan aware bundles.
-
-                      '
-              private_vlan:
-                type: dict
-                $ref: eos_cli_config_gen#/keys/vlans/items/keys/private_vlan
-                keys:
-                  type:
-                    type: str
-                    required: true
-                  primary_vlan:
-                    type: int
-                    required: true
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings
@@ -11693,24 +11701,73 @@ $defs:
               level.
 
               `default_flow_tracker_type` default value is `sampled`.'
-          inband_management_subnet:
+          underlay_multicast:
+            type: dict
             documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              removed: true
-              warning: true
-              new_key: inband_mgmt_subnet
-              remove_in_version: 5.0.0
-            type: str
-          inband_management_vlan:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              removed: true
-              warning: true
-              new_key: inband_mgmt_vlan
-              remove_in_version: 5.0.0
-            type: int
+              table: node-type-multicast
+            keys:
+              pim_sm:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: "When enabled, configures multicast routing and by
+                      default configures PIM sparse-mode in the underlay on all:\n
+                      \ - P2P uplink interfaces if enabled on uplink peer\n  - MLAG
+                      L3 peer interface if also enabled on MLAG peer\n  - l3_edge
+                      and core interfaces\nOverrides the global `underlay_multicast_pim_sm`."
+                  uplinks:
+                    type: bool
+                    default: true
+                    description: 'Enable/Disable PIM sparse-mode on uplinks.
+
+                      Requires node setting `underlay_multicast.pim_sm.enabled: true`
+                      or, if unset, global `underlay_multicast_pim_sm: true`'
+                  uplink_interfaces:
+                    description: 'Limit PIM SM to the uplink_interfaces in this list.
+                      All interfaces if unset.
+
+                      Effective only when node settings `underlay_multicast.pim_sm.uplinks:
+                      true`.'
+                    type: list
+                    items:
+                      type: str
+                  mlag:
+                    description: Configure PIM sparse-mode in the underlay on the
+                      MLAG L3 peer VLAN interface.
+                    type: bool
+                    default: true
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: "When enabled, configures multicast routing and by
+                      default configures static multicast in the underlay on all:\n
+                      \ - P2P uplink interfaces if enabled on uplink peer\n  - MLAG
+                      L3 peer interface if also enabled on MLAG peer\n  - l3_edge
+                      and core interfaces\nOverrides the global `underlay_multicast_multicast`."
+                  uplinks:
+                    type: bool
+                    default: true
+                    description: 'Enable/Disable static multicast on uplinks.
+
+                      Requires node setting `underlay_multicast.static.enabled: true`
+                      or, if unset, global `underlay_multicast_static: true`'
+                  uplink_interfaces:
+                    description: 'Limit static multicast to the uplink_interfaces
+                      in this list. All interfaces if unset.
+
+                      Effective only when node settings `underlay_multicast.static.uplinks:
+                      true`.'
+                    type: list
+                    items:
+                      type: str
+                  mlag:
+                    description: Configure static multicast in the underlay on MLAG
+                      L3 peer interfacee.
+                    type: bool
+                    default: true
           campus:
             documentation_options:
               table: node-type-common-configuration
@@ -12456,9 +12513,43 @@ $defs:
           description: Enable sFlow. Overrides `fabric_sflow` setting.
         underlay_multicast:
           type: bool
-          description: Enable PIM sparse mode. Requires `include_in_underlay_protocol`
+          description: 'Enable PIM sparse mode. Requires `include_in_underlay_protocol`
             and the global `underlay_multicast` to be `true`.
-          default: false
+
+
+            Note: The default value for this key is `false` when using either the
+            new key `underlay_multicast.pim_sm.enabled: true
+
+            or, if unset, global `underlay_multicast_pim_sm: true`'
+          deprecation:
+            removed: false
+            warning: true
+            new_key: multicast_pim_sm
+            remove_in_version: 6.0.0
+        multicast_pim_sm:
+          type: bool
+          description: 'Configure PIM sparse-mode on the P2P links.
+
+            Requires node setting `underlay_multicast.pim_sm.enabled: true` or, if
+            unset, global `underlay_multicast_pim_sm: true`
+
+            The default value depends on the value of `include_in_underlay_protocol`:
+
+            * when `include_in_underlay_protocol: true`, the default value is `true`
+
+            * when `include_in_underlay_protocol: false`, the default value is `false`.'
+        multicast_static:
+          type: bool
+          description: 'Configure static multicast on the P2P links.
+
+            Requires node setting `underlay_multicast.static.enabled: true` or, if
+            unset, global `underlay_multicast_static: true`
+
+            The default value depends on the value of `include_in_underlay_protocol`:
+
+            * when `include_in_underlay_protocol: true`, the default value is `true`
+
+            * when `include_in_underlay_protocol: false`, the default value is `false`.'
         flow_tracking:
           type: dict
           $ref: eos_designs#/$defs/flow_tracking_link
@@ -13059,18 +13150,6 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/vlan_interfaces/items
-      ipv6_address_virtual:
-        type: str
-        description: 'IPv6_address/Mask.
-
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
-
-          '
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: 5.0.0
-          new_key: ipv6_address_virtuals
       evpn_l2_multi_domain:
         type: bool
         description: 'Explicitly extend SVI to remote EVPN domains.

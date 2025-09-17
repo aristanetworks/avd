@@ -12,7 +12,7 @@ title: Input variables for eos_designs
 
 This document describes the supported input variables for the role `arista.avd.eos_designs`.
 
-Since several data models have changed between AVD versions 4.x and 5.x, it is recommended to study the [Porting Guide for AVD 5.x.x](../../../../../../docs/porting-guides/5.x.x.md) for existing deployments.
+Since several data models have changed between AVD versions 5.x and 6.x, it is recommended to study the [Porting Guide for AVD 6.x.x](../../../../../../docs/porting-guides/6.x.x.md) for existing deployments.
 
 The input variables are documented below in tables and YAML.
 
@@ -519,7 +519,7 @@ connected_endpoints_port_channel_interfaces:
 - `{{ adapter_description }}`
 - All group/hostvars
 
-router_id_loopback_interfaces (replacing overlay_loopback_interface):
+router_id_loopback_interfaces:
 
 - `{{ router_id_loopback_description }}`
 - `{{ overlay_loopback_description }}` (deprecated - use `router_id_loopback_description` instead)
@@ -573,10 +573,6 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/type-setting.md
 
 Node types can be defined statically on each node or in each group of nodes.  By leveraging `default_node_types`, regular expressions can be used to determine the node type based
 on the hostname.
-
-!!! warning
-    Please note that using the `default_node_types` functionality will cause certain tests in the eos_validate_state role to not be executed.
-    This functionality will be restored as part of a later update to eos_validate_state and this note will then be removed.
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/default-node-types.md
@@ -666,6 +662,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-l3-port-c
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-bgp-configuration.md
+--8<--
+
+### Node type Multicast configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-multicast.md
 --8<--
 
 ### Node type network services configuration
@@ -1556,8 +1558,7 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/svi-profiles.md
 
 ### EVPN VLAN aware bundles settings
 
-EVPN VLAN aware bundles referenced by name in `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].evpn_vlan_bundle`
-or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle` or `<network_services_key>[].l2vlans[].evpn_vlan_bundle`.
+EVPN VLAN aware bundles referenced by name in `<network_services_key>[].evpn_vlan_bundle` or `<network_services_key>[].vrfs[].svis[].evpn_vlan_bundle` or `<network_services_key>[].l2vlans[].evpn_vlan_bundle`.
 
 An EVPN VLAN aware bundle will only be configured if at least one VLAN is associated with it.
 
