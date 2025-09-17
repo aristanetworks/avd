@@ -881,7 +881,6 @@ $defs:
               table: node-type-l2-mlag-configuration
             description: |
               Set MLAG interface speed.
-              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
             type: str
             $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           mlag_peer_l3_vlan:
