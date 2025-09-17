@@ -9738,11 +9738,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    class NameServers(AvdList[str]):
-        """Subclass of AvdList with `str` items."""
-
-    NameServers._item_type = str
-
     class NetworkPortsItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -11478,7 +11473,6 @@ class EosDesigns(EosDesignsRootModel):
                 "connected_endpoints_port_channel_interfaces": {"type": str},
                 "router_id_loopback_interface": {"type": str},
                 "vtep_loopback_interface": {"type": str},
-                "overlay_loopback_interface": {"type": str},
             }
             python_module: str | None
             """Custom Python Module to import for interface descriptions."""
@@ -11504,8 +11498,6 @@ class EosDesigns(EosDesignsRootModel):
             """Path to Custom J2 template."""
             vtep_loopback_interface: str | None
             """Path to Custom J2 template."""
-            overlay_loopback_interface: str | None
-            """Path to Custom J2 template."""
 
             if TYPE_CHECKING:
 
@@ -11522,7 +11514,6 @@ class EosDesigns(EosDesignsRootModel):
                     connected_endpoints_port_channel_interfaces: str | None | UndefinedType = Undefined,
                     router_id_loopback_interface: str | None | UndefinedType = Undefined,
                     vtep_loopback_interface: str | None | UndefinedType = Undefined,
-                    overlay_loopback_interface: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     InterfaceDescriptions.
@@ -11541,7 +11532,6 @@ class EosDesigns(EosDesignsRootModel):
                         connected_endpoints_port_channel_interfaces: Path to Custom J2 template.
                         router_id_loopback_interface: Path to Custom J2 template.
                         vtep_loopback_interface: Path to Custom J2 template.
-                        overlay_loopback_interface: Path to Custom J2 template.
 
                     """
 
@@ -12000,7 +11990,6 @@ class EosDesigns(EosDesignsRootModel):
                 "connected_endpoints_port_channel_interfaces": {"type": str},
                 "router_id_loopback_interface": {"type": str},
                 "vtep_loopback_interface": {"type": str},
-                "overlay_loopback_interface": {"type": str},
             }
             python_module: str | None
             """Custom Python Module to import for interface descriptions."""
@@ -12026,8 +12015,6 @@ class EosDesigns(EosDesignsRootModel):
             """Path to Custom J2 template."""
             vtep_loopback_interface: str | None
             """Path to Custom J2 template."""
-            overlay_loopback_interface: str | None
-            """Path to Custom J2 template."""
 
             if TYPE_CHECKING:
 
@@ -12044,7 +12031,6 @@ class EosDesigns(EosDesignsRootModel):
                     connected_endpoints_port_channel_interfaces: str | None | UndefinedType = Undefined,
                     router_id_loopback_interface: str | None | UndefinedType = Undefined,
                     vtep_loopback_interface: str | None | UndefinedType = Undefined,
-                    overlay_loopback_interface: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     InterfaceDescriptions.
@@ -12063,7 +12049,6 @@ class EosDesigns(EosDesignsRootModel):
                         connected_endpoints_port_channel_interfaces: Path to Custom J2 template.
                         router_id_loopback_interface: Path to Custom J2 template.
                         vtep_loopback_interface: Path to Custom J2 template.
-                        overlay_loopback_interface: Path to Custom J2 template.
 
                     """
 
@@ -17150,52 +17135,6 @@ class EosDesigns(EosDesignsRootModel):
     class SourceInterfaces(AvdModel):
         """Subclass of AvdModel."""
 
-        class DomainLookup(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"mgmt_interface": {"type": bool, "default": False}, "inband_mgmt_interface": {"type": bool, "default": False}}
-            mgmt_interface: bool
-            """
-            Configure an IP Domain Lookup source-interface with the interface set by `mgmt_interface` for the
-            VRF set by `mgmt_interface_vrf`.
-            `mgmt_interface` is typically the out-of-band Management interface,
-            and can be set under the node settings, platform settings or as a group/host var.
-
-            Default value: `False`
-            """
-            inband_mgmt_interface: bool
-            """
-            Configure an IP Domain Lookup source-interface with the interface set by `inband_mgmt_interface` for
-            the VRF set by `inband_mgmt_vrf`.
-            `inband_mgmt_interface` is typically a loopback or SVI interface,
-            and can be set under the node settings.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, mgmt_interface: bool | UndefinedType = Undefined, inband_mgmt_interface: bool | UndefinedType = Undefined) -> None:
-                    """
-                    DomainLookup.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mgmt_interface:
-                           Configure an IP Domain Lookup source-interface with the interface set by `mgmt_interface` for the
-                           VRF set by `mgmt_interface_vrf`.
-                           `mgmt_interface` is typically the out-of-band Management interface,
-                           and can be set under the node settings, platform settings or as a group/host var.
-                        inband_mgmt_interface:
-                           Configure an IP Domain Lookup source-interface with the interface set by `inband_mgmt_interface` for
-                           the VRF set by `inband_mgmt_vrf`.
-                           `inband_mgmt_interface` is typically a loopback or SVI interface,
-                           and can be set under the node settings.
-
-                    """
-
         class HttpClient(AvdModel):
             """Subclass of AvdModel."""
 
@@ -17239,98 +17178,6 @@ class EosDesigns(EosDesignsRootModel):
                            the VRF set by `inband_mgmt_vrf`.
                            `inband_mgmt_interface` is typically a loopback or SVI interface,
                            and can be set under the node settings.
-
-                    """
-
-        class Radius(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"mgmt_interface": {"type": bool, "default": False}, "inband_mgmt_interface": {"type": bool, "default": False}}
-            mgmt_interface: bool
-            """
-            Configure an IP Radius source-interface with the interface set by `mgmt_interface` for the VRF set
-            by `mgmt_interface_vrf`.
-            `mgmt_interface` is typically the out-of-band Management interface, and can
-            be set under the node settings, platform settings or as a group/host var.
-
-            Default value: `False`
-            """
-            inband_mgmt_interface: bool
-            """
-            Configure an IP Radius source-interface with the interface set by `inband_mgmt_interface` for the
-            VRF set by `inband_mgmt_vrf`.
-            `inband_mgmt_interface` is typically a loopback or SVI interface, and
-            can be set under the node settings.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, mgmt_interface: bool | UndefinedType = Undefined, inband_mgmt_interface: bool | UndefinedType = Undefined) -> None:
-                    """
-                    Radius.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mgmt_interface:
-                           Configure an IP Radius source-interface with the interface set by `mgmt_interface` for the VRF set
-                           by `mgmt_interface_vrf`.
-                           `mgmt_interface` is typically the out-of-band Management interface, and can
-                           be set under the node settings, platform settings or as a group/host var.
-                        inband_mgmt_interface:
-                           Configure an IP Radius source-interface with the interface set by `inband_mgmt_interface` for the
-                           VRF set by `inband_mgmt_vrf`.
-                           `inband_mgmt_interface` is typically a loopback or SVI interface, and
-                           can be set under the node settings.
-
-                    """
-
-        class Snmp(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"mgmt_interface": {"type": bool, "default": False}, "inband_mgmt_interface": {"type": bool, "default": False}}
-            mgmt_interface: bool
-            """
-            Configure a SNMP local-interface with the interface set by `mgmt_interface` for the VRF set by
-            `mgmt_interface_vrf`.
-            `mgmt_interface` is typically the out-of-band Management interface, and can be
-            set under the node settings, platform settings or as a group/host var.
-
-            Default value: `False`
-            """
-            inband_mgmt_interface: bool
-            """
-            Configure a SNMP local-interface with the interface set by `inband_mgmt_interface` for the VRF set
-            by `inband_mgmt_vrf`.
-            `inband_mgmt_interface` is typically a loopback or SVI interface, and can be
-            set under the node settings.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, mgmt_interface: bool | UndefinedType = Undefined, inband_mgmt_interface: bool | UndefinedType = Undefined) -> None:
-                    """
-                    Snmp.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mgmt_interface:
-                           Configure a SNMP local-interface with the interface set by `mgmt_interface` for the VRF set by
-                           `mgmt_interface_vrf`.
-                           `mgmt_interface` is typically the out-of-band Management interface, and can be
-                           set under the node settings, platform settings or as a group/host var.
-                        inband_mgmt_interface:
-                           Configure a SNMP local-interface with the interface set by `inband_mgmt_interface` for the VRF set
-                           by `inband_mgmt_vrf`.
-                           `inband_mgmt_interface` is typically a loopback or SVI interface, and can be
-                           set under the node settings.
 
                     """
 
@@ -17380,81 +17227,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class Tacacs(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"mgmt_interface": {"type": bool, "default": False}, "inband_mgmt_interface": {"type": bool, "default": False}}
-            mgmt_interface: bool
-            """
-            Configure an IP Tacacs source-interface with the interface set by `mgmt_interface` for the VRF set
-            by `mgmt_interface_vrf`.
-            `mgmt_interface` is typically the out-of-band Management interface, and can
-            be set under the node settings, platform settings or as a group/host var.
-
-            Default value: `False`
-            """
-            inband_mgmt_interface: bool
-            """
-            Configure an IP Tacacs source-interface with the interface set by `inband_mgmt_interface` for the
-            VRF set by `inband_mgmt_vrf`.
-            `inband_mgmt_interface` is typically a loopback or SVI interface, and
-            can be set under the node settings.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, mgmt_interface: bool | UndefinedType = Undefined, inband_mgmt_interface: bool | UndefinedType = Undefined) -> None:
-                    """
-                    Tacacs.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mgmt_interface:
-                           Configure an IP Tacacs source-interface with the interface set by `mgmt_interface` for the VRF set
-                           by `mgmt_interface_vrf`.
-                           `mgmt_interface` is typically the out-of-band Management interface, and can
-                           be set under the node settings, platform settings or as a group/host var.
-                        inband_mgmt_interface:
-                           Configure an IP Tacacs source-interface with the interface set by `inband_mgmt_interface` for the
-                           VRF set by `inband_mgmt_vrf`.
-                           `inband_mgmt_interface` is typically a loopback or SVI interface, and
-                           can be set under the node settings.
-
-                    """
-
-        _fields: ClassVar[dict] = {
-            "domain_lookup": {"type": DomainLookup},
-            "http_client": {"type": HttpClient},
-            "radius": {"type": Radius},
-            "snmp": {"type": Snmp},
-            "ssh_client": {"type": SshClient},
-            "tacacs": {"type": Tacacs},
-        }
-        domain_lookup: DomainLookup
-        """
-        IP Domain Lookup source-interfaces.
-
-        Subclass of AvdModel.
-        """
+        _fields: ClassVar[dict] = {"http_client": {"type": HttpClient}, "ssh_client": {"type": SshClient}}
         http_client: HttpClient
         """
         IP HTTP Client source-interfaces.
-
-        Subclass of AvdModel.
-        """
-        radius: Radius
-        """
-        IP Radius source-interfaces.
-
-        Subclass of AvdModel.
-        """
-        snmp: Snmp
-        """
-        SNMP local-interfaces.
 
         Subclass of AvdModel.
         """
@@ -17464,25 +17240,10 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        tacacs: Tacacs
-        """
-        IP Tacacs source-interfaces.
-
-        Subclass of AvdModel.
-        """
 
         if TYPE_CHECKING:
 
-            def __init__(
-                self,
-                *,
-                domain_lookup: DomainLookup | UndefinedType = Undefined,
-                http_client: HttpClient | UndefinedType = Undefined,
-                radius: Radius | UndefinedType = Undefined,
-                snmp: Snmp | UndefinedType = Undefined,
-                ssh_client: SshClient | UndefinedType = Undefined,
-                tacacs: Tacacs | UndefinedType = Undefined,
-            ) -> None:
+            def __init__(self, *, http_client: HttpClient | UndefinedType = Undefined, ssh_client: SshClient | UndefinedType = Undefined) -> None:
                 """
                 SourceInterfaces.
 
@@ -17490,28 +17251,12 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    domain_lookup:
-                       IP Domain Lookup source-interfaces.
-
-                       Subclass of AvdModel.
                     http_client:
                        IP HTTP Client source-interfaces.
 
                        Subclass of AvdModel.
-                    radius:
-                       IP Radius source-interfaces.
-
-                       Subclass of AvdModel.
-                    snmp:
-                       SNMP local-interfaces.
-
-                       Subclass of AvdModel.
                     ssh_client:
                        IP SSH Client source-interfaces.
-
-                       Subclass of AvdModel.
-                    tacacs:
-                       IP Tacacs source-interfaces.
 
                        Subclass of AvdModel.
 
@@ -19764,22 +19509,11 @@ class EosDesigns(EosDesignsRootModel):
         class MessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "id": {"type": int},
-                "hash_algorithm": {"type": str, "default": "sha512"},
-                "key": {"type": str},
-                "cleartext_key": {"type": str},
-            }
+            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "cleartext_key": {"type": str}}
             id: int
             hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
             """Default value: `"sha512"`"""
-            key: str | None
-            """
-            Cleartext key.
-            To protect the password at rest it is strongly recommended to make use of a vault or
-            similar.
-            """
-            cleartext_key: str | None
+            cleartext_key: str
             """
             Cleartext key for OSPF message-digest authentication
             To protect the password at rest it is strongly
@@ -19793,8 +19527,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
-                    key: str | None | UndefinedType = Undefined,
-                    cleartext_key: str | None | UndefinedType = Undefined,
+                    cleartext_key: str | UndefinedType = Undefined,
                 ) -> None:
                     """
                     MessageDigestKeysItem.
@@ -19805,10 +19538,6 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         id: id
                         hash_algorithm: hash_algorithm
-                        key:
-                           Cleartext key.
-                           To protect the password at rest it is strongly recommended to make use of a vault or
-                           similar.
                         cleartext_key:
                            Cleartext key for OSPF message-digest authentication
                            To protect the password at rest it is strongly
@@ -69784,7 +69513,6 @@ class EosDesigns(EosDesignsRootModel):
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
         "event_handlers": {"type": EosCliConfigGen.EventHandlers},
         "event_monitor": {"type": EosCliConfigGen.EventMonitor},
-        "evpn_ebgp_gateway_inter_domain": {"type": bool},
         "evpn_ebgp_gateway_multihop": {"type": int, "default": 15},
         "evpn_ebgp_multihop": {"type": int, "default": 3},
         "evpn_hostflap_detection": {"type": EvpnHostflapDetection},
@@ -69850,7 +69578,6 @@ class EosDesigns(EosDesignsRootModel):
         "mlag_peer_svi_description": {"type": str, "default": "MLAG"},
         "mlag_peer_vlan_name": {"type": str, "default": "MLAG"},
         "mlag_port_channel_description": {"type": str, "default": "MLAG_{mlag_peer}_{peer_interface}"},
-        "name_servers": {"type": NameServers},
         "network_ports": {"type": NetworkPorts},
         "network_services_keys": {"type": NetworkServicesKeys, "default": lambda cls: coerce_type([{"name": "tenants"}], target_type=cls)},
         "custom_node_type_keys": {"type": CustomNodeTypeKeys},
@@ -70778,7 +70505,6 @@ class EosDesigns(EosDesignsRootModel):
     implement workarounds to problems discovered in the field.
     """
     event_monitor: EosCliConfigGen.EventMonitor
-    evpn_ebgp_gateway_inter_domain: bool | None
     evpn_ebgp_gateway_multihop: int
     """
     Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI
@@ -71331,13 +71057,6 @@ class EosDesigns(EosDesignsRootModel):
     default the description is templated from the name and port-channel interface of the MLAG peer.
 
     Default value: `"MLAG_{mlag_peer}_{peer_interface}"`
-    """
-    name_servers: NameServers
-    """
-    List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
-
-    Subclass of AvdList with `str`
-    items.
     """
     network_ports: NetworkPorts
     """Subclass of AvdList with `NetworkPortsItem` items."""
@@ -72211,7 +71930,6 @@ class EosDesigns(EosDesignsRootModel):
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
             event_handlers: EosCliConfigGen.EventHandlers | UndefinedType = Undefined,
             event_monitor: EosCliConfigGen.EventMonitor | UndefinedType = Undefined,
-            evpn_ebgp_gateway_inter_domain: bool | None | UndefinedType = Undefined,
             evpn_ebgp_gateway_multihop: int | UndefinedType = Undefined,
             evpn_ebgp_multihop: int | UndefinedType = Undefined,
             evpn_hostflap_detection: EvpnHostflapDetection | UndefinedType = Undefined,
@@ -72274,7 +71992,6 @@ class EosDesigns(EosDesignsRootModel):
             mlag_peer_svi_description: str | UndefinedType = Undefined,
             mlag_peer_vlan_name: str | UndefinedType = Undefined,
             mlag_port_channel_description: str | UndefinedType = Undefined,
-            name_servers: NameServers | UndefinedType = Undefined,
             network_ports: NetworkPorts | UndefinedType = Undefined,
             network_services_keys: NetworkServicesKeys | UndefinedType = Undefined,
             custom_node_type_keys: CustomNodeTypeKeys | UndefinedType = Undefined,
@@ -72854,7 +72571,6 @@ class EosDesigns(EosDesignsRootModel):
                    customize the system behavior, and
                    implement workarounds to problems discovered in the field.
                 event_monitor: event_monitor
-                evpn_ebgp_gateway_inter_domain: evpn_ebgp_gateway_inter_domain
                 evpn_ebgp_gateway_multihop:
                    Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI
                    networks.
@@ -73234,11 +72950,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    By
                    default the description is templated from the name and port-channel interface of the MLAG peer.
-                name_servers:
-                   List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
-
-                   Subclass of AvdList with `str`
-                   items.
                 network_ports: Subclass of AvdList with `NetworkPortsItem` items.
                 network_services_keys:
                    Network Services can be grouped by using separate keys.
