@@ -2,9 +2,6 @@
 
 ## Table of Contents
 
-- [Management](#management)
-  - [IP Name Server Groups](#ip-name-server-groups)
-  - [Management API Models](#management-api-models)
 - [Monitoring](#monitoring)
   - [Flow Tracking](#flow-tracking)
 - [Interfaces](#interfaces)
@@ -16,65 +13,6 @@
   - [Router BGP](#router-bgp)
 - [Filters](#filters)
   - [Community-lists](#community-lists)
-
-## Management
-
-### IP Name Server Groups
-
-#### IP Name Server Groups Summary
-
-##### mynameserver1
-
-DNS Domain: arista.avd.com
-
-###### IP Domain List
-
-| IP Domain |
-| --------- |
-| domain-list1 |
-
-#### IP Name Server Groups Device Configuration
-
-```eos
-!
-ip name-server group mynameserver1
-   dns domain arista.avd.com
-   ip domain-list domain-list1
-```
-
-### Management API Models
-
-#### Management API Models Summary
-
-| Provider | Path | Disabled |
-| -------- | ---- | -------- |
-| smash | flexCounters | False |
-| smash | forwarding/srte/status/fec | False |
-| smash | routing6/status | False |
-| smash | routing/bgp/export/allPeerAdjRibIn | False |
-| smash | routing/status | True |
-| smash | tunnel/tunnelFib/entry | False |
-| sysdb | /Sysdb/sys/logging/config/vrfLoggingHost/mgmt | True |
-| sysdb | cell/1/agent | True |
-
-#### Management API Models Device Configuration
-
-```eos
-!
-management api models
-   !
-   provider smash
-      path flexCounters
-      path forwarding/srte/status/fec
-      path routing6/status
-      path routing/bgp/export/allPeerAdjRibIn
-      path routing/status disabled
-      path tunnel/tunnelFib/entry
-   !
-   provider sysdb
-      path /Sysdb/sys/logging/config/vrfLoggingHost/mgmt disabled
-      path cell/1/agent disabled
-```
 
 ## Monitoring
 
