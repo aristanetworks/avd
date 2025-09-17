@@ -245,8 +245,7 @@ $defs:
             documentation_options:
               table: node-type-uplink-configuration
             description: |
-              Set point-to-Point interface speed for the uplink switch interface only.
-              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+             Set point-to-Point interface speed for the uplink switch interface only.
             type: str
             $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/speed
           uplink_mtu:
