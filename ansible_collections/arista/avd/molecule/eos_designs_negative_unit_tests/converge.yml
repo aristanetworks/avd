@@ -355,6 +355,23 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
+  hosts: FABRIC_DOWNLINK_INTERFACES_TOO_SMALL
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts'
   hosts: FAILURE_CONNECTED_ENDPOINT_PORT_PROFILE_DOES_NOT_EXIST_IN_FACTS
   connection: local
   tasks:
@@ -855,6 +872,70 @@
 
 - name: Converge Negative tests for 'eos_designs_facts'
   hosts: incorrect-uplink-port-channel-id-l2leaf1b
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts' - FABRIC_MISSING_BGP_AS_ON_UPLINK_SWITCH
+  hosts: missing-bgp-as-on-uplink-switch-leaf
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts' - FABRIC_SMALL_BGP_AS_RANGE_ON_UPLINK_SWITCH
+  hosts: small-bgp-as-range-on-uplink-switch-leaf
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts' - FABRIC_UPLINK_STRUCTURED_CONFIG_WITH_NEW_KEYS
+  hosts: uplink-structured-config-with-new-keys-l3leaf
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
+
+- name: Converge Negative tests for 'eos_designs_facts' - FABRIC_MISSING_UNDERLAY_MULTICAST_FOR_EVPN_MULTICAST
+  hosts: evpn-multicast-missing-underlay-multicast
   connection: local
   tasks:
     - name: Run failure scenario Test

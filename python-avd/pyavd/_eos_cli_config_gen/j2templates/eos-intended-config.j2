@@ -6,7 +6,6 @@
 {# Device Configuration #}
 {# context used to hide password and keys #}
 {% set hide_passwords = eos_cli_config_gen_configuration.hide_passwords | arista.avd.default(false) %}
-{% include 'eos/rancid-content-type.j2' %}
 {% include 'eos/config-comment.j2' %}
 {# System Boot Configuration #}
 {% include 'eos/boot.j2' %}
@@ -24,6 +23,8 @@
 {% include 'eos/hardware.j2' %}
 {# service routing configuration #}
 {% include 'eos/service-routing-configuration-bgp.j2' %}
+{# cfm #}
+{% include 'eos/cfm.j2' %}
 {# cli prompt #}
 {% include 'eos/prompt.j2' %}
 {# terminal settings #}
@@ -371,6 +372,8 @@
 {% include 'eos/router-pim-sparse-mode.j2' %}
 {# router msdp #}
 {% include 'eos/router-msdp.j2' %}
+{# router rip configuration #}
+{% include 'eos/router-rip.j2' %}
 {# stun #}
 {% include 'eos/stun.j2' %}
 {# ip tacacs+ source interfaces #}

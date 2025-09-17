@@ -9,7 +9,6 @@ custom_structured_configuration_ethernet_interfaces:
     peer_type: firewall
     description: dc2-leaf3-fw1_e1
     # shutdown: false
-    type: port-channel-member
     channel_group:
       id: 11
       mode: active
@@ -18,6 +17,8 @@ custom_structured_configuration_ethernet_interfaces:
     ip_address: dhcp
     peer: dc2-leaf3a.arista.com
     peer_interface: Ethernet16
+    # Test to skip the VerifyLLDPNeighbors test case for a peer with shutdown interface
+    shutdown: true
     switchport:
       enabled: false
   - name: Ethernet17
@@ -41,6 +42,15 @@ custom_structured_configuration_ethernet_interfaces:
     peer_interface: Ethernet19
     switchport:
       enabled: false
+  # Test to skip the VerifyReachability test case for a peer with shutdown interface
+  - name: Ethernet20
+    description: Test_peer_shutdown_interface_connectivity
+    ip_address: 10.19.20.1/31
+    peer: dc2-leaf3a.arista.com
+    peer_interface: Ethernet20
+    switchport:
+      enabled: false
+    shutdown: true
 
 custom_structured_configuration_port_channel_interfaces:
   - name: Port-Channel11

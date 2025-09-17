@@ -283,27 +283,6 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
-      IPv4_UNDERLAY_PEERS:
-        type: dict
-        deprecation:
-          warning: true
-          new_key: bgp_peer_groups.ipv4_underlay_peers
-          removed: true
-          remove_in_version: 4.0.0
-      MLAG_IPv4_UNDERLAY_PEER:
-        type: dict
-        deprecation:
-          warning: true
-          new_key: bgp_peer_groups.mlag_ipv4_underlay_peer
-          removed: true
-          remove_in_version: 4.0.0
-      EVPN_OVERLAY_PEERS:
-        type: dict
-        deprecation:
-          warning: true
-          new_key: bgp_peer_groups.evpn_overlay_peers
-          removed: true
-          remove_in_version: 4.0.0
   bgp_update_wait_install:
     documentation_options:
       table: bgp-settings
@@ -431,69 +410,6 @@ keys:
       existing keys will be replaced.\n"
     default:
     - custom_structured_configuration_
-  cvp_ingestauth_key:
-    documentation_options:
-      table: cloudvision-settings
-    type: str
-    description: 'On-premise CVP ingest auth key. If set, TerminAttr will be configured
-      with key-based authentication for on-premise CVP.
-
-      If not set, TerminAttr will be configured with certificate based authentication:
-
-      - On-premise using token onboarding. Default token path is ''/tmp/token''.
-
-      - CVaaS using token-secure onboarding. Default token path is ''/tmp/cv-onboarding-token''.
-
-      Token must be copied to the device first.'
-    deprecation:
-      warning: true
-      remove_in_version: 5.0.0
-      new_key: cv_settings.onprem_clusters[].key
-  cvp_instance_ip:
-    documentation_options:
-      table: cloudvision-settings
-    deprecation:
-      warning: true
-      new_key: cv_settings.onprem_clusters[].servers[].name or cv_settings.cvaas.fqdn
-      remove_in_version: 5.0.0
-    type: str
-    description: 'IPv4 address or DNS name for CloudVision.
-
-      This variable only supports an on-premise single-node cluster or the DNS name
-      of a CloudVision as a Service instance.'
-  cvp_instance_ips:
-    documentation_options:
-      table: cloudvision-settings
-    type: list
-    description: 'List of IPv4 addresses or DNS names for CloudVision.
-
-      For on-premise CloudVision enter all the nodes of the cluster.
-
-      For CloudVision as a Service enter the DNS name of the instance.
-
-      `eos_designs` only supports one CloudVision cluster.
-
-      '
-    items:
-      type: str
-      description: IPv4 address or DNS name for CloudVision
-    deprecation:
-      warning: true
-      new_key: cv_settings.onprem_clusters[].servers[].name or cv_settings.cvaas.server
-      remove_in_version: 5.0.0
-  cvp_token_file:
-    documentation_options:
-      table: cloudvision-settings
-    type: str
-    description: 'cvp_token_file is the path to the token file on the switch.
-
-      If not set the default locations for on-premise or CVaaS will be used.
-
-      See cvp_ingestauth_key for details.'
-    deprecation:
-      warning: true
-      new_key: cv_settings.onprem_clusters[].token_file or cv_settings.cvaas.token_file
-      remove_in_version: 5.0.0
   dc_name:
     documentation_options:
       table: fabric-topology
@@ -816,24 +732,6 @@ keys:
       '
     type: bool
     default: false
-  evpn_rd_type:
-    documentation_options:
-      table: evpn-settings
-    type: dict
-    deprecation:
-      warning: true
-      new_key: overlay_rd_type
-      removed: true
-      remove_in_version: 4.0.0
-  evpn_rt_type:
-    documentation_options:
-      table: evpn-settings
-    type: dict
-    deprecation:
-      warning: true
-      new_key: overlay_rt_type
-      removed: true
-      remove_in_version: 4.0.0
   evpn_short_esi_prefix:
     documentation_options:
       table: evpn-settings
@@ -1241,18 +1139,6 @@ keys:
         min: 1
         max: 4093
         default: 3000
-  name_servers:
-    documentation_options:
-      table: management-settings
-    type: list
-    description: List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
-    items:
-      type: str
-      description: IPv4 address
-    deprecation:
-      warning: true
-      remove_in_version: 5.0.0
-      new_key: dns_settings.servers
   network_ports:
     type: list
     items:
@@ -2657,49 +2543,6 @@ keys:
       "system_mac_address" can also be set under node type settings.
 
       If both are set, the value under node type settings takes precedence.'
-  terminattr_disable_aaa:
-    documentation_options:
-      table: cloudvision-settings
-    type: bool
-    default: false
-    deprecation:
-      warning: true
-      new_key: cv_settings.terminattr_disable_aaa
-      remove_in_version: 5.0.0
-  terminattr_ingestexclude:
-    documentation_options:
-      table: cloudvision-settings
-    type: str
-    default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-    deprecation:
-      warning: true
-      new_key: cv_settings.terminattr_ingestexclude
-      remove_in_version: 5.0.0
-  terminattr_ingestgrpcurl_port:
-    documentation_options:
-      table: cloudvision-settings
-    type: int
-    convert_types:
-    - str
-    default: 9910
-    description: 'Port number used for Terminattr connection to an on-premise CloudVision
-      cluster.
-
-      The port number is always 443 when using CloudVision as a Service, so this value
-      is ignored.'
-    deprecation:
-      warning: true
-      new_key: cv_settings.onprem_clusters[].servers[].port
-      remove_in_version: 5.0.0
-  terminattr_smashexcludes:
-    documentation_options:
-      table: cloudvision-settings
-    type: str
-    default: ale,flexCounter,hardware,kni,pulse,strata
-    deprecation:
-      warning: true
-      new_key: cv_settings.terminattr_smashexcludes
-      remove_in_version: 5.0.0
   timezone:
     documentation_options:
       table: management-settings
@@ -2976,16 +2819,6 @@ keys:
 
       '
     type: str
-  vxlan_vlan_aware_bundles:
-    documentation_options:
-      table: evpn-settings
-    deprecation:
-      warning: true
-      new_key: evpn_vlan_aware_bundles
-      removed: true
-      remove_in_version: 4.0.0
-    type: bool
-    default: false
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -3486,21 +3319,6 @@ $defs:
               Setting to false will set port to ''shutdown'' in intended configuration.
 
               '
-          esi:
-            type: str
-            description: Format xxxx:xxxx:xxxx.
-            deprecation:
-              warning: true
-              removed: true
-              remove_in_version: 4.0.0
-              new_key: short_esi
-          short_esi:
-            type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
-            deprecation:
-              warning: true
-              remove_in_version: 5.0.0
-              new_key: ethernet_segment.short_esi
           lacp_fallback:
             type: dict
             description: LACP fallback configuration.
@@ -3680,16 +3498,6 @@ $defs:
                   over description.
 
                   '
-              server_ports:
-                type: list
-                deprecation:
-                  warning: true
-                  removed: true
-                  new_key: endpoint_ports
-                  remove_in_version: 4.0.0
-                items:
-                  type: str
-                  description: Used for documentation purposes.
   l3_edge:
     type: dict
     keys:
@@ -6100,24 +5908,6 @@ $defs:
               it must be set on each applicable node/node-group/node-type as needed.'
             type: int
             default: 1500
-          inband_management_subnet:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              warning: true
-              new_key: inband_mgmt_subnet
-              remove_in_version: 5.0.0
-            type: str
-            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet
-          inband_management_vlan:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              warning: true
-              new_key: inband_mgmt_vlan
-              remove_in_version: 5.0.0
-            type: int
-            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan
           mpls_overlay_role:
             documentation_options:
               table: node-type-mpls-configuration
@@ -6605,20 +6395,6 @@ $defs:
           IP addresses on each node.
 
           '
-      ipv6_address_virtual:
-        type: str
-        description: 'IPv6_address/Mask
-
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional)
-
-          If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all
-          addresses will be configured
-
-          '
-        deprecation:
-          warning: true
-          remove_in_version: 5.0.0
-          new_key: ipv6_address_virtuals
       ipv6_address_virtuals:
         type: list
         description: 'IPv6 VXLAN Anycast IP addresses

@@ -81,6 +81,15 @@ ethernet_interfaces:
   peer: DC1.L2LEAF6A
   peer_interface: Ethernet1
   peer_type: l2leaf
+- name: Ethernet32
+  description: description through uplink_switch_ethernet_structured_config(DC1.L2LEAF7A)
+  shutdown: false
+  channel_group:
+    id: 32
+    mode: active
+  peer: DC1.L2LEAF7A
+  peer_interface: Ethernet1
+  peer_type: l2leaf
 - name: Ethernet49/1
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet3/1
   shutdown: false
@@ -349,7 +358,6 @@ ipv6_static_routes:
   next_hop: 2001:db8:310::1
   track_bfd: true
   name: Track-bfd-network-services
-is_deployed: true
 local_users:
 - name: admin
   disabled: true
@@ -405,9 +413,39 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: 7280R
   rack: rackC
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+monitor_sessions:
+- name: MonitoringSessionServer18
+  sources:
+  - name: Port-Channel26
+    direction: tx
+    access_group:
+      type: ip
+      name: myIpAVL
+      priority: 5
+  - name: Ethernet22
+    direction: rx
+    access_group:
+      type: ip
+      name: myIpAL
+      priority: 10
+  - name: Ethernet23
+    direction: rx
+    access_group:
+      type: ip
+      name: myIpAL
+      priority: 10
+- name: MonitoringSessionServer19
+  sources:
+  - name: Port-Channel20
+    direction: tx
+    access_group:
+      type: ip
+      name: myIpAVL
+      priority: 5
 ntp:
   local_interface:
     name: Management99
@@ -480,6 +518,14 @@ port_channel_interfaces:
     identifier: 0000:0000:a8be:743c:0a1a
     route_target: a8:be:74:3c:0a:1a
   lacp_id: a8be.743c.0a1a
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 110-112,120-121,130-131,140-141,160-161,210-211,310-311,410-413,450-452
+- name: Port-Channel32
+  description: description through uplink_switch_port_channel_structured_config(DC1.L2LEAF7A)
+  shutdown: false
   switchport:
     enabled: true
     mode: trunk
@@ -652,6 +698,13 @@ router_bgp:
     remote_as: '65001'
     peer: DC1-SPINE4
     description: DC1-SPINE4
+  aggregate_addresses:
+  - prefix: 10.12.1.0/8
+    advertise_only: true
+    as_set: true
+    summary_only: true
+    attribute_map: RM-ATTRIBUTE
+    match_map: RM-MATCH
   redistribute:
     connected:
       enabled: true

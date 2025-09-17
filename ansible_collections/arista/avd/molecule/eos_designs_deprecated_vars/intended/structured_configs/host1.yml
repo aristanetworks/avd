@@ -15,21 +15,81 @@ daemon_terminattr:
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet4
+  description: uplink_structured_config on port-channel uplink
+  shutdown: false
+  channel_group:
+    id: 4
+    mode: active
+  storm_control:
+    broadcast:
+      level: '25'
+    unknown_unicast:
+      level: '25'
+  peer: host3
+  peer_interface: Ethernet4
+  peer_type: l2leaf
 - name: Ethernet42
   description: P2P_host2_Ethernet42
   shutdown: false
   mtu: 9214
   ip_address: 192.168.42.201/31
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  ospf_authentication: message-digest
-  ospf_message_digest_keys:
-  - id: 1
-    hash_algorithm: sha512
-    key: cJ25Oy2bNyqRwTqh1A2FXmcCqBSvRAvV
+  storm_control:
+    broadcast:
+      level: '25'
+    unknown_unicast:
+      level: '25'
   peer: host2
   peer_interface: Ethernet42
   peer_type: pe
+  switchport:
+    enabled: false
+    trunk:
+      native_vlan_tag: true
+- name: Ethernet43
+  description: P2P_host4_Ethernet43
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.42.42.204/31
+  pim:
+    ipv4:
+      sparse_mode: true
+  peer: host4
+  peer_interface: Ethernet43
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet5
+  description: P2P_peer1_Ethernet3
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.18/31
+  pim:
+    ipv4:
+      sparse_mode: true
+  peer: peer1
+  peer_interface: Ethernet3
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Ethernet6
+  description: P2P_peer2_Ethernet6
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.20/31
+  peer: peer2
+  peer_interface: Ethernet6
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: P2P_peer3_Ethernet7
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.22/31
+  peer: peer3
+  peer_interface: Ethernet7
+  peer_type: other
   switchport:
     enabled: false
 - name: Ethernet47
@@ -93,18 +153,29 @@ ipv6_static_routes:
   prefix: ::/0
   next_hop: 2001:db8:311::4
   name: IPv6-test-2
-is_deployed: true
+local_users:
+- name: admin
+  disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+  ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+    cvpadmin@hostmachine.local
+  secondary_ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkz=
+    cvpadmin@hostmachine.local
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.101/32
-  ospf_area: 0.0.0.0
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.101/32
-  ospf_area: 0.0.0.0
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -117,8 +188,22 @@ management_interfaces:
   ip_address: 192.168.0.103/24
   type: oob
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 port_channel_interfaces:
+- name: Port-Channel4
+  description: uplink_structured_config on port-channel uplink
+  shutdown: false
+  storm_control:
+    broadcast:
+      level: '25'
+    unknown_unicast:
+      level: '25'
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
 - name: Port-Channel11
   shutdown: false
   flow_tracker:
@@ -140,6 +225,20 @@ port_channel_interfaces:
     transport: ipv4
   switchport:
     enabled: true
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 300
@@ -157,6 +256,10 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
@@ -164,7 +267,39 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.42.200
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '102'
+    peer: host2
+    description: host2_Ethernet42
+  - ip_address: 10.42.42.205
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '101'
+    peer: host4
+    description: host4_Ethernet43
+  - ip_address: 192.168.0.19
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65002'
+    local_as: '65001'
+    peer: peer1
+    description: peer1
+  - ip_address: 192.168.0.21
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65003'
+    local_as: '65001'
+    peer: peer2
+    description: peer2
+  - ip_address: 192.168.0.23
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65004'
+    local_as: '65001'
+    peer: peer3
+    description: peer3
   redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
     static:
       enabled: true
   address_family_evpn:
@@ -173,17 +308,13 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-router_ospf:
-  process_ids:
-  - id: 100
-    passive_interface_default: true
-    router_id: 192.168.255.101
-    bfd_enable: false
-    no_passive_interfaces:
-    - Ethernet42
-    max_lsa: 12000
+router_multicast:
+  ipv4:
+    routing: true
 service_routing_protocols_model: multi-agent
 snmp_server:
   ipv4_acls:

@@ -5,7 +5,14 @@ l2leaf:
     platform: vEOS-LAB
     uplink_switches: [ UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A, UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
-    uplink_structured_config:
+    uplink_port_channel_structured_config:
+      storm_control:
+        broadcast:
+          level: 25
+        unknown_unicast:
+          level: 25
+    # Structured config applied to downlink port-channel of uplink switch.
+    uplink_switch_port_channel_structured_config:
       storm_control:
         broadcast:
           level: 25
@@ -22,8 +29,12 @@ l2leaf:
     - group: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1
       # Testing the inheritance works correctly when nullifying a dict in the group and then applying a new one per node.
       mlag_port_channel_structured_config: null
-      # Testing merging of uplink_structured_config which is a dict type with no schema.
-      uplink_structured_config:
+      # Testing merging of uplink_structured_config.
+      uplink_port_channel_structured_config:
+        switchport:
+          trunk:
+            native_vlan_tag: true
+      uplink_switch_port_channel_structured_config:
         switchport:
           trunk:
             native_vlan_tag: true

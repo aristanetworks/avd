@@ -550,6 +550,11 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv4 address.
+                  secondary_addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
                     convert_types:
@@ -562,8 +567,17 @@ keys:
                 keys:
                   address:
                     type: str
-                    required: true
                     description: Virtual IPv6 address.
+                    deprecation:
+                      warning: true
+                      remove_in_version: 6.0.0
+                      new_key: addresses
+                  # TODO: AVD6.0 the `addresses` key should be made required once the deprecated key `address` is removed in AVD6.0
+                  addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Virtual IPv6 addresses.
               peer_authentication:
                 type: dict
                 $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids/items/keys/peer_authentication"
@@ -649,26 +663,3 @@ keys:
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
-        ipv6_address_virtual:
-          type: str
-          description: |
-            IPv6_address/Mask.
-          deprecation:
-            removed: true
-            warning: true
-            new_key: ipv6_address_virtuals
-            remove_in_version: "5.0.0"
-        ipv6_virtual_router_address:
-          type: str
-          deprecation:
-            removed: true
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: ipv6_virtual_router_addresses
-        vrrp:
-          type: dict
-          deprecation:
-            removed: true
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: vrrp_ids

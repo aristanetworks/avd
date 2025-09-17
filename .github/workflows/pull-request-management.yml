@@ -23,11 +23,34 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  required-checks:  # Added in github settings as a required check before merge. This ensures that CI finishes before merge queue is merged.
+    needs:
+      - python_type_checking
+      - python_requirements
+      - molecule_eos_cli_config_gen
+      - molecule_eos_designs
+      - molecule_eos_designs_minimum_requirements
+      - molecule_anta_runner
+      - ansible_test_sanity
+      - ansible_test_units
+      - ansible_test_integration
+      - galaxy_importer
+      - ansible_lint
+      - test_pyavd
+      - cargo_build_and_test
+      - python_rust_bindings_build_and_test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo '${{ toJSON(needs) }}' | jq -e 'to_entries | all(.value.result == "success" or .value.result == "skipped")'
+
   file-changes:
     runs-on: ubuntu-latest
     outputs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
+      pyavd: ${{ steps.filter.outputs.pyavd }}
       cloudvision: ${{ steps.filter.outputs.cloudvision }}
       dhcp: ${{ steps.filter.outputs.dhcp }}
       plugins: ${{ steps.filter.outputs.plugins }}
@@ -36,7 +59,7 @@ jobs:
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
       rust_src_or_ci_changed: ${{ steps.filter.outputs.rust_src_or_ci_changed }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -61,9 +84,6 @@ jobs:
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/**/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/*'
               - 'python-avd/pyavd/_eos_cli_config_gen/**/*'
-            validate_state:
-              - 'ansible_collections/arista/avd/roles/eos_validate_state/*'
-              - 'ansible_collections/arista/avd/roles/eos_validate_state/**/*'
             cloudvision:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
@@ -117,8 +137,8 @@ jobs:
     outputs:
       wheel_file: ${{ steps.build_step.outputs.wheel_file }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: |
             3.12
@@ -145,7 +165,7 @@ jobs:
     steps:
       - name: PyRight static type checker
         # Specific SHA as allowed by github org admins
-        uses: jakebailey/pyright-action@b5d50e5cde6547546a5c4ac92e416a8c2c1a1dfe
+        uses: jakebailey/pyright-action@6cabc0f01c4994be48fd45cd9dbacdd6e1ee6e5e
 
   # ----------------------------------- #
   # Test Requirements
@@ -164,9 +184,9 @@ jobs:
           - "3.12"
           - "3.13"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python_version }}
       - name: Download pyavd Artifact
@@ -200,7 +220,7 @@ jobs:
             ansible_version: "ansible-core==2.16.0"
     if: needs.file-changes.outputs.config_gen == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v5
         with:
@@ -235,7 +255,7 @@ jobs:
     needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.dhcp == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v5
         with:
@@ -267,6 +287,7 @@ jobs:
       matrix:
         avd_scenario:
           - "ansible_only"
+          - "digital_twin"
           - "eos_designs_deprecated_vars"
           - "eos_designs-l2ls"
           - "eos_designs-mpls-isis-sr-ldp"
@@ -295,7 +316,7 @@ jobs:
     needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v5
         with:
@@ -318,14 +339,14 @@ jobs:
     needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v5
         with:
           name: pyavd
           path: /tmp/pyavd/
       - name: Use Python 3.10 for minimum requirements
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: |
             3.10
@@ -366,7 +387,7 @@ jobs:
     if: needs.file-changes.outputs.cloudvision == 'true' || needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v5
         with:
@@ -406,43 +427,7 @@ jobs:
     needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true'
     steps:
-      - uses: actions/checkout@v4
-      - name: Download pyavd Artifact
-        uses: actions/download-artifact@v5
-        with:
-          name: pyavd
-          path: /tmp/pyavd/
-      - name: Install pyavd and Ansible requirements
-        run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
-      - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
-        run: |
-          molecule test --scenario-name ${{ matrix.avd_scenario }}
-      - name: Check GIT status
-        run: |
-          sh .github/check-git-status.sh
-
-  # ----------------------------------- #
-  # EOS Validate State MOLECULE
-  # ----------------------------------- #
-  molecule_eos_validate_state:
-    name: Validate eos_validate_state
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        avd_scenario:
-          - "eos_validate_state"
-        ansible_version:
-          - "ansible-core<2.19.0"
-        include:
-          - avd_scenario: "eos_validate_state"
-            ansible_version: "ansible-core==2.16.0"
-    needs: [build_pyavd, file-changes]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.validate_state == 'true'
-    steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Download pyavd Artifact
         uses: actions/download-artifact@v5
         with:
@@ -477,9 +462,9 @@ jobs:
             pip_installation: "--user https://github.com/ansible/ansible/archive/devel.tar.gz"
             skip_test: "--skip-test ansible-doc"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: |
             3.10
@@ -505,9 +490,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: |
             3.12
@@ -536,9 +521,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [file-changes]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: |
             3.12
@@ -565,11 +550,11 @@ jobs:
     name: Build Ansible collection
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: |
             3.12
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Python & Ansible requirements
         run: |
           # distlib is required when using manifest
@@ -591,11 +576,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_collection]
     steps:
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: |
             3.11
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Python & Ansible requirements
         run: |
           pip install "ansible-core==2.16.0"
@@ -625,11 +610,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_pyavd, build_collection]
     env:
-      ANSIBLE_COLLECTIONS_PATH: /home/runner/work/avd/avd
+      ANSIBLE_COLLECTIONS_PATH: ${{ github.workspace }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: |
             3.10
@@ -660,8 +645,8 @@ jobs:
   # ----------------------------------- #
   # Test of pyavd
   # ----------------------------------- #
-  pyavd:
-    name: Test pyavd
+  test_pyavd:
+    name: Test pyavd (Python ${{ matrix.python }}, Suite ${{ matrix.suite.name }})
     runs-on: ubuntu-latest
     needs: [file-changes]
     if: |
@@ -669,12 +654,24 @@ jobs:
       needs.file-changes.outputs.config_gen == 'true' ||
       needs.file-changes.outputs.pyavd == 'true'
     strategy:
+      fail-fast: false
       matrix:
         python: ["3.10", "3.11", "3.12", "3.13"]
+        suite:
+          - name: "Main-Tests"
+            id: Main-Tests
+            pytest_args: "--ignore=tests/pyavd/molecule_scenarios/test_get_device_config.py --ignore=tests/pyavd/molecule_scenarios/test_negative_eos_designs.py --ignore=tests/schema_tools/metaschema/test_meta_schema_model.py"
+            upload_compiled_templates: true
+          - name: "Excluded-Tests (test_get_device_config and test_meta_schema_model)"
+            id: Excluded-test_get_device_config-and-test_meta_schema_model
+            pytest_args: "tests/pyavd/molecule_scenarios/test_get_device_config.py tests/schema_tools/metaschema/test_meta_schema_model.py"
+          - name: "Excluded-Tests (test_negative_eos_designs)"
+            id: Excluded-test_negative_eos_designs
+            pytest_args: "tests/pyavd/molecule_scenarios/test_negative_eos_designs.py"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Python 3
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Install tox
@@ -683,31 +680,71 @@ jobs:
       - name: Run pytest via tox for ${{ matrix.python }}
         working-directory: python-avd
         run: |
-          tox
-      - name: Upload coverage from pytest
-        # Coverage only runs as part of 3.11.
-        if: |
-          matrix.python == '3.11'
+          tox -- ${{ matrix.suite.pytest_args }}
+      - name: Rename the coverage file
+        if: matrix.python == '3.11'
+        run: |
+          mv ./python-avd/.coverage.* ./coverage-${{ matrix.suite.id }}.dat
+      - name: Upload pytest coverage data
+        if: matrix.python == '3.11'
         uses: actions/upload-artifact@v4
         with:
-          name: pytest-coverage
-          path: python-avd/coverage.xml
-
+          name: coverage-data-${{ matrix.suite.id }}
+          path: coverage-${{ matrix.suite.id }}.dat
       - name: Upload eos_designs compiled templates from pytest
-        if: |
-          matrix.python == '3.11'
+        if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
         uses: actions/upload-artifact@v4
         with:
           name: pytest-eos-designs-compiled-templates
           path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
-
       - name: Upload eos_cli_config_gen compiled templates from pytest
-        if: |
-          matrix.python == '3.11'
+        if: matrix.suite.upload_compiled_templates == true && matrix.python == '3.11'
         uses: actions/upload-artifact@v4
         with:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
+
+  generate_pyavd_coverage_report:
+    name: Test pyavd python 3.11 coverage report
+    runs-on: ubuntu-latest
+    needs: [test_pyavd]
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Install coverage
+        working-directory: python-avd
+        run: pip install --group coverage
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v5
+        with:
+          pattern: coverage-data-*
+          path: python-avd
+          merge-multiple: true
+      - name: Download eos_designs compiled templates artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: pytest-eos-designs-compiled-templates
+          path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
+      - name: Download eos_cli_config_gen compiled templates artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: pytest-eos-cli-config-gen-compiled-templates
+          path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
+      - name: Combine and report test coverage
+        working-directory: python-avd
+        run: |
+          set -ex
+          coverage combine --rcfile=pyproject.toml coverage-*.dat
+          coverage report --rcfile=pyproject.toml
+          coverage xml --rcfile=pyproject.toml
+      - name: Upload pytest coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-coverage
+          path: python-avd/coverage.xml
 
   # ----------------------------------- #
   # Cargo build, test and linting
@@ -730,7 +767,7 @@ jobs:
             macos-latest,
           ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         # This is needed for arm machines since they don't ship with 2024 edition.
       - name: Upgrade rust and cargo
         run: rustup update stable
@@ -789,11 +826,11 @@ jobs:
           ]
         python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         # This is needed for arm machines since they don't ship with 2024 edition.
       - name: Upgrade rust and cargo
         run: rustup update stable
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Install tox
@@ -813,10 +850,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [file-changes]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Upgrade rust and cargo
         run: rustup update stable
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: 3.11
       - name: Install tox

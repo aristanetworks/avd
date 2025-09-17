@@ -7,7 +7,6 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ptp</samp>](## "ptp") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version v5.0.0. Use <samp>ptp_settings</samp> instead.</span> |
     | [<samp>ptp_profiles</samp>](## "ptp_profiles") | List, items: Dictionary |  | See (+) on YAML tab |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "ptp_profiles.[].profile") | String | Required, Unique |  |  | PTP profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;announce</samp>](## "ptp_profiles.[].announce") | Dictionary |  |  |  | PTP announce interval. |
@@ -22,6 +21,7 @@
     | [<samp>&nbsp;&nbsp;profile</samp>](## "ptp_settings.profile") | String |  | `aes67-r16-2016` |  | Default available profiles are:<br>  - "aes67"<br>  - "aes67-r16-2016"<br>  - "smpte2059-2" |
     | [<samp>&nbsp;&nbsp;domain</samp>](## "ptp_settings.domain") | Integer |  | `127` | Min: 0<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;auto_clock_identity</samp>](## "ptp_settings.auto_clock_identity") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;forward_v1</samp>](## "ptp_settings.forward_v1") | Boolean |  | `False` |  | Forward dataplane PTP V1 packets. |
 
 === "YAML"
 
@@ -53,6 +53,9 @@
       profile: <str; default="aes67-r16-2016">
       domain: <int; 0-255; default=127>
       auto_clock_identity: <bool; default=True>
+
+      # Forward dataplane PTP V1 packets.
+      forward_v1: <bool; default=False>
     ```
 
     1. Default Value

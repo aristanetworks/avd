@@ -25,22 +25,24 @@ keys:
                 - start-stop
                 - stop-only
                 required: true
+              methods:
+                type: list
+                $ref: eos_cli_config_gen#/$defs/methods
               group:
                 description: Group Name.
                 type: str
                 deprecation:
+                  removed: true
                   warning: true
                   new_key: methods.group
                   remove_in_version: 6.0.0
               logging:
                 type: bool
                 deprecation:
+                  removed: true
                   warning: true
                   new_key: methods.method
                   remove_in_version: 6.0.0
-              methods:
-                type: list
-                $ref: eos_cli_config_gen#/$defs/methods
           default:
             type: dict
             keys:
@@ -50,22 +52,24 @@ keys:
                 - none
                 - start-stop
                 - stop-only
+              methods:
+                type: list
+                $ref: eos_cli_config_gen#/$defs/methods
               group:
                 description: Group Name.
                 type: str
                 deprecation:
+                  removed: true
                   warning: true
                   new_key: methods.group
                   remove_in_version: 6.0.0
               logging:
                 type: bool
                 deprecation:
+                  removed: true
                   warning: true
                   new_key: methods.method
                   remove_in_version: 6.0.0
-              methods:
-                type: list
-                $ref: eos_cli_config_gen#/$defs/methods
       system:
         type: dict
         keys:
@@ -78,16 +82,17 @@ keys:
                 - none
                 - start-stop
                 - stop-only
+              methods:
+                type: list
+                $ref: eos_cli_config_gen#/$defs/methods
               group:
                 description: Group Name.
                 type: str
                 deprecation:
+                  removed: true
                   warning: true
                   new_key: methods.group
                   remove_in_version: 6.0.0
-              methods:
-                type: list
-                $ref: eos_cli_config_gen#/$defs/methods
       dot1x:
         type: dict
         keys:
@@ -99,13 +104,6 @@ keys:
                 valid_values:
                 - start-stop
                 - stop-only
-              group:
-                description: Group Name.
-                type: str
-                deprecation:
-                  warning: true
-                  new_key: methods.group
-                  remove_in_version: 6.0.0
               methods:
                 type: list
                 min_length: 1
@@ -120,6 +118,14 @@ keys:
 
                         This option is applicable only when the `method` key is explicitly
                         set to `group`.'
+              group:
+                description: Group Name.
+                type: str
+                deprecation:
+                  removed: true
+                  warning: true
+                  new_key: methods.group
+                  remove_in_version: 6.0.0
       commands:
         type: dict
         keys:
@@ -140,22 +146,24 @@ keys:
                   - none
                   - start-stop
                   - stop-only
+                methods:
+                  type: list
+                  $ref: eos_cli_config_gen#/$defs/methods
                 group:
                   description: Group Name.
                   type: str
                   deprecation:
+                    removed: true
                     warning: true
                     new_key: methods.group
                     remove_in_version: 6.0.0
                 logging:
                   type: bool
                   deprecation:
+                    removed: true
                     warning: true
                     new_key: methods.method
                     remove_in_version: 6.0.0
-                methods:
-                  type: list
-                  $ref: eos_cli_config_gen#/$defs/methods
           default:
             type: list
             items:
@@ -173,22 +181,24 @@ keys:
                   - none
                   - start-stop
                   - stop-only
+                methods:
+                  type: list
+                  $ref: eos_cli_config_gen#/$defs/methods
                 group:
                   description: Group Name.
                   type: str
                   deprecation:
+                    removed: true
                     warning: true
                     new_key: methods.group
                     remove_in_version: 6.0.0
                 logging:
                   type: bool
                   deprecation:
+                    removed: true
                     warning: true
                     new_key: methods.method
                     remove_in_version: 6.0.0
-                methods:
-                  type: list
-                  $ref: eos_cli_config_gen#/$defs/methods
   aaa_authentication:
     type: dict
     keys:
@@ -831,17 +841,6 @@ keys:
                     - igp
                     - incomplete
                     default: any
-  avd_data_conversion_mode:
-    documentation_options:
-      table: role-input-validation
-    type: str
-    deprecation:
-      warning: true
-      removed: true
-      remove_in_version: 5.0.0
-    description: 'Conversion Mode for AVD input data conversion.
-
-      '
   avd_data_validation_mode:
     documentation_options:
       table: role-input-validation
@@ -912,6 +911,280 @@ keys:
           key:
             description: Hashed Password.
             type: str
+  cfm:
+    description: 'Configure connectivity fault management (CFM).
+
+      CFM is a network protocol for monitoring and troubleshooting Ethernet networks.'
+    type: dict
+    keys:
+      continuity_check_loc_state_action_disable_interface_routing:
+        type: bool
+        description: 'Disable routing on interfaces where a loss of connectivity (LOC)
+          defect is detected.
+
+          This prevents traffic from being routed to a faulty link.'
+      domains:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: CFM domain name.
+            level:
+              type: int
+              convert_types:
+              - str
+              required: true
+              min: 0
+              max: 7
+              description: Maintenance domain level.
+            associations:
+              type: list
+              primary_key: id
+              description: List of maintenance associations.
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
+                    description: Maintenance association ID.
+                  direction:
+                    type: str
+                    valid_values:
+                    - up
+                    - down
+                    description: Local maintenance endpoint direction.
+                  end_points:
+                    type: list
+                    primary_key: id
+                    description: Configure the maintenance endpoint(MEP).
+                    items:
+                      type: dict
+                      keys:
+                        id:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 8191
+                          description: Local maintenance endpoint ID.
+                        remote_end_point:
+                          type: str
+                          description: 'Remote maintenance endpoint ID(s) or range(s)
+                            of remote maintenance endpoint ID(s).
+
+                            The range is from 1 to 8191.'
+                          convert_types:
+                          - int
+                        interface:
+                          type: str
+                          description: 'Specifies the interface on which to configure
+                            the local maintenance endpoint.
+
+                            Supported types include Ethernet sub-interfaces, InternalRecirc,
+                            and Port-Channel link aggregation groups (LAGs).'
+                  profile:
+                    type: str
+                    description: Apply connectivity fault management profile.
+                  remote_end_points:
+                    type: list
+                    primary_key: id
+                    description: Configure the remote maintenance endpoint(RMEP).
+                    items:
+                      type: dict
+                      keys:
+                        id:
+                          type: int
+                          convert_types:
+                          - str
+                          min: 1
+                          max: 8191
+                          description: Configure remote maintenance endpoint ID.
+                        mac_address:
+                          type: str
+                          description: MAC address of the RMEP.
+                  vlan:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Set VLAN in the maintenance association.
+                    min: 1
+                    max: 4094
+            intermediate_point:
+              type: bool
+              description: Configure the device as a maintenance intermediate point.
+      measurement_loss:
+        type: dict
+        description: Configure Ethernet OAM loss measurement functions.
+        keys:
+          inband:
+            type: bool
+            description: Enable hardware-assisted support for OAM loss measurement.
+          synthetic:
+            type: bool
+            description: Enable hardware-assisted support for OAM synthetic loss measurement.
+      profiles:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: CFM profile name.
+            alarm_indication:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable sending of alarm indication signal (AIS) packets.
+                client_domain_level:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 7
+                  description: Client maintenance domain level for which to send AIS
+                    packets.
+                tx_interval:
+                  type: str
+                  description: Transmission interval for AIS packets.
+                  valid_values:
+                  - 1 seconds
+                  - 1 minutes
+            continuity_check:
+              type: dict
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable the continuity check protocol to monitor connectivity.
+                qos_cos:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Set the class of service (CoS) value for CFM frames.
+                  min: 0
+                  max: 7
+                tx_interval:
+                  type: str
+                  description: Set the transmission interval for continuity check
+                    messages (CCMs).
+                  valid_values:
+                  - 3.33 milliseconds
+                  - 10 milliseconds
+                  - 100 milliseconds
+                  - 1 seconds
+                  - 10 seconds
+                  - 1 minutes
+                  - 10 minutes
+                alarm_defects:
+                  type: list
+                  min_length: 1
+                  description: 'Defines alarm indication signal protocol parameters.
+                    Supported options:
+
+                    - rdi-ccm: Raise alarms on continuity check messages (CCMs) with
+                    the remote defect indication (RDI) bit set.
+
+                    - loc-state: Raise alarms on loss of connectivity (LOC).
+
+                    - error-ccm: Raise alarms on invalid continuity check messages
+                    (CCMs).
+
+                    - cross-connection: Raise alarms on cross-connection defects.'
+                  items:
+                    type: str
+                    valid_values:
+                    - rdi-ccm
+                    - loc-state
+                    - error-ccm
+                    - cross-connection
+            measurement:
+              type: dict
+              keys:
+                delay:
+                  type: dict
+                  keys:
+                    single_ended:
+                      type: bool
+                      description: Enable single-ended delay measurement.
+                    qos_cos:
+                      type: int
+                      convert_types:
+                      - str
+                      description: Set the class of service (CoS) value for CFM frames.
+                      min: 0
+                      max: 7
+                    tx_interval:
+                      type: str
+                      convert_types:
+                      - int
+                      - float
+                      description: 'Interval in milliseconds between successive measurement
+                        frames.
+
+                        The range is from 3.33 to 600000.'
+                loss:
+                  type: dict
+                  keys:
+                    single_ended:
+                      type: bool
+                      description: Enable single-ended loss measurement.
+                    qos_cos:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 7
+                      description: Set the class of service (CoS) value for CFM frames.
+                    tx_interval:
+                      type: str
+                      convert_types:
+                      - int
+                      - float
+                      description: 'Interval in milliseconds between successive measurement
+                        frames.
+
+                        The range is from 3.33 to 600000.'
+                    synthetic:
+                      type: dict
+                      keys:
+                        single_ended:
+                          type: bool
+                          description: Enable single-ended synthetic loss measurement.
+                        qos_cos:
+                          type: str
+                          description: Set the class of service (CoS) value or a range
+                            of values (0-7) for synthetic loss measurement.
+                          convert_types:
+                          - int
+                        tx_interval:
+                          type: dict
+                          keys:
+                            interval:
+                              type: str
+                              required: true
+                              convert_types:
+                              - int
+                              - float
+                              description: 'Interval in milliseconds between successive
+                                measurement frames.
+
+                                The range is from 3.33 to 600000.'
+                            period_frames:
+                              type: int
+                              convert_types:
+                              - str
+                              description: Synthetic loss measurement transmission
+                                frames.
+                              min: 1
+                              max: 65535
   class_maps:
     type: dict
     display_name: QOS Class-maps
@@ -1367,18 +1640,6 @@ keys:
         type: bool
         description: 'Subscribe to dynamic device configuration from CloudVision (TerminAttr
           default is false).
-
-          '
-      cvcompression:
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: v5.0.0
-        type: str
-        description: 'The default compression scheme when streaming to CloudVision
-          is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
-
-          There is no need to change the compression scheme.
 
           '
   daemons:
@@ -2216,73 +2477,6 @@ keys:
             "l2 mru" CLI.
 
             '
-        vlans:
-          type: str
-          convert_types:
-          - int
-          description: 'List of switchport vlans as string.
-
-            For a trunk port this would be a range like "1-200,300".
-
-            For an access port this would be a single vlan "123".
-
-            '
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.access_vlan or switchport.trunk.allowed_vlan
-        native_vlan:
-          type: int
-          convert_types:
-          - str
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.trunk.native_vlan
-        native_vlan_tag:
-          type: bool
-          description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
-            takes precedence.
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.trunk.native_vlan_tag
-        mode:
-          type: str
-          valid_values:
-          - access
-          - dot1q-tunnel
-          - trunk
-          - trunk phone
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.mode
-        phone:
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.phone
-          type: dict
-          keys:
-            trunk:
-              type: str
-              valid_values:
-              - tagged
-              - tagged phone
-              - untagged
-              - untagged phone
-            vlan:
-              type: int
-              min: 1
-              max: 4094
-              convert_types:
-              - str
         arp_gratuitous_accept:
           type: bool
           description: Accept gratuitous ARP.
@@ -2310,33 +2504,6 @@ keys:
             like 7150.
 
             replace-fcs: Replace fcs field with timestamp.'
-        trunk_groups:
-          type: list
-          items:
-            type: str
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.trunk.groups
-        type:
-          type: str
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
-          valid_values:
-          - routed
-          - switched
-          - l3dot1q
-          - l2dot1q
-          - port-channel-member
-          description: 'l3dot1q and l2dot1q are used for sub-interfaces. The parent
-            interface should be defined as routed.
-
-            The `type = switched/routed` should not be combined with `switchport`.
-
-            '
         snmp_trap_link_change:
           type: bool
         address_locking:
@@ -2489,19 +2656,7 @@ keys:
             route_target:
               type: str
               description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
-        encapsulation_dot1q_vlan:
-          type: int
-          convert_types:
-          - str
-          description: VLAN tag to configure on sub-interface.
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: encapsulation_dot1q.vlan
         encapsulation_dot1q:
-          description: 'Warning: `encapsulation_dot1q` should not be combined with
-            `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type:
-            l2dot1q`.'
           type: dict
           keys:
             vlan:
@@ -2522,46 +2677,14 @@ keys:
                 on EOS.
         encapsulation_vlan:
           type: dict
-          description: 'This setting can only be applied to sub-interfaces on EOS.
-
-            Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type:
-            l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.'
+          description: This setting can only be applied to sub-interfaces on EOS.
           keys:
             client:
               type: dict
               keys:
-                dot1q:
-                  deprecation:
-                    warning: true
-                    remove_in_version: 6.0.0
-                  type: dict
-                  keys:
-                    vlan:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 1
-                      max: 4094
-                      description: Client VLAN ID.
-                    outer:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 1
-                      max: 4094
-                      description: Client Outer VLAN ID.
-                    inner:
-                      type: int
-                      convert_types:
-                      - str
-                      description: Client Inner VLAN ID.
-                unmatched:
-                  type: bool
-                  deprecation:
-                    warning: true
-                    remove_in_version: 6.0.0
                 encapsulation:
                   type: str
+                  required: true
                   valid_values:
                   - dot1q
                   - dot1ad
@@ -2596,43 +2719,25 @@ keys:
                   valid_values:
                   - dot1q
                   - dot1ad
+                dot1q:
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 6.0.0
+                    new_key: encapsulation
+                  type: dict
+                unmatched:
+                  type: bool
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 6.0.0
+                    new_key: encapsulation
             network:
               type: dict
               description: Network encapsulations are all optional and skipped if
                 using client unmatched.
               keys:
-                dot1q:
-                  deprecation:
-                    warning: true
-                    remove_in_version: 6.0.0
-                  type: dict
-                  keys:
-                    vlan:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 1
-                      max: 4094
-                      description: Network VLAN ID.
-                    outer:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 1
-                      max: 4094
-                      description: Network outer VLAN ID.
-                    inner:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 1
-                      max: 4094
-                      description: Network inner VLAN ID.
-                client:
-                  type: bool
-                  deprecation:
-                    warning: true
-                    remove_in_version: 6.0.0
                 encapsulation:
                   description: '`untagged` (no encapsulation) is applicable for `untagged`
                     client only.
@@ -2640,6 +2745,7 @@ keys:
                     `client` and `client inner` (retain client encapsulation) is not
                     applicable for `untagged` client.'
                   type: str
+                  required: true
                   valid_values:
                   - dot1q
                   - dot1ad
@@ -2675,11 +2781,22 @@ keys:
                   valid_values:
                   - dot1q
                   - dot1ad
+                dot1q:
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 6.0.0
+                    new_key: encapsulation
+                  type: dict
+                client:
+                  type: bool
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 6.0.0
+                    new_key: encapsulation
         vlan_id:
-          description: 'This setting can only be applied to sub-interfaces on EOS.
-
-            Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type
-            == l2dot1q`.'
+          description: This setting can only be applied to sub-interfaces on EOS.
           type: int
           min: 1
           max: 4094
@@ -2937,32 +3054,12 @@ keys:
             of TCP SYN packets if it exceeds the configured MSS ceiling limit for
             the interface.'
           keys:
-            ipv4_segment_size:
-              type: int
-              convert_types:
-              - str
-              min: 64
-              max: 65475
-              deprecation:
-                warning: true
-                remove_in_version: 6.0.0
-                new_key: ipv4
             ipv4:
               type: int
               convert_types:
               - str
               min: 64
               max: 65475
-            ipv6_segment_size:
-              type: int
-              convert_types:
-              - str
-              min: 64
-              max: 65475
-              deprecation:
-                warning: true
-                remove_in_version: 6.0.0
-                new_key: ipv6
             ipv6:
               type: int
               convert_types:
@@ -2974,6 +3071,28 @@ keys:
               valid_values:
               - egress
               - ingress
+            ipv4_segment_size:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: ipv4
+            ipv6_segment_size:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: ipv6
         channel_group:
           type: dict
           keys:
@@ -3009,28 +3128,8 @@ keys:
           - level-2
         isis_hello_padding:
           type: bool
-        isis_authentication_mode:
-          type: str
-          deprecation:
-            warning: true
-            remove_in_version: v6.0.0
-            new_key: isis_authentication.both.mode or isis_authentication.level_1.mode
-              or isis_authentication.level_2.mode
-          valid_values:
-          - text
-          - md5
-        isis_authentication_key:
-          type: str
-          deprecation:
-            warning: true
-            remove_in_version: v6.0.0
-            new_key: isis_authentication.both.key or isis_authentication.level_1.key
-              or isis_authentication.level_2.key
-          description: Type-7 encrypted password.
         isis_authentication:
           type: dict
-          description: This key should not be mixed with ethernet_interfaces[].isis_authentication_mode
-            or ethernet_interfaces[].isis_authentication_key.
           $ref: eos_cli_config_gen#/keys/router_isis/keys/authentication
         poe:
           type: dict
@@ -3277,51 +3376,6 @@ keys:
               convert_types:
               - str
               description: ZTP vlan number.
-        trunk_private_vlan_secondary:
-          type: bool
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.trunk.private_vlan_secondary
-        pvlan_mapping:
-          type: str
-          convert_types:
-          - int
-          description: List of vlans as string.
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.pvlan_mapping
-        vlan_translations:
-          deprecation:
-            warning: true
-            removed: false
-            remove_in_version: 6.0.0
-            new_key: switchport.vlan_translations
-          type: list
-          items:
-            type: dict
-            keys:
-              from:
-                type: str
-                convert_types:
-                - int
-                description: List of vlans as string (only one vlan if direction is
-                  "both").
-              to:
-                type: int
-                convert_types:
-                - str
-                description: VLAN ID.
-              direction:
-                type: str
-                valid_values:
-                - in
-                - out
-                - both
-                default: both
         dot1x:
           type: dict
           description: 802.1x
@@ -3343,6 +3397,10 @@ keys:
                   type: str
                   valid_values:
                   - authenticator
+                  - supplicant
+                supplicant_profile:
+                  type: str
+                  description: Supplicant profile name.
             authentication_failure:
               type: dict
               keys:
@@ -3664,6 +3722,62 @@ keys:
                 override:
                   type: str
                   description: Transceiver type.
+            application_override:
+              type: str
+              description: 'Set CMIS transceiver application.
+
+                ''100gbase-srbd'' should not be used in conjunction with `application_override_lanes`.'
+              valid_values:
+              - '0'
+              - '1'
+              - '2'
+              - '3'
+              - '4'
+              - '5'
+              - '6'
+              - '7'
+              - '8'
+              - '9'
+              - '10'
+              - '11'
+              - '12'
+              - '13'
+              - '14'
+              - '15'
+              - 100gbase-srbd
+              convert_types:
+              - int
+            application_override_lanes:
+              type: list
+              description: Set CMIS transceiver applications with lanes. The ranges
+                of `lanes` should not overlap.
+              items:
+                type: dict
+                keys:
+                  override:
+                    min: 0
+                    max: 15
+                    type: int
+                    required: true
+                    convert_types:
+                    - str
+                  first_lane:
+                    type: int
+                    description: Set the start value of host lanes for which overrides
+                      should be applied.
+                    required: true
+                    min: 1
+                    max: 8
+                    convert_types:
+                    - str
+                  last_lane:
+                    type: int
+                    description: Set the last value of host lanes for which overrides
+                      should be applied.
+                    min: 1
+                    max: 8
+                    convert_types:
+                    - str
         ip_proxy_arp:
           type: bool
         traffic_policy:
@@ -4000,6 +4114,11 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv4 address.
+                  secondary_addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
                     convert_types:
@@ -4010,10 +4129,20 @@ keys:
               ipv6:
                 type: dict
                 keys:
+                  addresses:
+                    type: list
+                    required: true
+                    items:
+                      type: str
+                    description: Virtual IPv6 addresses.
                   address:
                     type: str
-                    required: true
                     description: Virtual IPv6 address.
+                    deprecation:
+                      warning: true
+                      removed: true
+                      remove_in_version: 6.0.0
+                      new_key: addresses
               peer_authentication:
                 type: dict
                 keys:
@@ -4042,11 +4171,11 @@ keys:
         validate_state:
           type: bool
           description: Set to false to disable interface state and LLDP topology validation
-            performed by the `eos_validate_state` role.
+            performed by the `anta_runner` role.
         validate_lldp:
           type: bool
           description: Set to false to disable the LLDP topology validation performed
-            by the `eos_validate_state` role.
+            by the `anta_runner` role.
         switchport:
           type: dict
           description: This should not be combined with `ethernet_interfaces[].type
@@ -4054,8 +4183,6 @@ keys:
           keys:
             enabled:
               type: bool
-              description: 'Warning: This should not be combined with `ethernet_interfaces[].type
-                = routed`.'
             mode:
               type: str
               valid_values:
@@ -4066,17 +4193,13 @@ keys:
               - tap
               - tool
               - tap-tool
-              description: 'Warning: This should not be combined with `ethernet_interfaces[].mode`.'
             access_vlan:
               type: int
               convert_types:
               - str
               min: 1
               max: 4094
-              description: 'Set VLAN when interface is in access mode.
-
-                Warning: This should not be combined with `ethernet_interfaces[].mode
-                = access/dot1q-tunnel` and `ethernet_interface[].vlans`.'
+              description: Set VLAN when interface is in access mode.
             trunk:
               type: dict
               keys:
@@ -4084,34 +4207,22 @@ keys:
                   type: str
                   convert_types:
                   - int
-                  description: 'VLAN ID or range(s) of VLAN IDs.
-
-                    Warning: This should not be combined with `ethernet_interfaces[].mode
-                    = trunk` and `ethernet_interface[].vlans`.'
+                  description: VLAN ID or range(s) of VLAN IDs.
                 native_vlan:
                   type: int
                   convert_types:
                   - str
-                  description: 'Set native VLAN when interface is in trunking mode.
-
-                    Warning: This should not be combined with `ethernet_interfaces[].native_vlan`.'
+                  description: Set native VLAN when interface is in trunking mode.
                   min: 1
                   max: 4094
                 native_vlan_tag:
                   type: bool
-                  description: 'If setting both native_vlan and native_vlan_tag, native_vlan_tag
+                  description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
                     takes precedence.
-
-                    Warning: This should not be combined with `ethernet_interfaces[].native_vlan_tag`.'
                 private_vlan_secondary:
                   type: bool
-                  description: 'Enable secondary VLAN mapping for a private vlan.
-
-                    Warning: This should not be combined with `ethernet_ineterfaces[].trunk_private_vlan_secondary`.'
+                  description: Enable secondary VLAN mapping for a private vlan.
                 groups:
-                  description: 'Warning: This should not be combined with `ethernet_ineterfaces[].trunk_groups`.
-
-                    '
                   type: list
                   items:
                     type: str
@@ -4120,7 +4231,6 @@ keys:
                     description: Trunk group name.
             phone:
               type: dict
-              description: 'Warning: This should not be combined with `ethernet_interfaces[].phone`.'
               keys:
                 vlan:
                   type: int
@@ -4128,10 +4238,8 @@ keys:
                   max: 4094
                   convert_types:
                   - str
-                  description: 'Warning: This should not be combined with `ethernet_interfaces[].phone.vlan`.'
                 trunk:
                   type: str
-                  description: 'Warning: This should not be combined with `ethernet_interfaces[].phone.trunk`.'
                   valid_values:
                   - tagged
                   - tagged phone
@@ -4141,9 +4249,7 @@ keys:
               type: str
               convert_types:
               - int
-              description: 'Secondary VLAN IDs of the private VLAN mapping.
-
-                Warning: This should not be combined with `ethernet_interfaces[].pvlan_mapping`.'
+              description: Secondary VLAN IDs of the private VLAN mapping.
             dot1q:
               type: dict
               keys:
@@ -4171,9 +4277,7 @@ keys:
               - tx
               - tx multicast
             vlan_translations:
-              description: 'VLAN Translation mappings.
-
-                Warning: This should not be combined with `ethernet_interfaces[].vlan_translations`.'
+              description: VLAN Translation mappings.
               type: dict
               keys:
                 in_required:
@@ -4671,16 +4775,6 @@ keys:
                 description: SRLG name or number.
                 convert_types:
                 - int
-            srlg:
-              description: SRLG name or number.
-              type: str
-              deprecation:
-                warning: true
-                removed: false
-                remove_in_version: 6.0.0
-                new_key: srlgs
-              convert_types:
-              - int
             metric:
               type: int
               convert_types:
@@ -4746,6 +4840,151 @@ keys:
                       valid_values:
                       - microseconds
                       - milliseconds
+            srlg:
+              description: SRLG name or number.
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                remove_in_version: 6.0.0
+                new_key: srlgs
+              convert_types:
+              - int
+        vlans:
+          type: str
+          convert_types:
+          - int
+          description: 'List of switchport vlans as string.
+
+            For a trunk port this would be a range like "1-200,300".
+
+            For an access port this would be a single vlan "123".
+
+            '
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.access_vlan or switchport.trunk.allowed_vlan
+        native_vlan:
+          type: int
+          convert_types:
+          - str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.trunk.native_vlan
+        native_vlan_tag:
+          type: bool
+          description: If setting both native_vlan and native_vlan_tag, native_vlan_tag
+            takes precedence.
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.trunk.native_vlan_tag
+        mode:
+          type: str
+          valid_values:
+          - access
+          - dot1q-tunnel
+          - trunk
+          - trunk phone
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.mode
+        phone:
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.phone
+          type: dict
+        trunk_groups:
+          type: list
+          items:
+            type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.trunk.groups
+        type:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
+          valid_values:
+          - routed
+          - switched
+          - l3dot1q
+          - l2dot1q
+          - port-channel-member
+          description: 'l3dot1q and l2dot1q are used for sub-interfaces. The parent
+            interface should be defined as routed.
+
+            The `type = switched/routed` should not be combined with `switchport`.
+
+            '
+        encapsulation_dot1q_vlan:
+          type: int
+          convert_types:
+          - str
+          description: VLAN tag to configure on sub-interface.
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: encapsulation_dot1q.vlan
+        isis_authentication_mode:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: v6.0.0
+            new_key: isis_authentication.both.mode or isis_authentication.level_1.mode
+              or isis_authentication.level_2.mode
+          valid_values:
+          - text
+          - md5
+        isis_authentication_key:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: v6.0.0
+            new_key: isis_authentication.both.key or isis_authentication.level_1.key
+              or isis_authentication.level_2.key
+          description: Type-7 encrypted password.
+        trunk_private_vlan_secondary:
+          type: bool
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.trunk.private_vlan_secondary
+        pvlan_mapping:
+          type: str
+          convert_types:
+          - int
+          description: List of vlans as string.
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.pvlan_mapping
+        vlan_translations:
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: switchport.vlan_translations
+          type: list
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
@@ -4909,38 +5148,6 @@ keys:
           description: 'Set the action to be non-blocking.
 
             '
-        action_type:
-          type: str
-          valid_values:
-          - bash
-          - increment
-          - log
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: 5.0.0
-            new_key: event_handlers.actions
-        action:
-          type: str
-          description: 'Command to execute.
-
-            '
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: 5.0.0
-            new_key: event_handlers.actions.bash_command
-        regex:
-          type: str
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: 5.0.0
-            new_key: event_handlers.trigger_on_logging.regex
-          description: 'Regular expression to use for searching log messages. Required
-            for on-logging trigger.
-
-            '
   event_monitor:
     type: dict
     keys:
@@ -5088,111 +5295,6 @@ keys:
                         - str
           shutdown:
             type: bool
-  flow_trackings:
-    documentation_options:
-      table: flow-tracking
-    deprecation:
-      removed: true
-      warning: true
-      new_key: flow_tracking
-      remove_in_version: v5.0.0
-    type: list
-    primary_key: type
-    items:
-      type: dict
-      keys:
-        type:
-          type: str
-          valid_values:
-          - sampled
-          description: Flow Tracking Type - only 'sampled' supported for now.
-        sample:
-          type: int
-          convert_types:
-          - str
-          min: 1
-          max: 4294967295
-        trackers:
-          type: list
-          primary_key: name
-          items:
-            type: dict
-            keys:
-              name:
-                type: str
-                description: Tracker Name.
-              record_export:
-                type: dict
-                keys:
-                  on_inactive_timeout:
-                    type: int
-                    convert_types:
-                    - str
-                    min: 3000
-                    max: 900000
-                    description: Flow record inactive export timeout in milliseconds.
-                  on_interval:
-                    type: int
-                    convert_types:
-                    - str
-                    min: 1000
-                    max: 36000000
-                    description: Flow record export interval in milliseconds.
-                  mpls:
-                    type: bool
-                    description: Export MPLS forwarding information.
-              exporters:
-                type: list
-                primary_key: name
-                items:
-                  type: dict
-                  keys:
-                    name:
-                      type: str
-                      description: Exporter Name.
-                    collector:
-                      type: dict
-                      keys:
-                        host:
-                          type: str
-                          description: Collector IPv4 address or IPv6 address or fully
-                            qualified domain name.
-                        port:
-                          type: int
-                          description: Collector Port Number.
-                          min: 1
-                          max: 65535
-                          convert_types:
-                          - str
-                    format:
-                      type: dict
-                      keys:
-                        ipfix_version:
-                          type: int
-                          convert_types:
-                          - str
-                    local_interface:
-                      type: str
-                      description: Local Source Interface.
-                    template_interval:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 5000
-                      max: 3600000
-                      description: Template interval in milliseconds.
-              table_size:
-                type: int
-                convert_types:
-                - str
-                min: 1
-                max: 614400
-                description: 'Maximum number of entries in flow table.
-
-                  '
-        shutdown:
-          type: bool
-          default: false
   generate_default_config:
     type: bool
     default: false
@@ -5222,6 +5324,7 @@ keys:
       '
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
       url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#default-eos-configuration-is-no-longer-automatically-generated
   generate_device_documentation:
@@ -5231,7 +5334,7 @@ keys:
     default: true
     deprecation:
       warning: true
-      removed: false
+      removed: true
       remove_in_version: 6.0.0
       new_key: eos_cli_config_gen_documentation.enable
   hardware:
@@ -6020,18 +6123,19 @@ keys:
                 max: 15
         dns_domain:
           type: str
-        ip_domain_list:
-          type: str
-          description: Set domain names to complete unqualified host names.
-          deprecation:
-            warning: true
-            new_key: ip_domain_lists
-            remove_in_version: 6.0.0
         ip_domain_lists:
           type: list
           description: Set domain names to complete unqualified host names.
           items:
             type: str
+        ip_domain_list:
+          type: str
+          description: Set domain names to complete unqualified host names.
+          deprecation:
+            removed: true
+            warning: true
+            new_key: ip_domain_lists
+            remove_in_version: 6.0.0
   ip_name_servers:
     type: list
     items:
@@ -6254,6 +6358,9 @@ keys:
                   min: 0
                   max: 4294967295
                   description: In seconds.
+  ip_ospf_router_id_output_format_hostnames:
+    type: bool
+    description: Display DNS-resolved router names for OSPF router IDs.
   ip_radius_source_interfaces:
     type: list
     items:
@@ -6939,9 +7046,10 @@ keys:
   ipv6_unicast_routing:
     type: bool
   is_deployed:
-    description: Key only used for documentation or validation purposes.
+    description: 'Key only used for documentation or validation purposes.
+
+      This key is deprecated and new key is metadata.is_deployed.'
     type: bool
-    default: true
   kernel:
     type: dict
     keys:
@@ -8157,20 +8265,6 @@ keys:
                         '
                       items:
                         type: str
-      enable_vrfs:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: transport.grpc
-          remove_in_version: 5.0.0
-      octa:
-        type: dict
-        deprecation:
-          warning: true
-          removed: true
-          new_key: provider
-          remove_in_version: 5.0.0
   management_api_http:
     type: dict
     keys:
@@ -8215,26 +8309,51 @@ keys:
   management_api_models:
     type: dict
     keys:
+      provider:
+        type: dict
+        keys:
+          sysdb:
+            type: dict
+            description: Sysdb provider configuration.
+            keys:
+              disabled_paths:
+                type: list
+                description: List of disabled Sysdb paths for Octa.
+                items:
+                  type: str
+          smash:
+            type: dict
+            description: Smash provider configuration.
+            keys:
+              paths:
+                type: list
+                description: List of Smash paths.
+                primary_key: path
+                items:
+                  type: dict
+                  keys:
+                    path:
+                      type: str
+                    disabled:
+                      type: bool
+                      description: Disabled Smash path for Octa.
+          macsec:
+            type: dict
+            description: MACsec provider configuration.
+            keys:
+              interfaces:
+                type: bool
+                description: Enable MACsec for interfaces.
+              mka:
+                type: bool
+                description: Enable MKA for MACsec.
       providers:
         type: list
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              valid_values:
-              - sysdb
-              - smash
-            paths:
-              type: list
-              items:
-                type: dict
-                keys:
-                  path:
-                    type: str
-                  disabled:
-                    type: bool
-                    default: false
+        deprecation:
+          warning: true
+          removed: true
+          new_key: provider
+          remove_in_version: 6.0.0
   management_console:
     type: dict
     keys:
@@ -8700,13 +8819,6 @@ keys:
                     type: bool
                     description: Configuring secret using the local timezone from
                       system clock. Default is UTC.
-      entropy_source:
-        type: str
-        deprecation:
-          warning: true
-          removed: true
-          remove_in_version: v5.0.0
-          new_key: entropy_sources
   management_ssh:
     type: dict
     keys:
@@ -8729,40 +8841,6 @@ keys:
               - password
               - public-key
             description: Allowed SSH authentication methods.
-      access_groups:
-        type: list
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: ip_access_group_in or vrfs.ip_access_group_in
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Standard ACL Name.
-            vrf:
-              type: str
-              description: VRF Name.
-              convert_types:
-              - int
-      ipv6_access_groups:
-        type: list
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: ipv6_access_group_in or vrfs.ipv6_access_group_in
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Standard ACL Name.
-            vrf:
-              type: str
-              description: VRF Name.
-              convert_types:
-              - int
       ip_access_group_in:
         type: str
         description: Standard ACL Name.
@@ -8883,6 +8961,20 @@ keys:
             min: 1
             max: 1000
             description: Time period (in seconds) to send SSH keep-alive packets.
+      access_groups:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: ip_access_group_in or vrfs.ip_access_group_in
+      ipv6_access_groups:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: ipv6_access_group_in or vrfs.ipv6_access_group_in
   management_tech_support:
     type: dict
     keys:
@@ -8997,6 +9089,9 @@ keys:
 
       It will not affect the generated EOS configuration.'
     keys:
+      is_deployed:
+        description: Key only used for documentation or validation purposes.
+        type: bool
       platform:
         type: str
       system_mac_address:
@@ -10385,15 +10480,6 @@ keys:
                     valid_values:
                     - pipe
                     - uniform
-  name_server:
-    documentation_options:
-      table: ip-name-servers
-    deprecation:
-      removed: true
-      warning: true
-      new_key: ip_name_servers
-      remove_in_version: v5.0.0
-    type: dict
   ntp:
     type: dict
     keys:
@@ -12453,6 +12539,9 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        vrrp_ids:
+          type: list
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids
         switchport:
           type: dict
           keys:
@@ -12903,35 +12992,15 @@ keys:
         validate_state:
           type: bool
           description: Set to false to disable interface state and LLDP topology validation
-            performed by the `eos_validate_state` role.
+            performed by the `anta_runner` role.
         validate_lldp:
           type: bool
           description: Set to false to disable the LLDP topology validation performed
-            by the `eos_validate_state` role.
+            by the `anta_runner` role.
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the port-channel interface
             in the final EOS configuration.
-        esi:
-          type: str
-          description: 'EVPN Ethernet Segment Identifier (Type 1 format).
-
-            '
-          deprecation:
-            removed: true
-            warning: true
-            new_key: evpn_ethernet_segment.identifier
-            remove_in_version: 5.0.0
-        rt:
-          type: str
-          description: 'EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx.
-
-            '
-          deprecation:
-            removed: true
-            warning: true
-            new_key: evpn_ethernet_segment.route_target
-            remove_in_version: 5.0.0
   prefix_lists:
     type: list
     primary_key: name
@@ -13088,6 +13157,20 @@ keys:
         max: 255
         convert_types:
         - str
+      hold_ptp_time:
+        type: int
+        min: 0
+        max: 172000
+        description: 'The length of time that PTP will remain in hold-down on the
+          internal oscillator if the connection to the GM is lost.
+
+          If a new GM is not elected before the expiry of the hold-down time, the
+          clock will revert to free-running.
+
+          Some platforms support larger maximum values, however 172000 seconds was
+          the max for 7150 series, and was widely used.'
+        convert_types:
+        - str
       message_type:
         type: dict
         keys:
@@ -13211,6 +13294,9 @@ keys:
             type: bool
             description: When enabled, the hardware clock is used as the source for
               PTP time during free-running mode.
+      forward_v1:
+        type: bool
+        description: Forward dataplane PTP V1 packets.
   qos:
     type: dict
     keys:
@@ -14074,15 +14160,6 @@ keys:
       tls_ssl_profile:
         type: str
         description: Name of global TLS profile.
-  radius_servers:
-    documentation_options:
-      table: radius-server
-    deprecation:
-      warning: true
-      removed: true
-      new_key: radius_server.hosts
-      remove_in_version: v5.0.0
-    type: list
   redundancy:
     type: dict
     keys:
@@ -14952,6 +15029,12 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            peer_tag_in:
+              type: str
+              description: Inbound peer tag name.
+            peer_tag_out_discard:
+              type: str
+              description: Outbound discard peer tag name.
             session_tracker:
               type: str
             shared_secret:
@@ -14977,20 +15060,6 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
-            peer_filter:
-              type: str
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: router_bgp.listen_ranges[].peer_filter
-            bgp_listen_range_prefix:
-              type: str
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: router_bgp.listen_ranges[].bgp_listen_range_prefix
       neighbors:
         type: list
         primary_key: ip_address
@@ -15090,6 +15159,12 @@ keys:
             route_map_out:
               type: str
               description: Outbound route-map name.
+            peer_tag_in:
+              type: str
+              description: Inbound peer tag name.
+            peer_tag_out_discard:
+              type: str
+              description: Outbound discard peer tag name.
             default_originate:
               type: dict
               keys:
@@ -15886,6 +15961,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -15939,6 +16020,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16170,6 +16257,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16213,13 +16306,6 @@ keys:
                           required: true
                         originate:
                           type: bool
-                    address_family_ipv6_originate:
-                      type: bool
-                      deprecation:
-                        warning: true
-                        removed: true
-                        new_key: address_family_ipv6
-                        remove_in_version: 5.0.0
           neighbors:
             type: list
             primary_key: ip_address
@@ -16236,6 +16322,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -16754,12 +16846,6 @@ keys:
                             policy decision.
                 multi_path:
                   type: bool
-                next_hop_resolution:
-                  type: dict
-                  deprecation:
-                    warning: true
-                    removed: true
-                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -16787,6 +16873,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           neighbors:
             type: list
             primary_key: ip_address
@@ -16882,12 +16974,6 @@ keys:
                             policy decision.
                 multi_path:
                   type: bool
-                next_hop_resolution:
-                  type: dict
-                  deprecation:
-                    warning: true
-                    removed: true
-                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -16915,6 +17001,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           networks:
             type: list
             primary_key: prefix
@@ -17010,6 +17102,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -17031,6 +17129,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -17241,6 +17345,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           peer_groups:
             type: list
             primary_key: name
@@ -17258,6 +17368,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
       address_family_ipv6:
         type: dict
         keys:
@@ -17307,6 +17423,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17347,6 +17469,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -17634,6 +17762,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 additional_paths:
                   type: dict
                   keys:
@@ -17869,6 +18003,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
           peer_groups:
             type: list
             primary_key: name
@@ -17886,6 +18026,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
       address_family_link_state:
         type: dict
         keys:
@@ -18112,6 +18258,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18157,6 +18309,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18206,6 +18364,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18251,6 +18415,12 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                peer_tag_in:
+                  type: str
+                  description: Inbound peer tag name.
+                peer_tag_out_discard:
+                  type: str
+                  description: Outbound discard peer tag name.
                 rcf_in:
                   type: str
                   description: 'Inbound RCF function name with parenthesis.
@@ -18717,27 +18887,15 @@ keys:
                   route_map_out:
                     type: str
                     description: Outbound route-map name.
+                  peer_tag_in:
+                    type: str
+                    description: Inbound peer tag name.
+                  peer_tag_out_discard:
+                    type: str
+                    description: Outbound discard peer tag name.
                   additional_paths:
                     type: dict
                     $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
-                  prefix_list_in:
-                    type: str
-                    description: Inbound prefix-list name.
-                    deprecation:
-                      warning: true
-                      removed: true
-                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in
-                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in
-                      remove_in_version: 5.0.0
-                  prefix_list_out:
-                    type: str
-                    description: Outbound prefix-list name.
-                    deprecation:
-                      warning: true
-                      removed: true
-                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out
-                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out
-                      remove_in_version: 5.0.0
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -19114,6 +19272,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       rcf_in:
                         type: str
                         description: 'Inbound RCF function name with parenthesis.
@@ -19497,6 +19661,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       rcf_in:
                         type: str
                         description: 'Inbound RCF function name with parenthesis.
@@ -19800,6 +19970,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       additional_paths:
                         type: dict
                         keys:
@@ -20065,6 +20241,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      peer_tag_in:
+                        type: str
+                        description: Inbound peer tag name.
+                      peer_tag_out_discard:
+                        type: str
+                        description: Outbound discard peer tag name.
                       additional_paths:
                         type: dict
                         keys:
@@ -20335,14 +20517,6 @@ keys:
                 VRF definition in the final EOS configuration.
 
                 '
-            address_families:
-              type: list
-              primary_key: address_family
-              deprecation:
-                warning: true
-                removed: true
-                new_key: address_family_*
-                remove_in_version: 5.0.0
       session_trackers:
         type: list
         primary_key: name
@@ -21005,20 +21179,6 @@ keys:
         type: str
         description: Multiline EOS CLI rendered directly on the router isis in the
           final EOS configuration.
-      address_family:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: address_family_ipv4.enabled or address_family_ipv6.enabled
-          remove_in_version: 5.0.0
-      isis_af_defaults:
-        type: list
-        deprecation:
-          removed: true
-          warning: true
-          new_key: address_family_ipv4/address_family_ipv6
-          remove_in_version: 5.0.0
   router_l2_vpn:
     type: dict
     keys:
@@ -21944,23 +22104,6 @@ keys:
       tcp_mss_ceiling:
         type: dict
         keys:
-          ipv4_segment_size:
-            type: str
-            description: 'Segment Size for IPv4.
-
-              Can be an integer in the range 64-65515 or "auto".
-
-              "auto" will enable auto-discovery which clamps the TCP MSS value to
-              the minimum of all the direct paths
-
-              and multi-hop path MTU towards a remote VTEP (minus 40bytes to account
-              for IP + TCP header).'
-            convert_types:
-            - int
-            deprecation:
-              warning: true
-              remove_in_version: 6.0.0
-              new_key: ipv4
           ipv4:
             type: str
             description: 'Segment Size for IPv4.
@@ -21982,6 +22125,13 @@ keys:
             description: 'Enforce on packets through DPS tunnel for a specific direction.
 
               Only ''ingress'' direction is supported.'
+          ipv4_segment_size:
+            type: str
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: 6.0.0
+              new_key: ipv4
       interfaces:
         type: list
         primary_key: name
@@ -22119,6 +22269,35 @@ keys:
                         max: 32
                       override:
                         type: bool
+  router_rip:
+    type: dict
+    description: Routing Information Protocol settings.
+    keys:
+      vrfs:
+        type: list
+        primary_key: vrf
+        items:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            vrf:
+              type: str
+              convert_types:
+              - int
+            metric_default:
+              type: int
+              description: Set default metric for the routes.
+              min: 0
+              max: 16
+              convert_types:
+              - str
+            networks:
+              type: list
+              min_length: 1
+              items:
+                type: str
+                description: Subnet/Mask. e.g. 192.168.10.0/24.
   router_segment_security:
     type: dict
     keys:
@@ -22511,6 +22690,13 @@ keys:
         type: int
         convert_types:
         - str
+      sample_truncate_size:
+        type: int
+        min: 128
+        max: 512
+        convert_types:
+        - str
+        description: Maximum sample size, in bytes.
       sample_input_subinterface:
         type: bool
       sample_output_subinterface:
@@ -22758,13 +22944,6 @@ keys:
               type: str
             included:
               type: bool
-            MIB_family_name:
-              deprecation:
-                warning: true
-                removed: true
-                remove_in_version: 5.0.0
-                new_key: mib_family_name
-              type: str
       groups:
         type: list
         items:
@@ -23229,13 +23408,6 @@ keys:
             max: 65535
             convert_types:
             - str
-          local_interface:
-            type: str
-            deprecation:
-              removed: true
-              warning: true
-              new_key: local_interfaces
-              remove_in_version: v5.0.0
   switchport_default:
     type: dict
     keys:
@@ -23258,6 +23430,8 @@ keys:
             valid_values:
             - tagged
             - untagged
+            - tagged phone
+            - untagged phone
           vlan:
             type: int
             description: VLAN ID.
@@ -23268,6 +23442,13 @@ keys:
           access_list_bypass:
             description: Bypass phone traffic from configured access-list.
             type: bool
+          qos_trust:
+            type: str
+            description: Quality of Service (QoS) trust mode. Outgoing traffic class
+              being derived from the ingress COS/DSCP value.
+            valid_values:
+            - cos
+            - dscp
   switchport_port_security:
     type: dict
     keys:
@@ -24567,6 +24748,11 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv4 address.
+                  secondary_addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Additional VRRP IPv4 addresses.
                   version:
                     type: int
                     convert_types:
@@ -24579,8 +24765,16 @@ keys:
                 keys:
                   address:
                     type: str
-                    required: true
                     description: Virtual IPv6 address.
+                    deprecation:
+                      warning: true
+                      remove_in_version: 6.0.0
+                      new_key: addresses
+                  addresses:
+                    type: list
+                    items:
+                      type: str
+                    description: Virtual IPv6 addresses.
               peer_authentication:
                 type: dict
                 $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids/items/keys/peer_authentication
@@ -24667,30 +24861,6 @@ keys:
           type: str
           description: Multiline EOS CLI rendered directly on the VLAN interface in
             the final EOS configuration.
-        ipv6_address_virtual:
-          type: str
-          description: 'IPv6_address/Mask.
-
-            '
-          deprecation:
-            removed: true
-            warning: true
-            new_key: ipv6_address_virtuals
-            remove_in_version: 5.0.0
-        ipv6_virtual_router_address:
-          type: str
-          deprecation:
-            removed: true
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: ipv6_virtual_router_addresses
-        vrrp:
-          type: dict
-          deprecation:
-            removed: true
-            warning: true
-            remove_in_version: 5.0.0
-            new_key: vrrp_ids
   vlan_internal_order:
     type: dict
     keys:
@@ -24994,7 +25164,38 @@ keys:
                       - str
                     multicast_group:
                       type: str
-                      description: IP Multicast Group Address.
+                      description: Default IP Multicast Group Address for the VRF.
+                    multicast_group_encap_range:
+                      type: str
+                      description: 'N:M mapping, the overlay groups in the VRF are
+                        mapped to one of
+
+                        the underlay groups defined within the encap range.
+
+                        The format is X.X.X.X/YY (IPv4 multicast group with prefix
+                        length between 19 and 32).
+
+                        Default multicast group `vxlan_interface.vxlan1.vxlan.vrfs.[].multicast_group`
+                        is required for this feature to work.
+
+                        See the TOI at https://www.arista.com/en/support/toi/eos-4-29-1f/16546-multicast-evpn-irb-multiple-underlay-groups'
+                    multicast_groups:
+                      type: list
+                      primary_key: overlay_group
+                      description: 'List of 1:1 mappings where each configured overlay
+                        multicast group is mapped
+
+                        directly to the specified underlay multicast group.'
+                      items:
+                        type: dict
+                        keys:
+                          overlay_group:
+                            type: str
+                            description: Overlay multicast group.
+                          encap:
+                            type: str
+                            required: true
+                            description: Underlay multicast group.
               flood_vteps:
                 type: list
                 items:
