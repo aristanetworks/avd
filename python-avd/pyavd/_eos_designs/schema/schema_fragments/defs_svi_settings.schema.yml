@@ -45,6 +45,18 @@ $defs:
         items:
           type: str
           description: IPv6_address/Mask.
+      ipv6_nd_prefixes:
+        type: list
+        $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/keys/ipv6_nd_prefixes"
+        items:
+          type: dict
+          keys:
+            ipv6_prefix:
+              type: str
+              description: |-
+                - It can be a specific IPv6 prefix.
+                - It can be set to `ipv6_address_virtuals`, in which case all IPv6 prefixes
+                defined under the `ipv6_address_virtuals` key will be advertised.
       ip_address_virtual_secondaries:
         type: list
         description: Secondary IPv4 VXLAN Anycast IP addresses.

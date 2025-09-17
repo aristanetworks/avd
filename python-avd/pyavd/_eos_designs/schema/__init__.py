@@ -17679,6 +17679,63 @@ class EosDesigns(EosDesignsRootModel):
 
             Ipv6AddressVirtuals._item_type = str
 
+            class Ipv6NdPrefixesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "ipv6_prefix": {"type": str},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                    "no_autoconfig_flag": {"type": bool},
+                }
+                ipv6_prefix: str
+                """
+                - It can be a specific IPv6 prefix.
+                - It can be set to `ipv6_address_virtuals`, in which case all
+                IPv6 prefixes
+                defined under the `ipv6_address_virtuals` key will be advertised.
+                """
+                valid_lifetime: str | None
+                """In seconds <0-4294967295> or infinite."""
+                preferred_lifetime: str | None
+                """In seconds <0-4294967295> or infinite."""
+                no_autoconfig_flag: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        ipv6_prefix: str | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ipv6NdPrefixesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv6_prefix:
+                               - It can be a specific IPv6 prefix.
+                               - It can be set to `ipv6_address_virtuals`, in which case all
+                               IPv6 prefixes
+                               defined under the `ipv6_address_virtuals` key will be advertised.
+                            valid_lifetime: In seconds <0-4294967295> or infinite.
+                            preferred_lifetime: In seconds <0-4294967295> or infinite.
+                            no_autoconfig_flag: no_autoconfig_flag
+
+                        """
+
+            class Ipv6NdPrefixes(AvdIndexedList[str, Ipv6NdPrefixesItem]):
+                """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                _primary_key: ClassVar[str] = "ipv6_prefix"
+
+            Ipv6NdPrefixes._item_type = Ipv6NdPrefixesItem
+
             class IpAddressVirtualSecondaries(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -18181,6 +18238,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv6_enable": {"type": bool},
                 "ip_address_virtual": {"type": str},
                 "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                "ipv6_nd_prefixes": {"type": Ipv6NdPrefixes},
                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -18239,6 +18297,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdList with `str` items.
             """
+            ipv6_nd_prefixes: Ipv6NdPrefixes
+            """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
             ip_address_virtual_secondaries: IpAddressVirtualSecondaries
             """
             Secondary IPv4 VXLAN Anycast IP addresses.
@@ -18418,6 +18478,7 @@ class EosDesigns(EosDesignsRootModel):
                     ipv6_enable: bool | None | UndefinedType = Undefined,
                     ip_address_virtual: str | None | UndefinedType = Undefined,
                     ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                    ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -18471,6 +18532,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdList with `str` items.
+                        ipv6_nd_prefixes: Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
                         ip_address_virtual_secondaries:
                            Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -18603,6 +18665,63 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
 
         Ipv6AddressVirtuals._item_type = str
+
+        class Ipv6NdPrefixesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "ipv6_prefix": {"type": str},
+                "valid_lifetime": {"type": str},
+                "preferred_lifetime": {"type": str},
+                "no_autoconfig_flag": {"type": bool},
+            }
+            ipv6_prefix: str
+            """
+            - It can be a specific IPv6 prefix.
+            - It can be set to `ipv6_address_virtuals`, in which case all
+            IPv6 prefixes
+            defined under the `ipv6_address_virtuals` key will be advertised.
+            """
+            valid_lifetime: str | None
+            """In seconds <0-4294967295> or infinite."""
+            preferred_lifetime: str | None
+            """In seconds <0-4294967295> or infinite."""
+            no_autoconfig_flag: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ipv6_prefix: str | UndefinedType = Undefined,
+                    valid_lifetime: str | None | UndefinedType = Undefined,
+                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                    no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6NdPrefixesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ipv6_prefix:
+                           - It can be a specific IPv6 prefix.
+                           - It can be set to `ipv6_address_virtuals`, in which case all
+                           IPv6 prefixes
+                           defined under the `ipv6_address_virtuals` key will be advertised.
+                        valid_lifetime: In seconds <0-4294967295> or infinite.
+                        preferred_lifetime: In seconds <0-4294967295> or infinite.
+                        no_autoconfig_flag: no_autoconfig_flag
+
+                    """
+
+        class Ipv6NdPrefixes(AvdIndexedList[str, Ipv6NdPrefixesItem]):
+            """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+            _primary_key: ClassVar[str] = "ipv6_prefix"
+
+        Ipv6NdPrefixes._item_type = Ipv6NdPrefixesItem
 
         class IpAddressVirtualSecondaries(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -19108,6 +19227,7 @@ class EosDesigns(EosDesignsRootModel):
             "ipv6_enable": {"type": bool},
             "ip_address_virtual": {"type": str},
             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+            "ipv6_nd_prefixes": {"type": Ipv6NdPrefixes},
             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -19182,6 +19302,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList with `str` items.
         """
+        ipv6_nd_prefixes: Ipv6NdPrefixes
+        """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
         """
         Secondary IPv4 VXLAN Anycast IP addresses.
@@ -19363,6 +19485,7 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ip_address_virtual: str | None | UndefinedType = Undefined,
                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -19428,6 +19551,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdList with `str` items.
+                    ipv6_nd_prefixes: Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
                     ip_address_virtual_secondaries:
                        Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -44988,6 +45112,63 @@ class EosDesigns(EosDesignsRootModel):
 
                             Ipv6AddressVirtuals._item_type = str
 
+                            class Ipv6NdPrefixesItem(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "ipv6_prefix": {"type": str},
+                                    "valid_lifetime": {"type": str},
+                                    "preferred_lifetime": {"type": str},
+                                    "no_autoconfig_flag": {"type": bool},
+                                }
+                                ipv6_prefix: str
+                                """
+                                - It can be a specific IPv6 prefix.
+                                - It can be set to `ipv6_address_virtuals`, in which case all
+                                IPv6 prefixes
+                                defined under the `ipv6_address_virtuals` key will be advertised.
+                                """
+                                valid_lifetime: str | None
+                                """In seconds <0-4294967295> or infinite."""
+                                preferred_lifetime: str | None
+                                """In seconds <0-4294967295> or infinite."""
+                                no_autoconfig_flag: bool | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        ipv6_prefix: str | UndefinedType = Undefined,
+                                        valid_lifetime: str | None | UndefinedType = Undefined,
+                                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                                        no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Ipv6NdPrefixesItem.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            ipv6_prefix:
+                                               - It can be a specific IPv6 prefix.
+                                               - It can be set to `ipv6_address_virtuals`, in which case all
+                                               IPv6 prefixes
+                                               defined under the `ipv6_address_virtuals` key will be advertised.
+                                            valid_lifetime: In seconds <0-4294967295> or infinite.
+                                            preferred_lifetime: In seconds <0-4294967295> or infinite.
+                                            no_autoconfig_flag: no_autoconfig_flag
+
+                                        """
+
+                            class Ipv6NdPrefixes(AvdIndexedList[str, Ipv6NdPrefixesItem]):
+                                """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                                _primary_key: ClassVar[str] = "ipv6_prefix"
+
+                            Ipv6NdPrefixes._item_type = Ipv6NdPrefixesItem
+
                             class IpAddressVirtualSecondaries(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
@@ -45502,6 +45683,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv6_enable": {"type": bool},
                                 "ip_address_virtual": {"type": str},
                                 "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                                "ipv6_nd_prefixes": {"type": Ipv6NdPrefixes},
                                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -45570,6 +45752,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
+                            ipv6_nd_prefixes: Ipv6NdPrefixes
+                            """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
                             ip_address_virtual_secondaries: IpAddressVirtualSecondaries
                             """
                             Secondary IPv4 VXLAN Anycast IP addresses.
@@ -45750,6 +45934,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_enable: bool | None | UndefinedType = Undefined,
                                     ip_address_virtual: str | None | UndefinedType = Undefined,
                                     ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                                    ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
                                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -45809,6 +45994,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                            Subclass of AvdList with `str` items.
+                                        ipv6_nd_prefixes: Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
                                         ip_address_virtual_secondaries:
                                            Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -45941,6 +46127,63 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         Ipv6AddressVirtuals._item_type = str
+
+                        class Ipv6NdPrefixesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "ipv6_prefix": {"type": str},
+                                "valid_lifetime": {"type": str},
+                                "preferred_lifetime": {"type": str},
+                                "no_autoconfig_flag": {"type": bool},
+                            }
+                            ipv6_prefix: str
+                            """
+                            - It can be a specific IPv6 prefix.
+                            - It can be set to `ipv6_address_virtuals`, in which case all
+                            IPv6 prefixes
+                            defined under the `ipv6_address_virtuals` key will be advertised.
+                            """
+                            valid_lifetime: str | None
+                            """In seconds <0-4294967295> or infinite."""
+                            preferred_lifetime: str | None
+                            """In seconds <0-4294967295> or infinite."""
+                            no_autoconfig_flag: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    ipv6_prefix: str | UndefinedType = Undefined,
+                                    valid_lifetime: str | None | UndefinedType = Undefined,
+                                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                                    no_autoconfig_flag: bool | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6NdPrefixesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        ipv6_prefix:
+                                           - It can be a specific IPv6 prefix.
+                                           - It can be set to `ipv6_address_virtuals`, in which case all
+                                           IPv6 prefixes
+                                           defined under the `ipv6_address_virtuals` key will be advertised.
+                                        valid_lifetime: In seconds <0-4294967295> or infinite.
+                                        preferred_lifetime: In seconds <0-4294967295> or infinite.
+                                        no_autoconfig_flag: no_autoconfig_flag
+
+                                    """
+
+                        class Ipv6NdPrefixes(AvdIndexedList[str, Ipv6NdPrefixesItem]):
+                            """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "ipv6_prefix"
+
+                        Ipv6NdPrefixes._item_type = Ipv6NdPrefixesItem
 
                         class IpAddressVirtualSecondaries(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -46454,6 +46697,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv6_enable": {"type": bool},
                             "ip_address_virtual": {"type": str},
                             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                            "ipv6_nd_prefixes": {"type": Ipv6NdPrefixes},
                             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -46552,6 +46796,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList with `str` items.
                         """
+                        ipv6_nd_prefixes: Ipv6NdPrefixes
+                        """Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`)."""
                         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
                         """
                         Secondary IPv4 VXLAN Anycast IP addresses.
@@ -46736,6 +46982,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv6_enable: bool | None | UndefinedType = Undefined,
                                 ip_address_virtual: str | None | UndefinedType = Undefined,
                                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                                ipv6_nd_prefixes: Ipv6NdPrefixes | UndefinedType = Undefined,
                                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -46817,6 +47064,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
+                                    ipv6_nd_prefixes: Subclass of AvdIndexedList with `Ipv6NdPrefixesItem` items. Primary key is `ipv6_prefix` (`str`).
                                     ip_address_virtual_secondaries:
                                        Secondary IPv4 VXLAN Anycast IP addresses.
 

@@ -16,6 +16,11 @@ tenant_d:
               - 2001:db8:310::1/64
               - 2001:db8:311::1/64
               - 2001:db8:312::1/64
+            ipv6_nd_prefixes:
+              - ipv6_prefix: ipv6_address_virtuals
+              - ipv6_prefix: 2002:db8:310::1/64
+                preferred_lifetime: 100
+                valid_lifetime: 200
           - id: 411
             name: Tenant_D_v6_OP_Zone_2
             tags: ['v6opzone']
