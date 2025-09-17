@@ -13,9 +13,6 @@ ansible_collections/arista/avd/roles/eos_config_deploy_eapi/**/*:
 ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*:
   - onurgashi
   - aphillipps
-ansible_collections/arista/avd/roles/eos_validate_state/**/*:
-  - ksator
-  - carlbuchmann
 ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*:
   - guillaumeVilar
   - noredistribution

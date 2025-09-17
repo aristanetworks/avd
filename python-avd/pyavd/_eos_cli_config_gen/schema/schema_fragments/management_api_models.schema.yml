@@ -11,6 +11,10 @@ keys:
     keys:
       providers:
         type: list
+        deprecation:
+          warning: true
+          new_key: provider
+          remove_in_version: 6.0.0
         items:
           type: dict
           keys:
@@ -27,3 +31,41 @@ keys:
                   disabled:
                     type: bool
                     default: false
+      provider:
+        type: dict
+        keys:
+          sysdb:
+            type: dict
+            description: Sysdb provider configuration.
+            keys:
+              disabled_paths:
+                type: list
+                description: List of disabled Sysdb paths for Octa.
+                items:
+                  type: str
+          smash:
+            type: dict
+            description: Smash provider configuration.
+            keys:
+              paths:
+                type: list
+                description: List of Smash paths.
+                primary_key: path
+                items:
+                  type: dict
+                  keys:
+                    path:
+                      type: str
+                    disabled:
+                      type: bool
+                      description: Disabled Smash path for Octa.
+          macsec:
+            type: dict
+            description: MACsec provider configuration.
+            keys:
+              interfaces:
+                type: bool
+                description: Enable MACsec for interfaces.
+              mka:
+                type: bool
+                description: Enable MKA for MACsec.

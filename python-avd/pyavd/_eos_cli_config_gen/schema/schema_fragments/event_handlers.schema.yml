@@ -154,29 +154,3 @@ keys:
           default: false
           description: |
             Set the action to be non-blocking.
-        action_type:
-          type: str
-          valid_values: ["bash", "increment", "log"]
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: 5.0.0
-            new_key: event_handlers.actions
-        action:
-          type: str
-          description: |
-            Command to execute.
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: 5.0.0
-            new_key: event_handlers.actions.bash_command
-        regex:
-          type: str
-          deprecation:
-            warning: true
-            removed: true
-            remove_in_version: 5.0.0
-            new_key: event_handlers.trigger_on_logging.regex
-          description: |
-            Regular expression to use for searching log messages. Required for on-logging trigger.

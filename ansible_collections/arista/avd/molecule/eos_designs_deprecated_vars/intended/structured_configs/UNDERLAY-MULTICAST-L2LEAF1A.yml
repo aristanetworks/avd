@@ -1,0 +1,57 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_UNDERLAY-MULTICAST-L3LEAF1A_Ethernet6
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  peer: UNDERLAY-MULTICAST-L3LEAF1A
+  peer_interface: Ethernet6
+  peer_type: l3leaf
+hostname: UNDERLAY-MULTICAST-L2LEAF1A
+ip_igmp_snooping:
+  globally_enabled: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.109/24
+  type: oob
+  gateway: 192.168.200.5
+metadata:
+  is_deployed: true
+  platform: vEOS-LAB
+  fabric_name: EOS_DESIGNS_DEPRECATED_VARS
+port_channel_interfaces:
+- name: Port-Channel1
+  description: L2_DC1_LEAF1_Port-Channel6
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.5
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
