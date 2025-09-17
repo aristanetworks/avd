@@ -44,8 +44,7 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65100.100'
-  as_notation: asdot
+  as: '4266393700'
   router_id: 10.10.0.1
   maximum_paths:
     paths: 4
@@ -79,15 +78,16 @@ router_bgp:
   neighbors:
   - ip_address: 10.90.90.90
     peer_group: IPVPN-GATEWAY-PEERS
-    remote_as: '65099.900'
+    remote_as: '4266328964'
     peer: SOME-EBGP-PEER
     description: SOME-EBGP-PEER
     ebgp_multihop: 15
   - ip_address: 10.80.80.80
     peer_group: IPVPN-GATEWAY-PEERS
-    remote_as: '65555.100'
+    remote_as: '4296212580'
     peer: SOME-IBGP-PEER
     description: SOME-IBGP-PEER
+    ebgp_multihop: 15
   redistribute:
     connected:
       enabled: true
