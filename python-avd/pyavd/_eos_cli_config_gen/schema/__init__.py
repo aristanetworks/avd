@@ -21012,62 +21012,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class ManagementApiModels(AvdModel):
         """Subclass of AvdModel."""
 
-        class ProvidersItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            class PathsItem(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"path": {"type": str}, "disabled": {"type": bool, "default": False}}
-                path: str | None
-                disabled: bool
-                """Default value: `False`"""
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, path: str | None | UndefinedType = Undefined, disabled: bool | UndefinedType = Undefined) -> None:
-                        """
-                        PathsItem.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            path: path
-                            disabled: disabled
-
-                        """
-
-            class Paths(AvdList[PathsItem]):
-                """Subclass of AvdList with `PathsItem` items."""
-
-            Paths._item_type = PathsItem
-
-            _fields: ClassVar[dict] = {"name": {"type": str}, "paths": {"type": Paths}}
-            name: Literal["sysdb", "smash"] | None
-            paths: Paths
-            """Subclass of AvdList with `PathsItem` items."""
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, name: Literal["sysdb", "smash"] | None | UndefinedType = Undefined, paths: Paths | UndefinedType = Undefined) -> None:
-                    """
-                    ProvidersItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: name
-                        paths: Subclass of AvdList with `PathsItem` items.
-
-                    """
-
-        class Providers(AvdList[ProvidersItem]):
-            """Subclass of AvdList with `ProvidersItem` items."""
-
-        Providers._item_type = ProvidersItem
-
         class Provider(AvdModel):
             """Subclass of AvdModel."""
 
@@ -21235,15 +21179,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"providers": {"type": Providers}, "provider": {"type": Provider}}
-        providers: Providers
-        """Subclass of AvdList with `ProvidersItem` items."""
+        _fields: ClassVar[dict] = {"provider": {"type": Provider}}
         provider: Provider
         """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, providers: Providers | UndefinedType = Undefined, provider: Provider | UndefinedType = Undefined) -> None:
+            def __init__(self, *, provider: Provider | UndefinedType = Undefined) -> None:
                 """
                 ManagementApiModels.
 
@@ -21251,7 +21193,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    providers: Subclass of AvdList with `ProvidersItem` items.
                     provider: Subclass of AvdModel.
 
                 """
