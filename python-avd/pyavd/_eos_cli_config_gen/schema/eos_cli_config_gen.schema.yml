@@ -5324,6 +5324,7 @@ keys:
       '
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
       url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#default-eos-configuration-is-no-longer-automatically-generated
   generate_device_documentation:
@@ -5333,7 +5334,7 @@ keys:
     default: true
     deprecation:
       warning: true
-      removed: false
+      removed: true
       remove_in_version: 6.0.0
       new_key: eos_cli_config_gen_documentation.enable
   hardware:
