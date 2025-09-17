@@ -1566,24 +1566,6 @@ $defs:
               Set the flow tracker type.
               Override the `default_flow_tracker_type`` set at the `node_type_key` level.
               `default_flow_tracker_type` default value is `sampled`.
-          inband_management_subnet:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              removed: true
-              warning: true
-              new_key: inband_mgmt_subnet
-              remove_in_version: 5.0.0
-            type: str
-          inband_management_vlan:
-            documentation_options:
-              table: node-type-inband-management-configuration
-            deprecation:
-              removed: true
-              warning: true
-              new_key: inband_mgmt_vlan
-              remove_in_version: 5.0.0
-            type: int
           underlay_multicast:
             type: dict
             documentation_options:

@@ -81,10 +81,3 @@ keys:
             max: 65535
             convert_types:
               - str
-          local_interface:
-            type: str
-            deprecation:
-              removed: true
-              warning: true
-              new_key: local_interfaces
-              remove_in_version: v5.0.0
