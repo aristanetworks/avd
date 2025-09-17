@@ -15504,15 +15504,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "name": {"type": str},
             "name_servers": {"type": NameServers},
             "dns_domain": {"type": str},
-            "ip_domain_list": {"type": str},
             "ip_domain_lists": {"type": IpDomainLists},
         }
         name: str
         name_servers: NameServers
         """Subclass of AvdList with `NameServersItem` items."""
         dns_domain: str | None
-        ip_domain_list: str | None
-        """Set domain names to complete unqualified host names."""
         ip_domain_lists: IpDomainLists
         """
         Set domain names to complete unqualified host names.
@@ -15528,7 +15525,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name: str | UndefinedType = Undefined,
                 name_servers: NameServers | UndefinedType = Undefined,
                 dns_domain: str | None | UndefinedType = Undefined,
-                ip_domain_list: str | None | UndefinedType = Undefined,
                 ip_domain_lists: IpDomainLists | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -15541,7 +15537,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: name
                     name_servers: Subclass of AvdList with `NameServersItem` items.
                     dns_domain: dns_domain
-                    ip_domain_list: Set domain names to complete unqualified host names.
                     ip_domain_lists:
                        Set domain names to complete unqualified host names.
 
@@ -68750,8 +68745,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "event_handlers": {"type": EventHandlers},
         "event_monitor": {"type": EventMonitor},
         "flow_tracking": {"type": FlowTracking},
-        "generate_default_config": {"type": bool, "default": False},
-        "generate_device_documentation": {"type": bool, "default": True},
         "hardware": {"type": Hardware},
         "hardware_counters": {"type": HardwareCounters},
         "hostname": {"type": str},
@@ -69093,29 +69086,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     flow_tracking: FlowTracking
     """Subclass of AvdModel."""
-    generate_default_config: bool
-    """
-    The `generate_default_config` knob allows to omit default EOS configuration.
-    This can be useful when
-    leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
-
-    The following commands
-    will be omitted when `generate_default_config` is set to `false`:
-
-    - RANCID Content Type
-    - Hostname
-    (even if `hostname` variable is not set. Then the hostname is picked up from `inventory_hostname`)
-    -
-    Default configuration for `aaa`
-    - Default configuration for `enable password`
-    - Transceiver qsfp
-    default mode
-    - End of configuration delimiter
-
-    Default value: `False`
-    """
-    generate_device_documentation: bool
-    """Default value: `True`"""
     hardware: Hardware
     """Subclass of AvdModel."""
     hardware_counters: HardwareCounters
@@ -69548,8 +69518,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             event_handlers: EventHandlers | UndefinedType = Undefined,
             event_monitor: EventMonitor | UndefinedType = Undefined,
             flow_tracking: FlowTracking | UndefinedType = Undefined,
-            generate_default_config: bool | UndefinedType = Undefined,
-            generate_device_documentation: bool | UndefinedType = Undefined,
             hardware: Hardware | UndefinedType = Undefined,
             hardware_counters: HardwareCounters | UndefinedType = Undefined,
             hostname: str | None | UndefinedType = Undefined,
@@ -69837,24 +69805,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    `EventHandlersItem` items. Primary key is `name` (`str`).
                 event_monitor: Subclass of AvdModel.
                 flow_tracking: Subclass of AvdModel.
-                generate_default_config:
-                   The `generate_default_config` knob allows to omit default EOS configuration.
-                   This can be useful when
-                   leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
-
-                   The following commands
-                   will be omitted when `generate_default_config` is set to `false`:
-
-                   - RANCID Content Type
-                   - Hostname
-                   (even if `hostname` variable is not set. Then the hostname is picked up from `inventory_hostname`)
-                   -
-                   Default configuration for `aaa`
-                   - Default configuration for `enable password`
-                   - Transceiver qsfp
-                   default mode
-                   - End of configuration delimiter
-                generate_device_documentation: generate_device_documentation
                 hardware: Subclass of AvdModel.
                 hardware_counters: Subclass of AvdModel.
                 hostname: hostname
