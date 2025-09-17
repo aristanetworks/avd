@@ -158,7 +158,7 @@ class SnmpServerMixin(Protocol):
                     self.structured_config.snmp_server.local_interfaces.append_new(name=source_interface, vrf=host_vrf if host_vrf != "default" else None)
 
             if not vrfs:
-                # If no VRFs are defined (and we are not just ignoring missing mgmt config)
+                # If no VRFs are defined
                 vrfs.add("default")
 
             output_host = host._cast_as(EosCliConfigGen.SnmpServer.HostsItem, ignore_extra_keys=True)
