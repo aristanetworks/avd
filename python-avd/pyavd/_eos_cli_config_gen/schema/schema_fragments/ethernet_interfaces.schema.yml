@@ -30,7 +30,7 @@ keys:
           description: Interval in seconds for updating interface counters.
         speed:
           type: str
-          description: Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+          description: Interface Speed.
           valid_values: [
             "100full", "100g", "100g-1", "100g-2", "100g-4", "100half", "10full", "10g", "10half", "1g", "200g", "200g-2", "200g-4", "25g", "400g", "400g-4",
             "400g-8", "40g", "50g", "50g-1", "50g-2", "800g-8", "sfp-1000baset", "auto", "auto 10000full", "auto 1000full", "auto 100full", "auto 100g-1",
