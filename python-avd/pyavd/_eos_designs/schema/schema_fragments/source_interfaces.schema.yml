@@ -85,7 +85,6 @@ keys:
             snmp_settings.vrfs[].source_interface
             or snmp_settings.hosts[].vrf: use_mgmt_interface_vrf
             or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf
-            or avd_6_behaviors.snmp_settings_vrfs
         keys:
           mgmt_interface:
             type: bool
