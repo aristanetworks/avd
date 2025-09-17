@@ -36,10 +36,9 @@ class SnmpServerMixin(Protocol):
         we will use snmp_hash filter to create an instance of hashlib HASH corresponding to the auth_type
         value based on various snmp_settings.users information.
         """
-        source_interfaces_inputs = self.inputs.source_interfaces.snmp
         snmp_settings = self.inputs.snmp_settings
 
-        if not any([source_interfaces_inputs, snmp_settings]):
+        if not snmp_settings:
             return
 
         self._snmp_engine_ids(snmp_settings)
