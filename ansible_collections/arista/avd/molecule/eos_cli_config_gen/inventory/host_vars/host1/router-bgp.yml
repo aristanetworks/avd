@@ -117,6 +117,8 @@ router_bgp:
       password: "dRx9sULvl+hzkCMYJLEQCw=="
       send_community: all
       maximum_routes: 0
+      peer_tag_in: PEER_TAG_IN
+      peer_tag_out_discard: PEER_TAG_DISCARD_OUT
     - name: MPLS-IBGP-PEERS
       type: "vpn-ipv4, vpn-ipv6"
       remote_as: 65000
@@ -195,6 +197,8 @@ router_bgp:
       send_community: all
       route_map_in: RM-MLAG-PEER-IN
       route_map_out: RM-MLAG-PEER-OUT
+      peer_tag_in: PEER_TAG_IN
+      peer_tag_out_discard: PEER_TAG_DISCARD_OUT
       remove_private_as:
         enabled: true
         all: true
@@ -368,6 +372,8 @@ router_bgp:
         encapsulation: path-selection
         route_map_in: RM1
         route_map_out: RM2
+        peer_tag_in: PEER_TAG_IN_EVPN
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_EVPN
         additional_paths:
           send: limit
           send_limit: 9
@@ -439,6 +445,8 @@ router_bgp:
       - name: EVPN-OVERLAY
         route_map_in: RM-HIDE-AS-PATH
         route_map_out: RM-HIDE-AS-PATH
+        peer_tag_in: PEER_TAG_IN_EVPN
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_EVPN
         activate: true
       - name: RCF_TEST
         rcf_in: Address_Family_EVPN_In()
@@ -481,6 +489,8 @@ router_bgp:
         activate: true
         route_map_in: RM-HIDE-AS-PATH
         route_map_out: RM-HIDE-AS-PATH
+        peer_tag_in: PEER_TAG_IN_IPV4
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4
         additional_paths:
           send: disabled
       - name: TEST_RCF
@@ -538,6 +548,8 @@ router_bgp:
         prefix_list_out: PL-FOO-v4-OUT
         route_map_in: Address_Family_IPV4_In
         route_map_out: Address_Family_IPV4_Out
+        peer_tag_in: PEER_TAG_IN_IPV4
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4
         additional_paths:
           receive: true
           send: limit
@@ -639,6 +651,8 @@ router_bgp:
           send: any
         route_map_in: RM-HIDE-AS-PATH
         route_map_out: RM-HIDE-AS-PATH
+        peer_tag_in: PEER_TAG_IN_IPV6
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV6
       - name: IPV6-UNDERLAY-MLAG
         activate: true
         additional_paths:
@@ -665,6 +679,8 @@ router_bgp:
         prefix_list_out: PL-FOO-v6-OUT
         route_map_in: Address_Family_IPV6_In
         route_map_out: Address_Family_IPV6_Out
+        peer_tag_in: PEER_TAG_IN_IPV6
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV6
         additional_paths:
           receive: true
           send: ecmp
@@ -728,6 +744,8 @@ router_bgp:
         activate: true
         route_map_in: IPV4-MULTICAST-RM-IN
         route_map_out: IPV4-MULTICAST-RM-OUT
+        peer_tag_in: PEER_TAG_IN_IPV4_MULTICAST
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4_MULTICAST
         additional_paths:
           receive: true
       - ip_address: 10.1.1.2
@@ -741,6 +759,8 @@ router_bgp:
         activate: true
         route_map_in: IPV4-MULTICAST-RM-IN
         route_map_out: IPV4-MULTICAST-RM-OUT
+        peer_tag_in: PEER_TAG_IN_IPV4_MULTICAST
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4_MULTICAST
       - name: IPV4-UNDERLAY-MLAG
         activate: true
       - name: IPV4-MULTICAST-INACTIVE
@@ -848,6 +868,8 @@ router_bgp:
         next_hop_unchanged: true
         route_map_in: RM_IN_TEST
         route_map_out: RM_OUT_TEST
+        peer_tag_in: PEER_TAG_IN_IPV4_LABELED
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4_LABELED
       - ip_address: 192.168.66.22
         additional_paths:
           send: disabled
@@ -860,6 +882,8 @@ router_bgp:
         activate: true
         route_map_in: RM_BGP_LU_IN
         route_map_out: RM_BGP_LU_OUT
+        peer_tag_in: PEER_TAG_IN_IPV4_LABELED
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4_LABELED
         additional_paths:
           send: ecmp
           send_limit: 10
@@ -1003,6 +1027,8 @@ router_bgp:
         activate: true
         route_map_in: IPv6_MULTICAST_RM_IN
         route_map_out: IPv6_MULTICAST_RM_OUT
+        peer_tag_in: PEER_TAG_IN_IPV6_MULTICAST
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV6_MULTICAST
         additional_paths:
           receive: true
     peer_groups:
@@ -1050,6 +1076,8 @@ router_bgp:
         activate: true
         route_map_in: RM-SR-TE-PEER-IN4
         route_map_out: RM-SR-TE-PEER-OUT4
+        peer_tag_in: PEER_TAG_IN_IPV4_SR_TE
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4_SR_TE
       - name: SR-TE-PG-2
         activate: false
     neighbors:
@@ -1057,6 +1085,8 @@ router_bgp:
         activate: true
         route_map_in: RM-SR-TE-PEER-IN4
         route_map_out: RM-SR-TE-PEER-OUT4
+        peer_tag_in: PEER_TAG_IN_IPV4_SR_TE
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4_SR_TE
       - ip_address: 192.168.42.43
         activate: false
   address_family_ipv6_sr_te:
@@ -1065,6 +1095,8 @@ router_bgp:
         activate: true
         route_map_in: RM-SR-TE-PEER-IN6
         route_map_out: RM-SR-TE-PEER-OUT6
+        peer_tag_in: PEER_TAG_IN_IPV6_SR_TE
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV6_SR_TE
       - name: SR-TE-PG-3
         activate: false
     neighbors:
@@ -1072,6 +1104,8 @@ router_bgp:
         activate: true
         route_map_in: RM-SR-TE-PEER-IN6
         route_map_out: RM-SR-TE-PEER-OUT6
+        peer_tag_in: PEER_TAG_IN_IPV6_SR_TE
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV6_SR_TE
       - ip_address: 2002:db8::dead:beef:cafe
         activate: false
   address_family_vpn_ipv4:
@@ -1086,6 +1120,8 @@ router_bgp:
           route_map: RM-IBGP-PEER-IN4
         route_map_in: RM-IBGP-PEER-IN4
         route_map_out: RM-IBGP-PEER-OUT4
+        peer_tag_in: PEER_TAG_IN_IPV4_VPN
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4_VPN
       - name: Test_RCF
         activate: false
         rcf_in: Address_Family_VPN_IPV4_In()
@@ -1101,6 +1137,8 @@ router_bgp:
           route_map: RM-NEIGHBOR-PEER-IN4
         route_map_in: RM-NEIGHBOR-PEER-IN4
         route_map_out: RM-NEIGHBOR-PEER-OUT4
+        peer_tag_in: PEER_TAG_IN_IPV4_VPN
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4_VPN
       - ip_address: 192.168.255.5
         activate: false
         default_route:
@@ -1122,6 +1160,8 @@ router_bgp:
           route_map: RM-IBGP-PEER-OUT6
         route_map_in: RM-IBGP-PEER-IN6
         route_map_out: RM-IBGP-PEER-OUT6
+        peer_tag_in: PEER_TAG_IN_IPV6_VPN
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV6_VPN
       - name: Test_RCF
         activate: false
         default_route:
@@ -1137,6 +1177,8 @@ router_bgp:
           route_map: RM-NEIGHBOR-PEER-IN6
         route_map_in: RM-NEIGHBOR-PEER-IN6
         route_map_out: RM-NEIGHBOR-PEER-OUT6
+        peer_tag_in: PEER_TAG_IN_IPV6_VPN
+        peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV6_VPN
       - ip_address: 2001:cafe:192:168::5
         activate: false
         default_route:
@@ -1272,6 +1314,8 @@ router_bgp:
       missing_policy:
         direction_out:
           action: deny-in-out
+      peer_tag_in: PEER_TAG_IN
+      peer_tag_out_discard: PEER_TAG_DISCARD_OUT
     - ip_address: 192.168.255.3
       allowas_in:
         enabled: true
@@ -1575,6 +1619,8 @@ router_bgp:
             activate: true
             route_map_in: FOO
             route_map_out: BAR
+            peer_tag_in: PEER_TAG_IN_IPV4_VRF
+            peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4_VRF
             additional_paths:
               receive: true
               send: any
@@ -1651,6 +1697,8 @@ router_bgp:
             activate: true
             route_map_in: FOO
             route_map_out: BAR
+            peer_tag_in: PEER_TAG_IN_IPV6_VRF
+            peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV6_VRF
             additional_paths:
               send: any
               receive: true
@@ -1690,6 +1738,8 @@ router_bgp:
             activate: false
             route_map_in: FOO
             route_map_out: BAR
+            peer_tag_in: PEER_TAG_IN_IPV4_MULTICAST_VRF
+            peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4_MULTICAST_VRF
             additional_paths:
               receive: true
         networks:
@@ -2117,6 +2167,8 @@ router_bgp:
           - ip_address: 10.2.3.5
             activate: true
             route_map_in: RM-10.2.3.5-SET-NEXT-HOP-IN
+            peer_tag_in: PEER_TAG_IN_IPV4_VRF
+            peer_tag_out_discard: PEER_TAG_DISCARD_OUT_IPV4_VRF
           - ip_address: 10.2.3.6
             next_hop:
               address_family_ipv6:
