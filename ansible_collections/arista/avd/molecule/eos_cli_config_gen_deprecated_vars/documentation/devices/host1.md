@@ -6,7 +6,6 @@
   - [Flow Tracking](#flow-tracking)
 - [Interfaces](#interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
-  - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
@@ -211,34 +210,6 @@ interface Port-Channel10
    !
    encapsulation vlan
       client dot1q outer 10 inner 12 network dot1q outer 20 inner 22
-```
-
-### VLAN Interfaces
-
-#### VLAN Interfaces Summary
-
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
-| Vlan10 | - | default | - | - |
-
-##### IPv4
-
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
-| Vlan10 |  default  |  -  |  -  |  -  |  -  |  -  |
-
-##### VRRP Details
-
-| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IPs | IPv4 VRRP Version | IPv6 Virtual IPs | Peer Authentication Mode |
-| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | ---------------- | ----------------- | ---------------- | ------------------------ |
-| Vlan10 | 2 | - | - | Enabled | - | - |  | 2 | 2, 0, 0, 1, :, d, b, 8, :, :, 2 | - |
-
-#### VLAN Interfaces Device Configuration
-
-```eos
-!
-interface Vlan10
-   vrrp 2 ipv6 2001:db8::2
 ```
 
 ## Routing
