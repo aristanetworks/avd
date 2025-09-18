@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;recovery</samp>](## "errdisable.recovery") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;causes</samp>](## "errdisable.recovery.causes") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "errdisable.recovery.causes.[].name") | String | Required, Unique |  | Valid Values:<br>- <code>arp-inspection</code><br>- <code>bpduguard</code><br>- <code>dot1x</code><br>- <code>hitless-reload-down</code><br>- <code>lacp-rate-limit</code><br>- <code>link-flap</code><br>- <code>no-internal-vlan</code><br>- <code>portchannelguard</code><br>- <code>portsec</code><br>- <code>speed-misconfigured</code><br>- <code>tap-port-init</code><br>- <code>tapagg</code><br>- <code>uplink-failure-detection</code><br>- <code>xcvr-misconfigured</code><br>- <code>xcvr-overheat</code><br>- <code>xcvr-power-unsupported</code><br>- <code>xcvr-unsupported</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "errdisable.recovery.causes.[].interval") | Integer |  |  |  | Interval for each recovery cause. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "errdisable.recovery.causes.[].interval") | Integer |  | `300` | Min: 30<br>Max: 86400 | Interval for each recovery cause. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "errdisable.recovery.interval") | Integer |  | `300` | Min: 30<br>Max: 86400 | Interval in seconds. |
 
 === "YAML"
@@ -29,7 +29,7 @@
           - name: <str; "arp-inspection" | "bpduguard" | "dot1x" | "hitless-reload-down" | "lacp-rate-limit" | "link-flap" | "no-internal-vlan" | "portchannelguard" | "portsec" | "speed-misconfigured" | "tap-port-init" | "tapagg" | "uplink-failure-detection" | "xcvr-misconfigured" | "xcvr-overheat" | "xcvr-power-unsupported" | "xcvr-unsupported"; required; unique>
 
             # Interval for each recovery cause.
-            interval: <int>
+            interval: <int; 30-86400; default=300>
 
         # Interval in seconds.
         interval: <int; 30-86400; default=300>

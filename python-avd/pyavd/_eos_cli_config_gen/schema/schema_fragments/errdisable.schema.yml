@@ -58,8 +58,11 @@ keys:
                   type: int
                   description: |-
                     Interval for each recovery cause.
+                  default: 300
+                  min: 30
+                  max: 86400
                   convert_types:
-                  - str
+                    - str
           interval:
             type: int
             convert_types:

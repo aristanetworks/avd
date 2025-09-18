@@ -5960,7 +5960,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class CausesItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "interval": {"type": int}}
+                _fields: ClassVar[dict] = {"name": {"type": str}, "interval": {"type": int, "default": 300}}
                 name: Literal[
                     "arp-inspection",
                     "bpduguard",
@@ -5980,8 +5980,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "xcvr-power-unsupported",
                     "xcvr-unsupported",
                 ]
-                interval: int | None
-                """Interval for each recovery cause."""
+                interval: int
+                """
+                Interval for each recovery cause.
+
+                Default value: `300`
+                """
 
                 if TYPE_CHECKING:
 
@@ -6008,7 +6012,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "xcvr-unsupported",
                         ]
                         | UndefinedType = Undefined,
-                        interval: int | None | UndefinedType = Undefined,
+                        interval: int | UndefinedType = Undefined,
                     ) -> None:
                         """
                         CausesItem.
