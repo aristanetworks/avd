@@ -83,13 +83,19 @@ class TagMixin(Protocol):
         Returns:
             List of Tag objects.
         """
+        request_time = TimeBounds()
+        if time is not None:
+            request_time.end = time
+
         request = TagStreamRequest(
-            partial_eq_filter=Tag(
-                # Notice the "" for workspace, since we are fetching mainline.
-                key=TagKey(workspace_id="", element_type=ELEMENT_TYPE_MAP[element_type]),
-                creator_type=CREATOR_TYPE_MAP[creator_type],
-            ),
-            time=TimeBounds(start=None, end=time),
+            partial_eq_filter=[
+                Tag(
+                    # Notice the "" for workspace, since we are fetching mainline.
+                    key=TagKey(workspace_id="", element_type=ELEMENT_TYPE_MAP[element_type]),
+                    creator_type=CREATOR_TYPE_MAP[creator_type],
+                )
+            ],
+            time=request_time,
         )
         client = TagServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
@@ -101,11 +107,13 @@ class TagMixin(Protocol):
 
         # Next up fetch the tags config from the workspace if workspace is not "".
         request = TagConfigStreamRequest(
-            partial_eq_filter=TagConfig(
-                # This time fetch for the actual workspace we are interested in.
-                key=TagKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
-            ),
-            time=TimeBounds(start=None, end=time),
+            partial_eq_filter=[
+                TagConfig(
+                    # This time fetch for the actual workspace we are interested in.
+                    key=TagKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
+                )
+            ],
+            time=request_time,
         )
         client = TagConfigServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
@@ -189,13 +197,19 @@ class TagMixin(Protocol):
         Returns:
             Workspace object matching the workspace_id
         """
+        request_time = TimeBounds()
+        if time is not None:
+            request_time.end = time
+
         request = TagAssignmentStreamRequest(
-            partial_eq_filter=TagAssignment(
-                # Notice the "" for workspace, since we are fetching mainline.
-                key=TagAssignmentKey(workspace_id="", element_type=ELEMENT_TYPE_MAP[element_type]),
-                tag_creator_type=CREATOR_TYPE_MAP[creator_type],
-            ),
-            time=TimeBounds(start=None, end=time),
+            partial_eq_filter=[
+                TagAssignment(
+                    # Notice the "" for workspace, since we are fetching mainline.
+                    key=TagAssignmentKey(workspace_id="", element_type=ELEMENT_TYPE_MAP[element_type]),
+                    tag_creator_type=CREATOR_TYPE_MAP[creator_type],
+                )
+            ],
+            time=request_time,
         )
         client = TagAssignmentServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
@@ -207,11 +221,14 @@ class TagMixin(Protocol):
 
         # Next up fetch the tags config from the workspace if workspace is not "".
         request = TagAssignmentConfigStreamRequest(
-            partial_eq_filter=TagAssignmentConfig(
-                # This time fetch for the actual workspace we are interested in.
-                key=TagKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
-            ),
-            time=TimeBounds(start=None, end=time),
+            partial_eq_filter=[
+                TagAssignmentConfig(
+                    # This time fetch for the actual workspace we are interested in.
+                    # TODO: Discuss this change with @Claus as TagAssignmentConfig expect a different type than TagKey
+                    key=TagAssignmentKey(workspace_id=workspace_id, element_type=ELEMENT_TYPE_MAP[element_type]),
+                )
+            ],
+            time=request_time,
         )
         client = TagAssignmentConfigServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
@@ -234,7 +251,7 @@ class TagMixin(Protocol):
         tag_assignments: list[tuple[str, str, str, str | None]],
         element_type: Literal["device", "interface"],
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> list[TagAssignment]:
+    ) -> list[TagAssignmentKey]:
         """
         Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.
 
@@ -247,7 +264,7 @@ class TagMixin(Protocol):
         TODO: Consider if we should add sub_type.
 
         Returns:
-            List of TagAssignment objects after being set including any server-generated values.
+            List of TagAssignmentKey objects after being set including any server-generated values.
         """
         request = TagAssignmentConfigSetSomeRequest(values=[])
         for label, value, device_id, interface_id in tag_assignments:
@@ -289,7 +306,8 @@ class TagMixin(Protocol):
         TODO: Consider if we should add sub_type.
 
         Returns:
-            List of TagAssignmentKey objects after being set including any server-generated values.
+            List of TagAssignmentKey objects after being deleted including any server-generated values.
+            TODO: this is probably the list of waht failed rather than this.
         """
         request = TagAssignmentConfigSetSomeRequest(values=[])
         for label, value, device_id, interface_id in tag_assignments:

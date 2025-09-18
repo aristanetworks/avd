@@ -366,7 +366,7 @@ class StudioMixin(Protocol):
                 key=InputsKey(
                     studio_id=studio_id,
                     workspace_id=workspace_id,
-                    path=RepeatedString(values=input_path),
+                    path=RepeatedString(values=input_path or []),
                 ),
                 inputs=json.dumps(inputs),
             ),
@@ -451,7 +451,7 @@ class StudioMixin(Protocol):
         device_inputs_by_id = {device_id: {"hostname": hostname, "macAddress": system_mac} for device_id, hostname, system_mac in device_inputs}
 
         # We need to get all the devices to make sure we get the correct index of devices.
-        studio_inputs: dict = await self.get_studio_inputs(studio_id=TOPOLOGY_STUDIO_ID, workspace_id=workspace_id, default_value={}, timeout=timeout)
+        studio_inputs: dict[str, Any] = await self.get_studio_inputs(studio_id=TOPOLOGY_STUDIO_ID, workspace_id=workspace_id, default_value={}, timeout=timeout)
 
         request = InputsConfigSetSomeRequest(values=[])
 
@@ -483,10 +483,10 @@ class StudioMixin(Protocol):
         index_offset = len(studio_inputs.get("devices", []))
         # Add any devices not part of the topology studio already.
         for index, device in enumerate(device_inputs_by_id.items()):
-            device_id, device_inputs = device
+            device_id, device_inputs_dict = device
             device_index = index + index_offset
             device_entry = {
-                "inputs": {"device": {**device_inputs, "modelName": "", "interfaces": []}},
+                "inputs": {"device": {**device_inputs_dict, "modelName": "", "interfaces": []}},
                 "tags": {"query": f"device:{device_id}"},
             }
             request.values.append(

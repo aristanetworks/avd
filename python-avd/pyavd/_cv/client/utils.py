@@ -3,19 +3,21 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Protocol
+from typing import TYPE_CHECKING, Any, Protocol, TypeVar
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
     from . import CVClientProtocol
 
+T = TypeVar("T")
+
 
 class UtilsMixin(Protocol):
     """Only to be used as mixin on CVClient class."""
 
     @staticmethod
-    def _remove_item_from_list(itm: Any, lst: list, matcher: Callable) -> None:
+    def _remove_item_from_list(itm: T, lst: list[T], matcher: Callable[[T, T], bool]) -> None:
         """
         Remove one item from the given list.
 
@@ -26,11 +28,11 @@ class UtilsMixin(Protocol):
         """
         for index, item in enumerate(lst):
             if matcher(item, itm):
-                lst.pop(index)
+                _ = lst.pop(index)
                 return
 
     @staticmethod
-    def _upsert_item_in_list(itm: Any, lst: list, matcher: Callable) -> None:
+    def _upsert_item_in_list(itm: T, lst: list[T], matcher: Callable[[T, T], bool]) -> None:
         """
         Update or append one item from the given list.
 
@@ -61,16 +63,17 @@ class UtilsMixin(Protocol):
                 return
             msg = f"Path '{path}', value type '{type(value)}' cannot be set on data type '{type(data)}'"
             raise RuntimeError(msg)
+
         # Convert '0' to 0.
-        path = [int(element) if str(element).isnumeric() else element for element in path]
-        if len(path) == 1:
+        updated_path = [int(element) if str(element).isnumeric() else element for element in path]
+        if len(updated_path) == 1:
             if isinstance(data, dict):
-                data[path[0]] = value
-            elif isinstance(data, list) and isinstance(path[0], int):
+                data[updated_path[0]] = value
+            elif isinstance(data, list) and isinstance(updated_path[0], int):
                 # We ignore the actual integer value and just append the item to the list.
                 data.append(value)
             else:
-                msg = f"Path '{path}' cannot be set on data of type '{type(data)}'"
+                msg = f"Path '{updated_path}' cannot be set on data of type '{type(data)}'"
                 raise RuntimeError(msg)
             return
 
@@ -122,12 +125,21 @@ class UtilsMixin(Protocol):
             return data
 
         # Convert '0' to 0.
-        path = [int(element) if str(element).isnumeric() else element for element in path]
-        if isinstance(path[0], int) and not isinstance(data, list):
-            msg = f"Path element is '{path[0]}' but data is not a list (got '{type(data)}')."
+        updated_path = [int(element) if str(element).isnumeric() else element for element in path]
+        if isinstance(updated_path[0], int):
+            if not isinstance(data, list):
+                msg = f"Path element is '{updated_path[0]}' but data is not a list (got '{type(data)}')."
+                raise TypeError(msg)
+            try:
+                return self._get_value_from_path(path[1:], data[updated_path[0]])
+            except IndexError:
+                return default_value
+
+        if not isinstance(data, dict):
+            msg = f"Path element is '{updated_path[0]}' but data is not a dict (got '{type(data)}')."
             raise TypeError(msg)
 
         try:
-            return self._get_value_from_path(path[1:], data[path[0]])
+            return self._get_value_from_path(path[1:], data[updated_path[0]])
         except (IndexError, KeyError):
             return default_value

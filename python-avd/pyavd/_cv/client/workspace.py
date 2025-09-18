@@ -72,7 +72,6 @@ class WorkspaceMixin(Protocol):
             key=WorkspaceKey(
                 workspace_id=workspace_id,
             ),
-            time=time,
         )
         client = WorkspaceServiceStub(self.channel)
 
