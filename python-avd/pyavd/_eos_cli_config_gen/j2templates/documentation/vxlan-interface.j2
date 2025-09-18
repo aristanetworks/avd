@@ -5,7 +5,7 @@
 #}
 {# j2lint: disable=V1 #}
 {# doc - vxlan interface #}
-{% set vxlan_config = vxlan_interface.vxlan1 | arista.avd.default(vxlan_interface.Vxlan1) %}
+{% set vxlan_config = vxlan_interface.vxlan1 %}
 {% if vxlan_config is arista.avd.defined %}
 
 ### VXLAN Interface
