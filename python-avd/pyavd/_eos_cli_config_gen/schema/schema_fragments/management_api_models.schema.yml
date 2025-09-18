@@ -9,28 +9,6 @@ keys:
   management_api_models:
     type: dict
     keys:
-      providers:
-        type: list
-        deprecation:
-          warning: true
-          new_key: provider
-          remove_in_version: 6.0.0
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              valid_values: ["sysdb", "smash"]
-            paths:
-              type: list
-              items:
-                type: dict
-                keys:
-                  path:
-                    type: str
-                  disabled:
-                    type: bool
-                    default: false
       provider:
         type: dict
         keys:
@@ -69,3 +47,10 @@ keys:
               mka:
                 type: bool
                 description: Enable MKA for MACsec.
+      providers:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          new_key: provider
+          remove_in_version: 6.0.0
