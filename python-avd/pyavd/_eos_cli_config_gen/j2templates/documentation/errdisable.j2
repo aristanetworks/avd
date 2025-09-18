@@ -14,7 +14,12 @@
 Errdisable recovery timer interval: {{ errdisable.recovery.interval }} seconds
 {%     endif %}
 {%     if errdisable.detect.causes is arista.avd.defined or errdisable.recovery.causes is arista.avd.defined %}
-{%         set combined_causes = ( errdisable.detect.causes | arista.avd.default([]) + errdisable.recovery.causes | arista.avd.default([]) ) | unique %}
+{%         set combined_causes = [] %}
+{%         do combined_causes.extend(errdisable.detect.causes | arista.avd.default([])) %}
+{%         for recovery_cause in errdisable.recovery.causes | arista.avd.default([]) %}
+{%             do combined_causes.append(recovery_cause.name) %}
+{%         endfor %}
+{%         set combined_causes = combined_causes | unique %}
 
 |  Cause | Detection Enabled | Recovery Enabled |
 | ------ | ----------------- | ---------------- |
@@ -24,12 +29,14 @@ Errdisable recovery timer interval: {{ errdisable.recovery.interval }} seconds
 {%             else %}
 {%                 set detect_status = "-" %}
 {%             endif %}
-{%             if cause in errdisable.recovery.causes | arista.avd.default([]) %}
-{%                 set recovery_status = True %}
-{%             else %}
-{%                 set recovery_status = "-" %}
-{%             endif %}
-| {{ cause }} | {{ detect_status }} | {{ recovery_status }} |
+{%             set status_namespece = namespace(recovery_status= "-") %}
+{%             for recovery_cause in errdisable.recovery.causes | arista.avd.default([]) %}
+{%                 if recovery_cause.name == cause %}
+{%                     set status_namespece.recovery_status = True %}
+{%                     break %}
+{%                 endif %}
+{%             endfor %}
+| {{ cause }} | {{ detect_status }} | {{ status_namespece.recovery_status }} |
 {%         endfor %}
 {%     endif %}
 

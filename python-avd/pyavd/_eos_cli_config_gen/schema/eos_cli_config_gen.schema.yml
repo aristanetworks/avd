@@ -2397,38 +2397,35 @@ keys:
         keys:
           causes:
             type: list
+            primary_key: name
             items:
-              type: str
-              valid_values:
-              - arp-inspection
-              - bpduguard
-              - dot1x
-              - hitless-reload-down
-              - lacp-rate-limit
-              - link-flap
-              - no-internal-vlan
-              - portchannelguard
-              - portsec
-              - speed-misconfigured
-              - tap-port-init
-              - tapagg
-              - uplink-failure-detection
-              - xcvr-misconfigured
-              - xcvr-overheat
-              - xcvr-power-unsupported
-              - xcvr-unsupported
-          intervals:
-            type: list
-            description: 'Interval for each recovery cause. This list should be of
-              same length as `causes`.
-
-              Set ''none'' for default interval.
-
-              Minimum value: 300 and maximum value: 86400.'
-            items:
-              type: str
-              convert_types:
-              - int
+              type: dict
+              keys:
+                name:
+                  type: str
+                  valid_values:
+                  - arp-inspection
+                  - bpduguard
+                  - dot1x
+                  - hitless-reload-down
+                  - lacp-rate-limit
+                  - link-flap
+                  - no-internal-vlan
+                  - portchannelguard
+                  - portsec
+                  - speed-misconfigured
+                  - tap-port-init
+                  - tapagg
+                  - uplink-failure-detection
+                  - xcvr-misconfigured
+                  - xcvr-overheat
+                  - xcvr-power-unsupported
+                  - xcvr-unsupported
+                interval:
+                  type: int
+                  description: Interval for each recovery cause.
+                  convert_types:
+                  - str
           interval:
             type: int
             convert_types:

@@ -5957,29 +5957,81 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Recovery(AvdModel):
             """Subclass of AvdModel."""
 
-            class Causes(AvdList[str]):
-                """Subclass of AvdList with `str` items."""
+            class CausesItem(AvdModel):
+                """Subclass of AvdModel."""
 
-            Causes._item_type = str
+                _fields: ClassVar[dict] = {"name": {"type": str}, "interval": {"type": int}}
+                name: Literal[
+                    "arp-inspection",
+                    "bpduguard",
+                    "dot1x",
+                    "hitless-reload-down",
+                    "lacp-rate-limit",
+                    "link-flap",
+                    "no-internal-vlan",
+                    "portchannelguard",
+                    "portsec",
+                    "speed-misconfigured",
+                    "tap-port-init",
+                    "tapagg",
+                    "uplink-failure-detection",
+                    "xcvr-misconfigured",
+                    "xcvr-overheat",
+                    "xcvr-power-unsupported",
+                    "xcvr-unsupported",
+                ]
+                interval: int | None
+                """Interval for each recovery cause."""
 
-            class Intervals(AvdList[str]):
-                """Subclass of AvdList with `str` items."""
+                if TYPE_CHECKING:
 
-            Intervals._item_type = str
+                    def __init__(
+                        self,
+                        *,
+                        name: Literal[
+                            "arp-inspection",
+                            "bpduguard",
+                            "dot1x",
+                            "hitless-reload-down",
+                            "lacp-rate-limit",
+                            "link-flap",
+                            "no-internal-vlan",
+                            "portchannelguard",
+                            "portsec",
+                            "speed-misconfigured",
+                            "tap-port-init",
+                            "tapagg",
+                            "uplink-failure-detection",
+                            "xcvr-misconfigured",
+                            "xcvr-overheat",
+                            "xcvr-power-unsupported",
+                            "xcvr-unsupported",
+                        ]
+                        | UndefinedType = Undefined,
+                        interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        CausesItem.
 
-            _fields: ClassVar[dict] = {"causes": {"type": Causes}, "intervals": {"type": Intervals}, "interval": {"type": int, "default": 300}}
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: name
+                            interval: Interval for each recovery cause.
+
+                        """
+
+            class Causes(AvdIndexedList[str, CausesItem]):
+                """Subclass of AvdIndexedList with `CausesItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Causes._item_type = CausesItem
+
+            _fields: ClassVar[dict] = {"causes": {"type": Causes}, "interval": {"type": int, "default": 300}}
             causes: Causes
-            """Subclass of AvdList with `str` items."""
-            intervals: Intervals
-            """
-            Interval for each recovery cause. This list should be of same length as `causes`.
-            Set 'none' for
-            default interval.
-            Minimum value: 300 and maximum value: 86400.
-
-            Subclass of AvdList with `str`
-            items.
-            """
+            """Subclass of AvdIndexedList with `CausesItem` items. Primary key is `name` (`str`)."""
             interval: int
             """
             Interval in seconds.
@@ -5989,13 +6041,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    causes: Causes | UndefinedType = Undefined,
-                    intervals: Intervals | UndefinedType = Undefined,
-                    interval: int | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, causes: Causes | UndefinedType = Undefined, interval: int | UndefinedType = Undefined) -> None:
                     """
                     Recovery.
 
@@ -6003,15 +6049,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        causes: Subclass of AvdList with `str` items.
-                        intervals:
-                           Interval for each recovery cause. This list should be of same length as `causes`.
-                           Set 'none' for
-                           default interval.
-                           Minimum value: 300 and maximum value: 86400.
-
-                           Subclass of AvdList with `str`
-                           items.
+                        causes: Subclass of AvdIndexedList with `CausesItem` items. Primary key is `name` (`str`).
                         interval: Interval in seconds.
 
                     """
