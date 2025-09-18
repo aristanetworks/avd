@@ -70,7 +70,6 @@ class LimitCvVersion:
             )
             raise ValueError(msg)
 
-
     def __call__(self, func: Callable[P, T]) -> Callable[P, T]:
         """
         Store the method in the map of versioned functions after checking for overlapping decorators for the same method.

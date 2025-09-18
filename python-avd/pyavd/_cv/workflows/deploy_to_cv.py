@@ -6,7 +6,6 @@ from __future__ import annotations
 from logging import getLogger
 from typing import TYPE_CHECKING, cast
 
-
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException
 
