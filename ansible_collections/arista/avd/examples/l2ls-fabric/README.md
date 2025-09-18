@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Example for L2LS Fabric
+title: L2LS Fabric
 ---
 <!--
   ~ Copyright (c) 2023-2025 Arista Networks, Inc.
@@ -8,7 +8,7 @@ title: Example for L2LS Fabric
   ~ that can be found in the LICENSE file.
   -->
 
-# Example for L2LS Fabric
+# L2LS Fabric
 
 ## Introduction
 

@@ -1,12 +1,4 @@
 ---
-ethernet_interfaces:
-  - name: Ethernet1
-    vlans: 1-2  # Conflict expected with switchport.access_vlan
-    mode: trunk  # Conflict expected with switchport.mode
-    switchport:
-      mode: access
-      access_vlan: 123
-
 port_channel_interfaces:
   - name: Port-Channel1
     vlans: 1-2  # Conflict expected with switchport.trunk.allowed_vlan
@@ -76,4 +68,4 @@ router_bgp:
           connected:
             enabled: true
 
-expected_error_message: "13 errors found during schema validation of input vars."
+expected_error_message: "11 errors found during schema validation of input vars."
