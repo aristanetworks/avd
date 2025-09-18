@@ -10,7 +10,6 @@ l2leaf:
   _custom_key1: custom_value1
   defaults:
     structured_config:
-      _custom_key2: [custom_value2]
       ethernet_interfaces:
         - name: "Ethernet1"
           switchport:

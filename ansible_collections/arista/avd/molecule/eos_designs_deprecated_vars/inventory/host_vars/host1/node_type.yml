@@ -22,9 +22,6 @@ l3leaf:
     - name: host1
       id: 101
       bgp_as: 101
-      structured_config:
-        # Having custom keys in structured_config is deprecated and support will be removed in AVD 6.0.0.
-        custom_key2: foo
   node_groups:
     - group: sflow-tests-leaf-mlag
       bgp_as: 65105

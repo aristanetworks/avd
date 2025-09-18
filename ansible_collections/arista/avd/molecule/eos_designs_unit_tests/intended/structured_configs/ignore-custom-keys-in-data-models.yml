@@ -29,5 +29,3 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
-_custom_key2:
-- custom_value2
