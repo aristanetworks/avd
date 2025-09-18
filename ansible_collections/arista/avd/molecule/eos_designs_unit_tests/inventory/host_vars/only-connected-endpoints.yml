@@ -51,3 +51,8 @@ network_ports:
     switch_ports: [Ethernet20-29]
     endpoint: Network Port
     profile: MY_PROFILE
+    # Testing for dot1x mode supplicant.
+    dot1x:
+      pae:
+        mode: supplicant
+        supplicant_profile: test_profile_only_connected_endpoints

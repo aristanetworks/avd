@@ -1,0 +1,24 @@
+# UNDERLAY_MULTICAST_TESTS_WITH_NO_PEERS
+
+type: l3leaf
+
+underlay_multicast: true
+underlay_multicast_rps:
+  - rp: 192.168.200.1
+    groups:
+      - 239.255.1.0/24
+underlay_multicast_anycast_rp:
+  mode: msdp
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  node_groups:
+    - group: DC1_LEAF1
+      nodes:
+        - name: UNDERLAY_MULTICAST_LEAF1
+          id: 1
+          mgmt_ip: 192.168.200.109/24
+          bgp_as: 65001
