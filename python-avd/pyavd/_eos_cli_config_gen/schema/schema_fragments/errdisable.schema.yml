@@ -37,23 +37,23 @@ keys:
                 name:
                   type: str
                   valid_values:
-                    - "arp-inspection"
-                    - "bpduguard"
-                    - "dot1x"
-                    - "hitless-reload-down"
-                    - "lacp-rate-limit"
-                    - "link-flap"
-                    - "no-internal-vlan"
-                    - "portchannelguard"
-                    - "portsec"
-                    - "speed-misconfigured"
-                    - "tap-port-init"
-                    - "tapagg"
-                    - "uplink-failure-detection"
-                    - "xcvr-misconfigured"
-                    - "xcvr-overheat"
-                    - "xcvr-power-unsupported"
-                    - "xcvr-unsupported"
+                  - "arp-inspection"
+                  - "bpduguard"
+                  - "dot1x"
+                  - "hitless-reload-down"
+                  - "lacp-rate-limit"
+                  - "link-flap"
+                  - "no-internal-vlan"
+                  - "portchannelguard"
+                  - "portsec"
+                  - "speed-misconfigured"
+                  - "tap-port-init"
+                  - "tapagg"
+                  - "uplink-failure-detection"
+                  - "xcvr-misconfigured"
+                  - "xcvr-overheat"
+                  - "xcvr-power-unsupported"
+                  - "xcvr-unsupported"
                 interval:
                   type: int
                   description: |-
@@ -62,7 +62,7 @@ keys:
                   min: 30
                   max: 86400
                   convert_types:
-                    - str
+                  - str
           interval:
             type: int
             convert_types:
