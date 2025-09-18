@@ -59,10 +59,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
 
     @classmethod
     def _from_dict(cls: type[T_AvdModel], data: Mapping) -> T_AvdModel:
-        """
-        Returns a new instance loaded with the data from the given dict.
-
-        """
+        """Returns a new instance loaded with the data from the given dict."""
         if not isinstance(data, Mapping):
             msg = f"Expecting 'data' as a 'Mapping' when loading data into '{cls.__name__}'. Got '{type(data)}"
             raise TypeError(msg)
