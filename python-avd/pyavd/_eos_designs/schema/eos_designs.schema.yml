@@ -5393,31 +5393,6 @@ keys:
 
       Errors will also be raised if an interface is not found for a device.'
     keys:
-      domain_lookup:
-        type: dict
-        description: IP Domain Lookup source-interfaces.
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: dns_settings
-        keys:
-          mgmt_interface:
-            type: bool
-            default: false
-            description: 'Configure an IP Domain Lookup source-interface with the
-              interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
-
-              `mgmt_interface` is typically the out-of-band Management interface,
-              and can be set under the node settings, platform settings or as a group/host
-              var.'
-          inband_mgmt_interface:
-            type: bool
-            default: false
-            description: 'Configure an IP Domain Lookup source-interface with the
-              interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
-
-              `inband_mgmt_interface` is typically a loopback or SVI interface, and
-              can be set under the node settings.'
       http_client:
         type: dict
         description: IP HTTP Client source-interfaces.
@@ -5436,58 +5411,6 @@ keys:
             default: false
             description: 'Configure an IP HTTP Client source-interface with the interface
               set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
-
-              `inband_mgmt_interface` is typically a loopback or SVI interface, and
-              can be set under the node settings.'
-      radius:
-        type: dict
-        description: IP Radius source-interfaces.
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: 'aaa_settings.radius.vrfs[].source_interface or aaa_settings.radius.servers[].vrf:
-            use_mgmt_interface_vrf or aaa_settings.radius.servers[].vrf: use_inband_mgmt_vrf'
-        keys:
-          mgmt_interface:
-            type: bool
-            default: false
-            description: 'Configure an IP Radius source-interface with the interface
-              set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
-
-              `mgmt_interface` is typically the out-of-band Management interface,
-              and can be set under the node settings, platform settings or as a group/host
-              var.'
-          inband_mgmt_interface:
-            type: bool
-            default: false
-            description: 'Configure an IP Radius source-interface with the interface
-              set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
-
-              `inband_mgmt_interface` is typically a loopback or SVI interface, and
-              can be set under the node settings.'
-      snmp:
-        type: dict
-        description: SNMP local-interfaces.
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: 'snmp_settings.vrfs[].source_interface or snmp_settings.hosts[].vrf:
-            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf'
-        keys:
-          mgmt_interface:
-            type: bool
-            default: false
-            description: 'Configure a SNMP local-interface with the interface set
-              by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
-
-              `mgmt_interface` is typically the out-of-band Management interface,
-              and can be set under the node settings, platform settings or as a group/host
-              var.'
-          inband_mgmt_interface:
-            type: bool
-            default: false
-            description: 'Configure a SNMP local-interface with the interface set
-              by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
 
               `inband_mgmt_interface` is typically a loopback or SVI interface, and
               can be set under the node settings.'
@@ -5514,30 +5437,36 @@ keys:
               can be set under the node settings.'
       tacacs:
         type: dict
-        description: IP Tacacs source-interfaces.
         deprecation:
           warning: true
+          removed: true
           remove_in_version: 6.0.0
           new_key: 'aaa_settings.tacacs.vrfs[].source_interface or aaa_settings.tacacs.servers[].vrf:
             use_mgmt_interface_vrf or aaa_settings.tacacs.servers[].vrf: use_inband_mgmt_vrf'
-        keys:
-          mgmt_interface:
-            type: bool
-            default: false
-            description: 'Configure an IP Tacacs source-interface with the interface
-              set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
-
-              `mgmt_interface` is typically the out-of-band Management interface,
-              and can be set under the node settings, platform settings or as a group/host
-              var.'
-          inband_mgmt_interface:
-            type: bool
-            default: false
-            description: 'Configure an IP Tacacs source-interface with the interface
-              set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
-
-              `inband_mgmt_interface` is typically a loopback or SVI interface, and
-              can be set under the node settings.'
+      snmp:
+        type: dict
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: 'snmp_settings.vrfs[].source_interface or snmp_settings.hosts[].vrf:
+            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf
+            or avd_6_behaviors.snmp_settings_vrfs'
+      radius:
+        type: dict
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: 'aaa_settings.radius.vrfs[].source_interface or aaa_settings.radius.servers[].vrf:
+            use_mgmt_interface_vrf or aaa_settings.radius.servers[].vrf: use_inband_mgmt_vrf'
+      domain_lookup:
+        type: dict
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: dns_settings
   ssh_settings:
     type: dict
     documentation_options:

@@ -647,18 +647,6 @@ class AvdStructuredConfigBaseProtocol(
         if eos_cli:
             self.structured_config.eos_cli = eos_cli
 
-    # need to update return type in self._build_source_interfaces() method, then update the below cached_property where this method is used
-    @structured_config_contributor
-    def ip_radius_source_interfaces(self) -> None:
-        """Parse source_interfaces.radius and return list of source_interfaces."""
-        if not (inputs := self.inputs.source_interfaces.radius):
-            return
-
-        if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Radius", output_type=EosCliConfigGen.IpRadiusSourceInterfaces
-        ):
-            self.structured_config.ip_radius_source_interfaces.extend(source_interfaces)
-
     @structured_config_contributor
     def radius_servers(self) -> None:
         """Parse AAA radius server configurations and update structured config with server and source interface details."""
@@ -684,17 +672,6 @@ class AvdStructuredConfigBaseProtocol(
                 radius_group = self.structured_config.aaa_server_groups.obtain(group)
                 radius_group.type = "radius"
                 radius_group.servers.append_new(server=server.host, vrf=server_vrf)
-
-    @structured_config_contributor
-    def ip_tacacs_source_interfaces(self) -> None:
-        """Parse source_interfaces.tacacs and return list of source_interfaces."""
-        if not (inputs := self.inputs.source_interfaces.tacacs):
-            return
-
-        if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Tacacs", output_type=EosCliConfigGen.IpTacacsSourceInterfaces
-        ):
-            self.structured_config.ip_tacacs_source_interfaces.extend(source_interfaces)
 
     @structured_config_contributor
     def tacacs_servers(self) -> None:
@@ -767,17 +744,6 @@ class AvdStructuredConfigBaseProtocol(
             inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP SSH Client", output_type=EosCliConfigGen.IpSshClientSourceInterfaces
         ):
             self.structured_config.ip_ssh_client_source_interfaces = source_interfaces
-
-    @structured_config_contributor
-    def ip_domain_lookup(self) -> None:
-        """Parse source_interfaces.domain_lookup and return dict with nested source_interfaces list."""
-        if not (inputs := self.inputs.source_interfaces.domain_lookup):
-            return
-
-        if source_interfaces := self._build_source_interfaces(
-            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Domain Lookup", output_type=EosCliConfigGen.IpDomainLookup.SourceInterfaces
-        ):
-            self.structured_config.ip_domain_lookup.source_interfaces = source_interfaces
 
     @structured_config_contributor
     def ip_http_client_source_interfaces(self) -> None:

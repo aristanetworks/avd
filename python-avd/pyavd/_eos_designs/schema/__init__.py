@@ -17063,52 +17063,6 @@ class EosDesigns(EosDesignsRootModel):
     class SourceInterfaces(AvdModel):
         """Subclass of AvdModel."""
 
-        class DomainLookup(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"mgmt_interface": {"type": bool, "default": False}, "inband_mgmt_interface": {"type": bool, "default": False}}
-            mgmt_interface: bool
-            """
-            Configure an IP Domain Lookup source-interface with the interface set by `mgmt_interface` for the
-            VRF set by `mgmt_interface_vrf`.
-            `mgmt_interface` is typically the out-of-band Management interface,
-            and can be set under the node settings, platform settings or as a group/host var.
-
-            Default value: `False`
-            """
-            inband_mgmt_interface: bool
-            """
-            Configure an IP Domain Lookup source-interface with the interface set by `inband_mgmt_interface` for
-            the VRF set by `inband_mgmt_vrf`.
-            `inband_mgmt_interface` is typically a loopback or SVI interface,
-            and can be set under the node settings.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, mgmt_interface: bool | UndefinedType = Undefined, inband_mgmt_interface: bool | UndefinedType = Undefined) -> None:
-                    """
-                    DomainLookup.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mgmt_interface:
-                           Configure an IP Domain Lookup source-interface with the interface set by `mgmt_interface` for the
-                           VRF set by `mgmt_interface_vrf`.
-                           `mgmt_interface` is typically the out-of-band Management interface,
-                           and can be set under the node settings, platform settings or as a group/host var.
-                        inband_mgmt_interface:
-                           Configure an IP Domain Lookup source-interface with the interface set by `inband_mgmt_interface` for
-                           the VRF set by `inband_mgmt_vrf`.
-                           `inband_mgmt_interface` is typically a loopback or SVI interface,
-                           and can be set under the node settings.
-
-                    """
-
         class HttpClient(AvdModel):
             """Subclass of AvdModel."""
 
@@ -17152,98 +17106,6 @@ class EosDesigns(EosDesignsRootModel):
                            the VRF set by `inband_mgmt_vrf`.
                            `inband_mgmt_interface` is typically a loopback or SVI interface,
                            and can be set under the node settings.
-
-                    """
-
-        class Radius(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"mgmt_interface": {"type": bool, "default": False}, "inband_mgmt_interface": {"type": bool, "default": False}}
-            mgmt_interface: bool
-            """
-            Configure an IP Radius source-interface with the interface set by `mgmt_interface` for the VRF set
-            by `mgmt_interface_vrf`.
-            `mgmt_interface` is typically the out-of-band Management interface, and can
-            be set under the node settings, platform settings or as a group/host var.
-
-            Default value: `False`
-            """
-            inband_mgmt_interface: bool
-            """
-            Configure an IP Radius source-interface with the interface set by `inband_mgmt_interface` for the
-            VRF set by `inband_mgmt_vrf`.
-            `inband_mgmt_interface` is typically a loopback or SVI interface, and
-            can be set under the node settings.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, mgmt_interface: bool | UndefinedType = Undefined, inband_mgmt_interface: bool | UndefinedType = Undefined) -> None:
-                    """
-                    Radius.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mgmt_interface:
-                           Configure an IP Radius source-interface with the interface set by `mgmt_interface` for the VRF set
-                           by `mgmt_interface_vrf`.
-                           `mgmt_interface` is typically the out-of-band Management interface, and can
-                           be set under the node settings, platform settings or as a group/host var.
-                        inband_mgmt_interface:
-                           Configure an IP Radius source-interface with the interface set by `inband_mgmt_interface` for the
-                           VRF set by `inband_mgmt_vrf`.
-                           `inband_mgmt_interface` is typically a loopback or SVI interface, and
-                           can be set under the node settings.
-
-                    """
-
-        class Snmp(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"mgmt_interface": {"type": bool, "default": False}, "inband_mgmt_interface": {"type": bool, "default": False}}
-            mgmt_interface: bool
-            """
-            Configure a SNMP local-interface with the interface set by `mgmt_interface` for the VRF set by
-            `mgmt_interface_vrf`.
-            `mgmt_interface` is typically the out-of-band Management interface, and can be
-            set under the node settings, platform settings or as a group/host var.
-
-            Default value: `False`
-            """
-            inband_mgmt_interface: bool
-            """
-            Configure a SNMP local-interface with the interface set by `inband_mgmt_interface` for the VRF set
-            by `inband_mgmt_vrf`.
-            `inband_mgmt_interface` is typically a loopback or SVI interface, and can be
-            set under the node settings.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, mgmt_interface: bool | UndefinedType = Undefined, inband_mgmt_interface: bool | UndefinedType = Undefined) -> None:
-                    """
-                    Snmp.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mgmt_interface:
-                           Configure a SNMP local-interface with the interface set by `mgmt_interface` for the VRF set by
-                           `mgmt_interface_vrf`.
-                           `mgmt_interface` is typically the out-of-band Management interface, and can be
-                           set under the node settings, platform settings or as a group/host var.
-                        inband_mgmt_interface:
-                           Configure a SNMP local-interface with the interface set by `inband_mgmt_interface` for the VRF set
-                           by `inband_mgmt_vrf`.
-                           `inband_mgmt_interface` is typically a loopback or SVI interface, and can be
-                           set under the node settings.
 
                     """
 
@@ -17293,81 +17155,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class Tacacs(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"mgmt_interface": {"type": bool, "default": False}, "inband_mgmt_interface": {"type": bool, "default": False}}
-            mgmt_interface: bool
-            """
-            Configure an IP Tacacs source-interface with the interface set by `mgmt_interface` for the VRF set
-            by `mgmt_interface_vrf`.
-            `mgmt_interface` is typically the out-of-band Management interface, and can
-            be set under the node settings, platform settings or as a group/host var.
-
-            Default value: `False`
-            """
-            inband_mgmt_interface: bool
-            """
-            Configure an IP Tacacs source-interface with the interface set by `inband_mgmt_interface` for the
-            VRF set by `inband_mgmt_vrf`.
-            `inband_mgmt_interface` is typically a loopback or SVI interface, and
-            can be set under the node settings.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, mgmt_interface: bool | UndefinedType = Undefined, inband_mgmt_interface: bool | UndefinedType = Undefined) -> None:
-                    """
-                    Tacacs.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mgmt_interface:
-                           Configure an IP Tacacs source-interface with the interface set by `mgmt_interface` for the VRF set
-                           by `mgmt_interface_vrf`.
-                           `mgmt_interface` is typically the out-of-band Management interface, and can
-                           be set under the node settings, platform settings or as a group/host var.
-                        inband_mgmt_interface:
-                           Configure an IP Tacacs source-interface with the interface set by `inband_mgmt_interface` for the
-                           VRF set by `inband_mgmt_vrf`.
-                           `inband_mgmt_interface` is typically a loopback or SVI interface, and
-                           can be set under the node settings.
-
-                    """
-
-        _fields: ClassVar[dict] = {
-            "domain_lookup": {"type": DomainLookup},
-            "http_client": {"type": HttpClient},
-            "radius": {"type": Radius},
-            "snmp": {"type": Snmp},
-            "ssh_client": {"type": SshClient},
-            "tacacs": {"type": Tacacs},
-        }
-        domain_lookup: DomainLookup
-        """
-        IP Domain Lookup source-interfaces.
-
-        Subclass of AvdModel.
-        """
+        _fields: ClassVar[dict] = {"http_client": {"type": HttpClient}, "ssh_client": {"type": SshClient}}
         http_client: HttpClient
         """
         IP HTTP Client source-interfaces.
-
-        Subclass of AvdModel.
-        """
-        radius: Radius
-        """
-        IP Radius source-interfaces.
-
-        Subclass of AvdModel.
-        """
-        snmp: Snmp
-        """
-        SNMP local-interfaces.
 
         Subclass of AvdModel.
         """
@@ -17377,25 +17168,10 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        tacacs: Tacacs
-        """
-        IP Tacacs source-interfaces.
-
-        Subclass of AvdModel.
-        """
 
         if TYPE_CHECKING:
 
-            def __init__(
-                self,
-                *,
-                domain_lookup: DomainLookup | UndefinedType = Undefined,
-                http_client: HttpClient | UndefinedType = Undefined,
-                radius: Radius | UndefinedType = Undefined,
-                snmp: Snmp | UndefinedType = Undefined,
-                ssh_client: SshClient | UndefinedType = Undefined,
-                tacacs: Tacacs | UndefinedType = Undefined,
-            ) -> None:
+            def __init__(self, *, http_client: HttpClient | UndefinedType = Undefined, ssh_client: SshClient | UndefinedType = Undefined) -> None:
                 """
                 SourceInterfaces.
 
@@ -17403,28 +17179,12 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    domain_lookup:
-                       IP Domain Lookup source-interfaces.
-
-                       Subclass of AvdModel.
                     http_client:
                        IP HTTP Client source-interfaces.
 
                        Subclass of AvdModel.
-                    radius:
-                       IP Radius source-interfaces.
-
-                       Subclass of AvdModel.
-                    snmp:
-                       SNMP local-interfaces.
-
-                       Subclass of AvdModel.
                     ssh_client:
                        IP SSH Client source-interfaces.
-
-                       Subclass of AvdModel.
-                    tacacs:
-                       IP Tacacs source-interfaces.
 
                        Subclass of AvdModel.
 
