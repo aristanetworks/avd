@@ -36,17 +36,14 @@ class SnmpServerMixin(Protocol):
         we will use snmp_hash filter to create an instance of hashlib HASH corresponding to the auth_type
         value based on various snmp_settings.users information.
         """
-        source_interfaces_inputs = self.inputs.source_interfaces.snmp
         snmp_settings = self.inputs.snmp_settings
 
-        if not any([source_interfaces_inputs, snmp_settings]):
+        if not snmp_settings:
             return
 
         self._snmp_engine_ids(snmp_settings)
         self._snmp_location(snmp_settings)
         self._snmp_users(snmp_settings)
-        # Local interfaces first, since it may be updated by snmp_hosts.
-        self._snmp_local_interfaces(source_interfaces_inputs)
         self._snmp_hosts(snmp_settings)
         self._snmp_vrfs(snmp_settings)
         self._snmp_ipv4_acls(snmp_settings)
@@ -191,22 +188,6 @@ class SnmpServerMixin(Protocol):
                 snmp_hosts.append(add_host)
 
         self.structured_config.snmp_server.hosts = snmp_hosts
-
-    def _snmp_local_interfaces(self: AvdStructuredConfigBaseProtocol, source_interfaces_inputs: EosDesigns.SourceInterfaces.Snmp) -> None:
-        """
-        Set local_interfaces from "source_interfaces.snmp".
-
-        TODO: AVD6.0 remove this method.
-        """
-        if not source_interfaces_inputs:
-            return
-
-        self.structured_config.snmp_server.local_interfaces = self._build_source_interfaces(
-            source_interfaces_inputs.mgmt_interface,
-            source_interfaces_inputs.inband_mgmt_interface,
-            error_context="SNMP",
-            output_type=EosCliConfigGen.SnmpServer.LocalInterfaces,
-        )
 
     def _snmp_vrfs(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """
