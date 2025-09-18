@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default
 
 if TYPE_CHECKING:
@@ -91,7 +92,7 @@ class IpIgmpSnoopingMixin(Protocol):
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem | None,
-    ) -> str | None:
+    ) -> str:
         """
         Return the IGMP snooping querier source address for a given VLAN.
 
@@ -103,13 +104,25 @@ class IpIgmpSnoopingMixin(Protocol):
         if vrf is not None:
             # SVI is attached to a VRF
             if source_address_key == "vrf_router_id":
-                return self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
-            return self.get_vrf_router_id(
-                vrf, tenant, source_address_key, context="'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VLAN"
-            )
+                source_address = self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id)
+            else:
+                source_address = self.get_vrf_router_id(
+                    vrf, tenant, source_address_key, context="'igmp_snooping_querier.source_address' is set to 'diagnostic_loopback' on the VLAN"
+                )
+        elif source_address_key in {"main_router_id", "diagnostic_loopback", "vrf_router_id"}:
+            # For L2VLANs, 'vrf_router_id' and 'diagnostic_loopback' are treated as 'main_router_id'.
+            source_address = self.shared_utils.router_id if self.inputs.use_router_general_for_router_id is not True else None
+        else:
+            source_address = source_address_key
 
-        # For L2VLANs, 'vrf_router_id' and 'diagnostic_loopback' are treated as 'main_router_id'.
-        if source_address_key in {"main_router_id", "diagnostic_loopback", "vrf_router_id"}:
-            return self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None
+        if source_address is not None:
+            return source_address
 
-        return source_address_key
+        vrf_info = f" in VRF '{vrf.name}'" if vrf else ""
+        msg = (
+            f"Unable to determine the IGMP snooping querier source address for VLAN '{vlan.name}'{vrf_info} in Tenant '{tenant.name}'. "
+            "The configured 'igmp_snooping_querier.source_address' could not be resolved. "
+            "If using 'main_router_id', 'diagnostic_loopback', or 'vrf_router_id' for an L2VLAN or SVI, "
+            "ensure that 'use_router_general_for_router_id' is not true."
+        )
+        raise AristaAvdInvalidInputsError(msg)
