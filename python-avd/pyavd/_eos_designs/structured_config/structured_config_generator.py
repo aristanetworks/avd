@@ -52,14 +52,14 @@ def structured_config_contributor(
         ```
         or
         ```
-        @structured_config_contributor(toggle_and_value=("avd_6_behaviors.snmp_settings.vrfs", True))
+        @structured_config_contributor(toggle_and_value=("sflow_settings.sample.rate", True))
         def ...
         ```
 
     Args:
         func: The method to decorate.
         toggle_and_value: A tuple of variable path and expected value, deciding if this method should run.
-            The path is a string like `avd_6_behaviors.snmp_settings_vrfs`, pointing to the feature toggle.
+            The path is a string like `sflow_settings.sample.rate`, pointing to the feature toggle.
 
     TODO: Store the functions in a class variable on StructuredConfigGeneratorProtocol instead of modifying the func.
     """
