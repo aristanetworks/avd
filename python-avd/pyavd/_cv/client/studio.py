@@ -78,9 +78,10 @@ class StudioMixin(Protocol):
         request = StudioRequest(
             # First attempt to fetch studio from workspace.
             key=StudioKey(studio_id=studio_id, workspace_id=workspace_id),
-            time=time,
         )
-        client = StudioServiceStub(self._channel)
+        if time is not None:
+            request.time = time
+        client = StudioServiceStub(self.channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
         except Exception as e:  # pylint: disable=broad-exception-caught
@@ -96,6 +97,10 @@ class StudioMixin(Protocol):
 
         # If we get here, it means no studio was returned by the workspace call.
         # So now we fetch the studio config from the workspace to see if the studio was deleted in this workspace.
+        request_time = TimeBounds()
+        if time is not None:
+            request_time.end = time
+
         request = StudioConfigStreamRequest(
             partial_eq_filter=[
                 StudioConfig(
@@ -103,9 +108,9 @@ class StudioMixin(Protocol):
                     remove=True,
                 ),
             ],
-            time=TimeBounds(start=None, end=time),
+            time=request_time,
         )
-        client = StudioConfigServiceStub(self._channel)
+        client = StudioConfigServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         async for _response in responses:
             # If we get here it means we got an entry with "removed: True" so no need to look further.
@@ -116,9 +121,10 @@ class StudioMixin(Protocol):
         request = StudioRequest(
             # First attempt to fetch studio from workspace.
             key=StudioKey(studio_id=studio_id, workspace_id=""),
-            time=time,
         )
-        client = StudioServiceStub(self._channel)
+        if time is not None:
+            request.time = time
+        client = StudioServiceStub(self.channel)
         response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
@@ -149,6 +155,10 @@ class StudioMixin(Protocol):
         Returns:
             Value of the studio inputs or the default_value if no inputs are found.
         """
+        request_time = TimeBounds()
+        if time is not None:
+            request_time.end = time
+
         request = InputsStreamRequest(
             # First attempt to fetch inputs from workspace.
             partial_eq_filter=[
@@ -156,9 +166,9 @@ class StudioMixin(Protocol):
                     key=InputsKey(studio_id=studio_id, workspace_id=workspace_id),
                 ),
             ],
-            time=time,
+            time=request_time,
         )
-        client = InputsServiceStub(self._channel)
+        client = InputsServiceStub(self.channel)
         studio_inputs = {}
 
         # We use get_all since inputs can be larger than the maximum message size.
@@ -189,9 +199,9 @@ class StudioMixin(Protocol):
                     remove=True,
                 ),
             ],
-            time=time,
+            time=request_time,
         )
-        client = InputsConfigServiceStub(self._channel)
+        client = InputsConfigServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         async for _response in responses:
             # If we get here it means we got an entry with "removed: True" so no need to look further.
@@ -205,9 +215,9 @@ class StudioMixin(Protocol):
                     key=InputsKey(studio_id=studio_id, workspace_id=""),
                 ),
             ],
-            time=time,
+            time=request_time,
         )
-        client = InputsServiceStub(self._channel)
+        client = InputsServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         async for response in responses:
             if response.value.inputs is None:
@@ -221,7 +231,7 @@ class StudioMixin(Protocol):
 
         return studio_inputs or default_value
 
-    # TODO: aalyze the actual return
+    # TODO: analyze the actual return
     @GRPCRequestHandler()
     async def get_studio_inputs_with_path(
         self: CVClientProtocol,
@@ -257,9 +267,11 @@ class StudioMixin(Protocol):
                 workspace_id=workspace_id,
                 path=RepeatedString(values=input_path),
             ),
-            time=time,
         )
-        client = InputsServiceStub(self._channel)
+        if time is not None:
+            request.time = time
+
+        client = InputsServiceStub(self.channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
         except GRPCError as e:
@@ -277,18 +289,24 @@ class StudioMixin(Protocol):
 
         # If we get here, it means no inputs were returned by the workspace call.
         # So now we fetch the inputs config from the workspace to see if the inputs were deleted in this workspace.
+        request_time = TimeBounds()
+        if time is not None:
+            request_time.end = time
+
         request = InputsConfigStreamRequest(
-            partial_eq_filter=InputsConfig(
-                key=InputsKey(
-                    studio_id=studio_id,
-                    workspace_id=workspace_id,
-                    path=RepeatedString(values=input_path),
-                ),
-                remove=True,
-            ),
-            time=time,
+            partial_eq_filter=[
+                InputsConfig(
+                    key=InputsKey(
+                        studio_id=studio_id,
+                        workspace_id=workspace_id,
+                        path=RepeatedString(values=input_path),
+                    ),
+                    remove=True,
+                )
+            ],
+            time=request_time,
         )
-        client = InputsConfigServiceStub(self._channel)
+        client = InputsConfigServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         async for _response in responses:
             # If we get here it means we got an entry with "removed: True" so no need to look further.
@@ -302,9 +320,11 @@ class StudioMixin(Protocol):
                 workspace_id="",
                 path=RepeatedString(values=input_path),
             ),
-            time=time,
         )
-        client = InputsServiceStub(self._channel)
+        if time is not None:
+            request.time = time
+
+        client = InputsServiceStub(self.channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
         except GRPCError as e:
@@ -351,7 +371,7 @@ class StudioMixin(Protocol):
                 inputs=json.dumps(inputs),
             ),
         )
-        client = InputsConfigServiceStub(self._channel)
+        client = InputsConfigServiceStub(self.channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
@@ -480,7 +500,7 @@ class StudioMixin(Protocol):
                 ),
             )
 
-        client = InputsConfigServiceStub(self._channel)
+        client = InputsConfigServiceStub(self.channel)
         responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
 
         return [response.key async for response in responses]

@@ -91,7 +91,7 @@ class TagMixin(Protocol):
             ),
             time=TimeBounds(start=None, end=time),
         )
-        client = TagServiceStub(self._channel)
+        client = TagServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         tags = [response.value async for response in responses]
 
@@ -107,7 +107,7 @@ class TagMixin(Protocol):
             ),
             time=TimeBounds(start=None, end=time),
         )
-        client = TagConfigServiceStub(self._channel)
+        client = TagConfigServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         async for response in responses:
             tag_config = response.value
@@ -156,7 +156,7 @@ class TagMixin(Protocol):
                 ),
             )
 
-        client = TagConfigServiceStub(self._channel)
+        client = TagConfigServiceStub(self.channel)
         responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
         # Recreating a full tag object. Since we just created it, it *must* be a user created tag.
 
@@ -197,7 +197,7 @@ class TagMixin(Protocol):
             ),
             time=TimeBounds(start=None, end=time),
         )
-        client = TagAssignmentServiceStub(self._channel)
+        client = TagAssignmentServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         tag_assignments = [response.value async for response in responses]
 
@@ -213,7 +213,7 @@ class TagMixin(Protocol):
             ),
             time=TimeBounds(start=None, end=time),
         )
-        client = TagAssignmentConfigServiceStub(self._channel)
+        client = TagAssignmentConfigServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
         async for response in responses:
             tag_assignment_config = response.value
@@ -264,7 +264,7 @@ class TagMixin(Protocol):
                 ),
             )
 
-        client = TagAssignmentConfigServiceStub(self._channel)
+        client = TagAssignmentConfigServiceStub(self.channel)
         responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
 
         return [response.key async for response in responses]
@@ -307,7 +307,7 @@ class TagMixin(Protocol):
                 ),
             )
 
-        client = TagAssignmentConfigServiceStub(self._channel)
+        client = TagAssignmentConfigServiceStub(self.channel)
         responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
 
         return [response.key async for response in responses]

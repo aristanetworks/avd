@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal, Protocol
 from uuid import NAMESPACE_DNS, uuid4, uuid5
 
-from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP
+from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP, ConfigletApiTuple
 from pyavd._cv.client.exceptions import CVManifestError
 
 AVD_NAMESPACE = uuid5(NAMESPACE_DNS, "avd.arista.com")
@@ -376,9 +376,9 @@ class CVConfiglet:
         return self.avd_configlet.file
 
     @property
-    def api_tuple(self) -> tuple[str, str, str, str]:
+    def api_tuple(self) -> ConfigletApiTuple:
         """Return a tuple representation of the configlet compatible with the CVClient APIs."""
-        return (self.id, self.name, self.description, str(self.file))
+        return ConfigletApiTuple(self.id, self.name, self.description, str(self.file))
 
 
 @dataclass(frozen=True)

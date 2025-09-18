@@ -65,7 +65,7 @@ class SwgMixin(Protocol):
                 address=location,
             ),
         )
-        client = EndpointConfigServiceStub(self._channel)
+        client = EndpointConfigServiceStub(self.channel)
 
         LOGGER.info("set_swg_device: Setting location for '%s': %s", device_id, location)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
@@ -101,7 +101,7 @@ class SwgMixin(Protocol):
                 ),
             ],
         )
-        client = EndpointStatusServiceStub(self._channel)
+        client = EndpointStatusServiceStub(self.channel)
 
         responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
         async for response in responses:

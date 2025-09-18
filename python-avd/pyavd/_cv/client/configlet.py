@@ -6,7 +6,7 @@ from __future__ import annotations
 from asyncio import gather
 from logging import getLogger
 from pathlib import Path
-from typing import TYPE_CHECKING, Literal, Protocol
+from typing import TYPE_CHECKING, Literal, NamedTuple, Protocol
 
 from pyavd._cv.api.arista.configlet.v1 import (
     Configlet,
@@ -50,13 +50,23 @@ PARALLEL_COROUTINES = 20
 LOGGER = getLogger(__name__)
 
 
+class ConfigletApiTuple(NamedTuple):
+    """Tuple representation of a configlet."""
+
+    # TODO: verify | None for description and file
+    id: str
+    name: str
+    description: str | None
+    file: str
+
+
 class ConfigletMixin(Protocol):
     """Only to be used as mixin on CVClient class."""
 
     configlet_api_version: Literal["v1"] = "v1"
 
     @GRPCRequestHandler()
-    async def get_configlet_containers(
+    async def get_configlet_containers(  # type: ignore[reportRedeclaration]
         self: CVClientProtocol,
         workspace_id: str,
         container_ids: list[str] | None = None,
@@ -75,7 +85,11 @@ class ConfigletMixin(Protocol):
         Returns:
             ConfigletAssignment objects.
         """
-        request = ConfigletAssignmentStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))
+        request_time = TimeBounds()
+        if time is not None:
+            request_time.end = time
+
+        request = ConfigletAssignmentStreamRequest(partial_eq_filter=[], time=request_time)
         if container_ids:
             for container_id in container_ids:
                 request.partial_eq_filter.append(
@@ -84,13 +98,13 @@ class ConfigletMixin(Protocol):
         else:
             request.partial_eq_filter.append(ConfigletAssignment(key=ConfigletAssignmentKey(workspace_id=workspace_id)))
 
-        client = ConfigletAssignmentServiceStub(self._channel)
+        client = ConfigletAssignmentServiceStub(self.channel)
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
 
         return [response.value async for response in responses]
 
     @GRPCRequestHandler()
-    async def set_configlet_container(
+    async def set_configlet_container(  # type: ignore[reportRedeclaration]
         self: CVClientProtocol,
         workspace_id: str,
         container_id: str,
@@ -120,20 +134,20 @@ class ConfigletMixin(Protocol):
                 key=ConfigletAssignmentKey(workspace_id=workspace_id, configlet_assignment_id=container_id),
                 display_name=display_name,
                 description=description,
-                configlet_ids=RepeatedString(values=configlet_ids),
+                configlet_ids=RepeatedString(values=configlet_ids or []),
                 query=query,
-                child_assignment_ids=RepeatedString(values=child_assignment_ids),
-                match_policy=ASSIGNMENT_MATCH_POLICY_MAP.get(match_policy or "match_all"),
+                child_assignment_ids=RepeatedString(values=child_assignment_ids or []),
+                match_policy=ASSIGNMENT_MATCH_POLICY_MAP.get(match_policy, ASSIGNMENT_MATCH_POLICY_MAP["match_all"]),
             ),
         )
-        client = ConfigletAssignmentConfigServiceStub(self._channel)
+        client = ConfigletAssignmentConfigServiceStub(self.channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
     @LimitCvVersion(min_ver="2024.2.0")
     @GRPCRequestHandler(list_field="containers")
-    async def set_configlet_containers(
+    async def set_configlet_containers(  # type: ignore[reportRedeclaration]
         self: CVClientProtocol,
         workspace_id: str,
         containers: list[tuple[str, str | None, str | None, list[str] | None, str | None, list[str] | None, str | None]],
@@ -157,15 +171,15 @@ class ConfigletMixin(Protocol):
                     key=ConfigletAssignmentKey(workspace_id=workspace_id, configlet_assignment_id=container_id),
                     display_name=display_name,
                     description=description,
-                    configlet_ids=RepeatedString(values=configlet_ids),
+                    configlet_ids=RepeatedString(values=configlet_ids or []),
                     query=query,
-                    child_assignment_ids=RepeatedString(values=child_assignment_ids),
-                    match_policy=ASSIGNMENT_MATCH_POLICY_MAP.get(match_policy or "match_all"),
+                    child_assignment_ids=RepeatedString(values=child_assignment_ids or []),
+                    match_policy=ASSIGNMENT_MATCH_POLICY_MAP.get(match_policy, ASSIGNMENT_MATCH_POLICY_MAP["match_all"]),
                 )
                 for container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy in containers
             ],
         )
-        client = ConfigletAssignmentConfigServiceStub(self._channel)
+        client = ConfigletAssignmentConfigServiceStub(self.channel)
         responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
 
         return [response.key async for response in responses]
@@ -173,10 +187,10 @@ class ConfigletMixin(Protocol):
     # Use this variant for versions below 2024.2.0 (still respecting overall min version)
     @LimitCvVersion(max_ver="2024.1.99")
     @GRPCRequestHandler()
-    async def set_configlet_containers(  # noqa: F811 - Redefining with decorator.
+    async def set_configlet_containers(  # noqa: F811, type: ignore[reportRedeclaration]
         self: CVClientProtocol,
         workspace_id: str,
-        containers: list[tuple[str, str | None, str | None, list[str] | None, str | None, list[str] | None, str | None]],
+        containers: list[tuple[str, str | None, str | None, list[str] | None, str | None, list[str] | None, Literal["match_first", "match_all"] | None]],
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[ConfigletAssignmentKey]:
         """
@@ -200,7 +214,7 @@ class ConfigletMixin(Protocol):
                 configlet_ids=configlet_ids,
                 query=query,
                 child_assignment_ids=child_assignment_ids,
-                match_policy=match_policy,
+                match_policy=match_policy or "match_all",
                 timeout=timeout,
             )
             for container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy in containers
@@ -213,9 +227,10 @@ class ConfigletMixin(Protocol):
             LOGGER.info("set_configlet_containers: Batch %s", index)
             configlet_configs.extend(await gather(*batch_coroutines))
 
+        # TODO: gross typing error in return type here..
         return [
             await self.set_configlet_container(
-                workspace_id, container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy, timeout
+                workspace_id, container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy or "match_all", timeout
             )
             for container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy in containers
         ]
@@ -243,7 +258,7 @@ class ConfigletMixin(Protocol):
                 remove=True,
             ),
         )
-        client = ConfigletAssignmentConfigServiceStub(self._channel)
+        client = ConfigletAssignmentConfigServiceStub(self.channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
@@ -270,14 +285,18 @@ class ConfigletMixin(Protocol):
         Returns:
             List of matching Configlet objects.
         """
-        request = ConfigletStreamRequest(partial_eq_filter=[], time=TimeBounds(start=None, end=time))
+        request_time = TimeBounds()
+        if time is not None:
+            request_time.end = time
+
+        request = ConfigletStreamRequest(partial_eq_filter=[], time=request_time)
         if configlet_ids:
             for configlet_id in configlet_ids:
                 request.partial_eq_filter.append(Configlet(key=ConfigletKey(workspace_id=workspace_id, configlet_id=configlet_id)))
         else:
             request.partial_eq_filter.append(Configlet(key=ConfigletKey(workspace_id=workspace_id)))
 
-        client = ConfigletServiceStub(self._channel)
+        client = ConfigletServiceStub(self.channel)
 
         responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
 
@@ -315,13 +334,13 @@ class ConfigletMixin(Protocol):
                 body=body,
             ),
         )
-        client = ConfigletConfigServiceStub(self._channel)
+        client = ConfigletConfigServiceStub(self.channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
     @GRPCRequestHandler()
-    async def set_configlet_from_file(
+    async def set_configlet_from_file(  # type: ignore[reportRedeclaration]
         self: CVClientProtocol,
         workspace_id: str,
         configlet_id: str,
@@ -352,17 +371,18 @@ class ConfigletMixin(Protocol):
                 body=Path(file).read_text(encoding="UTF-8"),
             ),
         )
-        client = ConfigletConfigServiceStub(self._channel)
+        client = ConfigletConfigServiceStub(self.channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
+    # TODO: This is bad as this is a different return type as compared to the one for the othervrsion
     @LimitCvVersion(min_ver="2024.2.0")
     @GRPCRequestHandler(list_field="configlets")
-    async def set_configlets_from_files(
+    async def set_configlets_from_files(  # type: ignore[reportRedeclaration]
         self: CVClientProtocol,
         workspace_id: str,
-        configlets: list[tuple[str, str]],
+        configlets: list[ConfigletApiTuple],
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[ConfigletKey]:
         """
@@ -387,7 +407,7 @@ class ConfigletMixin(Protocol):
                     body=Path(file).read_text(encoding="UTF-8"),
                 )
             )
-        client = ConfigletConfigServiceStub(self._channel)
+        client = ConfigletConfigServiceStub(self.channel)
 
         responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
 
@@ -399,9 +419,9 @@ class ConfigletMixin(Protocol):
     async def set_configlets_from_files(  # noqa: F811 - Redefining with decorator.
         self: CVClientProtocol,
         workspace_id: str,
-        configlets: list[tuple[str, str]],
+        configlets: list[ConfigletApiTuple],
         timeout: float = DEFAULT_API_TIMEOUT,
-    ) -> list[ConfigletKey]:
+    ) -> None:
         """
         Create batches of configlets and do parallel calls to set_configlet_from_file for each batch.
 
@@ -409,9 +429,6 @@ class ConfigletMixin(Protocol):
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
             configlets: List of Tuples with the format `(configlet_id, display_name, description, path_to_config_file)`.
             timeout: Timeout in seconds.
-
-        Returns:
-            List of ConfigletConfig objects after being set including any server-generated values.
         """
         coroutines = [
             self.set_configlet_from_file(
@@ -458,7 +475,7 @@ class ConfigletMixin(Protocol):
                     remove=True,
                 ),
             )
-        client = ConfigletConfigServiceStub(self._channel)
+        client = ConfigletConfigServiceStub(self.channel)
 
         responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
 

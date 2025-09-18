@@ -68,17 +68,13 @@ class WorkspaceMixin(Protocol):
         Returns:
             Workspace object matching the workspace_id
         """
-        if self._channel is None:
-            msg = "'get_workspace' was called with _channel set to None"
-            raise RuntimeError(msg)
-
         request = WorkspaceRequest(
             key=WorkspaceKey(
                 workspace_id=workspace_id,
             ),
             time=time,
         )
-        client = WorkspaceServiceStub(self._channel)
+        client = WorkspaceServiceStub(self.channel)
 
         response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
 
@@ -104,10 +100,6 @@ class WorkspaceMixin(Protocol):
         Returns:
             WorkspaceConfig object after being set including any server-generated values.
         """
-        if self._channel is None:
-            msg = "'create_workspace' was called with _channel set to None"
-            raise RuntimeError(msg)
-
         request = WorkspaceConfigSetRequest(
             WorkspaceConfig(
                 key=WorkspaceKey(workspace_id=workspace_id),
@@ -115,7 +107,7 @@ class WorkspaceMixin(Protocol):
                 description=description,
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
+        client = WorkspaceConfigServiceStub(self.channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
@@ -135,10 +127,6 @@ class WorkspaceMixin(Protocol):
         Returns:
             WorkspaceConfig object after being set including any server-generated values.
         """
-        if self._channel is None:
-            msg = "'abandon_workspace' was called with _channel set to None"
-            raise RuntimeError(msg)
-
         request = WorkspaceConfigSetRequest(
             WorkspaceConfig(
                 key=WorkspaceKey(workspace_id=workspace_id),
@@ -148,7 +136,7 @@ class WorkspaceMixin(Protocol):
                 ),
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
+        client = WorkspaceConfigServiceStub(self.channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
@@ -168,10 +156,6 @@ class WorkspaceMixin(Protocol):
         Returns:
             WorkspaceConfig object after being set including any server-generated values.
         """
-        if self._channel is None:
-            msg = "'build_workspace' was called with _channel set to None"
-            raise RuntimeError(msg)
-
         request = WorkspaceConfigSetRequest(
             WorkspaceConfig(
                 key=WorkspaceKey(workspace_id=workspace_id),
@@ -181,7 +165,7 @@ class WorkspaceMixin(Protocol):
                 ),
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
+        client = WorkspaceConfigServiceStub(self.channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
@@ -201,12 +185,8 @@ class WorkspaceMixin(Protocol):
         Returns:
             WorkspaceConfig object after being set including any server-generated values.
         """
-        if self._channel is None:
-            msg = "'delete_workspace' was called with _channel set to None"
-            raise RuntimeError(msg)
-
         request = WorkspaceConfigDeleteRequest(key=WorkspaceKey(workspace_id=workspace_id))
-        client = WorkspaceConfigServiceStub(self._channel)
+        client = WorkspaceConfigServiceStub(self.channel)
         response = await client.delete(request, metadata=self._metadata, timeout=timeout)
         return response.key
 
@@ -228,10 +208,6 @@ class WorkspaceMixin(Protocol):
         Returns:
             WorkspaceConfig object after being set including any server-generated values.
         """
-        if self._channel is None:
-            msg = "'submit_workspace' was called with _channel set to None"
-            raise RuntimeError(msg)
-
         request = WorkspaceConfigSetRequest(
             WorkspaceConfig(
                 key=WorkspaceKey(workspace_id=workspace_id),
@@ -239,7 +215,7 @@ class WorkspaceMixin(Protocol):
                 request_params=RequestParams(request_id=f"req-{uuid4()}"),
             ),
         )
-        client = WorkspaceConfigServiceStub(self._channel)
+        client = WorkspaceConfigServiceStub(self.channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         LOGGER.debug("submit_workspace: Got response to submission: %s", response.value)
         return response.value
@@ -265,10 +241,6 @@ class WorkspaceMixin(Protocol):
         Returns:
             Tuple of (<Response object for the request_id>, <Full Workspace object>)
         """
-        if self._channel is None:
-            msg = "'wait_for_workspace_response' was called with _channel set to None"
-            raise RuntimeError(msg)
-
         request = WorkspaceStreamRequest(
             partial_eq_filter=[
                 Workspace(
@@ -276,7 +248,7 @@ class WorkspaceMixin(Protocol):
                 ),
             ],
         )
-        client = WorkspaceServiceStub(self._channel)
+        client = WorkspaceServiceStub(self.channel)
         responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
         async for response in responses:
             if request_id in response.value.responses.values:

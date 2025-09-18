@@ -24,7 +24,7 @@ from .exceptions import CVGRPCStatusUnavailable, CVMessageSizeExceeded
 from .versioning import CvVersion
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from collections.abc import Callable, Coroutine
     from inspect import BoundArguments, Signature
 
 LOGGER = getLogger(__name__)
@@ -70,7 +70,9 @@ class LimitCvVersion:
             )
             raise ValueError(msg)
 
-    def __call__(self, func: Callable[P, T]) -> Callable[P, T]:
+    # Python 3.12 syntax
+    # def __call__[**P, T](self, func: Callable[P, Coroutine[Any, Any, T]]) -> Callable[P, Coroutine[Any, Any, T]]:
+    def __call__(self, func: Callable[P, Coroutine[Any, Any, T]]) -> Callable[P, Coroutine[Any, Any, T]]:
         """
         Store the method in the map of versioned functions after checking for overlapping decorators for the same method.
 
@@ -152,7 +154,7 @@ class GRPCRequestHandler:
         self.list_field = list_field
         self.min_items_for_splitting_attempt = max(2, min_items_for_splitting_attempt)
 
-    def __call__(self, func: Callable[P, T]) -> Callable[P, T]:
+    def __call__(self, func: Callable[P, Coroutine[Any, Any, T]]) -> Callable[P, Coroutine[Any, Any, T]]:
         self.func = func
         self.func_signature = signature(func)
 
@@ -204,7 +206,7 @@ class GRPCRequestHandler:
 
         return _string_based_annotation is list or get_origin(annotation) is list, _string_based_annotation
 
-    async def _execute_single_call_with_retries(self, call_args: tuple[Any], call_kwargs: dict[str, Any]) -> None:
+    async def _execute_single_call_with_retries(self, *call_args: Any, **call_kwargs: Any) -> None:
         """Executes a single call to self.func with retry logic for gRPC UNAVAILABLE."""
         if self.func is None:
             # TODO: Add exception to indicate it should not be used directly
@@ -249,7 +251,7 @@ class GRPCRequestHandler:
                                     raise CVGRPCStatusUnavailable(msg, *e.args, call_args, call_kwargs)
 
                             case Status.RESOURCE_EXHAUSTED:
-                                if matches := fullmatch(MSG_SIZE_EXCEEDED_REGEX, e.message):
+                                if matches := fullmatch(MSG_SIZE_EXCEEDED_REGEX, e.message or ""):
                                     new_exception = CVMessageSizeExceeded(*e.args)
                                     new_exception.max_size = int(matches.group("max"))
                                     new_exception.size = int(matches.group("size"))
@@ -263,7 +265,7 @@ class GRPCRequestHandler:
         # Required by ruff
         return None
 
-    async def _execute_with_splitting(self, original_call_args: tuple[Any], original_call_kwargs: dict[str, Any]) -> Any:
+    async def _execute_with_splitting(self, *original_call_args: Any, **original_call_kwargs: Any) -> Any:
         if self.func is None:
             # TODO: Add exception to indicate it should not be used directly
             return None

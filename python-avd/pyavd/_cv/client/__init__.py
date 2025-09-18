@@ -59,6 +59,13 @@ class CVClientProtocol(
             self._channel.close()
             self._channel = None
 
+    @property
+    def channel(self) -> Channel:
+        if self._channel is None:
+            msg = "'set_change_control' was called with _channel set to None"
+            raise RuntimeError(msg)
+        return self._channel
+
     def _connect(self) -> None:
         # TODO: Verify connection
         # TODO: Handle multinode clusters
@@ -136,14 +143,14 @@ class CVClientProtocol(
             msg = "Unable to get version from CloudVision server. Missing token."
             raise CVClientException(msg)
 
-        try:
-            response = get(  # noqa: S113 TODO: Add configurable timeout
-                "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
-                headers={"Authorization": f"Bearer {self._token}"},
-                verify=self._verify_certs,
-                json={},
-            )
+        response = get(  # noqa: S113 TODO: Add configurable timeout
+            "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
+            headers={"Authorization": f"Bearer {self._token}"},
+            verify=self._verify_certs,
+            json={},
+        )
 
+        try:
             self._cv_version = CvVersion(response.json()["version"])
         except (KeyError, JSONDecodeError) as e:
             msg = f"Unable to get version from CloudVision server. Got {response.text}"
