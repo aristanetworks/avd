@@ -66,6 +66,11 @@ ethernet_interfaces:
   mtu: 9000
   vrf: Tenant_A_L3_VRF_Zone
   ip_address: 10.10.10.10/24
+  ip_address_secondaries:
+  - 10.10.10.50/24
+  - 10.10.20.51/24
+  - 10.10.30.53/24
+  - 10.10.40.54/24
   peer_type: l3_interface
   switchport:
     enabled: false
@@ -75,6 +80,11 @@ ethernet_interfaces:
   mtu: 9000
   vrf: Tenant_A_L3_VRF_Zone
   ip_address: 10.10.20.20/24
+  ip_address_secondaries:
+  - 10.10.10.50/24
+  - 10.10.20.51/24
+  - 10.10.30.53/24
+  - 10.10.40.54/24
   peer_type: l3_interface
   switchport:
     enabled: false
