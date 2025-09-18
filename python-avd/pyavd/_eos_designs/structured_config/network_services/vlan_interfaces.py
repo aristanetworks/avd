@@ -149,17 +149,17 @@ class VlanInterfacesMixin(Protocol):
             # If any anycast IPs are set, we also enable link-local IPv6 per best practice, unless specifically disabled with 'ipv6_enable: false'
             vlan_interface_config.ipv6_enable = default(vlan_interface_config.ipv6_enable, True)  # noqa: FBT003
 
-        for ipv6_nd_prefix_model in svi.ipv6_nd_prefixes:
+        for ipv6_nd_prefix in svi.ipv6_nd_prefixes:
             nd_prefix_options: dict[str, Any] = {
-                "valid_lifetime": ipv6_nd_prefix_model.valid_lifetime,
-                "preferred_lifetime": ipv6_nd_prefix_model.preferred_lifetime,
-                "no_autoconfig_flag": ipv6_nd_prefix_model.no_autoconfig_flag,
+                "valid_lifetime": ipv6_nd_prefix.valid_lifetime,
+                "preferred_lifetime": ipv6_nd_prefix.preferred_lifetime,
+                "no_autoconfig_flag": ipv6_nd_prefix.no_autoconfig_flag,
             }
-            if ipv6_nd_prefix_model.ipv6_prefix == "ipv6_address_virtuals":
+            if ipv6_nd_prefix.ipv6_prefix == "ipv6_address_virtuals":
                 for ipv6_address in svi.ipv6_address_virtuals:
                     vlan_interface_config.ipv6_nd_prefixes.append_new(ipv6_prefix=ipv6_address, **nd_prefix_options)
             else:
-                vlan_interface_config.ipv6_nd_prefixes.append_new(ipv6_prefix=ipv6_nd_prefix_model.ipv6_prefix, **nd_prefix_options)
+                vlan_interface_config.ipv6_nd_prefixes.append_new(ipv6_prefix=ipv6_nd_prefix.ipv6_prefix, **nd_prefix_options)
 
         if vrf.name != "default":
             vlan_interface_config.vrf = vrf.name
