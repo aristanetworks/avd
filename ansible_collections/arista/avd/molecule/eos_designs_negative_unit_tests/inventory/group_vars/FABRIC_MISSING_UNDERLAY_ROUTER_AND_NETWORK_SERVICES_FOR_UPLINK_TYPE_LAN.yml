@@ -1,0 +1,16 @@
+---
+fabric_name: FABRIC_MISSING_UNDERLAY_ROUTER_AND_NETWORK_SERVICES_FOR_UPLINK_TYPE_LAN
+type: spine
+
+spine:
+  nodes:
+    - name: missing-underlay-router-and-network-services-for-uplink-type-lan
+      loopback_ipv4_pool: 192.168.255.0/24
+      id: 1
+      bgp_as: 65000
+      uplink_type: lan
+      uplink_interfaces: [Ethernet1]
+
+expected_error_message: >-
+  'underlay_router' and 'network_services.l3' must be 'true' for the node_type_key when
+  using 'lan' as 'uplink_type' for host 'missing-underlay-router-and-network-services-for-uplink-type-lan'.

@@ -1,3 +1,11 @@
+# Test the new anta_ variables for connection settings
+anta_user: anta
+anta_password: anta
+anta_enable_mode: true
+anta_enable_password: anta
+anta_port: 443
+anta_use_ssl: true
+
 # Custom router bgp structured_config to test external BGP peer
 custom_structured_configuration_router_bgp:
   neighbors:
@@ -23,15 +31,6 @@ custom_structured_configuration_router_path_selection:
 # Custom router adaptive virtual topology structured_config to test skip the anta test VerifyAVTSpecificPath for empty static peers
 custom_structured_configuration_router_adaptive_virtual_topology:
   topology_role: edge
-
-# Custom ip name servers structured_config for DNS test
-custom_structured_configuration_ip_name_servers:
-  - ip_address: 8.8.8.8
-    vrf: MGMT
-    priority: 0
-  - ip_address: 1.1.1.1
-    vrf: MGMT
-    priority: 1
 
 # Custom inputs for the hardware tests
 accepted_xcvr_manufacturers:

@@ -6,7 +6,6 @@
 {# Device Configuration #}
 {# context used to hide password and keys #}
 {% set hide_passwords = eos_cli_config_gen_configuration.hide_passwords | arista.avd.default(false) %}
-{% include 'eos/rancid-content-type.j2' %}
 {% include 'eos/config-comment.j2' %}
 {# System Boot Configuration #}
 {% include 'eos/boot.j2' %}
@@ -24,6 +23,8 @@
 {% include 'eos/hardware.j2' %}
 {# service routing configuration #}
 {% include 'eos/service-routing-configuration-bgp.j2' %}
+{# cfm #}
+{% include 'eos/cfm.j2' %}
 {# cli prompt #}
 {% include 'eos/prompt.j2' %}
 {# terminal settings #}
@@ -128,6 +129,8 @@
 {% include 'eos/ptp.j2' %}
 {# qos-profiles #}
 {% include 'eos/qos-profiles.j2' %}
+{# radius-proxy #}
+{% include 'eos/radius-proxy.j2' %}
 {# redundancy #}
 {% include 'eos/redundancy.j2' %}
 {# router adaptive-virtual-topology #}
@@ -230,6 +233,8 @@
 {% include 'eos/tcam-profile.j2' %}
 {# application traffic recognition #}
 {% include 'eos/application-traffic-recognition.j2' %}
+{# Load-balance Cluster #}
+{% include 'eos/load-balance-cluster.j2' %}
 {# Connectivity monitor configuration #}
 {% include 'eos/monitor-connectivity.j2' %}
 {# MAC address-table aging #}
@@ -367,6 +372,8 @@
 {% include 'eos/router-pim-sparse-mode.j2' %}
 {# router msdp #}
 {% include 'eos/router-msdp.j2' %}
+{# router rip configuration #}
+{% include 'eos/router-rip.j2' %}
 {# stun #}
 {% include 'eos/stun.j2' %}
 {# ip tacacs+ source interfaces #}

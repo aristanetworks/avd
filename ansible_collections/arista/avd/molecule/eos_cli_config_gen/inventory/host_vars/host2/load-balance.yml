@@ -1,0 +1,9 @@
+---
+load_balance:
+  cluster:
+    forwarding_type: bridged encapsulation vxlan ipv4
+    load_balance_method_flow_round_robin: false
+    destination_grouping: prefix length
+    prefix_length: 10
+    flow:
+      monitor: false

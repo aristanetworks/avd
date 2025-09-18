@@ -6,7 +6,7 @@ ci:
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         name: Trims trailing whitespace.
@@ -77,6 +77,8 @@ repos:
           - --use-current-year
           - --allow-past-years
           - --fuzzy-match-generates-todo
+          - --detect-license-in-X-top-lines
+          - '10'
           - --comment-style
           - "<!--|  ~|  -->"
 
@@ -94,7 +96,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.12.3
+    rev: v0.13.0
     hooks:
       # Run the linter.
       - id: ruff
@@ -104,24 +106,24 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.403
+    rev: v1.1.405
     hooks:
       - id: pyright
         name: PyRight static type checker
         types: [python]
         additional_dependencies:
-          - "anta==1.4.0"
-          - "ansible-core>=2.16.0,<2.19.0"
-          - "deepmerge>=1.1.0"
-          - "PyYAML>=6.0.0"
-          - "pydantic>=2.3.0"
-          - "jsonschema-rs>=0.24"
-          - "referencing>=0.35.0"
-          - "ruff==0.12.3"
+          - 'anta==1.5.0'
+          - 'ansible-core>=2.16.0,<2.19.0'
+          - 'deepmerge>=1.1.0'
+          - 'PyYAML>=6.0.0'
+          - 'pydantic>=2.3.0'
+          - 'jsonschema-rs>=0.24'
+          - 'referencing>=0.35.0'
+          - 'ruff==0.13.0'
           - "aristaproto>=0.1.1"
 
   - repo: https://github.com/pycqa/pylint
-    rev: "v3.3.7"
+    rev: "v3.3.8"
     hooks:
       - id: pylint # Use pylintrc file in repository
         name: Check for Linting errors on Python files outside the Ansible collection.
@@ -250,6 +252,25 @@ repos:
             "referencing>=0.35.0",
             "ruff==0.7.2",
           ]
+
+      - id: check-schema-tables-in-docs
+        name: Check for schema tables in documentation.
+        entry: development/find_missing_tables.py
+        language: python
+        args:
+          - --root-path
+          - "ansible_collections/arista/avd"
+          - --table-files
+          - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/*.md"
+          - "ansible_collections/arista/avd/roles/eos_designs/docs/tables/*.md"
+          - --global-docs
+          - "ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/*.md"
+          - "ansible_collections/arista/avd/roles/eos_designs/docs/*.md"
+          - --ignore-files
+          - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
+          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
+          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-node-type-keys.key.md
+        pass_filenames: false
 
       - id: templates
         name: Precompile Jinja2 templates

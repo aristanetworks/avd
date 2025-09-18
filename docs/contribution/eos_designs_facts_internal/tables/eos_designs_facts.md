@@ -56,6 +56,9 @@
     | [<samp>mlag_switch_ids</samp>](## "mlag_switch_ids") | Dictionary |  |  |  | The switch ids of both primary and secondary switches for a this node group. |
     | [<samp>&nbsp;&nbsp;primary</samp>](## "mlag_switch_ids.primary") | Integer | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;secondary</samp>](## "mlag_switch_ids.secondary") | Integer | Required |  |  |  |
+    | [<samp>mlag_underlay_multicast</samp>](## "mlag_underlay_multicast") | Dictionary |  |  |  | Should multicast be enabled on the mlag peer-l3-vlan. |
+    | [<samp>&nbsp;&nbsp;pim_sm</samp>](## "mlag_underlay_multicast.pim_sm") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;static</samp>](## "mlag_underlay_multicast.static") | Boolean | Required |  |  |  |
     | [<samp>evpn_role</samp>](## "evpn_role") | String |  |  |  |  |
     | [<samp>mpls_overlay_role</samp>](## "mpls_overlay_role") | String |  |  |  |  |
     | [<samp>evpn_route_servers</samp>](## "evpn_route_servers") | List, items: String |  |  |  | For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches variable set elsewhere.<br>For all other evpn roles there is no default. |
@@ -84,7 +87,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "uplinks.[].ptp.enable") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_security</samp>](## "uplinks.[].mac_security") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "uplinks.[].mac_security.profile") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "uplinks.[].underlay_multicast") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_pim_sm</samp>](## "uplinks.[].underlay_multicast_pim_sm") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_static</samp>](## "uplinks.[].underlay_multicast_static") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "uplinks.[].ipv6_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "uplinks.[].prefix_length") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "uplinks.[].ip_address") | String |  |  |  |  |
@@ -115,7 +119,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_ztp_vlan</samp>](## "uplinks.[].inband_ztp_vlan") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_ztp_lacp_fallback_delay</samp>](## "uplinks.[].inband_ztp_lacp_fallback_delay") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dhcp_server</samp>](## "uplinks.[].dhcp_server") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "uplinks.[].structured_config") | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "uplinks.[].structured_config") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ethernet_structured_config</samp>](## "uplinks.[].ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_channel_structured_config</samp>](## "uplinks.[].port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the uplink Port-Channel when using port-channel uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_ethernet_structured_config</samp>](## "uplinks.[].peer_ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_port_channel_structured_config</samp>](## "uplinks.[].peer_port_channel_structured_config") | Dictionary |  |  |  | Custom structured config applied to the uplink Port-Channel when using port-channel uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "uplinks.[].subinterfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;interface</samp>](## "uplinks.[].subinterfaces.[].interface") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "uplinks.[].subinterfaces.[].peer_interface") | String | Required |  |  |  |
@@ -128,7 +136,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "uplinks.[].subinterfaces.[].ipv6_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip_address</samp>](## "uplinks.[].subinterfaces.[].peer_ip_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6_address</samp>](## "uplinks.[].subinterfaces.[].peer_ipv6_address") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "uplinks.[].subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "uplinks.[].subinterfaces.[].structured_config") <span style="color:red">deprecated</span> | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>uplink_port_channel_structured_config or uplink_ethernet_structured_config or uplink_switch_ethernet_structured_config or uplink_switch_port_channel_structured_config</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethernet_structured_config</samp>](## "uplinks.[].subinterfaces.[].ethernet_structured_config") | Dictionary |  |  |  | Custom structured config applied to `uplink_interfaces`. |
     | [<samp>uplink_peers</samp>](## "uplink_peers") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "uplink_peers.[]") | String |  |  |  |  |
     | [<samp>uplink_switch_vrfs</samp>](## "uplink_switch_vrfs") | List, items: String |  |  |  |  |
@@ -248,6 +257,11 @@
     mlag_switch_ids:
       primary: <int; required>
       secondary: <int; required>
+
+    # Should multicast be enabled on the mlag peer-l3-vlan.
+    mlag_underlay_multicast:
+      pim_sm: <bool; required>
+      static: <bool; required>
     evpn_role: <str>
     mpls_overlay_role: <str>
 
@@ -293,7 +307,8 @@
           enable: <bool; default=False>
         mac_security:
           profile: <str; required>
-        underlay_multicast: <bool>
+        underlay_multicast_pim_sm: <bool>
+        underlay_multicast_static: <bool>
         ipv6_enable: <bool>
         prefix_length: <int>
         ip_address: <str>
@@ -334,7 +349,22 @@
         # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.
         # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+        # This key is deprecated.
+        # Support will be removed in AVD version 6.0.0.
+        # Use `uplink_port_channel_structured_config` or `uplink_ethernet_structured_config` or `uplink_switch_ethernet_structured_config` or `uplink_switch_port_channel_structured_config` instead.
         structured_config: <dict>
+
+        # Custom structured config applied to `uplink_interfaces`.
+        ethernet_structured_config: <dict>
+
+        # Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+        port_channel_structured_config: <dict>
+
+        # Custom structured config applied to `uplink_interfaces`.
+        peer_ethernet_structured_config: <dict>
+
+        # Custom structured config applied to the uplink Port-Channel when using port-channel uplinks.
+        peer_port_channel_structured_config: <dict>
         subinterfaces:
           - interface: <str; required; unique>
             peer_interface: <str; required>
@@ -353,7 +383,13 @@
             # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.
             # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
             # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+            # This key is deprecated.
+            # Support will be removed in AVD version 6.0.0.
+            # Use `uplink_port_channel_structured_config` or `uplink_ethernet_structured_config` or `uplink_switch_ethernet_structured_config` or `uplink_switch_port_channel_structured_config` instead.
             structured_config: <dict>
+
+            # Custom structured config applied to `uplink_interfaces`.
+            ethernet_structured_config: <dict>
     uplink_peers:
       - <str>
     uplink_switch_vrfs:

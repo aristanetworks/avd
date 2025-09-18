@@ -37,7 +37,6 @@ ethernet_interfaces:
     enabled: false
 hostname: DC1-RS2
 ip_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -62,6 +61,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.1.254
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   dc_name: DC1
   fabric_name: TWODC_5STAGE_CLOS
@@ -70,8 +70,8 @@ metadata:
     node_type: veos
     ip_addr: 192.168.1.4/24
     version: 4.33.1.1F
-    username: admin
-    password: admin
+    username: cvpadmin
+    password: cvp123!
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

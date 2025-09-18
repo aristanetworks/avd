@@ -65,7 +65,7 @@ class ActionModule(ActionBase):
         setup_module_logging(result)
 
         # Get task arguments and validate them
-        validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
+        _validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
         validated_args = strip_empties_from_dict(validated_args)
 
         # Converting to json and back to remove any AnsibeUnsafe types
@@ -120,7 +120,9 @@ class ActionModule(ActionBase):
             result["changed"] = result.get("changed") or changed
 
         if output.digital_twin:
-            content = {str(key).replace("_", "-"): value for key, value in asdict(output.digital_twin).items() if value is not None}
+            content = strip_empties_from_dict(
+                {str(key).replace("_", "-"): list(value) if isinstance(value, tuple) else value for key, value in asdict(output.digital_twin).items()}
+            )
             changed = write_file(
                 content=yaml.dump(content, Dumper=AnsibleDumper, sort_keys=False, indent=2, width=130),
                 filename=validated_args["digital_twin_file"],

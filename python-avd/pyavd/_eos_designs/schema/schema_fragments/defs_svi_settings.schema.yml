@@ -19,6 +19,9 @@ $defs:
         type: str
         description: |
           SVI description. By default set to VLAN name.
+      arp_gratuitous_accept:
+        type: bool
+        description: Accept gratuitous ARP.
       ip_address:
         type: str
         description: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
@@ -106,6 +109,11 @@ $defs:
         type: list
         $ref: "eos_designs#/$defs/static_routes"
         description: Static routes to be configured on every device where the SVI is configured.
+      ipv6_static_routes:
+        type: list
+        # Reusing the schema from `static_routes` since IPv4 and IPv6 static routes share the same keys.
+        $ref: "eos_designs#/$defs/static_routes"
+        description: IPv6 static routes to be configured on every device where the SVI is configured.
       vni_override:
         type: int
         convert_types:
@@ -331,16 +339,6 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items"
-      ipv6_address_virtual:
-        type: str
-        description: |
-          IPv6_address/Mask.
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional).
-        deprecation:
-          removed: true
-          warning: true
-          remove_in_version: 5.0.0
-          new_key: ipv6_address_virtuals
       evpn_l2_multi_domain:
         type: bool
         description: |

@@ -134,6 +134,7 @@ class EthernetInterfacesMixin(Protocol):
                     ip_address=l3_interface.ip_addresses[node_index],
                     mtu=self.shared_utils.get_interface_mtu(interface_name, l3_interface.mtu),
                     shutdown=not l3_interface.enabled,
+                    arp_gratuitous_accept=l3_interface.arp_gratuitous_accept,
                     description=interface_description,
                     eos_cli=l3_interface.raw_eos_cli,
                     flow_tracker=self.shared_utils.get_flow_tracker(l3_interface.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
@@ -144,8 +145,7 @@ class EthernetInterfacesMixin(Protocol):
                         l3_interface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                     )
 
-                if self.inputs.fabric_sflow.l3_interfaces is not None:
-                    interface.sflow.enable = self.inputs.fabric_sflow.l3_interfaces
+                interface.sflow.enable = self.shared_utils.get_interface_sflow(interface.name, self.inputs.fabric_sflow.l3_interfaces)
 
                 if l3_interface.ipv4_acl_in:
                     acl = self.shared_utils.get_ipv4_acl(
