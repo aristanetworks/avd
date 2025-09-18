@@ -45,17 +45,24 @@ class UtilsMixin(Protocol):
         self: AvdStructuredConfigConnectedEndpointsProtocol,
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
         channel_group_id: int,
-        short_esi: str | None = None,
+        port_channel_subif_short_esi: str | None = None,
         hash_extra_value: str = "",
     ) -> str | None:
-        """Return short_esi for one adapter."""
-        if len(set(adapter.switches)) < 2 or not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
-            # Only configure ESI for EVPN multi-homing.
+        """
+        Return short_esi for one adapter.
+
+        short_esi is only set when called from sub-interface port-channels.
+        """
+        if not self.shared_utils.overlay_evpn or not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
             return None
 
-        # short_esi is only set when called from sub-interface port-channels.
-        if (short_esi is None) and (short_esi := adapter.ethernet_segment.short_esi) is None:
+        if (short_esi := (port_channel_subif_short_esi or adapter.ethernet_segment.short_esi)) is None:
             return None
+
+        if len(set(adapter.switches)) < 2:
+            # Only configure ESI for multi-homing.
+            msg = f"The length of '{adapter._internal_data.context}.switches' should be greater than 1 to configure short ESI."
+            raise AristaAvdInvalidInputsError(msg)
 
         endpoint_ports = adapter.endpoint_ports
         short_esi = str(short_esi)
