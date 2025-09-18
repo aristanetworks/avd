@@ -193,7 +193,7 @@ keys:
       Vxlan1:
         deprecation:
           warning: true
+          removed: true
           remove_in_version: 6.0.0
           new_key: vxlan1
         type: dict
-        $ref: "eos_cli_config_gen#/keys/vxlan_interface/keys/vxlan1"
