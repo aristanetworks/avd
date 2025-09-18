@@ -565,19 +565,20 @@ keys:
               ipv6:
                 type: dict
                 keys:
+                  addresses:
+                    type: list
+                    required: true
+                    items:
+                      type: str
+                    description: Virtual IPv6 addresses.
                   address:
                     type: str
                     description: Virtual IPv6 address.
                     deprecation:
                       warning: true
+                      removed: true
                       remove_in_version: 6.0.0
                       new_key: addresses
-                  # TODO: AVD6.0 the `addresses` key should be made required once the deprecated key `address` is removed in AVD6.0
-                  addresses:
-                    type: list
-                    items:
-                      type: str
-                    description: Virtual IPv6 addresses.
               peer_authentication:
                 type: dict
                 $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/vrrp_ids/items/keys/peer_authentication"
