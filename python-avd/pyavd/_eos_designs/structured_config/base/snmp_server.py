@@ -44,7 +44,6 @@ class SnmpServerMixin(Protocol):
         self._snmp_engine_ids(snmp_settings)
         self._snmp_location(snmp_settings)
         self._snmp_users(snmp_settings)
-        # Local interfaces first, since it may be updated by snmp_hosts.
         self._snmp_hosts(snmp_settings)
         self._snmp_vrfs_and_acls(snmp_settings)
 
