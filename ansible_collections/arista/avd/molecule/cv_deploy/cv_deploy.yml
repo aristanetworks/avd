@@ -10,7 +10,7 @@
     cv_proxy_port: "{{ lookup('env', 'CV_PROXY_PORT') | default(3128, true) | int }}"
     cv_proxy_username: "{{ lookup('env', 'CV_PROXY_USERNAME') | default('', true) }}"
     cv_proxy_password: "{{ lookup('env', 'CV_PROXY_PASSWORD') | default('', true) }}"
-    cv_verify_certs: true
+    cv_verify_certs: "{{ lookup('env', 'CV_VERIFY_CERTS') | default('', true) }}"
     cv_skip_missing_devices: true
     eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
     structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"

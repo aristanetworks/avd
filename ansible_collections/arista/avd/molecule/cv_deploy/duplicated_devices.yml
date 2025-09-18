@@ -10,7 +10,7 @@
     cv_proxy_port: "{{ lookup('env', 'CV_PROXY_PORT') | default(3128, true) | int }}"
     cv_proxy_username: "{{ lookup('env', 'CV_PROXY_USERNAME') | default('', true) }}"
     cv_proxy_password: "{{ lookup('env', 'CV_PROXY_PASSWORD') | default('', true) }}"
-    cv_verify_certs: true
+    cv_verify_certs: "{{ lookup('env', 'CV_VERIFY_CERTS') | default('', true) }}"
     cv_skip_missing_devices: true
     eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
     original_structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
@@ -52,7 +52,7 @@
       ansible.legacy.uri:
         url: "https://{{ cv_server }}/api/resources/inventory/v1/Device/all"
         use_proxy: "{{ true if cv_proxy_host and cv_proxy_port and cv_proxy_username and cv_proxy_password else false }}"
-        validate_certs: true
+        validate_certs: "{{ cv_verify_certs }}"
         return_content: true
         headers:
           Accept: "application/json"
@@ -262,7 +262,7 @@
           ansible.legacy.uri:
             url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig/some
             use_proxy: "{{ true if cv_proxy_host and cv_proxy_port and cv_proxy_username and cv_proxy_password else false }}"
-            validate_certs: true
+            validate_certs: "{{ cv_verify_certs }}"
             return_content: true
             headers:
               Accept: "application/json"

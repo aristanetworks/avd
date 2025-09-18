@@ -108,7 +108,7 @@ class CVClientProtocol(
                 _, protocol = await loop.create_connection(
                     lambda: channel._protocol_factory(),
                     sock=proxy_sock,
-                    ssl=ssl_context,
+                    ssl=channel._ssl if ssl_context is True else ssl_context,
                     server_hostname=self._servers[0] if ssl_context else None,
                 )
 
