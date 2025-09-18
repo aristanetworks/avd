@@ -4447,9 +4447,7 @@ class EosDesigns(EosDesignsRootModel):
         class ServersItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"ip_address": {"type": str}, "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"}, "priority": {"type": int}}
-            ip_address: str
-            """IPv4 or IPv6 address for DNS server."""
+            _fields: ClassVar[dict] = {"vrf": {"type": str, "default": "use_default_mgmt_method_vrf"}, "ip_address": {"type": str}, "priority": {"type": int}}
             vrf: str
             """
             The value of `vrf` will be interpreted according to these rules:
@@ -4470,13 +4468,15 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `"use_default_mgmt_method_vrf"`
             """
+            ip_address: str
+            """IPv4 or IPv6 address for DNS server."""
             priority: int | None
             """Priority value (lower is first)."""
 
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, ip_address: str | UndefinedType = Undefined, vrf: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined
+                    self, *, vrf: str | UndefinedType = Undefined, ip_address: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     ServersItem.
@@ -4485,7 +4485,6 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        ip_address: IPv4 or IPv6 address for DNS server.
                         vrf:
                            The value of `vrf` will be interpreted according to these rules:
                            - `use_mgmt_interface_vrf` will
@@ -4502,6 +4501,7 @@ class EosDesigns(EosDesignsRootModel):
                            above depending on the value of `default_mgmt_method`.
                            - Any other string will be used directly as
                            the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
+                        ip_address: IPv4 or IPv6 address for DNS server.
                         priority: Priority value (lower is first).
 
                     """

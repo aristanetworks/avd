@@ -15558,7 +15558,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ip_address: str
         """IPv4 or IPv6 address for DNS server."""
         vrf: str
-        """VRF Name."""
+        """
+        VRF Name.
+        Use "default" for the default VRF.
+        """
         priority: int | None
         """Priority value (lower is first)."""
 
@@ -15575,7 +15578,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     ip_address: IPv4 or IPv6 address for DNS server.
-                    vrf: VRF Name.
+                    vrf:
+                       VRF Name.
+                       Use "default" for the default VRF.
                     priority: Priority value (lower is first).
 
                 """
