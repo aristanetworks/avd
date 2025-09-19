@@ -15557,19 +15557,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {"ip_address": {"type": str}, "vrf": {"type": str}, "priority": {"type": int}}
         ip_address: str
         """IPv4 or IPv6 address for DNS server."""
-        vrf: str | None
-        """VRF Name."""
+        vrf: str
+        """
+        VRF Name.
+        Use "default" for the default VRF.
+        """
         priority: int | None
         """Priority value (lower is first)."""
 
         if TYPE_CHECKING:
 
             def __init__(
-                self,
-                *,
-                ip_address: str | UndefinedType = Undefined,
-                vrf: str | None | UndefinedType = Undefined,
-                priority: int | None | UndefinedType = Undefined,
+                self, *, ip_address: str | UndefinedType = Undefined, vrf: str | UndefinedType = Undefined, priority: int | None | UndefinedType = Undefined
             ) -> None:
                 """
                 IpNameServersItem.
@@ -15579,7 +15578,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     ip_address: IPv4 or IPv6 address for DNS server.
-                    vrf: VRF Name.
+                    vrf:
+                       VRF Name.
+                       Use "default" for the default VRF.
                     priority: Priority value (lower is first).
 
                 """
