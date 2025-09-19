@@ -39,16 +39,3 @@ snmp_settings:
       # Notice no VRF here. With the AVD 6 behavior this means "use_default_mgmt_method_vrf"
       version: 2c
       community: SNMP-COMMUNITY-2
-  # Deprecated. To be removed in 6.0.0
-  ipv4_acls:
-    - name: acl-for-vrf-MGMT
-      # Notice no VRF here. With the AVD 6 behavior this means "use_default_mgmt_method_vrf"
-    - name: acl-for-vrf-default
-      vrf: default # VRF must be set to "default" since the default changes.
-
-  # Deprecated. To be removed in 6.0.0
-  ipv6_acls:
-    - name: acl-for-vrf-MGMT
-      # Notice no VRF here. With the AVD 6 behavior this means "use_default_mgmt_method_vrf"
-    - name: acl-for-vrf-default
-      vrf: default # VRF must be set to "default" since the default changes.

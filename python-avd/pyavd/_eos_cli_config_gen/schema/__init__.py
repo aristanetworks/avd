@@ -17856,10 +17856,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "vrf": {"type": str},
-            "destination_address_prefix": {"type": str},
             "prefix": {"type": str},
             "interface": {"type": str},
-            "gateway": {"type": str},
             "next_hop": {"type": str},
             "track_bfd": {"type": bool},
             "distance": {"type": int},
@@ -17868,13 +17866,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "metric": {"type": int},
         }
         vrf: str | None
-        destination_address_prefix: str | None
-        """IPv6 Network/Mask."""
-        prefix: str | None
+        prefix: str
         """IPv6 Network/Mask."""
         interface: str | None
-        gateway: str | None
-        """IPv6 Address."""
         next_hop: str | None
         """IPv6 Address."""
         track_bfd: bool | None
@@ -17891,10 +17885,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 vrf: str | None | UndefinedType = Undefined,
-                destination_address_prefix: str | None | UndefinedType = Undefined,
-                prefix: str | None | UndefinedType = Undefined,
+                prefix: str | UndefinedType = Undefined,
                 interface: str | None | UndefinedType = Undefined,
-                gateway: str | None | UndefinedType = Undefined,
                 next_hop: str | None | UndefinedType = Undefined,
                 track_bfd: bool | None | UndefinedType = Undefined,
                 distance: int | None | UndefinedType = Undefined,
@@ -17910,10 +17902,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     vrf: vrf
-                    destination_address_prefix: IPv6 Network/Mask.
                     prefix: IPv6 Network/Mask.
                     interface: interface
-                    gateway: IPv6 Address.
                     next_hop: IPv6 Address.
                     track_bfd: Track next-hop using BFD.
                     distance: distance
@@ -61663,10 +61653,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "vrf": {"type": str},
-            "destination_address_prefix": {"type": str},
             "prefix": {"type": str},
             "interface": {"type": str},
-            "gateway": {"type": str},
             "next_hop": {"type": str},
             "track_bfd": {"type": bool},
             "distance": {"type": int},
@@ -61676,13 +61664,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         vrf: str | None
         """VRF Name."""
-        destination_address_prefix: str | None
-        """IPv4_network/Mask."""
-        prefix: str | None
+        prefix: str
         """IPv4_network/Mask."""
         interface: str | None
-        gateway: str | None
-        """IPv4 Address."""
         next_hop: str | None
         """IPv4 Address."""
         track_bfd: bool | None
@@ -61699,10 +61683,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 vrf: str | None | UndefinedType = Undefined,
-                destination_address_prefix: str | None | UndefinedType = Undefined,
-                prefix: str | None | UndefinedType = Undefined,
+                prefix: str | UndefinedType = Undefined,
                 interface: str | None | UndefinedType = Undefined,
-                gateway: str | None | UndefinedType = Undefined,
                 next_hop: str | None | UndefinedType = Undefined,
                 track_bfd: bool | None | UndefinedType = Undefined,
                 distance: int | None | UndefinedType = Undefined,
@@ -61718,10 +61700,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     vrf: VRF Name.
-                    destination_address_prefix: IPv4_network/Mask.
                     prefix: IPv4_network/Mask.
                     interface: interface
-                    gateway: IPv4 Address.
                     next_hop: IPv4 Address.
                     track_bfd: Track next-hop using BFD.
                     distance: distance

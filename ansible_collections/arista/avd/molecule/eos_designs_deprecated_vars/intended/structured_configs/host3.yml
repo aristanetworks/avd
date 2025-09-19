@@ -60,14 +60,6 @@ port_channel_interfaces:
       allowed_vlan: none
 service_routing_protocols_model: multi-agent
 snmp_server:
-  ipv4_acls:
-  - name: acl-for-vrf-MGMT
-  - name: acl-for-vrf-default
-    vrf: default
-  ipv6_acls:
-  - name: acl-for-vrf-MGMT
-  - name: acl-for-vrf-default
-    vrf: default
   hosts:
   - host: 10.6.75.124
     version: '3'
