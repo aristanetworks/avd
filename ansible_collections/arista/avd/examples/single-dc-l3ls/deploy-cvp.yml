@@ -5,7 +5,7 @@
   connection: local
   tasks:
 
-    - name: Deploy Configurations to Devices # (2)!
+    - name: Deploy Configurations via CloudVision # (2)!
       ansible.builtin.import_role:
         name: arista.avd.cv_deploy
       vars:
