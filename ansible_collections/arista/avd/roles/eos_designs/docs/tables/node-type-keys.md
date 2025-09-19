@@ -528,7 +528,7 @@
           key: leaf
           mlag_support: true
           network_services:
-            l2: True,
+            l2: true,
           type: leaf
           underlay_router: false
           uplink_type: port-channel
@@ -565,7 +565,7 @@
           default_wan_role: server
           key: wan_rr
           network_services:
-            l3: True,
+            l3: true,
           type: wan_rr
           vtep: true
         ```

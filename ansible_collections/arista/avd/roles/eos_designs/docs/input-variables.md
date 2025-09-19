@@ -32,7 +32,6 @@ The input variables are documented below in tables and YAML.
 ## Design type
 
 !!! note
-    The `design.type` variable is no longer required. It has been deprecated and will be removed in AVD 6.0.0.
     The default [Node Type Variables](#node-type-variables) can be used with all designs.
 
 --8<--

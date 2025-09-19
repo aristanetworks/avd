@@ -292,47 +292,47 @@ keys:
         "cv_tags_topology_type": "spine"
       - "key": "l3leaf"
         "type": "l3leaf"
-        "connected_endpoints": True
+        "connected_endpoints": true
         "default_evpn_role": "client"
-        "mlag_support": True
+        "mlag_support": true
         "network_services":
-          "l2": True
-          "l3": True
-        "vtep": True
+          "l2": true
+          "l3": true
+        "vtep": true
         "default_ptp_priority1": 30
         "cv_tags_topology_type": "leaf"
       - "key": "l2leaf"
         "type": "l2leaf"
-        "connected_endpoints": True
-        "mlag_support": True
+        "connected_endpoints": true
+        "mlag_support": true
         "network_services":
-          "l2": True
-        "underlay_router": False
+          "l2": true
+        "underlay_router": false
         "uplink_type": "port-channel"
         "cv_tags_topology_type": "leaf"
       - "key": "p"
         "type": "p"
-        "mpls_lsr": True
+        "mpls_lsr": true
         "default_mpls_overlay_role": "none"
         "default_overlay_routing_protocol": "ibgp"
         "default_underlay_routing_protocol": "isis-sr"
       - "key": "pe"
         "type": "pe"
-        "mpls_lsr": True
-        "connected_endpoints": True
+        "mpls_lsr": true
+        "connected_endpoints": true
         "default_mpls_overlay_role": "client"
         "default_evpn_role": "client"
         "network_services":
-          "l1": True
-          "l2": True
-          "l3": True
+          "l1": true
+          "l2": true
+          "l3": true
         "default_overlay_routing_protocol": "ibgp"
         "default_underlay_routing_protocol": "isis-sr"
         "default_overlay_address_families": ["vpn-ipv4"]
         "default_evpn_encapsulation": "mpls"
       - "key": "rr"
         "type": "rr"
-        "mpls_lsr": True
+        "mpls_lsr": true
         "default_mpls_overlay_role": "server"
         "default_evpn_role": "server"
         "default_overlay_routing_protocol": "ibgp"
@@ -341,30 +341,30 @@ keys:
         "default_evpn_encapsulation": "mpls"
       - "key": "l3spine"
         "type": "l3spine"
-        "connected_endpoints": True
-        "mlag_support": True
+        "connected_endpoints": true
+        "mlag_support": true
         "network_services":
-          "l2": True
-          "l3": True
+          "l2": true
+          "l3": true
         "default_overlay_routing_protocol": "none"
         "default_underlay_routing_protocol": "none"
         "cv_tags_topology_type": "spine"
       - "key": "leaf"
         "type": "leaf"
-        "connected_endpoints": True
-        "mlag_support": True
+        "connected_endpoints": true
+        "mlag_support": true
         "network_services":
-          "l2": True,
-        "underlay_router": False
+          "l2": true,
+        "underlay_router": false
         "uplink_type": "port-channel"
         "cv_tags_topology_type": "leaf"
       - "key": "l2spine"
         "type": "l2spine"
-        "connected_endpoints": True
-        "mlag_support": True
+        "connected_endpoints": true
+        "mlag_support": true
         "network_services":
-          "l2": True
-        "underlay_router": False
+          "l2": true
+        "underlay_router": false
         "uplink_type": "port-channel"
         "cv_tags_topology_type": "spine"
       - "key": "super_spine"
@@ -382,9 +382,9 @@ keys:
         "default_underlay_routing_protocol": "none"
         "default_overlay_routing_protocol": "ibgp"
         "default_flow_tracker_type": "hardware"
-        "vtep": True
+        "vtep": true
         "network_services":
-          "l3": True
+          "l3": true
       - "key": "wan_rr"
         "type": "wan_rr"
         "default_evpn_role": "server"
@@ -392,6 +392,6 @@ keys:
         "default_underlay_routing_protocol": "none"
         "default_overlay_routing_protocol": "ibgp"
         "default_flow_tracker_type": "hardware"
-        "vtep": True
+        "vtep": true
         "network_services":
-          "l3": True,
+          "l3": true,
