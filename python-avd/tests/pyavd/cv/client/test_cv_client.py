@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import ssl
+from contextlib import AbstractContextManager
+from contextlib import nullcontext as does_not_raise
 from logging import getLogger
 from os import environ
 from typing import TYPE_CHECKING
@@ -12,6 +14,7 @@ from unittest.mock import patch
 import aristaproto
 import pytest
 import pytest_asyncio
+import requests
 
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException
@@ -27,6 +30,9 @@ LOGGER = getLogger(__name__)
 CV_SERVER = environ.get("CV_SERVER") or "www.cv-prod-us-central1-c.arista.io"
 CV_TOKEN = environ.get("CV_ACCESS_TOKEN")
 RECORDING = environ.get("RECORDING")
+
+
+ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 
 
 @pytest_asyncio.fixture
@@ -136,3 +142,138 @@ async def test_cv_client_unauthenticated_proxy() -> None:
             proxy_host=proxy_host,
         ) as cvclient:
             assert cvclient._proxy_manager.proxy_url == f"http://{proxy_host}:{cvclient._proxy_manager.proxy_port}"
+
+
+@pytest.mark.skipif(environ.get("CV_LIVE_PROXY_TEST") is None, reason="CV_LIVE_PROXY_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("targeted_cv"),
+    [
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_PRD_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_PRD_SERVER", default=""),
+            },
+            id="CVAAS_PRD",
+        ),
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_STG_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_STG_SERVER", default=""),
+            },
+            id="CVAAS_STG",
+        ),
+    ],
+)
+@pytest.mark.parametrize(
+    ("proxy_auth"),
+    [
+        pytest.param(
+            {
+                "proxy_username": environ.get("CV_PROXY_USERNAME"),
+                "proxy_password": environ.get("CV_PROXY_PASSWORD"),
+                "proxy_host": environ.get("CV_PROXY_AUTH_HOST"),
+                "proxy_port": environ.get("CV_PROXY_AUTH_PORT"),
+            },
+            id="PROXY_AUTH",
+        ),
+        pytest.param(
+            {
+                "proxy_username": environ.get("CV_PROXY_USERNAME"),
+                "proxy_password": environ.get("CV_PROXY_PASSWORD"),
+                "proxy_host": environ.get("CV_PROXY_NO_AUTH_HOST"),
+                "proxy_port": environ.get("CV_PROXY_NO_AUTH_PORT"),
+            },
+            id="PROXY_NO_AUTH",
+        ),
+    ],
+)
+@pytest.mark.parametrize(
+    ("verify_certs"),
+    [
+        pytest.param(True, id="VERIFY_CERTS_TRUE"),
+        pytest.param(False, id="VERIFY_CERTS_FALSE"),
+    ],
+)
+@pytest.mark.filterwarnings("ignore:Unverified HTTPS request is being made to host")
+async def test_cvclient_with_cvaas_via_proxy(
+    targeted_cv: dict[str, str],
+    proxy_auth: dict[str, str],
+    verify_certs: bool,
+) -> None:
+    """Test ability to fetch data from CVaaS through HTTP CONNECT proxy server using REST and gRPC."""
+    with does_not_raise():
+        async with CVClient(
+            servers=targeted_cv["cv_server"],
+            token=targeted_cv["cv_access_token"],
+            verify_certs=verify_certs,
+            proxy_host=proxy_auth["proxy_host"],
+            proxy_port=int(proxy_auth["proxy_port"]),
+            proxy_username=proxy_auth["proxy_username"],
+            proxy_password=proxy_auth["proxy_password"],
+        ) as cvclient_via_proxy:
+            result = await cvclient_via_proxy.get_inventory_devices(devices=[(None, None, "nonexisting-avd-ci-hostname")])
+        assert result == []
+
+
+@pytest.mark.skipif(environ.get("CV_LIVE_PROXY_TEST") is None, reason="CV_LIVE_PROXY_TEST env variable is not set. Live cv_deploy proxy tests are skipped.")
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    ("targeted_cv"),
+    [
+        pytest.param(
+            {
+                "cv_access_token": environ.get("CV_ONPREM_ACCESS_TOKEN", default=""),
+                "cv_server": environ.get("CV_ONPREM_SERVER", default=""),
+            },
+            id="CV_ONPREM",
+        ),
+    ],
+)
+@pytest.mark.parametrize(
+    ("proxy_auth"),
+    [
+        pytest.param(
+            {
+                "proxy_username": environ.get("CV_PROXY_USERNAME"),
+                "proxy_password": environ.get("CV_PROXY_PASSWORD"),
+                "proxy_host": environ.get("CV_PROXY_AUTH_HOST"),
+                "proxy_port": environ.get("CV_PROXY_AUTH_PORT"),
+            },
+            id="PROXY_AUTH",
+        ),
+        pytest.param(
+            {
+                "proxy_username": environ.get("CV_PROXY_USERNAME"),
+                "proxy_password": environ.get("CV_PROXY_PASSWORD"),
+                "proxy_host": environ.get("CV_PROXY_NO_AUTH_HOST"),
+                "proxy_port": environ.get("CV_PROXY_NO_AUTH_PORT"),
+            },
+            id="PROXY_NO_AUTH",
+        ),
+    ],
+)
+@pytest.mark.parametrize(
+    ("verify_certs", "expected_exception"),
+    [
+        pytest.param(True, pytest.raises(requests.exceptions.SSLError, match="SSLCertVerificationError"), id="VERIFY_CERTS_TRUE"),
+        pytest.param(False, does_not_raise(), id="VERIFY_CERTS_FALSE"),
+    ],
+)
+@pytest.mark.filterwarnings("ignore:Unverified HTTPS request is being made to host")
+async def test_cvclient_with_onprem_via_proxy(
+    targeted_cv: dict[str, str], proxy_auth: dict[str, str], verify_certs: bool, expected_exception: ExpectedExceptionContext
+) -> None:
+    """Test ability to fetch data from on-prem CloudVision through HTTP CONNECT proxy server using REST and gRPC."""
+    with expected_exception:
+        async with CVClient(
+            servers=targeted_cv["cv_server"],
+            token=targeted_cv["cv_access_token"],
+            verify_certs=verify_certs,
+            proxy_host=proxy_auth["proxy_host"],
+            proxy_port=int(proxy_auth["proxy_port"]),
+            proxy_username=proxy_auth["proxy_username"],
+            proxy_password=proxy_auth["proxy_password"],
+        ) as cvclient_via_proxy:
+            result = await cvclient_via_proxy.get_inventory_devices(devices=[(None, None, "nonexisting-avd-ci-hostname")])
+        assert result == []
