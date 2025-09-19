@@ -16692,8 +16692,6 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "host": {"type": str},
                 "vrf": {"type": str},
-                "use_mgmt_interface_vrf": {"type": bool},
-                "use_inband_mgmt_vrf": {"type": bool},
                 "version": {"type": str},
                 "community": {"type": str},
                 "users": {"type": Users},
@@ -16720,24 +16718,6 @@ class EosDesigns(EosDesignsRootModel):
             other string will be used directly as the VRF name. Remember to set the
             `snmp_settings.vrfs[].source_interface` if needed.
             """
-            use_mgmt_interface_vrf: bool | None
-            """
-            Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-            Ignored if 'mgmt_ip' or
-            'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF,
-            the host will not be configured at all.
-            Can be used in combination with "vrf" and
-            "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
-            """
-            use_inband_mgmt_vrf: bool | None
-            """
-            Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
-            Ignored if inband management is
-            not configured for the device, so if the host is only configured with this VRF, the host will not be
-            configured at all.
-            Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
-            the SNMP host under multiple VRFs.
-            """
             version: Literal["1", "2c", "3"] | None
             community: str | None
             """Community name. Required with version "1" or "2c"."""
@@ -16751,8 +16731,6 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     host: str | None | UndefinedType = Undefined,
                     vrf: str | None | UndefinedType = Undefined,
-                    use_mgmt_interface_vrf: bool | None | UndefinedType = Undefined,
-                    use_inband_mgmt_vrf: bool | None | UndefinedType = Undefined,
                     version: Literal["1", "2c", "3"] | None | UndefinedType = Undefined,
                     community: str | None | UndefinedType = Undefined,
                     users: Users | UndefinedType = Undefined,
@@ -16783,20 +16761,6 @@ class EosDesigns(EosDesignsRootModel):
                            - Any
                            other string will be used directly as the VRF name. Remember to set the
                            `snmp_settings.vrfs[].source_interface` if needed.
-                        use_mgmt_interface_vrf:
-                           Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-                           Ignored if 'mgmt_ip' or
-                           'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF,
-                           the host will not be configured at all.
-                           Can be used in combination with "vrf" and
-                           "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
-                        use_inband_mgmt_vrf:
-                           Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
-                           Ignored if inband management is
-                           not configured for the device, so if the host is only configured with this VRF, the host will not be
-                           configured at all.
-                           Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
-                           the SNMP host under multiple VRFs.
                         version: version
                         community: Community name. Required with version "1" or "2c".
                         users: Subclass of AvdList with `UsersItem` items.
@@ -16807,62 +16771,6 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `HostsItem` items."""
 
         Hosts._item_type = HostsItem
-
-        class Ipv4AclsItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-            name: str | None
-            """IPv4 access list name."""
-            vrf: str | None
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    Ipv4AclsItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: IPv4 access list name.
-                        vrf: vrf
-
-                    """
-
-        class Ipv4Acls(AvdList[Ipv4AclsItem]):
-            """Subclass of AvdList with `Ipv4AclsItem` items."""
-
-        Ipv4Acls._item_type = Ipv4AclsItem
-
-        class Ipv6AclsItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-            name: str | None
-            """IPv6 access list name."""
-            vrf: str | None
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    Ipv6AclsItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: IPv6 access list name.
-                        vrf: vrf
-
-                    """
-
-        class Ipv6Acls(AvdList[Ipv6AclsItem]):
-            """Subclass of AvdList with `Ipv6AclsItem` items."""
-
-        Ipv6Acls._item_type = Ipv6AclsItem
 
         class ViewsItem(AvdModel):
             """Subclass of AvdModel."""
@@ -16959,16 +16867,12 @@ class EosDesigns(EosDesignsRootModel):
             "contact": {"type": str},
             "location": {"type": bool, "default": False},
             "vrfs": {"type": Vrfs},
-            "enable_mgmt_interface_vrf": {"type": bool},
-            "enable_inband_mgmt_vrf": {"type": bool},
             "compute_local_engineid": {"type": bool, "default": False},
             "compute_local_engineid_source": {"type": str, "default": "hostname_and_ip"},
             "compute_v3_user_localized_key": {"type": bool, "default": False},
             "users": {"type": Users},
             "hosts": {"type": Hosts},
             "communities": {"type": EosCliConfigGen.SnmpServer.Communities},
-            "ipv4_acls": {"type": Ipv4Acls},
-            "ipv6_acls": {"type": Ipv6Acls},
             "views": {"type": Views},
             "groups": {"type": Groups},
             "traps": {"type": EosCliConfigGen.SnmpServer.Traps},
@@ -16984,21 +16888,6 @@ class EosDesigns(EosDesignsRootModel):
         """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
-        enable_mgmt_interface_vrf: bool | None
-        """
-        Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
-        Ignored if 'mgmt_ip' or
-        'ipv6_mgmt_ip' are not configured for the device.
-        Can be used in combination with "vrfs" and
-        "enable_inband_mgmt_vrf".
-        """
-        enable_inband_mgmt_vrf: bool | None
-        """
-        Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
-        Ignored if inband management is not
-        configured for the device.
-        Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".
-        """
         compute_local_engineid: bool
         """
         Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
@@ -17042,10 +16931,6 @@ class EosDesigns(EosDesignsRootModel):
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
         communities: EosCliConfigGen.SnmpServer.Communities
-        ipv4_acls: Ipv4Acls
-        """Subclass of AvdList with `Ipv4AclsItem` items."""
-        ipv6_acls: Ipv6Acls
-        """Subclass of AvdList with `Ipv6AclsItem` items."""
         views: Views
         """Subclass of AvdList with `ViewsItem` items."""
         groups: Groups
@@ -17060,16 +16945,12 @@ class EosDesigns(EosDesignsRootModel):
                 contact: str | None | UndefinedType = Undefined,
                 location: bool | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
-                enable_mgmt_interface_vrf: bool | None | UndefinedType = Undefined,
-                enable_inband_mgmt_vrf: bool | None | UndefinedType = Undefined,
                 compute_local_engineid: bool | UndefinedType = Undefined,
                 compute_local_engineid_source: Literal["hostname_and_ip", "system_mac"] | UndefinedType = Undefined,
                 compute_v3_user_localized_key: bool | UndefinedType = Undefined,
                 users: Users | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
                 communities: EosCliConfigGen.SnmpServer.Communities | UndefinedType = Undefined,
-                ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
-                ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
                 views: Views | UndefinedType = Undefined,
                 groups: Groups | UndefinedType = Undefined,
                 traps: EosCliConfigGen.SnmpServer.Traps | UndefinedType = Undefined,
@@ -17086,17 +16967,6 @@ class EosDesigns(EosDesignsRootModel):
                        Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack>
                        <inventory_hostname>".
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
-                    enable_mgmt_interface_vrf:
-                       Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
-                       Ignored if 'mgmt_ip' or
-                       'ipv6_mgmt_ip' are not configured for the device.
-                       Can be used in combination with "vrfs" and
-                       "enable_inband_mgmt_vrf".
-                    enable_inband_mgmt_vrf:
-                       Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
-                       Ignored if inband management is not
-                       configured for the device.
-                       Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".
                     compute_local_engineid: Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
                     compute_local_engineid_source:
                        `compute_local_engineid_source` supports:
@@ -17124,8 +16994,6 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdList with `UsersItem` items.
                     hosts: Subclass of AvdList with `HostsItem` items.
                     communities: communities
-                    ipv4_acls: Subclass of AvdList with `Ipv4AclsItem` items.
-                    ipv6_acls: Subclass of AvdList with `Ipv6AclsItem` items.
                     views: Subclass of AvdList with `ViewsItem` items.
                     groups: Subclass of AvdList with `GroupsItem` items.
                     traps: traps

@@ -4289,15 +4289,40 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TftpServer(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"file_ipv4": {"type": str}, "file_ipv6": {"type": str}}
+            class Option150Ipv4(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Option150Ipv4._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "file_ipv4": {"type": str},
+                "file_ipv6": {"type": str},
+                "option_66_ipv4": {"type": str},
+                "option_150_ipv4": {"type": Option150Ipv4},
+            }
             file_ipv4: str | None
             """Name of TFTP file for IPv4 clients."""
             file_ipv6: str | None
             """Name of TFTP file for IPv6 clients."""
+            option_66_ipv4: str | None
+            """IPv4 address or server FQDN for TFTP option 66."""
+            option_150_ipv4: Option150Ipv4
+            """
+            List of IPv4 addresses for TFTP option 150.
+
+            Subclass of AvdList with `str` items.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, file_ipv4: str | None | UndefinedType = Undefined, file_ipv6: str | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    file_ipv4: str | None | UndefinedType = Undefined,
+                    file_ipv6: str | None | UndefinedType = Undefined,
+                    option_66_ipv4: str | None | UndefinedType = Undefined,
+                    option_150_ipv4: Option150Ipv4 | UndefinedType = Undefined,
+                ) -> None:
                     """
                     TftpServer.
 
@@ -4307,6 +4332,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         file_ipv4: Name of TFTP file for IPv4 clients.
                         file_ipv6: Name of TFTP file for IPv6 clients.
+                        option_66_ipv4: IPv4 address or server FQDN for TFTP option 66.
+                        option_150_ipv4:
+                           List of IPv4 addresses for TFTP option 150.
+
+                           Subclass of AvdList with `str` items.
 
                     """
 
@@ -17927,10 +17957,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "vrf": {"type": str},
-            "destination_address_prefix": {"type": str},
             "prefix": {"type": str},
             "interface": {"type": str},
-            "gateway": {"type": str},
             "next_hop": {"type": str},
             "track_bfd": {"type": bool},
             "distance": {"type": int},
@@ -17939,13 +17967,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "metric": {"type": int},
         }
         vrf: str | None
-        destination_address_prefix: str | None
-        """IPv6 Network/Mask."""
-        prefix: str | None
+        prefix: str
         """IPv6 Network/Mask."""
         interface: str | None
-        gateway: str | None
-        """IPv6 Address."""
         next_hop: str | None
         """IPv6 Address."""
         track_bfd: bool | None
@@ -17962,10 +17986,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 vrf: str | None | UndefinedType = Undefined,
-                destination_address_prefix: str | None | UndefinedType = Undefined,
-                prefix: str | None | UndefinedType = Undefined,
+                prefix: str | UndefinedType = Undefined,
                 interface: str | None | UndefinedType = Undefined,
-                gateway: str | None | UndefinedType = Undefined,
                 next_hop: str | None | UndefinedType = Undefined,
                 track_bfd: bool | None | UndefinedType = Undefined,
                 distance: int | None | UndefinedType = Undefined,
@@ -17981,10 +18003,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     vrf: vrf
-                    destination_address_prefix: IPv6 Network/Mask.
                     prefix: IPv6 Network/Mask.
                     interface: interface
-                    gateway: IPv6 Address.
                     next_hop: IPv6 Address.
                     track_bfd: Track next-hop using BFD.
                     distance: distance
@@ -61734,10 +61754,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "vrf": {"type": str},
-            "destination_address_prefix": {"type": str},
             "prefix": {"type": str},
             "interface": {"type": str},
-            "gateway": {"type": str},
             "next_hop": {"type": str},
             "track_bfd": {"type": bool},
             "distance": {"type": int},
@@ -61747,13 +61765,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         vrf: str | None
         """VRF Name."""
-        destination_address_prefix: str | None
-        """IPv4_network/Mask."""
-        prefix: str | None
+        prefix: str
         """IPv4_network/Mask."""
         interface: str | None
-        gateway: str | None
-        """IPv4 Address."""
         next_hop: str | None
         """IPv4 Address."""
         track_bfd: bool | None
@@ -61770,10 +61784,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 vrf: str | None | UndefinedType = Undefined,
-                destination_address_prefix: str | None | UndefinedType = Undefined,
-                prefix: str | None | UndefinedType = Undefined,
+                prefix: str | UndefinedType = Undefined,
                 interface: str | None | UndefinedType = Undefined,
-                gateway: str | None | UndefinedType = Undefined,
                 next_hop: str | None | UndefinedType = Undefined,
                 track_bfd: bool | None | UndefinedType = Undefined,
                 distance: int | None | UndefinedType = Undefined,
@@ -61789,10 +61801,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     vrf: VRF Name.
-                    destination_address_prefix: IPv4_network/Mask.
                     prefix: IPv4_network/Mask.
                     interface: interface
-                    gateway: IPv4 Address.
                     next_hop: IPv4 Address.
                     track_bfd: Track next-hop using BFD.
                     distance: distance

@@ -5204,28 +5204,6 @@ keys:
               description: IPv6 access-list name.
               convert_types:
               - int
-      enable_mgmt_interface_vrf:
-        type: bool
-        description: 'Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
-
-          Ignored if ''mgmt_ip'' or ''ipv6_mgmt_ip'' are not configured for the device.
-
-          Can be used in combination with "vrfs" and "enable_inband_mgmt_vrf".'
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: vrfs[name="use_mgmt_interface_vrf"].enabled
-      enable_inband_mgmt_vrf:
-        type: bool
-        description: 'Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
-
-          Ignored if inband management is not configured for the device.
-
-          Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".'
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: vrfs[name="use_inband_mgmt_vrf"].enabled
       compute_local_engineid:
         type: bool
         default: false
@@ -5327,49 +5305,21 @@ keys:
               - int
             use_mgmt_interface_vrf:
               type: bool
-              description: 'Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-
-                Ignored if ''mgmt_ip'' or ''ipv6_mgmt_ip'' are not configured for
-                the device, so if the host is only configured with this VRF, the host
-                will not be configured at all.
-
-                Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to
-                configure the SNMP host under multiple VRFs.'
               deprecation:
                 warning: true
+                removed: true
                 remove_in_version: 6.0.0
                 new_key: 'vrf: "use_mgmt_interface_vrf"'
             use_inband_mgmt_vrf:
               type: bool
-              description: 'Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
-
-                Ignored if inband management is not configured for the device, so
-                if the host is only configured with this VRF, the host will not be
-                configured at all.
-
-                Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
-                to configure the SNMP host under multiple VRFs.'
               deprecation:
                 warning: true
+                removed: true
                 remove_in_version: 6.0.0
                 new_key: 'vrf: "use_inband_mgmt_vrf"'
       communities:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/communities
-      ipv4_acls:
-        type: list
-        $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv4_acls
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: vrfs[].ipv4_acl
-      ipv6_acls:
-        type: list
-        $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv6_acls
-        deprecation:
-          warning: true
-          remove_in_version: 6.0.0
-          new_key: vrfs[].ipv6_acl
       views:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/views
@@ -5379,6 +5329,34 @@ keys:
       traps:
         type: dict
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/traps
+      enable_mgmt_interface_vrf:
+        type: bool
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[name="use_mgmt_interface_vrf"].enabled
+      enable_inband_mgmt_vrf:
+        type: bool
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[name="use_inband_mgmt_vrf"].enabled
+      ipv4_acls:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[].ipv4_acl
+      ipv6_acls:
+        type: list
+        deprecation:
+          warning: true
+          removed: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[].ipv6_acl
   source_interfaces:
     documentation_options:
       table: management-source-interfaces-settings
