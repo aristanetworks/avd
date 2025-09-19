@@ -1047,7 +1047,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             if vrf.redistribute is arista.avd.defined %}
 {%                 set redistribute = vrf.redistribute.keys() %}
 {%             else %}
-{%                 set redistribute = vrf.redistribute_routes | arista.avd.default([{'source_protocol':'-'}]) | map(attribute='source_protocol') %}
+{%                 set redistribute = ["-"] %}
 {%             endif %}
 {%             set multicast = vrf.evpn_multicast | arista.avd.default(false) %}
 {%             set multicast_transit = vrf.evpn_multicast_address_family.ipv4.transit | arista.avd.default(false) %}

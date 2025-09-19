@@ -3,9 +3,11 @@
 ip_name_servers:
   # no VRF
   - ip_address: 10.10.128.10
+    vrf: default
   # no VRF priority
   - ip_address: 10.10.129.10
     priority: 0
+    vrf: default
   # Same DNS management VRF
   - ip_address: 10.10.128.10
     vrf: mgmt
@@ -15,9 +17,11 @@ ip_name_servers:
     priority: 3
   # no VRF
   - ip_address: 2001:db8::1
+    vrf: default
   # no VRF priority
   - ip_address: 2001:db8::2
     priority: 0
+    vrf: default
   # Same DNS management VRF
   - ip_address: 2001:db8::1
     vrf: mgmt
