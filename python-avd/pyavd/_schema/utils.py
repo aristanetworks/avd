@@ -18,10 +18,5 @@ def get_instance_with_defaults(instance: dict, dynamic_key_path: str, schema: di
         # The key is already set, so no need to find the default value.
         return instance
 
-    if dynamic_root_key == "node_type_keys":
-        from pyavd._eos_designs.shared_utils.node_type_keys import DEFAULT_DESIGN_TYPE, DEFAULT_NODE_TYPE_KEYS  # noqa: PLC0415
-
-        return ChainMap(instance, {"node_type_keys": DEFAULT_NODE_TYPE_KEYS[DEFAULT_DESIGN_TYPE]})
-
     # Fetch default value from schema
     return ChainMap(instance, {dynamic_root_key: get(schema, f"keys.{dynamic_root_key}.default")})
