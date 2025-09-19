@@ -28,10 +28,8 @@ class DaemonTerminattrMixin(Protocol):
 
         The schema will enforce that we only use either new or old models.
         """
-        if not self.inputs.cv_settings:
+        if not (cv_settings := self.inputs.cv_settings):
             return
-
-        cv_settings = self.inputs.cv_settings
 
         clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
             list(cv_settings.cvaas.clusters) if cv_settings.cvaas.enabled else []
