@@ -71319,7 +71319,7 @@ class EosDesigns(EosDesignsRootModel):
       - "underlay_routing_protocol: ebgp"
     Some settings are not yet
     supported with IPv6 underlay:
-      - underlay_multicast
+      - underlay_multicast_pim_sm
       - underlay_multicast_rp_interfaces
       -
     underlay_rfc5549
@@ -73080,7 +73080,7 @@ class EosDesigns(EosDesignsRootModel):
                      - "underlay_routing_protocol: ebgp"
                    Some settings are not yet
                    supported with IPv6 underlay:
-                     - underlay_multicast
+                     - underlay_multicast_pim_sm
                      - underlay_multicast_rp_interfaces
                      -
                    underlay_rfc5549

@@ -5684,8 +5684,9 @@ keys:
       IPv6 addresses.\nCurrently BGP peer-groups are named with IPv4 by default. This
       can be modified under `bgp_peer_groups`.\nRequires:\n  - \"underlay_ipv6: true\"\n
       \ - \"loopback_ipv6_pool\"\n  - \"underlay_routing_protocol: ebgp\"\nSome settings
-      are not yet supported with IPv6 underlay:\n  - underlay_multicast\n  - underlay_multicast_rp_interfaces\n
-      \ - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n  - inband_ztp\n"
+      are not yet supported with IPv6 underlay:\n  - underlay_multicast_pim_sm\n  -
+      underlay_multicast_rp_interfaces\n  - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n
+      \ - inband_ztp\n"
     type: bool
     default: false
   underlay_isis_authentication_cleartext_key:
