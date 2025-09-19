@@ -26,11 +26,6 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
-        ip_address_secondaries:
-          type: list
-          items:
-            type: str
-            description: Node IPv4 address/Mask.
         dhcp_ip:
           type: str
           description: |-

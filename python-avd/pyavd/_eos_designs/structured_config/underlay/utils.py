@@ -175,13 +175,6 @@ class UtilsMixin(Protocol):
         if l3_generic_interface.ip_address == "dhcp" and l3_generic_interface.dhcp_accept_default_route:
             interface.dhcp_client_accept_default_route = True
 
-        if isinstance(interface, EosCliConfigGen.EthernetInterfacesItem):
-            interface.ip_address_secondaries = l3_generic_interface.ip_address_secondaries._cast_as(EosCliConfigGen.EthernetInterfacesItem.IpAddressSecondaries)
-        elif isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
-            interface.ip_address_secondaries = l3_generic_interface.ip_address_secondaries._cast_as(
-                EosCliConfigGen.PortChannelInterfacesItem.IpAddressSecondaries
-            )
-
         return interface
 
     def _get_l3_uplink_with_l2_as_subint(

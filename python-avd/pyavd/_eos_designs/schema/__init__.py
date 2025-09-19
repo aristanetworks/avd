@@ -8784,11 +8784,6 @@ class EosDesigns(EosDesignsRootModel):
     class L3InterfaceProfilesItem(AvdModel):
         """Subclass of AvdModel."""
 
-        class IpAddressSecondaries(AvdList[str]):
-            """Subclass of AvdList with `str` items."""
-
-        IpAddressSecondaries._item_type = str
-
         class Bgp(AvdModel):
             """Subclass of AvdModel."""
 
@@ -9016,7 +9011,6 @@ class EosDesigns(EosDesignsRootModel):
             "name": {"type": str},
             "description": {"type": str},
             "ip_address": {"type": str},
-            "ip_address_secondaries": {"type": IpAddressSecondaries},
             "dhcp_ip": {"type": str},
             "public_ip": {"type": str},
             "encapsulation_dot1q_vlan": {"type": int},
@@ -9061,8 +9055,6 @@ class EosDesigns(EosDesignsRootModel):
         """
         ip_address: str | None
         """Node IPv4 address/Mask or 'dhcp'."""
-        ip_address_secondaries: IpAddressSecondaries
-        """Subclass of AvdList with `str` items."""
         dhcp_ip: str | None
         """
         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -9216,7 +9208,6 @@ class EosDesigns(EosDesignsRootModel):
                 name: str | None | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
                 ip_address: str | None | UndefinedType = Undefined,
-                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                 dhcp_ip: str | None | UndefinedType = Undefined,
                 public_ip: str | None | UndefinedType = Undefined,
                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -9261,7 +9252,6 @@ class EosDesigns(EosDesignsRootModel):
                        If not set a default description will be configured with '[<peer>[
                        <peer_interface>]]'.
                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                    ip_address_secondaries: Subclass of AvdList with `str` items.
                     dhcp_ip:
                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                        IPv4 address
@@ -26373,11 +26363,6 @@ class EosDesigns(EosDesignsRootModel):
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -26607,7 +26592,6 @@ class EosDesigns(EosDesignsRootModel):
                             "name": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -26649,8 +26633,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
-                        ip_address_secondaries: IpAddressSecondaries
-                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -26804,7 +26786,6 @@ class EosDesigns(EosDesignsRootModel):
                                 name: str | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -26847,7 +26828,6 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -27100,11 +27080,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -27220,7 +27195,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -27270,8 +27244,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
-                        ip_address_secondaries: IpAddressSecondaries
-                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -27396,7 +27368,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -27442,7 +27413,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -30933,11 +30903,6 @@ class EosDesigns(EosDesignsRootModel):
                         class L3InterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
 
-                            class IpAddressSecondaries(AvdList[str]):
-                                """Subclass of AvdList with `str` items."""
-
-                            IpAddressSecondaries._item_type = str
-
                             class Bgp(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -31173,7 +31138,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "name": {"type": str},
                                 "description": {"type": str},
                                 "ip_address": {"type": str},
-                                "ip_address_secondaries": {"type": IpAddressSecondaries},
                                 "dhcp_ip": {"type": str},
                                 "public_ip": {"type": str},
                                 "encapsulation_dot1q_vlan": {"type": int},
@@ -31215,8 +31179,6 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ip_address: str | None
                             """Node IPv4 address/Mask or 'dhcp'."""
-                            ip_address_secondaries: IpAddressSecondaries
-                            """Subclass of AvdList with `str` items."""
                             dhcp_ip: str | None
                             """
                             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -31370,7 +31332,6 @@ class EosDesigns(EosDesignsRootModel):
                                     name: str | UndefinedType = Undefined,
                                     description: str | None | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
-                                    ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                     dhcp_ip: str | None | UndefinedType = Undefined,
                                     public_ip: str | None | UndefinedType = Undefined,
                                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -31413,7 +31374,6 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set a default description will be configured with '[<peer>[
                                            <peer_interface>]]'.
                                         ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                        ip_address_secondaries: Subclass of AvdList with `str` items.
                                         dhcp_ip:
                                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                            IPv4 address
@@ -31666,11 +31626,6 @@ class EosDesigns(EosDesignsRootModel):
 
                             MemberInterfaces._item_type = MemberInterfacesItem
 
-                            class IpAddressSecondaries(AvdList[str]):
-                                """Subclass of AvdList with `str` items."""
-
-                            IpAddressSecondaries._item_type = str
-
                             class Bgp(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -31792,7 +31747,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "mode": {"type": str, "default": "active"},
                                 "member_interfaces": {"type": MemberInterfaces},
                                 "ip_address": {"type": str},
-                                "ip_address_secondaries": {"type": IpAddressSecondaries},
                                 "dhcp_ip": {"type": str},
                                 "public_ip": {"type": str},
                                 "encapsulation_dot1q_vlan": {"type": int},
@@ -31842,8 +31796,6 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ip_address: str | None
                             """Node IPv4 address/Mask or 'dhcp'."""
-                            ip_address_secondaries: IpAddressSecondaries
-                            """Subclass of AvdList with `str` items."""
                             dhcp_ip: str | None
                             """
                             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -31968,7 +31920,6 @@ class EosDesigns(EosDesignsRootModel):
                                     mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
                                     member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
-                                    ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                     dhcp_ip: str | None | UndefinedType = Undefined,
                                     public_ip: str | None | UndefinedType = Undefined,
                                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -32014,7 +31965,6 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of
                                            AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                         ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                        ip_address_secondaries: Subclass of AvdList with `str` items.
                                         dhcp_ip:
                                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                            IPv4 address
@@ -35446,11 +35396,6 @@ class EosDesigns(EosDesignsRootModel):
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -35680,7 +35625,6 @@ class EosDesigns(EosDesignsRootModel):
                             "name": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -35722,8 +35666,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
-                        ip_address_secondaries: IpAddressSecondaries
-                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -35877,7 +35819,6 @@ class EosDesigns(EosDesignsRootModel):
                                 name: str | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -35920,7 +35861,6 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -36173,11 +36113,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -36293,7 +36228,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -36343,8 +36277,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
-                        ip_address_secondaries: IpAddressSecondaries
-                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -36469,7 +36401,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -36515,7 +36446,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -40027,11 +39957,6 @@ class EosDesigns(EosDesignsRootModel):
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -40261,7 +40186,6 @@ class EosDesigns(EosDesignsRootModel):
                             "name": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -40303,8 +40227,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
-                        ip_address_secondaries: IpAddressSecondaries
-                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -40458,7 +40380,6 @@ class EosDesigns(EosDesignsRootModel):
                                 name: str | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -40501,7 +40422,6 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -40754,11 +40674,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -40874,7 +40789,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -40924,8 +40838,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
-                        ip_address_secondaries: IpAddressSecondaries
-                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -41050,7 +40962,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -41096,7 +41007,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -53007,11 +52917,6 @@ class EosDesigns(EosDesignsRootModel):
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -53241,7 +53146,6 @@ class EosDesigns(EosDesignsRootModel):
                             "name": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -53283,8 +53187,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
-                        ip_address_secondaries: IpAddressSecondaries
-                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -53438,7 +53340,6 @@ class EosDesigns(EosDesignsRootModel):
                                 name: str | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -53481,7 +53382,6 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -53734,11 +53634,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -53854,7 +53749,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -53904,8 +53798,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
-                        ip_address_secondaries: IpAddressSecondaries
-                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -54030,7 +53922,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -54076,7 +53967,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -57567,11 +57457,6 @@ class EosDesigns(EosDesignsRootModel):
                         class L3InterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
 
-                            class IpAddressSecondaries(AvdList[str]):
-                                """Subclass of AvdList with `str` items."""
-
-                            IpAddressSecondaries._item_type = str
-
                             class Bgp(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -57807,7 +57692,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "name": {"type": str},
                                 "description": {"type": str},
                                 "ip_address": {"type": str},
-                                "ip_address_secondaries": {"type": IpAddressSecondaries},
                                 "dhcp_ip": {"type": str},
                                 "public_ip": {"type": str},
                                 "encapsulation_dot1q_vlan": {"type": int},
@@ -57849,8 +57733,6 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ip_address: str | None
                             """Node IPv4 address/Mask or 'dhcp'."""
-                            ip_address_secondaries: IpAddressSecondaries
-                            """Subclass of AvdList with `str` items."""
                             dhcp_ip: str | None
                             """
                             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -58004,7 +57886,6 @@ class EosDesigns(EosDesignsRootModel):
                                     name: str | UndefinedType = Undefined,
                                     description: str | None | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
-                                    ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                     dhcp_ip: str | None | UndefinedType = Undefined,
                                     public_ip: str | None | UndefinedType = Undefined,
                                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -58047,7 +57928,6 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set a default description will be configured with '[<peer>[
                                            <peer_interface>]]'.
                                         ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                        ip_address_secondaries: Subclass of AvdList with `str` items.
                                         dhcp_ip:
                                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                            IPv4 address
@@ -58300,11 +58180,6 @@ class EosDesigns(EosDesignsRootModel):
 
                             MemberInterfaces._item_type = MemberInterfacesItem
 
-                            class IpAddressSecondaries(AvdList[str]):
-                                """Subclass of AvdList with `str` items."""
-
-                            IpAddressSecondaries._item_type = str
-
                             class Bgp(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -58426,7 +58301,6 @@ class EosDesigns(EosDesignsRootModel):
                                 "mode": {"type": str, "default": "active"},
                                 "member_interfaces": {"type": MemberInterfaces},
                                 "ip_address": {"type": str},
-                                "ip_address_secondaries": {"type": IpAddressSecondaries},
                                 "dhcp_ip": {"type": str},
                                 "public_ip": {"type": str},
                                 "encapsulation_dot1q_vlan": {"type": int},
@@ -58476,8 +58350,6 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             ip_address: str | None
                             """Node IPv4 address/Mask or 'dhcp'."""
-                            ip_address_secondaries: IpAddressSecondaries
-                            """Subclass of AvdList with `str` items."""
                             dhcp_ip: str | None
                             """
                             When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -58602,7 +58474,6 @@ class EosDesigns(EosDesignsRootModel):
                                     mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
                                     member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                     ip_address: str | None | UndefinedType = Undefined,
-                                    ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                     dhcp_ip: str | None | UndefinedType = Undefined,
                                     public_ip: str | None | UndefinedType = Undefined,
                                     encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -58648,7 +58519,6 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of
                                            AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                         ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                        ip_address_secondaries: Subclass of AvdList with `str` items.
                                         dhcp_ip:
                                            When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                            IPv4 address
@@ -62080,11 +61950,6 @@ class EosDesigns(EosDesignsRootModel):
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -62314,7 +62179,6 @@ class EosDesigns(EosDesignsRootModel):
                             "name": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -62356,8 +62220,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
-                        ip_address_secondaries: IpAddressSecondaries
-                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -62511,7 +62373,6 @@ class EosDesigns(EosDesignsRootModel):
                                 name: str | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -62554,7 +62415,6 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -62807,11 +62667,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -62927,7 +62782,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -62977,8 +62831,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
-                        ip_address_secondaries: IpAddressSecondaries
-                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -63103,7 +62955,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -63149,7 +63000,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -66661,11 +66511,6 @@ class EosDesigns(EosDesignsRootModel):
                     class L3InterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -66895,7 +66740,6 @@ class EosDesigns(EosDesignsRootModel):
                             "name": {"type": str},
                             "description": {"type": str},
                             "ip_address": {"type": str},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -66937,8 +66781,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
-                        ip_address_secondaries: IpAddressSecondaries
-                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -67092,7 +66934,6 @@ class EosDesigns(EosDesignsRootModel):
                                 name: str | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -67135,7 +66976,6 @@ class EosDesigns(EosDesignsRootModel):
                                        If not set a default description will be configured with '[<peer>[
                                        <peer_interface>]]'.
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address
@@ -67388,11 +67228,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         MemberInterfaces._item_type = MemberInterfacesItem
 
-                        class IpAddressSecondaries(AvdList[str]):
-                            """Subclass of AvdList with `str` items."""
-
-                        IpAddressSecondaries._item_type = str
-
                         class Bgp(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -67508,7 +67343,6 @@ class EosDesigns(EosDesignsRootModel):
                             "mode": {"type": str, "default": "active"},
                             "member_interfaces": {"type": MemberInterfaces},
                             "ip_address": {"type": str},
-                            "ip_address_secondaries": {"type": IpAddressSecondaries},
                             "dhcp_ip": {"type": str},
                             "public_ip": {"type": str},
                             "encapsulation_dot1q_vlan": {"type": int},
@@ -67558,8 +67392,6 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_address: str | None
                         """Node IPv4 address/Mask or 'dhcp'."""
-                        ip_address_secondaries: IpAddressSecondaries
-                        """Subclass of AvdList with `str` items."""
                         dhcp_ip: str | None
                         """
                         When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
@@ -67684,7 +67516,6 @@ class EosDesigns(EosDesignsRootModel):
                                 mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
                                 member_interfaces: MemberInterfaces | UndefinedType = Undefined,
                                 ip_address: str | None | UndefinedType = Undefined,
-                                ip_address_secondaries: IpAddressSecondaries | UndefinedType = Undefined,
                                 dhcp_ip: str | None | UndefinedType = Undefined,
                                 public_ip: str | None | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
@@ -67730,7 +67561,6 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of
                                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
                                     ip_address: Node IPv4 address/Mask or 'dhcp'.
-                                    ip_address_secondaries: Subclass of AvdList with `str` items.
                                     dhcp_ip:
                                        When the `ip_address` is `dhcp`, this optional field allows to indicate the expected
                                        IPv4 address

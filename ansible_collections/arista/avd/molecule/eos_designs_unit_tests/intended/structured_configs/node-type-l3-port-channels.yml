@@ -266,9 +266,6 @@ port_channel_interfaces:
   description: Port-Channel with 3 member ports.
   shutdown: false
   ip_address: 192.168.1.102/31
-  ip_address_secondaries:
-  - 192.168.1.101/31
-  - 192.168.1.110/31
   service_profile: TEST-QOS-PROFILE1
   flow_tracker:
     hardware: FLOW-TRACKER

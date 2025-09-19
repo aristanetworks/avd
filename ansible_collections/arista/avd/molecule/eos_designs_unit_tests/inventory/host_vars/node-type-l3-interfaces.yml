@@ -11,10 +11,6 @@ spine:
         - # Settings set via profile
           name: Ethernet1
           ip_address: 192.168.1.2/31
-          # Test for ip_address_secondaries
-          ip_address_secondaries:
-            - 192.168.1.1/24
-            - 192.168.1.5/24
           peer: peer1
           peer_interface: eth1
           peer_ip: 192.168.1.3

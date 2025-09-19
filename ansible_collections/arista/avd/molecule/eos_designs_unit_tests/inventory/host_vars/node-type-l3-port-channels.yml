@@ -53,10 +53,6 @@ wan_router:
                 - name: Ethernet3
                   description: "Custom eth3 description"
               ip_address: 192.168.1.102/31
-              # Test for ip_address_secondaries
-              ip_address_secondaries:
-                - 192.168.1.101/31
-                - 192.168.1.110/31
               peer: peer1
               peer_port_channel: Port-Channel10
               peer_ip: 192.168.1.103

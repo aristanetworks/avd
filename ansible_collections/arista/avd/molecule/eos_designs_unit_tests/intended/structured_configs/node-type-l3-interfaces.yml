@@ -9,9 +9,6 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 10000full
   ip_address: 192.168.1.2/31
-  ip_address_secondaries:
-  - 192.168.1.1/24
-  - 192.168.1.5/24
   service_profile: TEST-QOS-PROFILE
   service_policy:
     qos:

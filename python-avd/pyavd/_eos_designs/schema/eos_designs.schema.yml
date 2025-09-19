@@ -11959,11 +11959,6 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
-        ip_address_secondaries:
-          type: list
-          items:
-            type: str
-            description: Node IPv4 address/Mask.
         dhcp_ip:
           type: str
           description: 'When the `ip_address` is `dhcp`, this optional field allows
@@ -12235,11 +12230,6 @@ $defs:
         ip_address:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
-        ip_address_secondaries:
-          type: list
-          items:
-            type: str
-            description: Node IPv4 address/Mask or 'dhcp'.
         dhcp_ip:
           type: str
           description: 'When the `ip_address` is `dhcp`, this optional field allows
