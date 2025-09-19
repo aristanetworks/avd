@@ -180,7 +180,7 @@ class SnmpServerMixin(Protocol):
 
     def _snmp_vrfs_and_acls(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """
-        Set list of dicts for enabling/disabling SNMP for VRFs.
+        Set ACLs (ipv4 and ipv6) and a list of dicts for enabling/disabling SNMP for VRFs.
 
         Requires snmp_settings.vrfs to be set
         """
