@@ -1796,6 +1796,7 @@ keys:
             vrf:
               type: str
               default: use_default_mgmt_method_vrf
+              required: false
               description: "The value of `vrf` will be interpreted according to these
                 rules:\n- `use_mgmt_interface_vrf` will configure the DNS server under
                 the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface`
