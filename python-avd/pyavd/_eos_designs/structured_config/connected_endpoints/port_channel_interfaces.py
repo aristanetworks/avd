@@ -251,7 +251,12 @@ class PortChannelInterfacesMixin(Protocol):
 
         # EVPN A/A
         if (
-            short_esi := self._get_short_esi(adapter, channel_group_id, short_esi=subinterface.short_esi, hash_extra_value=str(subinterface.number))
+            short_esi := self._get_short_esi(
+                adapter,
+                channel_group_id,
+                port_channel_subif_short_esi=subinterface.short_esi,
+                hash_extra_value=str(subinterface.number),
+            )
         ) is not None:
             port_channel_interface.evpn_ethernet_segment._update(
                 identifier=f"{self.inputs.evpn_short_esi_prefix}{short_esi}",

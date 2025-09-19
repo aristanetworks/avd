@@ -16,7 +16,8 @@ title: Ansible Collection Role cv_deploy
 
 Depending on the configured options, the role supports multiple operations:
 
-- Deploys configurations for one or more devices using the "Static Configuration Studio".
+- Deploys device-specific configurations for one or more devices using the "Static Configuration Studio".
+- Deploys a full hierarchy of containers and configlets using the "Static Configuration Studio".
 - Deploys device and interface Tags for one or more devices.
 - Adds missing devices and updates device details for existing devices in the "Inventory & Topology Studio".
 - Creates, builds, submits Workspaces.
@@ -56,7 +57,6 @@ The API to CloudVision is using gRPC over encrypted HTTP/2.
     Make sure to enable "Studios - End-to-End Provisioning" under Settings, Features.
 
     ![Figure 1: Ansible Role arista.avd.cv_deploy](../../../../../docs/_media/studios_end_to_end_provisioning.png)
-- Currently only the first of the given cv_servers is being used.
 
 ## Roadmap
 
@@ -274,6 +274,46 @@ To force an error to always be raised in case of duplicate `system_mac_address`,
 ```yaml
 cv_strict_system_mac_address: true
 ```
+
+#### Static Configuration Studio deployment
+
+In addition to deploying device-specific configurations, the role allows for the deployment of a full hierarchy of containers and configlets to the CloudVision "Static Configuration Studio". This is controlled by the `cv_static_config_manifest` variable:
+
+```yaml
+cv_static_config_manifest:
+
+  # A list of dictionaries defining configlets to be created in the Configlet Library.
+  # Configlet names must be unique across all defined configlets.
+  configlets:
+    - name: <str>
+      file: <str>
+
+  # A list of dictionaries defining the root containers in the Static Configuration hierarchy.
+  # Container names must be unique among sibling containers (at the same level).
+  containers:
+    - name: <str>
+      description: <str, optional>
+      tag_query: <str>
+      match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+      configlets:
+        - name: <str>
+      sub_containers:
+        - name: <str>
+          description: <str, optional>
+          tag_query: <str>
+          match_policy: <str, default="match_all", choices=["match_all", "match_first"]>
+          configlets:
+            - name: <str>
+          sub_containers: <list of containers>
+```
+
+!!! note "Root Containers Order"
+    When initially deploying or adding new root containers, the role places its managed root containers to the top of the Studio container tree. Please be aware that this automated ordering **may displace any containers you have manually arranged**.
+
+!!! tip "Manifest-Only Deployment"
+    To manage the Static Configuration Studio independently, you can run a "manifest-only" deployment. Simply provide an empty list for `cv_devices` (`cv_devices: []`).
+
+    When `cv_devices` is empty, the role skips all device-specific operations (like configlet generation and tagging) and **only** deploys the content of `cv_static_config_manifest`.
 
 #### Role default input directories
 

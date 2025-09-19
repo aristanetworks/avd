@@ -9,7 +9,6 @@ custom_structured_configuration_ethernet_interfaces:
     peer_type: firewall
     description: dc2-leaf3-fw1_e1
     # shutdown: false
-    type: port-channel-member
     channel_group:
       id: 11
       mode: active

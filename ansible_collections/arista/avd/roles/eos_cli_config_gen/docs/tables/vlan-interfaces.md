@@ -236,9 +236,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].vrrp_ids.[].ipv4.secondary_addresses.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "vlan_interfaces.[].vrrp_ids.[].ipv4.version") | Integer |  |  | Valid Values:<br>- <code>2</code><br>- <code>3</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "vlan_interfaces.[].vrrp_ids.[].ipv6") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "vlan_interfaces.[].vrrp_ids.[].ipv6.address") <span style="color:red">deprecated</span> | String |  |  |  | Virtual IPv6 address.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>addresses</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses</samp>](## "vlan_interfaces.[].vrrp_ids.[].ipv6.addresses") | List, items: String |  |  |  | Virtual IPv6 addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;addresses</samp>](## "vlan_interfaces.[].vrrp_ids.[].ipv6.addresses") | List, items: String | Required |  |  | Virtual IPv6 addresses. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].vrrp_ids.[].ipv6.addresses.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "vlan_interfaces.[].vrrp_ids.[].ipv6.address") <span style="color:red">removed</span> | String |  |  |  | Virtual IPv6 address.<span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>addresses</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_authentication</samp>](## "vlan_interfaces.[].vrrp_ids.[].peer_authentication") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "vlan_interfaces.[].vrrp_ids.[].peer_authentication.mode") | String | Required |  | Valid Values:<br>- <code>text</code><br>- <code>ietf-md5</code> | Authentication mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "vlan_interfaces.[].vrrp_ids.[].peer_authentication.key") | String | Required |  |  | Authentication key. |
@@ -265,9 +265,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vlan_interfaces.[].tags.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "vlan_interfaces.[].type") | String |  |  |  | Key only used for documentation or validation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "vlan_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address_virtual</samp>](## "vlan_interfaces.[].ipv6_address_virtual") <span style="color:red">removed</span> | String |  |  |  | IPv6_address/Mask.<br><span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>ipv6_address_virtuals</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_virtual_router_address</samp>](## "vlan_interfaces.[].ipv6_virtual_router_address") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>ipv6_virtual_router_addresses</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrrp</samp>](## "vlan_interfaces.[].vrrp") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>vrrp_ids</samp> instead.</span> |
 
 === "YAML"
 
@@ -739,14 +736,8 @@
               version: <int; 2 | 3>
             ipv6:
 
-              # Virtual IPv6 address.
-              # This key is deprecated.
-              # Support will be removed in AVD version 6.0.0.
-              # Use `addresses` instead.
-              address: <str>
-
               # Virtual IPv6 addresses.
-              addresses:
+              addresses: # required
                 - <str>
             peer_authentication:
 

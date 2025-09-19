@@ -1,9 +1,11 @@
+---
 # UNDERLAY_MULTICAST_TESTS
 
 # Test underlay multicast configuration on underlay router + mlag
 type: l3leaf
 
-underlay_multicast: true
+underlay_multicast_pim_sm: true
+underlay_multicast_static: true
 
 l3leaf:
   defaults:
@@ -12,17 +14,17 @@ l3leaf:
     loopback_ipv4_offset: 2
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     uplink_interfaces: [Ethernet1, Ethernet2]
-    uplink_switches: ['UNDERLAY-MULTICAST-SPINE1', 'UNDERLAY-MULTICAST-SPINE2']
+    uplink_switches: ["UNDERLAY-MULTICAST-SPINE1", "UNDERLAY-MULTICAST-SPINE2"]
     uplink_ipv4_pool: 172.31.255.0/24
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_interfaces: [Ethernet3, Ethernet4]
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
     # Test multicast configuration with mlag pair.
     # Expected results:
     # - router multicast enabled for ipv4
-    # - p2p links configured with "pim ipv4 sparse-mode"
-    # - VLAN 4093 configured with "pim ipv4 sparse-mode"
+    # - p2p links configured with "pim ipv4 sparse-mode" and "multicast static ipv4"
+    # - VLAN 4093 configured with "pim ipv4 sparse-mode" but not "multicast static ipv4" because disabled on 1B
     - group: DC1_LEAF1
       bgp_as: 65101
       nodes:
@@ -30,14 +32,16 @@ l3leaf:
           id: 1
           mgmt_ip: 192.168.200.105/24
           uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        # Tested from host_vars
         - name: UNDERLAY-MULTICAST-L3LEAF1B
-          id: 2
-          mgmt_ip: 192.168.200.106/24
-          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+          # [...] defined in host_vars
+          # Testing that node variables override global variables
+
     # Test multicast configuration with mlag pair sharing same vlan for l3 peering (4094)
     # Expected results:
     # - router multicast enabled for ipv4
-    # - p2p links configured with "pim ipv4 sparse-mode"
+    # - p2p links configured with "pim ipv4 sparse-mode" and "multicast static ipv4"
+    # TODO: check below if static
     # - VLAN 4094 configured with "pim ipv4 sparse-mode"
     - group: DC1_LEAF2
       bgp_as: 65102
@@ -47,7 +51,45 @@ l3leaf:
           id: 3
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [Ethernet3, Ethernet3]
+          # Testing that these restrictions don't have any effect
+          underlay_multicast:
+            pim_sm:
+              uplinks: true
+            static:
+              uplink_interfaces: [Ethernet1]
         - name: UNDERLAY-MULTICAST-L3LEAF2B
           id: 4
           mgmt_ip: 192.168.200.108/24
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
+          # Testing limiting multicast on uplinks
+          underlay_multicast:
+            pim_sm:
+              # uplink_interfaces does not contain Ethernet1
+              uplinks: true
+              uplink_interfaces: [Ethernet5]
+            static:
+              # interface is in but it uplinks: false
+              uplinks: false
+              uplink_interfaces: [Ethernet1]
+              # shutting down static multicast on one side of MLAG and making sure it is not configured
+              # on BOTH side
+              mlag: false
+
+    - group: DC1_LEAF3
+      bgp_as: 65103
+      mlag_peer_l3_vlan: 4094
+      # Checking static multicast over MLAG removing anything else
+      underlay_multicast:
+        pim_sm:
+          enabled: false
+        static:
+          uplinks: false
+      nodes:
+        - name: UNDERLAY-MULTICAST-L3LEAF3A
+          id: 5
+          mgmt_ip: 192.168.200.109/24
+          uplink_switch_interfaces: [Ethernet5, Ethernet5]
+        - name: UNDERLAY-MULTICAST-L3LEAF3B
+          id: 6
+          mgmt_ip: 192.168.200.10/24
+          uplink_switch_interfaces: [Ethernet6, Ethernet6]
