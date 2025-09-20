@@ -34,6 +34,12 @@
 {%         if dhcp_server.dns_servers_ipv6 is arista.avd.defined %}
    dns server ipv6 {{ dhcp_server.dns_servers_ipv6 | arista.avd.natural_sort | join(" ") }}
 {%         endif %}
+{%         if dhcp_server.tftp_server.option_66_ipv4 is arista.avd.defined %}
+   tftp server option 66 ipv4 {{ dhcp_server.tftp_server.option_66_ipv4 }}
+{%         endif %}
+{%         if dhcp_server.tftp_server.option_150_ipv4 is arista.avd.defined %}
+   tftp server option 150 ipv4 {{ dhcp_server.tftp_server.option_150_ipv4 | join(" ") }}
+{%         endif %}
 {%         if dhcp_server.tftp_server.file_ipv4 is arista.avd.defined %}
    tftp server file ipv4 {{ dhcp_server.tftp_server.file_ipv4 }}
 {%         endif %}

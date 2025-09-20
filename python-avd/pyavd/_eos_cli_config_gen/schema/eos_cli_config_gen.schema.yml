@@ -1770,6 +1770,15 @@ keys:
               min_length: 1
               max_length: 255
               description: Name of TFTP file for IPv6 clients.
+            option_66_ipv4:
+              type: str
+              description: IPv4 address or server FQDN for TFTP option 66.
+            option_150_ipv4:
+              type: list
+              min_length: 1
+              description: List of IPv4 addresses for TFTP option 150.
+              items:
+                type: str
         ipv4_vendor_options:
           type: list
           primary_key: vendor_id

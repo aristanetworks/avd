@@ -4289,15 +4289,40 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TftpServer(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"file_ipv4": {"type": str}, "file_ipv6": {"type": str}}
+            class Option150Ipv4(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Option150Ipv4._item_type = str
+
+            _fields: ClassVar[dict] = {
+                "file_ipv4": {"type": str},
+                "file_ipv6": {"type": str},
+                "option_66_ipv4": {"type": str},
+                "option_150_ipv4": {"type": Option150Ipv4},
+            }
             file_ipv4: str | None
             """Name of TFTP file for IPv4 clients."""
             file_ipv6: str | None
             """Name of TFTP file for IPv6 clients."""
+            option_66_ipv4: str | None
+            """IPv4 address or server FQDN for TFTP option 66."""
+            option_150_ipv4: Option150Ipv4
+            """
+            List of IPv4 addresses for TFTP option 150.
+
+            Subclass of AvdList with `str` items.
+            """
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, file_ipv4: str | None | UndefinedType = Undefined, file_ipv6: str | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    file_ipv4: str | None | UndefinedType = Undefined,
+                    file_ipv6: str | None | UndefinedType = Undefined,
+                    option_66_ipv4: str | None | UndefinedType = Undefined,
+                    option_150_ipv4: Option150Ipv4 | UndefinedType = Undefined,
+                ) -> None:
                     """
                     TftpServer.
 
@@ -4307,6 +4332,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         file_ipv4: Name of TFTP file for IPv4 clients.
                         file_ipv6: Name of TFTP file for IPv6 clients.
+                        option_66_ipv4: IPv4 address or server FQDN for TFTP option 66.
+                        option_150_ipv4:
+                           List of IPv4 addresses for TFTP option 150.
+
+                           Subclass of AvdList with `str` items.
 
                     """
 
