@@ -69625,10 +69625,10 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_isis_instance_name": {"type": str},
         "underlay_l2_ethernet_description": {"type": str, "default": "L2_{peer}_{peer_interface}"},
         "underlay_l2_port_channel_description": {"type": str, "default": "L2_{peer_node_group_or_peer}_{peer_interface}"},
-        "underlay_multicast_pim_sm": {"type": bool, "default": False},
-        "underlay_multicast_static": {"type": bool, "default": False},
         "underlay_multicast_anycast_rp": {"type": UnderlayMulticastAnycastRp},
+        "underlay_multicast_pim_sm": {"type": bool, "default": False},
         "underlay_multicast_rps": {"type": UnderlayMulticastRps},
+        "underlay_multicast_static": {"type": bool, "default": False},
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
         "underlay_ospf_authentication": {"type": UnderlayOspfAuthentication},
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
@@ -71402,6 +71402,21 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"L2_{peer_node_group_or_peer}_{peer_interface}"`
     """
+    underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp
+    """
+    If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address,
+    they will be configured
+    with one of the following methods:
+    - Anycast RP using PIM (RFC4610).
+    -
+    Anycast RP using MSDP (RFC4611).
+
+    NOTE: When using MSDP, all nodes across all MSDP enabled RPs will
+    be added to a single MSDP mesh group named "ANYCAST-RP".
+
+
+    Subclass of AvdModel.
+    """
     underlay_multicast_pim_sm: bool
     """
     When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
@@ -71418,32 +71433,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
-    underlay_multicast_static: bool
-    """
-    When enabled, configures multicast routing and by default configures static multicast in the
-    underlay on all:
-      - P2P uplink interfaces if enabled on uplink peer
-      - MLAG L3 peer interface if
-    also enabled on MLAG peer
-      - l3_edge and core interfaces
-
-    Default value: `False`
-    """
-    underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp
-    """
-    If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address,
-    they will be configured
-    with one of the following methods:
-    - Anycast RP using PIM (RFC4610).
-    -
-    Anycast RP using MSDP (RFC4611).
-
-    NOTE: When using MSDP, all nodes across all MSDP enabled RPs will
-    be added to a single MSDP mesh group named "ANYCAST-RP".
-
-
-    Subclass of AvdModel.
-    """
     underlay_multicast_rps: UnderlayMulticastRps
     """
     List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
@@ -71456,6 +71445,17 @@ class EosDesigns(EosDesignsRootModel):
 
     Requires 'underlay_multicast_pim_sm: true'.
     Subclass of AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
+    """
+    underlay_multicast_static: bool
+    """
+    When enabled, configures multicast routing and by default configures static multicast in the
+    underlay on all:
+      - P2P uplink interfaces if enabled on uplink peer
+      - MLAG L3 peer interface if
+    also enabled on MLAG peer
+      - l3_edge and core interfaces
+
+    Default value: `False`
     """
     underlay_ospf_area: str
     """Default value: `"0.0.0.0"`"""
@@ -71834,10 +71834,10 @@ class EosDesigns(EosDesignsRootModel):
             underlay_isis_instance_name: str | None | UndefinedType = Undefined,
             underlay_l2_ethernet_description: str | UndefinedType = Undefined,
             underlay_l2_port_channel_description: str | UndefinedType = Undefined,
-            underlay_multicast_pim_sm: bool | UndefinedType = Undefined,
-            underlay_multicast_static: bool | UndefinedType = Undefined,
             underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp | UndefinedType = Undefined,
+            underlay_multicast_pim_sm: bool | UndefinedType = Undefined,
             underlay_multicast_rps: UnderlayMulticastRps | UndefinedType = Undefined,
+            underlay_multicast_static: bool | UndefinedType = Undefined,
             underlay_ospf_area: str | UndefinedType = Undefined,
             underlay_ospf_authentication: UnderlayOspfAuthentication | UndefinedType = Undefined,
             underlay_ospf_bfd_enable: bool | UndefinedType = Undefined,
@@ -73141,25 +73141,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    By default the description is templated from the peer's node group (for MLAG
                    or EVPN A/A) or hostname and port-channel interface of the peer.
-                underlay_multicast_pim_sm:
-                   When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
-                   on all:
-                     - P2P uplink interfaces if enabled on uplink peer
-                     - MLAG L3 peer interface if also
-                   enabled on MLAG peer
-                     - l3_edge and core interfaces
-
-                   Note: This changes the default behavior for
-                   l3_edge / core_interfaces to automatically include the interfaces
-                   in multicast, unless
-                   `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
-                underlay_multicast_static:
-                   When enabled, configures multicast routing and by default configures static multicast in the
-                   underlay on all:
-                     - P2P uplink interfaces if enabled on uplink peer
-                     - MLAG L3 peer interface if
-                   also enabled on MLAG peer
-                     - l3_edge and core interfaces
                 underlay_multicast_anycast_rp:
                    If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address,
                    they will be configured
@@ -73173,6 +73154,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                underlay_multicast_pim_sm:
+                   When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                   on all:
+                     - P2P uplink interfaces if enabled on uplink peer
+                     - MLAG L3 peer interface if also
+                   enabled on MLAG peer
+                     - l3_edge and core interfaces
+
+                   Note: This changes the default behavior for
+                   l3_edge / core_interfaces to automatically include the interfaces
+                   in multicast, unless
+                   `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
                 underlay_multicast_rps:
                    List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
                    The
@@ -73184,6 +73177,13 @@ class EosDesigns(EosDesignsRootModel):
 
                    Requires 'underlay_multicast_pim_sm: true'.
                    Subclass of AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
+                underlay_multicast_static:
+                   When enabled, configures multicast routing and by default configures static multicast in the
+                   underlay on all:
+                     - P2P uplink interfaces if enabled on uplink peer
+                     - MLAG L3 peer interface if
+                   also enabled on MLAG peer
+                     - l3_edge and core interfaces
                 underlay_ospf_area: underlay_ospf_area
                 underlay_ospf_authentication: Subclass of AvdModel.
                 underlay_ospf_bfd_enable: underlay_ospf_bfd_enable

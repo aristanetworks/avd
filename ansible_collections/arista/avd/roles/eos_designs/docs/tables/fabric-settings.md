@@ -40,11 +40,10 @@
     | [<samp>underlay_ipv6_numbered</samp>](## "underlay_ipv6_numbered") | Boolean |  | `False` |  | This feature allows pure IPv6 underlay routing protocol with numbered addresses.<br>Currently sets both underlay and overlay, including MLAG, to use IPv6 addresses.<br>Currently BGP peer-groups are named with IPv4 by default. This can be modified under `bgp_peer_groups`.<br>Requires:<br>  - "underlay_ipv6: true"<br>  - "loopback_ipv6_pool"<br>  - "underlay_routing_protocol: ebgp"<br>Some settings are not yet supported with IPv6 underlay:<br>  - underlay_multicast_pim_sm<br>  - underlay_multicast_rp_interfaces<br>  - underlay_rfc5549<br>  - wan_role<br>  - vtep_vvtep_ip<br>  - inband_ztp<br> |
     | [<samp>underlay_l2_ethernet_description</samp>](## "underlay_l2_ethernet_description") | String |  | `L2_{peer}_{peer_interface}` |  | The description or description template to be used on L2 ethernet interfaces.<br>The interfaces using this are the member interfaces of port-channel uplinks.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br><br>By default the description is templated from the hostname and interface of the peer. |
     | [<samp>underlay_l2_port_channel_description</samp>](## "underlay_l2_port_channel_description") | String |  | `L2_{peer_node_group_or_peer}_{peer_interface}` |  | The description or description template to be used on L2 port-channel interfaces.<br>The interfaces using this are port-channel uplinks.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/stable/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br>  - `port_channel_id`: The local port-channel ID.<br>  - `peer_port_channel_id`: The ID of the port-channel on the peer.<br>  - `peer_node_group`: The node group of the peer if the peer is an MLAG member or running EVPN A/A.<br>  - `peer_node_group_or_peer`: Helper alias of the peer_node_group or peer.<br>  - `peer_node_group_or_uppercase_peer`: Helper alias of the peer_node_group or peer hostname in uppercase.<br><br>By default the description is templated from the peer's node group (for MLAG or EVPN A/A) or hostname and port-channel interface of the peer. |
-    | [<samp>underlay_multicast_pim_sm</samp>](## "underlay_multicast_pim_sm") | Boolean |  | `False` |  | When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces<br><br>Note: This changes the default behavior for l3_edge / core_interfaces to automatically include the interfaces<br>in multicast, unless `include_in_underlay_protocol: false` or `multicast_pim_sm: false`. |
-    | [<samp>underlay_multicast_static</samp>](## "underlay_multicast_static") | Boolean |  | `False` |  | When enabled, configures multicast routing and by default configures static multicast in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces |
     | [<samp>underlay_multicast</samp>](## "underlay_multicast") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>underlay_multicast_pim_sm</samp> instead.</span> |
     | [<samp>underlay_multicast_anycast_rp</samp>](## "underlay_multicast_anycast_rp") | Dictionary |  |  |  | If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured<br>with one of the following methods:<br>- Anycast RP using PIM (RFC4610).<br>- Anycast RP using MSDP (RFC4611).<br><br>NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named "ANYCAST-RP".<br> |
     | [<samp>&nbsp;&nbsp;mode</samp>](## "underlay_multicast_anycast_rp.mode") | String |  | `pim` | Valid Values:<br>- <code>pim</code><br>- <code>msdp</code> |  |
+    | [<samp>underlay_multicast_pim_sm</samp>](## "underlay_multicast_pim_sm") | Boolean |  | `False` |  | When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces<br><br>Note: This changes the default behavior for l3_edge / core_interfaces to automatically include the interfaces<br>in multicast, unless `include_in_underlay_protocol: false` or `multicast_pim_sm: false`. |
     | [<samp>underlay_multicast_rps</samp>](## "underlay_multicast_rps") | List, items: Dictionary |  |  |  | List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.<br>The device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).<br>If multiple nodes are configured under 'nodes' for the same RP address, they will be configured<br>according to the 'underlay_multicast_anycast_rp.mode' setting.<br><br>Requires 'underlay_multicast_pim_sm: true'.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;rp</samp>](## "underlay_multicast_rps.[].rp") | String | Required, Unique |  |  | RP IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "underlay_multicast_rps.[].nodes") | List, items: Dictionary |  |  |  | List of nodes where a Loopback interface with the RP address will be configured.<br> |
@@ -54,6 +53,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "underlay_multicast_rps.[].groups") | List, items: String |  |  |  | List of groups to associate with the RP address set in 'rp'.<br>If access_list_name is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "underlay_multicast_rps.[].groups.[]") | String |  |  |  | Multicast Group IPv4 prefix/mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "underlay_multicast_rps.[].access_list_name") | String |  |  |  | Name of standard Access-List.<br> |
+    | [<samp>underlay_multicast_static</samp>](## "underlay_multicast_static") | Boolean |  | `False` |  | When enabled, configures multicast routing and by default configures static multicast in the underlay on all:<br>  - P2P uplink interfaces if enabled on uplink peer<br>  - MLAG L3 peer interface if also enabled on MLAG peer<br>  - l3_edge and core interfaces |
     | [<samp>underlay_rfc5549</samp>](## "underlay_rfc5549") | Boolean |  | `False` |  | Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.<br>Requires "underlay_routing_protocol: ebgp".<br> |
     | [<samp>underlay_routing_protocol</samp>](## "underlay_routing_protocol") | String |  |  | Value is converted to lower case.<br>Valid Values:<br>- <code>ebgp</code><br>- <code>ospf</code><br>- <code>ospf-ldp</code><br>- <code>isis</code><br>- <code>isis-sr</code><br>- <code>isis-ldp</code><br>- <code>isis-sr-ldp</code><br>- <code>none</code> | - The following underlay routing protocols are supported:<br>  - EBGP (default for l3ls-evpn)<br>  - OSPF.<br>  - OSPF-LDP*.<br>  - ISIS.<br>  - ISIS-SR*.<br>  - ISIS-LDP*.<br>  - ISIS-SR-LDP*.<br>  - No underlay routing protocol (none)<br>- The variables should be applied to all devices in the fabric.<br>*Only supported with core_interfaces data model.<br> |
     | [<samp>uplink_ptp</samp>](## "uplink_ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links. |
@@ -301,21 +301,6 @@
     # By default the description is templated from the peer's node group (for MLAG or EVPN A/A) or hostname and port-channel interface of the peer.
     underlay_l2_port_channel_description: <str; default="L2_{peer_node_group_or_peer}_{peer_interface}">
 
-    # When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay on all:
-    #   - P2P uplink interfaces if enabled on uplink peer
-    #   - MLAG L3 peer interface if also enabled on MLAG peer
-    #   - l3_edge and core interfaces
-    #
-    # Note: This changes the default behavior for l3_edge / core_interfaces to automatically include the interfaces
-    # in multicast, unless `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
-    underlay_multicast_pim_sm: <bool; default=False>
-
-    # When enabled, configures multicast routing and by default configures static multicast in the underlay on all:
-    #   - P2P uplink interfaces if enabled on uplink peer
-    #   - MLAG L3 peer interface if also enabled on MLAG peer
-    #   - l3_edge and core interfaces
-    underlay_multicast_static: <bool; default=False>
-
     # If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured
     # with one of the following methods:
     # - Anycast RP using PIM (RFC4610).
@@ -324,6 +309,15 @@
     # NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named "ANYCAST-RP".
     underlay_multicast_anycast_rp:
       mode: <str; "pim" | "msdp"; default="pim">
+
+    # When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay on all:
+    #   - P2P uplink interfaces if enabled on uplink peer
+    #   - MLAG L3 peer interface if also enabled on MLAG peer
+    #   - l3_edge and core interfaces
+    #
+    # Note: This changes the default behavior for l3_edge / core_interfaces to automatically include the interfaces
+    # in multicast, unless `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
+    underlay_multicast_pim_sm: <bool; default=False>
 
     # List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
     # The device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).
@@ -356,6 +350,12 @@
 
         # Name of standard Access-List.
         access_list_name: <str>
+
+    # When enabled, configures multicast routing and by default configures static multicast in the underlay on all:
+    #   - P2P uplink interfaces if enabled on uplink peer
+    #   - MLAG L3 peer interface if also enabled on MLAG peer
+    #   - l3_edge and core interfaces
+    underlay_multicast_static: <bool; default=False>
 
     # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
     # Requires "underlay_routing_protocol: ebgp".
