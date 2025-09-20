@@ -362,6 +362,8 @@ tenants:
             ip_address_virtual: 10.2.23.1/24
             # test for fast-leave when igmp_snooping_querier.fast_leave: true but evpn_l2_multicast.enabled is not set
             # fast-leave is not expected for VLAN 230 since evpn_l2_multicast.enabled is not set
+            # TODO: Revisit this test. I don't believe this should be the behavior.
+            # evpn_l2_multicast.enabled should not be required for fast-leave configuration since it's not OISM specific.
             igmp_snooping_querier:
               enabled: true
               fast_leave: true

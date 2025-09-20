@@ -25,6 +25,7 @@ ip_igmp_snooping:
     querier:
       enabled: true
       address: 192.168.255.8
+    fast_leave: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 loopback_interfaces:

@@ -78,9 +78,7 @@ class IpIgmpSnoopingMixin(Protocol):
                     vlan.igmp_snooping_querier.source_address, tenant.igmp_snooping_querier.source_address, self.shared_utils.router_id
                 )
                 vlan_item.querier.version = default(vlan.igmp_snooping_querier.version, tenant.igmp_snooping_querier.version)
-
-        if evpn_l2_multicast_enabled:
-            vlan_item.fast_leave = default(vlan.igmp_snooping_querier.fast_leave, tenant.evpn_l2_multicast.fast_leave)
+                vlan_item.fast_leave = default(vlan.igmp_snooping_querier.fast_leave, tenant.evpn_l2_multicast.fast_leave)
 
         if vlan_item:
             vlan_item.id = vlan.id

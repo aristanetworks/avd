@@ -122,6 +122,7 @@ ip_igmp_snooping:
     querier:
       enabled: true
       address: 192.168.255.7
+    fast_leave: true
   - id: 252
     querier:
       enabled: true

@@ -185,7 +185,7 @@ tenants:
         igmp_snooping_querier:
           enabled: false
       # Expected results:
-      # igmp querier enabled, querier address set to loopback 0 address 192.168.255.1, version 3 with fast-leave
+      # igmp querier enabled, querier address set to loopback 0 address 192.168.255.1, version 3 with fast-leave disable
       - id: 124
         name: "VLAN_124"
         tags: ['test_l2']
@@ -193,3 +193,11 @@ tenants:
           enabled: true
           version: 3
           fast_leave: false
+      # igmp querier enabled, querier address set to loopback 0 address 192.168.255.1, version 3 with fast-leave enabled
+      - id: 125
+        name: "VLAN_125"
+        tags: ['test_l2']
+        igmp_snooping_querier:
+          enabled: true
+          version: 3
+          fast_leave: true
