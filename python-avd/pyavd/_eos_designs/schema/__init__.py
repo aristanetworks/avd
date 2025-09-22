@@ -2080,7 +2080,6 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -2201,15 +2200,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool | None
-            """
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-            to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key
-            `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
-            """
             multicast_pim_sm: bool | None
             """
             Configure PIM sparse-mode on the P2P links.
@@ -2314,7 +2304,6 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -2400,13 +2389,6 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         sflow: Enable sFlow. Overrides `fabric_sflow` setting.
-                        underlay_multicast:
-                           Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-                           to be `true`.
-
-                           Note: The default value for this key is `false` when using either the new key
-                           `underlay_multicast.pim_sm.enabled: true
-                           or, if unset, global `underlay_multicast_pim_sm: true`
                         multicast_pim_sm:
                            Configure PIM sparse-mode on the P2P links.
                            Requires node setting
@@ -2779,7 +2761,6 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -2900,15 +2881,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool | None
-            """
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-            to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key
-            `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
-            """
             multicast_pim_sm: bool | None
             """
             Configure PIM sparse-mode on the P2P links.
@@ -3013,7 +2985,6 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -3099,13 +3070,6 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         sflow: Enable sFlow. Overrides `fabric_sflow` setting.
-                        underlay_multicast:
-                           Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-                           to be `true`.
-
-                           Note: The default value for this key is `false` when using either the new key
-                           `underlay_multicast.pim_sm.enabled: true
-                           or, if unset, global `underlay_multicast_pim_sm: true`
                         multicast_pim_sm:
                            Configure PIM sparse-mode on the P2P links.
                            Requires node setting
@@ -7605,7 +7569,6 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -7726,15 +7689,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool | None
-            """
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-            to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key
-            `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
-            """
             multicast_pim_sm: bool | None
             """
             Configure PIM sparse-mode on the P2P links.
@@ -7839,7 +7793,6 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -7925,13 +7878,6 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         sflow: Enable sFlow. Overrides `fabric_sflow` setting.
-                        underlay_multicast:
-                           Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-                           to be `true`.
-
-                           Note: The default value for this key is `false` when using either the new key
-                           `underlay_multicast.pim_sm.enabled: true
-                           or, if unset, global `underlay_multicast_pim_sm: true`
                         multicast_pim_sm:
                            Configure PIM sparse-mode on the P2P links.
                            Requires node setting
@@ -8304,7 +8250,6 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -8425,15 +8370,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool | None
-            """
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-            to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key
-            `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
-            """
             multicast_pim_sm: bool | None
             """
             Configure PIM sparse-mode on the P2P links.
@@ -8538,7 +8474,6 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -8624,13 +8559,6 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         sflow: Enable sFlow. Overrides `fabric_sflow` setting.
-                        underlay_multicast:
-                           Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-                           to be `true`.
-
-                           Note: The default value for this key is `false` when using either the new key
-                           `underlay_multicast.pim_sm.enabled: true
-                           or, if unset, global `underlay_multicast_pim_sm: true`
                         multicast_pim_sm:
                            Configure PIM sparse-mode on the P2P links.
                            Requires node setting
@@ -16692,8 +16620,6 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "host": {"type": str},
                 "vrf": {"type": str},
-                "use_mgmt_interface_vrf": {"type": bool},
-                "use_inband_mgmt_vrf": {"type": bool},
                 "version": {"type": str},
                 "community": {"type": str},
                 "users": {"type": Users},
@@ -16720,24 +16646,6 @@ class EosDesigns(EosDesignsRootModel):
             other string will be used directly as the VRF name. Remember to set the
             `snmp_settings.vrfs[].source_interface` if needed.
             """
-            use_mgmt_interface_vrf: bool | None
-            """
-            Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-            Ignored if 'mgmt_ip' or
-            'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF,
-            the host will not be configured at all.
-            Can be used in combination with "vrf" and
-            "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
-            """
-            use_inband_mgmt_vrf: bool | None
-            """
-            Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
-            Ignored if inband management is
-            not configured for the device, so if the host is only configured with this VRF, the host will not be
-            configured at all.
-            Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
-            the SNMP host under multiple VRFs.
-            """
             version: Literal["1", "2c", "3"] | None
             community: str | None
             """Community name. Required with version "1" or "2c"."""
@@ -16751,8 +16659,6 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     host: str | None | UndefinedType = Undefined,
                     vrf: str | None | UndefinedType = Undefined,
-                    use_mgmt_interface_vrf: bool | None | UndefinedType = Undefined,
-                    use_inband_mgmt_vrf: bool | None | UndefinedType = Undefined,
                     version: Literal["1", "2c", "3"] | None | UndefinedType = Undefined,
                     community: str | None | UndefinedType = Undefined,
                     users: Users | UndefinedType = Undefined,
@@ -16783,20 +16689,6 @@ class EosDesigns(EosDesignsRootModel):
                            - Any
                            other string will be used directly as the VRF name. Remember to set the
                            `snmp_settings.vrfs[].source_interface` if needed.
-                        use_mgmt_interface_vrf:
-                           Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-                           Ignored if 'mgmt_ip' or
-                           'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF,
-                           the host will not be configured at all.
-                           Can be used in combination with "vrf" and
-                           "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
-                        use_inband_mgmt_vrf:
-                           Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
-                           Ignored if inband management is
-                           not configured for the device, so if the host is only configured with this VRF, the host will not be
-                           configured at all.
-                           Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
-                           the SNMP host under multiple VRFs.
                         version: version
                         community: Community name. Required with version "1" or "2c".
                         users: Subclass of AvdList with `UsersItem` items.
@@ -16807,62 +16699,6 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `HostsItem` items."""
 
         Hosts._item_type = HostsItem
-
-        class Ipv4AclsItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-            name: str | None
-            """IPv4 access list name."""
-            vrf: str | None
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    Ipv4AclsItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: IPv4 access list name.
-                        vrf: vrf
-
-                    """
-
-        class Ipv4Acls(AvdList[Ipv4AclsItem]):
-            """Subclass of AvdList with `Ipv4AclsItem` items."""
-
-        Ipv4Acls._item_type = Ipv4AclsItem
-
-        class Ipv6AclsItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-            name: str | None
-            """IPv6 access list name."""
-            vrf: str | None
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    Ipv6AclsItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: IPv6 access list name.
-                        vrf: vrf
-
-                    """
-
-        class Ipv6Acls(AvdList[Ipv6AclsItem]):
-            """Subclass of AvdList with `Ipv6AclsItem` items."""
-
-        Ipv6Acls._item_type = Ipv6AclsItem
 
         class ViewsItem(AvdModel):
             """Subclass of AvdModel."""
@@ -16959,16 +16795,12 @@ class EosDesigns(EosDesignsRootModel):
             "contact": {"type": str},
             "location": {"type": bool, "default": False},
             "vrfs": {"type": Vrfs},
-            "enable_mgmt_interface_vrf": {"type": bool},
-            "enable_inband_mgmt_vrf": {"type": bool},
             "compute_local_engineid": {"type": bool, "default": False},
             "compute_local_engineid_source": {"type": str, "default": "hostname_and_ip"},
             "compute_v3_user_localized_key": {"type": bool, "default": False},
             "users": {"type": Users},
             "hosts": {"type": Hosts},
             "communities": {"type": EosCliConfigGen.SnmpServer.Communities},
-            "ipv4_acls": {"type": Ipv4Acls},
-            "ipv6_acls": {"type": Ipv6Acls},
             "views": {"type": Views},
             "groups": {"type": Groups},
             "traps": {"type": EosCliConfigGen.SnmpServer.Traps},
@@ -16984,21 +16816,6 @@ class EosDesigns(EosDesignsRootModel):
         """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
-        enable_mgmt_interface_vrf: bool | None
-        """
-        Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
-        Ignored if 'mgmt_ip' or
-        'ipv6_mgmt_ip' are not configured for the device.
-        Can be used in combination with "vrfs" and
-        "enable_inband_mgmt_vrf".
-        """
-        enable_inband_mgmt_vrf: bool | None
-        """
-        Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
-        Ignored if inband management is not
-        configured for the device.
-        Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".
-        """
         compute_local_engineid: bool
         """
         Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
@@ -17042,10 +16859,6 @@ class EosDesigns(EosDesignsRootModel):
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
         communities: EosCliConfigGen.SnmpServer.Communities
-        ipv4_acls: Ipv4Acls
-        """Subclass of AvdList with `Ipv4AclsItem` items."""
-        ipv6_acls: Ipv6Acls
-        """Subclass of AvdList with `Ipv6AclsItem` items."""
         views: Views
         """Subclass of AvdList with `ViewsItem` items."""
         groups: Groups
@@ -17060,16 +16873,12 @@ class EosDesigns(EosDesignsRootModel):
                 contact: str | None | UndefinedType = Undefined,
                 location: bool | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
-                enable_mgmt_interface_vrf: bool | None | UndefinedType = Undefined,
-                enable_inband_mgmt_vrf: bool | None | UndefinedType = Undefined,
                 compute_local_engineid: bool | UndefinedType = Undefined,
                 compute_local_engineid_source: Literal["hostname_and_ip", "system_mac"] | UndefinedType = Undefined,
                 compute_v3_user_localized_key: bool | UndefinedType = Undefined,
                 users: Users | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
                 communities: EosCliConfigGen.SnmpServer.Communities | UndefinedType = Undefined,
-                ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
-                ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
                 views: Views | UndefinedType = Undefined,
                 groups: Groups | UndefinedType = Undefined,
                 traps: EosCliConfigGen.SnmpServer.Traps | UndefinedType = Undefined,
@@ -17086,17 +16895,6 @@ class EosDesigns(EosDesignsRootModel):
                        Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack>
                        <inventory_hostname>".
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
-                    enable_mgmt_interface_vrf:
-                       Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
-                       Ignored if 'mgmt_ip' or
-                       'ipv6_mgmt_ip' are not configured for the device.
-                       Can be used in combination with "vrfs" and
-                       "enable_inband_mgmt_vrf".
-                    enable_inband_mgmt_vrf:
-                       Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
-                       Ignored if inband management is not
-                       configured for the device.
-                       Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".
                     compute_local_engineid: Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
                     compute_local_engineid_source:
                        `compute_local_engineid_source` supports:
@@ -17124,8 +16922,6 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdList with `UsersItem` items.
                     hosts: Subclass of AvdList with `HostsItem` items.
                     communities: communities
-                    ipv4_acls: Subclass of AvdList with `Ipv4AclsItem` items.
-                    ipv6_acls: Subclass of AvdList with `Ipv6AclsItem` items.
                     views: Subclass of AvdList with `ViewsItem` items.
                     groups: Subclass of AvdList with `GroupsItem` items.
                     traps: traps
@@ -27263,7 +27059,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -27314,7 +27110,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -31815,7 +31611,7 @@ class EosDesigns(EosDesignsRootModel):
                                 also enabled on MLAG peer
                                   - l3_edge and core interfaces
                                 Overrides the global
-                                `underlay_multicast_multicast`.
+                                `underlay_multicast_static`.
                                 """
                                 uplinks: bool
                                 """
@@ -31866,7 +31662,7 @@ class EosDesigns(EosDesignsRootModel):
                                                also enabled on MLAG peer
                                                  - l3_edge and core interfaces
                                                Overrides the global
-                                               `underlay_multicast_multicast`.
+                                               `underlay_multicast_static`.
                                             uplinks:
                                                Enable/Disable static multicast on uplinks.
                                                Requires node setting
@@ -36296,7 +36092,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -36347,7 +36143,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -40857,7 +40653,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -40908,7 +40704,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -53777,7 +53573,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -53828,7 +53624,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -58329,7 +58125,7 @@ class EosDesigns(EosDesignsRootModel):
                                 also enabled on MLAG peer
                                   - l3_edge and core interfaces
                                 Overrides the global
-                                `underlay_multicast_multicast`.
+                                `underlay_multicast_static`.
                                 """
                                 uplinks: bool
                                 """
@@ -58380,7 +58176,7 @@ class EosDesigns(EosDesignsRootModel):
                                                also enabled on MLAG peer
                                                  - l3_edge and core interfaces
                                                Overrides the global
-                                               `underlay_multicast_multicast`.
+                                               `underlay_multicast_static`.
                                             uplinks:
                                                Enable/Disable static multicast on uplinks.
                                                Requires node setting
@@ -62810,7 +62606,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -62861,7 +62657,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -67371,7 +67167,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -67422,7 +67218,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -69829,11 +69625,10 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_isis_instance_name": {"type": str},
         "underlay_l2_ethernet_description": {"type": str, "default": "L2_{peer}_{peer_interface}"},
         "underlay_l2_port_channel_description": {"type": str, "default": "L2_{peer_node_group_or_peer}_{peer_interface}"},
-        "underlay_multicast": {"type": bool, "default": False},
-        "underlay_multicast_pim_sm": {"type": bool},
-        "underlay_multicast_static": {"type": bool, "default": False},
         "underlay_multicast_anycast_rp": {"type": UnderlayMulticastAnycastRp},
+        "underlay_multicast_pim_sm": {"type": bool, "default": False},
         "underlay_multicast_rps": {"type": UnderlayMulticastRps},
+        "underlay_multicast_static": {"type": bool, "default": False},
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
         "underlay_ospf_authentication": {"type": UnderlayOspfAuthentication},
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
@@ -71524,7 +71319,7 @@ class EosDesigns(EosDesignsRootModel):
       - "underlay_routing_protocol: ebgp"
     Some settings are not yet
     supported with IPv6 underlay:
-      - underlay_multicast
+      - underlay_multicast_pim_sm
       - underlay_multicast_rp_interfaces
       -
     underlay_rfc5549
@@ -71607,42 +71402,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"L2_{peer_node_group_or_peer}_{peer_interface}"`
     """
-    underlay_multicast: bool
-    """
-    Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
-    Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-    No other
-    configuration is added, so the underlay will only support Source-Specific Multicast (SSM).
-    The
-    configuration is intended to be used as multicast underlay for EVPN OISM overlay.
-
-    Default value: `False`
-    """
-    underlay_multicast_pim_sm: bool | None
-    """
-    When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
-    on all:
-      - P2P uplink interfaces if enabled on uplink peer
-      - MLAG L3 peer interface if also
-    enabled on MLAG peer
-      - l3_edge and core interfaces
-
-    Note: This changes the default behavior for
-    l3_edge / core_interfaces to automatically include the interfaces
-    in multicast, unless
-    `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
-    """
-    underlay_multicast_static: bool
-    """
-    When enabled, configures multicast routing and by default configures static multicast in the
-    underlay on all:
-      - P2P uplink interfaces if enabled on uplink peer
-      - MLAG L3 peer interface if
-    also enabled on MLAG peer
-      - l3_edge and core interfaces
-
-    Default value: `False`
-    """
     underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp
     """
     If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address,
@@ -71658,6 +71417,22 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    underlay_multicast_pim_sm: bool
+    """
+    When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+    on all:
+      - P2P uplink interfaces if enabled on uplink peer
+      - MLAG L3 peer interface if also
+    enabled on MLAG peer
+      - l3_edge and core interfaces
+
+    Note: This changes the default behavior for
+    l3_edge / core_interfaces to automatically include the interfaces
+    in multicast, unless
+    `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
+
+    Default value: `False`
+    """
     underlay_multicast_rps: UnderlayMulticastRps
     """
     List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
@@ -71670,6 +71445,17 @@ class EosDesigns(EosDesignsRootModel):
 
     Requires 'underlay_multicast_pim_sm: true'.
     Subclass of AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
+    """
+    underlay_multicast_static: bool
+    """
+    When enabled, configures multicast routing and by default configures static multicast in the
+    underlay on all:
+      - P2P uplink interfaces if enabled on uplink peer
+      - MLAG L3 peer interface if
+    also enabled on MLAG peer
+      - l3_edge and core interfaces
+
+    Default value: `False`
     """
     underlay_ospf_area: str
     """Default value: `"0.0.0.0"`"""
@@ -72048,11 +71834,10 @@ class EosDesigns(EosDesignsRootModel):
             underlay_isis_instance_name: str | None | UndefinedType = Undefined,
             underlay_l2_ethernet_description: str | UndefinedType = Undefined,
             underlay_l2_port_channel_description: str | UndefinedType = Undefined,
-            underlay_multicast: bool | UndefinedType = Undefined,
-            underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
-            underlay_multicast_static: bool | UndefinedType = Undefined,
             underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp | UndefinedType = Undefined,
+            underlay_multicast_pim_sm: bool | UndefinedType = Undefined,
             underlay_multicast_rps: UnderlayMulticastRps | UndefinedType = Undefined,
+            underlay_multicast_static: bool | UndefinedType = Undefined,
             underlay_ospf_area: str | UndefinedType = Undefined,
             underlay_ospf_authentication: UnderlayOspfAuthentication | UndefinedType = Undefined,
             underlay_ospf_bfd_enable: bool | UndefinedType = Undefined,
@@ -73295,7 +73080,7 @@ class EosDesigns(EosDesignsRootModel):
                      - "underlay_routing_protocol: ebgp"
                    Some settings are not yet
                    supported with IPv6 underlay:
-                     - underlay_multicast
+                     - underlay_multicast_pim_sm
                      - underlay_multicast_rp_interfaces
                      -
                    underlay_rfc5549
@@ -73356,32 +73141,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    By default the description is templated from the peer's node group (for MLAG
                    or EVPN A/A) or hostname and port-channel interface of the peer.
-                underlay_multicast:
-                   Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
-                   Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-                   No other
-                   configuration is added, so the underlay will only support Source-Specific Multicast (SSM).
-                   The
-                   configuration is intended to be used as multicast underlay for EVPN OISM overlay.
-                underlay_multicast_pim_sm:
-                   When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
-                   on all:
-                     - P2P uplink interfaces if enabled on uplink peer
-                     - MLAG L3 peer interface if also
-                   enabled on MLAG peer
-                     - l3_edge and core interfaces
-
-                   Note: This changes the default behavior for
-                   l3_edge / core_interfaces to automatically include the interfaces
-                   in multicast, unless
-                   `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
-                underlay_multicast_static:
-                   When enabled, configures multicast routing and by default configures static multicast in the
-                   underlay on all:
-                     - P2P uplink interfaces if enabled on uplink peer
-                     - MLAG L3 peer interface if
-                   also enabled on MLAG peer
-                     - l3_edge and core interfaces
                 underlay_multicast_anycast_rp:
                    If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address,
                    they will be configured
@@ -73395,6 +73154,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                underlay_multicast_pim_sm:
+                   When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                   on all:
+                     - P2P uplink interfaces if enabled on uplink peer
+                     - MLAG L3 peer interface if also
+                   enabled on MLAG peer
+                     - l3_edge and core interfaces
+
+                   Note: This changes the default behavior for
+                   l3_edge / core_interfaces to automatically include the interfaces
+                   in multicast, unless
+                   `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
                 underlay_multicast_rps:
                    List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
                    The
@@ -73406,6 +73177,13 @@ class EosDesigns(EosDesignsRootModel):
 
                    Requires 'underlay_multicast_pim_sm: true'.
                    Subclass of AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
+                underlay_multicast_static:
+                   When enabled, configures multicast routing and by default configures static multicast in the
+                   underlay on all:
+                     - P2P uplink interfaces if enabled on uplink peer
+                     - MLAG L3 peer interface if
+                   also enabled on MLAG peer
+                     - l3_edge and core interfaces
                 underlay_ospf_area: underlay_ospf_area
                 underlay_ospf_authentication: Subclass of AvdModel.
                 underlay_ospf_bfd_enable: underlay_ospf_bfd_enable
