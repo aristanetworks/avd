@@ -234,14 +234,14 @@
 
         ```yaml
         trackers:
-        - exporters:
-          - collectors:
-            - host: 127.0.0.1
-            local_interface: Loopback0
-            name: CV-TELEMETRY
-            template_interval: 3600000
-          name: FLOW-TRACKER
+        - name: FLOW-TRACKER
           record_export:
             on_inactive_timeout: 70000
             on_interval: 300000
+          exporters:
+          - name: CV-TELEMETRY
+            collectors:
+            - host: 127.0.0.1
+            local_interface: Loopback0
+            template_interval: 3600000
         ```
