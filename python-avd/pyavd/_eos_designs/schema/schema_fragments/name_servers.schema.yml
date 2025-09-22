@@ -10,11 +10,8 @@ keys:
     documentation_options:
       table: management-settings
     type: list
-    description: List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
-    items:
-      type: str
-      description: IPv4 or IPv6 address.
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
       new_key: dns_settings.servers

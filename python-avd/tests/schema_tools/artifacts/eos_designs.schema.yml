@@ -695,7 +695,7 @@ keys:
     type: bool
     description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"
       or \"evpn_l3_multicast\" must also be configured under the Network Services
-      (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled
+      (tenants).\nRequires \"underlay_multicast_pim_sm: true\" and IGMP snooping enabled
       globally (default).\nFor MLAG devices Route Distinguisher must be unique since
       this feature will create multi-vtep configuration.\nWarning !!! For Trident3
       based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default
@@ -2640,23 +2640,19 @@ keys:
       table: isis-settings
     description: Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls.
     type: str
-  underlay_multicast:
+  underlay_multicast_pim_sm:
     documentation_options:
       table: fabric-settings
     type: bool
-    description: 'Enable Multicast in the underlay on all p2p uplink interfaces and
-      mlag l3 peer interface.
-
-      Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-
-      No other configuration is added, so the underlay will only support Source-Specific
-      Multicast (SSM).
-
-      The configuration is intended to be used as multicast underlay for EVPN OISM
-      overlay.
-
-      '
     default: false
+    description: |-
+      When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay on all:
+        - P2P uplink interfaces if enabled on uplink peer
+        - MLAG L3 peer interface if also enabled on MLAG peer
+        - l3_edge and core interfaces
+
+      Note: This changes the default behavior for l3_edge / core_interfaces to automatically include the interfaces
+      in multicast, unless `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
   underlay_multicast_anycast_rp:
     documentation_options:
       table: fabric-settings
@@ -2697,7 +2693,7 @@ keys:
       according to the ''underlay_multicast_anycast_rp.mode'' setting.
 
 
-      Requires ''underlay_multicast: true''.
+      Requires ''underlay_multicast_pim_sm: true''.
 
       '
     type: list

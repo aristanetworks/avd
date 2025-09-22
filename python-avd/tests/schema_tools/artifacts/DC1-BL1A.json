@@ -59,15 +59,24 @@
         "location": true
     },
     "mgmt_gateway": "192.168.200.5",
-    "name_servers": [
-        "192.168.200.5",
-        "8.8.8.8",
-        "2001:db8::1",
-        "2001:db8::2"
-    ],
     "management_eapi": {
         "enable_https": true,
         "default_services": false
+    },
+    "dns_settings": {
+        "domain": "testfabric.local",
+        "servers": [
+            {
+                "ip_address": "10.10.10.1",
+                "priority": 1,
+                "vrf": "default"
+            },
+            {
+                "ip_address": "10.10.10.1",
+                "priority": 1,
+                "vrf": "use_mgmt_interface_vrf"
+            }
+        ]
     },
     "ntp_settings": {
         "server_vrf": "use_mgmt_interface_vrf",
