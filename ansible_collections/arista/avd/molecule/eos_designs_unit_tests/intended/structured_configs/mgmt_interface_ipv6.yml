@@ -10,7 +10,6 @@ ipv6_static_routes:
 - vrf: MGMT
   prefix: ::/0
   next_hop: 0200::2
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -25,6 +24,7 @@ management_interfaces:
   type: oob
   ipv6_gateway: 0200::2
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true

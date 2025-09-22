@@ -29,7 +29,6 @@ ip_name_servers:
   vrf: VRF2
 - ip_address: 192.168.42.8
   vrf: VRF2
-is_deployed: true
 local_users:
 - name: eos-designs-admin
   disabled: false
@@ -72,6 +71,7 @@ management_interfaces:
   ip_address: 192.168.100.10/24
   type: oob
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 snmp_server:

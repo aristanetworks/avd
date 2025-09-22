@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
@@ -52,6 +52,12 @@ keys:
                   subscribe_policy:
                     type: str
                     description: Route-Map Policy.
+                  subscribe_rcf:
+                    type: str
+                    description: |-
+                      RCF Policy name with parenthesis.
+                      Example: MyFunction(myarg).
+                      Mutually exclusive with `subscribe_policy`, if both are defined `subscribe_policy` takes precedence.
             routes:
               type: dict
               keys:

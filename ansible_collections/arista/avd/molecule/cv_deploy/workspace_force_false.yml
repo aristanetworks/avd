@@ -38,13 +38,22 @@
         name: avd-ci-core1
         groups: INACTIVE
 
-    - name: "{{ test_id | upper }} Provision with cv_submit_workspace_force = false"
+    - name: "{{ test_id | upper }} Code block to provision CVP with AVD configuration"
       tags: ["{{ test_id }}"]
       run_once: true
       delegate_to: localhost
 
       block:
-        - name: "{{ test_id | upper }} Trigger errors"
+
+        - name: "(BLOCK) {{ test_id | upper }} Banner"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            msg:
+              - "### ENGAGE CV_DEPLOY ROLE TO PUSH CONFIGURATION FOR {{ test_id[:69] | upper }} ###"
+
+        # This task is expected to fail
+        - name: "(BLOCK) {{ test_id | upper }} Trigger errors"
           tags: ["{{ test_id }}"]
           ansible.builtin.import_role:
             name: arista.avd.cv_deploy
@@ -56,14 +65,30 @@
             cv_register_detailed_results: true
             cv_devices: [ avd-ci-leaf1, avd-ci-core1 ]
 
-      rescue:
-        - name: "{{ test_id | upper }} Display CVP result"
+        # If task above did not fail for whatever reason - execute following task to catch this
+        # Task below is not expected to run under normal conditions
+        - name: "(BLOCK) {{ test_id | upper }} Force failure"
           tags: ["{{ test_id }}"]
           run_once: true
-          ansible.builtin.debug:
-            msg: '{{ cv_deploy_results }}'
+          ansible.builtin.fail:
+            msg: "Previous task was expected to fail but something went wrong."
+          register: force_failure
 
-        - name: "{{ test_id | upper }} Check CVP returns"
+      rescue:
+
+        - name: "(RESCUE) {{ test_id | upper }} Force failure"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.fail:
+            msg: "Call towards CV inside BLOCK was expected to FAIL but has not. Please investigate (check EOS/CV states and streaming, etc.)."
+          when: force_failure is defined
+
+        # Clear failed state of failed hosts for next engaged playbook (no impact within running playbook)
+        - name: "(RESCUE) {{ test_id | upper }} Reset ansible_play_hosts for next playbook (no impact within running playbook)"
+          tags: ["{{ test_id }}"]
+          ansible.builtin.meta: clear_host_errors
+
+        - name: "(RESCUE) {{ test_id | upper }} Check CVP returns"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -72,64 +97,74 @@
               - "'Failed to submit workspace' in cv_deploy_results.errors[0]"
               - cv_deploy_results.workspace.state == "submit failed"
 
-    - name: "{{ test_id | upper }} Cleanup orphan workspace"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      ansible.legacy.uri:
-        url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig/some
-        validate_certs: true
-        return_content: true
-        headers:
-          Accept: "application/json"
-          Content-Type: "application/json"
-          Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
-        method: POST
-        body_format: json
-        body:
-          {
-            "values": [
+      always:
+
+        - name: "(ALWAYS) {{ test_id | upper }} Display CVP detailed result"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            var: cv_deploy_results
+
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup orphan workspace"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.legacy.uri:
+            url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig/some
+            validate_certs: true
+            return_content: true
+            headers:
+              Accept: "application/json"
+              Content-Type: "application/json"
+              Authorization: "Bearer {{ lookup('env', 'CV_ACCESS_TOKEN') }}"
+            method: POST
+            body_format: json
+            body:
               {
-                "key": {
-                  "workspaceId": "{{ cv_deploy_results.workspace.id }}"
-                },
-                "request": "REQUEST_ABANDON",
-                "requestParams": {
-                  "requestId": "{{ r }}"
-                }
+                "values": [
+                  {
+                    "key": {
+                      "workspaceId": "{{ cv_deploy_results.workspace.id }}"
+                    },
+                    "request": "REQUEST_ABANDON",
+                    "requestParams": {
+                      "requestId": "{{ r }}"
+                    }
+                  }
+                ]
               }
-            ]
-          }
-        force_basic_auth: true
-        timeout: 10
-      register: cvp_abandon_workspace_result
-      until: cvp_abandon_workspace_result.status == 200
-      retries: 3
-      delay: 3
-      ignore_errors: true
-      when: |
-        cv_deploy_results.workspace.id is not none and
-        cv_deploy_results.workspace.id | length > 0 and
-        cv_deploy_results.workspace.state | default('') != "abandoned"
+            force_basic_auth: true
+            timeout: 10
+          register: cvp_abandon_workspace_result
+          until: cvp_abandon_workspace_result.status == 200
+          retries: 3
+          delay: 3
+          ignore_errors: true
+          when: |
+            cv_deploy_results.workspace.id is not none and
+            cv_deploy_results.workspace.id | length > 0 and
+            cv_deploy_results.workspace.state | default('') != "abandoned"
 
-    - name: "{{ test_id | upper }}  Cleanup"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      delegate_to: localhost
-      ansible.builtin.import_role:
-        name: arista.avd.cv_deploy
-      vars:
-        cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
-        cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
-        cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
-        cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
-        cv_register_detailed_results: true
-        cv_devices: "{{ ansible_play_hosts_all }}"
-        eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
-        structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
-        cv_submit_workspace_force: true
-        cv_run_change_control: true
+        - name: "(ALWAYS) {{ test_id | upper }} Banner"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            msg:
+              - "### ENGAGE CV_DEPLOY ROLE TO CLEANUP AFTER {{ test_id[:69] | upper }} ###"
 
-    # Clear failed state of failed hosts for next engaged playbook (no impact within running playbook)
-    - name: "{{ test_id | upper }} Reset ansible_play_hosts for next playbook (no impact within running playbook)"
-      tags: ["{{ test_id }}"]
-      ansible.builtin.meta: clear_host_errors
+        - name: "(ALWAYS) {{ test_id | upper }}  Cleanup"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          delegate_to: localhost
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
+            cv_workspace_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
+            cv_change_control_name: "{{ cv_common_pattern }}_{{ r }}_cleanup"
+            cv_change_control_description: "{{ (cv_common_pattern + '_' + r + '_cleanup') | upper }}"
+            cv_register_detailed_results: true
+            cv_devices: "{{ ansible_play_hosts_all }}"
+            eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+            structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
+            cv_submit_workspace_force: true
+            cv_run_change_control: true

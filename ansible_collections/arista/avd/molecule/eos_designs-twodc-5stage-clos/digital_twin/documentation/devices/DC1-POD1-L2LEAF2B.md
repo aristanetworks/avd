@@ -336,8 +336,8 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
-| Vlan4094 | MLAG | default | - | False |
+| Vlan4085 | L2LEAF_INBAND_MGMT | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -353,11 +353,13 @@ interface Port-Channel3
 interface Vlan4085
    description L2LEAF_INBAND_MGMT
    no shutdown
+   mtu 1500
    ip address 172.21.110.6/24
 !
 interface Vlan4094
    description MLAG
    no shutdown
+   mtu 1500
    no autostate
    ip address 172.20.110.3/31
 ```
@@ -450,8 +452,5 @@ vrf instance MGMT
 !
 interface Loopback1003
   description Loopback created from raw_eos_cli under l2leaf node DC1-POD1-L2LEAF2B
-
-interface Loopback1111
-  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
 
 ```

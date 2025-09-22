@@ -55,3 +55,7 @@ class CVDuplicatedDevices(CVClientException):
 
 class CVGRPCStatusUnavailable(CVClientException):
     """CloudVision gRPC status is unavailable."""
+
+
+class CVManifestError(CVClientException):
+    """Error while creating a CVManifest instance from a user AvdManifest."""

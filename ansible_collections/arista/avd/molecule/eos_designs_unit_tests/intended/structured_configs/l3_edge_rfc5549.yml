@@ -48,7 +48,6 @@ ethernet_interfaces:
 hostname: l3_edge_rfc5549
 ip_routing_ipv6_interfaces: true
 ipv6_unicast_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -59,6 +58,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY

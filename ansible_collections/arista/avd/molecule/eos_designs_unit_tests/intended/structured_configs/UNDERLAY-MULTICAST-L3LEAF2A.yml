@@ -27,6 +27,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.9/31
+  multicast:
+    ipv4:
+      static: true
   pim:
     ipv4:
       sparse_mode: true
@@ -49,7 +52,6 @@ hostname: UNDERLAY-MULTICAST-L3LEAF2A
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -75,6 +77,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:

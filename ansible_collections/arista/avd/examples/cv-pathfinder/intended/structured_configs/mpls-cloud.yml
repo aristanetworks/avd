@@ -69,7 +69,6 @@ ip_name_servers:
 - ip_address: 192.168.17.1
   vrf: MGMT
 ip_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -104,6 +103,7 @@ management_interfaces:
     transmit: false
     receive: false
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: WAN
 ntp:

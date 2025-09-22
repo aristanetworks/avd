@@ -11,9 +11,10 @@
     | [<samp>&nbsp;&nbsp;mode</samp>](## "switchport_default.mode") | String |  |  | Valid Values:<br>- <code>routed</code><br>- <code>access</code> |  |
     | [<samp>&nbsp;&nbsp;phone</samp>](## "switchport_default.phone") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cos</samp>](## "switchport_default.phone.cos") | Integer |  |  | Min: 0<br>Max: 7 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "switchport_default.phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>untagged</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "switchport_default.phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>untagged</code><br>- <code>tagged phone</code><br>- <code>untagged phone</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "switchport_default.phone.vlan") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list_bypass</samp>](## "switchport_default.phone.access_list_bypass") | Boolean |  |  |  | Bypass phone traffic from configured access-list. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;qos_trust</samp>](## "switchport_default.phone.qos_trust") | String |  |  | Valid Values:<br>- <code>cos</code><br>- <code>dscp</code> | Quality of Service (QoS) trust mode. Outgoing traffic class being derived from the ingress COS/DSCP value. |
 
 === "YAML"
 
@@ -22,11 +23,14 @@
       mode: <str; "routed" | "access">
       phone:
         cos: <int; 0-7>
-        trunk: <str; "tagged" | "untagged">
+        trunk: <str; "tagged" | "untagged" | "tagged phone" | "untagged phone">
 
         # VLAN ID.
         vlan: <int; 1-4094>
 
         # Bypass phone traffic from configured access-list.
         access_list_bypass: <bool>
+
+        # Quality of Service (QoS) trust mode. Outgoing traffic class being derived from the ingress COS/DSCP value.
+        qos_trust: <str; "cos" | "dscp">
     ```

@@ -7,7 +7,7 @@ import json
 from copy import deepcopy
 from functools import cached_property
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Literal
 
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
@@ -42,13 +42,34 @@ class MoleculeHost:
         self.scenario = scenario
 
     @cached_property
-    def structured_config(self) -> dict:
+    def structured_config(self) -> dict[str, Any]:
         """The intended structured config for the host, as read from the YAML file in the molecule scenario."""
         structured_config_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "intended/structured_configs", f"{self.name}.yml")
         if not structured_config_path.exists():
             return {}
 
         return load(structured_config_path.read_text(), CSafeLoader)
+
+    def get_test_catalog(self, run_name: Literal["default_run", "allow_bgp_vrfs_run", "filtered_run"]) -> dict[str, Any]:
+        """
+        Gets the expected ANTA test catalog for a specific run.
+
+        Args:
+            run_name: The subdirectory name for the test run.
+
+        Returns:
+            The test catalog as a dictionary, or an empty dict if not found.
+        """
+        test_catalog_path = self.scenario.path.joinpath(
+            self.scenario.artifacts_path_offset,
+            f"anta/avd_catalogs/{run_name}",
+            f"{self.name}.json",
+        )
+
+        if not test_catalog_path.exists():
+            return {}
+
+        return load(test_catalog_path.read_text(), CSafeLoader)
 
     @cached_property
     def config(self) -> str | None:
@@ -69,7 +90,7 @@ class MoleculeHost:
         return doc_path.read_text()
 
     @cached_property
-    def hostvars(self) -> dict:
+    def hostvars(self) -> dict[str, Any]:
         """The input vars for the host, as read from the Ansible inventory in the molecule scenario."""
         hostvars = json.loads(json.dumps(self.scenario._vars.get_vars(host=self.ansible_host)))
 
@@ -198,3 +219,12 @@ class MoleculeScenario:
             raise LookupError(msg, files)
 
         return files[0].read_text("UTF-8")
+
+    @property
+    def structured_configs(self) -> dict[str, dict[str, Any]]:
+        """
+        A dictionary of intended structured configs for all hosts in the scenario, keyed by hostname.
+
+        This property collects the `structured_config` from each host object in the inventory.
+        """
+        return {host.name: host.structured_config for host in self.hosts}

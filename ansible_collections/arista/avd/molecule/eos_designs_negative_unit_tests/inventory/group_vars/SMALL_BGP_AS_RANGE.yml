@@ -19,4 +19,4 @@ l3leaf:
           id: 3
 
 expected_error_message: >-
-  Unable to allocate BGP AS: bgp_as range is too small (2) for the id of the device for host 'BGP_AS_LEAF1C'.
+  Unable to allocate BGP AS: bgp_as range '65101-65102' is too small (2) for the id '3' for host 'BGP_AS_LEAF1C'.

@@ -3,5 +3,7 @@
 ptp_settings:
   enabled: true
   auto_clock_identity: false
+  # Test forward_v1
+  forward_v1: true
   # Test overriding domain
   domain: 111

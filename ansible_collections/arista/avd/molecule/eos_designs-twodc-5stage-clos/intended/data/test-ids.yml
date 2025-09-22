@@ -9,6 +9,7 @@ node_id_pools:
     hostname=DC1-POD1-LEAF1A: 1
     hostname=DC1.POD1.LEAF2A: 2
     hostname=DC1-POD1-LEAF2B: 3
+    hostname=DC1-POD1-LEAF1B: 4
   fabric_name=TWODC_5STAGE_CLOS/dc_name=DC1/pod_name=DC1_POD1/type=spine:
     hostname=DC1-POD1-SPINE1: 1
     hostname=DC1-POD1-SPINE2: 2

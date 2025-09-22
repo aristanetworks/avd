@@ -3,6 +3,15 @@
 # that can be found in the LICENSE file.
 ---
 
+- name: Deprecation warning!
+  delegate_to: localhost
+  ansible.builtin.debug:
+    msg:
+      - "!!! Deprecation Warning - The role 'arista.avd.cvp_configlet_upload' has been deprecated and will be removed in AVD version 6.0.0."
+      - "!!! Deprecation Warning - Update your playbook to leverage the new 'arista.avd.cv_deploy' role instead."
+      - "!!! Deprecation Warning - See 'https://avd.arista.com' for details on 'arista.avd.cv_deploy'."
+  run_once: true
+
 - name: Verify Requirements
   delegate_to: localhost
   when: avd_requirements is not defined and avd_verify_requirements | default(true)

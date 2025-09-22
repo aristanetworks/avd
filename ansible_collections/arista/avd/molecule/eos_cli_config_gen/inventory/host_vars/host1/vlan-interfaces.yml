@@ -591,6 +591,9 @@ vlan_interfaces:
             reload: 800
         ipv4:
           address: 192.0.2.1
+          secondary_addresses:
+            - 192.0.3.3
+            - 192.0.4.4
         peer_authentication:
           mode: ietf-md5
           key: auth_key
@@ -599,7 +602,8 @@ vlan_interfaces:
           enabled: true
           delay:
         ipv6:
-          address: 2001:db8:667::1
+          addresses:
+            - 2001:db8:667::1
         peer_authentication:
           mode: text
           key: auth_key
@@ -625,6 +629,9 @@ vlan_interfaces:
             reload: 800
         ipv4:
           address: 192.0.2.1
+          secondary_addresses:
+            - 192.0.3.3
+            - 192.0.4.4
         tracked_object:
           - name: ID1TrackedObjectDecrement
             decrement: 5
@@ -639,7 +646,9 @@ vlan_interfaces:
           enabled: true
           delay:
         ipv6:
-          address: 2001:db8:333::1
+          addresses:
+            - 2001:db8:333::1
+            - 2002:db8:333::2
         peer_authentication:
           mode: text
           key: auth_key

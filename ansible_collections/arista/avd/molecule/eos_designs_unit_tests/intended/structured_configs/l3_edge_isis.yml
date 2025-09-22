@@ -134,7 +134,6 @@ ethernet_interfaces:
     enabled: false
 hostname: l3_edge_isis
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -147,6 +146,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ptp:
   mode: boundary

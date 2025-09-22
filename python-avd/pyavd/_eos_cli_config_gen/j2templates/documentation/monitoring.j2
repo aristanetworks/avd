@@ -33,7 +33,8 @@
        or sflow_interfaces | length > 0
        or monitor_telemetry_postcard_policy is arista.avd.defined
        or monitor_server_radius is arista.avd.defined
-       or monitor_twamp is arista.avd.defined %}
+       or monitor_twamp is arista.avd.defined
+       or cfm is arista.avd.defined %}
 
 ## Monitoring
 {## TerminAttr Daemon #}
@@ -48,6 +49,8 @@
 {%     include 'documentation/snmp-server.j2' %}
 {## Monitor Sessions #}
 {%     include 'documentation/monitor-sessions.j2' %}
+{## Connectivity Fault Management #}
+{%     include 'documentation/cfm.j2' %}
 {## Tap Aggregation #}
 {%     include 'documentation/tap-aggregation.j2' %}
 {## SFlow #}

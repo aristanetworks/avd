@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 from unittest import mock
 
 import pytest
@@ -14,7 +15,7 @@ from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._schema.store import create_store
 from pyavd.api.pool_manager import PoolManager
-from pyavd.api.pool_manager.base_classes import FILE_HEADER
+from pyavd.api.pool_manager.base_classes import FILE_HEADER, Pool
 
 # Load schema from pickled file into lru_cache before we start mocking the file open.
 create_store(load_from_yaml=False)
@@ -354,3 +355,85 @@ def test_avdpoolmanager_load_data_negative(mock_file_data: dict, shared_utils: D
         pool_manager = PoolManager(Path(DUMMYDIR))
         with pytest.raises(type(expected_exception), match=str(expected_exception)):
             pool_manager.get_pool("node_id_pools", shared_utils)
+
+
+@pytest.mark.parametrize(
+    ("mock_file_data", "expected_exception"),
+    [
+        pytest.param("not_a_dict", TypeError("Invalid type for 'pool' '<class 'str'>'. Expected a dict."), id="Wrong data format"),
+        pytest.param(
+            {"pool_key": "pool_key_not_a_dict"}, TypeError("Invalid type for 'pool_key' '<class 'str'>'. Expected a dict."), id="Wrong data format for pool_key"
+        ),
+        pytest.param(
+            {"pool_key": {}, "assignments": "not_a_list"},
+            TypeError("Invalid type for 'assignments' '<class 'str'>'. Expected a list."),
+            id="Wrong data format for assignments",
+        ),
+        pytest.param(
+            {"pool_key": {}, "assignments": ["not_a_dict"]},
+            TypeError("Invalid assignment type '<class 'str'>'. Expected a dict."),
+            id="Wrong data format for one assignment",
+        ),
+        pytest.param(
+            {"pool_key": {}, "assignments": [{"key": "not_a_dict"}]},
+            TypeError("Invalid type for assignment 'key' '<class 'str'>'. Expected a dict."),
+            id="Wrong data format for one assignment key",
+        ),
+        pytest.param(
+            {"pool_key": {}, "assignments": [{"key": {}, "value": "not_an_int"}]},
+            TypeError("Invalid type for assignment 'value' '<class 'str'>'. Expected a int."),
+            id="Wrong data format for one assignment value",
+        ),
+    ],
+)
+def test_avdpoolmanager_load_old_format_negative(mock_file_data: dict[str, Any] | str, expected_exception: Exception) -> None:
+    # mocking value_type for collection for the last test
+    mocked_collection = mock.MagicMock()
+    mocked_collection.value_type = int
+    with pytest.raises(type(expected_exception), match=str(expected_exception)):
+        Pool.load_old_format(mock_file_data, mocked_collection)
+
+
+def test_avdpoolmanager_upgrade_old_data() -> None:
+    hostvars = TESTHOST3.copy()
+    hostname = hostvars.pop("inventory_hostname")
+
+    file_data_in_old_format = {
+        "node_id_pools": [
+            {
+                "pool_key": {"fabric_name": hostvars["fabric_name"], "dc_name": None, "pod_name": hostvars["pod_name"], "type": hostvars["type"]},
+                "assignments": [{"key": {"hostname": hostname}, "value": 123}],
+            }
+        ]
+    }
+    expected_data_in_new_format = get_data([get_pool(TESTHOST3, [get_assignment(TESTHOST3, 123)])])
+
+    with (
+        mock.patch.object(Path, "exists", mock.Mock(return_value=True)) as mocked_exists,
+        mock.patch.object(Path, "open", mock.mock_open(read_data=get_file_content(file_data_in_old_format))) as mocked_open,
+        mock.patch.object(Path, "parent", mock.PropertyMock(mkdir=mock.MagicMock())) as _mocked_parent,
+        mock.patch.object(Path, "touch", mock.Mock()) as _mocked_touch,
+    ):
+        mocked_open: mock.MagicMock
+        mocked_file_write: mock.MagicMock = mocked_open.return_value.write
+
+        # Initialize pool_manager and feed to shared_utils.
+        pool_manager = PoolManager(Path(DUMMYDIR))
+
+        shared_utils = SharedUtils(hostname=hostname, hostvars=hostvars, inputs=EosDesigns._from_dict(hostvars), templar=None, peer_facts={})
+        # Get the id of the host from hostvars. If not, a new data set will be created.
+        assert pool_manager.get_assignment("node_id_pools", shared_utils) == 123
+
+        mocked_exists.assert_called_once()
+        mocked_open.assert_called_once()
+        _args, kwargs = mocked_open.call_args
+        assert "mode" in kwargs
+        assert kwargs["mode"] == "r"
+
+        assert pool_manager.save_updated_pools() is True
+
+        mocked_open.assert_called()
+        _args, kwargs = mocked_open.call_args_list[-1]
+        assert "mode" in kwargs
+        assert kwargs["mode"] == "w"
+        mocked_file_write.assert_called_once_with(get_file_content(expected_data_in_new_format))

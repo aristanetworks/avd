@@ -116,6 +116,7 @@ l2leaf:
     - name: inband-mgmt-subnet
       inband_mgmt_vlan: 101
       inband_mgmt_subnet: 192.168.101.0/24
+      inband_mgmt_subnet_offset: 3
       id: 1
     - name: inband-mgmt-subnet-vrf
       inband_mgmt_vlan: 102

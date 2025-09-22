@@ -3,7 +3,6 @@ type: l3leaf
 
 l3leaf:
   defaults:
-
     platform: vEOS-lab
     loopback_ipv4_pool: 10.255.0.0/27
     loopback_ipv4_offset: 2
@@ -65,3 +64,13 @@ l3leaf:
           evpn_gateway:
             remote_peers:
               - hostname: dc2-leaf2b
+    - group: DC1_L3_LEAF3
+      # do not use this leaf - only testing legacy is_deployed in strutcured_config
+      bgp_as: 65103
+      nodes:
+        - name: dc1-leaf3a
+          id: 5
+          mgmt_ip: 172.16.1.105/24
+          uplink_switch_interfaces:
+            - Ethernet42
+            - Ethernet42

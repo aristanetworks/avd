@@ -105,7 +105,6 @@ ethernet_interfaces:
     enabled: false
 hostname: DC1-POD1-SPINE2
 ip_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -130,6 +129,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.1.254
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   pod_name: DC1_POD1
   dc_name: DC1
@@ -139,8 +139,9 @@ metadata:
     node_type: veos
     ip_addr: 192.168.1.6/24
     version: 4.33.1F
-    username: admin
-    password: admin
+    username: cvpadmin
+    password: cvp123!
+    internet_access: true
 router_bgp:
   as: '65110.100'
   router_id: 172.16.110.2

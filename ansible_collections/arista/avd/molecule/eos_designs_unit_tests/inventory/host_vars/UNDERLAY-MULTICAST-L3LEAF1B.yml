@@ -1,0 +1,39 @@
+---
+# UNDERLAY_MULTICAST_TESTS
+# Testing that values at node level have precedence over global variable
+
+# disable PIM SM globally
+underlay_multicast_pim_sm: false
+# enable static multicast globally
+underlay_multicast_static: true
+
+# keeping the defaults from group_vars
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_switches: ["UNDERLAY-MULTICAST-SPINE1", "UNDERLAY-MULTICAST-SPINE2"]
+    uplink_ipv4_pool: 172.31.255.0/24
+    mlag_interfaces: [Ethernet3, Ethernet4]
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+  node_groups:
+    - group: DC1_LEAF1
+      bgp_as: 65101
+      nodes:
+        - name: UNDERLAY-MULTICAST-L3LEAF1A
+          # [...] from group_vars
+        - name: UNDERLAY-MULTICAST-L3LEAF1B
+          # Testing that node variables override global variables
+          id: 2
+          mgmt_ip: 192.168.200.106/24
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+          underlay_multicast:
+            pim_sm:
+              enabled: true
+            static:
+              # this implies that mlag static multicast is disabled
+              enabled: false

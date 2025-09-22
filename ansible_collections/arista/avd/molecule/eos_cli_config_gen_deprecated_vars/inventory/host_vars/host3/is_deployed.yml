@@ -1,0 +1,7 @@
+---
+# Deprecated at eos_cli_config_gen level but only in documentation
+# to not trigger the warning because of clashing eos_designs.
+is_deployed: false
+# to avoid empty doc file
+enable_password:
+  disabled: true

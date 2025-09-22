@@ -107,6 +107,8 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
 
         This relies on sFlow being rendered after all other eos_designs modules (except structured config).
         """
+        if not self.shared_utils.platform_settings.feature_support.sflow:
+            return False
         return any(interface.sflow.enable for interface in chain(self.structured_config.ethernet_interfaces, self.structured_config.port_channel_interfaces))
 
     @structured_config_contributor

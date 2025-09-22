@@ -15,3 +15,31 @@ load_balance:
           udp:
             dst_port: 101
             payload_bytes: 25
+  cluster:
+    forwarding_type: routed ipv4
+    flow:
+      monitor: true
+      source_learning_aging_timeout: 45
+    load_balance_method_flow_round_robin: true
+    destination_grouping: bgp field-set
+    port_groups:
+      - group: host_group1
+        balance_factor: 10
+        interface: Ethernet 2-4
+        flow:
+          limit: 12
+          warning: 25
+          exhaustion_action:
+            dscp: 5
+            traffic_class: 7
+      - group: host_group2
+        balance_factor: 10
+        interface: Ethernet 2,3
+        flow:
+          exhaustion_action:
+            dscp: 45
+      - group: host_group3
+        interface: Ethernet 2.2,3.1
+        flow:
+          exhaustion_action:
+            traffic_class: 9

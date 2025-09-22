@@ -1,0 +1,49 @@
+release_summary: |
+  Release 5.7.0 - See documentation on avd.arista.com for details.
+minor_changes:
+### Documentation
+- |-
+ Doc(eos_designs): Remove incorrect model for evpn_vlan_bundle by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5812
+- |-
+ Doc: Update cvp.avd.sh to aristanetworks.github.io/ansible-cvp by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5852
+- |-
+ Doc: Porting Guide cv_deploy by @JulioPDX in https://github.com/aristanetworks/avd/pull/5837
+### New features and enhancements in eos_cli_config_gen
+- |-
+ Feat(eos_cli_config_gen): Add support for router rip configuration by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5664
+- |-
+ Feat(eos_cli_config_gen): Added support for Connectivity Fault Management by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5717
+- |-
+ Feat(eos_cli_config_gen): Enhance switchport default phone with trunk (un)tagged phone and qos_trust by @vitthalmagadum in https://github.com/aristanetworks/avd/pull/5778
+- |-
+ Feat(eos_cli_config_gen): Added support for peer-tag in/out under router bgp by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5787
+- |-
+ Feat(eos_cli_config_gen): Support for interface dot1x supplicant by @geetanjalimanegslab in https://github.com/aristanetworks/avd/pull/5796
+- |-
+ Feat(eos_cli_config_gen): Added the support for macsec provider in management api models by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5831
+### New features and enhancements in eos_designs
+- |-
+ Feat(eos_designs): Added support for L2VLAN profiles by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5722
+- |-
+ Feat(eos_designs): Add support for BGP aggregate addresses by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5749
+- |-
+ Feat(eos_designs): Extend LACP fallback individual options by @colinmacgiolla in https://github.com/aristanetworks/avd/pull/5781
+### Other new features and enhancements
+- |-
+ Feat(cv_deploy): Add support for username and password authentication by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5834
+- |-
+ Feat(cv_deploy): Deploy manifest for CV Static Config Studio containers and configlets by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5824
+- |-
+ Feat(eos_designs): Add support for multicast ipv4 static on p2p uplinks ethernet by @gmuloc in https://github.com/aristanetworks/avd/pull/5843
+### PyAVD Changes
+- |-
+ Refactor(pyavd): deploy manifest of CV static config containers and configlets by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5793
+### Other Changes
+- |-
+ Bump: Update version to 5.7.0-dev0 by @gmuloc in https://github.com/aristanetworks/avd/pull/5784
+- |-
+ Refactor: Include ansible tests in Ruff by @ClausHolbechArista in https://github.com/aristanetworks/avd/pull/5698
+- |-
+ Bump: ANTA requirements to v1.5.0 by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5845
+- |-
+ Refactor(cvp_configlet_upload): Deprecate arista.avd.cvp_configlet_upload by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5740

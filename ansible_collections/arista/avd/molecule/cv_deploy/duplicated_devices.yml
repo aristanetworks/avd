@@ -148,8 +148,18 @@
       tags: ["{{ test_id }}"]
       run_once: true
       delegate_to: localhost
+
       block:
-        - name: "{{ test_id | upper }} Attempt to provision CVP with AVD configuration containing overlapping devices and default strict_system_mac_address"
+
+        - name: "(BLOCK) {{ test_id | upper }} Banner"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            msg:
+              - "### ENGAGE CV_DEPLOY ROLE TO PUSH CONFIGURATION FOR {{ test_id[:69] | upper }} ###"
+
+        # This task is expected to fail
+        - name: "(BLOCK) {{ test_id | upper }} Provision CVP with AVD configuration containing overlapping devices and default strict_system_mac_address"
           run_once: true
           ansible.builtin.import_role:
             name: arista.avd.cv_deploy
@@ -158,14 +168,31 @@
             cv_workspace_description: "{{ (cv_common_pattern + '-' + r + '-converge') | upper }}"
             cv_submit_workspace: false
             cv_register_detailed_results: true
-      rescue:
-        - name: "{{ test_id | upper }} Display CVP result"
+
+        # If task above did not fail for whatever reason - execute following task to catch this
+        # Task below is not expected to run under normal conditions
+        - name: "(BLOCK) {{ test_id | upper }} Force failure"
           tags: ["{{ test_id }}"]
           run_once: true
-          ansible.builtin.debug:
-            msg: '{{ cv_deploy_results }}'
+          ansible.builtin.fail:
+            msg: "Previous task was expected to fail but something went wrong."
+          register: force_failure
 
-        - name: "{{ test_id | upper }} Check and assert CVP returns"
+      rescue:
+
+        - name: "(RESCUE) {{ test_id | upper }} Force failure"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.fail:
+            msg: "Call towards CV inside BLOCK was expected to FAIL but has not. Please investigate (check EOS/CV states and streaming, etc.)."
+          when: force_failure is defined
+
+        # Clear failed state of failed hosts for next engaged playbook (no impact within running playbook)
+        - name: "(RESCUE) {{ test_id | upper }} Reset ansible_play_hosts for next playbook (no impact within running playbook)"
+          tags: ["{{ test_id }}"]
+          ansible.builtin.meta: clear_host_errors
+
+        - name: "(RESCUE) {{ test_id | upper }} Check and assert CVP returns"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -213,7 +240,15 @@
                 hostvars['avd-ci-spine1'].metadata.system_mac_address +
                 '.*avd-ci-spine1.*avd-ci-spine2.*') | list | length == 0
 
-        - name: "{{ test_id | upper }} Cleanup orphan workspace"
+      always:
+
+        - name: "(ALWAYS) {{ test_id | upper }} Display CVP detailed result"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            var: cv_deploy_results
+
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup orphan workspace"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.legacy.uri:
@@ -249,7 +284,14 @@
           ignore_errors: true
           when: cv_deploy_results.workspace.id is not none and cv_deploy_results.workspace.id | length > 0
 
-        - name: "{{ test_id | upper }} Cleanup"
+        - name: "(ALWAYS) {{ test_id | upper }} Banner"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            msg:
+              - "### ENGAGE CV_DEPLOY ROLE TO CLEANUP AFTER {{ test_id[:69] | upper }} ###"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost
@@ -266,14 +308,3 @@
             structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
             cv_submit_workspace_force: true
             cv_run_change_control: true
-
-        - name: "{{ test_id | upper }} Display CVP result"
-          tags: ["{{ test_id }}"]
-          run_once: true
-          ansible.builtin.debug:
-            msg: '{{ cv_deploy_results }}'
-
-        # Clear failed state of failed hosts for next engaged playbook (no impact within running playbook)
-        - name: Reset ansible_play_hosts for next playbook (no impact within running playbook)
-          tags: ["{{ test_id }}"]
-          ansible.builtin.meta: clear_host_errors

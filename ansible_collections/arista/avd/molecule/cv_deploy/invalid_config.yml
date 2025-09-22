@@ -31,14 +31,22 @@
       ansible.builtin.set_fact:
         r: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
 
-    - name: "{{ test_id | upper }} Natively engage arista.avd.cv_workflow module to test abandoned Workspace"
+    - name: "{{ test_id | upper }} Code block to provision CVP with AVD configuration"
       tags: ["{{ test_id }}"]
       run_once: true
       delegate_to: localhost
 
       block:
 
-        - name: "{{ test_id | upper }} engage arista.avd.cv_workflow module to test failing build when workspace.requested_state == abandoned"
+        - name: "(BLOCK) {{ test_id | upper }} Banner"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            msg:
+              - "### ENGAGE CV_WORKFLOW MODULE TO PUSH CONFIGURATION FOR {{ test_id[:69] | upper }} ###"
+
+        # This task is expected to fail
+        - name: "(BLOCK) {{ test_id | upper }} Engage arista.avd.cv_workflow module to test failing build when workspace.requested_state == abandoned"
           tags: ["{{ test_id }}"]
           run_once: true
           delegate_to: localhost
@@ -56,15 +64,30 @@
             return_details: true
           register: cv_deploy_results
 
-      rescue:
-
-        - name: "{{ test_id | upper }} Display CVP result for basic invalid configuration"
+        # If task above did not fail for whatever reason - execute following task to catch this
+        # Task below is not expected to run under normal conditions
+        - name: "(BLOCK) {{ test_id | upper }} Force failure"
           tags: ["{{ test_id }}"]
           run_once: true
-          ansible.builtin.debug:
-            msg: '{{ cv_deploy_results }}'
+          ansible.builtin.fail:
+            msg: "Previous task was expected to fail but something went wrong."
+          register: force_failure
 
-        - name: "{{ test_id | upper }} Assert CVP returns for basic invalid configuration"
+      rescue:
+
+        - name: "(RESCUE) {{ test_id | upper }} Force failure"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.fail:
+            msg: "Call towards CV inside BLOCK was expected to FAIL but has not. Please investigate (check EOS/CV states and streaming, etc.)."
+          when: force_failure is defined
+
+        # Clear failed state of failed hosts for next engaged playbook (no impact within running playbook)
+        - name: (RESCUE) Reset ansible_play_hosts for next playbook (no impact within running playbook)
+          tags: ["{{ test_id }}"]
+          ansible.builtin.meta: clear_host_errors
+
+        - name: "(RESCUE) {{ test_id | upper }} Assert CVP returns for basic invalid configuration"
           tags: ["{{ test_id }}"]
           run_once: true
           ansible.builtin.assert:
@@ -77,25 +100,35 @@
               - "'Failed to build workspace' in cv_deploy_results.errors[0]"
               - "'device build error' in cv_deploy_results.errors[0]"
 
-    - name: "{{ test_id | upper }} Cleanup"
-      tags: ["{{ test_id }}"]
-      run_once: true
-      delegate_to: localhost
-      ansible.builtin.import_role:
-        name: arista.avd.cv_deploy
-      vars:
-        cv_workspace_name: "{{ cv_common_pattern }}-{{ r }}-cleanup"
-        cv_workspace_description: "{{ cv_common_pattern + '-' + r + '-cleanup' | upper }}"
-        cv_change_control_name: "{{ cv_common_pattern }}-{{ r }}-cleanup"
-        cv_change_control_description: "{{ cv_common_pattern + '-' + r + '-cleanup' | upper }}"
-        cv_register_detailed_results: true
-        cv_devices: "{{ ansible_play_hosts_all }}"
-        eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
-        structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
-        cv_submit_workspace_force: true
-        cv_run_change_control: true
+      always:
 
-    # Clear failed state of failed hosts for next engaged playbook (no impact within running playbook)
-    - name: Reset ansible_play_hosts for next playbook (no impact within running playbook)
-      tags: ["{{ test_id }}"]
-      ansible.builtin.meta: clear_host_errors
+        - name: "(ALWAYS) {{ test_id | upper }} Display CVP result for basic invalid configuration"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            var: cv_deploy_results
+
+        - name: "(ALWAYS) {{ test_id | upper }} Banner"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          ansible.builtin.debug:
+            msg:
+              - "### ENGAGE CV_DEPLOY ROLE TO CLEANUP AFTER {{ test_id[:69] | upper }} ###"
+
+        - name: "(ALWAYS) {{ test_id | upper }} Cleanup"
+          tags: ["{{ test_id }}"]
+          run_once: true
+          delegate_to: localhost
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_workspace_name: "{{ cv_common_pattern }}-{{ r }}-cleanup"
+            cv_workspace_description: "{{ cv_common_pattern + '-' + r + '-cleanup' | upper }}"
+            cv_change_control_name: "{{ cv_common_pattern }}-{{ r }}-cleanup"
+            cv_change_control_description: "{{ cv_common_pattern + '-' + r + '-cleanup' | upper }}"
+            cv_register_detailed_results: true
+            cv_devices: "{{ ansible_play_hosts_all }}"
+            eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+            structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
+            cv_submit_workspace_force: true
+            cv_run_change_control: true

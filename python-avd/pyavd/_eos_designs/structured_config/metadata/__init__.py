@@ -25,6 +25,7 @@ class AvdStructuredConfigMetadataProtocol(CvTagsMixin, CvPathfinderMixin, Digita
     def metadata(self) -> None:
         self.structured_config.metadata._update(
             platform=self.shared_utils.platform,
+            is_deployed=self.inputs.is_deployed,
             system_mac_address=self.shared_utils.system_mac_address,
             rack=self.shared_utils.node_config.rack,
             pod_name=self.inputs.pod_name,

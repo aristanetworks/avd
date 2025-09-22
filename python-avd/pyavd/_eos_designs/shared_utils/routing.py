@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils.password_utils.password import bgp_encrypt
 from pyavd.j2filters import range_expand
 
@@ -121,7 +121,7 @@ class RoutingMixin(Protocol):
 
         if self.node_config.bgp_as is None:
             msg = "bgp_as"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(msg, host=self.hostname)
 
         bgp_as_range_expanded = range_expand(self.node_config.bgp_as)
         try:
@@ -135,8 +135,8 @@ class RoutingMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
             return bgp_as_range_expanded[self.id - 1]
         except IndexError as exc:
-            msg = f"Unable to allocate BGP AS: bgp_as range is too small ({len(bgp_as_range_expanded)}) for the id of the device"
-            raise AristaAvdError(msg) from exc
+            msg = f"Unable to allocate BGP AS: bgp_as range '{self.node_config.bgp_as}' is too small ({len(bgp_as_range_expanded)}) for the id '{self.id}'."
+            raise AristaAvdInvalidInputsError(msg, host=self.hostname) from exc
 
     def get_bgp_password(
         self: SharedUtilsProtocol,

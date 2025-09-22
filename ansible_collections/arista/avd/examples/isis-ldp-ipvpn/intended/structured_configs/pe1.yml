@@ -82,7 +82,6 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:00
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -118,6 +117,7 @@ management_security:
   password:
     encryption_key_common: true
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: FABRIC
 mpls:

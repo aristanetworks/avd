@@ -37,7 +37,6 @@ ethernet_interfaces:
 hostname: dc1-leaf1c
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -53,6 +52,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   dc_name: DC1
   fabric_name: FABRIC

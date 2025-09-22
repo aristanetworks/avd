@@ -2,7 +2,7 @@
 # deploy.yml
 
 - name: Build and Deploy Configs
-  hosts: DC1_FABRIC
+  hosts: FABRIC
   gather_facts: false
   tasks:
 

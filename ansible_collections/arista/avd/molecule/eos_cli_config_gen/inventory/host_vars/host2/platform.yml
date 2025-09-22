@@ -8,3 +8,5 @@ platform:
   fap:
     buffering_egress:
       profile: balanced
+    voq:
+      credit_rates_unified: false

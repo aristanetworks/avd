@@ -27,7 +27,6 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -49,6 +48,7 @@ management_interfaces:
   ip_address: 192.168.201.116/24
   type: oob
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   fabric_name: FABRIC_IP_ADDRESSING
 mlag_configuration:

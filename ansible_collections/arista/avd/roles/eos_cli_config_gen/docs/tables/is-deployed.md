@@ -7,11 +7,12 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>is_deployed</samp>](## "is_deployed") | Boolean |  | `True` |  | Key only used for documentation or validation purposes. |
+    | [<samp>is_deployed</samp>](## "is_deployed") | Boolean |  |  |  | Key only used for documentation or validation purposes.<br>This key is deprecated and new key is metadata.is_deployed. |
 
 === "YAML"
 
     ```yaml
     # Key only used for documentation or validation purposes.
-    is_deployed: <bool; default=True>
+    # This key is deprecated and new key is metadata.is_deployed.
+    is_deployed: <bool>
     ```

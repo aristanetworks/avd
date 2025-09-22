@@ -2,16 +2,17 @@
 root_dir: '{{ playbook_dir }}'
 
 # local users
-local_users:
-  - name: admin
-    privilege: 15
-    role: network-admin
-    no_password: true
+aaa_settings:
+  local_users:
+    - name: admin
+      privilege: 15
+      role: network-admin
+      no_password: true
 
-  - name: cvpadmin
-    privilege: 15
-    role: network-admin
-    sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
+    - name: cvpadmin
+      privilege: 15
+      role: network-admin
+      sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
 
 # Cloud Vision server
 cv_settings:

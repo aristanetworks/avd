@@ -174,7 +174,6 @@ ip_igmp_snooping:
 ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:00
 ipv6_unicast_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -202,6 +201,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: 7280SR3
   fabric_name: MPLS_CORE
 mpls:

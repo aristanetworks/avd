@@ -10,6 +10,9 @@ title: Ansible Collection Role dhcp_provisioner
 
 # dhcp_provisioner
 
+!!! warning "Deprecation Warning"
+    The role `arista.avd.dhcp_provisioner` has been deprecated and will be removed in AVD version 6.0.0.
+
 ## Overview
 
 **dhcp_provisioner** is a role to build and deploy a DHCP configuration file to support Zero Touch Provisioning with Arista EOS devices.
@@ -127,7 +130,7 @@ custom_structured_configuration_daemon_terminattr:
 
 ### Tasks
 
-1. Generate structured configuration for DHCP configuration as documented in [`arista.cvp.dhcp_configuration`](https://cvp.avd.sh/en/latest/roles/dhcp_configuration/).
+1. Generate structured configuration for DHCP configuration as documented in [`arista.cvp.dhcp_configuration`](https://aristanetworks.github.io/ansible-cvp/roles/dhcp_configuration/).
 2. Load generated variables.
 3. Create DHCP configuration file.
 4. If mode is online, apply configuration to DHCP server.

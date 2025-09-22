@@ -1,0 +1,23 @@
+---
+# Not testing anything, but just a placeholder for future tests.
+type: l3leaf
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 172.16.0.0/24
+    virtual_router_mac_address: cafe:cafe:cafe
+    uplink_ipv4_pool: 10.42.42.0/24
+    uplink_switches: [host1]
+    uplink_interfaces: [Ethernet43]
+    uplink_switch_interfaces: [Ethernet43]
+    uplink_type: p2p-vrfs
+    # Testing uplink_structured_config for p2p-vrfs uplinks
+    uplink_structured_config:
+      pim:
+        ipv4:
+          sparse_mode: true
+  nodes:
+    - name: host4
+      id: 103
+      bgp_as: 101

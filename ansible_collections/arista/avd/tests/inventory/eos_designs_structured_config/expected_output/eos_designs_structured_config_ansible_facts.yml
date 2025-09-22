@@ -1,5 +1,4 @@
 hostname: testhost
-is_deployed: true
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending
@@ -28,3 +27,4 @@ switch:
   vlans: ""
 metadata:
   fabric_name: integration_tests
+  is_deployed: true

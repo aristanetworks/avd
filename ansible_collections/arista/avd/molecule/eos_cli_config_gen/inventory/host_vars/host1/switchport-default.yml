@@ -5,6 +5,7 @@ switchport_default:
   mode: access
   phone:
     cos: 0
+    qos_trust: cos
     trunk: tagged
     vlan: 69
     access_list_bypass: true

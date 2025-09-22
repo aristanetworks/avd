@@ -10,7 +10,7 @@
     | [<samp>ipsec_settings</samp>](## "ipsec_settings") | Dictionary |  |  |  | Settings applicable to all IPsec connections. |
     | [<samp>&nbsp;&nbsp;bind_connection_to_interface</samp>](## "ipsec_settings.bind_connection_to_interface") | Boolean |  | `False` |  | Allow IPsec connections to be bound to the source interface.<br>Enabling this prevents IPsec connections from using ECMP paths. |
     | [<samp>wan_encapsulation</samp>](## "wan_encapsulation") | String |  | `path-selection` | Valid Values:<br>- <code>path-selection</code><br>- <code>vxlan</code> | Select the encapsulation to use for EVPN peerings for WAN BGP peers. |
-    | [<samp>wan_ha</samp>](## "wan_ha") | Dictionary |  |  |  | PREVIEW: The `wan_ha` key is currently not supported. |
+    | [<samp>wan_ha</samp>](## "wan_ha") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;lan_ha_path_group_name</samp>](## "wan_ha.lan_ha_path_group_name") | String |  | `LAN_HA` |  | When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.<br>This key allows to overwrite the default LAN HA path-group name. |
     | [<samp>wan_ipsec_profiles</samp>](## "wan_ipsec_profiles") | Dictionary |  |  |  | Define IPsec profiles parameters for WAN configuration. |
     | [<samp>&nbsp;&nbsp;control_plane</samp>](## "wan_ipsec_profiles.control_plane") | Dictionary | Required |  |  |  |
@@ -43,8 +43,6 @@
 
     # Select the encapsulation to use for EVPN peerings for WAN BGP peers.
     wan_encapsulation: <str; "path-selection" | "vxlan"; default="path-selection">
-
-    # PREVIEW: The `wan_ha` key is currently not supported.
     wan_ha:
 
       # When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.

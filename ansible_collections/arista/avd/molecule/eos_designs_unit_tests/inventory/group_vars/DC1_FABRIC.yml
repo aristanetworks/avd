@@ -404,6 +404,20 @@ l2leaf:
           mgmt_ip: 192.168.200.123/24
           uplink_switches: [ DC1-LEAF2B ]
           uplink_switch_interfaces: [ Ethernet31 ]
+      # Node to test structured configs for underlay_l2 uplinks.
+    - group: DC1_L2LEAF7
+      nodes:
+        - name: DC1.L2LEAF7A
+          id: 18
+          mgmt_ip: 192.168.200.124/24
+          uplink_switches: [ DC1-LEAF2A ]
+          uplink_switch_interfaces: [ Ethernet32 ]
+          # Structured config applied to uplink port-channel.
+          uplink_switch_port_channel_structured_config:
+            description: description through uplink_switch_port_channel_structured_config(DC1.L2LEAF7A)
+          # Structured_config applied to member interfaces of uplink port-channel.
+          uplink_switch_ethernet_structured_config:
+            description: description through uplink_switch_ethernet_structured_config(DC1.L2LEAF7A)
 
 # Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500

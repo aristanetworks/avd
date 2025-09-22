@@ -43,12 +43,12 @@ ethernet_interfaces:
 hostname: SL-LEAF2B
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   fabric_name: SINGLE_LINK_TO_MLAG_PAIR
 mlag_configuration:

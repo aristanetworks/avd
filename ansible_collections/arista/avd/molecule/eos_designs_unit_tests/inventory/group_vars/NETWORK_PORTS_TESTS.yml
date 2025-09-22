@@ -221,6 +221,23 @@ network_ports:
       - Ethernet25
     description: Add all vlans
     vlans: 1-4094
+
+  - switches:
+      - network-ports-tests.2
+    switch_ports:
+      - Ethernet22-23
+    mode: trunk
+    vlans: 300
+    port_channel:
+      channel_id: 222
+      mode: "active"
+      lacp_fallback:
+        mode: individual
+        individual:
+          mode: access
+          # Testing that we attracting vlan 400 with "only_vlans_in_use"
+          vlans: 400
+
 # Overwriting one interface from a range to ensure that we don't reuse objects in memory across multiple interfaces.
 # We should only see updates for this interface.
 custom_structured_configuration_ethernet_interfaces:
@@ -249,6 +266,10 @@ tenants:
       # network-ports-tests-2 using only_vlans_in_use
       - id: 300
         name: VLAN300_PHONE_ON_L2LEAF1_AND_2
+      # VLAN 300 will be configured on network-ports-tests-1 by default, and
+      # network-ports-tests-2 using only_vlans_in_use finding the vlan on fallback individual.
+      - id: 400
+        name: VLAN400_FALLBACK_INDIVIDUAL_VLAN
 
 l2leaf:
   node_groups:

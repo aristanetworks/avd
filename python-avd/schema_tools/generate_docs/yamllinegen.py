@@ -204,7 +204,7 @@ class YamlLineGenBase:
 
     def get_annotation(self) -> str | None:
         if self.needs_annotation_for_default_value:
-            return yaml.dump({self.schema._key: self.schema.default}, indent=2)
+            return yaml.dump({self.schema._key: self.schema.default}, sort_keys=False, indent=2)
         return None
 
     def render_restrictions(self) -> str | None:

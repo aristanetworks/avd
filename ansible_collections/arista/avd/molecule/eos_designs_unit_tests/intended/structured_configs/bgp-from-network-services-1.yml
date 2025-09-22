@@ -23,7 +23,6 @@ hostname: bgp-from-network-services-1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -41,6 +40,7 @@ management_interfaces:
   ip_address: 10.1.1.1/24
   type: oob
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:
   domain_id: GROUP1

@@ -6,7 +6,6 @@ enable_password:
 hostname: no_mgmt_gateway
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -19,6 +18,7 @@ management_interfaces:
   ip_address: 192.168.200.106
   type: oob
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true

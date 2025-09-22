@@ -13,14 +13,12 @@ from .router_path_selection import VerifySpecificPathInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
 from .routing_generic import VerifyRoutingProtocolModelInputFactory
 from .security import VerifyAPIHttpsSSLInputFactory, VerifySpecificIPSecConnInputFactory
-from .services import VerifyDNSServersInputFactory
 from .system import VerifyReloadCauseInputFactory
 
 __all__ = [
     "VerifyAPIHttpsSSLInputFactory",
     "VerifyAVTSpecificPathInputFactory",
     "VerifyBGPPeerSessionInputFactory",
-    "VerifyDNSServersInputFactory",
     "VerifyEnvironmentCoolingInputFactory",
     "VerifyEnvironmentPowerInputFactory",
     "VerifyInterfacesStatusInputFactory",

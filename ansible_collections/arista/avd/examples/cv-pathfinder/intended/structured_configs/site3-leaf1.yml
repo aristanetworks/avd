@@ -42,8 +42,8 @@ flow_tracking:
       name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
     shutdown: false
 hostname: site3-leaf1
@@ -56,7 +56,6 @@ ip_igmp_snooping:
 ip_name_servers:
 - ip_address: 192.168.17.1
   vrf: MGMT
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -86,6 +85,7 @@ management_interfaces:
     transmit: false
     receive: false
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: WAN
 ntp:

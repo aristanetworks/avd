@@ -4,9 +4,9 @@ underlay_ospf_authentication:
   enabled: true
   message_digest_keys:
     - id: 1
-      key: arista123arista
+      cleartext_key: arista123arista
     - id: 2
-      key: please_vault_me
+      cleartext_key: please_vault_me
 
 type: l3leaf
 mgmt_interface: null # To get the coverage for get(self.cv_topology_config, "mgmt_interface")

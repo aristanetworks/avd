@@ -9,7 +9,11 @@ l3leaf:
     uplink_interfaces: ['Ethernet1']
     uplink_switches: ['UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1']
     uplink_ipv4_pool: 172.31.255.0/24
-    uplink_structured_config:
+    uplink_ethernet_structured_config:
+      pim:
+        ipv4:
+          sparse_mode: true
+    uplink_switch_ethernet_structured_config:
       pim:
         ipv4:
           sparse_mode: true

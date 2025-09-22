@@ -102,7 +102,6 @@ ethernet_interfaces:
 hostname: BGP-LEAF1
 ip_igmp_snooping:
   globally_enabled: true
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -116,6 +115,7 @@ management_interfaces:
   type: oob
   gateway: 172.31.0.1
 metadata:
+  is_deployed: true
   pod_name: L2LS_BGP
   fabric_name: L2LS
   cv_tags:

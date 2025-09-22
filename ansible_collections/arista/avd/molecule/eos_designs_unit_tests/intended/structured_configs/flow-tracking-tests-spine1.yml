@@ -146,8 +146,8 @@ flow_tracking:
       name: FLOW-TRACKER
       exporters:
       - name: ayush_exporter
-        collector:
-          host: 127.0.0.2
+        collectors:
+        - host: 127.0.0.2
         local_interface: Loopback0
         template_interval: 40002
     - table_size: 4331
@@ -158,14 +158,13 @@ flow_tracking:
       name: FLOW-TRACKER-1
       exporters:
       - name: ayush_exporter
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
         template_interval: 40000
     shutdown: false
 hostname: flow-tracking-tests-spine1
 ip_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -184,6 +183,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.0.1
 metadata:
+  is_deployed: true
   platform: vEOS-LAB
   fabric_name: FLOW_TRACKING_TESTS
 prefix_lists:

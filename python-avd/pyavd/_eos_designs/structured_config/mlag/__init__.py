@@ -3,11 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import cast
-
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
-from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import AvdStringFormatter, default
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
@@ -124,17 +121,11 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             if self.inputs.underlay_ospf_authentication.enabled:
                 vlan_interface.ospf_authentication = "message-digest"
                 for ospf_key in self.inputs.underlay_ospf_authentication.message_digest_keys:
-                    if ospf_key.key is None and ospf_key.cleartext_key is None:
-                        msg = (
-                            f"`underlay_ospf_authentication.message_digest_keys[key={ospf_key.id}].key or "
-                            f"`underlay_ospf_authentication.message_digest_keys[key={ospf_key.id}].cleartext_key`"
-                        )
-                        raise AristaAvdMissingVariableError(msg)
                     vlan_interface.ospf_message_digest_keys.append_new(
                         id=ospf_key.id,
                         hash_algorithm=ospf_key.hash_algorithm,
                         key=ospf_message_digest_encrypt(
-                            password=cast("str", ospf_key.cleartext_key or ospf_key.key),
+                            password=ospf_key.cleartext_key,
                             key=vlan_interface.name,
                             hash_algorithm=ospf_key.hash_algorithm,
                             key_id=str(ospf_key.id),
@@ -156,8 +147,10 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                     key=isis_authentication_key,
                     key_type="7",
                 )
-        if self.shared_utils.underlay_multicast:
+        if self.shared_utils.underlay_multicast_pim_mlag_enabled and self.shared_utils.mlag_peer_facts.mlag_underlay_multicast.pim_sm:
             vlan_interface.pim.ipv4.sparse_mode = True
+        if self.shared_utils.underlay_multicast_static_mlag_enabled and self.shared_utils.mlag_peer_facts.mlag_underlay_multicast.static:
+            vlan_interface.multicast.ipv4.static = True
 
         if self.inputs.underlay_rfc5549:
             vlan_interface.ipv6_enable = True
@@ -200,8 +193,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             # except in the case where the same trunk group name is defined.
             port_channel_interface.switchport.trunk.groups.append(self.inputs.trunk_groups.mlag_l3.name)
 
-        if (self.inputs.fabric_sflow.mlag_interfaces) is not None:
-            port_channel_interface.sflow.enable = self.inputs.fabric_sflow.mlag_interfaces
+        port_channel_interface.sflow.enable = self.shared_utils.get_interface_sflow(port_channel_interface.name, self.inputs.fabric_sflow.mlag_interfaces)
 
         if self.shared_utils.ptp_enabled and self.shared_utils.node_config.ptp.mlag:
             ptp_profile_config = self.shared_utils.ptp_profile._deepcopy()

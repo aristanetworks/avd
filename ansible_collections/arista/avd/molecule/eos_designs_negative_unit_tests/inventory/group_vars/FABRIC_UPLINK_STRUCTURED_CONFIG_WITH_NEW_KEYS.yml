@@ -1,0 +1,38 @@
+---
+fabric_name: FABRIC_UPLINK_STRUCTURED_CONFIG_WITH_NEW_KEYS
+
+default_node_types:
+  - node_type: spine
+    match_hostnames: [.*spine]
+  - node_type: l3leaf
+    match_hostnames: [.*l3leaf]
+
+spine:
+  defaults:
+    bgp_as: 65001
+    loopback_ipv4_pool: 192.168.4.0/24
+  nodes:
+    - name: uplink-structured-config-with-new-keys-spine
+      id: 10
+
+l3leaf:
+  defaults:
+    bgp_as: 65010
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_switches: [uplink-structured-config-with-new-keys-spine]
+    uplink_switch_interfaces: [Ethernet1, Ethernet2]
+    uplink_ipv4_pool: 192.168.1.0/24
+    vtep_loopback_ipv4_pool: 192.168.2.0/24
+    loopback_ipv4_pool: 192.168.3.0/24
+    uplink_structured_config:
+      shutdown: true
+  nodes:
+    - name: uplink-structured-config-with-new-keys-l3leaf
+      id: 1
+      uplink_ethernet_structured_config:
+        shutdown: true
+
+expected_error_message:
+  The input data model 'uplink_structured_config' in node_type settings is deprecated and
+  cannot be used in conjunction with the new 'uplink_ethernet_structured_config'.
+  Check the settings for 'uplink-structured-config-with-new-keys-l3leaf'.

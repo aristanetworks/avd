@@ -12,7 +12,8 @@ device:
   defaults:
     structured_config:
       # hostname: null # Hostname is kept to avoid pyavd tests from failing. Uncomment this if you are trying to build connected-endpoints only configs.
-      is_deployed: null
+      metadata:
+        is_deployed: null
       service_routing_protocols_model: null
       vlan_internal_order: null
       aaa_root: null
@@ -50,3 +51,8 @@ network_ports:
     switch_ports: [Ethernet20-29]
     endpoint: Network Port
     profile: MY_PROFILE
+    # Testing for dot1x mode supplicant.
+    dot1x:
+      pae:
+        mode: supplicant
+        supplicant_profile: test_profile_only_connected_endpoints

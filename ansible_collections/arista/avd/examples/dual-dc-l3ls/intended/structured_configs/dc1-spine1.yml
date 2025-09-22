@@ -46,7 +46,6 @@ ethernet_interfaces:
     enabled: false
 hostname: dc1-spine1
 ip_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -74,6 +73,7 @@ management_interfaces:
   type: oob
   gateway: 172.16.1.1
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: FABRIC
 prefix_lists:

@@ -36,10 +36,31 @@ class NodeIdPoolCollection(PoolCollection[int]):
         )
 
     @staticmethod
+    def _pool_key_from_dict(pool_key_dict: dict) -> str:
+        """
+        Returns the formatted pool key generated from legacy pool key dict format.
+
+        Caveat: This will always use the default template string to generate the pool names.
+
+        Raises:
+            KeyError: If any of the legacy fields are missing. Caught by the caller.
+        """
+        return AvdStringFormatter().format(
+            "fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}",
+            fabric_name=pool_key_dict["fabric_name"],
+            dc_name=pool_key_dict["dc_name"],
+            pod_name=pool_key_dict["pod_name"],
+            type=pool_key_dict["type"],
+            rack=None,
+        )
+
+    @staticmethod
     def _pools_file_from_shared_utils(output_dir: Path, shared_utils: SharedUtilsProtocol) -> Path:
         """Returns the file to use for this device."""
         fabric_name = shared_utils.fabric_name
         default_id_file = output_dir.joinpath(f"data/{fabric_name}-ids.yml")
+
+        # Save the pool string on the class just in case
         return Path(default(shared_utils.inputs.fabric_numbering.node_id.pools_file, default_id_file))
 
     @staticmethod

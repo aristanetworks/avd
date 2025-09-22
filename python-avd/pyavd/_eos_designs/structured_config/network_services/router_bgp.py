@@ -187,6 +187,11 @@ class RouterBgpMixin(Protocol):
                         # We need to add redistribute connected for the default VRF when underlay_routing_protocol is "none"
                         bgp_vrf.redistribute.connected.enabled = True
 
+                for address in vrf.aggregate_addresses:
+                    self.structured_config.router_bgp.aggregate_addresses.append(
+                        address._cast_as(EosCliConfigGen.RouterBgp.AggregateAddressesItem, ignore_extra_keys=True)
+                    )
+
                 # MLAG IBGP Peering VLANs per VRF
                 # Will only be configured for VRF default if underlay_routing_protocol == "none".
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:

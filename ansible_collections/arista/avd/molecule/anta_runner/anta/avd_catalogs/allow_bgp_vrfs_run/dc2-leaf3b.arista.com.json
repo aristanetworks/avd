@@ -292,6 +292,10 @@
             "status": "adminDown"
           },
           {
+            "name": "Ethernet20",
+            "status": "adminDown"
+          },
+          {
             "name": "Loopback0",
             "status": "up"
           },

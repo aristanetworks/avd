@@ -142,8 +142,8 @@ flow_tracking:
         on_interval: 5000
       exporters:
       - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
+        collectors:
+        - host: 127.0.0.1
         local_interface: Loopback0
     shutdown: false
 hostname: site4-wan1
@@ -218,7 +218,6 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -263,6 +262,7 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
+  is_deployed: true
   platform: CloudEOS
   fabric_name: WAN
   cv_tags:

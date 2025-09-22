@@ -26,7 +26,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retransmit</samp>](## "radius_server.hosts.[].retransmit") | Integer |  |  | Min: 0<br>Max: 100 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "radius_server.hosts.[].key") | String |  |  |  | Encrypted key - only type 7 supported.<br>When TLS is configured, `key` is ignored. |
     | [<samp>&nbsp;&nbsp;tls_ssl_profile</samp>](## "radius_server.tls_ssl_profile") | String |  |  |  | Name of global TLS profile. |
-    | [<samp>radius_servers</samp>](## "radius_servers") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version v5.0.0. Use <samp>radius_server.hosts</samp> instead.</span> |
 
 === "YAML"
 

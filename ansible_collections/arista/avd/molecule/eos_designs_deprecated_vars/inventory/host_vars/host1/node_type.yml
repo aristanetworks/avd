@@ -12,13 +12,27 @@ l3leaf:
     uplink_switch_interfaces: [Ethernet42]
     uplink_interfaces: [Ethernet42]
     uplink_ipv4_pool: 192.168.42.0/24
+    uplink_structured_config:
+      storm_control:
+        broadcast:
+          level: 25
+        unknown_unicast:
+          level: 25
   nodes:
     - name: host1
       id: 101
       bgp_as: 101
+      structured_config:
+        # Having custom keys in structured_config is deprecated and support will be removed in AVD 6.0.0.
+        custom_key2: foo
   node_groups:
     - group: sflow-tests-leaf-mlag
       bgp_as: 65105
+      # Testing merging of uplink_structured_config which is a dict type with no schema.
+      uplink_structured_config:
+        switchport:
+          trunk:
+            native_vlan_tag: true
       nodes:
         - name: host1
           id: 5

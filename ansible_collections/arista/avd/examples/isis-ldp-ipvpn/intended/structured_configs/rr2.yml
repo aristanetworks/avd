@@ -81,7 +81,6 @@ ethernet_interfaces:
     enabled: false
 hostname: rr2
 ip_routing: true
-is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -117,6 +116,7 @@ management_security:
   password:
     encryption_key_common: true
 metadata:
+  is_deployed: true
   platform: vEOS-lab
   fabric_name: FABRIC
 mpls:

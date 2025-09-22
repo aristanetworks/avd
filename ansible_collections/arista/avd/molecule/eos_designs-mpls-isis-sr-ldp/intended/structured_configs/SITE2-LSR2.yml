@@ -78,7 +78,6 @@ ethernet_interfaces:
 hostname: SITE2-LSR2
 ip_routing: true
 ipv6_unicast_routing: true
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -106,6 +105,7 @@ management_interfaces:
   type: oob
   gateway: 192.168.200.5
 metadata:
+  is_deployed: true
   platform: 7280SR
   fabric_name: MPLS_CORE
 mpls:

@@ -1,0 +1,20 @@
+---
+
+custom_platform_settings:
+  - platforms:
+      - vEOS
+    feature_support:
+      wan: false
+
+fabric_name: FABRIC_WAN_UNSUPPORTED_PLATFORM
+
+type: wan_router
+
+wan_router:
+  defaults:
+    platform: vEOS
+  nodes:
+    - name: wan-unsupported-platform
+
+expected_error_message: >-
+  The WAN features are not compatible with the 'vEOS' platform used by node 'wan-unsupported-platform'.

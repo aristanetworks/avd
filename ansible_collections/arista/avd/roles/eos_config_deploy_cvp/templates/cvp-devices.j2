@@ -14,7 +14,8 @@
 cvp_devices:
 {% for device in groups[container_root] | arista.avd.natural_sort %}
 {%     if device | arista.avd.is_in_filter(local_var.device_filter) %}
-{%         if (hostvars[device].is_deployed is defined and hostvars[device].is_deployed == true) or (hostvars[device].is_deployed is not defined) %}
+{%         set is_deployed = hostvars[device].metadata.is_deployed | arista.avd.default(hostvars[device].is_deployed, true) %}
+{%         if is_deployed %}
   {{ device }}:
     name: {{ device }}
 {%             for container_name, container in cvp_vars.cvp_topology.items() | arista.avd.natural_sort %}

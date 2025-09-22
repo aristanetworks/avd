@@ -29,13 +29,15 @@
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile | IPv6 Lease Time |
-| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | --------------- | ---------------- | ------------- | --------------- |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 TFTP Bootfile URL (Option 59) | IPv6 Lease Time |
+| ------------------- | --- | --------------- | ---------------- | ------------------------------ | ---------------------------- | ---------------------------- | --------------- | --------------- | ---------------- | ---------------------------------- | --------------- |
 {%         for dhcp_server in dhcp_servers | arista.avd.natural_sort("vrf") %}
 {%             set enabled = not dhcp_server.disabled | arista.avd.default(false) %}
 {%             set dns_domain_ipv4 = dhcp_server.dns_domain_name_ipv4 | arista.avd.default("-") %}
 {%             set dns_servers_ipv4 = dhcp_server.dns_servers_ipv4 | arista.avd.default(["-"]) | join(", ") %}
 {%             set tftp_server_file_ipv4 = dhcp_server.tftp_server.file_ipv4 | arista.avd.default("-") %}
+{%             set tftp_server_option_66_ipv4 = dhcp_server.tftp_server.option_66_ipv4 | arista.avd.default("-") %}
+{%             set tftp_server_option_150_ipv4 = dhcp_server.tftp_server.option_150_ipv4 | arista.avd.default("-") | join(", ") %}
 {%             if dhcp_server.lease_time_ipv4.days is arista.avd.defined
                 and dhcp_server.lease_time_ipv4.hours is arista.avd.defined
                 and dhcp_server.lease_time_ipv4.minutes is arista.avd.defined %}
@@ -49,7 +51,7 @@
                 and dhcp_server.lease_time_ipv6.minutes is arista.avd.defined %}
 {%                 set lease_time_ipv6 = dhcp_server.lease_time_ipv6.days ~ " days " ~ dhcp_server.lease_time_ipv6.hours ~ " hours " ~ dhcp_server.lease_time_ipv6.minutes ~ " minutes" %}
 {%             endif %}
-| {{ enabled }} | {{ dhcp_server.vrf }} | {{ dns_domain_ipv4 }} | {{ dns_servers_ipv4 }} | {{ tftp_server_file_ipv4 }} | {{ lease_time_ipv4 | arista.avd.default("-") }} | {{ dns_domain_ipv6 }} | {{ dns_servers_ipv6 }} | {{ tftp_server_file_ipv6 }} | {{ lease_time_ipv6 | arista.avd.default("-") }} |
+| {{ enabled }} | {{ dhcp_server.vrf }} | {{ dns_domain_ipv4 }} | {{ dns_servers_ipv4 }} | {{ tftp_server_file_ipv4 }} | {{ tftp_server_option_66_ipv4 }} | {{ tftp_server_option_150_ipv4 }} | {{ lease_time_ipv4 | arista.avd.default("-") }} | {{ dns_domain_ipv6 }} | {{ dns_servers_ipv6 }} | {{ tftp_server_file_ipv6 }} | {{ lease_time_ipv6 | arista.avd.default("-") }} |
 {%         endfor %}
 {%         for dhcp_server in dhcp_servers | arista.avd.natural_sort("vrf") %}
 {%             set dhcp_server_subnets = [] %}

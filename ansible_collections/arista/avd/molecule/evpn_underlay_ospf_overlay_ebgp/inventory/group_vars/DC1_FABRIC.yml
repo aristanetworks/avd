@@ -28,7 +28,7 @@ underlay_ospf_authentication:
   enabled: true
   message_digest_keys:
     - id: 1
-      key: arista123arista
+      cleartext_key: arista123arista
       hash_algorithm: sha256
 
 # Enable vlan aware bundles

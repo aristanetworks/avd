@@ -122,6 +122,7 @@ class PortChannelInterfacesMixin(Protocol):
                     mtu=self.shared_utils.get_interface_mtu(l3_port_channel.name, l3_port_channel.mtu),
                     description=interface_description or None,
                     ip_address=l3_port_channel.ip_address,
+                    arp_gratuitous_accept=l3_port_channel.arp_gratuitous_accept,
                     shutdown=not l3_port_channel.enabled,
                     eos_cli=l3_port_channel.raw_eos_cli,
                     flow_tracker=self.shared_utils.get_flow_tracker(

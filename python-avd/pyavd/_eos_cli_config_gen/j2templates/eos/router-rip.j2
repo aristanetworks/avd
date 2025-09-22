@@ -1,0 +1,27 @@
+{#
+ Copyright (c) 2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - router rip #}
+{% if router_rip.vrfs is arista.avd.defined %}
+{%     for rip_vrf in router_rip.vrfs | arista.avd.natural_sort(sort_key='vrf', ignore_case=false) %}
+!
+{%         if rip_vrf.vrf == "default" %}
+router rip
+{%         else %}
+router rip vrf {{ rip_vrf.vrf }}
+{%         endif %}
+{%         if rip_vrf.metric_default is arista.avd.defined %}
+   metric default {{ rip_vrf.metric_default }}
+{%         endif %}
+{%         for network in rip_vrf.networks | arista.avd.natural_sort %}
+   network {{ network }}
+{%         endfor %}
+{%         if rip_vrf.enabled is arista.avd.defined(true) %}
+   no shutdown
+{%         elif rip_vrf.enabled is arista.avd.defined(false) %}
+   shutdown
+{%         endif %}
+{%     endfor %}
+{% endif %}

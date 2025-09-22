@@ -12,7 +12,6 @@ cvx:
 enable_password:
   disabled: true
 hostname: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1
-is_deployed: true
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -25,6 +24,7 @@ management_interfaces:
   ip_address: 192.168.254.254/23
   type: oob
 metadata:
+  is_deployed: true
   dc_name: OVERLAY_ROUTING_PROTOCOL_CVX_TESTS
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent

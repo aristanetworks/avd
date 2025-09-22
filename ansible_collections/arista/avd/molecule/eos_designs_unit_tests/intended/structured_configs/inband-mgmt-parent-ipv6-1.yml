@@ -156,7 +156,6 @@ ipv6_prefix_lists:
     action: permit 2a00:106::/64
   - sequence: 20
     action: permit 2a00:107::/64
-is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -178,6 +177,7 @@ management_interfaces:
   ip_address: 192.168.100.15/24
   type: oob
 metadata:
+  is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:
   domain_id: inband-mgmt-parents-ipv6
