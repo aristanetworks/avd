@@ -109,7 +109,7 @@
 {%     endif %}
 {%     if aaa_accounting.commands.default is arista.avd.defined %}
 {%         for command_default in aaa_accounting.commands.default %}
-{%             if command_default.type is arista.avd.defined("none") %}
+{%             if command_default.type == "none" %}
 | Commands - Default | {{ command_default.commands }} | none | - | - |
 {%             elif command_default.methods is arista.avd.defined %}
 {%                 set methods_list = [] %}
