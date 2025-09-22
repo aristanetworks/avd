@@ -101,7 +101,7 @@ class RoutingMixin(Protocol):
         return None
 
     @cached_property
-    def bgp_as_notation(self: SharedUtilsProtocol) -> Literal["asdot", "asplain"]:
+    def bgp_as_notation(self: SharedUtilsProtocol) -> Literal[asdot, asplain]:
         bgp_as_notation = default(self.inputs.bgp_as_notation, "auto")
         if bgp_as_notation == "asdot" or (bgp_as_notation == "auto" and "." in str(self.bgp_as)):
             return "asdot"
