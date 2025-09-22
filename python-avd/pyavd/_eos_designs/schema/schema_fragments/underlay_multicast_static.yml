@@ -6,12 +6,13 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  underlay_multicast:
+  underlay_multicast_static:
     documentation_options:
       table: fabric-settings
     type: bool
-    deprecation:
-      removed: true
-      warning: true
-      new_key: underlay_multicast_pim_sm
-      remove_in_version: 6.0.0
+    default: false
+    description: |-
+      When enabled, configures multicast routing and by default configures static multicast in the underlay on all:
+        - P2P uplink interfaces if enabled on uplink peer
+        - MLAG L3 peer interface if also enabled on MLAG peer
+        - l3_edge and core interfaces
