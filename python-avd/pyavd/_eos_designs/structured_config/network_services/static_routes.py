@@ -41,7 +41,7 @@ class StaticRoutesMixin(Protocol):
                         vrf=vrf.name,
                         prefix=static_route.prefix or Undefined,
                         interface=static_route.interface,
-                        next_hop=static_route.next_hop or static_route.gateway,
+                        next_hop=static_route.next_hop or Undefined,
                         track_bfd=static_route.track_bfd,
                         distance=static_route.distance,
                         tag=static_route.tag,
