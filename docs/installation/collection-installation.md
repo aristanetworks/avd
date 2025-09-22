@@ -4,7 +4,7 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# Collection installation
+# Ansible Collection Installation
 
 ## Installation workflow
 

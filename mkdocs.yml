@@ -1,5 +1,5 @@
 # Project information
-site_name: AVD
+site_name: " "
 site_author: Arista AVD Team
 site_description: Arista AVD documentation
 copyright: Copyright &copy; 2019 - 2025 Arista Networks
@@ -15,15 +15,18 @@ repo_url: https://github.com/aristanetworks/avd
 use_directory_urls: false
 edit_uri: edit/devel/
 theme:
-  logo: docs/_media/arista-logo.png
+  logo: docs/_media/arista-avd-logo-white.png
   name: material
   features:
     - content.code.annotate
     - content.code.copy
     - content.tabs.link
     - header.autohide
+    - navigation.expand
     - navigation.instant
     - navigation.prune
+    - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.top
     - search.highlight
     # - toc.integrate
@@ -39,6 +42,7 @@ theme:
   language: en
   include_search_page: false
   search_index_only: true
+  custom_dir: docs/overrides
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -137,6 +141,9 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
@@ -167,10 +174,9 @@ markdown_extensions:
 docs_dir: .
 nav:
   - Home: index.md
-  - Getting Started:
-      - Introduction to Ansible and AVD: docs/getting-started/intro-to-ansible-and-avd.md
-      - AVD and Ansible Automation Platform: docs/getting-started/avd-aap.md
-      - Migrating to cv_deploy: docs/getting-started/cv-deploy-porting.md
+  - Installation:
+      - Ansible Collection: docs/installation/collection-installation.md
+      - Containers: docs/containers/overview.md
   - Examples:
       - Single DC L3LS: ansible_collections/arista/avd/examples/single-dc-l3ls/README.md
       - Dual DC L3LS: ansible_collections/arista/avd/examples/dual-dc-l3ls/README.md
@@ -178,51 +184,55 @@ nav:
       - Campus Fabric: ansible_collections/arista/avd/examples/campus-fabric/README.md
       - ISIS-LDP IPVPN: ansible_collections/arista/avd/examples/isis-ldp-ipvpn/README.md
       - CV Pathfinder: ansible_collections/arista/avd/examples/cv-pathfinder/README.md
-  - Installation:
-      - Collection Installation: docs/installation/collection-installation.md
-  - Ansible Collection Roles:
-      - eos_designs:
-          - Overview: ansible_collections/arista/avd/roles/eos_designs/README.md
-          - Role Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/role-configuration.md
-          - Input Variables: ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md
-          - How-To Guides:
-              - Configuring PTP: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/ptp.md
-              - Configuring WAN: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/wan.md
-              - Custom descriptions and names: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.md
-              - Custom Structured Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md
-              - Custom Templates: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-templates.md
-              - Generate CloudVision Tags: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/cloudvision-tags.md
-      - eos_cli_config_gen:
-          - Overview: ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md
-          - Role Configuration: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/role-configuration.md
-          - Input Variables: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/input-variables.md
-          - How-To Guides:
-              - Custom Templates: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/how-to/custom-templates.md
-      - cvp_configlet_upload: ansible_collections/arista/avd/roles/cvp_configlet_upload/README.md
-      - eos_config_deploy_cvp:
-          - Overview: ansible_collections/arista/avd/roles/eos_config_deploy_cvp/README.md
-          - Integrating AVD with CVaaS: ansible_collections/arista/avd/roles/eos_config_deploy_cvp/docs/avd-to-cvaas.md
-      - eos_config_deploy_eapi: ansible_collections/arista/avd/roles/eos_config_deploy_eapi/README.md
-      - eos_snapshot: ansible_collections/arista/avd/roles/eos_snapshot/README.md
-      - dhcp_provisioner: ansible_collections/arista/avd/roles/dhcp_provisioner/README.md
-      - build_output_folders: ansible_collections/arista/avd/roles/build_output_folders/README.md
-      - cv_deploy: ansible_collections/arista/avd/roles/cv_deploy/README.md
-      - anta_runner: ansible_collections/arista/avd/roles/anta_runner/README.md
-  - Ansible Collection Plugins: docs/plugins/
-  - Contributing to AVD:
+  - How-to Guides:
+      - Configuring PTP: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/ptp.md
+      - Configuring WAN: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/wan.md
+      - Custom Descriptions and Names: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.md
+      - Custom Structured Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md
+      - Generate CloudVision Tags: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/cloudvision-tags.md
+      - Migrating to cv_deploy: docs/getting-started/cv-deploy-porting.md
+  - User Manual:
+      - Input Variables:
+          - Overview: docs/input-variables/README.md
+          - eos_designs: ansible_collections/arista/avd/roles/eos_designs/docs/input-variables.md
+          - eos_cli_config_gen: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/input-variables.md
+      - Ansible Collection:
+          - Introduction to Ansible and AVD: docs/getting-started/intro-to-ansible-and-avd.md
+          - AVD and Ansible Automation Platform: docs/getting-started/avd-aap.md
+          - Roles:
+              - eos_designs:
+                  - Overview: ansible_collections/arista/avd/roles/eos_designs/README.md
+                  - Role Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/role-configuration.md
+                  - Custom Templates: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-templates.md
+              - eos_cli_config_gen:
+                  - Overview: ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md
+                  - Role Configuration: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/role-configuration.md
+                  - Custom Templates: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/how-to/custom-templates.md
+              - cvp_configlet_upload: ansible_collections/arista/avd/roles/cvp_configlet_upload/README.md
+              - eos_config_deploy_cvp:
+                  - Overview: ansible_collections/arista/avd/roles/eos_config_deploy_cvp/README.md
+                  - Integrating AVD with CVaaS: ansible_collections/arista/avd/roles/eos_config_deploy_cvp/docs/avd-to-cvaas.md
+              - eos_config_deploy_eapi: ansible_collections/arista/avd/roles/eos_config_deploy_eapi/README.md
+              - eos_snapshot: ansible_collections/arista/avd/roles/eos_snapshot/README.md
+              - dhcp_provisioner: ansible_collections/arista/avd/roles/dhcp_provisioner/README.md
+              - build_output_folders: ansible_collections/arista/avd/roles/build_output_folders/README.md
+              - cv_deploy: ansible_collections/arista/avd/roles/cv_deploy/README.md
+              - anta_runner: ansible_collections/arista/avd/roles/anta_runner/README.md
+          - Plugins: docs/plugins/
+      - PyAVD: docs/pyavd/pyavd.md
+  - Release Notes:
+      - 6.x.x: docs/release-notes/6.x.x.md
+      - Porting Guide: docs/porting-guides/6.x.x.md
+  - Contribute:
       - Overview: docs/contribution/overview.md
       - Development Tooling: docs/contribution/development-tooling.md
       - Code Style: docs/contribution/style-guide.md
       - Validation of Input Variables: docs/contribution/input-variable-validation.md
       - EOS Designs internal notes: docs/contribution/eos_designs_internal_notes.md
       - Authoring eos_cli_config_gen Role Guide: docs/contribution/authoring_eos_cli_config_gen.md
-  - Release Notes: docs/release-notes/6.x.x.md
-  - Porting Guide: docs/porting-guides/6.x.x.md
-  - PyAVD: docs/pyavd/pyavd.md
-  - Versioning: docs/versioning/semantic-versioning.md
-  - AVD Dev Containers:
-      - Overview: docs/containers/overview.md
-  - Support: docs/support/support_overview.md
+  - Support:
+      - Overview: docs/support/support_overview.md
+      - Versioning: docs/versioning/semantic-versioning.md
 # Indicates which files should be added to the build site but not present in nav.
 not_in_nav: |
   /ansible_collections/arista/avd/examples/single-dc-l3ls/documentation/*

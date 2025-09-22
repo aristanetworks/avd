@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Ansible Collection Role eos_designs - WAN
+title: WAN
 ---
 <!--
   ~ Copyright (c) 2023-2025 Arista Networks, Inc.

@@ -481,25 +481,25 @@ ip domain-list domain2.local
 
 | Name Server | VRF | Priority |
 | ----------- | --- | -------- |
-| 10.10.128.10 | - | - |
-| 10.10.129.10 | - | 0 |
+| 10.10.128.10 | default | - |
+| 10.10.129.10 | default | 0 |
 | 10.10.128.10 | mgmt | - |
 | 10.10.128.10 | TEST | 3 |
-| 2001:db8::1 | - | - |
-| 2001:db8::2 | - | 0 |
+| 2001:db8::1 | default | - |
+| 2001:db8::2 | default | 0 |
 | 2001:db8::1 | mgmt | - |
 | 2001:db8::2 | TEST | 3 |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server 10.10.128.10
+ip name-server vrf default 10.10.128.10
 ip name-server vrf mgmt 10.10.128.10
 ip name-server vrf TEST 10.10.128.10 priority 3
-ip name-server 10.10.129.10 priority 0
-ip name-server 2001:db8::1
+ip name-server vrf default 10.10.129.10 priority 0
+ip name-server vrf default 2001:db8::1
 ip name-server vrf mgmt 2001:db8::1
-ip name-server 2001:db8::2 priority 0
+ip name-server vrf default 2001:db8::2 priority 0
 ip name-server vrf TEST 2001:db8::2 priority 3
 ```
 
@@ -1962,14 +1962,14 @@ dhcp relay
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile | IPv6 Lease Time |
-| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | --------------- | ---------------- | ------------- | --------------- |
-| True | AVRF | - | - | - | - | - | - | - | - |
-| True | defauls | - | - | - | - | - | - | - | - |
-| True | default | - | 10.0.0.1, 192.168.255.254 | https://www.arista.io/ztp/bootstrap | - | - | 2001:db8::1, 2001:db8::2 | https://2001:0db8:fe/ztp/bootstrap | - |
-| True | defaulu | - | - | - | - | - | - | - | - |
-| True | TEST | testv4.com | - | - | 10 days 10 hours 10 minutes | testv6.com | - | - | 12 days 12 hours 12 minutes |
-| False | VRF01 | - | - | - | - | - | - | - | - |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 TFTP Bootfile URL (Option 59) | IPv6 Lease Time |
+| ------------------- | --- | --------------- | ---------------- | ------------------------------ | ---------------------------- | ---------------------------- | --------------- | --------------- | ---------------- | ---------------------------------- | --------------- |
+| True | AVRF | - | - | - | - | - | - | - | - | - | - |
+| True | defauls | - | - | - | - | - | - | - | - | - | - |
+| True | default | - | 10.0.0.1, 192.168.255.254 | https://www.arista.io/ztp/bootstrap | 192.168.66.22 | 192.166.66.33, 192.161.66.33 | - | - | 2001:db8::1, 2001:db8::2 | https://2001:0db8:fe/ztp/bootstrap | - |
+| True | defaulu | - | - | - | - | - | - | - | - | - | - |
+| True | TEST | testv4.com | - | - | - | - | 10 days 10 hours 10 minutes | testv6.com | - | - | 12 days 12 hours 12 minutes |
+| False | VRF01 | - | - | - | - | - | - | - | - | - | - |
 
 #### VRF AVRF DHCP Server
 
@@ -2048,6 +2048,8 @@ dhcp server vrf defauls
 dhcp server
    dns server ipv4 10.0.0.1 192.168.255.254
    dns server ipv6 2001:db8::1 2001:db8::2
+   tftp server option 66 ipv4 192.168.66.22
+   tftp server option 150 ipv4 192.166.66.33 192.161.66.33
    tftp server file ipv4 https://www.arista.io/ztp/bootstrap
    tftp server file ipv6 https://2001:0db8:fe/ztp/bootstrap
    !
@@ -11533,6 +11535,8 @@ ip access-list ACL_SEQUENCE_AND_COUNTERS
    50 permit tcp any range 1000 1100 any range 10 20
    4294967295 deny ip any any
    permit response traffic nat
+!
+ip access-list ACL_WITHOUT_ENTRIES
 ```
 
 ### IPv6 Standard Access-lists
