@@ -38,7 +38,7 @@ INVALID_CUSTOM_DEVICE_TAGS = [
     "hostname",
     "terminattr",
 ]
-"""These tag names overlap with CV system tags or topology_hints"""
+"""These tag names overlap with CV system tags."""
 CAMPUS_LINK_TYPE_MAP = {
     "downlink": "Downlink",
     "egress": "Egress",
