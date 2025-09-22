@@ -2592,9 +2592,9 @@ keys:
   inband_ztp_bootstrap_file:
     type: str
     description: "Bootstrap URL configured in DHCP to use for inband ZTP.\nIf not
-      set and `cvp_instance_ips` is set then the bootstrap value will be set to:\n
-      \   `https://{cvp_instance_ips[0]}/ztp/bootstrap`\nOtherwise no value will be
-      configured."
+      set and `cv_settings.onprem_clusters[0].servers[0].name` is set then the bootstrap
+      value will be set to:\n    `https://{cv_settings.onprem_clusters[0].servers[0].name}/ztp/bootstrap`\nOtherwise
+      no value will be configured."
     documentation_options:
       table: management-settings
   internal_vlan_order:
@@ -5539,7 +5539,6 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: bool
-    default: false
     deprecation:
       removed: true
       warning: true
@@ -5549,7 +5548,6 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: str
-    default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
     deprecation:
       removed: true
       warning: true
@@ -5559,14 +5557,6 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: int
-    convert_types:
-    - str
-    default: 9910
-    description: 'Port number used for Terminattr connection to an on-premise CloudVision
-      cluster.
-
-      The port number is always 443 when using CloudVision as a Service, so this value
-      is ignored.'
     deprecation:
       warning: true
       removed: true
@@ -5576,7 +5566,6 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: str
-    default: ale,flexCounter,hardware,kni,pulse,strata
     deprecation:
       removed: true
       warning: true

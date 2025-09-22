@@ -5,8 +5,8 @@ keys:
     type: str
     description: |-
       Bootstrap URL configured in DHCP to use for inband ZTP.
-      If not set and `cvp_instance_ips` is set then the bootstrap value will be set to:
-          `https://{cvp_instance_ips[0]}/ztp/bootstrap`
+      If not set and `cv_settings.onprem_clusters[0].servers[0].name` is set then the bootstrap value will be set to:
+          `https://{cv_settings.onprem_clusters[0].servers[0].name}/ztp/bootstrap`
       Otherwise no value will be configured.
     documentation_options:
       table: management-settings

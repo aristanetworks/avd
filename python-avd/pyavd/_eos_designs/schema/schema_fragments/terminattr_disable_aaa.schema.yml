@@ -10,7 +10,6 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: bool
-    default: false
     deprecation:
       removed: true
       warning: true

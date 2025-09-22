@@ -10,7 +10,6 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: str
-    default: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
     deprecation:
       removed: true
       warning: true
