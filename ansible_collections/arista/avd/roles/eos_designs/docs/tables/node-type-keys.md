@@ -457,115 +457,115 @@
 
         ```yaml
         node_type_keys:
-        - cv_tags_topology_type: spine
+        - key: spine
+          type: spine
           default_evpn_role: server
           default_ptp_priority1: 20
-          key: spine
-          type: spine
-        - connected_endpoints: true
-          cv_tags_topology_type: leaf
+          cv_tags_topology_type: spine
+        - key: l3leaf
+          type: l3leaf
+          connected_endpoints: true
           default_evpn_role: client
-          default_ptp_priority1: 30
-          key: l3leaf
           mlag_support: true
           network_services:
             l2: true
             l3: true
-          type: l3leaf
           vtep: true
-        - connected_endpoints: true
+          default_ptp_priority1: 30
           cv_tags_topology_type: leaf
-          key: l2leaf
+        - key: l2leaf
+          type: l2leaf
+          connected_endpoints: true
           mlag_support: true
           network_services:
             l2: true
-          type: l2leaf
           underlay_router: false
           uplink_type: port-channel
-        - default_mpls_overlay_role: none
-          default_overlay_routing_protocol: ibgp
-          default_underlay_routing_protocol: isis-sr
-          key: p
-          mpls_lsr: true
+          cv_tags_topology_type: leaf
+        - key: p
           type: p
-        - connected_endpoints: true
-          default_evpn_encapsulation: mpls
-          default_evpn_role: client
-          default_mpls_overlay_role: client
-          default_overlay_address_families:
-          - vpn-ipv4
+          mpls_lsr: true
+          default_mpls_overlay_role: none
           default_overlay_routing_protocol: ibgp
           default_underlay_routing_protocol: isis-sr
-          key: pe
+        - key: pe
+          type: pe
           mpls_lsr: true
+          connected_endpoints: true
+          default_mpls_overlay_role: client
+          default_evpn_role: client
           network_services:
             l1: true
             l2: true
             l3: true
-          type: pe
-        - default_evpn_encapsulation: mpls
-          default_evpn_role: server
-          default_mpls_overlay_role: server
-          default_overlay_address_families:
-          - vpn-ipv4
           default_overlay_routing_protocol: ibgp
           default_underlay_routing_protocol: isis-sr
-          key: rr
-          mpls_lsr: true
+          default_overlay_address_families:
+          - vpn-ipv4
+          default_evpn_encapsulation: mpls
+        - key: rr
           type: rr
-        - connected_endpoints: true
-          cv_tags_topology_type: spine
-          default_overlay_routing_protocol: none
-          default_underlay_routing_protocol: none
-          key: l3spine
+          mpls_lsr: true
+          default_mpls_overlay_role: server
+          default_evpn_role: server
+          default_overlay_routing_protocol: ibgp
+          default_underlay_routing_protocol: isis-sr
+          default_overlay_address_families:
+          - vpn-ipv4
+          default_evpn_encapsulation: mpls
+        - key: l3spine
+          type: l3spine
+          connected_endpoints: true
           mlag_support: true
           network_services:
             l2: true
             l3: true
-          type: l3spine
-        - connected_endpoints: true
-          cv_tags_topology_type: leaf
-          key: leaf
+          default_overlay_routing_protocol: none
+          default_underlay_routing_protocol: none
+          cv_tags_topology_type: spine
+        - key: leaf
+          type: leaf
+          connected_endpoints: true
           mlag_support: true
           network_services:
             l2: true,
-          type: leaf
           underlay_router: false
           uplink_type: port-channel
-        - connected_endpoints: true
-          cv_tags_topology_type: spine
-          key: l2spine
+          cv_tags_topology_type: leaf
+        - key: l2spine
+          type: l2spine
+          connected_endpoints: true
           mlag_support: true
           network_services:
             l2: true
-          type: l2spine
           underlay_router: false
           uplink_type: port-channel
-        - cv_tags_topology_type: core
-          key: super_spine
+          cv_tags_topology_type: spine
+        - key: super_spine
           type: super-spine
-        - cv_tags_topology_type: spine
-          default_evpn_role: server
-          key: overlay_controller
+          cv_tags_topology_type: core
+        - key: overlay_controller
           type: overlay-controller
-        - default_evpn_role: client
-          default_flow_tracker_type: hardware
-          default_overlay_routing_protocol: ibgp
-          default_underlay_routing_protocol: none
+          default_evpn_role: server
+          cv_tags_topology_type: spine
+        - key: wan_router
+          type: wan_router
+          default_evpn_role: client
           default_wan_role: client
-          key: wan_router
+          default_underlay_routing_protocol: none
+          default_overlay_routing_protocol: ibgp
+          default_flow_tracker_type: hardware
+          vtep: true
           network_services:
             l3: true
-          type: wan_router
-          vtep: true
-        - default_evpn_role: server
-          default_flow_tracker_type: hardware
-          default_overlay_routing_protocol: ibgp
-          default_underlay_routing_protocol: none
+        - key: wan_rr
+          type: wan_rr
+          default_evpn_role: server
           default_wan_role: server
-          key: wan_rr
+          default_underlay_routing_protocol: none
+          default_overlay_routing_protocol: ibgp
+          default_flow_tracker_type: hardware
+          vtep: true
           network_services:
             l3: true,
-          type: wan_rr
-          vtep: true
         ```
