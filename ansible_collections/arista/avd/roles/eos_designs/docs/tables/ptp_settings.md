@@ -62,27 +62,27 @@
 
         ```yaml
         ptp_profiles:
-        - announce:
+        - profile: aes67-r16-2016
+          announce:
             interval: 0
             timeout: 3
           delay_req: -3
-          profile: aes67-r16-2016
           sync_message:
             interval: -3
           transport: ipv4
-        - announce:
+        - profile: smpte2059-2
+          announce:
             interval: -2
             timeout: 3
           delay_req: -4
-          profile: smpte2059-2
           sync_message:
             interval: -4
           transport: ipv4
-        - announce:
+        - profile: aes67
+          announce:
             interval: 2
             timeout: 3
           delay_req: 0
-          profile: aes67
           sync_message:
             interval: 0
           transport: ipv4

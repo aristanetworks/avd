@@ -62,6 +62,10 @@ dhcp_servers:
     tftp_server:
       file_ipv4: "https://www.arista.io/ztp/bootstrap"
       file_ipv6: "https://2001:0db8:fe/ztp/bootstrap"
+      option_66_ipv4: 192.168.66.22
+      option_150_ipv4:
+        - 192.166.66.33
+        - 192.161.66.33
     subnets:
       - subnet: 10.2.3.0/24
       - subnet: 2a00:2::/64
