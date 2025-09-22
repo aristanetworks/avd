@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._utils import Undefined
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -37,9 +38,9 @@ class Ipv6StaticRoutesMixin(Protocol):
                     static_route_item = EosCliConfigGen.Ipv6StaticRoutesItem()
                     static_route_item._update(
                         vrf=vrf.name,
-                        prefix=static_route.prefix or static_route.destination_address_prefix,
+                        prefix=static_route.prefix or Undefined,
                         interface=static_route.interface,
-                        next_hop=static_route.next_hop or static_route.gateway,
+                        next_hop=static_route.next_hop or Undefined,
                         track_bfd=static_route.track_bfd,
                         distance=static_route.distance,
                         tag=static_route.tag,
