@@ -8,10 +8,6 @@
   arista.avd.eos_designs_structured_config:
     template_output: false
 
-- name: print
-  debug:
-    msg: "{{ result }}"
-
 - assert:
     that:
       - result is success
