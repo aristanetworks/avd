@@ -4345,10 +4345,10 @@ $defs:
                 items:
                   type: dict
                   keys:
-                    destination_address_prefix:
+                    prefix:
                       type: str
                       description: IPv4_address.
-                    gateway:
+                    next_hop:
                       type: str
                       description: IPv4_address.
                     track_bfd:
@@ -4386,10 +4386,10 @@ $defs:
                 items:
                   type: dict
                   keys:
-                    destination_address_prefix:
+                    prefix:
                       type: str
                       description: IPv6_address.
-                    gateway:
+                    next_hop:
                       type: str
                     track_bfd:
                       type: bool
