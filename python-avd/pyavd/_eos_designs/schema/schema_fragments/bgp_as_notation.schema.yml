@@ -12,3 +12,9 @@ keys:
     type: str
     valid_values: ["auto", "asdot", "asplain"]
     default: auto
+    description: |-
+      AS number representation.
+      asdot - AS number representation in asdot format (Ex. 123.12).
+      asplain - AS number representation in asplain format (Ex. 12312).
+      auto - Will look at the configured ASN and if there is a dot in it,
+             it will use asdot otherwise asplain.

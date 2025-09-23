@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default
 from pyavd._utils.password_utils.password import bgp_encrypt
 from pyavd.j2filters import range_expand
 
@@ -102,7 +101,7 @@ class RoutingMixin(Protocol):
 
     @cached_property
     def bgp_as_notation(self: SharedUtilsProtocol) -> Literal["asdot", "asplain"]:
-        bgp_as_notation = default(self.inputs.bgp_as_notation, "auto")
+        bgp_as_notation = self.inputs.bgp_as_notation
         if bgp_as_notation == "asdot" or (bgp_as_notation == "auto" and "." in str(self.bgp_as)):
             return "asdot"
         return "asplain"

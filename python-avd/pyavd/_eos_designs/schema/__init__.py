@@ -69749,7 +69749,17 @@ class EosDesigns(EosDesignsRootModel):
     be put in quotes, to prevent it from being interpreted as a float number.
     """
     bgp_as_notation: Literal["auto", "asdot", "asplain"]
-    """Default value: `"auto"`"""
+    """
+    AS number representation.
+    asdot - AS number representation in asdot format (Ex. 123.12).
+    asplain -
+    AS number representation in asplain format (Ex. 12312).
+    auto - Will look at the configured ASN and
+    if there is a dot in it,
+           it will use asdot otherwise asplain.
+
+    Default value: `"auto"`
+    """
     bgp_default_ipv4_unicast: bool
     """
     Default activation of IPv4 unicast address-family on all IPv4 neighbors.
@@ -71933,7 +71943,14 @@ class EosDesigns(EosDesignsRootModel):
                    overlay when "overlay_routing_protocol" == ibgp.
                    For asdot notation in YAML inputs, the value must
                    be put in quotes, to prevent it from being interpreted as a float number.
-                bgp_as_notation: bgp_as_notation
+                bgp_as_notation:
+                   AS number representation.
+                   asdot - AS number representation in asdot format (Ex. 123.12).
+                   asplain -
+                   AS number representation in asplain format (Ex. 12312).
+                   auto - Will look at the configured ASN and
+                   if there is a dot in it,
+                          it will use asdot otherwise asplain.
                 bgp_default_ipv4_unicast:
                    Default activation of IPv4 unicast address-family on all IPv4 neighbors.
                    It is best practice to
