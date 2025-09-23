@@ -38,7 +38,7 @@ class Ipv6StaticRoutesMixin(Protocol):
                     static_route_item = EosCliConfigGen.Ipv6StaticRoutesItem()
                     static_route_item._update(
                         vrf=vrf.name,
-                        prefix=static_route.prefix or Undefined,
+                        prefix=static_route.prefix,
                         interface=static_route.interface,
                         next_hop=static_route.next_hop,
                         track_bfd=static_route.track_bfd,
