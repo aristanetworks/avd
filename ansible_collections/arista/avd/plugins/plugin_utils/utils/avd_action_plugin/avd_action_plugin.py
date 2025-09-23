@@ -10,6 +10,7 @@ from typing import Any, ClassVar
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase
+from ansible.utils.display import Display
 
 from .log_config import AvdLoggingConfig, get_avd_log_level
 from .log_handlers import AnsibleDisplayHandler, ContextFilter, SaveToResultHandler
@@ -48,7 +49,7 @@ class AvdActionPlugin(ActionBase):
         if self._task.args.get("save_logs", False):
             temp_handlers.append(SaveToResultHandler(result_dict=self.result))
         if self._task.args.get("live_display", True):
-            temp_handlers.append(AnsibleDisplayHandler())
+            temp_handlers.append(AnsibleDisplayHandler(display=Display()))
 
         # Build the context data and log format string
         context_data, format_parts = {}, []
@@ -133,6 +134,7 @@ class AvdActionPlugin(ActionBase):
         for logger in target_loggers:
             # Save original state (level, handlers, propagation)
             original_states[logger.name] = {"level": logger.level, "handlers": list(logger.handlers), "propagate": logger.propagate}
+
             # Defend against lingering handlers from other plugins if not cleaned up
             logger.handlers.clear()
 
@@ -140,7 +142,7 @@ class AvdActionPlugin(ActionBase):
             logger.propagate = False
 
             # Apply new configuration
-            desired_level = get_avd_log_level(logger.name, self._display.verbosity)
+            desired_level = get_avd_log_level(logger.name, Display().verbosity)
             logger.setLevel(desired_level)
             for temp_handler in temp_handlers:
                 logger.addHandler(temp_handler)

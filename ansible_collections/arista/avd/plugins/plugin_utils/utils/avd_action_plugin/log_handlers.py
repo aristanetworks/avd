@@ -24,10 +24,10 @@ class ContextFilter(logging.Filter):
 class AnsibleDisplayHandler(logging.Handler):
     """A handler to bridge Python logging to the Ansible Display object for screen output."""
 
-    def __init__(self, display: Display | None = None) -> None:
+    def __init__(self, display: Display) -> None:
         """Initialize the handler."""
         super().__init__()
-        self.display = display if display is not None else Display()
+        self.display = display
 
     def emit(self, record: logging.LogRecord) -> None:
         """
