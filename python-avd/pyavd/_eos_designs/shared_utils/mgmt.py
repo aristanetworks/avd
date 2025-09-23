@@ -47,16 +47,16 @@ class MgmtMixin(Protocol):
         )
 
         # Adjust OOB management interface for ACT Digital Twin "veos" and "cloudeos" node types
-        if self.digital_twin and self.inputs.digital_twin.environment == "act":
+        if self.digital_twin and self.inputs.digital_twin.environment == "act" and self.platform_settings.digital_twin.act_node_type in ["veos", "cloudeos"]:
             act_mgmt_interface = "Management1"
-            if mgmt_interface != act_mgmt_interface and self.platform_settings.digital_twin.act_node_type in ["veos", "cloudeos"]:
+            if mgmt_interface != act_mgmt_interface:
                 LOGGER.info(
                     "OOB management interface for node '%s' changed from '%s' to '%s' for its ACT Digital Twin copy.",
                     self.hostname,
                     mgmt_interface,
                     act_mgmt_interface,
                 )
-                return act_mgmt_interface
+            return act_mgmt_interface
 
         return mgmt_interface
 
