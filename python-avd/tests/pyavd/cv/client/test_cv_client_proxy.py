@@ -10,7 +10,6 @@ from os import environ
 from unittest.mock import patch
 
 import pytest
-import requests
 
 from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVClientException
@@ -179,7 +178,7 @@ async def test_cvclient_with_cvaas_via_proxy(
 @pytest.mark.parametrize(
     ("verify_certs", "expected_exception"),
     [
-        pytest.param(True, pytest.raises(requests.exceptions.SSLError, match="SSLCertVerificationError"), id="VERIFY_CERTS_TRUE"),
+        pytest.param(True, pytest.raises(CVClientException, match="SSLCertVerificationError"), id="VERIFY_CERTS_TRUE"),
         pytest.param(False, does_not_raise(), id="VERIFY_CERTS_FALSE"),
     ],
 )

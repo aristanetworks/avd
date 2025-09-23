@@ -165,11 +165,8 @@ class CVClientProtocol(
                 json={},
             )
             response.raise_for_status()
-        except HTTPError as e:
-            msg = f"Unable to get token from CloudVision server due to the following HTTPError: {e.args}."
-            raise CVClientException(msg) from e
-        except RequestException as e:
-            msg = f"Unable to get token from CloudVision server due to the following generic 'requests' error: {e.args}."
+        except (HTTPError, RequestException) as e:
+            msg = f"Unable to get token from CloudVision server due to the following error: {e.args}."
             raise CVClientException(msg) from e
 
         try:
@@ -199,11 +196,8 @@ class CVClientProtocol(
                 json={},
             )
             response.raise_for_status()
-        except HTTPError as e:
-            msg = f"Unable to get version from CloudVision server due to the following HTTPError: {e.args}."
-            raise CVClientException(msg) from e
-        except RequestException as e:
-            msg = f"Unable to get version from CloudVision server due to the following generic 'requests' error: {e.args}."
+        except (HTTPError, RequestException) as e:
+            msg = f"Unable to get version from CloudVision server due to the following error: {e.args}."
             raise CVClientException(msg) from e
 
         try:
