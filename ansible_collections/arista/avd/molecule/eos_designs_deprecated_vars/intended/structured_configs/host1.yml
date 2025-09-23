@@ -59,39 +59,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
-- name: Ethernet5
-  description: P2P_peer1_Ethernet3
-  shutdown: false
-  mtu: 9214
-  ip_address: 192.168.0.18/31
-  pim:
-    ipv4:
-      sparse_mode: true
-  peer: peer1
-  peer_interface: Ethernet3
-  peer_type: other
-  switchport:
-    enabled: false
-- name: Ethernet6
-  description: P2P_peer2_Ethernet6
-  shutdown: false
-  mtu: 9214
-  ip_address: 192.168.0.20/31
-  peer: peer2
-  peer_interface: Ethernet6
-  peer_type: other
-  switchport:
-    enabled: false
-- name: Ethernet7
-  description: P2P_peer3_Ethernet7
-  shutdown: false
-  mtu: 9214
-  ip_address: 192.168.0.22/31
-  peer: peer3
-  peer_interface: Ethernet7
-  peer_type: other
-  switchport:
-    enabled: false
 - name: Ethernet47
   shutdown: false
   ip_address: 10.10.1.1/30
@@ -260,24 +227,6 @@ router_bgp:
     remote_as: '101'
     peer: host4
     description: host4_Ethernet43
-  - ip_address: 192.168.0.19
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65002'
-    local_as: '65001'
-    peer: peer1
-    description: peer1
-  - ip_address: 192.168.0.21
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65003'
-    local_as: '65001'
-    peer: peer2
-    description: peer2
-  - ip_address: 192.168.0.23
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65004'
-    local_as: '65001'
-    peer: peer3
-    description: peer3
   redistribute:
     connected:
       enabled: true
@@ -294,9 +243,6 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-router_multicast:
-  ipv4:
-    routing: true
 service_routing_protocols_model: multi-agent
 static_routes:
 - vrf: default
