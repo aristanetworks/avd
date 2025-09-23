@@ -5684,8 +5684,9 @@ keys:
       IPv6 addresses.\nCurrently BGP peer-groups are named with IPv4 by default. This
       can be modified under `bgp_peer_groups`.\nRequires:\n  - \"underlay_ipv6: true\"\n
       \ - \"loopback_ipv6_pool\"\n  - \"underlay_routing_protocol: ebgp\"\nSome settings
-      are not yet supported with IPv6 underlay:\n  - underlay_multicast\n  - underlay_multicast_rp_interfaces\n
-      \ - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n  - inband_ztp\n"
+      are not yet supported with IPv6 underlay:\n  - underlay_multicast_pim_sm\n  -
+      underlay_multicast_rp_interfaces\n  - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n
+      \ - inband_ztp\n"
     type: bool
     default: false
   underlay_isis_authentication_cleartext_key:
@@ -5760,43 +5761,11 @@ keys:
     documentation_options:
       table: fabric-settings
     type: bool
-    description: 'Enable Multicast in the underlay on all p2p uplink interfaces and
-      mlag l3 peer interface.
-
-      Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-
-      No other configuration is added, so the underlay will only support Source-Specific
-      Multicast (SSM).
-
-      The configuration is intended to be used as multicast underlay for EVPN OISM
-      overlay.
-
-      '
-    default: false
     deprecation:
-      removed: false
+      removed: true
       warning: true
       new_key: underlay_multicast_pim_sm
       remove_in_version: 6.0.0
-  underlay_multicast_pim_sm:
-    documentation_options:
-      table: fabric-settings
-    type: bool
-    description: "When enabled, configures multicast routing and by default configures
-      PIM sparse-mode in the underlay on all:\n  - P2P uplink interfaces if enabled
-      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
-      l3_edge and core interfaces\n\nNote: This changes the default behavior for l3_edge
-      / core_interfaces to automatically include the interfaces\nin multicast, unless
-      `include_in_underlay_protocol: false` or `multicast_pim_sm: false`."
-  underlay_multicast_static:
-    documentation_options:
-      table: fabric-settings
-    type: bool
-    default: false
-    description: "When enabled, configures multicast routing and by default configures
-      static multicast in the underlay on all:\n  - P2P uplink interfaces if enabled
-      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
-      l3_edge and core interfaces"
   underlay_multicast_anycast_rp:
     documentation_options:
       table: fabric-settings
@@ -5822,6 +5791,17 @@ keys:
         - pim
         - msdp
         default: pim
+  underlay_multicast_pim_sm:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    default: false
+    description: "When enabled, configures multicast routing and by default configures
+      PIM sparse-mode in the underlay on all:\n  - P2P uplink interfaces if enabled
+      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
+      l3_edge and core interfaces\n\nNote: This changes the default behavior for l3_edge
+      / core_interfaces to automatically include the interfaces\nin multicast, unless
+      `include_in_underlay_protocol: false` or `multicast_pim_sm: false`."
   underlay_multicast_rps:
     documentation_options:
       table: fabric-settings
@@ -5890,6 +5870,15 @@ keys:
           description: 'Name of standard Access-List.
 
             '
+  underlay_multicast_static:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    default: false
+    description: "When enabled, configures multicast routing and by default configures
+      static multicast in the underlay on all:\n  - P2P uplink interfaces if enabled
+      on uplink peer\n  - MLAG L3 peer interface if also enabled on MLAG peer\n  -
+      l3_edge and core interfaces"
   underlay_ospf_area:
     documentation_options:
       table: ospf-settings
@@ -11651,7 +11640,7 @@ $defs:
                       default configures static multicast in the underlay on all:\n
                       \ - P2P uplink interfaces if enabled on uplink peer\n  - MLAG
                       L3 peer interface if also enabled on MLAG peer\n  - l3_edge
-                      and core interfaces\nOverrides the global `underlay_multicast_multicast`."
+                      and core interfaces\nOverrides the global `underlay_multicast_static`."
                   uplinks:
                     type: bool
                     default: true
@@ -12416,21 +12405,6 @@ $defs:
         sflow:
           type: bool
           description: Enable sFlow. Overrides `fabric_sflow` setting.
-        underlay_multicast:
-          type: bool
-          description: 'Enable PIM sparse mode. Requires `include_in_underlay_protocol`
-            and the global `underlay_multicast` to be `true`.
-
-
-            Note: The default value for this key is `false` when using either the
-            new key `underlay_multicast.pim_sm.enabled: true
-
-            or, if unset, global `underlay_multicast_pim_sm: true`'
-          deprecation:
-            removed: false
-            warning: true
-            new_key: multicast_pim_sm
-            remove_in_version: 6.0.0
         multicast_pim_sm:
           type: bool
           description: 'Configure PIM sparse-mode on the P2P links.
@@ -12571,6 +12545,13 @@ $defs:
           description: Custom structured config for port-channel links.
           documentation_options:
             hide_keys: true
+        underlay_multicast:
+          type: bool
+          deprecation:
+            removed: true
+            warning: true
+            new_key: multicast_pim_sm
+            remove_in_version: 6.0.0
   rx_queue_settings:
     type: dict
     description: 'Receive queue parameters for platform SFE interface profile.
