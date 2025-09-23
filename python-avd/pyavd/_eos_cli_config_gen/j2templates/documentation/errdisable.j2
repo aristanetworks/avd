@@ -29,17 +29,17 @@ Errdisable recovery timer interval: {{ errdisable.recovery.interval }} seconds
 {%             else %}
 {%                 set detect_status = "-" %}
 {%             endif %}
-{%             set status_namespece = namespace(recovery_status= "-", recovery_interval = "-") %}
+{%             set status_namespace = namespace(recovery_status= "-", recovery_interval = "-") %}
 {%             for recovery_cause in errdisable.recovery.causes | arista.avd.default([]) %}
 {%                 if recovery_cause.name == cause %}
-{%                     set status_namespece.recovery_status = True %}
+{%                     set status_namespace.recovery_status = True %}
 {%                     if recovery_cause.interval is arista.avd.defined %}
-{%                         set status_namespece.recovery_interval = recovery_cause.interval %}
+{%                         set status_namespace.recovery_interval = recovery_cause.interval %}
 {%                     endif %}
 {%                     break %}
 {%                 endif %}
 {%             endfor %}
-| {{ cause }} | {{ detect_status }} | {{ status_namespece.recovery_status }} | {{ status_namespece.recovery_interval }} |
+| {{ cause }} | {{ detect_status }} | {{ status_namespace.recovery_status }} | {{ status_namespace.recovery_interval }} |
 {%         endfor %}
 {%     endif %}
 
