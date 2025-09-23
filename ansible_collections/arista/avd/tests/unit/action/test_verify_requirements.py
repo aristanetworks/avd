@@ -2,8 +2,8 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-import os
 import logging
+import os
 from importlib.metadata import PackageNotFoundError
 from itertools import repeat
 from pathlib import Path
@@ -41,7 +41,6 @@ class VersionInfo(NamedTuple):
 def test__validate_python_version(mocked_version: tuple[int, int, int, str, int], expected_return: bool) -> None:
     """TODO: - could add the expected stderr."""
     info = {}
-    result = {}  # As in ansible module result
     with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys:
         mocked_sys.version_info = VersionInfo(*mocked_version)
         ret = _validate_python_version(info)
@@ -62,10 +61,10 @@ def test__validate_python_version_deprecation_message() -> None:
     with (
         patch("ansible_collections.arista.avd.plugins.action.verify_requirements.DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION", new=True),
         patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys,
-        pytest.warns(DeprecationWarning, match="will drop support for Python version") as recorded_warnings,
     ):
         mocked_sys.version_info = VersionInfo(*MIN_PYTHON_SUPPORTED_VERSION, 42, "final", 0)
-        ret = _validate_python_version(info)
+        with pytest.warns(DeprecationWarning, match="will drop support for Python version") as recorded_warnings:
+            ret = _validate_python_version(info)
     assert ret is True
     assert info["python_version_info"] == {
         "major": MIN_PYTHON_SUPPORTED_VERSION[0],
