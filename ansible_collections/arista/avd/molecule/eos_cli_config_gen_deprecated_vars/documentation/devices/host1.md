@@ -6,9 +6,6 @@
   - [Flow Tracking](#flow-tracking)
 - [Interfaces](#interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
-- [Routing](#routing)
-  - [Static Routes](#static-routes)
-  - [IPv6 Static Routes](#ipv6-static-routes)
 - [Filters](#filters)
   - [Community-lists](#community-lists)
 
@@ -209,38 +206,6 @@ interface Port-Channel10
    !
    encapsulation vlan
       client dot1q outer 10 inner 12 network dot1q outer 20 inner 22
-```
-
-## Routing
-
-### Static Routes
-
-#### Static Routes Summary
-
-| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
-| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| default | 1.1.2.0/24 | 10.1.1.1 | vlan1001 | 200 | 666 | RT-TO-FAKE-DMZ | - |
-
-#### Static Routes Device Configuration
-
-```eos
-!
-ip route 1.1.2.0/24 Vlan1001 10.1.1.1 200 tag 666 name RT-TO-FAKE-DMZ
-```
-
-### IPv6 Static Routes
-
-#### IPv6 Static Routes Summary
-
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| TENANT_A_PROJECT01 | 2a01:cb04:4e6:a300::/64 | 2a01:cb04:4e6:100::1 | vlan1001 | 1 | - | - | - |
-
-#### Static Routes Device Configuration
-
-```eos
-!
-ipv6 route vrf TENANT_A_PROJECT01 2a01:cb04:4e6:a300::/64 Vlan1001 2a01:cb04:4e6:100::1
 ```
 
 ## Filters
