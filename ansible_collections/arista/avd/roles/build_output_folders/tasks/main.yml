@@ -8,7 +8,6 @@
   ansible.builtin.file:
     path: "{{ output_dir }}"
     state: absent
-    mode: "{{ avd_dir_mode }}"
   delegate_to: localhost
   run_once: true
 
