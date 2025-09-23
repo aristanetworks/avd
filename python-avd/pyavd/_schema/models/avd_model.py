@@ -44,7 +44,7 @@ class AvdModel(AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
     _custom_data: dict[str, Any]
     """
     Dictionary holding extra keys given in _from_dict.
-    These keys are the keys starting with underscore.
+    These keys start with an underscore.
     """
     _skipped_keys: set[str]
     """
