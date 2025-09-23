@@ -41,6 +41,9 @@ jobs:
             --exclude "hub.docker.com" \
             --exclude "tech-library.arista.com" \
             --exclude "www.arista.com.*" \
+            --exclude "www.gnu.org" \
+            --exclude "https://developers.redhat.com"
+            --exclude "https://avd.arista.com/6.x"
             --max-connections-per-host 30 \
             --max-redirections 3 \
             --rate-limit 1 \
