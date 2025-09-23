@@ -16,8 +16,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "snmp_settings.vrfs.[].source_interface") | String |  |  |  | Source interface to use for SNMP hosts in this VRF.<br>If not set, the source interface may be set automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.<br>If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_acl</samp>](## "snmp_settings.vrfs.[].ipv4_acl") | String |  |  |  | IPv4 access-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_acl</samp>](## "snmp_settings.vrfs.[].ipv6_acl") | String |  |  |  | IPv6 access-list name. |
-    | [<samp>&nbsp;&nbsp;enable_mgmt_interface_vrf</samp>](## "snmp_settings.enable_mgmt_interface_vrf") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".<br>Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device.<br>Can be used in combination with "vrfs" and "enable_inband_mgmt_vrf".<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>vrfs[name="use_mgmt_interface_vrf"].enabled</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;enable_inband_mgmt_vrf</samp>](## "snmp_settings.enable_inband_mgmt_vrf") <span style="color:red">deprecated</span> | Boolean |  |  |  | Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".<br>Ignored if inband management is not configured for the device.<br>Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>vrfs[name="use_inband_mgmt_vrf"].enabled</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;compute_local_engineid</samp>](## "snmp_settings.compute_local_engineid") | Boolean |  | `False` |  | Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.<br> |
     | [<samp>&nbsp;&nbsp;compute_local_engineid_source</samp>](## "snmp_settings.compute_local_engineid_source") | String |  | `hostname_and_ip` | Valid Values:<br>- <code>hostname_and_ip</code><br>- <code>system_mac</code> | `compute_local_engineid_source` supports:<br>- `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1<br>  the string generated via the concatenation of the hostname plus the management IP.<br>  {{ inventory_hostname }} + {{ switch.mgmt_ip }}.<br>- `system_mac` generate the switch default engine id for AVD usage.<br>  To use this, `system_mac_address` MUST be set for the device.<br>  The formula is f5717f + system_mac_address + 00.<br> |
     | [<samp>&nbsp;&nbsp;compute_v3_user_localized_key</samp>](## "snmp_settings.compute_v3_user_localized_key") | Boolean |  | `False` |  | Requires compute_local_engineid to be `true`.<br>If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.<br>The algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.<br> |
@@ -32,8 +30,8 @@
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "snmp_settings.hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "snmp_settings.hosts.[].host") | String |  |  |  | Host IP address or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_settings.hosts.[].vrf") | String |  |  |  | VRF Name.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the SNMP host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the SNMP host under the VRF and set the source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_mgmt_interface_vrf</samp>](## "snmp_settings.hosts.[].use_mgmt_interface_vrf") <span style="color:red">deprecated</span> | Boolean |  |  |  | Configure the SNMP host under the VRF set with "mgmt_interface_vrf".<br>Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.<br>Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>vrf: "use_mgmt_interface_vrf"</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_inband_mgmt_vrf</samp>](## "snmp_settings.hosts.[].use_inband_mgmt_vrf") <span style="color:red">deprecated</span> | Boolean |  |  |  | Configure the SNMP host under the VRF set with "inband_mgmt_vrf".<br>Ignored if inband management is not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.<br>Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure the SNMP host under multiple VRFs.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>vrf: "use_inband_mgmt_vrf"</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_mgmt_interface_vrf</samp>](## "snmp_settings.hosts.[].use_mgmt_interface_vrf") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vrf: "use_mgmt_interface_vrf"</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_inband_mgmt_vrf</samp>](## "snmp_settings.hosts.[].use_inband_mgmt_vrf") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vrf: "use_inband_mgmt_vrf"</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "snmp_settings.hosts.[].version") | String |  |  | Valid Values:<br>- <code>1</code><br>- <code>2c</code><br>- <code>3</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;community</samp>](## "snmp_settings.hosts.[].community") | String |  |  |  | Community name. Required with version "1" or "2c". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;users</samp>](## "snmp_settings.hosts.[].users") | List, items: Dictionary |  |  |  |  |
@@ -47,12 +45,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_list_ipv6</samp>](## "snmp_settings.communities.[].access_list_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "snmp_settings.communities.[].access_list_ipv6.name") | String |  |  |  | IPv6 access list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;view</samp>](## "snmp_settings.communities.[].view") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;ipv4_acls</samp>](## "snmp_settings.ipv4_acls") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>vrfs[].ipv4_acl</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.ipv4_acls.[].name") | String |  |  |  | IPv4 access list name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_settings.ipv4_acls.[].vrf") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;ipv6_acls</samp>](## "snmp_settings.ipv6_acls") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>vrfs[].ipv6_acl</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.ipv6_acls.[].name") | String |  |  |  | IPv6 access list name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "snmp_settings.ipv6_acls.[].vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;views</samp>](## "snmp_settings.views") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.views.[].name") | String |  |  |  | SNMP view name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mib_family_name</samp>](## "snmp_settings.views.[].mib_family_name") | String |  |  |  |  |
@@ -69,6 +61,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;snmp_traps</samp>](## "snmp_settings.traps.snmp_traps") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.traps.snmp_traps.[].name") | String |  |  |  | Enable or disable specific snmp-traps and their sub_traps.<br>Examples:<br>- "bgp"<br>- "bgp established"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "snmp_settings.traps.snmp_traps.[].enabled") | Boolean |  |  |  | The trap is enabled unless this is set to false. |
+    | [<samp>&nbsp;&nbsp;enable_mgmt_interface_vrf</samp>](## "snmp_settings.enable_mgmt_interface_vrf") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vrfs[name="use_mgmt_interface_vrf"].enabled</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;enable_inband_mgmt_vrf</samp>](## "snmp_settings.enable_inband_mgmt_vrf") <span style="color:red">removed</span> | Boolean |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vrfs[name="use_inband_mgmt_vrf"].enabled</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;ipv4_acls</samp>](## "snmp_settings.ipv4_acls") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vrfs[].ipv4_acl</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;ipv6_acls</samp>](## "snmp_settings.ipv6_acls") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>vrfs[].ipv6_acl</samp> instead.</span> |
 
 === "YAML"
 
@@ -107,22 +103,6 @@
 
           # IPv6 access-list name.
           ipv6_acl: <str>
-
-      # Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
-      # Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device.
-      # Can be used in combination with "vrfs" and "enable_inband_mgmt_vrf".
-      # This key is deprecated.
-      # Support will be removed in AVD version 6.0.0.
-      # Use `vrfs[name="use_mgmt_interface_vrf"].enabled` instead.
-      enable_mgmt_interface_vrf: <bool>
-
-      # Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
-      # Ignored if inband management is not configured for the device.
-      # Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".
-      # This key is deprecated.
-      # Support will be removed in AVD version 6.0.0.
-      # Use `vrfs[name="use_inband_mgmt_vrf"].enabled` instead.
-      enable_inband_mgmt_vrf: <bool>
 
       # Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
       compute_local_engineid: <bool; default=False>
@@ -173,22 +153,6 @@
           # - `use_default_mgmt_method_vrf` will configure the SNMP host under the VRF and set the source-interface for one of the two options above depending on the value of `default_mgmt_method`.
           # - Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
           vrf: <str>
-
-          # Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-          # Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.
-          # Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
-          # This key is deprecated.
-          # Support will be removed in AVD version 6.0.0.
-          # Use `vrf: "use_mgmt_interface_vrf"` instead.
-          use_mgmt_interface_vrf: <bool>
-
-          # Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
-          # Ignored if inband management is not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all.
-          # Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure the SNMP host under multiple VRFs.
-          # This key is deprecated.
-          # Support will be removed in AVD version 6.0.0.
-          # Use `vrf: "use_inband_mgmt_vrf"` instead.
-          use_inband_mgmt_vrf: <bool>
           version: <str; "1" | "2c" | "3">
 
           # Community name. Required with version "1" or "2c".
@@ -210,22 +174,6 @@
             # IPv6 access list name.
             name: <str>
           view: <str>
-      # This key is deprecated.
-      # Support will be removed in AVD version 6.0.0.
-      # Use `vrfs[].ipv4_acl` instead.
-      ipv4_acls:
-
-          # IPv4 access list name.
-        - name: <str>
-          vrf: <str>
-      # This key is deprecated.
-      # Support will be removed in AVD version 6.0.0.
-      # Use `vrfs[].ipv6_acl` instead.
-      ipv6_acls:
-
-          # IPv6 access list name.
-        - name: <str>
-          vrf: <str>
       views:
 
           # SNMP view name.

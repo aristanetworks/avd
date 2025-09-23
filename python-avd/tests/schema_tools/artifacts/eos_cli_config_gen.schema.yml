@@ -5698,12 +5698,12 @@ keys:
           type: str
           convert_types:
           - int
-        destination_address_prefix:
+        prefix:
           type: str
           description: IPv6 Network/Mask.
         interface:
           type: str
-        gateway:
+        next_hop:
           type: str
           description: IPv6 Address.
         track_bfd:
@@ -18302,12 +18302,12 @@ keys:
           description: VRF Name.
           convert_types:
           - int
-        destination_address_prefix:
+        prefix:
           type: str
           description: IPv4_network/Mask.
         interface:
           type: str
-        gateway:
+        next_hop:
           type: str
           description: IPv4 Address.
         track_bfd:
