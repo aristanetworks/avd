@@ -12858,7 +12858,7 @@ ip hardware fib load-balance distribution dynamic flow-set-size 4
 
 Errdisable recovery timer interval: 300 seconds
 
-|  Cause | Detection Enabled | Recovery Enabled | Recovery Interval |
+|  Cause | Detection Enabled | Recovery Enabled | Recovery Interval(seconds) |
 | ------ | ----------------- | ---------------- | ----------------- |
 | acl | True | - | - |
 | arp-inspection | True | True | - |

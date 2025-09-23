@@ -6012,7 +6012,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ]
                 interval: int
                 """
-                Interval for each recovery cause.
+                Interval for each recovery cause in seconds.
 
                 Default value: `300`
                 """
@@ -6052,7 +6052,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             name: name
-                            interval: Interval for each recovery cause.
+                            interval: Interval for each recovery cause in seconds.
 
                         """
 
