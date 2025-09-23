@@ -82,8 +82,8 @@ The plugin offers the following capabilities:
       run_once: true
       delegate_to: localhost
       vars:
-        anta_dir_mode: "0o777"
-        anta_file_mode: "0o666"
+        anta_dir_mode: "0o700"
+        anta_file_mode: "0o600"
       arista.avd.anta_workflow:
         device_list: "{{ ansible_play_hosts }}"
         anta_dir_mode: "{{ anta_dir_mode }}"
