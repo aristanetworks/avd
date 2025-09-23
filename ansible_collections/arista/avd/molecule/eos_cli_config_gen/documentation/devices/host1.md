@@ -13020,7 +13020,7 @@ mac security
 
 ##### BLUE-C1-POLICY
 
-Counters: DEMO-TRAFFIC, DROP-PACKETS
+Counters: DROP-PACKETS
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
@@ -13093,7 +13093,7 @@ traffic-policies
    counter interface poll interval 10 seconds
    !
    traffic-policy BLUE-C1-POLICY
-      counter DEMO-TRAFFIC DROP-PACKETS
+      counter DROP-PACKETS
       !
       match BLUE-C1-POLICY-01 ipv4
          source prefix 10.0.0.0/8 192.168.0.0/16

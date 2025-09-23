@@ -28,7 +28,6 @@ traffic_policies:
         ipv4:
           drop: true
       counters:
-        - DEMO-TRAFFIC
         - DROP-PACKETS
       matches:
         - name: BLUE-C1-POLICY-01

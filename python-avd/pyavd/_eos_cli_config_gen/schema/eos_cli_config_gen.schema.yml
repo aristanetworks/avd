@@ -23367,7 +23367,7 @@ keys:
                 type: str
                 convert_types:
                 - int
-              description: Counter name.
+              description: List of named counters.
             matches:
               type: list
               primary_key: name
@@ -23475,11 +23475,13 @@ keys:
                         type: str
                         convert_types:
                         - int
-                        description: 'Counter name. This should also be added to the
-                          `policies[].counters` list.
+                        description: 'Named counter.
 
-                          It will no longer be added automatically to the counters
-                          in AVD 6.0.'
+                          Must also be defined under `policies[].counters` to be active.
+
+                          If not defined, the counter will be inactive on EOS and
+                          a warning is printed via the ''show traffic-policy interface''
+                          command.'
                       drop:
                         type: bool
                       log:
@@ -23571,8 +23573,13 @@ keys:
                       type: str
                       convert_types:
                       - int
-                      description: Counter name. This should also be added to the
-                        `policies[].counters` list.
+                      description: 'Named counter.
+
+                        Must also be defined under `policies[].counters` to be active.
+
+                        If not defined, the counter will be inactive on EOS and a
+                        warning is printed via the ''show traffic-policy interface''
+                        command.'
                     drop:
                       type: bool
                     log:
@@ -23594,8 +23601,13 @@ keys:
                       type: str
                       convert_types:
                       - int
-                      description: Counter name. This should also be added to the
-                        `policies[].counters` list.
+                      description: 'Named counter.
+
+                        Must also be defined under `policies[].counters` to be active.
+
+                        If not defined, the counter will be inactive on EOS and a
+                        warning is printed via the ''show traffic-policy interface''
+                        command.'
                     drop:
                       type: bool
                     log:
