@@ -59,12 +59,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
-- name: Ethernet47
-  shutdown: false
-  ip_address: 10.10.1.1/30
-  peer_type: l3_interface
-  switchport:
-    enabled: false
 - name: Ethernet1
   description: SERVER_OLD_SW-1/2_Endpoint_port1
   shutdown: false
