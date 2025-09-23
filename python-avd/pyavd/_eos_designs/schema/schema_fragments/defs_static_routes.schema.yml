@@ -13,6 +13,7 @@ $defs:
       keys:
         prefix:
           type: str
+          required: true
         next_hop:
           type: str
         track_bfd:

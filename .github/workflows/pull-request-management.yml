@@ -4,12 +4,15 @@ name: "Collection code testing"
 "on":
   pull_request:
   merge_group:
+    types: [checks_requested]
+
   push:
     branches:
       - devel
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref }}
+  # For PRs the head_ref will be used. For Merge Queues (merge_group) we fallback to run_id.
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
 env:
