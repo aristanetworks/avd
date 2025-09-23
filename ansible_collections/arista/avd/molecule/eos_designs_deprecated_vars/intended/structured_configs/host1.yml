@@ -83,16 +83,6 @@ ethernet_interfaces:
   peer: OLD_SW-1/2
   peer_interface: ENDPOINT_PORT2
   peer_type: server
-flow_tracking:
-  sampled:
-    sample: 10000
-    trackers:
-    - name: FT_Test
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-    shutdown: false
 hostname: host1
 ip_igmp_snooping:
   globally_enabled: true
@@ -153,13 +143,6 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: none
-- name: Port-Channel11
-  shutdown: false
-  flow_tracker:
-    sampled: FT_Test
-  peer_type: l3_port_channel
-  switchport:
-    enabled: false
 - name: Port-Channel1
   description: SERVER_OLD_SW-1/2_ENDPOINT_PORT_CHANNEL
   shutdown: false

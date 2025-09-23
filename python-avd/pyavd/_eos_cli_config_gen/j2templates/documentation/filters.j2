@@ -3,8 +3,7 @@
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
-{% if community_lists is arista.avd.defined
-       or ip_community_lists is arista.avd.defined
+{% if ip_community_lists is arista.avd.defined
        or peer_filters is arista.avd.defined
        or dynamic_prefix_lists is arista.avd.defined
        or prefix_lists is arista.avd.defined
@@ -16,8 +15,6 @@
        or as_path is arista.avd.defined %}
 
 ## Filters
-{## Community-lists #}
-{%     include 'documentation/community-lists.j2' %}
 {## IP Community Lists #}
 {%     include 'documentation/ip-community-lists.j2' %}
 {## Peer Filters #}
