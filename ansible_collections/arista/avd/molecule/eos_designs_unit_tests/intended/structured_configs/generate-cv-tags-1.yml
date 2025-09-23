@@ -47,6 +47,8 @@ metadata:
       value: '65000'
     - name: UPPERCASE_DEVICE_TAG
       value: something with spaces
+    - name: Role
+      value: DC23
     interface_tags:
     - interface: Ethernet1
       tags:

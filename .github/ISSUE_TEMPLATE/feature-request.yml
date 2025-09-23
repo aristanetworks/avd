@@ -28,7 +28,6 @@ body:
         - anta_runner
         - cv_deploy
         - eos_config_deploy_cvp
-        - eos_validate_state
         - PyAVD
         - others
     validations:

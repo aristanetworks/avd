@@ -34,12 +34,6 @@
           - ansible_collections/arista/avd/roles/eos_designs/*
           - ansible_collections/arista/avd/roles/eos_designs/**/*
 
-"role: eos_validate_state":
-  - changed-files:
-      - any-glob-to-any-file:
-          - ansible_collections/arista/avd/roles/eos_validate_state/*
-          - ansible_collections/arista/avd/roles/eos_validate_state/**/*
-
 "role: eos_snapshot":
   - changed-files:
       - any-glob-to-any-file:

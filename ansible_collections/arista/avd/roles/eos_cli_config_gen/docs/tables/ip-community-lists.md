@@ -7,6 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>community_lists</samp>](## "community_lists") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>ip_community_lists</samp> instead.</span> |
     | [<samp>ip_community_lists</samp>](## "ip_community_lists") | List, items: Dictionary |  |  |  | Communities and regexp entries MUST not be configured in the same community-list.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "ip_community_lists.[].name") | String | Required, Unique |  |  | IP Community-list Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ip_community_lists.[].entries") | List, items: Dictionary | Required |  |  |  |

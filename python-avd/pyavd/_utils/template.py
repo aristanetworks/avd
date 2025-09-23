@@ -48,7 +48,7 @@ def template(template_file: str, template_vars: dict, templar: Templar | None) -
     jinjaloader = templar.environment.loader
     searchpath = jinjaloader.searchpath if isinstance(jinjaloader, FileSystemLoader) else []
     template_file_path = dataloader.path_dwim_relative_stack(searchpath, "templates", template_file)
-    j2template, dummy = dataloader._get_file_contents(template_file_path)
+    j2template, _ = dataloader._get_file_contents(template_file_path)
     j2template = to_text(j2template)
 
     with templar.set_temporary_context(available_variables=template_vars):

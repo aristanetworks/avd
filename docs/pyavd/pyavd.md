@@ -51,7 +51,6 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 
 - Add examples
 - Add more tests (current coverage is 85%)
-- Add network state validation similar to `eos_validate_state`.
 - Add CloudVision tag integrations
 - Explore support for custom Jinja2 templates.
 
