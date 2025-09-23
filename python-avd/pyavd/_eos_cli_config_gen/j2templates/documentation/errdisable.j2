@@ -20,7 +20,7 @@ Errdisable recovery timer interval: {{ errdisable.recovery.interval }} seconds
 {%         endfor %}
 {%         for recovery_cause in errdisable.recovery.causes | arista.avd.default([]) %}
 {%             if causes.get(recovery_cause.name) %}
-{%                 set _ = causes[recovery_cause.name].update({"recovery_status": True}) %}
+{%                 do causes[recovery_cause.name].update({"recovery_status": True}) %}
 {%             else %}
 {%                 set _ = causes.update({recovery_cause.name :{"recovery_status": True}}) %}
 {%             endif %}
