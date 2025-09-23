@@ -43,7 +43,7 @@ This behavior can be adjusted by setting the variable described below.
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-input-validation.md
 --8<--
 
-## Input Variables File/Dir Mode
+## Ouput File/Dir Mode
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-file-permission-mode.md
