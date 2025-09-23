@@ -1626,18 +1626,18 @@ ip nat synchronization
 
 ### Errdisable Summary
 
-|  Cause | Detection Enabled | Recovery Enabled |
-| ------ | ----------------- | ---------------- |
-| arp-inspection | - | True |
-| bpduguard | - | True |
-| hitless-reload-down | - | True |
-| lacp-rate-limit | - | True |
-| link-flap | - | True |
-| no-internal-vlan | - | True |
-| portchannelguard | - | True |
-| portsec | - | True |
-| tapagg | - | True |
-| uplink-failure-detection | - | True |
+|  Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
+| ------ | ----------------- | ---------------- | -------------------------- |
+| arp-inspection | - | True | - |
+| bpduguard | - | True | - |
+| hitless-reload-down | - | True | - |
+| lacp-rate-limit | - | True | - |
+| link-flap | - | True | - |
+| no-internal-vlan | - | True | - |
+| portchannelguard | - | True | - |
+| portsec | - | True | - |
+| tapagg | - | True | - |
+| uplink-failure-detection | - | True | - |
 
 ```eos
 !
