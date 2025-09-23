@@ -5954,7 +5954,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class CausesItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "interval": {"type": int, "default": 300}}
+                _fields: ClassVar[dict] = {"name": {"type": str}, "interval": {"type": int}}
                 name: Literal[
                     "arp-inspection",
                     "bpduguard",
@@ -5974,12 +5974,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "xcvr-power-unsupported",
                     "xcvr-unsupported",
                 ]
-                interval: int
-                """
-                Interval for each recovery cause in seconds.
-
-                Default value: `300`
-                """
+                interval: int | None
+                """Interval for each recovery cause in seconds."""
 
                 if TYPE_CHECKING:
 
@@ -6006,7 +6002,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "xcvr-unsupported",
                         ]
                         | UndefinedType = Undefined,
-                        interval: int | UndefinedType = Undefined,
+                        interval: int | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         CausesItem.
@@ -6027,19 +6023,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Causes._item_type = CausesItem
 
-            _fields: ClassVar[dict] = {"causes": {"type": Causes}, "interval": {"type": int, "default": 300}}
+            _fields: ClassVar[dict] = {"causes": {"type": Causes}, "interval": {"type": int}}
             causes: Causes
             """Subclass of AvdIndexedList with `CausesItem` items. Primary key is `name` (`str`)."""
-            interval: int
-            """
-            Interval in seconds.
-
-            Default value: `300`
-            """
+            interval: int | None
+            """Interval in seconds."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, causes: Causes | UndefinedType = Undefined, interval: int | UndefinedType = Undefined) -> None:
+                def __init__(self, *, causes: Causes | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                     """
                     Recovery.
 

@@ -2422,7 +2422,6 @@ keys:
                 interval:
                   type: int
                   description: Interval for each recovery cause in seconds.
-                  default: 300
                   min: 30
                   max: 86400
                   convert_types:
@@ -2432,7 +2431,6 @@ keys:
             convert_types:
             - str
             description: Interval in seconds.
-            default: 300
             min: 30
             max: 86400
   ethernet_interfaces:
