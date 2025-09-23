@@ -1627,7 +1627,7 @@ ip nat synchronization
 ### Errdisable Summary
 
 |  Cause | Detection Enabled | Recovery Enabled | Recovery Interval(seconds) |
-| ------ | ----------------- | ---------------- | ----------------- |
+| ------ | ----------------- | ---------------- | -------------------------- |
 | arp-inspection | - | True | - |
 | bpduguard | - | True | - |
 | hitless-reload-down | - | True | - |
