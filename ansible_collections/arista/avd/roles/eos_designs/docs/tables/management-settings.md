@@ -223,7 +223,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;facility</samp>](## "logging_settings.level.[].facility") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;severity</samp>](## "logging_settings.level.[].severity") | String |  |  | Valid Values:<br>- <code>alerts</code><br>- <code>critical</code><br>- <code>debugging</code><br>- <code>emergencies</code><br>- <code>errors</code><br>- <code>informational</code><br>- <code>notifications</code><br>- <code>warnings</code><br>- <code>0</code><br>- <code>1</code><br>- <code>2</code><br>- <code>3</code><br>- <code>4</code><br>- <code>5</code><br>- <code>6</code><br>- <code>7</code> | Severity of facility. Below are the supported severities.<br>emergencies    System is unusable                (severity=0)<br>alerts         Immediate action needed           (severity=1)<br>critical       Critical conditions               (severity=2)<br>errors         Error conditions                  (severity=3)<br>warnings       Warning conditions                (severity=4)<br>notifications  Normal but significant conditions (severity=5)<br>informational  Informational messages            (severity=6)<br>debugging      Debugging messages                (severity=7)<br><0-7>          Severity level value |
     | [<samp>management_eapi</samp>](## "management_eapi") | Dictionary |  |  |  | Default is HTTPS management eAPI enabled.<br> |
-    | [<samp>&nbsp;&nbsp;enabled</samp>](## "management_eapi.enabled") | Boolean |  | `True` |  | Enable/Disable api http-commands. |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "management_eapi.enabled") | Boolean |  |  |  | Enable/Disable api http-commands. |
     | [<samp>&nbsp;&nbsp;enable_http</samp>](## "management_eapi.enable_http") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enable_https</samp>](## "management_eapi.enable_https") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;default_services</samp>](## "management_eapi.default_services") | Boolean |  |  |  |  |
@@ -795,7 +795,7 @@
     management_eapi:
 
       # Enable/Disable api http-commands.
-      enabled: <bool; default=True>
+      enabled: <bool>
       enable_http: <bool>
       enable_https: <bool; default=True>
       default_services: <bool>

@@ -9574,18 +9574,14 @@ class EosDesigns(EosDesignsRootModel):
         Vrfs._item_type = VrfsItem
 
         _fields: ClassVar[dict] = {
-            "enabled": {"type": bool, "default": True},
+            "enabled": {"type": bool},
             "enable_http": {"type": bool},
             "enable_https": {"type": bool, "default": True},
             "default_services": {"type": bool},
             "vrfs": {"type": Vrfs, "default": lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)},
         }
-        enabled: bool
-        """
-        Enable/Disable api http-commands.
-
-        Default value: `True`
-        """
+        enabled: bool | None
+        """Enable/Disable api http-commands."""
         enable_http: bool | None
         enable_https: bool
         """Default value: `True`"""
@@ -9610,7 +9606,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                enabled: bool | UndefinedType = Undefined,
+                enabled: bool | None | UndefinedType = Undefined,
                 enable_http: bool | None | UndefinedType = Undefined,
                 enable_https: bool | UndefinedType = Undefined,
                 default_services: bool | None | UndefinedType = Undefined,

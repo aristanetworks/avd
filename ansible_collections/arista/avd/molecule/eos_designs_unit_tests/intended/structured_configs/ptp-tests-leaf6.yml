@@ -41,10 +41,6 @@ loopback_interfaces:
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.2.4/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 metadata:
   is_deployed: true
   fabric_name: PTP_TESTS

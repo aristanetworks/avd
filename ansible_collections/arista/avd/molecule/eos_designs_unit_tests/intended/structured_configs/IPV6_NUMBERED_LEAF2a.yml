@@ -70,10 +70,6 @@ loopback_interfaces:
   shutdown: false
   vrf: VRF12
   ip_address: 10.255.12.3/32
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
