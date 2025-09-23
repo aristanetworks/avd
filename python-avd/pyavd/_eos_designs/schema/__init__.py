@@ -5893,30 +5893,6 @@ class EosDesigns(EosDesignsRootModel):
             class ExportersItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Collector(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"host": {"type": str}, "port": {"type": int}}
-                    host: str | None
-                    """Collector IPv4 address or IPv6 address or fully qualified domain name"""
-                    port: int | None
-                    """Collector Port Number"""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, host: str | None | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
-                            """
-                            Collector.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                host: Collector IPv4 address or IPv6 address or fully qualified domain name
-                                port: Collector Port Number
-
-                            """
-
                 class CollectorsItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -5977,7 +5953,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
-                    "collector": {"type": Collector},
                     "collectors": {"type": Collectors},
                     "format": {"type": Format},
                     "local_interface": {"type": str},
@@ -5985,8 +5960,6 @@ class EosDesigns(EosDesignsRootModel):
                 }
                 name: str
                 """Exporter Name"""
-                collector: Collector
-                """Subclass of AvdModel."""
                 collectors: Collectors
                 """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
                 format: Format
@@ -6002,7 +5975,6 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        collector: Collector | UndefinedType = Undefined,
                         collectors: Collectors | UndefinedType = Undefined,
                         format: Format | UndefinedType = Undefined,
                         local_interface: str | None | UndefinedType = Undefined,
@@ -6016,7 +5988,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             name: Exporter Name
-                            collector: Subclass of AvdModel.
                             collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`).
                             format: Subclass of AvdModel.
                             local_interface: Local Source Interface

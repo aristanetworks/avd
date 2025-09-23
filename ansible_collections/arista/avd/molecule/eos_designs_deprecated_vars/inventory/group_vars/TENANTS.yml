@@ -12,9 +12,3 @@ tenants:
               - 10.10.1.1/30
             nodes:
               - host1
-        l3_port_channels:
-          - name: Port-Channel11
-            node: host1
-            flow_tracking:
-              enabled: true
-              name: FT_Test
