@@ -1962,14 +1962,14 @@ dhcp relay
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile | IPv6 Lease Time |
-| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | --------------- | ---------------- | ------------- | --------------- |
-| True | AVRF | - | - | - | - | - | - | - | - |
-| True | defauls | - | - | - | - | - | - | - | - |
-| True | default | - | 10.0.0.1, 192.168.255.254 | https://www.arista.io/ztp/bootstrap | - | - | 2001:db8::1, 2001:db8::2 | https://2001:0db8:fe/ztp/bootstrap | - |
-| True | defaulu | - | - | - | - | - | - | - | - |
-| True | TEST | testv4.com | - | - | 10 days 10 hours 10 minutes | testv6.com | - | - | 12 days 12 hours 12 minutes |
-| False | VRF01 | - | - | - | - | - | - | - | - |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | TFTP Bootfile Name (Option 67) | TFTP Server Name (Option 66) | TFTP Server IPs (Option 150) | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 TFTP Bootfile URL (Option 59) | IPv6 Lease Time |
+| ------------------- | --- | --------------- | ---------------- | ------------------------------ | ---------------------------- | ---------------------------- | --------------- | --------------- | ---------------- | ---------------------------------- | --------------- |
+| True | AVRF | - | - | - | - | - | - | - | - | - | - |
+| True | defauls | - | - | - | - | - | - | - | - | - | - |
+| True | default | - | 10.0.0.1, 192.168.255.254 | https://www.arista.io/ztp/bootstrap | 192.168.66.22 | 192.166.66.33, 192.161.66.33 | - | - | 2001:db8::1, 2001:db8::2 | https://2001:0db8:fe/ztp/bootstrap | - |
+| True | defaulu | - | - | - | - | - | - | - | - | - | - |
+| True | TEST | testv4.com | - | - | - | - | 10 days 10 hours 10 minutes | testv6.com | - | - | 12 days 12 hours 12 minutes |
+| False | VRF01 | - | - | - | - | - | - | - | - | - | - |
 
 #### VRF AVRF DHCP Server
 
@@ -2048,6 +2048,8 @@ dhcp server vrf defauls
 dhcp server
    dns server ipv4 10.0.0.1 192.168.255.254
    dns server ipv6 2001:db8::1 2001:db8::2
+   tftp server option 66 ipv4 192.168.66.22
+   tftp server option 150 ipv4 192.166.66.33 192.161.66.33
    tftp server file ipv4 https://www.arista.io/ztp/bootstrap
    tftp server file ipv6 https://2001:0db8:fe/ztp/bootstrap
    !

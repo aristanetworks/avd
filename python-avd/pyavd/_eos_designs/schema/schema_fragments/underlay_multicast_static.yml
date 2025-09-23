@@ -6,14 +6,13 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  bgp_maximum_paths:
+  underlay_multicast_static:
     documentation_options:
-      table: bgp-settings
+      table: fabric-settings
+    type: bool
+    default: false
     description: |-
-      Maximum Paths for BGP multi-path.
-      The default value is 4 except for WAN Routers where the default value is 16.
-    type: int
-    convert_types:
-      - str
-    min: 1
-    max: 600
+      When enabled, configures multicast routing and by default configures static multicast in the underlay on all:
+        - P2P uplink interfaces if enabled on uplink peer
+        - MLAG L3 peer interface if also enabled on MLAG peer
+        - l3_edge and core interfaces
