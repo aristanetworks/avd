@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from grpclib.client import Channel
 from requests import JSONDecodeError, get, post
+from requests.exceptions import HTTPError, RequestException
 
 from .change_control import ChangeControlMixin
 from .configlet import ConfigletMixin
@@ -108,7 +109,7 @@ class CVClientProtocol(
                 _, protocol = await loop.create_connection(
                     lambda: channel._protocol_factory(),
                     sock=proxy_sock,
-                    ssl=channel._ssl if ssl_context is True else ssl_context,
+                    ssl=channel._ssl,
                     server_hostname=self._servers[0] if ssl_context else None,
                 )
 
@@ -163,7 +164,15 @@ class CVClientProtocol(
                 proxies=self._proxy_manager.get_requests_proxies() if self._proxy_manager is not None else None,
                 json={},
             )
+            response.raise_for_status()
+        except HTTPError as e:
+            msg = f"Unable to get token from CloudVision server due to the following HTTPError: {e.args}."
+            raise CVClientException(msg) from e
+        except RequestException as e:
+            msg = f"Unable to get token from CloudVision server due to the following generic 'requests' error: {e.args}."
+            raise CVClientException(msg) from e
 
+        try:
             self._token = response.json()["sessionId"]
         except (KeyError, JSONDecodeError) as e:
             msg = "Unable to get token from CloudVision server. Please supply service account token instead of username/password."
@@ -181,7 +190,6 @@ class CVClientProtocol(
             msg = "Unable to get version from CloudVision server. Missing token."
             raise CVClientException(msg)
 
-        response = None
         try:
             response = get(  # noqa: S113 TODO: Add configurable timeout
                 "https://" + self._servers[0] + "/cvpservice/cvpInfo/getCvpInfo.do",
@@ -191,6 +199,14 @@ class CVClientProtocol(
                 json={},
             )
             response.raise_for_status()
+        except HTTPError as e:
+            msg = f"Unable to get version from CloudVision server due to the following HTTPError: {e.args}."
+            raise CVClientException(msg) from e
+        except RequestException as e:
+            msg = f"Unable to get version from CloudVision server due to the following generic 'requests' error: {e.args}."
+            raise CVClientException(msg) from e
+
+        try:
             self._cv_version = CvVersion(response.json()["version"])
         except (KeyError, JSONDecodeError) as e:
             msg = f"Unable to get version from CloudVision server. Got {response.text if response else 'No response'}"
