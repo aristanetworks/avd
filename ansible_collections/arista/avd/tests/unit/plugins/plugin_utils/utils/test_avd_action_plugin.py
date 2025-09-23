@@ -225,7 +225,6 @@ class TestAvdActionPlugin:
         expected_message = expected_format.format("A message from the plugin.")
         patched_display.return_value.warning.assert_called_once_with(expected_message)
 
-
     def test_logging_with_save_logs(self, patched_display: MagicMock) -> None:
         """Test that logs are saved to the result."""
 
@@ -246,7 +245,6 @@ class TestAvdActionPlugin:
         # Assert that the logs were saved to the result dictionary
         assert result["logs"]["warnings"] == ["A warning to save."]
         assert result["logs"]["errors"] == ["An error to save."]
-
 
     def test_logging_with_live_display_false(self, patched_display: MagicMock) -> None:
         """Test that logs are never displayed in Ansible."""
