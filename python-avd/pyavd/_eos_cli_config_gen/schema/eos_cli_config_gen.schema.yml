@@ -1770,6 +1770,15 @@ keys:
               min_length: 1
               max_length: 255
               description: Name of TFTP file for IPv6 clients.
+            option_66_ipv4:
+              type: str
+              description: IPv4 address or server FQDN for TFTP option 66.
+            option_150_ipv4:
+              type: list
+              min_length: 1
+              description: List of IPv4 addresses for TFTP option 150.
+              items:
+                type: str
         ipv4_vendor_options:
           type: list
           primary_key: vendor_id
@@ -6146,7 +6155,10 @@ keys:
           required: true
           description: IPv4 or IPv6 address for DNS server.
         vrf:
-          description: VRF Name.
+          description: 'VRF Name.
+
+            Use "default" for the default VRF.'
+          required: true
           type: str
           convert_types:
           - int
@@ -6997,25 +7009,12 @@ keys:
           type: str
           convert_types:
           - int
-        destination_address_prefix:
-          type: str
-          description: IPv6 Network/Mask.
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: prefix
         prefix:
           type: str
           description: IPv6 Network/Mask.
+          required: true
         interface:
           type: str
-        gateway:
-          type: str
-          description: IPv6 Address.
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: next_hop
         next_hop:
           type: str
           description: IPv6 Address.
@@ -7043,6 +7042,20 @@ keys:
           - str
           min: 0
           max: 4294967295
+        destination_address_prefix:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: prefix
+        gateway:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: next_hop
   ipv6_unicast_routing:
     type: bool
   is_deployed:
@@ -22845,25 +22858,12 @@ keys:
           description: VRF Name.
           convert_types:
           - int
-        destination_address_prefix:
-          type: str
-          description: IPv4_network/Mask.
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: prefix
         prefix:
           type: str
           description: IPv4_network/Mask.
+          required: true
         interface:
           type: str
-        gateway:
-          type: str
-          description: IPv4 Address.
-          deprecation:
-            warning: true
-            remove_in_version: 6.0.0
-            new_key: next_hop
         next_hop:
           type: str
           description: IPv4 Address.
@@ -22891,6 +22891,20 @@ keys:
           - str
           min: 0
           max: 4294967295
+        destination_address_prefix:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: prefix
+        gateway:
+          type: str
+          deprecation:
+            warning: true
+            removed: true
+            remove_in_version: 6.0.0
+            new_key: next_hop
   stun:
     type: dict
     description: STUN configuration.

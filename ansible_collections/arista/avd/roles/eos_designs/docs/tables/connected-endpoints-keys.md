@@ -51,40 +51,40 @@
 
         ```yaml
         connected_endpoints_keys:
-        - description: Server
-          key: servers
+        - key: servers
           type: server
-        - description: Firewall
-          key: firewalls
+          description: Server
+        - key: firewalls
           type: firewall
-        - description: Router
-          key: routers
+          description: Firewall
+        - key: routers
           type: router
-        - description: Load Balancer
-          key: load_balancers
+          description: Router
+        - key: load_balancers
           type: load_balancer
-        - description: Storage Array
-          key: storage_arrays
+          description: Load Balancer
+        - key: storage_arrays
           type: storage_array
-        - description: CPE
-          key: cpes
+          description: Storage Array
+        - key: cpes
           type: cpe
-        - description: Workstation
-          key: workstations
+          description: CPE
+        - key: workstations
           type: workstation
-        - description: Access Point
-          key: access_points
+          description: Workstation
+        - key: access_points
           type: access_point
-        - description: Phone
-          key: phones
+          description: Access Point
+        - key: phones
           type: phone
-        - description: Printer
-          key: printers
+          description: Phone
+        - key: printers
           type: printer
-        - description: Camera
-          key: cameras
+          description: Printer
+        - key: cameras
           type: camera
-        - description: Generic Device
-          key: generic_devices
+          description: Camera
+        - key: generic_devices
           type: generic_device
+          description: Generic Device
         ```
