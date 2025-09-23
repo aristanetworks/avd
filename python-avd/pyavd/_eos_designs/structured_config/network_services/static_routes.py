@@ -39,7 +39,7 @@ class StaticRoutesMixin(Protocol):
                 for static_route in vrf.static_routes:
                     static_route_item = EosCliConfigGen.StaticRoutesItem(
                         vrf=vrf.name,
-                        prefix=static_route.prefix or Undefined,
+                        prefix=static_route.prefix,
                         interface=static_route.interface,
                         next_hop=static_route.next_hop,
                         track_bfd=static_route.track_bfd,
