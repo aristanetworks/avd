@@ -3311,15 +3311,15 @@
                         },
                         {
                             "prefix": "2001:db9::/32",
-                            "gateway": "2001:db8:310::1",
+                            "next_hop": "2001:db8:310::1",
                             "name": "IPv6-test-1",
                             "nodes": [
                                 "DC1-LEAF1A"
                             ]
                         },
                         {
-                            "next_hop": "2001:dba::/32",
-                            "gateway": "2001:db8:310::1",
+                            "prefix": "2001:dba::/32",
+                            "next_hop": "2001:db8:310::1",
                             "name": "Track-bfd-network-services",
                             "track_bfd": true,
                             "nodes": [
