@@ -2,6 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import logging
+from dataclasses import dataclass
 
 ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
     0: {  # Verbosity: 0
@@ -87,3 +88,12 @@ def get_avd_log_level(logger_name: str, verbosity: int) -> int:
 
     # If the logger is not found, it is considered an external library
     return level_map.get(logger_name, level_map["external_libs"])
+
+
+@dataclass(frozen=True)
+class AvdLoggingConfig:
+    """Configuration for the logging environment in AVD Ansible action plugins."""
+
+    add_role_context: bool = False
+    add_hostname_context: bool = False
+    target_loggers: tuple[str, ...] = ("ansible_collections.arista.avd", "pyavd", "schema_tools")

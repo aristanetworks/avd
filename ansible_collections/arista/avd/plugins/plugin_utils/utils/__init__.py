@@ -3,8 +3,6 @@
 # that can be found in the LICENSE file.
 from .action_plugin_vars import ActionPluginVars
 from .anta_workflow_logging import AntaWorkflowFilter, AntaWorkflowHandler
-from .avd_action_plugin import AvdActionPlugin
-from .avd_logging import avd_logging
 from .avd_switch_facts_default_dict import AvdSwitchFactsDefaultDict
 from .compile_searchpath import compile_searchpath
 from .cprofile_decorator import cprofile
@@ -19,7 +17,6 @@ __all__ = [
     "ActionPluginVars",
     "AntaWorkflowFilter",
     "AntaWorkflowHandler",
-    "AvdActionPlugin",
     "AvdSwitchFactsDefaultDict",
     "DeprecatedDict",
     "NoAliasDumper",
@@ -27,7 +24,6 @@ __all__ = [
     "PythonToAnsibleHandler",
     "YamlDumper",
     "YamlLoader",
-    "avd_logging",
     "compile_searchpath",
     "cprofile",
     "get_templar",

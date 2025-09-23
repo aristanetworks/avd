@@ -17,7 +17,7 @@ from ansible import constants as C  # noqa: N812
 from ansible.utils.collection_loader._collection_finder import _get_collection_metadata
 
 from ansible_collections.arista.avd.plugins import PYTHON_AVD_PATH, RUNNING_FROM_SOURCE
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AvdActionPlugin, avd_logging
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_action_plugin import AvdActionPlugin, AvdLoggingConfig
 
 try:
     # Relying on packaging installed by ansible
@@ -36,6 +36,7 @@ MIN_PYTHON_SUPPORTED_VERSION = (3, 10)
 DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION = False
 
 
+# TODO: Consider moving the following helpers inside the plugin class as methods to use `self.logger`.
 def _validate_python_version(info: dict[str, Any]) -> bool:
     """
     Validate the running Python version.
@@ -392,8 +393,9 @@ def check_running_from_source() -> bool:
 
 
 class ActionModule(AvdActionPlugin):
-    @avd_logging(add_role_context=True, target_loggers=["ansible_collections.arista.avd", "pyavd", "schema_tools"])
-    def run_plugin(self, task_vars: dict[str, Any]) -> dict[str, Any]:
+    _logging_config = AvdLoggingConfig(add_role_context=True)
+
+    def main(self, task_vars: dict[str, Any]) -> None:
         if not HAS_PACKAGING:
             msg = "packaging is required to run this plugin"
             raise ImportError(msg)
@@ -427,9 +429,9 @@ class ActionModule(AvdActionPlugin):
         if check_running_from_source():
             self.result["changed"] = True
 
-        LOGGER.info("AVD version %s", info["ansible"]["collection"]["version"], extra={"color": C.COLOR_OK})
+        self.logger.info("AVD version %s", info["ansible"]["collection"]["version"], extra={"color": C.COLOR_OK})
         if RUNNING_FROM_SOURCE:
-            LOGGER.info("AVD is running from source using PyAVD at '%s'", PYTHON_AVD_PATH, extra={"color": C.COLOR_OK})
+            self.logger.info("AVD is running from source using PyAVD at '%s'", PYTHON_AVD_PATH, extra={"color": C.COLOR_OK})
 
         if not _validate_python_version(info["python"]):
             self.result["failed"] = True
@@ -441,11 +443,9 @@ class ActionModule(AvdActionPlugin):
             self.result["failed"] = True
 
         serialized_info = json.dumps(info, indent=4)
-        LOGGER.info(serialized_info)
+        self.logger.info(serialized_info)
 
         if avd_ignore_requirements is True:
             self.result["failed"] = False
         elif self.result["failed"] is True:
             self.result["msg"] = error_message
-
-        return self.result
