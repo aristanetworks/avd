@@ -10,19 +10,10 @@ keys:
     type: list
     primary_key: name
     display_name: Community Lists (legacy model)
+    documentation_options:
+      table: ip-community-lists
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
       new_key: ip_community_lists
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          description: Community-list Name.
-        action:
-          type: str
-          required: true
-          description: |
-            Action as string.
-            Example: "permit GSHUT 65123:123"
