@@ -61,7 +61,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;actions</samp>](## "traffic_policies.policies.[].matches.[].actions") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "traffic_policies.policies.[].matches.[].actions.dscp") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "traffic_policies.policies.[].matches.[].actions.traffic_class") | Integer |  |  |  | Traffic class ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "traffic_policies.policies.[].matches.[].actions.count") | String |  |  |  | Named counter.<br>Must also be defined under `policies[].counters` to be active.<br>If not defined, the counter will be inactive on EOS and a warning is printed via the 'show traffic-policy interface' command. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "traffic_policies.policies.[].matches.[].actions.count") | String |  |  |  | Named counter.<br>Must also be defined under `policies[].counters` to be active.<br>If not defined, the counter is inactive on EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "traffic_policies.policies.[].matches.[].actions.drop") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "traffic_policies.policies.[].matches.[].actions.log") | Boolean |  |  |  | Only supported when action is set to drop. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redirect</samp>](## "traffic_policies.policies.[].matches.[].actions.redirect") | Dictionary |  |  |  |  |
@@ -206,7 +206,7 @@
 
                 # Named counter.
                 # Must also be defined under `policies[].counters` to be active.
-                # If not defined, the counter will be inactive on EOS and a warning is printed via the 'show traffic-policy interface' command.
+                # If not defined, the counter is inactive on EOS.
                 count: <str>
                 drop: <bool>
 
