@@ -2182,7 +2182,16 @@ class EosDesigns(EosDesignsRootModel):
                     "50g-1",
                     "50g-2",
                     "800g-8",
-                    "sfp-1000baset",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
                     "auto",
                     "auto 10000full",
                     "auto 1000full",
@@ -2208,6 +2217,20 @@ class EosDesigns(EosDesignsRootModel):
                     "auto 50gfull",
                     "auto 5gfull",
                     "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
                     "forced 10000full",
                     "forced 1000full",
                     "forced 1000half",
@@ -2222,10 +2245,7 @@ class EosDesigns(EosDesignsRootModel):
                 ]
                 | None
             )
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-            <interface_speed>`.
-            """
+            """Interface Speed."""
             ip_pool: str | None
             """
             P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
@@ -2431,7 +2451,16 @@ class EosDesigns(EosDesignsRootModel):
                         "50g-1",
                         "50g-2",
                         "800g-8",
-                        "sfp-1000baset",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
                         "auto",
                         "auto 10000full",
                         "auto 1000full",
@@ -2457,6 +2486,20 @@ class EosDesigns(EosDesignsRootModel):
                         "auto 50gfull",
                         "auto 5gfull",
                         "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
                         "forced 10000full",
                         "forced 1000full",
                         "forced 1000half",
@@ -2519,9 +2562,7 @@ class EosDesigns(EosDesignsRootModel):
                            Unique id per subnet_summary. Used to calculate ip addresses.
                            Required with ip_pool. ID starting
                            from 1.
-                        speed:
-                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                           <interface_speed>`.
+                        speed: Interface Speed.
                         ip_pool:
                            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
                            link.
@@ -3012,7 +3053,16 @@ class EosDesigns(EosDesignsRootModel):
                     "50g-1",
                     "50g-2",
                     "800g-8",
-                    "sfp-1000baset",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
                     "auto",
                     "auto 10000full",
                     "auto 1000full",
@@ -3038,6 +3088,20 @@ class EosDesigns(EosDesignsRootModel):
                     "auto 50gfull",
                     "auto 5gfull",
                     "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
                     "forced 10000full",
                     "forced 1000full",
                     "forced 1000half",
@@ -3052,10 +3116,7 @@ class EosDesigns(EosDesignsRootModel):
                 ]
                 | None
             )
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-            <interface_speed>`.
-            """
+            """Interface Speed."""
             ip_pool: str | None
             """
             P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
@@ -3256,7 +3317,16 @@ class EosDesigns(EosDesignsRootModel):
                         "50g-1",
                         "50g-2",
                         "800g-8",
-                        "sfp-1000baset",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
                         "auto",
                         "auto 10000full",
                         "auto 1000full",
@@ -3282,6 +3352,20 @@ class EosDesigns(EosDesignsRootModel):
                         "auto 50gfull",
                         "auto 5gfull",
                         "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
                         "forced 10000full",
                         "forced 1000full",
                         "forced 1000half",
@@ -3347,9 +3431,7 @@ class EosDesigns(EosDesignsRootModel):
                            Unique id per subnet_summary. Used to calculate ip addresses.
                            Required with ip_pool. ID starting
                            from 1.
-                        speed:
-                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                           <interface_speed>`.
+                        speed: Interface Speed.
                         ip_pool:
                            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
                            link.
@@ -4483,7 +4565,16 @@ class EosDesigns(EosDesignsRootModel):
                 "50g-1",
                 "50g-2",
                 "800g-8",
-                "sfp-1000baset",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
                 "auto",
                 "auto 10000full",
                 "auto 1000full",
@@ -4509,6 +4600,20 @@ class EosDesigns(EosDesignsRootModel):
                 "auto 50gfull",
                 "auto 5gfull",
                 "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
                 "forced 10000full",
                 "forced 1000full",
                 "forced 1000half",
@@ -4523,11 +4628,7 @@ class EosDesigns(EosDesignsRootModel):
             ]
             | None
         )
-        """
-        Set MLAG interfaces speed.
-        Speed should be set in the format `<interface_speed>` or `forced
-        <interface_speed>` or `auto <interface_speed>`.
-        """
+        """Set MLAG interfaces speed."""
         downlink_interfaces: DownlinkInterfaces
         """
         List of downlink interfaces or downlink interface ranges.
@@ -4558,7 +4659,16 @@ class EosDesigns(EosDesignsRootModel):
                 "50g-1",
                 "50g-2",
                 "800g-8",
-                "sfp-1000baset",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
                 "auto",
                 "auto 10000full",
                 "auto 1000full",
@@ -4584,6 +4694,20 @@ class EosDesigns(EosDesignsRootModel):
                 "auto 50gfull",
                 "auto 5gfull",
                 "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
                 "forced 10000full",
                 "forced 1000full",
                 "forced 1000half",
@@ -4632,7 +4756,16 @@ class EosDesigns(EosDesignsRootModel):
                     "50g-1",
                     "50g-2",
                     "800g-8",
-                    "sfp-1000baset",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
                     "auto",
                     "auto 10000full",
                     "auto 1000full",
@@ -4658,6 +4791,20 @@ class EosDesigns(EosDesignsRootModel):
                     "auto 50gfull",
                     "auto 5gfull",
                     "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
                     "forced 10000full",
                     "forced 1000full",
                     "forced 1000half",
@@ -4696,7 +4843,16 @@ class EosDesigns(EosDesignsRootModel):
                     "50g-1",
                     "50g-2",
                     "800g-8",
-                    "sfp-1000baset",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
                     "auto",
                     "auto 10000full",
                     "auto 1000full",
@@ -4722,6 +4878,20 @@ class EosDesigns(EosDesignsRootModel):
                     "auto 50gfull",
                     "auto 5gfull",
                     "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
                     "forced 10000full",
                     "forced 1000full",
                     "forced 1000half",
@@ -4763,10 +4933,7 @@ class EosDesigns(EosDesignsRootModel):
                        List of MLAG interfaces or MLAG interface ranges.
 
                        Subclass of AvdList with `str` items.
-                    mlag_interfaces_speed:
-                       Set MLAG interfaces speed.
-                       Speed should be set in the format `<interface_speed>` or `forced
-                       <interface_speed>` or `auto <interface_speed>`.
+                    mlag_interfaces_speed: Set MLAG interfaces speed.
                     downlink_interfaces:
                        List of downlink interfaces or downlink interface ranges.
 
@@ -8207,7 +8374,16 @@ class EosDesigns(EosDesignsRootModel):
                     "50g-1",
                     "50g-2",
                     "800g-8",
-                    "sfp-1000baset",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
                     "auto",
                     "auto 10000full",
                     "auto 1000full",
@@ -8233,6 +8409,20 @@ class EosDesigns(EosDesignsRootModel):
                     "auto 50gfull",
                     "auto 5gfull",
                     "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
                     "forced 10000full",
                     "forced 1000full",
                     "forced 1000half",
@@ -8247,10 +8437,7 @@ class EosDesigns(EosDesignsRootModel):
                 ]
                 | None
             )
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-            <interface_speed>`.
-            """
+            """Interface Speed."""
             ip_pool: str | None
             """
             P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
@@ -8456,7 +8643,16 @@ class EosDesigns(EosDesignsRootModel):
                         "50g-1",
                         "50g-2",
                         "800g-8",
-                        "sfp-1000baset",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
                         "auto",
                         "auto 10000full",
                         "auto 1000full",
@@ -8482,6 +8678,20 @@ class EosDesigns(EosDesignsRootModel):
                         "auto 50gfull",
                         "auto 5gfull",
                         "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
                         "forced 10000full",
                         "forced 1000full",
                         "forced 1000half",
@@ -8544,9 +8754,7 @@ class EosDesigns(EosDesignsRootModel):
                            Unique id per subnet_summary. Used to calculate ip addresses.
                            Required with ip_pool. ID starting
                            from 1.
-                        speed:
-                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                           <interface_speed>`.
+                        speed: Interface Speed.
                         ip_pool:
                            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
                            link.
@@ -9037,7 +9245,16 @@ class EosDesigns(EosDesignsRootModel):
                     "50g-1",
                     "50g-2",
                     "800g-8",
-                    "sfp-1000baset",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
                     "auto",
                     "auto 10000full",
                     "auto 1000full",
@@ -9063,6 +9280,20 @@ class EosDesigns(EosDesignsRootModel):
                     "auto 50gfull",
                     "auto 5gfull",
                     "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
                     "forced 10000full",
                     "forced 1000full",
                     "forced 1000half",
@@ -9077,10 +9308,7 @@ class EosDesigns(EosDesignsRootModel):
                 ]
                 | None
             )
-            """
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-            <interface_speed>`.
-            """
+            """Interface Speed."""
             ip_pool: str | None
             """
             P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
@@ -9281,7 +9509,16 @@ class EosDesigns(EosDesignsRootModel):
                         "50g-1",
                         "50g-2",
                         "800g-8",
-                        "sfp-1000baset",
+                        "sfp-1000baset auto 100full",
+                        "1.6t-8",
+                        "100mfull",
+                        "100mhalf",
+                        "10mfull",
+                        "10mhalf",
+                        "200g-1",
+                        "400g-2",
+                        "40g-4",
+                        "800g-4",
                         "auto",
                         "auto 10000full",
                         "auto 1000full",
@@ -9307,6 +9544,20 @@ class EosDesigns(EosDesignsRootModel):
                         "auto 50gfull",
                         "auto 5gfull",
                         "auto 800g-8",
+                        "auto 1.6t-8",
+                        "auto 100mfull",
+                        "auto 100mhalf",
+                        "auto 10g",
+                        "auto 10mfull",
+                        "auto 10mhalf",
+                        "auto 1g",
+                        "auto 2.5g",
+                        "auto 200g-1",
+                        "auto 25g",
+                        "auto 400g-2",
+                        "auto 40g-4",
+                        "auto 5g",
+                        "auto 800g-4",
                         "forced 10000full",
                         "forced 1000full",
                         "forced 1000half",
@@ -9372,9 +9623,7 @@ class EosDesigns(EosDesignsRootModel):
                            Unique id per subnet_summary. Used to calculate ip addresses.
                            Required with ip_pool. ID starting
                            from 1.
-                        speed:
-                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                           <interface_speed>`.
+                        speed: Interface Speed.
                         ip_pool:
                            P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P
                            link.
@@ -9872,7 +10121,16 @@ class EosDesigns(EosDesignsRootModel):
                 "50g-1",
                 "50g-2",
                 "800g-8",
-                "sfp-1000baset",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
                 "auto",
                 "auto 10000full",
                 "auto 1000full",
@@ -9898,6 +10156,20 @@ class EosDesigns(EosDesignsRootModel):
                 "auto 50gfull",
                 "auto 5gfull",
                 "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
                 "forced 10000full",
                 "forced 1000full",
                 "forced 1000half",
@@ -9912,10 +10184,7 @@ class EosDesigns(EosDesignsRootModel):
             ]
             | None
         )
-        """
-        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
-        """
+        """Interface Speed."""
         receive_bandwidth: int | None
         """
         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -10049,7 +10318,16 @@ class EosDesigns(EosDesignsRootModel):
                     "50g-1",
                     "50g-2",
                     "800g-8",
-                    "sfp-1000baset",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
                     "auto",
                     "auto 10000full",
                     "auto 1000full",
@@ -10075,6 +10353,20 @@ class EosDesigns(EosDesignsRootModel):
                     "auto 50gfull",
                     "auto 5gfull",
                     "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
                     "forced 10000full",
                     "forced 1000full",
                     "forced 1000half",
@@ -10154,9 +10446,7 @@ class EosDesigns(EosDesignsRootModel):
                        specified.
                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                     enabled: Enable or Shutdown the interface.
-                    speed:
-                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                    speed: Interface Speed.
                     receive_bandwidth:
                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                        This is currently used on
@@ -11884,7 +12174,16 @@ class EosDesigns(EosDesignsRootModel):
                 "50g-1",
                 "50g-2",
                 "800g-8",
-                "sfp-1000baset",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
                 "auto",
                 "auto 10000full",
                 "auto 1000full",
@@ -11910,6 +12209,20 @@ class EosDesigns(EosDesignsRootModel):
                 "auto 50gfull",
                 "auto 5gfull",
                 "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
                 "forced 10000full",
                 "forced 1000full",
                 "forced 1000half",
@@ -11925,8 +12238,7 @@ class EosDesigns(EosDesignsRootModel):
             | None
         )
         """
-        Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
+        Set adapter speed.
         If not specified speed will be auto.
         """
         profile: str | None
@@ -12100,7 +12412,16 @@ class EosDesigns(EosDesignsRootModel):
                     "50g-1",
                     "50g-2",
                     "800g-8",
-                    "sfp-1000baset",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
                     "auto",
                     "auto 10000full",
                     "auto 1000full",
@@ -12126,6 +12447,20 @@ class EosDesigns(EosDesignsRootModel):
                     "auto 50gfull",
                     "auto 5gfull",
                     "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
                     "forced 10000full",
                     "forced 1000full",
                     "forced 1000half",
@@ -12241,8 +12576,7 @@ class EosDesigns(EosDesignsRootModel):
                        key if set.
                     endpoint: Name or description of the endpoints connected to these ports.
                     speed:
-                       Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                       Set adapter speed.
                        If not specified speed will be auto.
                     profile: Port-profile name to inherit configuration.
                     enabled:
@@ -16615,7 +16949,16 @@ class EosDesigns(EosDesignsRootModel):
                 "50g-1",
                 "50g-2",
                 "800g-8",
-                "sfp-1000baset",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
                 "auto",
                 "auto 10000full",
                 "auto 1000full",
@@ -16641,6 +16984,20 @@ class EosDesigns(EosDesignsRootModel):
                 "auto 50gfull",
                 "auto 5gfull",
                 "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
                 "forced 10000full",
                 "forced 1000full",
                 "forced 1000half",
@@ -16656,8 +17013,7 @@ class EosDesigns(EosDesignsRootModel):
             | None
         )
         """
-        Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
+        Set adapter speed.
         If not specified speed will be auto.
         """
         description: str | None
@@ -16846,7 +17202,16 @@ class EosDesigns(EosDesignsRootModel):
                     "50g-1",
                     "50g-2",
                     "800g-8",
-                    "sfp-1000baset",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
                     "auto",
                     "auto 10000full",
                     "auto 1000full",
@@ -16872,6 +17237,20 @@ class EosDesigns(EosDesignsRootModel):
                     "auto 50gfull",
                     "auto 5gfull",
                     "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
                     "forced 10000full",
                     "forced 1000full",
                     "forced 1000half",
@@ -16932,8 +17311,7 @@ class EosDesigns(EosDesignsRootModel):
                        Port_profiles can refer to another port_profile to inherit settings in
                        up to two levels (adapter->profile->parent_profile).
                     speed:
-                       Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                       Set adapter speed.
                        If not specified speed will be auto.
                     description:
                        Description or description template to be used on all ports.
@@ -24082,7 +24460,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -24108,6 +24495,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -24123,8 +24524,7 @@ class EosDesigns(EosDesignsRootModel):
                         | None
                     )
                     """
-                    Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                    <interface_speed>`.
+                    Set adapter speed.
                     If not specified speed will be auto.
                     """
                     description: str | None
@@ -24317,7 +24717,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -24343,6 +24752,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -24438,8 +24861,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 speed:
-                                   Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                   <interface_speed>`.
+                                   Set adapter speed.
                                    If not specified speed will be auto.
                                 description:
                                    Description or description template to be used on all ports.
@@ -25852,7 +26274,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -25878,6 +26309,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -25893,8 +26338,7 @@ class EosDesigns(EosDesignsRootModel):
                         | None
                     )
                     """
-                    Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                    <interface_speed>`.
+                    Set adapter speed.
                     If not specified speed will be auto.
                     """
                     description: str | None
@@ -26087,7 +26531,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -26113,6 +26566,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -26208,8 +26675,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdList with `str` items.
                                 speed:
-                                   Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                   <interface_speed>`.
+                                   Set adapter speed.
                                    If not specified speed will be auto.
                                 description:
                                    Description or description template to be used on all ports.
@@ -28055,7 +28521,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -28081,6 +28556,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -28095,10 +28584,7 @@ class EosDesigns(EosDesignsRootModel):
                             ]
                             | None
                         )
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -28232,7 +28718,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -28258,6 +28753,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -28335,9 +28844,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -28514,7 +29021,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -28540,6 +29056,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -28554,10 +29084,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ]
                                 | None
                             )
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -28602,7 +29129,16 @@ class EosDesigns(EosDesignsRootModel):
                                         "50g-1",
                                         "50g-2",
                                         "800g-8",
-                                        "sfp-1000baset",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
                                         "auto",
                                         "auto 10000full",
                                         "auto 1000full",
@@ -28628,6 +29164,20 @@ class EosDesigns(EosDesignsRootModel):
                                         "auto 50gfull",
                                         "auto 5gfull",
                                         "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
                                         "forced 10000full",
                                         "forced 1000full",
                                         "forced 1000half",
@@ -28664,9 +29214,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -29622,7 +30170,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -29648,6 +30205,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -29693,7 +30264,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -29719,6 +30299,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -29733,11 +30327,7 @@ class EosDesigns(EosDesignsRootModel):
                         ]
                         | None
                     )
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -30102,7 +30692,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -30128,6 +30727,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -30142,11 +30755,7 @@ class EosDesigns(EosDesignsRootModel):
                         ]
                         | None
                     )
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -30600,7 +31209,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -30626,6 +31244,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -30663,7 +31295,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -30689,6 +31330,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -30773,7 +31428,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -30799,6 +31463,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -30961,10 +31639,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -31198,10 +31873,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -33226,7 +33898,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -33252,6 +33933,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -33266,10 +33961,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ]
                                 | None
                             )
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            """Interface Speed."""
                             receive_bandwidth: int | None
                             """
                             Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -33403,7 +34095,16 @@ class EosDesigns(EosDesignsRootModel):
                                         "50g-1",
                                         "50g-2",
                                         "800g-8",
-                                        "sfp-1000baset",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
                                         "auto",
                                         "auto 10000full",
                                         "auto 1000full",
@@ -33429,6 +34130,20 @@ class EosDesigns(EosDesignsRootModel):
                                         "auto 50gfull",
                                         "auto 5gfull",
                                         "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
                                         "forced 10000full",
                                         "forced 1000full",
                                         "forced 1000half",
@@ -33506,9 +34221,7 @@ class EosDesigns(EosDesignsRootModel):
                                            specified.
                                         dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                         enabled: Enable or Shutdown the interface.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         receive_bandwidth:
                                            Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                            This is currently used on
@@ -33685,7 +34398,16 @@ class EosDesigns(EosDesignsRootModel):
                                         "50g-1",
                                         "50g-2",
                                         "800g-8",
-                                        "sfp-1000baset",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
                                         "auto",
                                         "auto 10000full",
                                         "auto 1000full",
@@ -33711,6 +34433,20 @@ class EosDesigns(EosDesignsRootModel):
                                         "auto 50gfull",
                                         "auto 5gfull",
                                         "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
                                         "forced 10000full",
                                         "forced 1000full",
                                         "forced 1000half",
@@ -33725,10 +34461,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ]
                                     | None
                                 )
-                                """
-                                Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                <interface_speed>`.
-                                """
+                                """Interface Speed."""
                                 rx_queue: RxQueue
                                 """
                                 Receive queue parameters for platform SFE interface profile.
@@ -33773,7 +34506,16 @@ class EosDesigns(EosDesignsRootModel):
                                             "50g-1",
                                             "50g-2",
                                             "800g-8",
-                                            "sfp-1000baset",
+                                            "sfp-1000baset auto 100full",
+                                            "1.6t-8",
+                                            "100mfull",
+                                            "100mhalf",
+                                            "10mfull",
+                                            "10mhalf",
+                                            "200g-1",
+                                            "400g-2",
+                                            "40g-4",
+                                            "800g-4",
                                             "auto",
                                             "auto 10000full",
                                             "auto 1000full",
@@ -33799,6 +34541,20 @@ class EosDesigns(EosDesignsRootModel):
                                             "auto 50gfull",
                                             "auto 5gfull",
                                             "auto 800g-8",
+                                            "auto 1.6t-8",
+                                            "auto 100mfull",
+                                            "auto 100mhalf",
+                                            "auto 10g",
+                                            "auto 10mfull",
+                                            "auto 10mhalf",
+                                            "auto 1g",
+                                            "auto 2.5g",
+                                            "auto 200g-1",
+                                            "auto 25g",
+                                            "auto 400g-2",
+                                            "auto 40g-4",
+                                            "auto 5g",
+                                            "auto 800g-4",
                                             "forced 10000full",
                                             "forced 1000full",
                                             "forced 1000half",
@@ -33835,9 +34591,7 @@ class EosDesigns(EosDesignsRootModel):
                                                If not set, this inherits the peer
                                                setting on the port-channel interface.
                                             peer_interface: The peer device interface. Used for description and documentation.
-                                            speed:
-                                               Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                               <interface_speed>`.
+                                            speed: Interface Speed.
                                             rx_queue:
                                                Receive queue parameters for platform SFE interface profile.
                                                This setting is ignored unless the
@@ -34811,7 +35565,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -34837,6 +35600,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -34882,7 +35659,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -34908,6 +35694,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -34922,11 +35722,7 @@ class EosDesigns(EosDesignsRootModel):
                             ]
                             | None
                         )
-                        """
-                        Set point-to-Point interface speed for the uplink switch interface only.
-                        Speed should be set in the
-                        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                        """
+                        """Set point-to-Point interface speed for the uplink switch interface only."""
                         uplink_mtu: int | None
                         """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                         max_uplink_switches: int | None
@@ -35291,7 +36087,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -35317,6 +36122,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -35331,11 +36150,7 @@ class EosDesigns(EosDesignsRootModel):
                             ]
                             | None
                         )
-                        """
-                        Set MLAG interface speed.
-                        Speed should be set in the format `<interface_speed>` or `forced
-                        <interface_speed>` or `auto <interface_speed>`.
-                        """
+                        """Set MLAG interface speed."""
                         mlag_peer_l3_vlan: int
                         """
                         Underlay L3 peering SVI interface id.
@@ -35791,7 +36606,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -35817,6 +36641,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -35854,7 +36692,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -35880,6 +36727,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -35964,7 +36825,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -35990,6 +36860,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -36159,10 +37043,7 @@ class EosDesigns(EosDesignsRootModel):
                                        interface speed can be overridden with `uplink_switch_interface_speed`).
                                        Speed should be set in the
                                        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                    uplink_switch_interface_speed:
-                                       Set point-to-Point interface speed for the uplink switch interface only.
-                                       Speed should be set in the
-                                       format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                    uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                     uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                     max_uplink_switches:
                                        Maximum number of uplink switches.
@@ -36396,10 +37277,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
-                                    mlag_interfaces_speed:
-                                       Set MLAG interface speed.
-                                       Speed should be set in the format `<interface_speed>` or `forced
-                                       <interface_speed>` or `auto <interface_speed>`.
+                                    mlag_interfaces_speed: Set MLAG interface speed.
                                     mlag_peer_l3_vlan:
                                        Underlay L3 peering SVI interface id.
                                        If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -38338,7 +39216,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -38364,6 +39251,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -38378,10 +39279,7 @@ class EosDesigns(EosDesignsRootModel):
                             ]
                             | None
                         )
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -38515,7 +39413,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -38541,6 +39448,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -38618,9 +39539,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -38797,7 +39716,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -38823,6 +39751,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -38837,10 +39779,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ]
                                 | None
                             )
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -38885,7 +39824,16 @@ class EosDesigns(EosDesignsRootModel):
                                         "50g-1",
                                         "50g-2",
                                         "800g-8",
-                                        "sfp-1000baset",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
                                         "auto",
                                         "auto 10000full",
                                         "auto 1000full",
@@ -38911,6 +39859,20 @@ class EosDesigns(EosDesignsRootModel):
                                         "auto 50gfull",
                                         "auto 5gfull",
                                         "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
                                         "forced 10000full",
                                         "forced 1000full",
                                         "forced 1000half",
@@ -38947,9 +39909,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -39920,7 +40880,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -39946,6 +40915,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -39991,7 +40974,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -40017,6 +41009,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -40031,11 +41037,7 @@ class EosDesigns(EosDesignsRootModel):
                         ]
                         | None
                     )
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -40400,7 +41402,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -40426,6 +41437,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -40440,11 +41465,7 @@ class EosDesigns(EosDesignsRootModel):
                         ]
                         | None
                     )
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -40900,7 +41921,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -40926,6 +41956,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -40963,7 +42007,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -40989,6 +42042,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -41073,7 +42140,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -41099,6 +42175,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -41270,10 +42360,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -41507,10 +42594,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -43524,7 +44608,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -43550,6 +44643,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -43564,10 +44671,7 @@ class EosDesigns(EosDesignsRootModel):
                             ]
                             | None
                         )
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -43701,7 +44805,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -43727,6 +44840,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -43804,9 +44931,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -43983,7 +45108,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -44009,6 +45143,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -44023,10 +45171,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ]
                                 | None
                             )
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -44071,7 +45216,16 @@ class EosDesigns(EosDesignsRootModel):
                                         "50g-1",
                                         "50g-2",
                                         "800g-8",
-                                        "sfp-1000baset",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
                                         "auto",
                                         "auto 10000full",
                                         "auto 1000full",
@@ -44097,6 +45251,20 @@ class EosDesigns(EosDesignsRootModel):
                                         "auto 50gfull",
                                         "auto 5gfull",
                                         "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
                                         "forced 10000full",
                                         "forced 1000full",
                                         "forced 1000half",
@@ -44133,9 +45301,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -45103,7 +46269,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -45129,6 +46304,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -45174,7 +46363,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -45200,6 +46398,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -45214,11 +46426,7 @@ class EosDesigns(EosDesignsRootModel):
                         ]
                         | None
                     )
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -45583,7 +46791,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -45609,6 +46826,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -45623,11 +46854,7 @@ class EosDesigns(EosDesignsRootModel):
                         ]
                         | None
                     )
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -46083,7 +47310,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -46109,6 +47345,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -46146,7 +47396,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -46172,6 +47431,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -46256,7 +47529,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -46282,6 +47564,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -46451,10 +47747,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -46688,10 +47981,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -51697,7 +52987,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -51723,6 +53022,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -51737,10 +53050,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ]
                                 | None
                             )
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            """Interface Speed."""
                             structured_config: EosCliConfigGen.EthernetInterfacesItem
                             """Custom structured config for the member ethernet interface."""
 
@@ -51776,7 +53086,16 @@ class EosDesigns(EosDesignsRootModel):
                                         "50g-1",
                                         "50g-2",
                                         "800g-8",
-                                        "sfp-1000baset",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
                                         "auto",
                                         "auto 10000full",
                                         "auto 1000full",
@@ -51802,6 +53121,20 @@ class EosDesigns(EosDesignsRootModel):
                                         "auto 50gfull",
                                         "auto 5gfull",
                                         "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
                                         "forced 10000full",
                                         "forced 1000full",
                                         "forced 1000half",
@@ -51837,9 +53170,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         structured_config: Custom structured config for the member ethernet interface.
 
                                     """
@@ -57194,7 +58525,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -57220,6 +58560,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -57234,10 +58588,7 @@ class EosDesigns(EosDesignsRootModel):
                             ]
                             | None
                         )
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -57371,7 +58722,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -57397,6 +58757,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -57474,9 +58848,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -57653,7 +59025,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -57679,6 +59060,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -57693,10 +59088,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ]
                                 | None
                             )
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -57741,7 +59133,16 @@ class EosDesigns(EosDesignsRootModel):
                                         "50g-1",
                                         "50g-2",
                                         "800g-8",
-                                        "sfp-1000baset",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
                                         "auto",
                                         "auto 10000full",
                                         "auto 1000full",
@@ -57767,6 +59168,20 @@ class EosDesigns(EosDesignsRootModel):
                                         "auto 50gfull",
                                         "auto 5gfull",
                                         "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
                                         "forced 10000full",
                                         "forced 1000full",
                                         "forced 1000half",
@@ -57803,9 +59218,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -58761,7 +60174,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -58787,6 +60209,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -58832,7 +60268,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -58858,6 +60303,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -58872,11 +60331,7 @@ class EosDesigns(EosDesignsRootModel):
                         ]
                         | None
                     )
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -59241,7 +60696,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -59267,6 +60731,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -59281,11 +60759,7 @@ class EosDesigns(EosDesignsRootModel):
                         ]
                         | None
                     )
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -59739,7 +61213,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -59765,6 +61248,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -59802,7 +61299,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -59828,6 +61334,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -59912,7 +61432,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -59938,6 +61467,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -60100,10 +61643,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -60337,10 +61877,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -62365,7 +63902,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -62391,6 +63937,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -62405,10 +63965,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ]
                                 | None
                             )
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            """Interface Speed."""
                             receive_bandwidth: int | None
                             """
                             Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -62542,7 +64099,16 @@ class EosDesigns(EosDesignsRootModel):
                                         "50g-1",
                                         "50g-2",
                                         "800g-8",
-                                        "sfp-1000baset",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
                                         "auto",
                                         "auto 10000full",
                                         "auto 1000full",
@@ -62568,6 +64134,20 @@ class EosDesigns(EosDesignsRootModel):
                                         "auto 50gfull",
                                         "auto 5gfull",
                                         "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
                                         "forced 10000full",
                                         "forced 1000full",
                                         "forced 1000half",
@@ -62645,9 +64225,7 @@ class EosDesigns(EosDesignsRootModel):
                                            specified.
                                         dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                         enabled: Enable or Shutdown the interface.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         receive_bandwidth:
                                            Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                            This is currently used on
@@ -62824,7 +64402,16 @@ class EosDesigns(EosDesignsRootModel):
                                         "50g-1",
                                         "50g-2",
                                         "800g-8",
-                                        "sfp-1000baset",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
                                         "auto",
                                         "auto 10000full",
                                         "auto 1000full",
@@ -62850,6 +64437,20 @@ class EosDesigns(EosDesignsRootModel):
                                         "auto 50gfull",
                                         "auto 5gfull",
                                         "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
                                         "forced 10000full",
                                         "forced 1000full",
                                         "forced 1000half",
@@ -62864,10 +64465,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ]
                                     | None
                                 )
-                                """
-                                Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                <interface_speed>`.
-                                """
+                                """Interface Speed."""
                                 rx_queue: RxQueue
                                 """
                                 Receive queue parameters for platform SFE interface profile.
@@ -62912,7 +64510,16 @@ class EosDesigns(EosDesignsRootModel):
                                             "50g-1",
                                             "50g-2",
                                             "800g-8",
-                                            "sfp-1000baset",
+                                            "sfp-1000baset auto 100full",
+                                            "1.6t-8",
+                                            "100mfull",
+                                            "100mhalf",
+                                            "10mfull",
+                                            "10mhalf",
+                                            "200g-1",
+                                            "400g-2",
+                                            "40g-4",
+                                            "800g-4",
                                             "auto",
                                             "auto 10000full",
                                             "auto 1000full",
@@ -62938,6 +64545,20 @@ class EosDesigns(EosDesignsRootModel):
                                             "auto 50gfull",
                                             "auto 5gfull",
                                             "auto 800g-8",
+                                            "auto 1.6t-8",
+                                            "auto 100mfull",
+                                            "auto 100mhalf",
+                                            "auto 10g",
+                                            "auto 10mfull",
+                                            "auto 10mhalf",
+                                            "auto 1g",
+                                            "auto 2.5g",
+                                            "auto 200g-1",
+                                            "auto 25g",
+                                            "auto 400g-2",
+                                            "auto 40g-4",
+                                            "auto 5g",
+                                            "auto 800g-4",
                                             "forced 10000full",
                                             "forced 1000full",
                                             "forced 1000half",
@@ -62974,9 +64595,7 @@ class EosDesigns(EosDesignsRootModel):
                                                If not set, this inherits the peer
                                                setting on the port-channel interface.
                                             peer_interface: The peer device interface. Used for description and documentation.
-                                            speed:
-                                               Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                               <interface_speed>`.
+                                            speed: Interface Speed.
                                             rx_queue:
                                                Receive queue parameters for platform SFE interface profile.
                                                This setting is ignored unless the
@@ -63950,7 +65569,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -63976,6 +65604,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -64021,7 +65663,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -64047,6 +65698,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -64061,11 +65726,7 @@ class EosDesigns(EosDesignsRootModel):
                             ]
                             | None
                         )
-                        """
-                        Set point-to-Point interface speed for the uplink switch interface only.
-                        Speed should be set in the
-                        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                        """
+                        """Set point-to-Point interface speed for the uplink switch interface only."""
                         uplink_mtu: int | None
                         """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                         max_uplink_switches: int | None
@@ -64430,7 +66091,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -64456,6 +66126,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -64470,11 +66154,7 @@ class EosDesigns(EosDesignsRootModel):
                             ]
                             | None
                         )
-                        """
-                        Set MLAG interface speed.
-                        Speed should be set in the format `<interface_speed>` or `forced
-                        <interface_speed>` or `auto <interface_speed>`.
-                        """
+                        """Set MLAG interface speed."""
                         mlag_peer_l3_vlan: int
                         """
                         Underlay L3 peering SVI interface id.
@@ -64930,7 +66610,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -64956,6 +66645,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -64993,7 +66696,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -65019,6 +66731,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -65103,7 +66829,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -65129,6 +66864,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -65298,10 +67047,7 @@ class EosDesigns(EosDesignsRootModel):
                                        interface speed can be overridden with `uplink_switch_interface_speed`).
                                        Speed should be set in the
                                        format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                    uplink_switch_interface_speed:
-                                       Set point-to-Point interface speed for the uplink switch interface only.
-                                       Speed should be set in the
-                                       format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                    uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                     uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                     max_uplink_switches:
                                        Maximum number of uplink switches.
@@ -65535,10 +67281,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
-                                    mlag_interfaces_speed:
-                                       Set MLAG interface speed.
-                                       Speed should be set in the format `<interface_speed>` or `forced
-                                       <interface_speed>` or `auto <interface_speed>`.
+                                    mlag_interfaces_speed: Set MLAG interface speed.
                                     mlag_peer_l3_vlan:
                                        Underlay L3 peering SVI interface id.
                                        If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -67477,7 +69220,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -67503,6 +69255,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -67517,10 +69283,7 @@ class EosDesigns(EosDesignsRootModel):
                             ]
                             | None
                         )
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -67654,7 +69417,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -67680,6 +69452,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -67757,9 +69543,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -67936,7 +69720,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -67962,6 +69755,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -67976,10 +69783,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ]
                                 | None
                             )
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -68024,7 +69828,16 @@ class EosDesigns(EosDesignsRootModel):
                                         "50g-1",
                                         "50g-2",
                                         "800g-8",
-                                        "sfp-1000baset",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
                                         "auto",
                                         "auto 10000full",
                                         "auto 1000full",
@@ -68050,6 +69863,20 @@ class EosDesigns(EosDesignsRootModel):
                                         "auto 50gfull",
                                         "auto 5gfull",
                                         "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
                                         "forced 10000full",
                                         "forced 1000full",
                                         "forced 1000half",
@@ -68086,9 +69913,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -69059,7 +70884,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -69085,6 +70919,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -69130,7 +70978,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -69156,6 +71013,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -69170,11 +71041,7 @@ class EosDesigns(EosDesignsRootModel):
                         ]
                         | None
                     )
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -69539,7 +71406,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -69565,6 +71441,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -69579,11 +71469,7 @@ class EosDesigns(EosDesignsRootModel):
                         ]
                         | None
                     )
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -70039,7 +71925,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -70065,6 +71960,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -70102,7 +72011,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -70128,6 +72046,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -70212,7 +72144,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -70238,6 +72179,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -70409,10 +72364,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -70646,10 +72598,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the
@@ -72663,7 +74612,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -72689,6 +74647,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -72703,10 +74675,7 @@ class EosDesigns(EosDesignsRootModel):
                             ]
                             | None
                         )
-                        """
-                        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                        <interface_speed>`.
-                        """
+                        """Interface Speed."""
                         receive_bandwidth: int | None
                         """
                         Maximum allowed receive bandwidth (download) in Mbps for this interface.
@@ -72840,7 +74809,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -72866,6 +74844,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -72943,9 +74935,7 @@ class EosDesigns(EosDesignsRootModel):
                                        specified.
                                     dhcp_accept_default_route: Accept a default route from DHCP if `ip_address` is set to `dhcp`.
                                     enabled: Enable or Shutdown the interface.
-                                    speed:
-                                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                       <interface_speed>`.
+                                    speed: Interface Speed.
                                     receive_bandwidth:
                                        Maximum allowed receive bandwidth (download) in Mbps for this interface.
                                        This is currently used on
@@ -73122,7 +75112,16 @@ class EosDesigns(EosDesignsRootModel):
                                     "50g-1",
                                     "50g-2",
                                     "800g-8",
-                                    "sfp-1000baset",
+                                    "sfp-1000baset auto 100full",
+                                    "1.6t-8",
+                                    "100mfull",
+                                    "100mhalf",
+                                    "10mfull",
+                                    "10mhalf",
+                                    "200g-1",
+                                    "400g-2",
+                                    "40g-4",
+                                    "800g-4",
                                     "auto",
                                     "auto 10000full",
                                     "auto 1000full",
@@ -73148,6 +75147,20 @@ class EosDesigns(EosDesignsRootModel):
                                     "auto 50gfull",
                                     "auto 5gfull",
                                     "auto 800g-8",
+                                    "auto 1.6t-8",
+                                    "auto 100mfull",
+                                    "auto 100mhalf",
+                                    "auto 10g",
+                                    "auto 10mfull",
+                                    "auto 10mhalf",
+                                    "auto 1g",
+                                    "auto 2.5g",
+                                    "auto 200g-1",
+                                    "auto 25g",
+                                    "auto 400g-2",
+                                    "auto 40g-4",
+                                    "auto 5g",
+                                    "auto 800g-4",
                                     "forced 10000full",
                                     "forced 1000full",
                                     "forced 1000half",
@@ -73162,10 +75175,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ]
                                 | None
                             )
-                            """
-                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                            <interface_speed>`.
-                            """
+                            """Interface Speed."""
                             rx_queue: RxQueue
                             """
                             Receive queue parameters for platform SFE interface profile.
@@ -73210,7 +75220,16 @@ class EosDesigns(EosDesignsRootModel):
                                         "50g-1",
                                         "50g-2",
                                         "800g-8",
-                                        "sfp-1000baset",
+                                        "sfp-1000baset auto 100full",
+                                        "1.6t-8",
+                                        "100mfull",
+                                        "100mhalf",
+                                        "10mfull",
+                                        "10mhalf",
+                                        "200g-1",
+                                        "400g-2",
+                                        "40g-4",
+                                        "800g-4",
                                         "auto",
                                         "auto 10000full",
                                         "auto 1000full",
@@ -73236,6 +75255,20 @@ class EosDesigns(EosDesignsRootModel):
                                         "auto 50gfull",
                                         "auto 5gfull",
                                         "auto 800g-8",
+                                        "auto 1.6t-8",
+                                        "auto 100mfull",
+                                        "auto 100mhalf",
+                                        "auto 10g",
+                                        "auto 10mfull",
+                                        "auto 10mhalf",
+                                        "auto 1g",
+                                        "auto 2.5g",
+                                        "auto 200g-1",
+                                        "auto 25g",
+                                        "auto 400g-2",
+                                        "auto 40g-4",
+                                        "auto 5g",
+                                        "auto 800g-4",
                                         "forced 10000full",
                                         "forced 1000full",
                                         "forced 1000half",
@@ -73272,9 +75305,7 @@ class EosDesigns(EosDesignsRootModel):
                                            If not set, this inherits the peer
                                            setting on the port-channel interface.
                                         peer_interface: The peer device interface. Used for description and documentation.
-                                        speed:
-                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                                           <interface_speed>`.
+                                        speed: Interface Speed.
                                         rx_queue:
                                            Receive queue parameters for platform SFE interface profile.
                                            This setting is ignored unless the
@@ -74242,7 +76273,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -74268,6 +76308,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -74313,7 +76367,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -74339,6 +76402,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -74353,11 +76430,7 @@ class EosDesigns(EosDesignsRootModel):
                         ]
                         | None
                     )
-                    """
-                    Set point-to-Point interface speed for the uplink switch interface only.
-                    Speed should be set in the
-                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    """Set point-to-Point interface speed for the uplink switch interface only."""
                     uplink_mtu: int | None
                     """Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting."""
                     max_uplink_switches: int | None
@@ -74722,7 +76795,16 @@ class EosDesigns(EosDesignsRootModel):
                             "50g-1",
                             "50g-2",
                             "800g-8",
-                            "sfp-1000baset",
+                            "sfp-1000baset auto 100full",
+                            "1.6t-8",
+                            "100mfull",
+                            "100mhalf",
+                            "10mfull",
+                            "10mhalf",
+                            "200g-1",
+                            "400g-2",
+                            "40g-4",
+                            "800g-4",
                             "auto",
                             "auto 10000full",
                             "auto 1000full",
@@ -74748,6 +76830,20 @@ class EosDesigns(EosDesignsRootModel):
                             "auto 50gfull",
                             "auto 5gfull",
                             "auto 800g-8",
+                            "auto 1.6t-8",
+                            "auto 100mfull",
+                            "auto 100mhalf",
+                            "auto 10g",
+                            "auto 10mfull",
+                            "auto 10mhalf",
+                            "auto 1g",
+                            "auto 2.5g",
+                            "auto 200g-1",
+                            "auto 25g",
+                            "auto 400g-2",
+                            "auto 40g-4",
+                            "auto 5g",
+                            "auto 800g-4",
                             "forced 10000full",
                             "forced 1000full",
                             "forced 1000half",
@@ -74762,11 +76858,7 @@ class EosDesigns(EosDesignsRootModel):
                         ]
                         | None
                     )
-                    """
-                    Set MLAG interface speed.
-                    Speed should be set in the format `<interface_speed>` or `forced
-                    <interface_speed>` or `auto <interface_speed>`.
-                    """
+                    """Set MLAG interface speed."""
                     mlag_peer_l3_vlan: int
                     """
                     Underlay L3 peering SVI interface id.
@@ -75222,7 +77314,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -75248,6 +77349,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -75285,7 +77400,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -75311,6 +77435,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -75395,7 +77533,16 @@ class EosDesigns(EosDesignsRootModel):
                                 "50g-1",
                                 "50g-2",
                                 "800g-8",
-                                "sfp-1000baset",
+                                "sfp-1000baset auto 100full",
+                                "1.6t-8",
+                                "100mfull",
+                                "100mhalf",
+                                "10mfull",
+                                "10mhalf",
+                                "200g-1",
+                                "400g-2",
+                                "40g-4",
+                                "800g-4",
                                 "auto",
                                 "auto 10000full",
                                 "auto 1000full",
@@ -75421,6 +77568,20 @@ class EosDesigns(EosDesignsRootModel):
                                 "auto 50gfull",
                                 "auto 5gfull",
                                 "auto 800g-8",
+                                "auto 1.6t-8",
+                                "auto 100mfull",
+                                "auto 100mhalf",
+                                "auto 10g",
+                                "auto 10mfull",
+                                "auto 10mhalf",
+                                "auto 1g",
+                                "auto 2.5g",
+                                "auto 200g-1",
+                                "auto 25g",
+                                "auto 400g-2",
+                                "auto 40g-4",
+                                "auto 5g",
+                                "auto 800g-4",
                                 "forced 10000full",
                                 "forced 1000full",
                                 "forced 1000half",
@@ -75590,10 +77751,7 @@ class EosDesigns(EosDesignsRootModel):
                                    interface speed can be overridden with `uplink_switch_interface_speed`).
                                    Speed should be set in the
                                    format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-                                uplink_switch_interface_speed:
-                                   Set point-to-Point interface speed for the uplink switch interface only.
-                                   Speed should be set in the
-                                   format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+                                uplink_switch_interface_speed: Set point-to-Point interface speed for the uplink switch interface only.
                                 uplink_mtu: Point-to-Point uplinks MTU in bytes. This setting overrides the `p2p_uplinks_mtu` setting.
                                 max_uplink_switches:
                                    Maximum number of uplink switches.
@@ -75827,10 +77985,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `str` items.
-                                mlag_interfaces_speed:
-                                   Set MLAG interface speed.
-                                   Speed should be set in the format `<interface_speed>` or `forced
-                                   <interface_speed>` or `auto <interface_speed>`.
+                                mlag_interfaces_speed: Set MLAG interface speed.
                                 mlag_peer_l3_vlan:
                                    Underlay L3 peering SVI interface id.
                                    If set to 0 or the same vlan as mlag_peer_vlan, the

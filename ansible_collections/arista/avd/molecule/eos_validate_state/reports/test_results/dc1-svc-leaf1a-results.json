@@ -361,7 +361,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies there are no adverse drops exceeding defined thresholds."
+    "description": "Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches."
   },
   {
     "name": "dc1-svc-leaf1a",
@@ -386,7 +386,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the power supplies state and input voltage."
+    "description": "Verifies the power supplies status."
   },
   {
     "name": "dc1-svc-leaf1a",
@@ -394,7 +394,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the power supplies state and input voltage.",
+    "description": "Verifies the power supplies status.",
     "custom_field": "Accepted States: 'ok'"
   },
   {

@@ -12468,7 +12468,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "50g-1",
                 "50g-2",
                 "800g-8",
-                "sfp-1000baset",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
                 "auto",
                 "auto 10000full",
                 "auto 1000full",
@@ -12494,6 +12503,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "auto 50gfull",
                 "auto 5gfull",
                 "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
                 "forced 10000full",
                 "forced 1000full",
                 "forced 1000half",
@@ -12508,10 +12531,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ]
             | None
         )
-        """
-        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
-        """
+        """Interface Speed."""
         mtu: int | None
         l2_mtu: int | None
         """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
@@ -12808,7 +12828,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "50g-1",
                     "50g-2",
                     "800g-8",
-                    "sfp-1000baset",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
                     "auto",
                     "auto 10000full",
                     "auto 1000full",
@@ -12834,6 +12863,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "auto 50gfull",
                     "auto 5gfull",
                     "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
                     "forced 10000full",
                     "forced 1000full",
                     "forced 1000half",
@@ -12974,9 +13017,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     description: description
                     shutdown: shutdown
                     load_interval: Interval in seconds for updating interface counters.
-                    speed:
-                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                    speed: Interface Speed.
                     mtu: mtu
                     l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
                     l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
@@ -22186,7 +22227,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "50g-1",
                 "50g-2",
                 "800g-8",
-                "sfp-1000baset",
+                "sfp-1000baset auto 100full",
+                "1.6t-8",
+                "100mfull",
+                "100mhalf",
+                "10mfull",
+                "10mhalf",
+                "200g-1",
+                "400g-2",
+                "40g-4",
+                "800g-4",
                 "auto",
                 "auto 10000full",
                 "auto 1000full",
@@ -22212,6 +22262,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "auto 50gfull",
                 "auto 5gfull",
                 "auto 800g-8",
+                "auto 1.6t-8",
+                "auto 100mfull",
+                "auto 100mhalf",
+                "auto 10g",
+                "auto 10mfull",
+                "auto 10mhalf",
+                "auto 1g",
+                "auto 2.5g",
+                "auto 200g-1",
+                "auto 25g",
+                "auto 400g-2",
+                "auto 40g-4",
+                "auto 5g",
+                "auto 800g-4",
                 "forced 10000full",
                 "forced 1000full",
                 "forced 1000half",
@@ -22226,10 +22290,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ]
             | None
         )
-        """
-        Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-        <interface_speed>`.
-        """
+        """Interface Speed."""
         mtu: int | None
         vrf: str | None
         """VRF Name."""
@@ -22288,7 +22349,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "50g-1",
                     "50g-2",
                     "800g-8",
-                    "sfp-1000baset",
+                    "sfp-1000baset auto 100full",
+                    "1.6t-8",
+                    "100mfull",
+                    "100mhalf",
+                    "10mfull",
+                    "10mhalf",
+                    "200g-1",
+                    "400g-2",
+                    "40g-4",
+                    "800g-4",
                     "auto",
                     "auto 10000full",
                     "auto 1000full",
@@ -22314,6 +22384,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "auto 50gfull",
                     "auto 5gfull",
                     "auto 800g-8",
+                    "auto 1.6t-8",
+                    "auto 100mfull",
+                    "auto 100mhalf",
+                    "auto 10g",
+                    "auto 10mfull",
+                    "auto 10mhalf",
+                    "auto 1g",
+                    "auto 2.5g",
+                    "auto 200g-1",
+                    "auto 25g",
+                    "auto 400g-2",
+                    "auto 40g-4",
+                    "auto 5g",
+                    "auto 800g-4",
                     "forced 10000full",
                     "forced 1000full",
                     "forced 1000half",
@@ -22351,9 +22435,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: Management Interface Name.
                     description: description
                     shutdown: shutdown
-                    speed:
-                       Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
-                       <interface_speed>`.
+                    speed: Interface Speed.
                     mtu: mtu
                     vrf: VRF Name.
                     ip_address: IPv4_address/Mask.
