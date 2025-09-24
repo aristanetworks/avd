@@ -10540,11 +10540,13 @@ keys:
               max: 4
               convert_types:
               - str
-            vrf:
-              type: str
-              description: VRF name.
-              convert_types:
-              - int
+      vrf:
+        type: str
+        description: 'VRF name for all NTP servers.
+
+          All NTP servers must be in the same VRF.'
+        convert_types:
+        - int
       authenticate:
         type: bool
       authenticate_servers_only:

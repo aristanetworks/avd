@@ -165,7 +165,7 @@ ntp:
   servers:
   - name: 192.168.200.5
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 router_isis:
   instance: EVPN_UNDERLAY
   net: 49.0001.1921.6825.5002.00

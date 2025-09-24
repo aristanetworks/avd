@@ -17,6 +17,7 @@ ntp:
       key: 2
     - name: 1.2.3.4
       local_interface: lo0
+  vrf: MGMT
   authenticate_servers_only: true
   trusted_keys: "1-2"
   authentication_keys:

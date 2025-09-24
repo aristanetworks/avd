@@ -32,8 +32,8 @@ ntp authenticate
 {%     endif %}
 {%     for server in ntp.servers | arista.avd.natural_sort('name') %}
 {%         set ntp_server_cli = "ntp server" %}
-{%         if server.vrf is arista.avd.defined and server.vrf != 'default' %}
-{%             set ntp_server_cli = ntp_server_cli ~ " vrf " ~ server.vrf %}
+{%         if ntp.vrf is arista.avd.defined and ntp.vrf != 'default' %}
+{%             set ntp_server_cli = ntp_server_cli ~ " vrf " ~ ntp.vrf %}
 {%         endif %}
 {%         set ntp_server_cli = ntp_server_cli ~ " " ~ server.name %}
 {%         if server.preferred is arista.avd.defined(true) %}
