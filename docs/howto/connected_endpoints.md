@@ -12,7 +12,7 @@ The **`connected_endpoints`** data model in AVD is a structured way to define th
 
 This model is typically defined directly under the leaf switch's data model, for example, in `host_vars/<leaf_name>.yml` or a group file like `group_vars/LEAFS.yml`.
 
-The core of this model revolves around a powerful concept called **Port Profiles**.
+The core of this model revolves around the concept called **Port Profiles**.
 
 ## Core Concept: Port Profiles
 
