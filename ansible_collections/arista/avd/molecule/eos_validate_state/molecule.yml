@@ -6,23 +6,30 @@ scenario:
     - create
     - converge
     - idempotence
-  destroy_sequence:
+  cleanup_sequence:
     - destroy
-
-ansible:
-  executor:
-    backend: ansible-playbook
-    args:
-      ansible_playbook:
-        - --inventory=inventory/inventory.yml
-        - --check
-  env:
-    ANSIBLE_FORCE_COLOR: true
-  cfg:
+dependency:
+  name: galaxy
+  enabled: false
+driver:
+  name: default
+  options:
+    managed: false
+platforms:
+  - name: dummy
+provisioner:
+  name: ansible
+  config_options:
     defaults:
       jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
       duplicate_dict_key: error
       gathering: explicit
-
+  inventory:
+    links:
+      hosts: 'inventory/inventory.yml'
+      group_vars: 'inventory/group_vars/'
+      host_vars: 'inventory/host_vars/'
+  ansible_args:
+    - --check
 verifier:
   name: ansible
