@@ -21,7 +21,7 @@ Everything starts with a tenant. A tenant is the top-level key under which you d
 
 - **VNI Range:** For EVPN VXLAN fabrics, each tenant is assigned a `mac_vrf_vni_base`. This number is used to automatically calculate the VXLAN Network Identifier (VNI) for each VLAN/SVI within that tenant (e.g., `vni = mac_vrf_vni_base + vlan_id`).
 
-- **Filtering:** AVD uses a filtering model to control which devices a tenant's configuration is applied to. This is typically done using tags.
+- **Filtering:** AVD uses a filtering model to control which devices a tenant's configuration is applied to. This is typically done using [tags](tags.md).
 
 ### Basic Tenant Structure
 
@@ -106,7 +106,7 @@ tenants:
 
 ```
 
-In this example, VLAN 250 will be created and stretched across any devices matching the `storage` tag, but it will not have an SVI or IP address managed by AVD's network services model. For more information please see the how-to guide on tags **Need to add link**.
+In this example, VLAN 250 will be created and stretched across any devices matching the `storage` tag, but it will not have an SVI or IP address managed by AVD's network services model. For more information please see the how-to guide on [tags](tags.md).
 
 ## Complete Tenant Example
 
