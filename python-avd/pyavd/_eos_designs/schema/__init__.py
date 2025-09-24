@@ -9559,15 +9559,7 @@ class EosDesigns(EosDesignsRootModel):
         default_services: bool | None
         vrfs: Vrfs
         """
-        Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not**
-        configured and the default value of `use_mgmt_interface_vrf` is used.
-        To enforce the presence of
-        `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using
-        `name: use_mgmt_interface_vrf`.
-        This behavior will be removed in AVD 6.0.
-
-        Subclass of
-        AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+        Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
         Default value: `lambda cls: coerce_type([{"name": "use_mgmt_interface_vrf", "enabled": True}], target_type=cls)`
         """
@@ -9594,16 +9586,7 @@ class EosDesigns(EosDesignsRootModel):
                     enable_http: enable_http
                     enable_https: enable_https
                     default_services: default_services
-                    vrfs:
-                       Note: For backward compatibility, `mgmt_ip` presence is not enforced when `vrfs` is **not**
-                       configured and the default value of `use_mgmt_interface_vrf` is used.
-                       To enforce the presence of
-                       `mgmt_ip` for the VRF defined by `mgmt_interface_vrf`, explicitly define an entry in `vrfs` using
-                       `name: use_mgmt_interface_vrf`.
-                       This behavior will be removed in AVD 6.0.
-
-                       Subclass of
-                       AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
 
                 """
 
