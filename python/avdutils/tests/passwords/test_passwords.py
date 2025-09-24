@@ -20,7 +20,7 @@ SHA512_CRYPT_TEST_DATA = [
         "arista",
         "",
         "",
-        pytest.raises(ValueError, match="Invalid Salt: Salt cannot be empty."),
+        pytest.raises(ValueError, match=r"Invalid Salt: Salt cannot be empty."),
         id="Empty salt",
     ),
     pytest.param(

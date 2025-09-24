@@ -48,17 +48,17 @@ ansible_collections/arista/avd/examples/common/example-installation.md
 
 ```shell
 ansible-avd-examples/ (or wherever the playbook was run)
-  |── dual-dc-l3ls
-    ├── ansible.cfg
-    ├── documentation
-    ├── group_vars
-    ├── images
-    ├── intended
-    ├── inventory.yml
-    ├── build.yml
-    ├── deploy.yml
-    ├── README.md
-    └── switch-basic-configurations
+├── dual-dc-l3ls
+  ├── documentation
+  ├── group_vars
+  ├── images
+  ├── intended
+  ├── switch-basic-configurations
+  ├── ansible.cfg
+  ├── build.yml
+  ├── deploy.yml
+  ├── inventory.yml
+  └── README.md
 ```
 
 ## Overall design overview
@@ -158,13 +158,11 @@ This section describes the entire `ansible-avd-examples/dual-dc-l3ls/inventory.y
 
 In this example, we will consider that no DNS is available and define the IPs the Ansible host has to reach per device.
 
-=== "inventory.yml"
-
-    ```yaml
-    --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/inventory.yml
-    --8<--
-    ```
+```yaml title="inventory.yml"
+--8<--
+ansible_collections/arista/avd/examples/dual-dc-l3ls/inventory.yml
+--8<--
+```
 
 ## Defining device types
 
@@ -174,23 +172,23 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_SPINES.yml
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_SPINES.yml:2:4
     --8<--
     ```
 
-=== "DC1_L3_LEAVES.yml"
+=== "DC1_L3_LEAFS.yml"
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_L3_LEAVES.yml
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_L3_LEAFS.yml:2:4
     --8<--
     ```
 
-=== "DC1_L2_LEAVES.yml"
+=== "DC1_L2_LEAFS.yml"
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_L2_LEAVES.yml
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_L2_LEAFS.yml:2:4
     --8<--
     ```
 
@@ -198,23 +196,23 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_SPINES.yml
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_SPINES.yml:2:4
     --8<--
     ```
 
-=== "DC2_L3_LEAVES.yml"
+=== "DC2_L3_LEAFS.yml"
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_L3_LEAVES.yml
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_L3_LEAFS.yml:2:4
     --8<--
     ```
 
-=== "DC2_L2_LEAVES.yml"
+=== "DC2_L2_LEAFS.yml"
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_L2_LEAVES.yml
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_L2_LEAFS.yml:2:4
     --8<--
     ```
 
@@ -222,12 +220,12 @@ As discussed in the single DC scenario, all device types must be explicitly defi
 
 The `ansible-avd-examples/dual-dc-l3ls/group_vars/FABRIC.yml` file defines generic settings that apply to all children of the `FABRIC` group as specified in the inventory described earlier.
 
-In this section, only additions to the previous example will be discussed. The only added change that must be inherited by both DCs is the L3 links between the L3 leaves, and it is represented at a fabric level using the following structure:
+In this section, only additions to the previous example will be discussed. The only added change that must be inherited by both DCs is the L3 links between the L3 leafs, and it is represented at a fabric level using the following structure:
 
 ```yaml title="FABRIC.yml"
-    --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/FABRIC.yml:70:91
-    --8<--
+--8<--
+ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/FABRIC.yml:77:98
+--8<--
 ```
 
 1. Define a new IP Pool named "DCI_IP_pool" using the prefix "172.16.100.0/24" to assign IP addresses.
@@ -243,94 +241,34 @@ In this section, we will discuss `DC2` device definitions. From `DC1`, only the 
 Creating the `DC2.yml` file limits the defined settings to DC2. In this example, DC2 follows the same configuration as DC1, but it could be different, keeping the DC1 definition intact while DC2 can be adjusted to meet other requirements.
 
 ```yaml title="DC2.yml"
----
-mgmt_gateway: 172.16.1.1 # (1)!
-
-spine:
-  defaults:
-    platform: vEOS-lab # (2)!
-    loopback_ipv4_pool: 10.255.128.0/27 # (3)!
-    bgp_as: 65200 # (4)!
-
-  nodes: # (5)!
-    - name: dc2-spine1
-      id: 11 # (6)!
-      mgmt_ip: 172.16.1.21/24 # (7)!
-
-    - name: dc2-spine2
-      id: 12
-      mgmt_ip: 172.16.1.22/24
+--8<--
+ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2.yml
+--8<--
 ```
 
 1. The default gateway for the management interface of all devices in DC2 is defined.
-2. `platform` references default settings defined in AVD specific to certain switch platforms.
-3. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0.
-4. `bgp_as` defines the BGP AS number.
-5. `nodes` defines the spine switches using the hostnames defined in the inventory.
-6. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc2-spine1 will get the IPv4 address 10.255.128.11/27 assigned to the Loopback0 interface.
-7. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
 
-The following section covers the L3 leaf switches. Significantly more settings need to be set compared to the spine switches:
+The following section covers the spine switches `ansible-avd-examples/dual-dc-l3ls/group_vars/DC2_SPINES.yml`.
 
-```yaml title="DC2.yml"
-l3leaf:
-  defaults:
-    platform: vEOS-lab # (1)!
-    loopback_ipv4_pool: 10.255.128.0/27 # (2)!
-    loopback_ipv4_offset: 2 # (3)!
-    vtep_loopback_ipv4_pool: 10.255.129.0/27 # (4)!
-    uplink_switches: ['dc2-spine1', 'dc2-spine2'] # (5)!
-    uplink_ipv4_pool: 10.255.255.64/26 # (6)!
-    mlag_peer_ipv4_pool: 10.255.129.64/27 # (7)!
-    mlag_peer_l3_ipv4_pool: 10.255.129.96/27 # (8)!
-    virtual_router_mac_address: 00:1c:73:00:00:99 # (9)!
-    spanning_tree_priority: 4096 # (10)!
-    spanning_tree_mode: mstp # (11)!
+```yaml title="DC2_SPINES.yml"
+--8<--
+ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_SPINES.yml
+--8<--
+```
 
-  node_groups: # (12)!
-    - group: DC2_L3_LEAF1
-      bgp_as: 65201 # (13)!
-      nodes:
-        - name: dc2-leaf1a
-          id: 1
-          mgmt_ip: 172.16.1.111/24
-          uplink_switch_interfaces:
-            - Ethernet1
-            - Ethernet1
-        - name: dc2-leaf1b
-          id: 2
-          mgmt_ip: 172.16.1.112/24
-          uplink_switch_interfaces:
-            - Ethernet2
-            - Ethernet2
+1. `platform` references default settings defined in AVD specific to certain switch platforms.
+2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0.
+3. `bgp_as` defines the BGP AS number.
+4. `nodes` defines the spine switches using the hostnames defined in the inventory.
+5. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc2-spine1 will get the IPv4 address 10.255.128.11/27 assigned to the Loopback0 interface.
+6. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
 
-    - group: DC2_L3_LEAF2
-      bgp_as: 65202
-      evpn_gateway: # (14)!
-        evpn_l2:
-          enabled: true
-        evpn_l3:
-          enabled: true
-          inter_domain: true
-      nodes:
-        - name: dc2-leaf2a
-          id: 3
-          mgmt_ip: 172.16.1.113/24
-          uplink_switch_interfaces:
-            - Ethernet3
-            - Ethernet3
-          evpn_gateway:
-            remote_peers: # (15)!
-              - hostname: dc1-leaf2a
-        - name: dc2-leaf2b
-          id: 4
-          mgmt_ip: 172.16.1.114/24
-          uplink_switch_interfaces:
-            - Ethernet4
-            - Ethernet4
-          evpn_gateway:
-            remote_peers:
-              - hostname: dc1-leaf2b
+The following section covers the L3 leaf switches`ansible-avd-examples/dual-dc-l3ls/group_vars/DC2_L3_LEAFS.yml`. Significantly more settings need to be set compared to the spine switches:
+
+```yaml title="DC2_L3_LEAFS.yml"
+--8<--
+ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_L3_LEAFS.yml
+--8<--
 ```
 
 1. `platform` references default settings defined in AVD specific to certain switch platforms.
@@ -349,30 +287,30 @@ l3leaf:
 14. `evpn_gateway` configures the EVPN DC GW features that will be inherited by the children of this group, in this case, dc2-leaf2a and dc2-leaf2b. `evpn_l2` configures EVPN DC GW for EVPN type 2 routes (MAC-IP) while `evpn_l3` configures the GW for EVPN type 5 routes (IP-PREFIX).
 15. `remote_peers` defines the RS for EVPN DC GW that will be configured on the device. This is a unique definition per device, and using the hostname, AVD can get all the information from the device to generate the configuration: Router ID to peer and BGP AS.
 
-Since we are adding the EVPN DC GW functionality in DC2, we must also add it in DC1. This is a snipped part of `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1.yml` file where the changes need to occur:
+Since we are adding the EVPN DC GW functionality in DC2, we must also add it in DC1. This is a snipped part of `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1_L3_LEAFS.yml` file where the changes need to occur:
 
 !!! important
-    The following is a snipped part of `DC1.yml` reflecting the changes needed compared to the single DC L3LS example. The goal is to configure EVPN DC GW functionality.
+    The following is a snipped part of `DC1_L3_LEAFS.yml` reflecting the changes needed compared to the single DC L3LS example. The goal is to configure EVPN DC GW functionality.
 
-```yaml title="DC1.yml"
-    --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1.yml:82:111
-    --8<--
+```yaml title="DC1_L3_LEAFS.yml"
+--8<--
+ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1_L3_LEAFS.yml:52:81
+--8<--
 ```
 
 Finally, the definition in DC2 for the L2 leaf switches:
 
-```yaml title="DC2.yml"
-    --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2.yml:113:138
-    --8<--
+```yaml title="DC2_L2_LEAFS.yml"
+--8<--
+ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2_L2_LEAFS.yml
+--8<--
 ```
 
 ## Specifying network services (VRFs and VLANs) in the EVPN/VXLAN fabric
 
 This file is identical to the one provided in the previous example. VRFs and VLANs are configured on all devices since no `tags` or `filter` are being used.
 
-It is important to consider adding the new leaves to the Inventory as described in the [Inventory](#content-of-the-inventoryyml-file) section, so they will rely on this file to configure the network services.
+It is important to consider adding the new leafs to the Inventory as described in the [Inventory](#content-of-the-inventoryyml-file) section, so they will rely on this file to configure the network services.
 
 ```yaml title="NETWORK_SERVICES.yml"
 --8<--
@@ -390,7 +328,7 @@ ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/CONNECTED_ENDPOI
 --8<--
 ```
 
-The configuration of the endpoints in DC2 is identical to the ones in DC1. The only change resides in the name of the leaves used and their ports.
+The configuration of the endpoints in DC2 is identical to the ones in DC1. The only change resides in the name of the leafs used and their ports.
 
 ## The playbook
 
@@ -400,13 +338,11 @@ The playbook is also the same, as the actions to execute in the fabric are the s
 
 Example of using this playbook without devices (local tasks):
 
-=== "build.yml"
-
-    ```yaml
-    --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/build.yml
-    --8<--
-    ```
+```yaml title="build.yml"
+--8<--
+ansible_collections/arista/avd/examples/dual-dc-l3ls/build.yml
+--8<--
+```
 
 Please look through the folders and files described above to learn more about the output generated by AVD.
 
@@ -414,13 +350,11 @@ Please look through the folders and files described above to learn more about th
 
 To build and deploy the configurations to your switches directly, using eAPI, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. Those auth variables are defined in FABRIC.yml.
 
-=== "deploy.yml"
-
-    ```yaml
-    --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/deploy.yml
-    --8<--
-    ```
+```yaml title="deploy.yml"
+--8<--
+ansible_collections/arista/avd/examples/dual-dc-l3ls/deploy.yml
+--8<--
+```
 
 ``` bash
 ### Deploy Configurations to Devices using eAPI

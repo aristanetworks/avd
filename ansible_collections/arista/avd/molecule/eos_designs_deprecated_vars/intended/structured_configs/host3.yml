@@ -50,17 +50,6 @@ port_channel_interfaces:
       allowed_vlan: none
 service_routing_protocols_model: multi-agent
 snmp_server:
-  ipv4_acls:
-  - name: acl-for-vrf-MGMT
-  - name: acl-for-vrf-default
-    vrf: default
-  ipv6_acls:
-  - name: acl-for-vrf-MGMT
-  - name: acl-for-vrf-default
-    vrf: default
-  local_interfaces:
-  - name: Management1
-    vrf: MGMT
   hosts:
   - host: 10.6.75.124
     version: '3'
@@ -68,12 +57,8 @@ snmp_server:
     - username: USER-WRITE
       authentication_level: auth
   - host: 10.6.75.130
-    vrf: MGMT
     version: 2c
     community: SNMP-COMMUNITY-2
-  vrfs:
-  - name: default
-    enable: false
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0

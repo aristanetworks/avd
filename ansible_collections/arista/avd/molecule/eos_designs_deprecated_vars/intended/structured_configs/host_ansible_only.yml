@@ -9,7 +9,7 @@ ip_igmp_snooping:
 ip_routing: true
 loopback_interfaces:
 - name: Loopback0
-  description: CUSTOM_ROUTER_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.6/32
 - name: Loopback1

@@ -647,60 +647,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
-    class Avd6Behaviors(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"snmp_settings_vrfs": {"type": bool, "default": False}, "inband_mgmt_attached_hosts": {"type": bool, "default": False}}
-        snmp_settings_vrfs: bool
-        """
-        Opt-in to the new behavior for snmp_settings:
-        - SNMP will only be enabled for VRFs specifically
-        enabled under `snmp_settings.vrfs`.
-          Note this means SNMP will be disabled for VRF "default" unless
-        it is defined there.
-        - `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.
-          If
-        `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
-        "default".
-
-        Default value: `False`
-        """
-        inband_mgmt_attached_hosts: bool
-        """
-        Opt-in to the new behavior for inband management route export:
-        - `ip attached-host route export`
-        will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
-
-        Default value: `False`
-        """
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, snmp_settings_vrfs: bool | UndefinedType = Undefined, inband_mgmt_attached_hosts: bool | UndefinedType = Undefined) -> None:
-                """
-                Avd6Behaviors.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    snmp_settings_vrfs:
-                       Opt-in to the new behavior for snmp_settings:
-                       - SNMP will only be enabled for VRFs specifically
-                       enabled under `snmp_settings.vrfs`.
-                         Note this means SNMP will be disabled for VRF "default" unless
-                       it is defined there.
-                       - `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.
-                         If
-                       `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string
-                       "default".
-                    inband_mgmt_attached_hosts:
-                       Opt-in to the new behavior for inband management route export:
-                       - `ip attached-host route export`
-                       will only be rendered for inband management VLAN interfaces if the underlay protocol is BGP.
-
-                """
-
     class BfdMultihop(AvdModel):
         """Subclass of AvdModel."""
 
@@ -2134,7 +2080,6 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -2255,15 +2200,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool | None
-            """
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-            to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key
-            `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
-            """
             multicast_pim_sm: bool | None
             """
             Configure PIM sparse-mode on the P2P links.
@@ -2368,7 +2304,6 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -2454,13 +2389,6 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         sflow: Enable sFlow. Overrides `fabric_sflow` setting.
-                        underlay_multicast:
-                           Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-                           to be `true`.
-
-                           Note: The default value for this key is `false` when using either the new key
-                           `underlay_multicast.pim_sm.enabled: true
-                           or, if unset, global `underlay_multicast_pim_sm: true`
                         multicast_pim_sm:
                            Configure PIM sparse-mode on the P2P links.
                            Requires node setting
@@ -2833,7 +2761,6 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -2954,15 +2881,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool | None
-            """
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-            to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key
-            `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
-            """
             multicast_pim_sm: bool | None
             """
             Configure PIM sparse-mode on the P2P links.
@@ -3067,7 +2985,6 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -3153,13 +3070,6 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         sflow: Enable sFlow. Overrides `fabric_sflow` setting.
-                        underlay_multicast:
-                           Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-                           to be `true`.
-
-                           Note: The default value for this key is `false` when using either the new key
-                           `underlay_multicast.pim_sm.enabled: true
-                           or, if unset, global `underlay_multicast_pim_sm: true`
                         multicast_pim_sm:
                            Configure PIM sparse-mode on the P2P links.
                            Requires node setting
@@ -5983,30 +5893,6 @@ class EosDesigns(EosDesignsRootModel):
             class ExportersItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Collector(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"host": {"type": str}, "port": {"type": int}}
-                    host: str | None
-                    """Collector IPv4 address or IPv6 address or fully qualified domain name"""
-                    port: int | None
-                    """Collector Port Number"""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, host: str | None | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
-                            """
-                            Collector.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                host: Collector IPv4 address or IPv6 address or fully qualified domain name
-                                port: Collector Port Number
-
-                            """
-
                 class CollectorsItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -6067,7 +5953,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
-                    "collector": {"type": Collector},
                     "collectors": {"type": Collectors},
                     "format": {"type": Format},
                     "local_interface": {"type": str},
@@ -6075,8 +5960,6 @@ class EosDesigns(EosDesignsRootModel):
                 }
                 name: str
                 """Exporter Name"""
-                collector: Collector
-                """Subclass of AvdModel."""
                 collectors: Collectors
                 """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
                 format: Format
@@ -6092,7 +5975,6 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        collector: Collector | UndefinedType = Undefined,
                         collectors: Collectors | UndefinedType = Undefined,
                         format: Format | UndefinedType = Undefined,
                         local_interface: str | None | UndefinedType = Undefined,
@@ -6106,7 +5988,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             name: Exporter Name
-                            collector: Subclass of AvdModel.
                             collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`).
                             format: Subclass of AvdModel.
                             local_interface: Local Source Interface
@@ -7659,7 +7540,6 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -7780,15 +7660,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool | None
-            """
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-            to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key
-            `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
-            """
             multicast_pim_sm: bool | None
             """
             Configure PIM sparse-mode on the P2P links.
@@ -7893,7 +7764,6 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -7979,13 +7849,6 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         sflow: Enable sFlow. Overrides `fabric_sflow` setting.
-                        underlay_multicast:
-                           Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-                           to be `true`.
-
-                           Note: The default value for this key is `false` when using either the new key
-                           `underlay_multicast.pim_sm.enabled: true
-                           or, if unset, global `underlay_multicast_pim_sm: true`
                         multicast_pim_sm:
                            Configure PIM sparse-mode on the P2P links.
                            Requires node setting
@@ -8358,7 +8221,6 @@ class EosDesigns(EosDesignsRootModel):
                 "bfd": {"type": bool},
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
-                "underlay_multicast": {"type": bool},
                 "multicast_pim_sm": {"type": bool},
                 "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
@@ -8479,15 +8341,6 @@ class EosDesigns(EosDesignsRootModel):
             """
             sflow: bool | None
             """Enable sFlow. Overrides `fabric_sflow` setting."""
-            underlay_multicast: bool | None
-            """
-            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-            to be `true`.
-
-            Note: The default value for this key is `false` when using either the new key
-            `underlay_multicast.pim_sm.enabled: true
-            or, if unset, global `underlay_multicast_pim_sm: true`
-            """
             multicast_pim_sm: bool | None
             """
             Configure PIM sparse-mode on the P2P links.
@@ -8592,7 +8445,6 @@ class EosDesigns(EosDesignsRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
-                    underlay_multicast: bool | None | UndefinedType = Undefined,
                     multicast_pim_sm: bool | None | UndefinedType = Undefined,
                     multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
@@ -8678,13 +8530,6 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdModel.
                         sflow: Enable sFlow. Overrides `fabric_sflow` setting.
-                        underlay_multicast:
-                           Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
-                           to be `true`.
-
-                           Note: The default value for this key is `false` when using either the new key
-                           `underlay_multicast.pim_sm.enabled: true
-                           or, if unset, global `underlay_multicast_pim_sm: true`
                         multicast_pim_sm:
                            Configure PIM sparse-mode on the P2P links.
                            Requires node setting
@@ -9791,11 +9636,6 @@ class EosDesigns(EosDesignsRootModel):
                     base_vlan: base_vlan
 
                 """
-
-    class NameServers(AvdList[str]):
-        """Subclass of AvdList with `str` items."""
-
-    NameServers._item_type = str
 
     class NetworkPortsItem(AvdModel):
         """Subclass of AvdModel."""
@@ -11532,7 +11372,6 @@ class EosDesigns(EosDesignsRootModel):
                 "connected_endpoints_port_channel_interfaces": {"type": str},
                 "router_id_loopback_interface": {"type": str},
                 "vtep_loopback_interface": {"type": str},
-                "overlay_loopback_interface": {"type": str},
             }
             python_module: str | None
             """Custom Python Module to import for interface descriptions."""
@@ -11558,8 +11397,6 @@ class EosDesigns(EosDesignsRootModel):
             """Path to Custom J2 template."""
             vtep_loopback_interface: str | None
             """Path to Custom J2 template."""
-            overlay_loopback_interface: str | None
-            """Path to Custom J2 template."""
 
             if TYPE_CHECKING:
 
@@ -11576,7 +11413,6 @@ class EosDesigns(EosDesignsRootModel):
                     connected_endpoints_port_channel_interfaces: str | None | UndefinedType = Undefined,
                     router_id_loopback_interface: str | None | UndefinedType = Undefined,
                     vtep_loopback_interface: str | None | UndefinedType = Undefined,
-                    overlay_loopback_interface: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     InterfaceDescriptions.
@@ -11595,7 +11431,6 @@ class EosDesigns(EosDesignsRootModel):
                         connected_endpoints_port_channel_interfaces: Path to Custom J2 template.
                         router_id_loopback_interface: Path to Custom J2 template.
                         vtep_loopback_interface: Path to Custom J2 template.
-                        overlay_loopback_interface: Path to Custom J2 template.
 
                     """
 
@@ -12054,7 +11889,6 @@ class EosDesigns(EosDesignsRootModel):
                 "connected_endpoints_port_channel_interfaces": {"type": str},
                 "router_id_loopback_interface": {"type": str},
                 "vtep_loopback_interface": {"type": str},
-                "overlay_loopback_interface": {"type": str},
             }
             python_module: str | None
             """Custom Python Module to import for interface descriptions."""
@@ -12080,8 +11914,6 @@ class EosDesigns(EosDesignsRootModel):
             """Path to Custom J2 template."""
             vtep_loopback_interface: str | None
             """Path to Custom J2 template."""
-            overlay_loopback_interface: str | None
-            """Path to Custom J2 template."""
 
             if TYPE_CHECKING:
 
@@ -12098,7 +11930,6 @@ class EosDesigns(EosDesignsRootModel):
                     connected_endpoints_port_channel_interfaces: str | None | UndefinedType = Undefined,
                     router_id_loopback_interface: str | None | UndefinedType = Undefined,
                     vtep_loopback_interface: str | None | UndefinedType = Undefined,
-                    overlay_loopback_interface: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     InterfaceDescriptions.
@@ -12117,7 +11948,6 @@ class EosDesigns(EosDesignsRootModel):
                         connected_endpoints_port_channel_interfaces: Path to Custom J2 template.
                         router_id_loopback_interface: Path to Custom J2 template.
                         vtep_loopback_interface: Path to Custom J2 template.
-                        overlay_loopback_interface: Path to Custom J2 template.
 
                     """
 
@@ -16761,8 +16591,6 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "host": {"type": str},
                 "vrf": {"type": str},
-                "use_mgmt_interface_vrf": {"type": bool},
-                "use_inband_mgmt_vrf": {"type": bool},
                 "version": {"type": str},
                 "community": {"type": str},
                 "users": {"type": Users},
@@ -16789,24 +16617,6 @@ class EosDesigns(EosDesignsRootModel):
             other string will be used directly as the VRF name. Remember to set the
             `snmp_settings.vrfs[].source_interface` if needed.
             """
-            use_mgmt_interface_vrf: bool | None
-            """
-            Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-            Ignored if 'mgmt_ip' or
-            'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF,
-            the host will not be configured at all.
-            Can be used in combination with "vrf" and
-            "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
-            """
-            use_inband_mgmt_vrf: bool | None
-            """
-            Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
-            Ignored if inband management is
-            not configured for the device, so if the host is only configured with this VRF, the host will not be
-            configured at all.
-            Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
-            the SNMP host under multiple VRFs.
-            """
             version: Literal["1", "2c", "3"] | None
             community: str | None
             """Community name. Required with version "1" or "2c"."""
@@ -16820,8 +16630,6 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     host: str | None | UndefinedType = Undefined,
                     vrf: str | None | UndefinedType = Undefined,
-                    use_mgmt_interface_vrf: bool | None | UndefinedType = Undefined,
-                    use_inband_mgmt_vrf: bool | None | UndefinedType = Undefined,
                     version: Literal["1", "2c", "3"] | None | UndefinedType = Undefined,
                     community: str | None | UndefinedType = Undefined,
                     users: Users | UndefinedType = Undefined,
@@ -16852,20 +16660,6 @@ class EosDesigns(EosDesignsRootModel):
                            - Any
                            other string will be used directly as the VRF name. Remember to set the
                            `snmp_settings.vrfs[].source_interface` if needed.
-                        use_mgmt_interface_vrf:
-                           Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
-                           Ignored if 'mgmt_ip' or
-                           'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF,
-                           the host will not be configured at all.
-                           Can be used in combination with "vrf" and
-                           "use_inband_mgmt_vrf" to configure the SNMP host under multiple VRFs.
-                        use_inband_mgmt_vrf:
-                           Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
-                           Ignored if inband management is
-                           not configured for the device, so if the host is only configured with this VRF, the host will not be
-                           configured at all.
-                           Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure
-                           the SNMP host under multiple VRFs.
                         version: version
                         community: Community name. Required with version "1" or "2c".
                         users: Subclass of AvdList with `UsersItem` items.
@@ -16876,62 +16670,6 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `HostsItem` items."""
 
         Hosts._item_type = HostsItem
-
-        class Ipv4AclsItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-            name: str | None
-            """IPv4 access list name."""
-            vrf: str | None
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    Ipv4AclsItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: IPv4 access list name.
-                        vrf: vrf
-
-                    """
-
-        class Ipv4Acls(AvdList[Ipv4AclsItem]):
-            """Subclass of AvdList with `Ipv4AclsItem` items."""
-
-        Ipv4Acls._item_type = Ipv4AclsItem
-
-        class Ipv6AclsItem(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"name": {"type": str}, "vrf": {"type": str}}
-            name: str | None
-            """IPv6 access list name."""
-            vrf: str | None
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, name: str | None | UndefinedType = Undefined, vrf: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    Ipv6AclsItem.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: IPv6 access list name.
-                        vrf: vrf
-
-                    """
-
-        class Ipv6Acls(AvdList[Ipv6AclsItem]):
-            """Subclass of AvdList with `Ipv6AclsItem` items."""
-
-        Ipv6Acls._item_type = Ipv6AclsItem
 
         class ViewsItem(AvdModel):
             """Subclass of AvdModel."""
@@ -17028,16 +16766,12 @@ class EosDesigns(EosDesignsRootModel):
             "contact": {"type": str},
             "location": {"type": bool, "default": False},
             "vrfs": {"type": Vrfs},
-            "enable_mgmt_interface_vrf": {"type": bool},
-            "enable_inband_mgmt_vrf": {"type": bool},
             "compute_local_engineid": {"type": bool, "default": False},
             "compute_local_engineid_source": {"type": str, "default": "hostname_and_ip"},
             "compute_v3_user_localized_key": {"type": bool, "default": False},
             "users": {"type": Users},
             "hosts": {"type": Hosts},
             "communities": {"type": EosCliConfigGen.SnmpServer.Communities},
-            "ipv4_acls": {"type": Ipv4Acls},
-            "ipv6_acls": {"type": Ipv6Acls},
             "views": {"type": Views},
             "groups": {"type": Groups},
             "traps": {"type": EosCliConfigGen.SnmpServer.Traps},
@@ -17053,21 +16787,6 @@ class EosDesigns(EosDesignsRootModel):
         """
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
-        enable_mgmt_interface_vrf: bool | None
-        """
-        Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
-        Ignored if 'mgmt_ip' or
-        'ipv6_mgmt_ip' are not configured for the device.
-        Can be used in combination with "vrfs" and
-        "enable_inband_mgmt_vrf".
-        """
-        enable_inband_mgmt_vrf: bool | None
-        """
-        Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
-        Ignored if inband management is not
-        configured for the device.
-        Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".
-        """
         compute_local_engineid: bool
         """
         Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
@@ -17111,10 +16830,6 @@ class EosDesigns(EosDesignsRootModel):
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
         communities: EosCliConfigGen.SnmpServer.Communities
-        ipv4_acls: Ipv4Acls
-        """Subclass of AvdList with `Ipv4AclsItem` items."""
-        ipv6_acls: Ipv6Acls
-        """Subclass of AvdList with `Ipv6AclsItem` items."""
         views: Views
         """Subclass of AvdList with `ViewsItem` items."""
         groups: Groups
@@ -17129,16 +16844,12 @@ class EosDesigns(EosDesignsRootModel):
                 contact: str | None | UndefinedType = Undefined,
                 location: bool | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
-                enable_mgmt_interface_vrf: bool | None | UndefinedType = Undefined,
-                enable_inband_mgmt_vrf: bool | None | UndefinedType = Undefined,
                 compute_local_engineid: bool | UndefinedType = Undefined,
                 compute_local_engineid_source: Literal["hostname_and_ip", "system_mac"] | UndefinedType = Undefined,
                 compute_v3_user_localized_key: bool | UndefinedType = Undefined,
                 users: Users | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
                 communities: EosCliConfigGen.SnmpServer.Communities | UndefinedType = Undefined,
-                ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
-                ipv6_acls: Ipv6Acls | UndefinedType = Undefined,
                 views: Views | UndefinedType = Undefined,
                 groups: Groups | UndefinedType = Undefined,
                 traps: EosCliConfigGen.SnmpServer.Traps | UndefinedType = Undefined,
@@ -17155,17 +16866,6 @@ class EosDesigns(EosDesignsRootModel):
                        Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack>
                        <inventory_hostname>".
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
-                    enable_mgmt_interface_vrf:
-                       Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
-                       Ignored if 'mgmt_ip' or
-                       'ipv6_mgmt_ip' are not configured for the device.
-                       Can be used in combination with "vrfs" and
-                       "enable_inband_mgmt_vrf".
-                    enable_inband_mgmt_vrf:
-                       Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
-                       Ignored if inband management is not
-                       configured for the device.
-                       Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".
                     compute_local_engineid: Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
                     compute_local_engineid_source:
                        `compute_local_engineid_source` supports:
@@ -17193,8 +16893,6 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdList with `UsersItem` items.
                     hosts: Subclass of AvdList with `HostsItem` items.
                     communities: communities
-                    ipv4_acls: Subclass of AvdList with `Ipv4AclsItem` items.
-                    ipv6_acls: Subclass of AvdList with `Ipv6AclsItem` items.
                     views: Subclass of AvdList with `ViewsItem` items.
                     groups: Subclass of AvdList with `GroupsItem` items.
                     traps: traps
@@ -17203,52 +16901,6 @@ class EosDesigns(EosDesignsRootModel):
 
     class SourceInterfaces(AvdModel):
         """Subclass of AvdModel."""
-
-        class DomainLookup(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"mgmt_interface": {"type": bool, "default": False}, "inband_mgmt_interface": {"type": bool, "default": False}}
-            mgmt_interface: bool
-            """
-            Configure an IP Domain Lookup source-interface with the interface set by `mgmt_interface` for the
-            VRF set by `mgmt_interface_vrf`.
-            `mgmt_interface` is typically the out-of-band Management interface,
-            and can be set under the node settings, platform settings or as a group/host var.
-
-            Default value: `False`
-            """
-            inband_mgmt_interface: bool
-            """
-            Configure an IP Domain Lookup source-interface with the interface set by `inband_mgmt_interface` for
-            the VRF set by `inband_mgmt_vrf`.
-            `inband_mgmt_interface` is typically a loopback or SVI interface,
-            and can be set under the node settings.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, mgmt_interface: bool | UndefinedType = Undefined, inband_mgmt_interface: bool | UndefinedType = Undefined) -> None:
-                    """
-                    DomainLookup.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mgmt_interface:
-                           Configure an IP Domain Lookup source-interface with the interface set by `mgmt_interface` for the
-                           VRF set by `mgmt_interface_vrf`.
-                           `mgmt_interface` is typically the out-of-band Management interface,
-                           and can be set under the node settings, platform settings or as a group/host var.
-                        inband_mgmt_interface:
-                           Configure an IP Domain Lookup source-interface with the interface set by `inband_mgmt_interface` for
-                           the VRF set by `inband_mgmt_vrf`.
-                           `inband_mgmt_interface` is typically a loopback or SVI interface,
-                           and can be set under the node settings.
-
-                    """
 
         class HttpClient(AvdModel):
             """Subclass of AvdModel."""
@@ -17293,98 +16945,6 @@ class EosDesigns(EosDesignsRootModel):
                            the VRF set by `inband_mgmt_vrf`.
                            `inband_mgmt_interface` is typically a loopback or SVI interface,
                            and can be set under the node settings.
-
-                    """
-
-        class Radius(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"mgmt_interface": {"type": bool, "default": False}, "inband_mgmt_interface": {"type": bool, "default": False}}
-            mgmt_interface: bool
-            """
-            Configure an IP Radius source-interface with the interface set by `mgmt_interface` for the VRF set
-            by `mgmt_interface_vrf`.
-            `mgmt_interface` is typically the out-of-band Management interface, and can
-            be set under the node settings, platform settings or as a group/host var.
-
-            Default value: `False`
-            """
-            inband_mgmt_interface: bool
-            """
-            Configure an IP Radius source-interface with the interface set by `inband_mgmt_interface` for the
-            VRF set by `inband_mgmt_vrf`.
-            `inband_mgmt_interface` is typically a loopback or SVI interface, and
-            can be set under the node settings.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, mgmt_interface: bool | UndefinedType = Undefined, inband_mgmt_interface: bool | UndefinedType = Undefined) -> None:
-                    """
-                    Radius.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mgmt_interface:
-                           Configure an IP Radius source-interface with the interface set by `mgmt_interface` for the VRF set
-                           by `mgmt_interface_vrf`.
-                           `mgmt_interface` is typically the out-of-band Management interface, and can
-                           be set under the node settings, platform settings or as a group/host var.
-                        inband_mgmt_interface:
-                           Configure an IP Radius source-interface with the interface set by `inband_mgmt_interface` for the
-                           VRF set by `inband_mgmt_vrf`.
-                           `inband_mgmt_interface` is typically a loopback or SVI interface, and
-                           can be set under the node settings.
-
-                    """
-
-        class Snmp(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"mgmt_interface": {"type": bool, "default": False}, "inband_mgmt_interface": {"type": bool, "default": False}}
-            mgmt_interface: bool
-            """
-            Configure a SNMP local-interface with the interface set by `mgmt_interface` for the VRF set by
-            `mgmt_interface_vrf`.
-            `mgmt_interface` is typically the out-of-band Management interface, and can be
-            set under the node settings, platform settings or as a group/host var.
-
-            Default value: `False`
-            """
-            inband_mgmt_interface: bool
-            """
-            Configure a SNMP local-interface with the interface set by `inband_mgmt_interface` for the VRF set
-            by `inband_mgmt_vrf`.
-            `inband_mgmt_interface` is typically a loopback or SVI interface, and can be
-            set under the node settings.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, mgmt_interface: bool | UndefinedType = Undefined, inband_mgmt_interface: bool | UndefinedType = Undefined) -> None:
-                    """
-                    Snmp.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mgmt_interface:
-                           Configure a SNMP local-interface with the interface set by `mgmt_interface` for the VRF set by
-                           `mgmt_interface_vrf`.
-                           `mgmt_interface` is typically the out-of-band Management interface, and can be
-                           set under the node settings, platform settings or as a group/host var.
-                        inband_mgmt_interface:
-                           Configure a SNMP local-interface with the interface set by `inband_mgmt_interface` for the VRF set
-                           by `inband_mgmt_vrf`.
-                           `inband_mgmt_interface` is typically a loopback or SVI interface, and can be
-                           set under the node settings.
 
                     """
 
@@ -17434,81 +16994,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class Tacacs(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"mgmt_interface": {"type": bool, "default": False}, "inband_mgmt_interface": {"type": bool, "default": False}}
-            mgmt_interface: bool
-            """
-            Configure an IP Tacacs source-interface with the interface set by `mgmt_interface` for the VRF set
-            by `mgmt_interface_vrf`.
-            `mgmt_interface` is typically the out-of-band Management interface, and can
-            be set under the node settings, platform settings or as a group/host var.
-
-            Default value: `False`
-            """
-            inband_mgmt_interface: bool
-            """
-            Configure an IP Tacacs source-interface with the interface set by `inband_mgmt_interface` for the
-            VRF set by `inband_mgmt_vrf`.
-            `inband_mgmt_interface` is typically a loopback or SVI interface, and
-            can be set under the node settings.
-
-            Default value: `False`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, mgmt_interface: bool | UndefinedType = Undefined, inband_mgmt_interface: bool | UndefinedType = Undefined) -> None:
-                    """
-                    Tacacs.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        mgmt_interface:
-                           Configure an IP Tacacs source-interface with the interface set by `mgmt_interface` for the VRF set
-                           by `mgmt_interface_vrf`.
-                           `mgmt_interface` is typically the out-of-band Management interface, and can
-                           be set under the node settings, platform settings or as a group/host var.
-                        inband_mgmt_interface:
-                           Configure an IP Tacacs source-interface with the interface set by `inband_mgmt_interface` for the
-                           VRF set by `inband_mgmt_vrf`.
-                           `inband_mgmt_interface` is typically a loopback or SVI interface, and
-                           can be set under the node settings.
-
-                    """
-
-        _fields: ClassVar[dict] = {
-            "domain_lookup": {"type": DomainLookup},
-            "http_client": {"type": HttpClient},
-            "radius": {"type": Radius},
-            "snmp": {"type": Snmp},
-            "ssh_client": {"type": SshClient},
-            "tacacs": {"type": Tacacs},
-        }
-        domain_lookup: DomainLookup
-        """
-        IP Domain Lookup source-interfaces.
-
-        Subclass of AvdModel.
-        """
+        _fields: ClassVar[dict] = {"http_client": {"type": HttpClient}, "ssh_client": {"type": SshClient}}
         http_client: HttpClient
         """
         IP HTTP Client source-interfaces.
-
-        Subclass of AvdModel.
-        """
-        radius: Radius
-        """
-        IP Radius source-interfaces.
-
-        Subclass of AvdModel.
-        """
-        snmp: Snmp
-        """
-        SNMP local-interfaces.
 
         Subclass of AvdModel.
         """
@@ -17518,25 +17007,10 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        tacacs: Tacacs
-        """
-        IP Tacacs source-interfaces.
-
-        Subclass of AvdModel.
-        """
 
         if TYPE_CHECKING:
 
-            def __init__(
-                self,
-                *,
-                domain_lookup: DomainLookup | UndefinedType = Undefined,
-                http_client: HttpClient | UndefinedType = Undefined,
-                radius: Radius | UndefinedType = Undefined,
-                snmp: Snmp | UndefinedType = Undefined,
-                ssh_client: SshClient | UndefinedType = Undefined,
-                tacacs: Tacacs | UndefinedType = Undefined,
-            ) -> None:
+            def __init__(self, *, http_client: HttpClient | UndefinedType = Undefined, ssh_client: SshClient | UndefinedType = Undefined) -> None:
                 """
                 SourceInterfaces.
 
@@ -17544,28 +17018,12 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    domain_lookup:
-                       IP Domain Lookup source-interfaces.
-
-                       Subclass of AvdModel.
                     http_client:
                        IP HTTP Client source-interfaces.
 
                        Subclass of AvdModel.
-                    radius:
-                       IP Radius source-interfaces.
-
-                       Subclass of AvdModel.
-                    snmp:
-                       SNMP local-interfaces.
-
-                       Subclass of AvdModel.
                     ssh_client:
                        IP SSH Client source-interfaces.
-
-                       Subclass of AvdModel.
-                    tacacs:
-                       IP Tacacs source-interfaces.
 
                        Subclass of AvdModel.
 
@@ -17747,7 +17205,7 @@ class EosDesigns(EosDesignsRootModel):
                     "metric": {"type": int},
                     "interface": {"type": str},
                 }
-                prefix: str | None
+                prefix: str
                 next_hop: str | None
                 track_bfd: bool | None
                 """Track next-hop using BFD."""
@@ -17763,7 +17221,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        prefix: str | None | UndefinedType = Undefined,
+                        prefix: str | UndefinedType = Undefined,
                         next_hop: str | None | UndefinedType = Undefined,
                         track_bfd: bool | None | UndefinedType = Undefined,
                         distance: int | None | UndefinedType = Undefined,
@@ -17808,7 +17266,7 @@ class EosDesigns(EosDesignsRootModel):
                     "metric": {"type": int},
                     "interface": {"type": str},
                 }
-                prefix: str | None
+                prefix: str
                 next_hop: str | None
                 track_bfd: bool | None
                 """Track next-hop using BFD."""
@@ -17824,7 +17282,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        prefix: str | None | UndefinedType = Undefined,
+                        prefix: str | UndefinedType = Undefined,
                         next_hop: str | None | UndefinedType = Undefined,
                         track_bfd: bool | None | UndefinedType = Undefined,
                         distance: int | None | UndefinedType = Undefined,
@@ -18672,7 +18130,7 @@ class EosDesigns(EosDesignsRootModel):
                 "metric": {"type": int},
                 "interface": {"type": str},
             }
-            prefix: str | None
+            prefix: str
             next_hop: str | None
             track_bfd: bool | None
             """Track next-hop using BFD."""
@@ -18688,7 +18146,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    prefix: str | None | UndefinedType = Undefined,
+                    prefix: str | UndefinedType = Undefined,
                     next_hop: str | None | UndefinedType = Undefined,
                     track_bfd: bool | None | UndefinedType = Undefined,
                     distance: int | None | UndefinedType = Undefined,
@@ -18733,7 +18191,7 @@ class EosDesigns(EosDesignsRootModel):
                 "metric": {"type": int},
                 "interface": {"type": str},
             }
-            prefix: str | None
+            prefix: str
             next_hop: str | None
             track_bfd: bool | None
             """Track next-hop using BFD."""
@@ -18749,7 +18207,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    prefix: str | None | UndefinedType = Undefined,
+                    prefix: str | UndefinedType = Undefined,
                     next_hop: str | None | UndefinedType = Undefined,
                     track_bfd: bool | None | UndefinedType = Undefined,
                     distance: int | None | UndefinedType = Undefined,
@@ -19818,22 +19276,11 @@ class EosDesigns(EosDesignsRootModel):
         class MessageDigestKeysItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "id": {"type": int},
-                "hash_algorithm": {"type": str, "default": "sha512"},
-                "key": {"type": str},
-                "cleartext_key": {"type": str},
-            }
+            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "cleartext_key": {"type": str}}
             id: int
             hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
             """Default value: `"sha512"`"""
-            key: str | None
-            """
-            Cleartext key.
-            To protect the password at rest it is strongly recommended to make use of a vault or
-            similar.
-            """
-            cleartext_key: str | None
+            cleartext_key: str
             """
             Cleartext key for OSPF message-digest authentication
             To protect the password at rest it is strongly
@@ -19847,8 +19294,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     id: int | UndefinedType = Undefined,
                     hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
-                    key: str | None | UndefinedType = Undefined,
-                    cleartext_key: str | None | UndefinedType = Undefined,
+                    cleartext_key: str | UndefinedType = Undefined,
                 ) -> None:
                     """
                     MessageDigestKeysItem.
@@ -19859,10 +19305,6 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         id: id
                         hash_algorithm: hash_algorithm
-                        key:
-                           Cleartext key.
-                           To protect the password at rest it is strongly recommended to make use of a vault or
-                           similar.
                         cleartext_key:
                            Cleartext key for OSPF message-digest authentication
                            To protect the password at rest it is strongly
@@ -27588,7 +27030,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -27639,7 +27081,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -32112,7 +31554,7 @@ class EosDesigns(EosDesignsRootModel):
                                 also enabled on MLAG peer
                                   - l3_edge and core interfaces
                                 Overrides the global
-                                `underlay_multicast_multicast`.
+                                `underlay_multicast_static`.
                                 """
                                 uplinks: bool
                                 """
@@ -32163,7 +31605,7 @@ class EosDesigns(EosDesignsRootModel):
                                                also enabled on MLAG peer
                                                  - l3_edge and core interfaces
                                                Overrides the global
-                                               `underlay_multicast_multicast`.
+                                               `underlay_multicast_static`.
                                             uplinks:
                                                Enable/Disable static multicast on uplinks.
                                                Requires node setting
@@ -36565,7 +36007,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -36616,7 +36058,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -41098,7 +40540,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -41149,7 +40591,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -44944,7 +44386,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "metric": {"type": int},
                                     "interface": {"type": str},
                                 }
-                                prefix: str | None
+                                prefix: str
                                 next_hop: str | None
                                 track_bfd: bool | None
                                 """Track next-hop using BFD."""
@@ -44960,7 +44402,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        prefix: str | None | UndefinedType = Undefined,
+                                        prefix: str | UndefinedType = Undefined,
                                         next_hop: str | None | UndefinedType = Undefined,
                                         track_bfd: bool | None | UndefinedType = Undefined,
                                         distance: int | None | UndefinedType = Undefined,
@@ -45005,7 +44447,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "metric": {"type": int},
                                     "interface": {"type": str},
                                 }
-                                prefix: str | None
+                                prefix: str
                                 next_hop: str | None
                                 track_bfd: bool | None
                                 """Track next-hop using BFD."""
@@ -45021,7 +44463,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        prefix: str | None | UndefinedType = Undefined,
+                                        prefix: str | UndefinedType = Undefined,
                                         next_hop: str | None | UndefinedType = Undefined,
                                         track_bfd: bool | None | UndefinedType = Undefined,
                                         distance: int | None | UndefinedType = Undefined,
@@ -45898,7 +45340,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "metric": {"type": int},
                                 "interface": {"type": str},
                             }
-                            prefix: str | None
+                            prefix: str
                             next_hop: str | None
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -45914,7 +45356,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | UndefinedType = Undefined,
                                     next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
@@ -45959,7 +45401,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "metric": {"type": int},
                                 "interface": {"type": str},
                             }
-                            prefix: str | None
+                            prefix: str
                             next_hop: str | None
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -45975,7 +45417,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | UndefinedType = Undefined,
                                     next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
@@ -46862,7 +46304,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "metric": {"type": int},
                                 "interface": {"type": str},
                             }
-                            prefix: str | None
+                            prefix: str
                             next_hop: str | None
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -46878,7 +46320,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | UndefinedType = Undefined,
                                     next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
@@ -46923,7 +46365,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "metric": {"type": int},
                                 "interface": {"type": str},
                             }
-                            prefix: str | None
+                            prefix: str
                             next_hop: str | None
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -46939,7 +46381,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | UndefinedType = Undefined,
                                     next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
@@ -47752,7 +47194,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "metric": {"type": int},
                                 "interface": {"type": str},
                             }
-                            prefix: str | None
+                            prefix: str
                             next_hop: str | None
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -47768,7 +47210,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | UndefinedType = Undefined,
                                     next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
@@ -47813,7 +47255,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "metric": {"type": int},
                                 "interface": {"type": str},
                             }
-                            prefix: str | None
+                            prefix: str
                             next_hop: str | None
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -47829,7 +47271,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | UndefinedType = Undefined,
                                     next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
@@ -48342,8 +47784,6 @@ class EosDesigns(EosDesignsRootModel):
                         Nodes._item_type = str
 
                         _fields: ClassVar[dict] = {
-                            "destination_address_prefix": {"type": str},
-                            "gateway": {"type": str},
                             "nodes": {"type": Nodes},
                             "prefix": {"type": str},
                             "next_hop": {"type": str},
@@ -48354,13 +47794,9 @@ class EosDesigns(EosDesignsRootModel):
                             "metric": {"type": int},
                             "interface": {"type": str},
                         }
-                        destination_address_prefix: str | None
-                        """IPv4_address."""
-                        gateway: str | None
-                        """IPv4_address."""
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
-                        prefix: str | None
+                        prefix: str
                         next_hop: str | None
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
@@ -48376,10 +47812,8 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                destination_address_prefix: str | None | UndefinedType = Undefined,
-                                gateway: str | None | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
-                                prefix: str | None | UndefinedType = Undefined,
+                                prefix: str | UndefinedType = Undefined,
                                 next_hop: str | None | UndefinedType = Undefined,
                                 track_bfd: bool | None | UndefinedType = Undefined,
                                 distance: int | None | UndefinedType = Undefined,
@@ -48395,8 +47829,6 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    destination_address_prefix: IPv4_address.
-                                    gateway: IPv4_address.
                                     nodes: Subclass of AvdList with `str` items.
                                     prefix: prefix
                                     next_hop: next_hop
@@ -48423,8 +47855,6 @@ class EosDesigns(EosDesignsRootModel):
                         Nodes._item_type = str
 
                         _fields: ClassVar[dict] = {
-                            "destination_address_prefix": {"type": str},
-                            "gateway": {"type": str},
                             "nodes": {"type": Nodes},
                             "prefix": {"type": str},
                             "next_hop": {"type": str},
@@ -48435,12 +47865,9 @@ class EosDesigns(EosDesignsRootModel):
                             "metric": {"type": int},
                             "interface": {"type": str},
                         }
-                        destination_address_prefix: str | None
-                        """IPv6_address."""
-                        gateway: str | None
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
-                        prefix: str | None
+                        prefix: str
                         next_hop: str | None
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
@@ -48456,10 +47883,8 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                destination_address_prefix: str | None | UndefinedType = Undefined,
-                                gateway: str | None | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
-                                prefix: str | None | UndefinedType = Undefined,
+                                prefix: str | UndefinedType = Undefined,
                                 next_hop: str | None | UndefinedType = Undefined,
                                 track_bfd: bool | None | UndefinedType = Undefined,
                                 distance: int | None | UndefinedType = Undefined,
@@ -48475,8 +47900,6 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    destination_address_prefix: IPv6_address.
-                                    gateway: gateway
                                     nodes: Subclass of AvdList with `str` items.
                                     prefix: prefix
                                     next_hop: next_hop
@@ -53990,7 +53413,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -54041,7 +53464,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -58514,7 +57937,7 @@ class EosDesigns(EosDesignsRootModel):
                                 also enabled on MLAG peer
                                   - l3_edge and core interfaces
                                 Overrides the global
-                                `underlay_multicast_multicast`.
+                                `underlay_multicast_static`.
                                 """
                                 uplinks: bool
                                 """
@@ -58565,7 +57988,7 @@ class EosDesigns(EosDesignsRootModel):
                                                also enabled on MLAG peer
                                                  - l3_edge and core interfaces
                                                Overrides the global
-                                               `underlay_multicast_multicast`.
+                                               `underlay_multicast_static`.
                                             uplinks:
                                                Enable/Disable static multicast on uplinks.
                                                Requires node setting
@@ -62967,7 +62390,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -63018,7 +62441,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -67500,7 +66923,7 @@ class EosDesigns(EosDesignsRootModel):
                             also enabled on MLAG peer
                               - l3_edge and core interfaces
                             Overrides the global
-                            `underlay_multicast_multicast`.
+                            `underlay_multicast_static`.
                             """
                             uplinks: bool
                             """
@@ -67551,7 +66974,7 @@ class EosDesigns(EosDesignsRootModel):
                                            also enabled on MLAG peer
                                              - l3_edge and core interfaces
                                            Overrides the global
-                                           `underlay_multicast_multicast`.
+                                           `underlay_multicast_static`.
                                         uplinks:
                                            Enable/Disable static multicast on uplinks.
                                            Requires node setting
@@ -69535,7 +68958,6 @@ class EosDesigns(EosDesignsRootModel):
         "aaa_settings": {"type": AaaSettings},
         "address_locking_settings": {"type": AddressLockingSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
-        "avd_6_behaviors": {"type": Avd6Behaviors},
         "avd_data_validation_mode": {"type": str, "default": "error"},
         "avd_digital_twin_mode": {"type": bool, "default": False},
         "avd_eos_designs_debug": {"type": bool, "default": False},
@@ -69615,7 +69037,6 @@ class EosDesigns(EosDesignsRootModel):
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
         "event_handlers": {"type": EosCliConfigGen.EventHandlers},
         "event_monitor": {"type": EosCliConfigGen.EventMonitor},
-        "evpn_ebgp_gateway_inter_domain": {"type": bool},
         "evpn_ebgp_gateway_multihop": {"type": int, "default": 15},
         "evpn_ebgp_multihop": {"type": int, "default": 3},
         "evpn_hostflap_detection": {"type": EvpnHostflapDetection},
@@ -69681,7 +69102,6 @@ class EosDesigns(EosDesignsRootModel):
         "mlag_peer_svi_description": {"type": str, "default": "MLAG"},
         "mlag_peer_vlan_name": {"type": str, "default": "MLAG"},
         "mlag_port_channel_description": {"type": str, "default": "MLAG_{mlag_peer}_{peer_interface}"},
-        "name_servers": {"type": NameServers},
         "network_ports": {"type": NetworkPorts},
         "network_services_keys": {"type": NetworkServicesKeys, "default": lambda cls: coerce_type([{"name": "tenants"}], target_type=cls)},
         "custom_node_type_keys": {"type": CustomNodeTypeKeys},
@@ -69933,11 +69353,10 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_isis_instance_name": {"type": str},
         "underlay_l2_ethernet_description": {"type": str, "default": "L2_{peer}_{peer_interface}"},
         "underlay_l2_port_channel_description": {"type": str, "default": "L2_{peer_node_group_or_peer}_{peer_interface}"},
-        "underlay_multicast": {"type": bool, "default": False},
-        "underlay_multicast_pim_sm": {"type": bool},
-        "underlay_multicast_static": {"type": bool, "default": False},
         "underlay_multicast_anycast_rp": {"type": UnderlayMulticastAnycastRp},
+        "underlay_multicast_pim_sm": {"type": bool, "default": False},
         "underlay_multicast_rps": {"type": UnderlayMulticastRps},
+        "underlay_multicast_static": {"type": bool, "default": False},
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
         "underlay_ospf_authentication": {"type": UnderlayOspfAuthentication},
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
@@ -69976,13 +69395,6 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
-    avd_6_behaviors: Avd6Behaviors
-    """
-    Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
-
-    Subclass of
-    AvdModel.
-    """
     avd_data_validation_mode: Literal["error", "warning"]
     """
     Validation Mode for AVD input data validation.
@@ -70616,7 +70028,6 @@ class EosDesigns(EosDesignsRootModel):
     implement workarounds to problems discovered in the field.
     """
     event_monitor: EosCliConfigGen.EventMonitor
-    evpn_ebgp_gateway_inter_domain: bool | None
     evpn_ebgp_gateway_multihop: int
     """
     Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI
@@ -71170,13 +70581,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"MLAG_{mlag_peer}_{peer_interface}"`
     """
-    name_servers: NameServers
-    """
-    List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
-
-    Subclass of AvdList with `str`
-    items.
-    """
     network_ports: NetworkPorts
     """Subclass of AvdList with `NetworkPortsItem` items."""
     network_services_keys: NetworkServicesKeys
@@ -71643,7 +71047,7 @@ class EosDesigns(EosDesignsRootModel):
       - "underlay_routing_protocol: ebgp"
     Some settings are not yet
     supported with IPv6 underlay:
-      - underlay_multicast
+      - underlay_multicast_pim_sm
       - underlay_multicast_rp_interfaces
       -
     underlay_rfc5549
@@ -71726,42 +71130,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"L2_{peer_node_group_or_peer}_{peer_interface}"`
     """
-    underlay_multicast: bool
-    """
-    Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
-    Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-    No other
-    configuration is added, so the underlay will only support Source-Specific Multicast (SSM).
-    The
-    configuration is intended to be used as multicast underlay for EVPN OISM overlay.
-
-    Default value: `False`
-    """
-    underlay_multicast_pim_sm: bool | None
-    """
-    When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
-    on all:
-      - P2P uplink interfaces if enabled on uplink peer
-      - MLAG L3 peer interface if also
-    enabled on MLAG peer
-      - l3_edge and core interfaces
-
-    Note: This changes the default behavior for
-    l3_edge / core_interfaces to automatically include the interfaces
-    in multicast, unless
-    `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
-    """
-    underlay_multicast_static: bool
-    """
-    When enabled, configures multicast routing and by default configures static multicast in the
-    underlay on all:
-      - P2P uplink interfaces if enabled on uplink peer
-      - MLAG L3 peer interface if
-    also enabled on MLAG peer
-      - l3_edge and core interfaces
-
-    Default value: `False`
-    """
     underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp
     """
     If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address,
@@ -71777,6 +71145,22 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdModel.
     """
+    underlay_multicast_pim_sm: bool
+    """
+    When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+    on all:
+      - P2P uplink interfaces if enabled on uplink peer
+      - MLAG L3 peer interface if also
+    enabled on MLAG peer
+      - l3_edge and core interfaces
+
+    Note: This changes the default behavior for
+    l3_edge / core_interfaces to automatically include the interfaces
+    in multicast, unless
+    `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
+
+    Default value: `False`
+    """
     underlay_multicast_rps: UnderlayMulticastRps
     """
     List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
@@ -71789,6 +71173,17 @@ class EosDesigns(EosDesignsRootModel):
 
     Requires 'underlay_multicast_pim_sm: true'.
     Subclass of AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
+    """
+    underlay_multicast_static: bool
+    """
+    When enabled, configures multicast routing and by default configures static multicast in the
+    underlay on all:
+      - P2P uplink interfaces if enabled on uplink peer
+      - MLAG L3 peer interface if
+    also enabled on MLAG peer
+      - l3_edge and core interfaces
+
+    Default value: `False`
     """
     underlay_ospf_area: str
     """Default value: `"0.0.0.0"`"""
@@ -71992,7 +71387,6 @@ class EosDesigns(EosDesignsRootModel):
             aaa_settings: AaaSettings | UndefinedType = Undefined,
             address_locking_settings: AddressLockingSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
-            avd_6_behaviors: Avd6Behaviors | UndefinedType = Undefined,
             avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
             avd_digital_twin_mode: bool | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
@@ -72050,7 +71444,6 @@ class EosDesigns(EosDesignsRootModel):
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
             event_handlers: EosCliConfigGen.EventHandlers | UndefinedType = Undefined,
             event_monitor: EosCliConfigGen.EventMonitor | UndefinedType = Undefined,
-            evpn_ebgp_gateway_inter_domain: bool | None | UndefinedType = Undefined,
             evpn_ebgp_gateway_multihop: int | UndefinedType = Undefined,
             evpn_ebgp_multihop: int | UndefinedType = Undefined,
             evpn_hostflap_detection: EvpnHostflapDetection | UndefinedType = Undefined,
@@ -72113,7 +71506,6 @@ class EosDesigns(EosDesignsRootModel):
             mlag_peer_svi_description: str | UndefinedType = Undefined,
             mlag_peer_vlan_name: str | UndefinedType = Undefined,
             mlag_port_channel_description: str | UndefinedType = Undefined,
-            name_servers: NameServers | UndefinedType = Undefined,
             network_ports: NetworkPorts | UndefinedType = Undefined,
             network_services_keys: NetworkServicesKeys | UndefinedType = Undefined,
             custom_node_type_keys: CustomNodeTypeKeys | UndefinedType = Undefined,
@@ -72170,11 +71562,10 @@ class EosDesigns(EosDesignsRootModel):
             underlay_isis_instance_name: str | None | UndefinedType = Undefined,
             underlay_l2_ethernet_description: str | UndefinedType = Undefined,
             underlay_l2_port_channel_description: str | UndefinedType = Undefined,
-            underlay_multicast: bool | UndefinedType = Undefined,
-            underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
-            underlay_multicast_static: bool | UndefinedType = Undefined,
             underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp | UndefinedType = Undefined,
+            underlay_multicast_pim_sm: bool | UndefinedType = Undefined,
             underlay_multicast_rps: UnderlayMulticastRps | UndefinedType = Undefined,
+            underlay_multicast_static: bool | UndefinedType = Undefined,
             underlay_ospf_area: str | UndefinedType = Undefined,
             underlay_ospf_authentication: UnderlayOspfAuthentication | UndefinedType = Undefined,
             underlay_ospf_bfd_enable: bool | UndefinedType = Undefined,
@@ -72218,11 +71609,6 @@ class EosDesigns(EosDesignsRootModel):
                 aaa_settings: Subclass of AvdModel.
                 address_locking_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
-                avd_6_behaviors:
-                   Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors in AVD 6.0.
-
-                   Subclass of
-                   AvdModel.
                 avd_data_validation_mode:
                    Validation Mode for AVD input data validation.
                    Input data validation will validate the input
@@ -72698,7 +72084,6 @@ class EosDesigns(EosDesignsRootModel):
                    customize the system behavior, and
                    implement workarounds to problems discovered in the field.
                 event_monitor: event_monitor
-                evpn_ebgp_gateway_inter_domain: evpn_ebgp_gateway_inter_domain
                 evpn_ebgp_gateway_multihop:
                    Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI
                    networks.
@@ -73078,11 +72463,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    By
                    default the description is templated from the name and port-channel interface of the MLAG peer.
-                name_servers:
-                   List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
-
-                   Subclass of AvdList with `str`
-                   items.
                 network_ports: Subclass of AvdList with `NetworkPortsItem` items.
                 network_services_keys:
                    Network Services can be grouped by using separate keys.
@@ -73428,7 +72808,7 @@ class EosDesigns(EosDesignsRootModel):
                      - "underlay_routing_protocol: ebgp"
                    Some settings are not yet
                    supported with IPv6 underlay:
-                     - underlay_multicast
+                     - underlay_multicast_pim_sm
                      - underlay_multicast_rp_interfaces
                      -
                    underlay_rfc5549
@@ -73489,32 +72869,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    By default the description is templated from the peer's node group (for MLAG
                    or EVPN A/A) or hostname and port-channel interface of the peer.
-                underlay_multicast:
-                   Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
-                   Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-                   No other
-                   configuration is added, so the underlay will only support Source-Specific Multicast (SSM).
-                   The
-                   configuration is intended to be used as multicast underlay for EVPN OISM overlay.
-                underlay_multicast_pim_sm:
-                   When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
-                   on all:
-                     - P2P uplink interfaces if enabled on uplink peer
-                     - MLAG L3 peer interface if also
-                   enabled on MLAG peer
-                     - l3_edge and core interfaces
-
-                   Note: This changes the default behavior for
-                   l3_edge / core_interfaces to automatically include the interfaces
-                   in multicast, unless
-                   `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
-                underlay_multicast_static:
-                   When enabled, configures multicast routing and by default configures static multicast in the
-                   underlay on all:
-                     - P2P uplink interfaces if enabled on uplink peer
-                     - MLAG L3 peer interface if
-                   also enabled on MLAG peer
-                     - l3_edge and core interfaces
                 underlay_multicast_anycast_rp:
                    If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address,
                    they will be configured
@@ -73528,6 +72882,18 @@ class EosDesigns(EosDesignsRootModel):
 
 
                    Subclass of AvdModel.
+                underlay_multicast_pim_sm:
+                   When enabled, configures multicast routing and by default configures PIM sparse-mode in the underlay
+                   on all:
+                     - P2P uplink interfaces if enabled on uplink peer
+                     - MLAG L3 peer interface if also
+                   enabled on MLAG peer
+                     - l3_edge and core interfaces
+
+                   Note: This changes the default behavior for
+                   l3_edge / core_interfaces to automatically include the interfaces
+                   in multicast, unless
+                   `include_in_underlay_protocol: false` or `multicast_pim_sm: false`.
                 underlay_multicast_rps:
                    List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
                    The
@@ -73539,6 +72905,13 @@ class EosDesigns(EosDesignsRootModel):
 
                    Requires 'underlay_multicast_pim_sm: true'.
                    Subclass of AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
+                underlay_multicast_static:
+                   When enabled, configures multicast routing and by default configures static multicast in the
+                   underlay on all:
+                     - P2P uplink interfaces if enabled on uplink peer
+                     - MLAG L3 peer interface if
+                   also enabled on MLAG peer
+                     - l3_edge and core interfaces
                 underlay_ospf_area: underlay_ospf_area
                 underlay_ospf_authentication: Subclass of AvdModel.
                 underlay_ospf_bfd_enable: underlay_ospf_bfd_enable
