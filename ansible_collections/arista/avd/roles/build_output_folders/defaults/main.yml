@@ -5,7 +5,7 @@
 root_dir: "{{ inventory_dir }}"
 
 # AVD configurations output
-# Permissions for created directories and files  
+# Permissions for created directories and files
 avd_dir_mode: "0o775"
 avd_file_mode: "0o664"
 

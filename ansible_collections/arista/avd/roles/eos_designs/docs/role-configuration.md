@@ -43,7 +43,7 @@ This behavior can be adjusted by setting the variable described below.
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/role-input-validation.md
 --8<--
 
-# Permissions for created directories and files  
+# Permissions for created directories and files
 
 --8<--
 ansible_collections/arista/avd/role s/eos_designs/docs/tables/role-file-permission-mode.md

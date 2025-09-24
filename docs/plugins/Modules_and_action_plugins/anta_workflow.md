@@ -63,8 +63,8 @@ The plugin offers the following capabilities:
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;json_output</samp> | str | optional | None |  | Path to the JSON report file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;filters</samp> | dict | optional | None |  | Filters used to hide specific test statuses from the reports. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hide_statuses</samp> | list | optional | None | Valid values:<br>- <code>success</code><br>- <code>failure</code><br>- <code>error</code><br>- <code>skipped</code><br>- <code>unset</code> | List of test statuses to hide from the reports. |
-| <samp>anta_dir_mode</samp> | str | optional | 0o775 |  | Directory permissions (octal string) to be applied to all directories created by the role. |
-| <samp>anta_file_mode</samp> | str | optional | 0o664 |  | File permissions (octal string) to be applied to all files created by the role. |
+| <samp>anta_dir_mode</samp> | str | optional | 0o775 |  | Directory permissions (octal string) to be applied to all directories created by the module. |
+| <samp>anta_file_mode</samp> | str | optional | 0o664 |  | File permissions (octal string) to be applied to all files created by the module. |
 
 ## See Also
 
