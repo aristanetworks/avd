@@ -101,6 +101,7 @@ router_ospf:
     no_passive_interfaces:
     - Ethernet1
     max_lsa: 12000
+    maximum_paths: 128
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:

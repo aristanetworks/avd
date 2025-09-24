@@ -107,6 +107,7 @@ router_ospf:
     - ethernet3
     - ethernet4
     max_lsa: 12000
+    maximum_paths: 128
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none

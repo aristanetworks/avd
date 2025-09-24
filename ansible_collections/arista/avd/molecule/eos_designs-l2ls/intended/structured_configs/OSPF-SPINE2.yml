@@ -121,6 +121,7 @@ router_ospf:
         enabled: true
       connected:
         enabled: true
+    maximum_paths: 128
 service_routing_protocols_model: multi-agent
 spanning_tree:
   no_spanning_tree_vlan: '4094'

@@ -5949,6 +5949,7 @@ keys:
     type: int
     min: 1
     max: 128
+    default: 128
     convert_types:
     - str
   underlay_ospf_process_id:
