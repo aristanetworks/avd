@@ -5888,30 +5888,6 @@ class EosDesigns(EosDesignsRootModel):
             class ExportersItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Collector(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"host": {"type": str}, "port": {"type": int}}
-                    host: str | None
-                    """Collector IPv4 address or IPv6 address or fully qualified domain name"""
-                    port: int | None
-                    """Collector Port Number"""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, host: str | None | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
-                            """
-                            Collector.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                host: Collector IPv4 address or IPv6 address or fully qualified domain name
-                                port: Collector Port Number
-
-                            """
-
                 class CollectorsItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -5972,7 +5948,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {
                     "name": {"type": str},
-                    "collector": {"type": Collector},
                     "collectors": {"type": Collectors},
                     "format": {"type": Format},
                     "local_interface": {"type": str},
@@ -5980,8 +5955,6 @@ class EosDesigns(EosDesignsRootModel):
                 }
                 name: str
                 """Exporter Name"""
-                collector: Collector
-                """Subclass of AvdModel."""
                 collectors: Collectors
                 """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
                 format: Format
@@ -5997,7 +5970,6 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         name: str | UndefinedType = Undefined,
-                        collector: Collector | UndefinedType = Undefined,
                         collectors: Collectors | UndefinedType = Undefined,
                         format: Format | UndefinedType = Undefined,
                         local_interface: str | None | UndefinedType = Undefined,
@@ -6011,7 +5983,6 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             name: Exporter Name
-                            collector: Subclass of AvdModel.
                             collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`).
                             format: Subclass of AvdModel.
                             local_interface: Local Source Interface
@@ -17229,7 +17200,7 @@ class EosDesigns(EosDesignsRootModel):
                     "metric": {"type": int},
                     "interface": {"type": str},
                 }
-                prefix: str | None
+                prefix: str
                 next_hop: str | None
                 track_bfd: bool | None
                 """Track next-hop using BFD."""
@@ -17245,7 +17216,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        prefix: str | None | UndefinedType = Undefined,
+                        prefix: str | UndefinedType = Undefined,
                         next_hop: str | None | UndefinedType = Undefined,
                         track_bfd: bool | None | UndefinedType = Undefined,
                         distance: int | None | UndefinedType = Undefined,
@@ -17290,7 +17261,7 @@ class EosDesigns(EosDesignsRootModel):
                     "metric": {"type": int},
                     "interface": {"type": str},
                 }
-                prefix: str | None
+                prefix: str
                 next_hop: str | None
                 track_bfd: bool | None
                 """Track next-hop using BFD."""
@@ -17306,7 +17277,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        prefix: str | None | UndefinedType = Undefined,
+                        prefix: str | UndefinedType = Undefined,
                         next_hop: str | None | UndefinedType = Undefined,
                         track_bfd: bool | None | UndefinedType = Undefined,
                         distance: int | None | UndefinedType = Undefined,
@@ -18154,7 +18125,7 @@ class EosDesigns(EosDesignsRootModel):
                 "metric": {"type": int},
                 "interface": {"type": str},
             }
-            prefix: str | None
+            prefix: str
             next_hop: str | None
             track_bfd: bool | None
             """Track next-hop using BFD."""
@@ -18170,7 +18141,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    prefix: str | None | UndefinedType = Undefined,
+                    prefix: str | UndefinedType = Undefined,
                     next_hop: str | None | UndefinedType = Undefined,
                     track_bfd: bool | None | UndefinedType = Undefined,
                     distance: int | None | UndefinedType = Undefined,
@@ -18215,7 +18186,7 @@ class EosDesigns(EosDesignsRootModel):
                 "metric": {"type": int},
                 "interface": {"type": str},
             }
-            prefix: str | None
+            prefix: str
             next_hop: str | None
             track_bfd: bool | None
             """Track next-hop using BFD."""
@@ -18231,7 +18202,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    prefix: str | None | UndefinedType = Undefined,
+                    prefix: str | UndefinedType = Undefined,
                     next_hop: str | None | UndefinedType = Undefined,
                     track_bfd: bool | None | UndefinedType = Undefined,
                     distance: int | None | UndefinedType = Undefined,
@@ -44522,7 +44493,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "metric": {"type": int},
                                     "interface": {"type": str},
                                 }
-                                prefix: str | None
+                                prefix: str
                                 next_hop: str | None
                                 track_bfd: bool | None
                                 """Track next-hop using BFD."""
@@ -44538,7 +44509,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        prefix: str | None | UndefinedType = Undefined,
+                                        prefix: str | UndefinedType = Undefined,
                                         next_hop: str | None | UndefinedType = Undefined,
                                         track_bfd: bool | None | UndefinedType = Undefined,
                                         distance: int | None | UndefinedType = Undefined,
@@ -44583,7 +44554,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "metric": {"type": int},
                                     "interface": {"type": str},
                                 }
-                                prefix: str | None
+                                prefix: str
                                 next_hop: str | None
                                 track_bfd: bool | None
                                 """Track next-hop using BFD."""
@@ -44599,7 +44570,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        prefix: str | None | UndefinedType = Undefined,
+                                        prefix: str | UndefinedType = Undefined,
                                         next_hop: str | None | UndefinedType = Undefined,
                                         track_bfd: bool | None | UndefinedType = Undefined,
                                         distance: int | None | UndefinedType = Undefined,
@@ -45476,7 +45447,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "metric": {"type": int},
                                 "interface": {"type": str},
                             }
-                            prefix: str | None
+                            prefix: str
                             next_hop: str | None
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -45492,7 +45463,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | UndefinedType = Undefined,
                                     next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
@@ -45537,7 +45508,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "metric": {"type": int},
                                 "interface": {"type": str},
                             }
-                            prefix: str | None
+                            prefix: str
                             next_hop: str | None
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -45553,7 +45524,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | UndefinedType = Undefined,
                                     next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
@@ -46440,7 +46411,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "metric": {"type": int},
                                 "interface": {"type": str},
                             }
-                            prefix: str | None
+                            prefix: str
                             next_hop: str | None
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -46456,7 +46427,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | UndefinedType = Undefined,
                                     next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
@@ -46501,7 +46472,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "metric": {"type": int},
                                 "interface": {"type": str},
                             }
-                            prefix: str | None
+                            prefix: str
                             next_hop: str | None
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -46517,7 +46488,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | UndefinedType = Undefined,
                                     next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
@@ -47330,7 +47301,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "metric": {"type": int},
                                 "interface": {"type": str},
                             }
-                            prefix: str | None
+                            prefix: str
                             next_hop: str | None
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -47346,7 +47317,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | UndefinedType = Undefined,
                                     next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
@@ -47391,7 +47362,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "metric": {"type": int},
                                 "interface": {"type": str},
                             }
-                            prefix: str | None
+                            prefix: str
                             next_hop: str | None
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -47407,7 +47378,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | UndefinedType = Undefined,
                                     next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
@@ -47920,8 +47891,6 @@ class EosDesigns(EosDesignsRootModel):
                         Nodes._item_type = str
 
                         _fields: ClassVar[dict] = {
-                            "destination_address_prefix": {"type": str},
-                            "gateway": {"type": str},
                             "nodes": {"type": Nodes},
                             "prefix": {"type": str},
                             "next_hop": {"type": str},
@@ -47932,13 +47901,9 @@ class EosDesigns(EosDesignsRootModel):
                             "metric": {"type": int},
                             "interface": {"type": str},
                         }
-                        destination_address_prefix: str | None
-                        """IPv4_address."""
-                        gateway: str | None
-                        """IPv4_address."""
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
-                        prefix: str | None
+                        prefix: str
                         next_hop: str | None
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
@@ -47954,10 +47919,8 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                destination_address_prefix: str | None | UndefinedType = Undefined,
-                                gateway: str | None | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
-                                prefix: str | None | UndefinedType = Undefined,
+                                prefix: str | UndefinedType = Undefined,
                                 next_hop: str | None | UndefinedType = Undefined,
                                 track_bfd: bool | None | UndefinedType = Undefined,
                                 distance: int | None | UndefinedType = Undefined,
@@ -47973,8 +47936,6 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    destination_address_prefix: IPv4_address.
-                                    gateway: IPv4_address.
                                     nodes: Subclass of AvdList with `str` items.
                                     prefix: prefix
                                     next_hop: next_hop
@@ -48001,8 +47962,6 @@ class EosDesigns(EosDesignsRootModel):
                         Nodes._item_type = str
 
                         _fields: ClassVar[dict] = {
-                            "destination_address_prefix": {"type": str},
-                            "gateway": {"type": str},
                             "nodes": {"type": Nodes},
                             "prefix": {"type": str},
                             "next_hop": {"type": str},
@@ -48013,12 +47972,9 @@ class EosDesigns(EosDesignsRootModel):
                             "metric": {"type": int},
                             "interface": {"type": str},
                         }
-                        destination_address_prefix: str | None
-                        """IPv6_address."""
-                        gateway: str | None
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
-                        prefix: str | None
+                        prefix: str
                         next_hop: str | None
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
@@ -48034,10 +47990,8 @@ class EosDesigns(EosDesignsRootModel):
                             def __init__(
                                 self,
                                 *,
-                                destination_address_prefix: str | None | UndefinedType = Undefined,
-                                gateway: str | None | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
-                                prefix: str | None | UndefinedType = Undefined,
+                                prefix: str | UndefinedType = Undefined,
                                 next_hop: str | None | UndefinedType = Undefined,
                                 track_bfd: bool | None | UndefinedType = Undefined,
                                 distance: int | None | UndefinedType = Undefined,
@@ -48053,8 +48007,6 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    destination_address_prefix: IPv6_address.
-                                    gateway: gateway
                                     nodes: Subclass of AvdList with `str` items.
                                     prefix: prefix
                                     next_hop: next_hop
