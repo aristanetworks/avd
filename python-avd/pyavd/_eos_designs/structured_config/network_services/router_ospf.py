@@ -39,7 +39,8 @@ class RouterOspfMixin(Protocol):
                 if not vrf.ospf.enabled or (vrf.ospf.nodes and self.shared_utils.hostname not in vrf.ospf.nodes):
                     continue
 
-                if vrf.ospf.process_id == self.inputs.underlay_ospf_process_id:
+                # Allowing network_services to influence the underlay OSPF configuration in a manner similar to BGP
+                if vrf.ospf.process_id == self.inputs.underlay_ospf_process_id and vrf.name != "default":
                     msg = f"'tenants[name={tenant.name}].vrfs[name={vrf.name}].ospf.process_id[process_id={vrf.ospf.process_id}]' should not match the \
 underlay OSPF process id '{self.inputs.underlay_ospf_process_id}'."
                     raise AristaAvdInvalidInputsError(msg)
