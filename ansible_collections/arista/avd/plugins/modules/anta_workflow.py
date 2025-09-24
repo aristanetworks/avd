@@ -122,11 +122,11 @@ options:
             elements: str
             choices: ["success", "failure", "error", "skipped", "unset"]
   anta_dir_mode:
-    description: Directory permissions (octal string) to be applied to all directories created by the role.
+    description: Directory permissions (octal string) to be applied to all directories created by the module.
     type: str
     default: "0o775"
   anta_file_mode:
-    description: File permissions (octal string) to be applied to all files created by the role.
+    description: File permissions (octal string) to be applied to all files created by the module.
     type: str
     default: "0o664"
 seealso:
