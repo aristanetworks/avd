@@ -5,13 +5,13 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# How-To Guide: AVD Network Services
+# AVD Network Services
 
-## Introduction to AVD Network Services
+## Introduction to Network Services
 
 **"Network Services"** is an abstracted data model that allows you to define and deploy Layer 2 (VLANs) and Layer 3 (VRF) services across your entire fabric.
 
-The model is designed to be tenant-based, meaning you group network services under a **"tenant"** which can represent an organization, department, or any logical container. This structure allows for the reuse of VLAN and SVI IDs across different tenants while ensuring that configurations are deployed only to the relevant devices in the fabric.
+The model is designed to be tenant-based, meaning you group network services under a **"tenant"** which can represent an organization, department, or any logical container. This structure allows for the reuse of VLAN and SVI IDs across different tenants while ensuring that configurations are deployed only to the relevant devices in the fabric. While this allows for complex multi-tenant environments, it's important to note that for a simple setup, it's perfectly fine to have one single `tenant` that represents all of your services.
 
 ## Core Concept: Tenants
 
@@ -36,7 +36,7 @@ tenants:
 
 ```
 
-## How-To: Configure L3 Services (VRFs and SVIs)
+## Configure L3 Services (VRFs and SVIs)
 
 L3 services are defined under the `vrfs` list within a tenant. A VRF contains Switched Virtual Interfaces (SVIs) which act as the default gateways for your VLANs.
 
@@ -81,7 +81,7 @@ In this example:
 - The SVI for VLAN 120 will have a VNI of `20120`.
 - The `tags` are used to control which devices or interfaces receive this configuration.
 
-## How-To: Configure L2 Services (L2VLANs)
+## Configure L2 Services (L2VLANs)
 
 Sometimes you need to stretch a VLAN across the fabric without an L3 gateway. These are defined under the `l2vlans` list within a tenant.
 
@@ -106,7 +106,7 @@ tenants:
 
 ```
 
-In this example, VLAN 250 will be created and stretched across any devices matching the `storage` tag, but it will not have an SVI or IP address managed by AVD's network services model.
+In this example, VLAN 250 will be created and stretched across any devices matching the `storage` tag, but it will not have an SVI or IP address managed by AVD's network services model. For more information please see the how-to guide on tags **Need to add link**.
 
 ## Complete Tenant Example
 
