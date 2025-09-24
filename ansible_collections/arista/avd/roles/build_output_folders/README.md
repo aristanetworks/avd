@@ -25,7 +25,7 @@ Role support following variables:
 # All folder below will be created in this directory folder.
 root_dir: '{{ inventory_dir }}'
 
-# Output file/dir default permissions
+# Permissions for created directories and files
 avd_dir_mode: "0o775"
 avd_file_mode: "0o664"
 # Main output directory
