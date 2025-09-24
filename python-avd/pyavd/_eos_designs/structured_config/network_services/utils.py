@@ -59,7 +59,7 @@ class UtilsMixin(Protocol):
 
             for svi in tenant.vrfs["default"].svis:
                 ip_address = default(svi.ip_address, svi.ip_address_virtual)
-                if ip_address is None or svi.ip_address_secondaries is None:
+                if ip_address is None:
                     continue
 
                 subnet = str(ipaddress.ip_network(ip_address, strict=False))

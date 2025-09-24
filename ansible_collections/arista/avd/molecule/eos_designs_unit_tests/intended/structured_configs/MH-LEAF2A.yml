@@ -158,6 +158,8 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 10.2.10.0/24
+  - sequence: 20
+    action: permit 10.0.0.0/24
 - name: PL-STATIC-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -372,6 +374,8 @@ vlan_interfaces:
 - name: Vlan311
   description: Tenant_default_vrf
   shutdown: false
+  ip_address_secondaries:
+  - 10.0.0.3/24
   ip_address_virtual: 10.2.10.1/24
   tenant: Tenant_X
   tags:

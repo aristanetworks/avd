@@ -28,6 +28,8 @@ tenants:
             tags: [default_vrf]
             enabled: true
             ip_address_virtual: 10.2.10.1/24
+            ip_address_secondaries:
+              - 10.0.0.3/24
         static_routes:
           - prefix: 10.0.0.0/8
             next_hop: 10.2.10.100
