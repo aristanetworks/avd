@@ -62915,9 +62915,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Traffic class ID."""
                     count: str | None
                     """
-                    Counter name. This should also be added to the `policies[].counters` list.
-                    It will no longer be
-                    added automatically to the counters in AVD 6.0.
+                    Named counter.
+                    Must also be defined under `policies[].counters` to be active.
+                    If not defined, the
+                    counter is inactive on EOS.
                     """
                     drop: bool | None
                     log: bool | None
@@ -62947,9 +62948,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
                                 count:
-                                   Counter name. This should also be added to the `policies[].counters` list.
-                                   It will no longer be
-                                   added automatically to the counters in AVD 6.0.
+                                   Named counter.
+                                   Must also be defined under `policies[].counters` to be active.
+                                   If not defined, the
+                                   counter is inactive on EOS.
                                 drop: drop
                                 log: Only supported when action is set to drop.
                                 redirect: Subclass of AvdModel.
@@ -63051,7 +63053,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_class: int | None
                     """Traffic class ID."""
                     count: str | None
-                    """Counter name. This should also be added to the `policies[].counters` list."""
+                    """
+                    Named counter.
+                    Must also be defined under `policies[].counters` to be active.
+                    If not defined, the
+                    counter is inactive on EOS.
+                    """
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
@@ -63076,7 +63083,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
-                                count: Counter name. This should also be added to the `policies[].counters` list.
+                                count:
+                                   Named counter.
+                                   Must also be defined under `policies[].counters` to be active.
+                                   If not defined, the
+                                   counter is inactive on EOS.
                                 drop: drop
                                 log: Only supported when action is set to drop.
 
@@ -63096,7 +63107,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_class: int | None
                     """Traffic class ID."""
                     count: str | None
-                    """Counter name. This should also be added to the `policies[].counters` list."""
+                    """
+                    Named counter.
+                    Must also be defined under `policies[].counters` to be active.
+                    If not defined, the
+                    counter is inactive on EOS.
+                    """
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
@@ -63121,7 +63137,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
-                                count: Counter name. This should also be added to the `policies[].counters` list.
+                                count:
+                                   Named counter.
+                                   Must also be defined under `policies[].counters` to be active.
+                                   If not defined, the
+                                   counter is inactive on EOS.
                                 drop: drop
                                 log: Only supported when action is set to drop.
 
@@ -63158,7 +63178,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Traffic Policy Name."""
             counters: Counters
             """
-            Counter name.
+            List of named counters.
 
             Subclass of AvdList with `str` items.
             """
@@ -63186,7 +63206,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: Traffic Policy Name.
                         counters:
-                           Counter name.
+                           List of named counters.
 
                            Subclass of AvdList with `str` items.
                         matches: Subclass of AvdIndexedList with `MatchesItem` items. Primary key is `name` (`str`).
