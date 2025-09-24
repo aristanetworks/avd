@@ -4,7 +4,7 @@
   ~ that can be found in the LICENSE file.
   -->
 
-The files in this directory are frozen copies of the real schema and and data.
+The files in this directory are frozen copies of the real schema and data.
 This is to ensure the tests of the schema tooling itself are consistent as the data models evolve.
 The fully updated schemas are tested with the updated data under the `tests/pyavd/eos_cli_config_gen` and `tests/pyavd/eos_designs` folders.
 
