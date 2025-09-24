@@ -29,7 +29,6 @@ All roles input variables follow SemVer. Any breaking changes will, at a minimum
 | `cv_deploy` | ✅ | ✅ | The resulting CloudVision configuration will be maintained, unless in rare cases, when addressing a bug. |
 | `eos_config_deploy_eapi` | ✅ | ✅ | |
 | `anta_runner` | ✅ | ✘ | The generated reports and other artifacts may change between minor releases.<br>Breaking changes to JSON & CSV outputs will be communicated in the release notes.|
-| `dhcp_provisioner` | ✅ | ✘ | Structured configuration output may change during minor releases to accommodate changes in the ansible-cvp collection.<br>The resulting DHCP configuration will be maintained, unless in rare cases, when addressing a bug. |
 | `build_output_folders` | ✅ | ✅ | |
 
 ### Plugins
