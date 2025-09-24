@@ -14,22 +14,25 @@
 Errdisable recovery timer interval: {{ errdisable.recovery.interval }} seconds
 {%     endif %}
 {%     if errdisable.detect.causes is arista.avd.defined or errdisable.recovery.causes is arista.avd.defined %}
-{%         set combined_causes = ( errdisable.detect.causes | arista.avd.default([]) + errdisable.recovery.causes | arista.avd.default([]) ) | unique %}
+{%         set causes = {} %}
+{%         for detect_cause in errdisable.detect.causes | arista.avd.default([]) %}
+{%             do causes.update({detect_cause: {"detect_status": True}}) %}
+{%         endfor %}
+{%         for recovery_cause in errdisable.recovery.causes | arista.avd.default([]) %}
+{%             if causes.get(recovery_cause.name) %}
+{%                 do causes[recovery_cause.name].update({"recovery_status": True}) %}
+{%             else %}
+{%                 do causes.update({recovery_cause.name :{"recovery_status": True}}) %}
+{%             endif %}
+{%             if recovery_cause.interval is arista.avd.defined %}
+{%                 do causes[recovery_cause.name].update({"recovery_interval": recovery_cause.interval}) %}
+{%             endif %}
+{%         endfor %}
 
-|  Cause | Detection Enabled | Recovery Enabled |
-| ------ | ----------------- | ---------------- |
-{%         for cause in combined_causes | arista.avd.natural_sort %}
-{%             if cause in errdisable.detect.causes | arista.avd.default([]) %}
-{%                 set detect_status = True %}
-{%             else %}
-{%                 set detect_status = "-" %}
-{%             endif %}
-{%             if cause in errdisable.recovery.causes | arista.avd.default([]) %}
-{%                 set recovery_status = True %}
-{%             else %}
-{%                 set recovery_status = "-" %}
-{%             endif %}
-| {{ cause }} | {{ detect_status }} | {{ recovery_status }} |
+|  Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
+| ------ | ----------------- | ---------------- | -------------------------- |
+{%         for cause, status in causes.items() | arista.avd.natural_sort %}
+| {{ cause }} | {{ status.detect_status | arista.avd.default("-") }} | {{ status.recovery_status | arista.avd.default("-") }} | {{ status.recovery_interval | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
 

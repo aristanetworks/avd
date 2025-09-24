@@ -24,7 +24,6 @@ SCOPES = [
     "eos_config_deploy_eapi",
     "eos_designs",
     "eos_snapshot",
-    "eos_validate_state",
     "anta_runner",
     "plugins",
     "requirements",

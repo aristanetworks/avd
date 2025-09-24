@@ -40,7 +40,7 @@ class TestActionPluginVars:
         action_plugin = MinimalActionPlugin(ansible_task)
         action_plugin_vars = ActionPluginVars(action_plugin)
 
-        with pytest.raises(KeyError, match="Host 'non-existent-host' not found in Ansible inventory."):
+        with pytest.raises(KeyError, match=r"Host 'non-existent-host' not found in Ansible inventory."):
             action_plugin_vars._get_raw_variables("non-existent-host")
 
     def test_get_raw_variables_group_vars(self, ansible_task: Task) -> None:

@@ -508,7 +508,6 @@ interface Vlan10
    no shutdown
    mtu 1500
    ip address 10.10.10.2/24
-   ip attached-host route export 19
    ip virtual-router address 10.10.10.1
 !
 interface Vlan110

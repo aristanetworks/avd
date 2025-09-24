@@ -55,7 +55,7 @@ Arista AVD Software Release Policy and Life Cycle defines the various phases of 
 
 The Arista AVD project follows [Semantic Versioning](../versioning/semantic-versioning.md): <font class="v-r">Major</font>.<font class="v-gr">Minor</font>.<font class="v-ygr">Maintenance</font> (ex. <font class="v-r">4</font>.<font class="v-gr">10</font>.<font class="v-ygr">2</font>):
 
-- <font class="v-r">Major: Contains breaking changes, follow the</font> [porting guide](../porting-guides/5.x.x.md).
+- <font class="v-r">Major: Contains breaking changes, follow the</font> [porting guide](../porting-guides/6.x.x.md).
 - <font class="v-gr">Minor: New features and fixes (non-breaking)</font>.
 - <font class="v-ygr">Maintenance: Fixes only (non-breaking)</font>.
 
@@ -66,16 +66,16 @@ The Arista AVD project follows [Semantic Versioning](../versioning/semantic-vers
 
 AVD supports the following upgrade paths:
 
-- Between any minor versions in the same release train, i.e., from 4.1.0 to 4.5.0.
+- Between any minor versions in the same release train, i.e., from 5.1.0 to 5.7.0.
   - Skipping minor versions is supported.
-- Between major release trains, i.e., from 4.10.2 to 5.0.0.
+- Between major release trains, i.e., from 5.7 to 6.0.0.
   - Skipping a major version is not supported, i.e, from 3.8.0 to 5.0.0.
   - Major versions may contain changes requiring updates to the inventory variables. Required updates will be described in a Porting Guide for each major version.
 
-Release notes and porting guide for version 5.x.x can be found here:
+Release notes and porting guide for version 6.x.x can be found here:
 
-- [Release Notes](../release-notes/5.x.x.md)
-- [Porting Guide](../porting-guides/5.x.x.md)
+- [Release Notes](../release-notes/6.x.x.md)
+- [Porting Guide](../porting-guides/6.x.x.md)
 
 ## Support Matrix
 
@@ -83,6 +83,7 @@ The following table depicts the AVD release support matrix, including the timeli
 
 | Release | Initial Release Date | Maintenance Phase | Support Only Phase | End of Support |
 | ------- | -------------------- | ----------------- | ------------------ | -------------- |
+| 6.x.x |   -      | - | - | - |
 | 5.x.x | Oct-2024 | - | - | - |
 | 4.x.x | Jun-2023 | Oct-2024 | Apr-2025 | Oct-2025 |
 
