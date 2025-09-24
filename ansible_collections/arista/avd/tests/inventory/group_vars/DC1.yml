@@ -39,7 +39,3 @@ ntp_settings:
   servers:
     - name: 0.fr.pool.ntp.org
     - name: 1.fr.pool.ntp.org
-
-# management eapi
-management_eapi:
-  enabled: true

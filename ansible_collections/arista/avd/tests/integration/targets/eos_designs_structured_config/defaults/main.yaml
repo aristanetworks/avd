@@ -15,5 +15,3 @@ avd_switch_facts:
     id: 1
     vlans: ""
     uplinks: []
-management_eapi:
-  enabled: true
