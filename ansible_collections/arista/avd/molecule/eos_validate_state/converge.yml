@@ -8,7 +8,7 @@
     - name: Generate AVD Structured Configurations and Fabric Documentation
       ansible.builtin.import_role:
         name: arista.avd.eos_designs
-      check_mode: false # Needed for idempotency
+      check_mode: false  # Needed for idempotency to pass
     - name: Test eos_validate_state
       delegate_to: localhost
       ansible.builtin.import_role:
