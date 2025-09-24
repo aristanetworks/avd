@@ -908,6 +908,6 @@
 
         ```yaml
         vrfs:
-        - enabled: true
-          name: use_mgmt_interface_vrf
+        - name: use_mgmt_interface_vrf
+          enabled: true
         ```
