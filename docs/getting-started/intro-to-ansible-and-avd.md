@@ -696,7 +696,7 @@ Below are a number of links to additional documentation about Ansible AVD and An
 - [Role documentation for eos_design](../../ansible_collections/arista/avd/roles/eos_designs/README.md)
 - [Role documentation for eos_cli_config_gen](../../ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md)
 - [RedHat Ansible Tower Documentation](https://docs.ansible.com/ansible/latest/reference_appendices/tower.html)
-- [Role documentation for eos_config_deploy_cvp](../../ansible_collections/arista/avd/roles/eos_config_deploy_cvp/README.md) / [eos_config_deploy_eapi](../../ansible_collections/arista/avd/roles/eos_config_deploy_eapi/README.md)
+- [Role documentation for cv_deploy](../../ansible_collections/arista/avd/roles/cv_deploy/README.md) / [eos_config_deploy_eapi](../../ansible_collections/arista/avd/roles/eos_config_deploy_eapi/README.md)
 
 ## Next steps
 
