@@ -12,10 +12,12 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.110/32
+  ospf_area: 0.0.0.0
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.110/32
+  ospf_area: 0.0.0.0
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -23,20 +25,6 @@ management_api_http:
 metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 192.168.255.0/24 eq 32
-  - sequence: 20
-    action: permit 192.168.254.0/24 eq 32
-route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 300
@@ -54,10 +42,6 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
-    send_community: all
-    maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
@@ -66,9 +50,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   redistribute:
-    connected:
-      enabled: true
-      route_map: RM-CONN-2-BGP
     ospf:
       enabled: true
   vlans:
@@ -86,8 +67,6 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   vrfs:
@@ -107,6 +86,10 @@ router_ospf:
   - id: 101
     passive_interface_default: true
     router_id: 192.168.255.110
+    bfd_enable: false
+    no_passive_interfaces:
+    - Vlan42
+    max_lsa: 42
     redistribute:
       bgp:
         enabled: true
@@ -116,6 +99,8 @@ vlan_interfaces:
 - name: Vlan42
   description: test-1
   shutdown: true
+  ospf_network_point_to_point: false
+  ospf_area: 0.0.0.0
   tenant: Tenant-A
 vlan_internal_order:
   allocation: ascending
