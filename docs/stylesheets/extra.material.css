@@ -63,24 +63,7 @@
     letter-spacing: -.01em;
     line-height: 3em;
 }
-@media only screen and (min-width: 76.25em) {
-    .md-main__inner {
-        max-width: 100%;
-   }
-    .md-sidebar--primary {
-        margin-left: 30px;
-   }
-    .md-sidebar--secondary {
-        margin-left: 0;
-        margin-right: 30px;
-        -webkit-transform: none;
-        transform: none;
-   }
-}
 @media only screen {
-    .md-header__inner, .md-footer-meta__inner{
-        max-width: 100%;
-   }
     .md-footer-nav {
         background-color: var(--md-default-bg-color--light);
         color: var(--md-accent-fg-color--transparent)
@@ -146,6 +129,9 @@
         border-width: thin;
         box-shadow: 0 .2rem .5rem rgba(0,0,0,.05),0 0 .05rem rgba(0,0,0,.1);
    }
+}
+.md-grid {
+    max-width: 100%;
 }
 .md-typeset__table {
     min-width: 100%;

@@ -7,31 +7,11 @@
 {% if management_ssh is arista.avd.defined %}
 !
 management ssh
-{%     if management_ssh.access_groups is arista.avd.defined %}
-{%         for access_group in management_ssh.access_groups | arista.avd.natural_sort %}
-{%             set acl_cli = "ip access-group " ~ access_group.name %}
-{%             if access_group.vrf is arista.avd.defined %}
-{%                 set acl_cli = acl_cli ~ " vrf " ~ access_group.vrf  %}
-{%             endif %}
-{%             set acl_cli = acl_cli ~ " in" %}
-   {{ acl_cli }}
-{%         endfor %}
-{%     endif %}
 {%     for vrf in management_ssh.vrfs | arista.avd.default([]) | selectattr("ip_access_group_in", "arista.avd.defined") %}
    ip access-group {{ vrf.ip_access_group_in }} vrf {{ vrf.name }} in
 {%     endfor %}
 {%     if management_ssh.ip_access_group_in is arista.avd.defined %}
    ip access-group {{ management_ssh.ip_access_group_in }} in
-{%     endif %}
-{%     if management_ssh.ipv6_access_groups is arista.avd.defined %}
-{%         for ipv6_access_group in management_ssh.ipv6_access_groups | arista.avd.natural_sort %}
-{%             set ipv6_acl_cli = "ipv6 access-group " ~ ipv6_access_group.name %}
-{%             if ipv6_access_group.vrf is arista.avd.defined %}
-{%                 set ipv6_acl_cli = ipv6_acl_cli ~ " vrf " ~ ipv6_access_group.vrf  %}
-{%             endif %}
-{%             set ipv6_acl_cli = ipv6_acl_cli ~ " in" %}
-   {{ ipv6_acl_cli }}
-{%         endfor %}
 {%     endif %}
 {%     for vrf in management_ssh.vrfs | arista.avd.default([]) | selectattr("ipv6_access_group_in", "arista.avd.defined") %}
    ipv6 access-group {{ vrf.ipv6_access_group_in }} vrf {{ vrf.name }} in

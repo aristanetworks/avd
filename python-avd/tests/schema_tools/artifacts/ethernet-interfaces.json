@@ -55,8 +55,8 @@
             },
             "ip_verify_unicast_source_reachable_via": "rx",
             "tcp_mss_ceiling": {
-                "ipv4_segment_size": 70,
-                "ipv6_segment_size": 75,
+                "ipv4": 70,
+                "ipv6": 75,
                 "direction": "egress"
             },
             "switchport": {
@@ -224,7 +224,7 @@
             "peer_type": "server",
             "description": "SRV-POD02_Eth1",
             "tcp_mss_ceiling": {
-                "ipv4_segment_size": 70,
+                "ipv4": 70,
                 "direction": "ingress"
             },
             "multicast": {
@@ -336,7 +336,7 @@
             },
             "spanning_tree_guard": "root",
             "tcp_mss_ceiling": {
-                "ipv6_segment_size": 65
+                "ipv6": 65
             },
             "switchport": {
                 "enabled": false,
@@ -391,7 +391,7 @@
             },
             "spanning_tree_guard": "disabled",
             "tcp_mss_ceiling": {
-                "ipv4_segment_size": 65
+                "ipv4": 65
             },
             "multicast": {
                 "ipv4": {
@@ -463,8 +463,12 @@
             "isis_network_point_to_point": true,
             "isis_circuit_type": "level-2",
             "isis_hello_padding": false,
-            "isis_authentication_mode": "md5",
-            "isis_authentication_key": "asfddja23452",
+            "isis_authentication": {
+                "both": {
+                    "mode": "md5",
+                    "key": "asfddja23452"
+                }
+            },
             "spanning_tree_guard": "loop",
             "switchport": {
                 "enabled": false,
@@ -1682,7 +1686,9 @@
                         "delay": null
                     },
                     "ipv6": {
-                        "address": "2001:db8::1"
+                        "addresses": [
+                            "2001:db8::1"
+                        ]
                     }
                 }
             ]
@@ -1733,7 +1739,9 @@
                         "delay": null
                     },
                     "ipv6": {
-                        "address": "2001:db8::1"
+                        "addresses": [
+                            "2001:db8::1"
+                        ]
                     },
                     "tracked_object": [
                         {

@@ -75,7 +75,7 @@ all:
           ansible_httpapi_port: 443
 ```
 
-For a complete list of authentication options available with CloudVision Ansible collection, you can read the dedicated page on [arista.cvp collection](https://cvp.avd.sh/en/latest/docs/how-to/cvp-authentication/).
+For a complete list of authentication options available with CloudVision Ansible collection, you can read the dedicated page on [arista.cvp collection](https://aristanetworks.github.io/ansible-cvp/docs/how-to/cvp-authentication/).
 
 ### Role default output directories
 

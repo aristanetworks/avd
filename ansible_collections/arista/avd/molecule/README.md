@@ -33,7 +33,6 @@ Current molecule implementation provides the following scenarios:
 - eos_designs_negative_unit_tests
 - eos_designs-twodc-5stage-clos
 - eos_designs_unit_tests
-- eos_validate_state
 - evpn_underlay_ebgp_overlay_ebgp
 - evpn_underlay_isis_overlay_ibgp
 - evpn_underlay_ospf_overlay_ebgp

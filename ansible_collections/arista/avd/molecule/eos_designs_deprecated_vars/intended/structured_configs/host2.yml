@@ -118,15 +118,6 @@ router_isis:
     enabled: true
     router_id: 10.42.0.102
 service_routing_protocols_model: multi-agent
-snmp_server:
-  hosts:
-  - host: 10.6.75.127
-    vrf: MGMT
-    version: 2c
-    community: SNMP-COMMUNITY-2
-  vrfs:
-  - name: MGMT
-    enable: true
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

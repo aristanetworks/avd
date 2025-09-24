@@ -128,7 +128,7 @@
 {%                     do row_ipv4_virtual_ips.extend(vrid.ipv4.secondary_addresses) %}
 {%                 endif %}
 {%                 set row_ipv4_version = vrid.ipv4.version | arista.avd.default('2') %}
-{%                 set row_ipv6_virtual_ips = vrid.ipv6.addresses | arista.avd.default(vrid.ipv6.address, '-') | join(', ') %}
+{%                 set row_ipv6_virtual_ips = vrid.ipv6.addresses | arista.avd.default('-') | join(', ') %}
 | {{ vlan_interface.name }} | {{ row_id }} | {{ row_prio_level }} | {{ row_ad_interval }} | {{ row_preempt }} | {{ row_tracked_object_name | arista.avd.default('-') }} | {{ row_tracked_object_action | arista.avd.default('-') }} | {{ row_ipv4_virtual_ips | join(", ") | arista.avd.default("-") }} | {{ row_ipv4_version }} | {{ row_ipv6_virtual_ips }} | {{ peer_auth_mode }} |
 {%             endfor %}
 {%         endfor %}

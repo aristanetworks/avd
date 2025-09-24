@@ -44,6 +44,26 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet5
+  description: P2P_UNDERLAY-MULTICAST-L3LEAF3A_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.31.255.18/31
+  peer: UNDERLAY-MULTICAST-L3LEAF3A
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet6
+  description: P2P_UNDERLAY-MULTICAST-L3LEAF3B_Ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.31.255.22/31
+  peer: UNDERLAY-MULTICAST-L3LEAF3B
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: UNDERLAY-MULTICAST-SPINE2
 ip_routing: true
 loopback_interfaces:
@@ -129,6 +149,16 @@ router_bgp:
     remote_as: '65102'
     peer: UNDERLAY-MULTICAST-L3LEAF2B
     description: UNDERLAY-MULTICAST-L3LEAF2B_Ethernet2
+  - ip_address: 172.31.255.19
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65103'
+    peer: UNDERLAY-MULTICAST-L3LEAF3A
+    description: UNDERLAY-MULTICAST-L3LEAF3A_Ethernet2
+  - ip_address: 172.31.255.23
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65103'
+    peer: UNDERLAY-MULTICAST-L3LEAF3B
+    description: UNDERLAY-MULTICAST-L3LEAF3B_Ethernet2
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
@@ -149,6 +179,16 @@ router_bgp:
     remote_as: '65102'
     peer: UNDERLAY-MULTICAST-L3LEAF2B
     description: UNDERLAY-MULTICAST-L3LEAF2B_Loopback0
+  - ip_address: 192.168.255.7
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65103'
+    peer: UNDERLAY-MULTICAST-L3LEAF3A
+    description: UNDERLAY-MULTICAST-L3LEAF3A_Loopback0
+  - ip_address: 192.168.255.8
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65103'
+    peer: UNDERLAY-MULTICAST-L3LEAF3B
+    description: UNDERLAY-MULTICAST-L3LEAF3B_Loopback0
   redistribute:
     connected:
       enabled: true

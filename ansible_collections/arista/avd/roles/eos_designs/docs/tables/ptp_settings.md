@@ -7,7 +7,6 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ptp</samp>](## "ptp") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version v5.0.0. Use <samp>ptp_settings</samp> instead.</span> |
     | [<samp>ptp_profiles</samp>](## "ptp_profiles") | List, items: Dictionary |  | See (+) on YAML tab |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "ptp_profiles.[].profile") | String | Required, Unique |  |  | PTP profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;announce</samp>](## "ptp_profiles.[].announce") | Dictionary |  |  |  | PTP announce interval. |
@@ -63,27 +62,27 @@
 
         ```yaml
         ptp_profiles:
-        - announce:
+        - profile: aes67-r16-2016
+          announce:
             interval: 0
             timeout: 3
           delay_req: -3
-          profile: aes67-r16-2016
           sync_message:
             interval: -3
           transport: ipv4
-        - announce:
+        - profile: smpte2059-2
+          announce:
             interval: -2
             timeout: 3
           delay_req: -4
-          profile: smpte2059-2
           sync_message:
             interval: -4
           transport: ipv4
-        - announce:
+        - profile: aes67
+          announce:
             interval: 2
             timeout: 3
           delay_req: 0
-          profile: aes67
           sync_message:
             interval: 0
           transport: ipv4
