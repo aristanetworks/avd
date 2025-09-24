@@ -2395,32 +2395,42 @@ keys:
         keys:
           causes:
             type: list
+            primary_key: name
             items:
-              type: str
-              valid_values:
-              - arp-inspection
-              - bpduguard
-              - dot1x
-              - hitless-reload-down
-              - lacp-rate-limit
-              - link-flap
-              - no-internal-vlan
-              - portchannelguard
-              - portsec
-              - speed-misconfigured
-              - tap-port-init
-              - tapagg
-              - uplink-failure-detection
-              - xcvr-misconfigured
-              - xcvr-overheat
-              - xcvr-power-unsupported
-              - xcvr-unsupported
+              type: dict
+              keys:
+                name:
+                  type: str
+                  valid_values:
+                  - arp-inspection
+                  - bpduguard
+                  - dot1x
+                  - hitless-reload-down
+                  - lacp-rate-limit
+                  - link-flap
+                  - no-internal-vlan
+                  - portchannelguard
+                  - portsec
+                  - speed-misconfigured
+                  - tap-port-init
+                  - tapagg
+                  - uplink-failure-detection
+                  - xcvr-misconfigured
+                  - xcvr-overheat
+                  - xcvr-power-unsupported
+                  - xcvr-unsupported
+                interval:
+                  type: int
+                  description: Interval for each recovery cause in seconds.
+                  min: 30
+                  max: 86400
+                  convert_types:
+                  - str
           interval:
             type: int
             convert_types:
             - str
             description: Interval in seconds.
-            default: 300
             min: 30
             max: 86400
   ethernet_interfaces:
