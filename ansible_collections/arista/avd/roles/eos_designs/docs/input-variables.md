@@ -29,16 +29,6 @@ The input variables are documented below in tables and YAML.
 
 `eos_designs` supports multiple options such as L3LS-EVPN with 3-stage or 5-stage, L2LS, MPLS, AutoVPN and CV Pathfinder. The sections below highlight some of these topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.
 
-## Design type
-
-!!! note
-    The `design.type` variable is no longer required. It has been deprecated and will be removed in AVD 6.0.0.
-    The default [Node Type Variables](#node-type-variables) can be used with all designs.
-
---8<--
-ansible_collections/arista/avd/roles/eos_designs/docs/tables/design.md
---8<--
-
 ### 3-stage clos topology support (Leaf & Spine)
 
 - The **eos_designs** role support various deployments with layer 3 leaf and spine (3-stage Clos) and optionally, with dedicated overlay controllers.
@@ -214,8 +204,6 @@ AVD provides the capability to customize your node types, supporting a variety o
     The default values will be overridden if this key is defined.
     If you need to change all the existing `node_type_keys`, it is recommended to copy the defaults and modify them.
     If you need to add custom `node_type_keys`, create them under `custom_node_type_keys`; if named identically to default `node_type_keys` entries, custom entries will replace the equivalent default entry.
-
-The default value of `node_type_keys` depend on the `design.type` setting which is deprecated for removal in AVD 6.0.0. The default design type `l3ls-evpn` provides all the default node types mentioned in the previous section.
 
 ??? example "Default value for design `l3ls-evpn`"
 

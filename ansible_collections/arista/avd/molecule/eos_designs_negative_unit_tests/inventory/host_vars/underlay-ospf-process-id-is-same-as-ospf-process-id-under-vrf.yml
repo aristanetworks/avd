@@ -1,0 +1,29 @@
+---
+underlay_ospf_process_id: 101
+
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: underlay-ospf-process-id-is-same-as-ospf-process-id-under-vrf
+      id: 102
+      bgp_as: 102
+
+tenants:
+  - name: Tenant-A
+    vrfs:
+      - name: ospf-vrf
+        vrf_id: 2
+        ospf:
+          enabled: true
+          process_id: 101
+        svis:
+          - id: 42
+            name: test-1
+            vni_override: 50111
+
+expected_error_message: >-
+  'tenants[name=Tenant-A].vrfs[name=ospf-vrf].ospf.process_id[process_id=101]' should not match the underlay OSPF process id '101'.

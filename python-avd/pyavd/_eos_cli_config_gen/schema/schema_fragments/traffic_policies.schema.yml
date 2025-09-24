@@ -89,7 +89,7 @@ keys:
                 type: str
                 convert_types:
                   - int
-              description: Counter name.
+              description: List of named counters.
             matches:
               type: list
               primary_key: name
@@ -192,8 +192,9 @@ keys:
                         convert_types:
                           - int
                         description: |-
-                          Counter name. This should also be added to the `policies[].counters` list.
-                          It will no longer be added automatically to the counters in AVD 6.0.
+                          Named counter.
+                          Must also be defined under `policies[].counters` to be active.
+                          If not defined, the counter is inactive on EOS.
                       drop:
                         type: bool
                       log:
@@ -279,7 +280,10 @@ keys:
                       type: str
                       convert_types:
                         - int
-                      description: Counter name. This should also be added to the `policies[].counters` list.
+                      description: |-
+                        Named counter.
+                        Must also be defined under `policies[].counters` to be active.
+                        If not defined, the counter is inactive on EOS.
                     drop:
                       type: bool
                     log:
@@ -301,7 +305,10 @@ keys:
                       type: str
                       convert_types:
                         - int
-                      description: Counter name. This should also be added to the `policies[].counters` list.
+                      description: |-
+                        Named counter.
+                        Must also be defined under `policies[].counters` to be active.
+                        If not defined, the counter is inactive on EOS.
                     drop:
                       type: bool
                     log:
