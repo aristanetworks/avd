@@ -8,7 +8,7 @@
 
 A **Node Type** is a data model template that defines the behavior and configuration of a group of devices with a similar function. Instead of configuring every switch from scratch, you assign a `node_type` to it, and AVD applies a pre-defined set of design rules.
 
-The `eos_designs` role comes with built-in node types like `spine`, `l3leaf`, and `l2leaf`. While these defaults cover most L3LS EVPN designs, AVD gives you the flexibility to customize them or create your own.
+The `eos_designs` role comes with built-in node types like `spine`, `l3leaf`, `l2leaf` and others. While these defaults cover most L3LS EVPN designs, AVD gives you the option to customize them or create your own.
 
 ## Default node types
 
