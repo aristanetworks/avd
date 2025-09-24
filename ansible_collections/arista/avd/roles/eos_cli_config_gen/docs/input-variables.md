@@ -221,22 +221,6 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/dynamic-pref
 
 ### IP community lists
 
-AVD currently supports two different data models for community lists:
-
-- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
-- The improved `ip_community_lists` data model.
-
-Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
-Community list names must be unique.
-
-The legacy data model supports simplified community list definition that only allows a single action to be defined as string:
-
---8<--
-ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/community-lists.md
---8<--
-
-The improved data model has a better design documented below:
-
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-community-lists.md
 --8<--
