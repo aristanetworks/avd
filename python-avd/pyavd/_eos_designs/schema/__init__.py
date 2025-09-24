@@ -71350,9 +71350,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     Serial Number of the device.
     Used for documentation purpose in the fabric documentation as can also
-    be used by the 'eos_config_deploy_cvp' role.
-    "serial_number" can also be set directly under node
-    type settings.
+    be used by the 'cv_deploy' role.
+    "serial_number" can also be set directly under node type settings.
     If both are set, the value under node type settings takes precedence.
     """
     sflow_settings: SflowSettings
@@ -73132,9 +73131,8 @@ class EosDesigns(EosDesignsRootModel):
                 serial_number:
                    Serial Number of the device.
                    Used for documentation purpose in the fabric documentation as can also
-                   be used by the 'eos_config_deploy_cvp' role.
-                   "serial_number" can also be set directly under node
-                   type settings.
+                   be used by the 'cv_deploy' role.
+                   "serial_number" can also be set directly under node type settings.
                    If both are set, the value under node type settings takes precedence.
                 sflow_settings:
                    sFlow settings.
