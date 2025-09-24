@@ -8,7 +8,7 @@
 
 ## Introduction to Connected Endpoints
 
-The **`connected_endpoints`** data model in AVD is a structured way to define the interfaces that connect to your leaf switches. Instead of manually creating `interface Ethernet...` configurations for every server, you describe the connections in your YAML inventory, and AVD generates the complete, standardized configuration for you.
+The **`connected_endpoints`** data model in AVD is a structured way to define the interfaces that connect to your leaf switches. Instead of manually creating `interface Ethernet...` configurations for every server, you describe the connections using a data model, and AVD generates the complete, standardized configuration for you.
 
 This model is typically defined directly under the leaf switch's data model, for example, in `host_vars/<leaf_name>.yml` or a group file like `group_vars/LEAFS.yml`.
 
