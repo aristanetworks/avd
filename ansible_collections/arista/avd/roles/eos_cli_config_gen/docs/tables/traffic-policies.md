@@ -85,13 +85,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "traffic_policies.policies.[].default_actions.ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "traffic_policies.policies.[].default_actions.ipv4.dscp") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "traffic_policies.policies.[].default_actions.ipv4.traffic_class") | Integer |  |  |  | Traffic class ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "traffic_policies.policies.[].default_actions.ipv4.count") | String |  |  |  | Named counter.<br>Must also be defined under `policies[].counters` to be active.<br>If not defined, the counter will be inactive on EOS and a warning is printed via the 'show traffic-policy interface' command. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "traffic_policies.policies.[].default_actions.ipv4.count") | String |  |  |  | Named counter.<br>Must also be defined under `policies[].counters` to be active.<br>If not defined, the counter is inactive on EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "traffic_policies.policies.[].default_actions.ipv4.drop") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "traffic_policies.policies.[].default_actions.ipv4.log") | Boolean |  |  |  | Only supported when action is set to drop. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "traffic_policies.policies.[].default_actions.ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "traffic_policies.policies.[].default_actions.ipv6.dscp") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "traffic_policies.policies.[].default_actions.ipv6.traffic_class") | Integer |  |  |  | Traffic class ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "traffic_policies.policies.[].default_actions.ipv6.count") | String |  |  |  | Named counter.<br>Must also be defined under `policies[].counters` to be active.<br>If not defined, the counter will be inactive on EOS and a warning is printed via the 'show traffic-policy interface' command. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "traffic_policies.policies.[].default_actions.ipv6.count") | String |  |  |  | Named counter.<br>Must also be defined under `policies[].counters` to be active.<br>If not defined, the counter is inactive on EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "traffic_policies.policies.[].default_actions.ipv6.drop") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log</samp>](## "traffic_policies.policies.[].default_actions.ipv6.log") | Boolean |  |  |  | Only supported when action is set to drop. |
 
@@ -265,7 +265,7 @@
 
               # Named counter.
               # Must also be defined under `policies[].counters` to be active.
-              # If not defined, the counter will be inactive on EOS and a warning is printed via the 'show traffic-policy interface' command.
+              # If not defined, the counter is inactive on EOS.
               count: <str>
               drop: <bool>
 
@@ -279,7 +279,7 @@
 
               # Named counter.
               # Must also be defined under `policies[].counters` to be active.
-              # If not defined, the counter will be inactive on EOS and a warning is printed via the 'show traffic-policy interface' command.
+              # If not defined, the counter is inactive on EOS.
               count: <str>
               drop: <bool>
 

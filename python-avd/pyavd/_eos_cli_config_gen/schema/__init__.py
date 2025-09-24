@@ -63379,8 +63379,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Named counter.
                     Must also be defined under `policies[].counters` to be active.
                     If not defined, the
-                    counter will be inactive on EOS and a warning is printed via the 'show traffic-policy interface'
-                    command.
+                    counter is inactive on EOS.
                     """
                     drop: bool | None
                     log: bool | None
@@ -63410,8 +63409,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                    Named counter.
                                    Must also be defined under `policies[].counters` to be active.
                                    If not defined, the
-                                   counter will be inactive on EOS and a warning is printed via the 'show traffic-policy interface'
-                                   command.
+                                   counter is inactive on EOS.
                                 drop: drop
                                 log: Only supported when action is set to drop.
 
@@ -63435,8 +63433,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Named counter.
                     Must also be defined under `policies[].counters` to be active.
                     If not defined, the
-                    counter will be inactive on EOS and a warning is printed via the 'show traffic-policy interface'
-                    command.
+                    counter is inactive on EOS.
                     """
                     drop: bool | None
                     log: bool | None
@@ -63466,8 +63463,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                    Named counter.
                                    Must also be defined under `policies[].counters` to be active.
                                    If not defined, the
-                                   counter will be inactive on EOS and a warning is printed via the 'show traffic-policy interface'
-                                   command.
+                                   counter is inactive on EOS.
                                 drop: drop
                                 log: Only supported when action is set to drop.
 

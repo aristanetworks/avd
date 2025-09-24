@@ -23574,9 +23574,7 @@ keys:
 
                         Must also be defined under `policies[].counters` to be active.
 
-                        If not defined, the counter will be inactive on EOS and a
-                        warning is printed via the ''show traffic-policy interface''
-                        command.'
+                        If not defined, the counter is inactive on EOS.'
                     drop:
                       type: bool
                     log:
@@ -23602,9 +23600,7 @@ keys:
 
                         Must also be defined under `policies[].counters` to be active.
 
-                        If not defined, the counter will be inactive on EOS and a
-                        warning is printed via the ''show traffic-policy interface''
-                        command.'
+                        If not defined, the counter is inactive on EOS.'
                     drop:
                       type: bool
                     log:
