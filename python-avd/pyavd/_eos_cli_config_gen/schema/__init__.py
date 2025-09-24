@@ -59128,13 +59128,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 RpAddresses._item_type = RpAddressesItem
 
-                _fields: ClassVar[dict] = {"bfd": {"type": bool}, "make_before_break": {"type": bool}, "rp_addresses": {"type": RpAddresses}}
+                _fields: ClassVar[dict] = {
+                    "bfd": {"type": bool},
+                    "make_before_break": {"type": bool},
+                    "rp_addresses": {"type": RpAddresses},
+                    "ssm_range": {"type": str},
+                }
                 bfd: bool | None
                 """Enable/Disable BFD."""
                 make_before_break: bool | None
                 """Enable/Disable Make-Before-Break."""
                 rp_addresses: RpAddresses
                 """Subclass of AvdList with `RpAddressesItem` items."""
+                ssm_range: str | None
+                """IPv4 Prefix associated with SSM."""
 
                 if TYPE_CHECKING:
 
@@ -59144,6 +59151,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         bfd: bool | None | UndefinedType = Undefined,
                         make_before_break: bool | None | UndefinedType = Undefined,
                         rp_addresses: RpAddresses | UndefinedType = Undefined,
+                        ssm_range: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Ipv4.
@@ -59155,6 +59163,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             bfd: Enable/Disable BFD.
                             make_before_break: Enable/Disable Make-Before-Break.
                             rp_addresses: Subclass of AvdList with `RpAddressesItem` items.
+                            ssm_range: IPv4 Prefix associated with SSM.
 
                         """
 

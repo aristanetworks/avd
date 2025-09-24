@@ -21840,6 +21840,9 @@ keys:
                         max: 32
                       override:
                         type: bool
+                ssm_range:
+                  type: str
+                  description: IPv4 Prefix associated with SSM.
   router_rip:
     type: dict
     description: Routing Information Protocol settings.
