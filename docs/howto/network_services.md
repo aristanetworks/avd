@@ -9,7 +9,7 @@
 
 ## Introduction to AVD Network Services
 
-In Arista Validated Designs (AVD), **"Network Services"** is an abstracted data model that allows you to define and deploy Layer 2 (VLANs) and Layer 3 (VRF) services across your entire fabric from a central location.
+**"Network Services"** is an abstracted data model that allows you to define and deploy Layer 2 (VLANs) and Layer 3 (VRF) services across your entire fabric.
 
 The model is designed to be tenant-based, meaning you group network services under a **"tenant"** which can represent an organization, department, or any logical container. This structure allows for the reuse of VLAN and SVI IDs across different tenants while ensuring that configurations are deployed only to the relevant devices in the fabric.
 
