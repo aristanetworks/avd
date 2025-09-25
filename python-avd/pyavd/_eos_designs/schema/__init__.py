@@ -70741,13 +70741,13 @@ class EosDesigns(EosDesignsRootModel):
     If the device is already deployed in the fabric.
     When set to false:
       - The `cv_deploy` role will
-    not attempt to move or apply configurations to this device.
-      - Peer interfaces toward this device
-    may be shutdown based on the `shutdown_interfaces_towards_undeployed_peers` setting.
-      - Peer BGP
-    neighbors may be shutdown based on the `shutdown_bgp_towards_undeployed_peers` setting.
-      -
-    Validation tests by the `anta_runner` role are automatically skipped for this device.
+    not apply configurations to this device.
+      - Peer interfaces toward this device may be shutdown
+    based on the `shutdown_interfaces_towards_undeployed_peers` setting.
+      - BGP peerings toward this
+    device may be shutdown based on the `shutdown_bgp_towards_undeployed_peers` setting.
+      - Validation
+    tests by the `anta_runner` role are automatically skipped for this device.
 
     Default value: `True`
     """
@@ -72705,13 +72705,13 @@ class EosDesigns(EosDesignsRootModel):
                    If the device is already deployed in the fabric.
                    When set to false:
                      - The `cv_deploy` role will
-                   not attempt to move or apply configurations to this device.
-                     - Peer interfaces toward this device
-                   may be shutdown based on the `shutdown_interfaces_towards_undeployed_peers` setting.
-                     - Peer BGP
-                   neighbors may be shutdown based on the `shutdown_bgp_towards_undeployed_peers` setting.
-                     -
-                   Validation tests by the `anta_runner` role are automatically skipped for this device.
+                   not apply configurations to this device.
+                     - Peer interfaces toward this device may be shutdown
+                   based on the `shutdown_interfaces_towards_undeployed_peers` setting.
+                     - BGP peerings toward this
+                   device may be shutdown based on the `shutdown_bgp_towards_undeployed_peers` setting.
+                     - Validation
+                   tests by the `anta_runner` role are automatically skipped for this device.
                 isis_advertise_passive_only: isis_advertise_passive_only
                 isis_area_id: isis_area_id
                 isis_default_circuit_type:
