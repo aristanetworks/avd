@@ -1,6 +1,7 @@
 ---
 underlay_routing_protocol: ospf
 underlay_ospf_maximum_paths: 100
+underlay_ospf_graceful_restart: false
 underlay_ospf_authentication:
   enabled: true
   message_digest_keys:

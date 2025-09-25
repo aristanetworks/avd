@@ -4233,34 +4233,6 @@ class EosDesigns(EosDesignsRootModel):
 
     DefaultNodeTypes._item_type = DefaultNodeTypesItem
 
-    class Design(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"type": {"type": str, "default": "l3ls-evpn"}}
-        type: Literal["l3ls-evpn", "mpls", "l2ls"]
-        """
-        By setting the design.type variable, the default node-types and templates described in these
-        documents will be used.
-
-        Default value: `"l3ls-evpn"`
-        """
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, type: Literal["l3ls-evpn", "mpls", "l2ls"] | UndefinedType = Undefined) -> None:
-                """
-                Design.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    type:
-                       By setting the design.type variable, the default node-types and templates described in these
-                       documents will be used.
-
-                """
-
     class DigitalTwin(AvdModel):
         """Subclass of AvdModel."""
 
@@ -17137,6 +17109,43 @@ class EosDesigns(EosDesignsRootModel):
 
             Ipv6AddressVirtuals._item_type = str
 
+            class Ipv6Nd(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "advertise_ipv6_address_virtuals": {"type": bool},
+                    "valid_lifetime": {"type": str},
+                    "preferred_lifetime": {"type": str},
+                }
+                advertise_ipv6_address_virtuals: bool | None
+                """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+                valid_lifetime: str | None
+                """In seconds <0-4294967295> or infinite."""
+                preferred_lifetime: str | None
+                """In seconds <0-4294967295> or infinite."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                        valid_lifetime: str | None | UndefinedType = Undefined,
+                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Ipv6Nd.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                            valid_lifetime: In seconds <0-4294967295> or infinite.
+                            preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                        """
+
             class IpAddressVirtualSecondaries(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -17639,6 +17648,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv6_enable": {"type": bool},
                 "ip_address_virtual": {"type": str},
                 "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                "ipv6_nd": {"type": Ipv6Nd},
                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -17697,6 +17707,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdList with `str` items.
             """
+            ipv6_nd: Ipv6Nd
+            """Subclass of AvdModel."""
             ip_address_virtual_secondaries: IpAddressVirtualSecondaries
             """
             Secondary IPv4 VXLAN Anycast IP addresses.
@@ -17876,6 +17888,7 @@ class EosDesigns(EosDesignsRootModel):
                     ipv6_enable: bool | None | UndefinedType = Undefined,
                     ip_address_virtual: str | None | UndefinedType = Undefined,
                     ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                    ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -17929,6 +17942,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                            Subclass of AvdList with `str` items.
+                        ipv6_nd: Subclass of AvdModel.
                         ip_address_virtual_secondaries:
                            Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -18061,6 +18075,39 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdList with `str` items."""
 
         Ipv6AddressVirtuals._item_type = str
+
+        class Ipv6Nd(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"advertise_ipv6_address_virtuals": {"type": bool}, "valid_lifetime": {"type": str}, "preferred_lifetime": {"type": str}}
+            advertise_ipv6_address_virtuals: bool | None
+            """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+            valid_lifetime: str | None
+            """In seconds <0-4294967295> or infinite."""
+            preferred_lifetime: str | None
+            """In seconds <0-4294967295> or infinite."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                    valid_lifetime: str | None | UndefinedType = Undefined,
+                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Ipv6Nd.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                        valid_lifetime: In seconds <0-4294967295> or infinite.
+                        preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                    """
 
         class IpAddressVirtualSecondaries(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -18566,6 +18613,7 @@ class EosDesigns(EosDesignsRootModel):
             "ipv6_enable": {"type": bool},
             "ip_address_virtual": {"type": str},
             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+            "ipv6_nd": {"type": Ipv6Nd},
             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -18640,6 +18688,8 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdList with `str` items.
         """
+        ipv6_nd: Ipv6Nd
+        """Subclass of AvdModel."""
         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
         """
         Secondary IPv4 VXLAN Anycast IP addresses.
@@ -18821,6 +18871,7 @@ class EosDesigns(EosDesignsRootModel):
                 ipv6_enable: bool | None | UndefinedType = Undefined,
                 ip_address_virtual: str | None | UndefinedType = Undefined,
                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -18886,6 +18937,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                        Subclass of AvdList with `str` items.
+                    ipv6_nd: Subclass of AvdModel.
                     ip_address_virtual_secondaries:
                        Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -44430,6 +44482,43 @@ class EosDesigns(EosDesignsRootModel):
 
                             Ipv6AddressVirtuals._item_type = str
 
+                            class Ipv6Nd(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "advertise_ipv6_address_virtuals": {"type": bool},
+                                    "valid_lifetime": {"type": str},
+                                    "preferred_lifetime": {"type": str},
+                                }
+                                advertise_ipv6_address_virtuals: bool | None
+                                """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+                                valid_lifetime: str | None
+                                """In seconds <0-4294967295> or infinite."""
+                                preferred_lifetime: str | None
+                                """In seconds <0-4294967295> or infinite."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                                        valid_lifetime: str | None | UndefinedType = Undefined,
+                                        preferred_lifetime: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Ipv6Nd.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                                            valid_lifetime: In seconds <0-4294967295> or infinite.
+                                            preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                                        """
+
                             class IpAddressVirtualSecondaries(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
@@ -44944,6 +45033,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv6_enable": {"type": bool},
                                 "ip_address_virtual": {"type": str},
                                 "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                                "ipv6_nd": {"type": Ipv6Nd},
                                 "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                                 "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                                 "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -45012,6 +45102,8 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdList with `str` items.
                             """
+                            ipv6_nd: Ipv6Nd
+                            """Subclass of AvdModel."""
                             ip_address_virtual_secondaries: IpAddressVirtualSecondaries
                             """
                             Secondary IPv4 VXLAN Anycast IP addresses.
@@ -45192,6 +45284,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv6_enable: bool | None | UndefinedType = Undefined,
                                     ip_address_virtual: str | None | UndefinedType = Undefined,
                                     ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                                    ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                                     ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                     ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                     ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -45251,6 +45344,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                            Subclass of AvdList with `str` items.
+                                        ipv6_nd: Subclass of AvdModel.
                                         ip_address_virtual_secondaries:
                                            Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -45383,6 +45477,43 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdList with `str` items."""
 
                         Ipv6AddressVirtuals._item_type = str
+
+                        class Ipv6Nd(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "advertise_ipv6_address_virtuals": {"type": bool},
+                                "valid_lifetime": {"type": str},
+                                "preferred_lifetime": {"type": str},
+                            }
+                            advertise_ipv6_address_virtuals: bool | None
+                            """Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key."""
+                            valid_lifetime: str | None
+                            """In seconds <0-4294967295> or infinite."""
+                            preferred_lifetime: str | None
+                            """In seconds <0-4294967295> or infinite."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    advertise_ipv6_address_virtuals: bool | None | UndefinedType = Undefined,
+                                    valid_lifetime: str | None | UndefinedType = Undefined,
+                                    preferred_lifetime: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ipv6Nd.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        advertise_ipv6_address_virtuals: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+                                        valid_lifetime: In seconds <0-4294967295> or infinite.
+                                        preferred_lifetime: In seconds <0-4294967295> or infinite.
+
+                                    """
 
                         class IpAddressVirtualSecondaries(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -45896,6 +46027,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv6_enable": {"type": bool},
                             "ip_address_virtual": {"type": str},
                             "ipv6_address_virtuals": {"type": Ipv6AddressVirtuals},
+                            "ipv6_nd": {"type": Ipv6Nd},
                             "ip_address_virtual_secondaries": {"type": IpAddressVirtualSecondaries},
                             "ip_virtual_router_addresses": {"type": IpVirtualRouterAddresses},
                             "ipv6_virtual_router_addresses": {"type": Ipv6VirtualRouterAddresses},
@@ -45994,6 +46126,8 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdList with `str` items.
                         """
+                        ipv6_nd: Ipv6Nd
+                        """Subclass of AvdModel."""
                         ip_address_virtual_secondaries: IpAddressVirtualSecondaries
                         """
                         Secondary IPv4 VXLAN Anycast IP addresses.
@@ -46178,6 +46312,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv6_enable: bool | None | UndefinedType = Undefined,
                                 ip_address_virtual: str | None | UndefinedType = Undefined,
                                 ipv6_address_virtuals: Ipv6AddressVirtuals | UndefinedType = Undefined,
+                                ipv6_nd: Ipv6Nd | UndefinedType = Undefined,
                                 ip_address_virtual_secondaries: IpAddressVirtualSecondaries | UndefinedType = Undefined,
                                 ip_virtual_router_addresses: IpVirtualRouterAddresses | UndefinedType = Undefined,
                                 ipv6_virtual_router_addresses: Ipv6VirtualRouterAddresses | UndefinedType = Undefined,
@@ -46259,6 +46394,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdList with `str` items.
+                                    ipv6_nd: Subclass of AvdModel.
                                     ip_address_virtual_secondaries:
                                        Secondary IPv4 VXLAN Anycast IP addresses.
 
@@ -50739,11 +50875,11 @@ class EosDesigns(EosDesignsRootModel):
                 Point to point services (pseudowires).
                 Only supported for node types with "network_services.l1:
                 true".
-                By default this is only set for node type "pe" with "design.type: mpls"
+                By default this is only set for node type "pe".
 
 
-                Subclass of
-                AvdIndexedList with `PointToPointServicesItem` items. Primary key is `name` (`str`).
+                Subclass of AvdIndexedList with
+                `PointToPointServicesItem` items. Primary key is `name` (`str`).
                 """
 
                 if TYPE_CHECKING:
@@ -50923,11 +51059,11 @@ class EosDesigns(EosDesignsRootModel):
                                Point to point services (pseudowires).
                                Only supported for node types with "network_services.l1:
                                true".
-                               By default this is only set for node type "pe" with "design.type: mpls"
+                               By default this is only set for node type "pe".
 
 
-                               Subclass of
-                               AvdIndexedList with `PointToPointServicesItem` items. Primary key is `name` (`str`).
+                               Subclass of AvdIndexedList with
+                               `PointToPointServicesItem` items. Primary key is `name` (`str`).
 
                         """
 
@@ -69253,7 +69389,6 @@ class EosDesigns(EosDesignsRootModel):
         "default_underlay_p2p_ethernet_description": {"type": str, "default": "P2P_{peer}_{peer_interface}{vrf?<_VRF_}"},
         "default_underlay_p2p_port_channel_description": {"type": str, "default": "P2P_{peer}_{peer_interface}"},
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
-        "design": {"type": Design},
         "digital_twin": {"type": DigitalTwin},
         "dns_settings": {"type": DnsSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
@@ -69329,14 +69464,128 @@ class EosDesigns(EosDesignsRootModel):
         "network_ports": {"type": NetworkPorts},
         "network_services_keys": {"type": NetworkServicesKeys, "default": lambda cls: coerce_type([{"name": "tenants"}], target_type=cls)},
         "custom_node_type_keys": {"type": CustomNodeTypeKeys},
-        "node_type_keys": {"type": NodeTypeKeys},
+        "node_type_keys": {
+            "type": NodeTypeKeys,
+            "default": lambda cls: coerce_type(
+                [
+                    {"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cv_tags_topology_type": "spine"},
+                    {
+                        "key": "l3leaf",
+                        "type": "l3leaf",
+                        "connected_endpoints": True,
+                        "default_evpn_role": "client",
+                        "mlag_support": True,
+                        "network_services": {"l2": True, "l3": True},
+                        "vtep": True,
+                        "default_ptp_priority1": 30,
+                        "cv_tags_topology_type": "leaf",
+                    },
+                    {
+                        "key": "l2leaf",
+                        "type": "l2leaf",
+                        "connected_endpoints": True,
+                        "mlag_support": True,
+                        "network_services": {"l2": True},
+                        "underlay_router": False,
+                        "uplink_type": "port-channel",
+                        "cv_tags_topology_type": "leaf",
+                    },
+                    {
+                        "key": "p",
+                        "type": "p",
+                        "mpls_lsr": True,
+                        "default_mpls_overlay_role": "none",
+                        "default_overlay_routing_protocol": "ibgp",
+                        "default_underlay_routing_protocol": "isis-sr",
+                    },
+                    {
+                        "key": "pe",
+                        "type": "pe",
+                        "mpls_lsr": True,
+                        "connected_endpoints": True,
+                        "default_mpls_overlay_role": "client",
+                        "default_evpn_role": "client",
+                        "network_services": {"l1": True, "l2": True, "l3": True},
+                        "default_overlay_routing_protocol": "ibgp",
+                        "default_underlay_routing_protocol": "isis-sr",
+                        "default_overlay_address_families": ["vpn-ipv4"],
+                        "default_evpn_encapsulation": "mpls",
+                    },
+                    {
+                        "key": "rr",
+                        "type": "rr",
+                        "mpls_lsr": True,
+                        "default_mpls_overlay_role": "server",
+                        "default_evpn_role": "server",
+                        "default_overlay_routing_protocol": "ibgp",
+                        "default_underlay_routing_protocol": "isis-sr",
+                        "default_overlay_address_families": ["vpn-ipv4"],
+                        "default_evpn_encapsulation": "mpls",
+                    },
+                    {
+                        "key": "l3spine",
+                        "type": "l3spine",
+                        "connected_endpoints": True,
+                        "mlag_support": True,
+                        "network_services": {"l2": True, "l3": True},
+                        "default_overlay_routing_protocol": "none",
+                        "default_underlay_routing_protocol": "none",
+                        "cv_tags_topology_type": "spine",
+                    },
+                    {
+                        "key": "leaf",
+                        "type": "leaf",
+                        "connected_endpoints": True,
+                        "mlag_support": True,
+                        "network_services": {"l2": "true,"},
+                        "underlay_router": False,
+                        "uplink_type": "port-channel",
+                        "cv_tags_topology_type": "leaf",
+                    },
+                    {
+                        "key": "l2spine",
+                        "type": "l2spine",
+                        "connected_endpoints": True,
+                        "mlag_support": True,
+                        "network_services": {"l2": True},
+                        "underlay_router": False,
+                        "uplink_type": "port-channel",
+                        "cv_tags_topology_type": "spine",
+                    },
+                    {"key": "super_spine", "type": "super-spine", "cv_tags_topology_type": "core"},
+                    {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cv_tags_topology_type": "spine"},
+                    {
+                        "key": "wan_router",
+                        "type": "wan_router",
+                        "default_evpn_role": "client",
+                        "default_wan_role": "client",
+                        "default_underlay_routing_protocol": "none",
+                        "default_overlay_routing_protocol": "ibgp",
+                        "default_flow_tracker_type": "hardware",
+                        "vtep": True,
+                        "network_services": {"l3": True},
+                    },
+                    {
+                        "key": "wan_rr",
+                        "type": "wan_rr",
+                        "default_evpn_role": "server",
+                        "default_wan_role": "server",
+                        "default_underlay_routing_protocol": "none",
+                        "default_overlay_routing_protocol": "ibgp",
+                        "default_flow_tracker_type": "hardware",
+                        "vtep": True,
+                        "network_services": {"l3": "true,"},
+                    },
+                ],
+                target_type=cls,
+            ),
+        },
         "ntp_settings": {"type": NtpSettings},
         "only_local_vlan_trunk_groups": {"type": bool, "default": False},
         "overlay_bgp_peer_description": {"type": str, "default": "{peer}{peer_interface?<_}"},
         "overlay_cvx_servers": {"type": OverlayCvxServers},
         "overlay_her_flood_list_per_vni": {"type": bool, "default": False},
         "overlay_her_flood_list_scope": {"type": str, "default": "fabric"},
-        "overlay_loopback_description": {"type": str},
         "overlay_mlag_rfc5549": {"type": bool, "default": False},
         "overlay_rd_type": {"type": OverlayRdType},
         "overlay_routing_protocol": {"type": str},
@@ -69584,7 +69833,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
         "underlay_ospf_authentication": {"type": UnderlayOspfAuthentication},
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
-        "underlay_ospf_graceful_restart": {"type": bool, "default": False},
+        "underlay_ospf_graceful_restart": {"type": bool, "default": True},
         "underlay_ospf_max_lsa": {"type": int, "default": 12000},
         "underlay_ospf_maximum_paths": {"type": int},
         "underlay_ospf_process_id": {"type": int, "default": 100},
@@ -70204,8 +70453,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"DIAG_VRF_{vrf}"`
     """
-    design: Design
-    """Subclass of AvdModel."""
     digital_twin: DigitalTwin
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -70855,6 +71102,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdIndexedList with `NodeTypeKeysItem` items. Primary key is `key`
     (`str`).
+
+    Default value: `lambda cls: coerce_type([{"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cv_tags_topology_type": "spine"}, {"key": "l3leaf", "type": "l3leaf", "connected_endpoints": True, "default_evpn_role": "client", "mlag_support": True, "network_services": {"l2": True, "l3": True}, "vtep": True, "default_ptp_priority1": 30, "cv_tags_topology_type": "leaf"}, {"key": "l2leaf", "type": "l2leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "p", "type": "p", "mpls_lsr": True, "default_mpls_overlay_role": "none", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr"}, {"key": "pe", "type": "pe", "mpls_lsr": True, "connected_endpoints": True, "default_mpls_overlay_role": "client", "default_evpn_role": "client", "network_services": {"l1": True, "l2": True, "l3": True}, "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "rr", "type": "rr", "mpls_lsr": True, "default_mpls_overlay_role": "server", "default_evpn_role": "server", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "l3spine", "type": "l3spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True, "l3": True}, "default_overlay_routing_protocol": "none", "default_underlay_routing_protocol": "none", "cv_tags_topology_type": "spine"}, {"key": "leaf", "type": "leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": "true,"}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "l2spine", "type": "l2spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "spine"}, {"key": "super_spine", "type": "super-spine", "cv_tags_topology_type": "core"}, {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cv_tags_topology_type": "spine"}, {"key": "wan_router", "type": "wan_router", "default_evpn_role": "client", "default_wan_role": "client", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "ibgp", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": True}}, {"key": "wan_rr", "type": "wan_rr", "default_evpn_role": "server", "default_wan_role": "server", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "ibgp", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": "true,"}}], target_type=cls)`
     """
     ntp_settings: NtpSettings
     """
@@ -70923,8 +71172,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"fabric"`
     """
-    overlay_loopback_description: str | None
-    """Customize the description on overlay interface Loopback0."""
     overlay_mlag_rfc5549: bool
     """
     IPv6 Unnumbered for MLAG iBGP connections.
@@ -71419,7 +71666,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     Enable graceful restart for OSPF underlay.
 
-    Default value: `False`
+    Default value: `True`
     """
     underlay_ospf_max_lsa: int
     """Default value: `12000`"""
@@ -71660,7 +71907,6 @@ class EosDesigns(EosDesignsRootModel):
             default_underlay_p2p_ethernet_description: str | UndefinedType = Undefined,
             default_underlay_p2p_port_channel_description: str | UndefinedType = Undefined,
             default_vrf_diag_loopback_description: str | UndefinedType = Undefined,
-            design: Design | UndefinedType = Undefined,
             digital_twin: DigitalTwin | UndefinedType = Undefined,
             dns_settings: DnsSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
@@ -71740,7 +71986,6 @@ class EosDesigns(EosDesignsRootModel):
             overlay_cvx_servers: OverlayCvxServers | UndefinedType = Undefined,
             overlay_her_flood_list_per_vni: bool | UndefinedType = Undefined,
             overlay_her_flood_list_scope: Literal["fabric", "dc"] | UndefinedType = Undefined,
-            overlay_loopback_description: str | None | UndefinedType = Undefined,
             overlay_mlag_rfc5549: bool | UndefinedType = Undefined,
             overlay_rd_type: OverlayRdType | UndefinedType = Undefined,
             overlay_routing_protocol: Literal["ebgp", "ibgp", "cvx", "her", "none"] | None | UndefinedType = Undefined,
@@ -72274,7 +72519,6 @@ class EosDesigns(EosDesignsRootModel):
                      - `vrf`: The VRF name.
                      - `tenant`: The tenant name.
                    By default the description is templated from the VRF name.
-                design: Subclass of AvdModel.
                 digital_twin:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
@@ -72776,7 +73020,6 @@ class EosDesigns(EosDesignsRootModel):
                    This can be changed to all VTEPs in the DC (sharing the same "dc_name" value).
                    This is useful
                    if Border Leaf switches are dividing the VXLAN overlay into separate domains.
-                overlay_loopback_description: Customize the description on overlay interface Loopback0.
                 overlay_mlag_rfc5549:
                    IPv6 Unnumbered for MLAG iBGP connections.
                    Requires "underlay_rfc5549: true".

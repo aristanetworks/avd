@@ -10,6 +10,5 @@ keys:
     documentation_options:
       table: ospf-settings
     type: bool
-    # TODO AVD 6.0 : Flip the default to true
-    default: false
+    default: true
     description: Enable graceful restart for OSPF underlay.

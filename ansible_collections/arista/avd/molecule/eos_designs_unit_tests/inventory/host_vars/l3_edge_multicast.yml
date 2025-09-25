@@ -1,6 +1,5 @@
 ---
 underlay_routing_protocol: ospf
-underlay_ospf_graceful_restart: true
 
 underlay_multicast_pim_sm: true
 underlay_multicast_static: true
