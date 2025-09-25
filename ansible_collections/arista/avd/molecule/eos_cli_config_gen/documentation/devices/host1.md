@@ -617,7 +617,7 @@ clock timezone GMT
 
 ##### NTP Servers
 
-NTP servers vrf: MGMT
+NTP servers VRF: MGMT
 
 | Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
 | ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |

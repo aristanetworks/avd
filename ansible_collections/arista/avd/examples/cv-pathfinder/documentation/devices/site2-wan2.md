@@ -164,7 +164,7 @@ ip domain lookup vrf MGMT source-interface Management1
 
 ##### NTP Servers
 
-NTP servers vrf: MGMT
+NTP servers VRF: MGMT
 
 | Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
 | ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |

@@ -22,7 +22,7 @@
 ##### NTP Servers
 {%         if ntp.vrf is arista.avd.defined %}
 
-NTP servers vrf: {{ ntp.vrf }}
+NTP servers VRF: {{ ntp.vrf }}
 {%         endif %}
 
 | Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |

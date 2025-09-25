@@ -97,7 +97,7 @@ ip name-server vrf MGMT 192.168.200.5
 
 ##### NTP Servers
 
-NTP servers vrf: MGMT
+NTP servers VRF: MGMT
 
 | Server | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
 | ------ | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
