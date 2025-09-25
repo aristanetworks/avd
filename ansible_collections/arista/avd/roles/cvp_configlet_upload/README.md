@@ -10,6 +10,11 @@ title: Ansible Collection Role cvp_configlet_upload
 
 # cvp_configlet_upload
 
+!!! warning "Deprecation Warning"
+    The role `arista.avd.cvp_configlet_upload` has been deprecated and will be removed in AVD version 6.0.0.<br/>
+    Update your playbook to leverage the new `arista.avd.cv_deploy` role instead.<br/>
+    See [arista.avd.cv_deploy](../cv_deploy/README.md) documentation for more details.
+
 ## Overview
 
 **cvp_configlet_upload**, is a role that deploys configlets stored in a local folder to the CloudVision server.
@@ -55,7 +60,7 @@ all:
           ansible_httpapi_port: 443
 ```
 
-For complete list of authentication options available with CloudVision Ansible collection, you can read dedicated page on [arista.cvp collection](https://cvp.avd.sh/en/latest/docs/how-to/cvp-authentication/).
+For complete list of authentication options available with CloudVision Ansible collection, you can read dedicated page on [arista.cvp collection](https://aristanetworks.github.io/ansible-cvp/docs/how-to/cvp-authentication/).
 
 #### Module variables
 

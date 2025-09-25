@@ -1,0 +1,15 @@
+{#
+ Copyright (c) 2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{% extends "base.html" %}
+{% block htmltitle %}
+{% if page.meta and page.meta.title %}
+    <title>AVD - {{ page.meta.title }}</title>
+{% elif page.title and not page.is_homepage %}
+    <title>AVD - {{ page.title | striptags }}</title>
+{% else %}
+    <title>Arista AVD</title>
+{% endif %}
+{% endblock %}

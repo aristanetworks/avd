@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal
 from uuid import NAMESPACE_DNS, uuid4, uuid5
 
@@ -204,7 +205,16 @@ class AvdConfiglet:
     """
 
     name: str
-    file: str
+    file: Path
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> AvdConfiglet:
+        """Build an AvdConfiglet instance from an input dictionary."""
+        try:
+            return cls(name=data["name"], file=Path(data["file"]).resolve())
+        except (KeyError, TypeError) as e:
+            msg = f"Invalid configlet definition: {data}. Error: {e}"
+            raise ValueError(msg) from e
 
 
 @dataclass(frozen=True)
@@ -222,6 +232,22 @@ class AvdContainer:
     configlets: tuple[str, ...] = field(default_factory=tuple)
     sub_containers: tuple[AvdContainer, ...] = field(default_factory=tuple)
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> AvdContainer:
+        """Recursively build an AvdContainer instance from an input dictionary."""
+        try:
+            copied_data = data.copy()
+            sub_containers_data = copied_data.pop("sub_containers", [])
+            sub_containers = tuple(cls.from_dict(sub_container_data) for sub_container_data in sub_containers_data)
+
+            configlets_data = copied_data.pop("configlets", [])
+            configlets = tuple(item["name"] for item in configlets_data)
+
+            return cls(sub_containers=sub_containers, configlets=configlets, **copied_data)
+        except (AttributeError, KeyError, TypeError) as e:
+            msg = f"Invalid container definition: {data}. Error: {e}"
+            raise ValueError(msg) from e
+
 
 @dataclass(frozen=True)
 class AvdManifest:
@@ -235,6 +261,21 @@ class AvdManifest:
 
     configlets: tuple[AvdConfiglet, ...] = field(default_factory=tuple)
     containers: tuple[AvdContainer, ...] = field(default_factory=tuple)
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> AvdManifest:
+        """Build an AvdManifest instance from an input dictionary."""
+        try:
+            configlets_data = data.get("configlets", [])
+            containers_data = data.get("containers", [])
+
+            configlets = tuple(AvdConfiglet.from_dict(configlet_data) for configlet_data in configlets_data)
+            containers = tuple(AvdContainer.from_dict(container_data) for container_data in containers_data)
+
+            return cls(configlets=configlets, containers=containers)
+        except (KeyError, TypeError, ValueError) as e:
+            msg = f"Failed to build the static configuration manifest. Please check your input data. Original error: {e}"
+            raise ValueError(msg) from e
 
 
 @dataclass(frozen=True)
@@ -323,13 +364,13 @@ class CVConfiglet:
         return self.avd_configlet.name
 
     @property
-    def file(self) -> str:
+    def file(self) -> Path:
         return self.avd_configlet.file
 
     @property
-    def api_tuple(self) -> tuple[Any, ...]:
+    def api_tuple(self) -> tuple[str, str, str, str]:
         """Return a tuple representation of the configlet compatible with the CVClient APIs."""
-        return (self.id, self.name, self.description, self.file)
+        return (self.id, self.name, self.description, str(self.file))
 
 
 @dataclass(frozen=True)

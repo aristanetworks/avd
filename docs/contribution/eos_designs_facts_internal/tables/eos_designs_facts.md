@@ -56,6 +56,9 @@
     | [<samp>mlag_switch_ids</samp>](## "mlag_switch_ids") | Dictionary |  |  |  | The switch ids of both primary and secondary switches for a this node group. |
     | [<samp>&nbsp;&nbsp;primary</samp>](## "mlag_switch_ids.primary") | Integer | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;secondary</samp>](## "mlag_switch_ids.secondary") | Integer | Required |  |  |  |
+    | [<samp>mlag_underlay_multicast</samp>](## "mlag_underlay_multicast") | Dictionary |  |  |  | Should multicast be enabled on the mlag peer-l3-vlan. |
+    | [<samp>&nbsp;&nbsp;pim_sm</samp>](## "mlag_underlay_multicast.pim_sm") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;static</samp>](## "mlag_underlay_multicast.static") | Boolean | Required |  |  |  |
     | [<samp>evpn_role</samp>](## "evpn_role") | String |  |  |  |  |
     | [<samp>mpls_overlay_role</samp>](## "mpls_overlay_role") | String |  |  |  |  |
     | [<samp>evpn_route_servers</samp>](## "evpn_route_servers") | List, items: String |  |  |  | For evpn clients the default value for EVPN Route Servers is the content of the uplink_switches variable set elsewhere.<br>For all other evpn roles there is no default. |
@@ -84,7 +87,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "uplinks.[].ptp.enable") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_security</samp>](## "uplinks.[].mac_security") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "uplinks.[].mac_security.profile") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "uplinks.[].underlay_multicast") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_pim_sm</samp>](## "uplinks.[].underlay_multicast_pim_sm") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_static</samp>](## "uplinks.[].underlay_multicast_static") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "uplinks.[].ipv6_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "uplinks.[].prefix_length") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "uplinks.[].ip_address") | String |  |  |  |  |
@@ -253,6 +257,11 @@
     mlag_switch_ids:
       primary: <int; required>
       secondary: <int; required>
+
+    # Should multicast be enabled on the mlag peer-l3-vlan.
+    mlag_underlay_multicast:
+      pim_sm: <bool; required>
+      static: <bool; required>
     evpn_role: <str>
     mpls_overlay_role: <str>
 
@@ -298,7 +307,8 @@
           enable: <bool; default=False>
         mac_security:
           profile: <str; required>
-        underlay_multicast: <bool>
+        underlay_multicast_pim_sm: <bool>
+        underlay_multicast_static: <bool>
         ipv6_enable: <bool>
         prefix_length: <int>
         ip_address: <str>

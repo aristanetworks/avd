@@ -93,9 +93,6 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 172.23.254.1
   mtu: 1500
-  ip_attached_host_route_export:
-    enabled: true
-    distance: 19
 vlan_internal_order:
   allocation: ascending
   range:
