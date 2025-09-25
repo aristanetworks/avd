@@ -40,12 +40,6 @@
           - ansible_collections/arista/avd/roles/eos_snapshot/*
           - ansible_collections/arista/avd/roles/eos_snapshot/**/*
 
-"role: dhcp_provisioner":
-  - changed-files:
-      - any-glob-to-any-file:
-          - ansible_collections/arista/avd/roles/dhcp_provisioner/*
-          - ansible_collections/arista/avd/roles/dhcp_provisioner/**/*
-
 "filter: natural_sort":
   - changed-files:
       - any-glob-to-any-file:

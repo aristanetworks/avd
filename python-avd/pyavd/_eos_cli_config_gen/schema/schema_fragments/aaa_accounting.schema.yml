@@ -43,7 +43,7 @@ keys:
               type:
                 type: str
                 valid_values: ["none", "start-stop", "stop-only"]
-              # TODO: AVD 6.0 Add required:true for all 'type' keys
+                required: true
               methods:
                 type: list
                 $ref: "eos_cli_config_gen#/$defs/methods"
@@ -71,6 +71,7 @@ keys:
               type:
                 type: str
                 valid_values: ["none", "start-stop", "stop-only"]
+                required: true
               methods:
                 type: list
                 $ref: "eos_cli_config_gen#/$defs/methods"
@@ -91,6 +92,7 @@ keys:
               type:
                 type: str
                 valid_values: ["start-stop", "stop-only"]
+                required: true
               methods:
                 type: list
                 min_length: 1
@@ -127,6 +129,7 @@ keys:
                 type:
                   type: str
                   valid_values: ["none", "start-stop", "stop-only"]
+                  required: true
                 methods:
                   type: list
                   $ref: "eos_cli_config_gen#/$defs/methods"
@@ -158,6 +161,7 @@ keys:
                 type:
                   type: str
                   valid_values: ["none", "start-stop", "stop-only"]
+                  required: true
                 methods:
                   type: list
                   $ref: "eos_cli_config_gen#/$defs/methods"
