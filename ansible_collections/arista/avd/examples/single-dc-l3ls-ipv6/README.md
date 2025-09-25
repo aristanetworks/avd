@@ -137,7 +137,6 @@ Group names use uppercase and underscore syntax:
 
 All hostnames use lowercase and dashes, for example:
 
-- cvp
 - dc1-spine1
 - dc1-leaf1a
 - dc1-leaf2c
