@@ -28,6 +28,8 @@ generate_cv_tags:
       data_path: some.key.that.we.do.not.have
     - name: UPPERCASE_DEVICE_TAG
       value: something with spaces
+    - name: Role
+      data_path: metadata.dc_name
   interface_tags:
     - name: static-interface-tag
       value: myinterfacevalue

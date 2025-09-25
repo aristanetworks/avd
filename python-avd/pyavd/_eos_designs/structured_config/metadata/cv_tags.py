@@ -20,15 +20,10 @@ if TYPE_CHECKING:
 
 CAMPUS_TOPOLOGY_NETWORK_TYPE = "campusV2"
 INVALID_CUSTOM_DEVICE_TAGS = [
-    "topology_hint_network_type",
-    "topology_hint_type",
     "topology_type",
-    "topology_hint_datacenter",
     "topology_datacenter",
-    "topology_hint_rack",
     "topology_rack",
     "topology_pod",
-    "topology_hint_pod",
     "eos",
     "eostrain",
     "ztp",
@@ -42,12 +37,8 @@ INVALID_CUSTOM_DEVICE_TAGS = [
     "tapagg",
     "hostname",
     "terminattr",
-    "Campus",
-    "Campus-Pod",
-    "Access-Pod",
-    "Role",
 ]
-"""These tag names overlap with CV system tags or topology_hints"""
+"""These tag names overlap with CV system tags."""
 CAMPUS_LINK_TYPE_MAP = {
     "downlink": "Downlink",
     "egress": "Egress",

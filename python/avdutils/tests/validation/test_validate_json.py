@@ -61,11 +61,7 @@ def test_validate_json() -> None:
     assert isinstance(feedback.issue._0.made, Value.Str)
     assert feedback.issue._0.made._0 == "100"
     feedback = next(coercions)
-    assert feedback.path == ["generate_default_config"]
-    assert isinstance(feedback.issue, Issue.DefaultValueInserted)
     feedback = next(coercions)
-    assert feedback.path == ["generate_device_documentation"]
-    assert isinstance(feedback.issue, Issue.DefaultValueInserted)
     feedback = next(coercions)
     assert feedback.path == ["transceiver_qsfp_default_mode_4x10"]
     assert isinstance(feedback.issue, Issue.DefaultValueInserted)
