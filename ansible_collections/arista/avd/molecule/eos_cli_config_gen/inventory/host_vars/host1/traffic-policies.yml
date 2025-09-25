@@ -28,7 +28,6 @@ traffic_policies:
         ipv4:
           drop: true
       counters:
-        - DEMO-TRAFFIC
         - DROP-PACKETS
       matches:
         - name: BLUE-C1-POLICY-01
@@ -67,6 +66,7 @@ traffic_policies:
                 - established
             - protocol: icmp
           actions:
+            # The count won't be active since it is not defined under counters
             count: DEMO-TRAFFIC
             dscp: 60
             redirect:
