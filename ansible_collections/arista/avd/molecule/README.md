@@ -20,8 +20,6 @@ Molecule provides support for testing with multiple instances, operating systems
 
 Current molecule implementation provides the following scenarios:
 
-- dhcp_configuration
-- dhcp_provisioning
 - eos_cli_config_gen
 - eos_cli_config_gen_deprecated_vars
 - eos_cli_config_gen_negative_unit_tests
