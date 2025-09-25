@@ -4233,34 +4233,6 @@ class EosDesigns(EosDesignsRootModel):
 
     DefaultNodeTypes._item_type = DefaultNodeTypesItem
 
-    class Design(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"type": {"type": str, "default": "l3ls-evpn"}}
-        type: Literal["l3ls-evpn", "mpls", "l2ls"]
-        """
-        By setting the design.type variable, the default node-types and templates described in these
-        documents will be used.
-
-        Default value: `"l3ls-evpn"`
-        """
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, type: Literal["l3ls-evpn", "mpls", "l2ls"] | UndefinedType = Undefined) -> None:
-                """
-                Design.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    type:
-                       By setting the design.type variable, the default node-types and templates described in these
-                       documents will be used.
-
-                """
-
     class DigitalTwin(AvdModel):
         """Subclass of AvdModel."""
 
@@ -50739,11 +50711,11 @@ class EosDesigns(EosDesignsRootModel):
                 Point to point services (pseudowires).
                 Only supported for node types with "network_services.l1:
                 true".
-                By default this is only set for node type "pe" with "design.type: mpls"
+                By default this is only set for node type "pe".
 
 
-                Subclass of
-                AvdIndexedList with `PointToPointServicesItem` items. Primary key is `name` (`str`).
+                Subclass of AvdIndexedList with
+                `PointToPointServicesItem` items. Primary key is `name` (`str`).
                 """
 
                 if TYPE_CHECKING:
@@ -50923,11 +50895,11 @@ class EosDesigns(EosDesignsRootModel):
                                Point to point services (pseudowires).
                                Only supported for node types with "network_services.l1:
                                true".
-                               By default this is only set for node type "pe" with "design.type: mpls"
+                               By default this is only set for node type "pe".
 
 
-                               Subclass of
-                               AvdIndexedList with `PointToPointServicesItem` items. Primary key is `name` (`str`).
+                               Subclass of AvdIndexedList with
+                               `PointToPointServicesItem` items. Primary key is `name` (`str`).
 
                         """
 
@@ -69253,7 +69225,6 @@ class EosDesigns(EosDesignsRootModel):
         "default_underlay_p2p_ethernet_description": {"type": str, "default": "P2P_{peer}_{peer_interface}{vrf?<_VRF_}"},
         "default_underlay_p2p_port_channel_description": {"type": str, "default": "P2P_{peer}_{peer_interface}"},
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
-        "design": {"type": Design},
         "digital_twin": {"type": DigitalTwin},
         "dns_settings": {"type": DnsSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
@@ -69329,7 +69300,122 @@ class EosDesigns(EosDesignsRootModel):
         "network_ports": {"type": NetworkPorts},
         "network_services_keys": {"type": NetworkServicesKeys, "default": lambda cls: coerce_type([{"name": "tenants"}], target_type=cls)},
         "custom_node_type_keys": {"type": CustomNodeTypeKeys},
-        "node_type_keys": {"type": NodeTypeKeys},
+        "node_type_keys": {
+            "type": NodeTypeKeys,
+            "default": lambda cls: coerce_type(
+                [
+                    {"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cv_tags_topology_type": "spine"},
+                    {
+                        "key": "l3leaf",
+                        "type": "l3leaf",
+                        "connected_endpoints": True,
+                        "default_evpn_role": "client",
+                        "mlag_support": True,
+                        "network_services": {"l2": True, "l3": True},
+                        "vtep": True,
+                        "default_ptp_priority1": 30,
+                        "cv_tags_topology_type": "leaf",
+                    },
+                    {
+                        "key": "l2leaf",
+                        "type": "l2leaf",
+                        "connected_endpoints": True,
+                        "mlag_support": True,
+                        "network_services": {"l2": True},
+                        "underlay_router": False,
+                        "uplink_type": "port-channel",
+                        "cv_tags_topology_type": "leaf",
+                    },
+                    {
+                        "key": "p",
+                        "type": "p",
+                        "mpls_lsr": True,
+                        "default_mpls_overlay_role": "none",
+                        "default_overlay_routing_protocol": "ibgp",
+                        "default_underlay_routing_protocol": "isis-sr",
+                    },
+                    {
+                        "key": "pe",
+                        "type": "pe",
+                        "mpls_lsr": True,
+                        "connected_endpoints": True,
+                        "default_mpls_overlay_role": "client",
+                        "default_evpn_role": "client",
+                        "network_services": {"l1": True, "l2": True, "l3": True},
+                        "default_overlay_routing_protocol": "ibgp",
+                        "default_underlay_routing_protocol": "isis-sr",
+                        "default_overlay_address_families": ["vpn-ipv4"],
+                        "default_evpn_encapsulation": "mpls",
+                    },
+                    {
+                        "key": "rr",
+                        "type": "rr",
+                        "mpls_lsr": True,
+                        "default_mpls_overlay_role": "server",
+                        "default_evpn_role": "server",
+                        "default_overlay_routing_protocol": "ibgp",
+                        "default_underlay_routing_protocol": "isis-sr",
+                        "default_overlay_address_families": ["vpn-ipv4"],
+                        "default_evpn_encapsulation": "mpls",
+                    },
+                    {
+                        "key": "l3spine",
+                        "type": "l3spine",
+                        "connected_endpoints": True,
+                        "mlag_support": True,
+                        "network_services": {"l2": True, "l3": True},
+                        "default_overlay_routing_protocol": "none",
+                        "default_underlay_routing_protocol": "none",
+                        "cv_tags_topology_type": "spine",
+                    },
+                    {
+                        "key": "leaf",
+                        "type": "leaf",
+                        "connected_endpoints": True,
+                        "mlag_support": True,
+                        "network_services": {"l2": "true,"},
+                        "underlay_router": False,
+                        "uplink_type": "port-channel",
+                        "cv_tags_topology_type": "leaf",
+                    },
+                    {
+                        "key": "l2spine",
+                        "type": "l2spine",
+                        "connected_endpoints": True,
+                        "mlag_support": True,
+                        "network_services": {"l2": True},
+                        "underlay_router": False,
+                        "uplink_type": "port-channel",
+                        "cv_tags_topology_type": "spine",
+                    },
+                    {"key": "super_spine", "type": "super-spine", "cv_tags_topology_type": "core"},
+                    {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cv_tags_topology_type": "spine"},
+                    {
+                        "key": "wan_router",
+                        "type": "wan_router",
+                        "default_evpn_role": "client",
+                        "default_wan_role": "client",
+                        "default_underlay_routing_protocol": "none",
+                        "default_overlay_routing_protocol": "ibgp",
+                        "default_flow_tracker_type": "hardware",
+                        "vtep": True,
+                        "network_services": {"l3": True},
+                    },
+                    {
+                        "key": "wan_rr",
+                        "type": "wan_rr",
+                        "default_evpn_role": "server",
+                        "default_wan_role": "server",
+                        "default_underlay_routing_protocol": "none",
+                        "default_overlay_routing_protocol": "ibgp",
+                        "default_flow_tracker_type": "hardware",
+                        "vtep": True,
+                        "network_services": {"l3": "true,"},
+                    },
+                ],
+                target_type=cls,
+            ),
+        },
         "ntp_settings": {"type": NtpSettings},
         "only_local_vlan_trunk_groups": {"type": bool, "default": False},
         "overlay_bgp_peer_description": {"type": str, "default": "{peer}{peer_interface?<_}"},
@@ -70204,8 +70290,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"DIAG_VRF_{vrf}"`
     """
-    design: Design
-    """Subclass of AvdModel."""
     digital_twin: DigitalTwin
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
@@ -70855,6 +70939,8 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of AvdIndexedList with `NodeTypeKeysItem` items. Primary key is `key`
     (`str`).
+
+    Default value: `lambda cls: coerce_type([{"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cv_tags_topology_type": "spine"}, {"key": "l3leaf", "type": "l3leaf", "connected_endpoints": True, "default_evpn_role": "client", "mlag_support": True, "network_services": {"l2": True, "l3": True}, "vtep": True, "default_ptp_priority1": 30, "cv_tags_topology_type": "leaf"}, {"key": "l2leaf", "type": "l2leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "p", "type": "p", "mpls_lsr": True, "default_mpls_overlay_role": "none", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr"}, {"key": "pe", "type": "pe", "mpls_lsr": True, "connected_endpoints": True, "default_mpls_overlay_role": "client", "default_evpn_role": "client", "network_services": {"l1": True, "l2": True, "l3": True}, "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "rr", "type": "rr", "mpls_lsr": True, "default_mpls_overlay_role": "server", "default_evpn_role": "server", "default_overlay_routing_protocol": "ibgp", "default_underlay_routing_protocol": "isis-sr", "default_overlay_address_families": ["vpn-ipv4"], "default_evpn_encapsulation": "mpls"}, {"key": "l3spine", "type": "l3spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True, "l3": True}, "default_overlay_routing_protocol": "none", "default_underlay_routing_protocol": "none", "cv_tags_topology_type": "spine"}, {"key": "leaf", "type": "leaf", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": "true,"}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "leaf"}, {"key": "l2spine", "type": "l2spine", "connected_endpoints": True, "mlag_support": True, "network_services": {"l2": True}, "underlay_router": False, "uplink_type": "port-channel", "cv_tags_topology_type": "spine"}, {"key": "super_spine", "type": "super-spine", "cv_tags_topology_type": "core"}, {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cv_tags_topology_type": "spine"}, {"key": "wan_router", "type": "wan_router", "default_evpn_role": "client", "default_wan_role": "client", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "ibgp", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": True}}, {"key": "wan_rr", "type": "wan_rr", "default_evpn_role": "server", "default_wan_role": "server", "default_underlay_routing_protocol": "none", "default_overlay_routing_protocol": "ibgp", "default_flow_tracker_type": "hardware", "vtep": True, "network_services": {"l3": "true,"}}], target_type=cls)`
     """
     ntp_settings: NtpSettings
     """
@@ -71660,7 +71746,6 @@ class EosDesigns(EosDesignsRootModel):
             default_underlay_p2p_ethernet_description: str | UndefinedType = Undefined,
             default_underlay_p2p_port_channel_description: str | UndefinedType = Undefined,
             default_vrf_diag_loopback_description: str | UndefinedType = Undefined,
-            design: Design | UndefinedType = Undefined,
             digital_twin: DigitalTwin | UndefinedType = Undefined,
             dns_settings: DnsSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
@@ -72274,7 +72359,6 @@ class EosDesigns(EosDesignsRootModel):
                      - `vrf`: The VRF name.
                      - `tenant`: The tenant name.
                    By default the description is templated from the VRF name.
-                design: Subclass of AvdModel.
                 digital_twin:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
