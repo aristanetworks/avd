@@ -52,6 +52,7 @@ keys:
                 - none
                 - start-stop
                 - stop-only
+                required: true
               methods:
                 type: list
                 $ref: eos_cli_config_gen#/$defs/methods
@@ -82,6 +83,7 @@ keys:
                 - none
                 - start-stop
                 - stop-only
+                required: true
               methods:
                 type: list
                 $ref: eos_cli_config_gen#/$defs/methods
@@ -104,6 +106,7 @@ keys:
                 valid_values:
                 - start-stop
                 - stop-only
+                required: true
               methods:
                 type: list
                 min_length: 1
@@ -146,6 +149,7 @@ keys:
                   - none
                   - start-stop
                   - stop-only
+                  required: true
                 methods:
                   type: list
                   $ref: eos_cli_config_gen#/$defs/methods
@@ -181,6 +185,7 @@ keys:
                   - none
                   - start-stop
                   - stop-only
+                  required: true
                 methods:
                   type: list
                   $ref: eos_cli_config_gen#/$defs/methods
