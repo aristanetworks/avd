@@ -1,4 +1,5 @@
-underlay_multicast: true
+---
+underlay_multicast_pim_sm: true
 
 l3leaf:
   defaults:
@@ -22,7 +23,7 @@ tenants:
     l2vlans:
       - id: 256
         name: "Missing_underlay_l2_multicast_group_ipv4_pool"
-        tags: ['test_l2']
+        tags: ["test_l2"]
 
 expected_error_message: >-
   'vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant 'Tenant_A' or 'vxlan_flood_multicast.underlay_l2_multicast_group'

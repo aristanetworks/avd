@@ -1,7 +1,7 @@
 type: l3leaf
 mgmt_gateway: 192.168.200.1
 
-underlay_multicast: true
+underlay_multicast_pim_sm: true
 evpn_multicast: true
 
 l3leaf:

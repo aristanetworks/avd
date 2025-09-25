@@ -1,0 +1,31 @@
+---
+underlay_routing_protocol: ospf
+underlay_ospf_process_id: 101
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: underlay-ospf-process-id-same-as-ospf-process-id-with-vrf-default
+      bgp_as: 102
+      id: 102
+
+tenants:
+  - name: Tenant-A
+    vrfs:
+      - name: default
+        vrf_id: 2
+        ospf:
+          enabled: true
+          process_id: 101
+          max_lsa: 42
+        svis:
+          - id: 42
+            name: test-1
+            vni_override: 50111
+            ospf:
+              enabled: true
