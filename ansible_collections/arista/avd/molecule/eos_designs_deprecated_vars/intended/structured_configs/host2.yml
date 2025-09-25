@@ -46,7 +46,7 @@ ip_routing: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 loopback_interfaces:
 - name: Loopback0
-  description: MY_OVERLAY_LOOPBACK
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.42.0.102/32
   isis_enable: CORE

@@ -69422,7 +69422,6 @@ class EosDesigns(EosDesignsRootModel):
         "overlay_cvx_servers": {"type": OverlayCvxServers},
         "overlay_her_flood_list_per_vni": {"type": bool, "default": False},
         "overlay_her_flood_list_scope": {"type": str, "default": "fabric"},
-        "overlay_loopback_description": {"type": str},
         "overlay_mlag_rfc5549": {"type": bool, "default": False},
         "overlay_rd_type": {"type": OverlayRdType},
         "overlay_routing_protocol": {"type": str},
@@ -71009,8 +71008,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"fabric"`
     """
-    overlay_loopback_description: str | None
-    """Customize the description on overlay interface Loopback0."""
     overlay_mlag_rfc5549: bool
     """
     IPv6 Unnumbered for MLAG iBGP connections.
@@ -71825,7 +71822,6 @@ class EosDesigns(EosDesignsRootModel):
             overlay_cvx_servers: OverlayCvxServers | UndefinedType = Undefined,
             overlay_her_flood_list_per_vni: bool | UndefinedType = Undefined,
             overlay_her_flood_list_scope: Literal["fabric", "dc"] | UndefinedType = Undefined,
-            overlay_loopback_description: str | None | UndefinedType = Undefined,
             overlay_mlag_rfc5549: bool | UndefinedType = Undefined,
             overlay_rd_type: OverlayRdType | UndefinedType = Undefined,
             overlay_routing_protocol: Literal["ebgp", "ibgp", "cvx", "her", "none"] | None | UndefinedType = Undefined,
@@ -72860,7 +72856,6 @@ class EosDesigns(EosDesignsRootModel):
                    This can be changed to all VTEPs in the DC (sharing the same "dc_name" value).
                    This is useful
                    if Border Leaf switches are dividing the VXLAN overlay into separate domains.
-                overlay_loopback_description: Customize the description on overlay interface Loopback0.
                 overlay_mlag_rfc5549:
                    IPv6 Unnumbered for MLAG iBGP connections.
                    Requires "underlay_rfc5549: true".
