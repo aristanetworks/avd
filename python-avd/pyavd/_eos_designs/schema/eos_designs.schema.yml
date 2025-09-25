@@ -7817,8 +7817,10 @@ $defs:
                 type: list
                 items:
                   type: str
-                description: 'List of node names or fully matching regex to configure
+                description: 'List of node names or fully matching regexes to configure
                   the peer group, e.g. ''DC1-BL[12]B''.
+
+                  The regexes should be written in quotes.
 
                   The peer-group is also created on devices which have a bgp_peer
                   mapped to the corresponding peer_group.
@@ -9351,7 +9353,7 @@ $defs:
                       items:
                         type: str
                       description: 'List of node names or fully matching regexes,
-                        e.g DC1-BL[12]A.
+                        e.g `DC1-BL[12]A`. The regexes should be written in quotes.
 
                         Nodes is required to restrict configuration of BGP neighbors
                         to certain nodes in the network.'
@@ -9494,6 +9496,8 @@ $defs:
                         type: str
                       description: 'List of node names or fully matching regex to
                         configure the peer group, e.g. ''DC1-BL[12]B''.
+
+                        The regexes should be written in quotes.
 
                         The peer-group is also created on devices which have a bgp_peer
                         mapped to the corresponding peer_group.

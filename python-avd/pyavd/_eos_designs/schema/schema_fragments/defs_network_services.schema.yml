@@ -114,7 +114,8 @@ $defs:
                 items:
                   type: str
                 description: |
-                  List of node names or fully matching regex to configure the peer group, e.g. 'DC1-BL[12]B'.
+                  List of node names or fully matching regexes to configure the peer group, e.g. 'DC1-BL[12]B'.
+                  The regexes should be written in quotes.
                   The peer-group is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
               address_family_ipv4:
                 type: dict
@@ -1376,7 +1377,7 @@ $defs:
                       items:
                         type: str
                       description: |-
-                        List of node names or fully matching regexes, e.g DC1-BL[12]A.
+                        List of node names or fully matching regexes, e.g `DC1-BL[12]A`. The regexes should be written in quotes.
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                     set_ipv4_next_hop:
                       type: str
@@ -1480,6 +1481,7 @@ $defs:
                         type: str
                       description: |
                         List of node names or fully matching regex to configure the peer group, e.g. 'DC1-BL[12]B'.
+                        The regexes should be written in quotes.
                         The peer-group is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
                     password:
                       type: str
