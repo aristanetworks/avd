@@ -154,6 +154,7 @@ class VlanInterfacesMixin(Protocol):
                     ipv6_prefix=ipv6_address,
                     valid_lifetime=svi.ipv6_nd.valid_lifetime,
                     preferred_lifetime=svi.ipv6_nd.preferred_lifetime,
+                )
 
         if vrf.name != "default":
             vlan_interface_config.vrf = vrf.name
