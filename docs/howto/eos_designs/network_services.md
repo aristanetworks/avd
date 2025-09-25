@@ -5,7 +5,7 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# AVD Network Services
+# Network Services
 
 ## Introduction to Network Services
 

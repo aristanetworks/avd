@@ -4,7 +4,7 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# Filtering with Tags
+# Tags
 
 ## Introduction to Tags
 
