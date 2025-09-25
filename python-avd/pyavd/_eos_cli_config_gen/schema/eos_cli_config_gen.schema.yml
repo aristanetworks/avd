@@ -22245,7 +22245,7 @@ keys:
     description: 'Serial Number of the device.
 
       Used only for documentation and deployment purposes. It is used by the ''cv_deploy''
-      roles.'
+      role.'
     type: str
     convert_types:
     - int

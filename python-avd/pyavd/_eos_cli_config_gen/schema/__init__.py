@@ -68013,7 +68013,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     Serial Number of the device.
     Used only for documentation and deployment purposes. It is used by the
-    'cv_deploy' roles.
+    'cv_deploy' role.
     """
     service_routing_configuration_bgp: ServiceRoutingConfigurationBgp
     """Subclass of AvdModel."""
@@ -68600,7 +68600,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 serial_number:
                    Serial Number of the device.
                    Used only for documentation and deployment purposes. It is used by the
-                   'cv_deploy' roles.
+                   'cv_deploy' role.
                 service_routing_configuration_bgp: Subclass of AvdModel.
                 service_routing_protocols_model: service_routing_protocols_model
                 service_unsupported_transceiver: Subclass of AvdModel.
