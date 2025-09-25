@@ -211,7 +211,6 @@ nav:
                   - Integrating AVD with CVaaS: ansible_collections/arista/avd/roles/eos_config_deploy_cvp/docs/avd-to-cvaas.md
               - eos_config_deploy_eapi: ansible_collections/arista/avd/roles/eos_config_deploy_eapi/README.md
               - eos_snapshot: ansible_collections/arista/avd/roles/eos_snapshot/README.md
-              - dhcp_provisioner: ansible_collections/arista/avd/roles/dhcp_provisioner/README.md
               - build_output_folders: ansible_collections/arista/avd/roles/build_output_folders/README.md
               - cv_deploy: ansible_collections/arista/avd/roles/cv_deploy/README.md
               - anta_runner: ansible_collections/arista/avd/roles/anta_runner/README.md
