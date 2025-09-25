@@ -171,7 +171,7 @@ ansible_collections/arista/avd/examples/single-dc-l3ls/inventory_without_ip.yml
 --8<--
 ```
 
-1. `Fabric`
+1. `FABRIC`
 
    - FABRIC represents the highest level within the hierarchy.
 
