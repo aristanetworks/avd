@@ -71204,14 +71204,14 @@ class EosDesigns(EosDesignsRootModel):
     """
     shutdown_bgp_towards_undeployed_peers: bool
     """
-    Administratively shuts down BGP neighbors on deployed devices that peer with any device marked with
+    Administratively shuts down BGP neighbors on deployed devices that peer with a device marked with
     `is_deployed: false`.
 
     Default value: `True`
     """
     shutdown_interfaces_towards_undeployed_peers: bool
     """
-    Administratively shuts down interfaces on deployed devices that connect to any peer marked with
+    Administratively shuts down interfaces on deployed devices that connect to a peer marked with
     `is_deployed: false`.
 
     Default value: `True`
@@ -72985,10 +72985,10 @@ class EosDesigns(EosDesignsRootModel):
                    default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.
                    Subclass of AvdModel.
                 shutdown_bgp_towards_undeployed_peers:
-                   Administratively shuts down BGP neighbors on deployed devices that peer with any device marked with
+                   Administratively shuts down BGP neighbors on deployed devices that peer with a device marked with
                    `is_deployed: false`.
                 shutdown_interfaces_towards_undeployed_peers:
-                   Administratively shuts down interfaces on deployed devices that connect to any peer marked with
+                   Administratively shuts down interfaces on deployed devices that connect to a peer marked with
                    `is_deployed: false`.
                 snmp_settings:
                    SNMP settings.

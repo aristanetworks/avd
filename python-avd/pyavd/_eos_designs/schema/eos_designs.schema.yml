@@ -5193,14 +5193,14 @@ keys:
     type: bool
     default: true
     description: 'Administratively shuts down BGP neighbors on deployed devices that
-      peer with any device marked with `is_deployed: false`.'
+      peer with a device marked with `is_deployed: false`.'
   shutdown_interfaces_towards_undeployed_peers:
     documentation_options:
       table: fabric-settings
     type: bool
     default: true
     description: 'Administratively shuts down interfaces on deployed devices that
-      connect to any peer marked with `is_deployed: false`.'
+      connect to a peer marked with `is_deployed: false`.'
   snmp_settings:
     documentation_options:
       table: management-snmp-settings
