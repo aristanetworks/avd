@@ -12,4 +12,4 @@ keys:
     type: bool
     default: true
     description: |-
-      Administratively shuts down interfaces on deployed devices that connect to any peer marked with `is_deployed: false`.
+      Administratively shuts down interfaces on deployed devices that connect to a peer marked with `is_deployed: false`.
