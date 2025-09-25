@@ -54,7 +54,7 @@ Make-before-break: {{ router_pim_sparse_mode.ipv4.make_before_break }}
 | -------- | --------- | ----------- | ----------------- |
 {%         for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
 {%             set any_ipv4_ip_addresses.present =  any_ipv4_ip_addresses.present or (vrf.ipv4.rp_addresses is arista.avd.defined and (vrf.ipv4.rp_addresses | length) > 0) %}
-| {{ vrf.name }} | {{ vrf.ipv4.ssm_range | default("-") }} | {{ vrf.ipv4.bfd | arista.avd.default(false) }} | {{ vrf.ipv4.make_before_break | default("-") }} |
+| {{ vrf.name }} | {{ vrf.ipv4.ssm_range | arista.avd.default("-") }} | {{ vrf.ipv4.bfd | arista.avd.default(false) }} | {{ vrf.ipv4.make_before_break | default("-") }} |
 {%         endfor %}
 {%         if any_ipv4_ip_addresses.present %}
 
