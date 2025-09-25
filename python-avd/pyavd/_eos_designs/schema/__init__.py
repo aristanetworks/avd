@@ -69833,7 +69833,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
         "underlay_ospf_authentication": {"type": UnderlayOspfAuthentication},
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
-        "underlay_ospf_graceful_restart": {"type": bool, "default": False},
+        "underlay_ospf_graceful_restart": {"type": bool, "default": True},
         "underlay_ospf_max_lsa": {"type": int, "default": 12000},
         "underlay_ospf_maximum_paths": {"type": int},
         "underlay_ospf_process_id": {"type": int, "default": 100},
@@ -71666,7 +71666,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     Enable graceful restart for OSPF underlay.
 
-    Default value: `False`
+    Default value: `True`
     """
     underlay_ospf_max_lsa: int
     """Default value: `12000`"""

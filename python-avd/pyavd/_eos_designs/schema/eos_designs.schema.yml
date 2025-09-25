@@ -6033,7 +6033,7 @@ keys:
     documentation_options:
       table: ospf-settings
     type: bool
-    default: false
+    default: true
     description: Enable graceful restart for OSPF underlay.
   underlay_ospf_max_lsa:
     documentation_options:
