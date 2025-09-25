@@ -27119,7 +27119,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         vrf: str | None
         """
         VRF name for all NTP servers.
-        All NTP servers must be in the same VRF.
+        All NTP servers must be in the same VRF on EOS.
         """
         authenticate: bool | None
         authenticate_servers_only: bool | None
@@ -27159,7 +27159,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`).
                     vrf:
                        VRF name for all NTP servers.
-                       All NTP servers must be in the same VRF.
+                       All NTP servers must be in the same VRF on EOS.
                     authenticate: authenticate
                     authenticate_servers_only: authenticate_servers_only
                     authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).

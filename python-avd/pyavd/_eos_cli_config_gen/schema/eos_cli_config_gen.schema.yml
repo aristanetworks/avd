@@ -10555,11 +10555,17 @@ keys:
               max: 4
               convert_types:
               - str
+            vrf:
+              type: str
+              deprecation:
+                warning: true
+                removed: true
+                new_key: ntp.vrf
       vrf:
         type: str
         description: 'VRF name for all NTP servers.
 
-          All NTP servers must be in the same VRF.'
+          All NTP servers must be in the same VRF on EOS.'
         convert_types:
         - int
       authenticate:
