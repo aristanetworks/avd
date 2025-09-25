@@ -1,5 +1,5 @@
 ---
-### NTP tests (Tested with default VRF here. Tested with Management VRF in "dns-ntp")
+### NTP tests (Tested with MGMT VRF here.)
 ntp:
   local_interface:
     name: lo1
