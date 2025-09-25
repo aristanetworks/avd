@@ -52,6 +52,7 @@ keys:
                 - none
                 - start-stop
                 - stop-only
+                required: true
               methods:
                 type: list
                 $ref: eos_cli_config_gen#/$defs/methods
@@ -82,6 +83,7 @@ keys:
                 - none
                 - start-stop
                 - stop-only
+                required: true
               methods:
                 type: list
                 $ref: eos_cli_config_gen#/$defs/methods
@@ -104,6 +106,7 @@ keys:
                 valid_values:
                 - start-stop
                 - stop-only
+                required: true
               methods:
                 type: list
                 min_length: 1
@@ -146,6 +149,7 @@ keys:
                   - none
                   - start-stop
                   - stop-only
+                  required: true
                 methods:
                   type: list
                   $ref: eos_cli_config_gen#/$defs/methods
@@ -181,6 +185,7 @@ keys:
                   - none
                   - start-stop
                   - stop-only
+                  required: true
                 methods:
                   type: list
                   $ref: eos_cli_config_gen#/$defs/methods
@@ -2395,32 +2400,42 @@ keys:
         keys:
           causes:
             type: list
+            primary_key: name
             items:
-              type: str
-              valid_values:
-              - arp-inspection
-              - bpduguard
-              - dot1x
-              - hitless-reload-down
-              - lacp-rate-limit
-              - link-flap
-              - no-internal-vlan
-              - portchannelguard
-              - portsec
-              - speed-misconfigured
-              - tap-port-init
-              - tapagg
-              - uplink-failure-detection
-              - xcvr-misconfigured
-              - xcvr-overheat
-              - xcvr-power-unsupported
-              - xcvr-unsupported
+              type: dict
+              keys:
+                name:
+                  type: str
+                  valid_values:
+                  - arp-inspection
+                  - bpduguard
+                  - dot1x
+                  - hitless-reload-down
+                  - lacp-rate-limit
+                  - link-flap
+                  - no-internal-vlan
+                  - portchannelguard
+                  - portsec
+                  - speed-misconfigured
+                  - tap-port-init
+                  - tapagg
+                  - uplink-failure-detection
+                  - xcvr-misconfigured
+                  - xcvr-overheat
+                  - xcvr-power-unsupported
+                  - xcvr-unsupported
+                interval:
+                  type: int
+                  description: Interval for each recovery cause in seconds.
+                  min: 30
+                  max: 86400
+                  convert_types:
+                  - str
           interval:
             type: int
             convert_types:
             - str
             description: Interval in seconds.
-            default: 300
             min: 30
             max: 86400
   ethernet_interfaces:
@@ -23358,7 +23373,7 @@ keys:
                 type: str
                 convert_types:
                 - int
-              description: Counter name.
+              description: List of named counters.
             matches:
               type: list
               primary_key: name
@@ -23466,11 +23481,11 @@ keys:
                         type: str
                         convert_types:
                         - int
-                        description: 'Counter name. This should also be added to the
-                          `policies[].counters` list.
+                        description: 'Named counter.
 
-                          It will no longer be added automatically to the counters
-                          in AVD 6.0.'
+                          Must also be defined under `policies[].counters` to be active.
+
+                          If not defined, the counter is inactive on EOS.'
                       drop:
                         type: bool
                       log:
@@ -23562,8 +23577,11 @@ keys:
                       type: str
                       convert_types:
                       - int
-                      description: Counter name. This should also be added to the
-                        `policies[].counters` list.
+                      description: 'Named counter.
+
+                        Must also be defined under `policies[].counters` to be active.
+
+                        If not defined, the counter is inactive on EOS.'
                     drop:
                       type: bool
                     log:
@@ -23585,8 +23603,11 @@ keys:
                       type: str
                       convert_types:
                       - int
-                      description: Counter name. This should also be added to the
-                        `policies[].counters` list.
+                      description: 'Named counter.
+
+                        Must also be defined under `policies[].counters` to be active.
+
+                        If not defined, the counter is inactive on EOS.'
                     drop:
                       type: bool
                     log:

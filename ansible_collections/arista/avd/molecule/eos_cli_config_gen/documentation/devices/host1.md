@@ -12860,26 +12860,26 @@ ip hardware fib load-balance distribution dynamic flow-set-size 4
 
 Errdisable recovery timer interval: 300 seconds
 
-|  Cause | Detection Enabled | Recovery Enabled |
-| ------ | ----------------- | ---------------- |
-| acl | True | - |
-| arp-inspection | True | True |
-| bpduguard | - | True |
-| dot1x | True | True |
-| hitless-reload-down | - | True |
-| lacp-rate-limit | - | True |
-| link-change | True | - |
-| link-flap | - | True |
-| no-internal-vlan | - | True |
-| portchannelguard | - | True |
-| portsec | - | True |
-| speed-misconfigured | - | True |
-| tapagg | True | True |
-| uplink-failure-detection | - | True |
-| xcvr-misconfigured | True | True |
-| xcvr-overheat | True | True |
-| xcvr-power-unsupported | True | True |
-| xcvr-unsupported | - | True |
+|  Cause | Detection Enabled | Recovery Enabled | Recovery Interval (seconds) |
+| ------ | ----------------- | ---------------- | -------------------------- |
+| acl | True | - | - |
+| arp-inspection | True | True | - |
+| bpduguard | - | True | 400 |
+| dot1x | True | True | 500 |
+| hitless-reload-down | - | True | - |
+| lacp-rate-limit | - | True | - |
+| link-change | True | - | - |
+| link-flap | - | True | - |
+| no-internal-vlan | - | True | - |
+| portchannelguard | - | True | - |
+| portsec | - | True | - |
+| speed-misconfigured | - | True | - |
+| tapagg | True | True | - |
+| uplink-failure-detection | - | True | - |
+| xcvr-misconfigured | True | True | - |
+| xcvr-overheat | True | True | - |
+| xcvr-power-unsupported | True | True | - |
+| xcvr-unsupported | - | True | - |
 
 ```eos
 !
@@ -12892,8 +12892,8 @@ errdisable detect cause xcvr-misconfigured
 errdisable detect cause xcvr-overheat
 errdisable detect cause xcvr-power-unsupported
 errdisable recovery cause arp-inspection
-errdisable recovery cause bpduguard
-errdisable recovery cause dot1x
+errdisable recovery cause bpduguard interval 400
+errdisable recovery cause dot1x interval 500
 errdisable recovery cause hitless-reload-down
 errdisable recovery cause lacp-rate-limit
 errdisable recovery cause link-flap
@@ -13022,7 +13022,7 @@ mac security
 
 ##### BLUE-C1-POLICY
 
-Counters: DEMO-TRAFFIC, DROP-PACKETS
+Counters: DROP-PACKETS
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Source Field(s) | Destination port(s) | Destination Field(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | --------------- | ------------------- | -------------------- | ------ |
@@ -13095,7 +13095,7 @@ traffic-policies
    counter interface poll interval 10 seconds
    !
    traffic-policy BLUE-C1-POLICY
-      counter DEMO-TRAFFIC DROP-PACKETS
+      counter DROP-PACKETS
       !
       match BLUE-C1-POLICY-01 ipv4
          source prefix 10.0.0.0/8 192.168.0.0/16

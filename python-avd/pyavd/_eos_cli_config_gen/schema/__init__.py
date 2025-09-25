@@ -127,17 +127,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Methods._item_type = MethodsItem
 
                 _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
-                type: Literal["none", "start-stop", "stop-only"] | None
+                type: Literal["none", "start-stop", "stop-only"]
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        type: Literal["none", "start-stop", "stop-only"] | None | UndefinedType = Undefined,
-                        methods: Methods | UndefinedType = Undefined,
+                        self, *, type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
                     ) -> None:
                         """
                         Default.
@@ -216,17 +213,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Methods._item_type = MethodsItem
 
                 _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
-                type: Literal["none", "start-stop", "stop-only"] | None
+                type: Literal["none", "start-stop", "stop-only"]
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self,
-                        *,
-                        type: Literal["none", "start-stop", "stop-only"] | None | UndefinedType = Undefined,
-                        methods: Methods | UndefinedType = Undefined,
+                        self, *, type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
                     ) -> None:
                         """
                         Default.
@@ -316,14 +310,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Methods._item_type = MethodsItem
 
                 _fields: ClassVar[dict] = {"type": {"type": str}, "methods": {"type": Methods}}
-                type: Literal["start-stop", "stop-only"] | None
+                type: Literal["start-stop", "stop-only"]
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, type: Literal["start-stop", "stop-only"] | None | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
+                        self, *, type: Literal["start-stop", "stop-only"] | UndefinedType = Undefined, methods: Methods | UndefinedType = Undefined
                     ) -> None:
                         """
                         Default.
@@ -401,7 +395,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"commands": {"type": str}, "type": {"type": str}, "methods": {"type": Methods}}
                 commands: str | None
                 """Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another."""
-                type: Literal["none", "start-stop", "stop-only"] | None
+                type: Literal["none", "start-stop", "stop-only"]
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
@@ -411,7 +405,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         commands: str | None | UndefinedType = Undefined,
-                        type: Literal["none", "start-stop", "stop-only"] | None | UndefinedType = Undefined,
+                        type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined,
                         methods: Methods | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -475,7 +469,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {"commands": {"type": str}, "type": {"type": str}, "methods": {"type": Methods}}
                 commands: str | None
                 """Privilege level 'all' or 0-15. Ensure that if ranges are used, they do not overlap with one another."""
-                type: Literal["none", "start-stop", "stop-only"] | None
+                type: Literal["none", "start-stop", "stop-only"]
                 methods: Methods
                 """Subclass of AvdList with `MethodsItem` items."""
 
@@ -485,7 +479,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         commands: str | None | UndefinedType = Undefined,
-                        type: Literal["none", "start-stop", "stop-only"] | None | UndefinedType = Undefined,
+                        type: Literal["none", "start-stop", "stop-only"] | UndefinedType = Undefined,
                         methods: Methods | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -5951,24 +5945,87 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class Recovery(AvdModel):
             """Subclass of AvdModel."""
 
-            class Causes(AvdList[str]):
-                """Subclass of AvdList with `str` items."""
+            class CausesItem(AvdModel):
+                """Subclass of AvdModel."""
 
-            Causes._item_type = str
+                _fields: ClassVar[dict] = {"name": {"type": str}, "interval": {"type": int}}
+                name: Literal[
+                    "arp-inspection",
+                    "bpduguard",
+                    "dot1x",
+                    "hitless-reload-down",
+                    "lacp-rate-limit",
+                    "link-flap",
+                    "no-internal-vlan",
+                    "portchannelguard",
+                    "portsec",
+                    "speed-misconfigured",
+                    "tap-port-init",
+                    "tapagg",
+                    "uplink-failure-detection",
+                    "xcvr-misconfigured",
+                    "xcvr-overheat",
+                    "xcvr-power-unsupported",
+                    "xcvr-unsupported",
+                ]
+                interval: int | None
+                """Interval for each recovery cause in seconds."""
 
-            _fields: ClassVar[dict] = {"causes": {"type": Causes}, "interval": {"type": int, "default": 300}}
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: Literal[
+                            "arp-inspection",
+                            "bpduguard",
+                            "dot1x",
+                            "hitless-reload-down",
+                            "lacp-rate-limit",
+                            "link-flap",
+                            "no-internal-vlan",
+                            "portchannelguard",
+                            "portsec",
+                            "speed-misconfigured",
+                            "tap-port-init",
+                            "tapagg",
+                            "uplink-failure-detection",
+                            "xcvr-misconfigured",
+                            "xcvr-overheat",
+                            "xcvr-power-unsupported",
+                            "xcvr-unsupported",
+                        ]
+                        | UndefinedType = Undefined,
+                        interval: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        CausesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: name
+                            interval: Interval for each recovery cause in seconds.
+
+                        """
+
+            class Causes(AvdIndexedList[str, CausesItem]):
+                """Subclass of AvdIndexedList with `CausesItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Causes._item_type = CausesItem
+
+            _fields: ClassVar[dict] = {"causes": {"type": Causes}, "interval": {"type": int}}
             causes: Causes
-            """Subclass of AvdList with `str` items."""
-            interval: int
-            """
-            Interval in seconds.
-
-            Default value: `300`
-            """
+            """Subclass of AvdIndexedList with `CausesItem` items. Primary key is `name` (`str`)."""
+            interval: int | None
+            """Interval in seconds."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, causes: Causes | UndefinedType = Undefined, interval: int | UndefinedType = Undefined) -> None:
+                def __init__(self, *, causes: Causes | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
                     """
                     Recovery.
 
@@ -5976,7 +6033,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        causes: Subclass of AvdList with `str` items.
+                        causes: Subclass of AvdIndexedList with `CausesItem` items. Primary key is `name` (`str`).
                         interval: Interval in seconds.
 
                     """
@@ -63179,9 +63236,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Traffic class ID."""
                     count: str | None
                     """
-                    Counter name. This should also be added to the `policies[].counters` list.
-                    It will no longer be
-                    added automatically to the counters in AVD 6.0.
+                    Named counter.
+                    Must also be defined under `policies[].counters` to be active.
+                    If not defined, the
+                    counter is inactive on EOS.
                     """
                     drop: bool | None
                     log: bool | None
@@ -63211,9 +63269,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
                                 count:
-                                   Counter name. This should also be added to the `policies[].counters` list.
-                                   It will no longer be
-                                   added automatically to the counters in AVD 6.0.
+                                   Named counter.
+                                   Must also be defined under `policies[].counters` to be active.
+                                   If not defined, the
+                                   counter is inactive on EOS.
                                 drop: drop
                                 log: Only supported when action is set to drop.
                                 redirect: Subclass of AvdModel.
@@ -63315,7 +63374,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_class: int | None
                     """Traffic class ID."""
                     count: str | None
-                    """Counter name. This should also be added to the `policies[].counters` list."""
+                    """
+                    Named counter.
+                    Must also be defined under `policies[].counters` to be active.
+                    If not defined, the
+                    counter is inactive on EOS.
+                    """
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
@@ -63340,7 +63404,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
-                                count: Counter name. This should also be added to the `policies[].counters` list.
+                                count:
+                                   Named counter.
+                                   Must also be defined under `policies[].counters` to be active.
+                                   If not defined, the
+                                   counter is inactive on EOS.
                                 drop: drop
                                 log: Only supported when action is set to drop.
 
@@ -63360,7 +63428,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     traffic_class: int | None
                     """Traffic class ID."""
                     count: str | None
-                    """Counter name. This should also be added to the `policies[].counters` list."""
+                    """
+                    Named counter.
+                    Must also be defined under `policies[].counters` to be active.
+                    If not defined, the
+                    counter is inactive on EOS.
+                    """
                     drop: bool | None
                     log: bool | None
                     """Only supported when action is set to drop."""
@@ -63385,7 +63458,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 dscp: dscp
                                 traffic_class: Traffic class ID.
-                                count: Counter name. This should also be added to the `policies[].counters` list.
+                                count:
+                                   Named counter.
+                                   Must also be defined under `policies[].counters` to be active.
+                                   If not defined, the
+                                   counter is inactive on EOS.
                                 drop: drop
                                 log: Only supported when action is set to drop.
 
@@ -63422,7 +63499,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Traffic Policy Name."""
             counters: Counters
             """
-            Counter name.
+            List of named counters.
 
             Subclass of AvdList with `str` items.
             """
@@ -63450,7 +63527,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         name: Traffic Policy Name.
                         counters:
-                           Counter name.
+                           List of named counters.
 
                            Subclass of AvdList with `str` items.
                         matches: Subclass of AvdIndexedList with `MatchesItem` items. Primary key is `name` (`str`).
