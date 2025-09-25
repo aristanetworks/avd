@@ -16,7 +16,7 @@ This guide will walk you through the steps required to get up and running with A
 - An accessible lab topology running Arista EOS.
 - An AVD project or Git repository with playbooks and an inventory. To get started, you may also use any of our [example topologies](../../ansible_collections/arista/avd/examples/single-dc-l3ls/README.md).
 - A RHEL instance running AAP.
-  - If you need access to a RHEL instance, you can join the [developer program](https://www.redhat.com/en/technologies/linux-platforms/enterprise-linux/developer-program) to get a copy.
+  - If you need access to a RHEL instance, you can join the [developer program](https://developers.redhat.com) to get a copy.
   - To get started, you may also sign up for a 60-day [trial license](https://www.redhat.com/en/technologies/management/ansible/trial) for AAP.
 
 !!! note
@@ -274,7 +274,7 @@ One thing that may need some clarification is the naming of "job templates." The
 
 === "Templates - Job"
 
-    The job template is where we leverage the custom execution environment. Since our setup requires specific Ansible collections and Python packages installed, we would like to use a pre-packaged environment with that software. We can modify a decent number of settings, and they may look familiar from previous history with Ansible configurations. If you need a refresher on these options, please see the [official documentation](https://docs.ansible.com/automation-controller/latest/html/userguide/job_templates.html). Once you are happy with the settings, click `Save`.
+    The job template is where we leverage the custom execution environment. Since our setup requires specific Ansible collections and Python packages installed, we would like to use a pre-packaged environment with that software. We can modify a decent number of settings, and they may look familiar from previous history with Ansible configurations. If you need a refresher on these options, please see the [official documentation](https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.4/html/automation_controller_user_guide/controller-job-templates). Once you are happy with the settings, click `Save`.
 
     !!! warning
         The playbook is set to "Run," and the EOS instances in use will be changed. Please ensure you are leveraging nonproduction instances when testing.
@@ -365,7 +365,7 @@ Below is an example of the playbook we are leveraging to build and deploy our co
 We have everything we need to run our job template now.
 
 !!! note
-    This guide leverages the `cv_deploy` role for provisioning through CV. The `cv_deploy` role requires additional options and tokens to be generated. Please see the `cv_deploy` role [documentation](https://avd.arista.com/stable/roles/cv_deploy/index.html) for the most up-to-date settings. We also set `cv_change_control` to `true`, the default it `false`. This allows the change control to be executed automatically.
+    This guide leverages the `cv_deploy` role for provisioning through CV. The `cv_deploy` role requires additional options and tokens to be generated. Please see the `cv_deploy` role [documentation](../../ansible_collections/arista/avd/roles/cv_deploy/README.md) for the most up-to-date settings. We also set `cv_change_control` to `true`, the default it `false`. This allows the change control to be executed automatically.
 
 === "Templates Run"
 

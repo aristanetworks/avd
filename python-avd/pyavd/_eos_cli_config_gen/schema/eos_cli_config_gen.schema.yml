@@ -52,6 +52,7 @@ keys:
                 - none
                 - start-stop
                 - stop-only
+                required: true
               methods:
                 type: list
                 $ref: eos_cli_config_gen#/$defs/methods
@@ -82,6 +83,7 @@ keys:
                 - none
                 - start-stop
                 - stop-only
+                required: true
               methods:
                 type: list
                 $ref: eos_cli_config_gen#/$defs/methods
@@ -104,6 +106,7 @@ keys:
                 valid_values:
                 - start-stop
                 - stop-only
+                required: true
               methods:
                 type: list
                 min_length: 1
@@ -146,6 +149,7 @@ keys:
                   - none
                   - start-stop
                   - stop-only
+                  required: true
                 methods:
                   type: list
                   $ref: eos_cli_config_gen#/$defs/methods
@@ -181,6 +185,7 @@ keys:
                   - none
                   - start-stop
                   - stop-only
+                  required: true
                 methods:
                   type: list
                   $ref: eos_cli_config_gen#/$defs/methods
@@ -1270,24 +1275,13 @@ keys:
     type: list
     primary_key: name
     display_name: Community Lists (legacy model)
+    documentation_options:
+      table: ip-community-lists
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
       new_key: ip_community_lists
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          description: Community-list Name.
-        action:
-          type: str
-          required: true
-          description: 'Action as string.
-
-            Example: "permit GSHUT 65123:123"
-
-            '
   config_comment:
     type: str
     description: 'Add a comment to provide information about the configuration.
@@ -2406,32 +2400,42 @@ keys:
         keys:
           causes:
             type: list
+            primary_key: name
             items:
-              type: str
-              valid_values:
-              - arp-inspection
-              - bpduguard
-              - dot1x
-              - hitless-reload-down
-              - lacp-rate-limit
-              - link-flap
-              - no-internal-vlan
-              - portchannelguard
-              - portsec
-              - speed-misconfigured
-              - tap-port-init
-              - tapagg
-              - uplink-failure-detection
-              - xcvr-misconfigured
-              - xcvr-overheat
-              - xcvr-power-unsupported
-              - xcvr-unsupported
+              type: dict
+              keys:
+                name:
+                  type: str
+                  valid_values:
+                  - arp-inspection
+                  - bpduguard
+                  - dot1x
+                  - hitless-reload-down
+                  - lacp-rate-limit
+                  - link-flap
+                  - no-internal-vlan
+                  - portchannelguard
+                  - portsec
+                  - speed-misconfigured
+                  - tap-port-init
+                  - tapagg
+                  - uplink-failure-detection
+                  - xcvr-misconfigured
+                  - xcvr-overheat
+                  - xcvr-power-unsupported
+                  - xcvr-unsupported
+                interval:
+                  type: int
+                  description: Interval for each recovery cause in seconds.
+                  min: 30
+                  max: 86400
+                  convert_types:
+                  - str
           interval:
             type: int
             convert_types:
             - str
             description: Interval in seconds.
-            default: 300
             min: 30
             max: 86400
   ethernet_interfaces:
@@ -23367,7 +23371,7 @@ keys:
                 type: str
                 convert_types:
                 - int
-              description: Counter name.
+              description: List of named counters.
             matches:
               type: list
               primary_key: name
@@ -23475,11 +23479,11 @@ keys:
                         type: str
                         convert_types:
                         - int
-                        description: 'Counter name. This should also be added to the
-                          `policies[].counters` list.
+                        description: 'Named counter.
 
-                          It will no longer be added automatically to the counters
-                          in AVD 6.0.'
+                          Must also be defined under `policies[].counters` to be active.
+
+                          If not defined, the counter is inactive on EOS.'
                       drop:
                         type: bool
                       log:
@@ -23571,8 +23575,11 @@ keys:
                       type: str
                       convert_types:
                       - int
-                      description: Counter name. This should also be added to the
-                        `policies[].counters` list.
+                      description: 'Named counter.
+
+                        Must also be defined under `policies[].counters` to be active.
+
+                        If not defined, the counter is inactive on EOS.'
                     drop:
                       type: bool
                     log:
@@ -23594,8 +23601,11 @@ keys:
                       type: str
                       convert_types:
                       - int
-                      description: Counter name. This should also be added to the
-                        `policies[].counters` list.
+                      description: 'Named counter.
+
+                        Must also be defined under `policies[].counters` to be active.
+
+                        If not defined, the counter is inactive on EOS.'
                     drop:
                       type: bool
                     log:
@@ -24951,25 +24961,6 @@ $defs:
                   name:
                     type: str
                     description: Exporter Name.
-                  collector:
-                    type: dict
-                    keys:
-                      host:
-                        type: str
-                        description: Collector IPv4 address or IPv6 address or fully
-                          qualified domain name.
-                      port:
-                        type: int
-                        description: Collector Port Number.
-                        min: 1
-                        max: 65535
-                        convert_types:
-                        - str
-                    deprecation:
-                      warning: true
-                      removed: false
-                      remove_in_version: 6.0.0
-                      new_key: collectors
                   collectors:
                     type: list
                     primary_key: host
@@ -25006,6 +24997,13 @@ $defs:
                     min: 5000
                     max: 3600000
                     description: Template interval in milliseconds.
+                  collector:
+                    type: dict
+                    deprecation:
+                      warning: true
+                      removed: true
+                      remove_in_version: 6.0.0
+                      new_key: collectors
       shutdown:
         type: bool
   interface_ip_nat:

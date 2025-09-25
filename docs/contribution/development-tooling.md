@@ -146,7 +146,6 @@ The AVD project leverages Molecule for:
   - `eos_designs`
   - `eos_cli_config_gen`
   - `eos_config_deploy_cvp`
-  - `dhcp_provisioner` (requires docker)
 - End-to-end systems integration tests on the following CloudVision role and module:
   - `cv_deploy`
   - `cv_workflow`
