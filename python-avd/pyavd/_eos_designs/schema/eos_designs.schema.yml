@@ -1698,22 +1698,10 @@ keys:
       table: design
     deprecation:
       warning: true
-      removed: false
+      removed: true
       remove_in_version: 6.0.0
-      url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#deprecation-of-designtype
+      url: https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html#removal-of-designtype
     type: dict
-    keys:
-      type:
-        type: str
-        description: 'By setting the design.type variable, the default node-types
-          and templates described in these documents will be used.
-
-          '
-        valid_values:
-        - l3ls-evpn
-        - mpls
-        - l2ls
-        default: l3ls-evpn
   digital_twin:
     documentation_options:
       table: digital-twin-configuration
@@ -3683,6 +3671,118 @@ keys:
           description: Device type that CloudVision should use when generating the
             Topology like "leaf", "spine", "core", "edge" or "member-leaf".
           type: str
+    default:
+    - key: spine
+      type: spine
+      default_evpn_role: server
+      default_ptp_priority1: 20
+      cv_tags_topology_type: spine
+    - key: l3leaf
+      type: l3leaf
+      connected_endpoints: true
+      default_evpn_role: client
+      mlag_support: true
+      network_services:
+        l2: true
+        l3: true
+      vtep: true
+      default_ptp_priority1: 30
+      cv_tags_topology_type: leaf
+    - key: l2leaf
+      type: l2leaf
+      connected_endpoints: true
+      mlag_support: true
+      network_services:
+        l2: true
+      underlay_router: false
+      uplink_type: port-channel
+      cv_tags_topology_type: leaf
+    - key: p
+      type: p
+      mpls_lsr: true
+      default_mpls_overlay_role: none
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+    - key: pe
+      type: pe
+      mpls_lsr: true
+      connected_endpoints: true
+      default_mpls_overlay_role: client
+      default_evpn_role: client
+      network_services:
+        l1: true
+        l2: true
+        l3: true
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+      default_overlay_address_families:
+      - vpn-ipv4
+      default_evpn_encapsulation: mpls
+    - key: rr
+      type: rr
+      mpls_lsr: true
+      default_mpls_overlay_role: server
+      default_evpn_role: server
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+      default_overlay_address_families:
+      - vpn-ipv4
+      default_evpn_encapsulation: mpls
+    - key: l3spine
+      type: l3spine
+      connected_endpoints: true
+      mlag_support: true
+      network_services:
+        l2: true
+        l3: true
+      default_overlay_routing_protocol: none
+      default_underlay_routing_protocol: none
+      cv_tags_topology_type: spine
+    - key: leaf
+      type: leaf
+      connected_endpoints: true
+      mlag_support: true
+      network_services:
+        l2: true,
+      underlay_router: false
+      uplink_type: port-channel
+      cv_tags_topology_type: leaf
+    - key: l2spine
+      type: l2spine
+      connected_endpoints: true
+      mlag_support: true
+      network_services:
+        l2: true
+      underlay_router: false
+      uplink_type: port-channel
+      cv_tags_topology_type: spine
+    - key: super_spine
+      type: super-spine
+      cv_tags_topology_type: core
+    - key: overlay_controller
+      type: overlay-controller
+      default_evpn_role: server
+      cv_tags_topology_type: spine
+    - key: wan_router
+      type: wan_router
+      default_evpn_role: client
+      default_wan_role: client
+      default_underlay_routing_protocol: none
+      default_overlay_routing_protocol: ibgp
+      default_flow_tracker_type: hardware
+      vtep: true
+      network_services:
+        l3: true
+    - key: wan_rr
+      type: wan_rr
+      default_evpn_role: server
+      default_wan_role: server
+      default_underlay_routing_protocol: none
+      default_overlay_routing_protocol: ibgp
+      default_flow_tracker_type: hardware
+      vtep: true
+      network_services:
+        l3: true,
   ntp_settings:
     documentation_options:
       table: management-settings
@@ -9572,7 +9672,7 @@ $defs:
 
             Only supported for node types with "network_services.l1: true".
 
-            By default this is only set for node type "pe" with "design.type: mpls"
+            By default this is only set for node type "pe".
 
             '
           items:

@@ -264,6 +264,7 @@ repos:
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-node-type-keys.key.md
+          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/design.md
         pass_filenames: false
 
       - id: templates

@@ -1,5 +1,5 @@
 ---
-name: "Check links offline for dead targets"
+name: Check links offline for dead targets
 
 "on":
   # schedule every day at 3 AM on devel
@@ -14,37 +14,41 @@ concurrency:
 
 jobs:
   offline_link_check:
-    name: 'Validate mkdoc content'
+    name: Validate mkdoc content
     if: github.repository == 'aristanetworks/avd'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
-      - name: 'Start docker compose stack'
+      - name: Start docker compose stack
         run: |
           docker compose -f development/docker-compose.yml up -d webdoc_avd
           docker compose -f development/docker-compose.yml ps
-      - name: 'Test connectivity to mkdoc server'
+      - name: "Test connectivity to mkdoc server"
         run: |
-          bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8000)" != "200" ]]; do sleep 5; done'
+          bash -c 'while [[ '$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8000)' != '200' ]]; do sleep 5; done'
       - name: Check links for 404
+        # TODO: AVD 6.0 - remove avd.arista.com/6.x
         run: |
           docker run --network container:webdoc_avd raviqqe/muffet:2.10.9 http://127.0.0.1:8000/ -f \
             --buffer-size 8192 \
-            --exclude ".*fonts.googleapis.com.*" \
-            --exclude ".*fonts.gstatic.com.*" \
-            --exclude ".*tools.ietf.org.*" \
-            --exclude ".*edit.*" \
-            --exclude ".*docs.github.com.*" \
-            --exclude "twitter.com" \
-            --exclude "www.docker.com" \
-            --exclude "hub.docker.com" \
-            --exclude "tech-library.arista.com" \
-            --exclude "www.arista.com.*" \
+            --exclude '.*fonts.googleapis.com.*' \
+            --exclude '.*fonts.gstatic.com.*' \
+            --exclude '.*tools.ietf.org.*' \
+            --exclude '.*edit.*' \
+            --exclude '.*docs.github.com.*' \
+            --exclude 'twitter.com' \
+            --exclude 'www.docker.com' \
+            --exclude 'hub.docker.com' \
+            --exclude 'tech-library.arista.com' \
+            --exclude 'www.arista.com.*' \
+            --exclude 'www.gnu.org' \
+            --exclude 'https://developers.redhat.com' \
+            --exclude 'https://avd.arista.com/6.x' \
             --max-connections-per-host 30 \
             --max-redirections 3 \
             --rate-limit 1 \
             --timeout 30
-      - name: 'Stop docker-compose stack'
+      - name: Stop docker-compose stack
         run: |
           docker compose -f development/docker-compose.yml down

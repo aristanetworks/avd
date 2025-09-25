@@ -19,9 +19,6 @@ ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*:
 ansible_collections/arista/avd/roles/cvp_configlet_upload/**/*:
   - guillaumeVilar
   - noredistribution
-ansible_collections/arista/avd/roles/dhcp_provisioner/**/*:
-  - guillaumeVilar
-  - noredistribution
 ansible_collections/arista/avd/plugins/filter/**/*:
   - carlbuchmann
   - ClausHolbechArista

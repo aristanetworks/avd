@@ -519,7 +519,10 @@ class FilteredTenantsMixin(Protocol):
                     vrf=svi_ip_helper.source_vrf,
                 )
 
-        if svi.ospf.enabled and vrf.ospf.enabled:
+        if svi.ospf.enabled:
+            if not vrf.ospf.enabled:
+                msg = f"OSPF is enabled on SVI '{svi.name}' but not under 'tenants[name={tenant.name}].vrfs[name={vrf.name}]'."
+                raise AristaAvdError(msg)
             config._update(
                 ospf_area=svi.ospf.area,
                 ospf_network_point_to_point=svi.ospf.point_to_point,
