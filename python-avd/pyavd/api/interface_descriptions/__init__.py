@@ -472,7 +472,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             - type.
         """
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.router_id_loopback_interface:
-            return self._template(template_path, overlay_loopback_description=data.description, router_id_loopback_description=data.description)
+            return self._template(template_path, router_id_loopback_description=data.description)
 
         return data.description
 
