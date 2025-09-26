@@ -34,13 +34,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.42.201/31
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  ospf_authentication: message-digest
-  ospf_message_digest_keys:
-  - id: 1
-    hash_algorithm: sha512
-    key: cJ25Oy2bNyqRwTqh1A2FXmcCqBSvRAvV
   storm_control:
     broadcast:
       level: '25'
@@ -58,61 +51,12 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.42.42.204/31
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  ospf_authentication: message-digest
-  ospf_message_digest_keys:
-  - id: 1
-    hash_algorithm: sha512
-    key: cJ25Oy2bNyqRwTqh1A2FXmcCqBSvRAvV
   pim:
     ipv4:
       sparse_mode: true
   peer: host4
   peer_interface: Ethernet43
   peer_type: l3leaf
-  switchport:
-    enabled: false
-- name: Ethernet5
-  description: P2P_peer1_Ethernet3
-  shutdown: false
-  mtu: 9214
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  pim:
-    ipv4:
-      sparse_mode: true
-  peer: peer1
-  peer_interface: Ethernet3
-  peer_type: other
-  switchport:
-    enabled: false
-- name: Ethernet6
-  description: P2P_peer2_Ethernet6
-  shutdown: false
-  mtu: 9214
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  peer: peer2
-  peer_interface: Ethernet6
-  peer_type: other
-  switchport:
-    enabled: false
-- name: Ethernet7
-  description: P2P_peer3_Ethernet7
-  shutdown: false
-  mtu: 9214
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  peer: peer3
-  peer_interface: Ethernet7
-  peer_type: other
-  switchport:
-    enabled: false
-- name: Ethernet47
-  shutdown: false
-  ip_address: 10.10.1.1/30
-  peer_type: l3_interface
   switchport:
     enabled: false
 - name: Ethernet1
@@ -133,43 +77,10 @@ ethernet_interfaces:
   peer: OLD_SW-1/2
   peer_interface: ENDPOINT_PORT2
   peer_type: server
-flow_tracking:
-  sampled:
-    sample: 10000
-    trackers:
-    - name: FT_Test
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-    shutdown: false
 hostname: host1
-ip_domain_lookup:
-  source_interfaces:
-  - name: Management1
-  - name: Vlan10
-    vrf: INBANDMGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: default
-- ip_address: 8.8.8.8
-  vrf: default
-ip_radius_source_interfaces:
-- name: Management1
-- name: Vlan10
-  vrf: INBANDMGMT
 ip_routing: true
-ip_tacacs_source_interfaces:
-- name: Management1
-- name: Vlan10
-  vrf: INBANDMGMT
-ipv6_static_routes:
-- vrf: default
-  prefix: ::/0
-  next_hop: 2001:db8:311::4
-  name: IPv6-test-2
 local_users:
 - name: admin
   disabled: true
@@ -189,12 +100,10 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.101/32
-  ospf_area: 0.0.0.0
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 192.168.254.101/32
-  ospf_area: 0.0.0.0
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -223,13 +132,6 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: none
-- name: Port-Channel11
-  shutdown: false
-  flow_tracker:
-    sampled: FT_Test
-  peer_type: l3_port_channel
-  switchport:
-    enabled: false
 - name: Port-Channel1
   description: SERVER_OLD_SW-1/2_ENDPOINT_PORT_CHANNEL
   shutdown: false
@@ -244,6 +146,20 @@ port_channel_interfaces:
     transport: ipv4
   switchport:
     enabled: true
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 300
@@ -261,6 +177,10 @@ router_bgp:
     default:
       ipv4_unicast: false
   peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
@@ -268,64 +188,32 @@ router_bgp:
     ebgp_multihop: 3
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.42.200
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '102'
+    peer: host2
+    description: host2_Ethernet42
+  - ip_address: 10.42.42.205
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '101'
+    peer: host4
+    description: host4_Ethernet43
   redistribute:
-    static:
+    connected:
       enabled: true
+      route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
   address_family_ipv4:
     peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-router_multicast:
-  ipv4:
-    routing: true
-router_ospf:
-  process_ids:
-  - id: 100
-    passive_interface_default: true
-    router_id: 192.168.255.101
-    bfd_enable: false
-    no_passive_interfaces:
-    - Ethernet42
-    - Ethernet43
-    - Ethernet5
-    - Ethernet6
-    - Ethernet7
-    max_lsa: 12000
 service_routing_protocols_model: multi-agent
-snmp_server:
-  ipv4_acls:
-  - name: SNMP-MGMT
-    vrf: MGMT
-  - name: onur
-  ipv6_acls:
-  - name: SNMP-MGMT
-    vrf: MGMT
-  - name: onur_v6
-  local_interfaces:
-  - name: Management1
-  - name: Vlan10
-    vrf: INBANDMGMT
-  hosts:
-  - host: 10.6.75.127
-    version: 2c
-    community: SNMP-COMMUNITY-2
-  - host: 10.6.75.127
-    vrf: INBANDMGMT
-    version: 2c
-    community: SNMP-COMMUNITY-2
-  vrfs:
-  - name: default
-    enable: true
-  - name: INBANDMGMT
-    enable: true
-static_routes:
-- vrf: default
-  prefix: 0.0.0.0
-  next_hop: 10.10.1.1
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
@@ -341,4 +229,3 @@ vxlan_interface:
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
-custom_key2: foo

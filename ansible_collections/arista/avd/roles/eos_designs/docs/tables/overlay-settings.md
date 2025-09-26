@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "overlay_cvx_servers.[]") | String |  |  |  | 'inventory_hostname' of CVX server.<br> |
     | [<samp>overlay_her_flood_list_per_vni</samp>](## "overlay_her_flood_list_per_vni") | Boolean |  | `False` |  | When using Head-End Replication, configure flood-lists per VNI.<br>By default HER will be configured with a common flood-list containing all VTEPs.<br>This behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`.<br>This will make `eos_designs` consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.<br> |
     | [<samp>overlay_her_flood_list_scope</samp>](## "overlay_her_flood_list_scope") | String |  | `fabric` | Valid Values:<br>- <code>fabric</code><br>- <code>dc</code> | When using Head-End Replication, set the scope of flood-lists to Fabric or DC.<br>By default all VTEPs in the Fabric (part of the inventory group referenced by "fabric_name") are added to the flood-lists.<br>This can be changed to all VTEPs in the DC (sharing the same "dc_name" value).<br>This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.<br> |
-    | [<samp>overlay_loopback_description</samp>](## "overlay_loopback_description") <span style="color:red">deprecated</span> | String |  |  |  | Customize the description on overlay interface Loopback0.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>router_id_loopback_description</samp> instead.</span> |
+    | [<samp>overlay_loopback_description</samp>](## "overlay_loopback_description") <span style="color:red">removed</span> | String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>router_id_loopback_description</samp> instead.</span> |
     | [<samp>overlay_mlag_rfc5549</samp>](## "overlay_mlag_rfc5549") | Boolean |  | `False` |  | IPv6 Unnumbered for MLAG iBGP connections.<br>Requires "underlay_rfc5549: true".<br> |
     | [<samp>overlay_rd_type</samp>](## "overlay_rd_type") | Dictionary |  |  |  | Configuration options for the Administrator subfield (first part of RD) and the Assigned Number subfield (second part of RD).<br><br>By default Route Distinguishers (RD) are set to:<br>- `<overlay_loopback>:<mac_vrf_id_base + vlan_id or mac_vrf_vni_base + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.<br>- `<overlay_loopback>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.<br>- `<overlay_loopback>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles defined under 'evpn_vlan_bundles'.<br>- `<overlay_loopback>:<vrf_id>` for VRFs.<br><br>Note:<br>RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.<br>When using loopback or 32-bit ASN/number the assigned number can only be a 16-bit number. This may be a problem with large VNIs.<br>For 16-bit ASN/number the assigned number can be a 32-bit number.<br> |
     | [<samp>&nbsp;&nbsp;admin_subfield</samp>](## "overlay_rd_type.admin_subfield") | String |  | `router_id` |  | The method for deriving RD Administrator subfield (first part of RD):<br>- 'router_id' means the IP address of Loopback0.<br>- 'vtep_loopback' means the IP address of the VTEP loopback interface.<br>- 'bgp_as' means the AS number of the device.<br>- 'switch_id' means the 'id' value of the device.<br>- Any <IPv4 Address> without mask.<br>- Integer between <0-65535>.<br>- Integer between <0-4294967295>.<br>- 'overlay_loopback_ip' means the IP address of Loopback0. (deprecated - use 'router_id' instead)<br> |
@@ -66,12 +66,6 @@
     # This can be changed to all VTEPs in the DC (sharing the same "dc_name" value).
     # This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.
     overlay_her_flood_list_scope: <str; "fabric" | "dc"; default="fabric">
-
-    # Customize the description on overlay interface Loopback0.
-    # This key is deprecated.
-    # Support will be removed in AVD version 6.0.0.
-    # Use `router_id_loopback_description` instead.
-    overlay_loopback_description: <str>
 
     # IPv6 Unnumbered for MLAG iBGP connections.
     # Requires "underlay_rfc5549: true".

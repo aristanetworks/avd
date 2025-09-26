@@ -18,6 +18,7 @@ repos:
       - id: check-added-large-files
         name: Prevents giant files from being committed.
         exclude: >-
+          (?x)
           (ansible_collections/arista/avd/molecule
           |pickle$
           |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/__init__.py
@@ -44,7 +45,13 @@ repos:
 
       - id: insert-license
         name: Check and insert license on select YAML files.
-        files: ansible_collections/arista/avd/roles/.*/(handlers|schemas|tasks)/.*\.yml$
+        files: >-
+          (?x)
+          (ansible_collections/arista/avd/roles/.*/(handlers|tasks)/.*\.yml
+          |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/.*\.yml
+          |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/.*\.yml
+          )
+
         args:
           - --license-filepath
           - development/license-short.txt
@@ -96,7 +103,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.12.12
+    rev: v0.13.1
     hooks:
       # Run the linter.
       - id: ruff
@@ -257,6 +264,7 @@ repos:
           - ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/service-unsupported-transceiver.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/unsupported-transceiver.md
           - ansible_collections/arista/avd/roles/eos_designs/docs/tables/custom-node-type-keys.key.md
+          - ansible_collections/arista/avd/roles/eos_designs/docs/tables/design.md
         pass_filenames: false
 
       - id: templates
