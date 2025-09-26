@@ -9319,7 +9319,9 @@ $defs:
                       items:
                         type: str
                       description: 'List of node names or fully matching regexes,
-                        e.g `DC1-BL[12]A`. The regexes should be written in quotes.
+                        e.g `DC1-BL[12]A`.
+
+                        The regexes should be written in quotes.
 
                         Nodes is required to restrict configuration of BGP neighbors
                         to certain nodes in the network.'

@@ -122,7 +122,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].default_originate.always") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update_source</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].update_source") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ebgp_multihop</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].ebgp_multihop") | Integer |  |  | Min: 1<br>Max: 255 | Time-to-live in range of hops. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].nodes") | List, items: String |  |  |  | List of node names or fully matching regexes, e.g `DC1-BL[12]A`. The regexes should be written in quotes.<br>Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].nodes") | List, items: String |  |  |  | List of node names or fully matching regexes, e.g `DC1-BL[12]A`.<br>The regexes should be written in quotes.<br>Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].nodes.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set_ipv4_next_hop</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].set_ipv4_next_hop") | String |  |  |  | IPv4_address<br>Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.<br>Next hop takes precedence over route_map_out.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set_ipv6_next_hop</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].set_ipv6_next_hop") | String |  |  |  | IPv6_address<br>Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.<br>Next hop takes precedence over route_map_out.<br> |
@@ -519,7 +519,8 @@
                 # Time-to-live in range of hops.
                 ebgp_multihop: <int; 1-255>
 
-                # List of node names or fully matching regexes, e.g `DC1-BL[12]A`. The regexes should be written in quotes.
+                # List of node names or fully matching regexes, e.g `DC1-BL[12]A`.
+                # The regexes should be written in quotes.
                 # Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                 nodes:
                   - <str>

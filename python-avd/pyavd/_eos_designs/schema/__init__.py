@@ -48261,7 +48261,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Time-to-live in range of hops."""
                         nodes: Nodes
                         """
-                        List of node names or fully matching regexes, e.g `DC1-BL[12]A`. The regexes should be written in
+                        List of node names or fully matching regexes, e.g `DC1-BL[12]A`.
+                        The regexes should be written in
                         quotes.
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the
                         network.
@@ -48374,7 +48375,8 @@ class EosDesigns(EosDesignsRootModel):
                                     update_source: update_source
                                     ebgp_multihop: Time-to-live in range of hops.
                                     nodes:
-                                       List of node names or fully matching regexes, e.g `DC1-BL[12]A`. The regexes should be written in
+                                       List of node names or fully matching regexes, e.g `DC1-BL[12]A`.
+                                       The regexes should be written in
                                        quotes.
                                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the
                                        network.
