@@ -178,7 +178,7 @@ ntp:
   servers:
   - name: 192.168.200.5
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_DC1-SVC3A_Port-Channel5

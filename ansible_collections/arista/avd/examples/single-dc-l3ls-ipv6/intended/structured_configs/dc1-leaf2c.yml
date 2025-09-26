@@ -85,7 +85,7 @@ ntp:
   servers:
   - name: 0.pool.ntp.org
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel1
   description: L2_DC1_L3_LEAF2_Port-Channel8
