@@ -100,9 +100,8 @@ ntp:
   servers:
   - name: 192.168.200.5
     preferred: true
-    vrf: MGMT
   - name: 2001:db8::3
-    vrf: MGMT
+  vrf: MGMT
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -842,6 +841,16 @@ vlan_interfaces:
   - 2001:db8:310::1/64
   - 2001:db8:311::1/64
   - 2001:db8:312::1/64
+  ipv6_nd_prefixes:
+  - ipv6_prefix: 2001:db8:310::1/64
+    valid_lifetime: '200'
+    preferred_lifetime: '100'
+  - ipv6_prefix: 2001:db8:311::1/64
+    valid_lifetime: '200'
+    preferred_lifetime: '100'
+  - ipv6_prefix: 2001:db8:312::1/64
+    valid_lifetime: '200'
+    preferred_lifetime: '100'
   tenant: Tenant_D
   tags:
   - v6opzone

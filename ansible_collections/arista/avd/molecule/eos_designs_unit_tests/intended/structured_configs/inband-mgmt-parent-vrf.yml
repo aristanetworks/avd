@@ -124,9 +124,8 @@ ntp:
   servers:
   - name: 2.2.2.55
     preferred: true
-    vrf: MGMT
   - name: pool.ntp.org
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel21
   description: INBAND-MGMT-SUBNET_Po1

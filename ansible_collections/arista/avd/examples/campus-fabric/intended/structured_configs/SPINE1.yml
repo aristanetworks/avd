@@ -132,9 +132,8 @@ ntp:
   servers:
   - name: time.google.com
     preferred: true
-    vrf: MGMT
   - name: pool.ntp.org
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel551
   description: MLAG_SPINE2_Port-Channel551
