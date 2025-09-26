@@ -82,7 +82,7 @@ class AvdDataConverter:
             yield from self.convert_data(data[key], childschema, [*path, key], data)
 
         # Extra check for root model reffed as structured_config, which by default will accept any variable.
-        # It is deprecated to have structured config with custom keys that don't start with _.
+        # It does not accept any structured_config with custom keys that don't start with _.
         # This is to prevent any collisions with AVD or other weird corner cases.
         # This behavior will change in 6.0, where the loader will no longer accept these. At that time we will have the schema enforce the vars.
         # TODO: Remove this and implement enforcement in validation and loader. Probably easier to do when we do the $ref.
@@ -95,7 +95,7 @@ class AvdDataConverter:
                     key=[*path, data_key],
                     new_key=f"_{data_key}",
                     remove_in_version="6.0.0",
-                    removed=False,
+                    removed=True,
                 )
 
     def convert_dynamic_keys(self, dynamic_keys: dict, data: dict, schema: dict, path: list[str | int], parent_dict: dict | None) -> Generator:

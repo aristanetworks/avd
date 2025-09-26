@@ -26923,7 +26923,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "minpoll": {"type": int},
                 "preferred": {"type": bool},
                 "version": {"type": int},
-                "vrf": {"type": str},
             }
             name: str
             """IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org."""
@@ -26938,8 +26937,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Value of minpoll between 3 - 17 (Logarithmic)."""
             preferred: bool | None
             version: int | None
-            vrf: str | None
-            """VRF name."""
 
             if TYPE_CHECKING:
 
@@ -26955,7 +26952,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     minpoll: int | None | UndefinedType = Undefined,
                     preferred: bool | None | UndefinedType = Undefined,
                     version: int | None | UndefinedType = Undefined,
-                    vrf: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ServersItem.
@@ -26973,7 +26969,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                         preferred: preferred
                         version: version
-                        vrf: VRF name.
 
                     """
 
@@ -27110,6 +27105,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "local_interface": {"type": LocalInterface},
             "servers": {"type": Servers},
+            "vrf": {"type": str},
             "authenticate": {"type": bool},
             "authenticate_servers_only": {"type": bool},
             "authentication_keys": {"type": AuthenticationKeys},
@@ -27120,6 +27116,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         servers: Servers
         """Subclass of AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`)."""
+        vrf: str | None
+        """
+        VRF name for all NTP servers.
+        All NTP servers must be in the same VRF on EOS.
+        """
         authenticate: bool | None
         authenticate_servers_only: bool | None
         authentication_keys: AuthenticationKeys
@@ -27140,6 +27141,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 local_interface: LocalInterface | UndefinedType = Undefined,
                 servers: Servers | UndefinedType = Undefined,
+                vrf: str | None | UndefinedType = Undefined,
                 authenticate: bool | None | UndefinedType = Undefined,
                 authenticate_servers_only: bool | None | UndefinedType = Undefined,
                 authentication_keys: AuthenticationKeys | UndefinedType = Undefined,
@@ -27155,6 +27157,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     local_interface: Subclass of AvdModel.
                     servers: Subclass of AvdIndexedList with `ServersItem` items. Primary key is `name` (`str`).
+                    vrf:
+                       VRF name for all NTP servers.
+                       All NTP servers must be in the same VRF on EOS.
                     authenticate: authenticate
                     authenticate_servers_only: authenticate_servers_only
                     authentication_keys: Subclass of AvdIndexedList with `AuthenticationKeysItem` items. Primary key is `id` (`int`).

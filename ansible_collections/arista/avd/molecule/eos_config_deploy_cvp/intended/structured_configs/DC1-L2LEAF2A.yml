@@ -100,7 +100,7 @@ ntp:
   servers:
   - name: 192.168.200.5
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_DC1-L2LEAF2B_Port-Channel3
