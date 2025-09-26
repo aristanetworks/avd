@@ -45,9 +45,7 @@ class SnmpServerMixin(Protocol):
         self._snmp_location(snmp_settings)
         self._snmp_users(snmp_settings)
         self._snmp_hosts(snmp_settings)
-        self._snmp_vrfs(snmp_settings)
-        self._snmp_ipv4_acls(snmp_settings)
-        self._snmp_ipv6_acls(snmp_settings)
+        self._snmp_vrfs_and_acls(snmp_settings)
 
         self.structured_config.snmp_server._update(
             contact=snmp_settings.contact,
@@ -143,8 +141,6 @@ class SnmpServerMixin(Protocol):
         if not (hosts := snmp_settings.hosts):
             return
 
-        has_mgmt_ip = (self.shared_utils.node_config.mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
-
         for host in natural_sort(hosts, "host"):
             host: EosDesigns.SnmpSettings.HostsItem
             vrfs = set()
@@ -160,15 +156,8 @@ class SnmpServerMixin(Protocol):
                 if source_interface:
                     self.structured_config.snmp_server.local_interfaces.append_new(name=source_interface, vrf=host_vrf if host_vrf != "default" else None)
 
-            if (use_mgmt_interface_vrf := host.use_mgmt_interface_vrf) and has_mgmt_ip:
-                vrfs.add(self.inputs.mgmt_interface_vrf)
-
-            if (use_inband_mgmt_vrf := host.use_inband_mgmt_vrf) and self.shared_utils.inband_mgmt_interface is not None:
-                # self.shared_utils.inband_mgmt_vrf returns None for the default VRF, but here we need "default" to avoid duplicates.
-                vrfs.add(self.shared_utils.inband_mgmt_vrf or "default")
-
-            if not any([vrfs, use_mgmt_interface_vrf, use_inband_mgmt_vrf]):
-                # If no VRFs are defined (and we are not just ignoring missing mgmt config)
+            if not vrfs:
+                # If no VRFs are defined
                 vrfs.add("default")
 
             output_host = host._cast_as(EosCliConfigGen.SnmpServer.HostsItem, ignore_extra_keys=True)
@@ -189,17 +178,12 @@ class SnmpServerMixin(Protocol):
 
         self.structured_config.snmp_server.hosts = snmp_hosts
 
-    def _snmp_vrfs(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
+    def _snmp_vrfs_and_acls(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """
-        Set list of dicts for enabling/disabling SNMP for VRFs.
+        Set ACLs (ipv4 and ipv6) and a list of dicts for enabling/disabling SNMP for VRFs.
 
-        Requires one of the following options to be set under snmp_settings:
-        - vrfs
-        - enable_mgmt_interface_vrf     TODO: 6.0 remove
-        - enable_inband_mgmt_vrf        TODO: 6.0 remove
+        Requires snmp_settings.vrfs to be set
         """
-        has_mgmt_ip = (self.shared_utils.node_config.mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
-
         vrfs = EosCliConfigGen.SnmpServer.Vrfs()
 
         for vrf in snmp_settings.vrfs:
@@ -209,45 +193,10 @@ class SnmpServerMixin(Protocol):
             vrf_name = self.get_vrf(vrf.name, context=f"snmp_settings.vrfs[name={vrf.name}]")
             vrfs.append_new(name=vrf_name, enable=vrf.enable)
 
-        if has_mgmt_ip and (enable_mgmt_interface_vrf := snmp_settings.enable_mgmt_interface_vrf) is not None:
-            vrfs.append_new(name=self.inputs.mgmt_interface_vrf, enable=enable_mgmt_interface_vrf)
+            if vrf.ipv4_acl is not None:
+                self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_acl, vrf=vrf_name if vrf_name != "default" else None)
 
-        if (enable_inband_mgmt_vrf := snmp_settings.enable_inband_mgmt_vrf) is not None and self.shared_utils.inband_mgmt_interface is not None:
-            # self.shared_utils.inband_mgmt_vrf returns None for the default VRF, but here we need "default" to avoid duplicates.
-            vrfs.append_new(name=self.shared_utils.inband_mgmt_vrf or "default", enable=enable_inband_mgmt_vrf)
+            if vrf.ipv6_acl is not None:
+                self.structured_config.snmp_server.ipv6_acls.append_new(name=vrf.ipv6_acl, vrf=vrf_name if vrf_name != "default" else None)
 
         self.structured_config.snmp_server.vrfs = vrfs._natural_sorted()
-
-    def _snmp_ipv4_acls(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
-        """
-        SNMP IPv4 ACLs. Resolves VRF from management VRFs.
-
-        TODO: 6.0 once we have removed the old model, we can move the acl logic to the _snmp_vrfs() method to avoid looping over the VRFs again.
-        """
-        self.structured_config.snmp_server.ipv4_acls.extend(snmp_settings.ipv4_acls._cast_as(EosCliConfigGen.SnmpServer.Ipv4Acls))
-        for vrf in snmp_settings.vrfs:
-            if vrf.ipv4_acl is None:
-                continue
-
-            vrf_name = self.get_vrf(
-                vrf_input=vrf.name,
-                context=f"snmp_settings.vrfs[name={vrf.name}]",
-            )
-            self.structured_config.snmp_server.ipv4_acls.append_new(name=vrf.ipv4_acl, vrf=vrf_name if vrf_name != "default" else None)
-
-    def _snmp_ipv6_acls(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
-        """
-        SNMP IPv6 ACLs. Resolves VRF from management VRFs.
-
-        TODO: 6.0 once we have removed the old model, we can move the acl logic to the _snmp_vrfs() method to avoid looping over the VRFs again.
-        """
-        self.structured_config.snmp_server.ipv6_acls.extend(snmp_settings.ipv6_acls._cast_as(EosCliConfigGen.SnmpServer.Ipv6Acls))
-        for vrf in snmp_settings.vrfs:
-            if vrf.ipv6_acl is None:
-                continue
-
-            vrf_name = self.get_vrf(
-                vrf_input=vrf.name,
-                context=f"snmp_settings.vrfs[name={vrf.name}]",
-            )
-            self.structured_config.snmp_server.ipv6_acls.append_new(name=vrf.ipv6_acl, vrf=vrf_name if vrf_name != "default" else None)
