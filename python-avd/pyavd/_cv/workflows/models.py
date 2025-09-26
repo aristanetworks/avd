@@ -11,6 +11,7 @@ from uuid import NAMESPACE_DNS, uuid4, uuid5
 
 from pyavd._cv.client.configlet import ASSIGNMENT_MATCH_POLICY_MAP
 from pyavd._cv.client.exceptions import CVManifestError
+from pyavd._cv.client.models import TagAssignmentTuple, TagTuple
 
 AVD_NAMESPACE = uuid5(NAMESPACE_DNS, "avd.arista.com")
 AVD_ENTITY_PREFIX = "avd_"
@@ -60,6 +61,29 @@ class CVDeviceTag:
     value: str
     device: CVDevice | None = None
 
+    @property
+    def tag_tuple(self) -> TagTuple:
+        """Return the TagTuple for this tag."""
+        return TagTuple(
+            element_type="device",
+            label=self.label,
+            value=self.value,
+        )
+
+    @property
+    def tag_assignment_tuple(self) -> TagAssignmentTuple | None:
+        """Return the TagAssignmentTuple for this tag assignment."""
+        if self.device is None or self.device.serial_number is None:
+            return None
+
+        return TagAssignmentTuple(
+            element_type="device",
+            label=self.label,
+            value=self.value,
+            device_id=self.device.serial_number,
+            interface_id=None,
+        )
+
 
 @dataclass
 class CVInterfaceTag:
@@ -68,6 +92,29 @@ class CVInterfaceTag:
     device: CVDevice | None = None
     interface: str | None = None
     """Must be set if device is set"""
+
+    @property
+    def tag_tuple(self) -> TagTuple:
+        """Returns the TagTuple for this tag."""
+        return TagTuple(
+            element_type="interface",
+            label=self.label,
+            value=self.value,
+        )
+
+    @property
+    def tag_assignment_tuple(self) -> TagAssignmentTuple | None:
+        """Returns the TagAssignmentTuple for this tag assignment."""
+        if self.device is None or self.device.serial_number is None or self.interface is None:
+            return None
+
+        return TagAssignmentTuple(
+            element_type="interface",
+            label=self.label,
+            value=self.value,
+            device_id=self.device.serial_number,
+            interface_id=self.interface,
+        )
 
 
 @dataclass

@@ -34,6 +34,7 @@ if TYPE_CHECKING:
     from datetime import datetime
 
     from . import CVClientProtocol
+    from .models import TagAssignmentTuple, TagTuple
 
 
 ELEMENT_TYPE_MAP = {
@@ -78,7 +79,7 @@ class TagMixin(Protocol):
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
-        TODO: Consider if we should add sub_type.
+        TODO: Consider if we should add element_sub_type.
 
         Returns:
             List of Tag objects.
@@ -125,8 +126,7 @@ class TagMixin(Protocol):
     async def set_tags(
         self: CVClientProtocol,
         workspace_id: str,
-        tags: list[tuple[str, str]],
-        element_type: Literal["device", "interface"],
+        tags: list[TagTuple],
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagKey]:
         """
@@ -134,31 +134,29 @@ class TagMixin(Protocol):
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            tags: List of tuples where each tuple is in the format (<tag_label>, <tag_value>).
-            element_type: Type of Tag(s) to create.
+            tags: List of `TagTuple` named tuples to be added.
             timeout: Base timeout in seconds. 0.1 second will be added per Tag.
 
-        TODO: Consider if we should add sub_type.
+        TODO: Consider if we should add element_sub_type.
 
         Returns:
             List of Tag objects after being set including any server-generated values.
         """
         request = TagConfigSetSomeRequest(values=[])
-        for label, value in tags:
+        for tag in tags:
             request.values.append(
                 TagConfig(
                     key=TagKey(
                         workspace_id=workspace_id,
-                        element_type=ELEMENT_TYPE_MAP[element_type],
-                        label=label,
-                        value=value,
+                        element_type=tag.element_type_member,
+                        label=tag.label,
+                        value=tag.value,
                     ),
                 ),
             )
 
         client = TagConfigServiceStub(self._channel)
         responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
-        # Recreating a full tag object. Since we just created it, it *must* be a user created tag.
 
         return [response.key async for response in responses]
 
@@ -184,7 +182,7 @@ class TagMixin(Protocol):
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
-        TODO: Consider if we should add sub_type.
+        TODO: Consider if we should add element_sub_type.
 
         Returns:
             Workspace object matching the workspace_id
@@ -231,35 +229,33 @@ class TagMixin(Protocol):
     async def set_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
-        tag_assignments: list[tuple[str, str, str, str | None]],
-        element_type: Literal["device", "interface"],
+        tag_assignments: list[TagAssignmentTuple],
         timeout: float = DEFAULT_API_TIMEOUT,
     ) -> list[TagAssignment]:
         """
-        Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.
+        Set Tags using arista.tag.v2.TagAssignmentConfigServiceStub.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            tag_assignments: List of tuples where each tuple is in the format (<tag_label>, <tag_value>, <device_id/serial_number>, <interface_name | None>).
-            element_type: Type of Tag(s) to assign.
+            tag_assignments: List of `TagAssignmentTuple` named tuples to be added.
             timeout: Base timeout in seconds. 0.1 second will be added per Tag assignment.
 
-        TODO: Consider if we should add sub_type.
+        TODO: Consider if we should add element_sub_type.
 
         Returns:
             List of TagAssignment objects after being set including any server-generated values.
         """
         request = TagAssignmentConfigSetSomeRequest(values=[])
-        for label, value, device_id, interface_id in tag_assignments:
+        for tag_assignment in tag_assignments:
             request.values.append(
                 TagAssignmentConfig(
                     key=TagAssignmentKey(
                         workspace_id=workspace_id,
-                        element_type=ELEMENT_TYPE_MAP[element_type],
-                        label=label,
-                        value=value,
-                        device_id=device_id,
-                        interface_id=interface_id,
+                        element_type=tag_assignment.element_type_member,
+                        label=tag_assignment.label,
+                        value=tag_assignment.value,
+                        device_id=tag_assignment.device_id,
+                        interface_id=tag_assignment.interface_id,
                     ),
                 ),
             )
@@ -273,35 +269,33 @@ class TagMixin(Protocol):
     async def delete_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
-        tag_assignments: list[tuple[str, str, str, str | None]],
-        element_type: Literal["device", "interface"],
+        tag_assignments: list[TagAssignmentTuple],
         timeout: float = 30.0,
     ) -> list[TagAssignmentKey]:
         """
-        Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.
+        Set Tags using arista.tag.v2.TagAssignmentConfigServiceStub.SetSome API.
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            tag_assignments: List of tuples where each tuple is in the format (<tag_label>, <tag_value>, <device_id/serial_number>, <interface_name | None>).
-            element_type: Type of Tag assignment(s) to delete.
+            tag_assignments: List of `TagAssignmentTuple` named tuples to be removed.
             timeout: Base timeout in seconds. 0.1 second will be added per Tag assignment.
 
-        TODO: Consider if we should add sub_type.
+        TODO: Consider if we should add element_sub_type.
 
         Returns:
             List of TagAssignmentKey objects after being set including any server-generated values.
         """
         request = TagAssignmentConfigSetSomeRequest(values=[])
-        for label, value, device_id, interface_id in tag_assignments:
+        for tag_assignment in tag_assignments:
             request.values.append(
                 TagAssignmentConfig(
                     key=TagAssignmentKey(
                         workspace_id=workspace_id,
-                        element_type=ELEMENT_TYPE_MAP[element_type],
-                        label=label,
-                        value=value,
-                        device_id=device_id,
-                        interface_id=interface_id,
+                        element_type=tag_assignment.element_type_member,
+                        label=tag_assignment.label,
+                        value=tag_assignment.value,
+                        device_id=tag_assignment.device_id,
+                        interface_id=tag_assignment.interface_id,
                     ),
                     remove=True,
                 ),

@@ -6,6 +6,8 @@ from __future__ import annotations
 from logging import getLogger
 from typing import TYPE_CHECKING
 
+from pyavd._cv.client.models import TagAssignmentTuple, TagTuple
+
 from .models import CVDeviceTag, CVInterfaceTag, CVWorkspace
 
 if TYPE_CHECKING:
@@ -24,7 +26,7 @@ async def deploy_tags_to_cv(
     cv_client: CVClient,
 ) -> None:
     """
-    Deploy Tags updating result with success, skipped, errors, warnings.
+    Deploy Tags updating result with skipped, deployed and removed tags.
 
     Tags can be either Device Tags or Interface Tags but *not* a combination.
 
@@ -39,7 +41,7 @@ async def deploy_tags_to_cv(
           Then improve logic below using sets.
 
 
-    In-place updates skipped_tags, deployed_tags, removed_tags, warnings so they can be given directly from the results object.
+    In-place updates skipped_tags, deployed_tags and removed_tags so they can be given directly from the results object.
     """
     LOGGER.info("deploy_tags_to_cv: %s", len(tags))
 
@@ -49,7 +51,7 @@ async def deploy_tags_to_cv(
 
     tag_type = "interface" if isinstance(tags[0], CVInterfaceTag) else "device"
 
-    # Build TODO: with CVDevice/CVInterfaceTag objects that exist on CloudVision. Add the rest to skipped.
+    # Build toto tags with CVDevice/CVInterfaceTag objects that exist on CloudVision. Add the rest to skipped.
     skipped_tags.extend(tag for tag in tags if tag.device is not None and not tag.device._exists_on_cv)
     todo_tags = [tag for tag in tags if tag.device is None or tag.device._exists_on_cv]
 
@@ -57,17 +59,17 @@ async def deploy_tags_to_cv(
     if not todo_tags:
         return
 
-    # Get existing interface tags. Use this to only add the missing. We will *not* remove any tags. (Assignment are removed later)
+    # Get existing tags. Use this to only add the missing. We will *not* remove any tags. Assignments are removed later.
     LOGGER.info("deploy_tags_to_cv: Getting existing tags")
     existing_tags = await cv_client.get_tags(workspace_id=workspace.id, element_type=tag_type, creator_type="user")
-    existing_tags_tuples = [(tag.key.label, tag.key.value) for tag in existing_tags]
+    existing_tags_tuples = [TagTuple.from_cv_tag(tag) for tag in existing_tags]
     LOGGER.info("deploy_tags_to_cv: Got %s tags", len(existing_tags_tuples))
-    tags_to_add = [tag for tag in todo_tags if (tag.label, tag.value) not in existing_tags_tuples]
+    tags_to_add = [tag.tag_tuple for tag in todo_tags if tag.tag_tuple not in existing_tags_tuples]
     LOGGER.info("deploy_tags_to_cv: Creating %s tags", len(tags_to_add))
     if tags_to_add:
-        await cv_client.set_tags(workspace_id=workspace.id, tags=[(tag.label, tag.value) for tag in tags_to_add], element_type=tag_type)
+        await cv_client.set_tags(workspace_id=workspace.id, tags=tags_to_add)
 
-    # Remove entries with no assignment from TODO: and add to deployed.
+    # Remove entries with no assignment from todo tags and add to deployed.
     deployed_tags.extend(tag for tag in todo_tags if tag.device is None)
     todo_tags = [tag for tag in todo_tags if tag.device is not None]
 
@@ -75,38 +77,27 @@ async def deploy_tags_to_cv(
     LOGGER.info("deploy_tags_to_cv: Getting existing tag assignments")
     cv_existing_assignments = await cv_client.get_tag_assignments(workspace_id=workspace.id, element_type=tag_type, creator_type="user")
     # Build list of tuples with existing tag assignments
-    existing_assignments = [
-        (
-            assignment.key.label,
-            assignment.key.value,
-            assignment.key.device_id,
-            str(assignment.key.interface_id).rsplit("@", maxsplit=1)[0] if assignment.key.interface_id is not None else None,
-        )
-        for assignment in cv_existing_assignments
-    ]
+    existing_assignments = [TagAssignmentTuple.from_cv_tag_assignment(assignment) for assignment in cv_existing_assignments]
     LOGGER.info("deploy_tags_to_cv: Got %s tag assignments", len(existing_assignments))
 
-    # Move all existing assignments from TODO: to deployed.
-    deployed_tags.extend(tag for tag in todo_tags if (tag.label, tag.value, tag.device.serial_number, getattr(tag, "interface", None)) in existing_assignments)
-    todo_tags = [tag for tag in todo_tags if (tag.label, tag.value, tag.device.serial_number, getattr(tag, "interface", None)) not in existing_assignments]
+    # Move all existing assignments from todo tags to deployed.
+    deployed_tags.extend(tag for tag in todo_tags if tag.tag_assignment_tuple in existing_assignments)
+    todo_tags = [tag for tag in todo_tags if tag.tag_assignment_tuple not in existing_assignments]
 
     if todo_tags:
         LOGGER.info("deploy_tags_to_cv: Creating %s tag assignments", len(todo_tags))
         await cv_client.set_tag_assignments(
             workspace_id=workspace.id,
-            tag_assignments=[(tag.label, tag.value, tag.device.serial_number, getattr(tag, "interface", None)) for tag in todo_tags],
-            element_type=tag_type,
+            tag_assignments=[tag.tag_assignment_tuple for tag in todo_tags if tag.tag_assignment_tuple],
         )
 
-    # Move all TODO: to deployed.
+    # Move all todo tags to deployed.
     deployed_tags.extend(todo_tags)
 
     # Now we start removing assignments depending on strict_tags or not.
 
     # Build set of tuples for deployed tags.
-    deployed_tags_tuples = {
-        (tag.label, tag.value, tag.device.serial_number, getattr(tag, "interface", None)) for tag in deployed_tags if tag.device is not None
-    }
+    deployed_tags_tuples = {tag.tag_assignment_tuple for tag in deployed_tags if tag.tag_assignment_tuple is not None}
 
     # Build set of serial numbers for devices
     devices_by_serial_number = {tag.device.serial_number: tag.device for tag in deployed_tags if tag.device is not None}
@@ -115,32 +106,30 @@ async def deploy_tags_to_cv(
     # If not strict, we remove any assignments with the same labels but not specified in the inputs.
     if strict:
         assignments_to_unassign = [
-            (label, value, device_serial_number, interface)
-            for label, value, device_serial_number, interface in existing_assignments
-            if device_serial_number in devices_by_serial_number and (label, value, device_serial_number, interface) not in deployed_tags_tuples
+            assignment for assignment in existing_assignments if assignment.device_id in devices_by_serial_number and assignment not in deployed_tags_tuples
         ]
     else:
         # Build set of tag labels we have assigned so we know which ones to remove.
-        deployed_tags_labels = {tag_tuple[0] for tag_tuple in deployed_tags_tuples}
+        deployed_tags_labels = {assignment.label for assignment in deployed_tags_tuples}
         assignments_to_unassign = [
-            (label, value, device_serial_number, interface)
-            for label, value, device_serial_number, interface in existing_assignments
-            if device_serial_number in devices_by_serial_number
-            and label in deployed_tags_labels
-            and (label, value, device_serial_number, interface) not in deployed_tags_tuples
+            assignment
+            for assignment in existing_assignments
+            if assignment.device_id in devices_by_serial_number and assignment.label in deployed_tags_labels and assignment not in deployed_tags_tuples
         ]
 
     if assignments_to_unassign:
         LOGGER.info("deploy_tags_to_cv: Deleting %s tag assignments", len(assignments_to_unassign))
-        await cv_client.delete_tag_assignments(workspace_id=workspace.id, tag_assignments=assignments_to_unassign, element_type=tag_type)
+        await cv_client.delete_tag_assignments(workspace_id=workspace.id, tag_assignments=assignments_to_unassign)
 
     if tag_type == "interface":
         removed_tags.extend(
-            CVInterfaceTag(label=label, value=value, device=devices_by_serial_number[serial_number], interface=interface)
-            for label, value, serial_number, interface in assignments_to_unassign
+            CVInterfaceTag(
+                label=assignment.label, value=assignment.value, device=devices_by_serial_number[assignment.device_id], interface=assignment.interface_id
+            )
+            for assignment in assignments_to_unassign
         )
     else:
         removed_tags.extend(
-            CVDeviceTag(label=label, value=value, device=devices_by_serial_number[serial_number])
-            for label, value, serial_number, interface in assignments_to_unassign
+            CVDeviceTag(label=assignment.label, value=assignment.value, device=devices_by_serial_number[assignment.device_id])
+            for assignment in assignments_to_unassign
         )
