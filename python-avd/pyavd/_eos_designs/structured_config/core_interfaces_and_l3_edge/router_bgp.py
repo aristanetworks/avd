@@ -59,7 +59,7 @@ class RouterBgpMixin(Protocol):
                 peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name if p2p_link.include_in_underlay_protocol else Undefined,
                 bfd=p2p_link.bfd,
                 local_as=self.shared_utils.get_asn(p2p_link_data["bgp_as"])
-                if self.shared_utils.get_asn(p2p_link_data["bgp_as"]) != self.shared_utils.bgp_as
+                if self.shared_utils.get_asn(p2p_link_data["bgp_as"]) != self.shared_utils.get_asn(self.shared_utils.bgp_as)
                 else None,
             )
 

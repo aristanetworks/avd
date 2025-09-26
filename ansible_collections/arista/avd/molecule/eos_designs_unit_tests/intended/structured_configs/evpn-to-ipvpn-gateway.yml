@@ -87,7 +87,6 @@ router_bgp:
     remote_as: '4296212580'
     peer: SOME-IBGP-PEER
     description: SOME-IBGP-PEER
-    ebgp_multihop: 15
   redistribute:
     connected:
       enabled: true

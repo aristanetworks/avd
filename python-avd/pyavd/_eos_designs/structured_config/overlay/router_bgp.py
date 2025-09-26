@@ -596,7 +596,9 @@ class RouterBgpMixin(Protocol):
                 self.inputs.bgp_peer_groups.ipvpn_gateway_peers.name,
                 remote_peer.bgp_as,
             )
-            if remote_peer.bgp_as != self.shared_utils.get_asn(default(self.shared_utils.node_config.ipvpn_gateway.local_as, self.shared_utils.bgp_as)):
+            if self.shared_utils.get_asn(remote_peer.bgp_as) != self.shared_utils.get_asn(
+                default(self.shared_utils.node_config.ipvpn_gateway.local_as, self.shared_utils.bgp_as)
+            ):
                 neighbor.ebgp_multihop = self.inputs.evpn_ebgp_gateway_multihop
 
             self.structured_config.router_bgp.neighbors.append(neighbor)
