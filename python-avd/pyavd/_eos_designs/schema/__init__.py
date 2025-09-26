@@ -43385,13 +43385,14 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     nodes: Nodes
                     """
-                    Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                    If not
-                    set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                    peer_group.
+                    List of node names or regular expressions to match against hostnames to configure the peer-group.
+                    The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                    The peer-group
+                    is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                    Subclass of AvdList with `str` items.
+                    Subclass
+                    of AvdList with `str` items.
                     """
                     address_family_ipv4: AddressFamilyIpv4
                     """Subclass of AvdModel."""
@@ -43551,13 +43552,14 @@ class EosDesigns(EosDesignsRootModel):
                                    To protect the password at rest it is strongly recommended to
                                    make use of a vault or similar.
                                 nodes:
-                                   Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                                   If not
-                                   set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                                   peer_group.
+                                   List of node names or regular expressions to match against hostnames to configure the peer-group.
+                                   The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                                   The peer-group
+                                   is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                                   Subclass of AvdList with `str` items.
+                                   Subclass
+                                   of AvdList with `str` items.
                                 address_family_ipv4: Subclass of AvdModel.
                                 address_family_ipv6: Subclass of AvdModel.
                                 type: Key only used for documentation or validation purposes.
@@ -48383,7 +48385,12 @@ class EosDesigns(EosDesignsRootModel):
                         """Time-to-live in range of hops."""
                         nodes: Nodes
                         """
-                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                        List of node names or regular expressions to match against hostnames.
+                        The regexes need to match full
+                        hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        Nodes is required to restrict configuration
+                        of BGP neighbors to certain nodes in the network.
+
                         Subclass of AvdList with `str` items.
                         """
                         set_ipv4_next_hop: str | None
@@ -48492,7 +48499,12 @@ class EosDesigns(EosDesignsRootModel):
                                     update_source: update_source
                                     ebgp_multihop: Time-to-live in range of hops.
                                     nodes:
-                                       Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                                       List of node names or regular expressions to match against hostnames.
+                                       The regexes need to match full
+                                       hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                                       Nodes is required to restrict configuration
+                                       of BGP neighbors to certain nodes in the network.
+
                                        Subclass of AvdList with `str` items.
                                     set_ipv4_next_hop:
                                        IPv4_address
@@ -49177,13 +49189,14 @@ class EosDesigns(EosDesignsRootModel):
                         """BGP peer group name."""
                         nodes: Nodes
                         """
-                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                        If not
-                        set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                        peer_group.
+                        List of node names or regular expressions to match against hostnames to configure the peer-group.
+                        The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        The peer-group
+                        is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                        Subclass of AvdList with `str` items.
+                        Subclass
+                        of AvdList with `str` items.
                         """
                         password: str | None
                         """
@@ -49347,13 +49360,14 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     name: BGP peer group name.
                                     nodes:
-                                       Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                                       If not
-                                       set the peer-group is created on devices which have a bgp_peer mapped to the corresponding
-                                       peer_group.
+                                       List of node names or regular expressions to match against hostnames to configure the peer-group.
+                                       The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                                       The peer-group
+                                       is also created on devices which have a bgp_peer mapped to the corresponding peer_group.
 
 
-                                       Subclass of AvdList with `str` items.
+                                       Subclass
+                                       of AvdList with `str` items.
                                     password:
                                        Type 7 encrypted password.
                                        Takes precedence over `cleartext_password`.
@@ -69687,7 +69701,6 @@ class EosDesigns(EosDesignsRootModel):
         "l3_edge": {"type": L3Edge},
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
-        "local_users": {"type": EosCliConfigGen.LocalUsers},
         "logging_settings": {"type": LoggingSettings},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
@@ -70081,7 +70094,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
         "underlay_ospf_authentication": {"type": UnderlayOspfAuthentication},
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
-        "underlay_ospf_graceful_restart": {"type": bool, "default": False},
+        "underlay_ospf_graceful_restart": {"type": bool, "default": True},
         "underlay_ospf_max_lsa": {"type": int, "default": 12000},
         "underlay_ospf_maximum_paths": {"type": int},
         "underlay_ospf_process_id": {"type": int, "default": 100},
@@ -70987,10 +71000,15 @@ class EosDesigns(EosDesignsRootModel):
     is_deployed: bool
     """
     If the device is already deployed in the fabric.
-    When set to false, interfaces toward this device
-    may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.
-    Furthermore
-    `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.
+    When set to false:
+      - The `cv_deploy` role will
+    not apply configurations to this device.
+      - Peer interfaces toward this device may be shutdown
+    based on the `shutdown_interfaces_towards_undeployed_peers` setting.
+      - BGP peerings toward this
+    device may be shutdown based on the `shutdown_bgp_towards_undeployed_peers` setting.
+      - Validation
+    tests by the `anta_runner` role are automatically skipped for this device.
 
     Default value: `True`
     """
@@ -71052,7 +71070,6 @@ class EosDesigns(EosDesignsRootModel):
     `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
     """
     load_interval: EosCliConfigGen.LoadInterval
-    local_users: EosCliConfigGen.LocalUsers
     logging_settings: LoggingSettings
     """
     Logging settings
@@ -71608,38 +71625,14 @@ class EosDesigns(EosDesignsRootModel):
     """
     shutdown_bgp_towards_undeployed_peers: bool
     """
-    When a device is set undeployed using `is_deployed: false` and
-    `shutdown_bgp_towards_undeployed_peers` key is set to true, the BGP neighborship is shutdown on the
-    peer.
+    Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`.
 
     Default value: `True`
     """
     shutdown_interfaces_towards_undeployed_peers: bool
     """
-    - It is possible to provision configurations for a complete topology but flag devices as undeployed
-    using the host level variable `is_deployed: false`.
-
-    ```yaml
-    # Use at the host level
-    is_deployed: <
-    true or false or default -> true >
-    ```
-
-    - By default, this will have no impact within the
-    `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still
-    be pushed by the `eos_config_deploy_eapi` directly to devices if used.
-    - However, if the
-    `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices
-    flagged  as `is_deployed: false` and not attempt to configure them.
-    - If the device is not present
-    in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail
-    tests on peers of the undeployed device trying to verify that interfaces are up.
-    - To overcome this
-    and shutdown interfaces towards undeployed peers, the variable
-    `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role
-    interface tests.
-    - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
-    are not present in the network.
+    Administratively shuts down interfaces on deployed devices that connect to a peer marked with
+    `is_deployed: false`.
 
     Default value: `True`
     """
@@ -71914,7 +71907,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     Enable graceful restart for OSPF underlay.
 
-    Default value: `False`
+    Default value: `True`
     """
     underlay_ospf_max_lsa: int
     """Default value: `12000`"""
@@ -72202,7 +72195,6 @@ class EosDesigns(EosDesignsRootModel):
             l3_edge: L3Edge | UndefinedType = Undefined,
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
-            local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
             logging_settings: LoggingSettings | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
@@ -72969,10 +72961,15 @@ class EosDesigns(EosDesignsRootModel):
                    routes defined under 'ipv6_mgmt_destination_networks'.
                 is_deployed:
                    If the device is already deployed in the fabric.
-                   When set to false, interfaces toward this device
-                   may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.
-                   Furthermore
-                   `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.
+                   When set to false:
+                     - The `cv_deploy` role will
+                   not apply configurations to this device.
+                     - Peer interfaces toward this device may be shutdown
+                   based on the `shutdown_interfaces_towards_undeployed_peers` setting.
+                     - BGP peerings toward this
+                   device may be shutdown based on the `shutdown_bgp_towards_undeployed_peers` setting.
+                     - Validation
+                   tests by the `anta_runner` role are automatically skipped for this device.
                 isis_advertise_passive_only: isis_advertise_passive_only
                 isis_area_id: isis_area_id
                 isis_default_circuit_type:
@@ -73005,7 +73002,6 @@ class EosDesigns(EosDesignsRootModel):
                    Subclass of AvdIndexedList with
                    `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
                 load_interval: load_interval
-                local_users: local_users
                 logging_settings:
                    Logging settings
 
@@ -73404,35 +73400,10 @@ class EosDesigns(EosDesignsRootModel):
                    For
                    default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.
                    Subclass of AvdModel.
-                shutdown_bgp_towards_undeployed_peers:
-                   When a device is set undeployed using `is_deployed: false` and
-                   `shutdown_bgp_towards_undeployed_peers` key is set to true, the BGP neighborship is shutdown on the
-                   peer.
+                shutdown_bgp_towards_undeployed_peers: Administratively shuts down BGP peerings towards devices marked with `is_deployed: false`.
                 shutdown_interfaces_towards_undeployed_peers:
-                   - It is possible to provision configurations for a complete topology but flag devices as undeployed
-                   using the host level variable `is_deployed: false`.
-
-                   ```yaml
-                   # Use at the host level
-                   is_deployed: <
-                   true or false or default -> true >
-                   ```
-
-                   - By default, this will have no impact within the
-                   `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still
-                   be pushed by the `eos_config_deploy_eapi` directly to devices if used.
-                   - However, if the
-                   `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices
-                   flagged  as `is_deployed: false` and not attempt to configure them.
-                   - If the device is not present
-                   in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail
-                   tests on peers of the undeployed device trying to verify that interfaces are up.
-                   - To overcome this
-                   and shutdown interfaces towards undeployed peers, the variable
-                   `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role
-                   interface tests.
-                   - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
-                   are not present in the network.
+                   Administratively shuts down interfaces on deployed devices that connect to a peer marked with
+                   `is_deployed: false`.
                 snmp_settings:
                    SNMP settings.
                    Configuration of remote SNMP engine IDs are currently only possible using
