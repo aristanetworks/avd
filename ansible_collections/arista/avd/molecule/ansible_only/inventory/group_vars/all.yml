@@ -8,6 +8,5 @@ eos_cli_config_gen_documentation:
 
 fabric_name: ANSIBLE_ONLY
 
-
 management_eapi:
   enabled: true
