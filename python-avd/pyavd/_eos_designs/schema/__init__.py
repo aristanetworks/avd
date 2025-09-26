@@ -24531,6 +24531,27 @@ class EosDesigns(EosDesignsRootModel):
                     class LinkTracking(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Downlinks(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            enabled: bool
+                            """Default value: `False`"""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    """
+                                    Downlinks.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+
+                                    """
+
                         class GroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -24572,10 +24593,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
+                            "downlinks": {"type": Downlinks},
                             "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                         }
                         enabled: bool
                         """Default value: `False`"""
+                        downlinks: Downlinks
+                        """Subclass of AvdModel."""
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -24591,7 +24615,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                downlinks: Downlinks | UndefinedType = Undefined,
+                                groups: Groups | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 LinkTracking.
 
@@ -24600,6 +24630,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    downlinks: Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -29066,6 +29097,27 @@ class EosDesigns(EosDesignsRootModel):
                         class LinkTracking(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class Downlinks(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                                enabled: bool
+                                """Default value: `False`"""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                        """
+                                        Downlinks.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+
+                                        """
+
                             class GroupsItem(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -29107,10 +29159,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool, "default": False},
+                                "downlinks": {"type": Downlinks},
                                 "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                             }
                             enabled: bool
                             """Default value: `False`"""
+                            downlinks: Downlinks
+                            """Subclass of AvdModel."""
                             groups: Groups
                             """
                             Link Tracking Groups.
@@ -29126,7 +29181,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    downlinks: Downlinks | UndefinedType = Undefined,
+                                    groups: Groups | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     LinkTracking.
 
@@ -29135,6 +29196,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
+                                        downlinks: Subclass of AvdModel.
                                         groups:
                                            Link Tracking Groups.
                                            By default a single group named "LT_GROUP1" is defined with default values.
@@ -33564,6 +33626,27 @@ class EosDesigns(EosDesignsRootModel):
                     class LinkTracking(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Downlinks(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            enabled: bool
+                            """Default value: `False`"""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    """
+                                    Downlinks.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+
+                                    """
+
                         class GroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -33605,10 +33688,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
+                            "downlinks": {"type": Downlinks},
                             "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                         }
                         enabled: bool
                         """Default value: `False`"""
+                        downlinks: Downlinks
+                        """Subclass of AvdModel."""
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -33624,7 +33710,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                downlinks: Downlinks | UndefinedType = Undefined,
+                                groups: Groups | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 LinkTracking.
 
@@ -33633,6 +33725,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    downlinks: Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -38125,6 +38218,27 @@ class EosDesigns(EosDesignsRootModel):
                     class LinkTracking(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Downlinks(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            enabled: bool
+                            """Default value: `False`"""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    """
+                                    Downlinks.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+
+                                    """
+
                         class GroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -38166,10 +38280,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
+                            "downlinks": {"type": Downlinks},
                             "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                         }
                         enabled: bool
                         """Default value: `False`"""
+                        downlinks: Downlinks
+                        """Subclass of AvdModel."""
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -38185,7 +38302,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                downlinks: Downlinks | UndefinedType = Undefined,
+                                groups: Groups | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 LinkTracking.
 
@@ -38194,6 +38317,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    downlinks: Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -51110,6 +51234,27 @@ class EosDesigns(EosDesignsRootModel):
                     class LinkTracking(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Downlinks(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            enabled: bool
+                            """Default value: `False`"""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    """
+                                    Downlinks.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+
+                                    """
+
                         class GroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -51151,10 +51296,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
+                            "downlinks": {"type": Downlinks},
                             "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                         }
                         enabled: bool
                         """Default value: `False`"""
+                        downlinks: Downlinks
+                        """Subclass of AvdModel."""
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -51170,7 +51318,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                downlinks: Downlinks | UndefinedType = Undefined,
+                                groups: Groups | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 LinkTracking.
 
@@ -51179,6 +51333,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    downlinks: Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -55645,6 +55800,27 @@ class EosDesigns(EosDesignsRootModel):
                         class LinkTracking(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class Downlinks(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                                enabled: bool
+                                """Default value: `False`"""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                        """
+                                        Downlinks.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+
+                                        """
+
                             class GroupsItem(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -55686,10 +55862,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {
                                 "enabled": {"type": bool, "default": False},
+                                "downlinks": {"type": Downlinks},
                                 "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                             }
                             enabled: bool
                             """Default value: `False`"""
+                            downlinks: Downlinks
+                            """Subclass of AvdModel."""
                             groups: Groups
                             """
                             Link Tracking Groups.
@@ -55705,7 +55884,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    downlinks: Downlinks | UndefinedType = Undefined,
+                                    groups: Groups | UndefinedType = Undefined,
+                                ) -> None:
                                     """
                                     LinkTracking.
 
@@ -55714,6 +55899,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
+                                        downlinks: Subclass of AvdModel.
                                         groups:
                                            Link Tracking Groups.
                                            By default a single group named "LT_GROUP1" is defined with default values.
@@ -60143,6 +60329,27 @@ class EosDesigns(EosDesignsRootModel):
                     class LinkTracking(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Downlinks(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            enabled: bool
+                            """Default value: `False`"""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    """
+                                    Downlinks.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+
+                                    """
+
                         class GroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -60184,10 +60391,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
+                            "downlinks": {"type": Downlinks},
                             "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                         }
                         enabled: bool
                         """Default value: `False`"""
+                        downlinks: Downlinks
+                        """Subclass of AvdModel."""
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -60203,7 +60413,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                downlinks: Downlinks | UndefinedType = Undefined,
+                                groups: Groups | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 LinkTracking.
 
@@ -60212,6 +60428,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    downlinks: Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.
@@ -64704,6 +64921,27 @@ class EosDesigns(EosDesignsRootModel):
                     class LinkTracking(AvdModel):
                         """Subclass of AvdModel."""
 
+                        class Downlinks(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}}
+                            enabled: bool
+                            """Default value: `False`"""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                                    """
+                                    Downlinks.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+
+                                    """
+
                         class GroupsItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -64745,10 +64983,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "enabled": {"type": bool, "default": False},
+                            "downlinks": {"type": Downlinks},
                             "groups": {"type": Groups, "default": lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)},
                         }
                         enabled: bool
                         """Default value: `False`"""
+                        downlinks: Downlinks
+                        """Subclass of AvdModel."""
                         groups: Groups
                         """
                         Link Tracking Groups.
@@ -64764,7 +65005,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                downlinks: Downlinks | UndefinedType = Undefined,
+                                groups: Groups | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 LinkTracking.
 
@@ -64773,6 +65020,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    downlinks: Subclass of AvdModel.
                                     groups:
                                        Link Tracking Groups.
                                        By default a single group named "LT_GROUP1" is defined with default values.

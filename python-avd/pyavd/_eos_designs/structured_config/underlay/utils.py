@@ -90,6 +90,12 @@ class UtilsMixin(Protocol):
                     port_channel_structured_config=uplink.peer_port_channel_structured_config,
                 )
 
+                if self.shared_utils.node_config.link_tracking.downlinks.enabled and self.shared_utils.link_tracking_groups is not None:
+                    downlink.link_tracking_groups.extend(
+                        EosDesignsFacts.UplinksItem.LinkTrackingGroupsItem(name=lt_group.name, direction="downstream")
+                        for lt_group in self.shared_utils.link_tracking_groups
+                    )
+
                 if peer_facts.inband_ztp:
                     # l2 inband ztp
                     downlink.inband_ztp_vlan = peer_facts.inband_ztp_vlan

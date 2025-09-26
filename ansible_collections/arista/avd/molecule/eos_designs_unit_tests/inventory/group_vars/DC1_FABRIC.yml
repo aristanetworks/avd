@@ -137,6 +137,13 @@ l3leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           ptp:
             enabled: false
+          link_tracking:
+            enabled: true
+            groups:
+              - name: l2leaf-server02
+                recovery_delay: 300
+            downlinks:
+              enabled: true
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
         - name: DC1-LEAF2B
