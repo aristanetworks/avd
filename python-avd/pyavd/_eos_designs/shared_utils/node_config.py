@@ -78,10 +78,6 @@ class NodeConfigMixin(Protocol):
         node_config._deepinherit(
             self.node_type_config.defaults._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)
         )
-        # Remove this check in 6.0 when uplink_structured_config is removed from schema.
-        if node_config.uplink_structured_config:
-            # if new key for uplink_structured_config is used, raises an Exception.
-            self.check_for_new_keys(node_config)
 
         return node_config
 
@@ -101,19 +97,3 @@ class NodeConfigMixin(Protocol):
         index = nodes.index(self.hostname)
         peer_index = not index  # (0->1 and 1>0)
         return index == 0, nodes[peer_index]
-
-    def check_for_new_keys(self: SharedUtilsProtocol, node_config: EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem) -> None:
-        """Raises an exception when node type setting 'uplink_structured_config' is used with new keys."""
-        new_keys = [
-            "uplink_ethernet_structured_config",
-            "uplink_switch_ethernet_structured_config",
-            "uplink_port_channel_structured_config",
-            "uplink_switch_port_channel_structured_config",
-        ]
-        for key in new_keys:
-            if node_config._get(key) is not None:
-                msg = (
-                    f"The input data model 'uplink_structured_config' in node_type settings is deprecated and cannot be used"
-                    f" in conjunction with the new '{key}'. Check the settings for '{self.hostname}'."
-                )
-                raise AristaAvdInvalidInputsError(msg)

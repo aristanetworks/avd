@@ -1,59 +1,24 @@
 aaa_root:
   disabled: true
 config_end: true
-daemon_terminattr:
-  cvaddrs:
-  - 192.168.200.12:444
-  - 192.168.200.13:444
-  cvauth:
-    method: key
-    key: test_key
-  cvvrf: default
-  disable_aaa: true
-  ingestexclude: excludethis
-  smashexcludes: excludethat
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet4
-  description: uplink_structured_config on port-channel uplink
-  shutdown: false
-  channel_group:
-    id: 4
-    mode: active
-  storm_control:
-    broadcast:
-      level: '25'
-    unknown_unicast:
-      level: '25'
-  peer: host3
-  peer_interface: Ethernet4
-  peer_type: l2leaf
 - name: Ethernet42
   description: P2P_host2_Ethernet42
   shutdown: false
   mtu: 9214
   ip_address: 192.168.42.201/31
-  storm_control:
-    broadcast:
-      level: '25'
-    unknown_unicast:
-      level: '25'
   peer: host2
   peer_interface: Ethernet42
   peer_type: pe
   switchport:
     enabled: false
-    trunk:
-      native_vlan_tag: true
 - name: Ethernet43
   description: P2P_host4_Ethernet43
   shutdown: false
   mtu: 9214
   ip_address: 10.42.42.204/31
-  pim:
-    ipv4:
-      sparse_mode: true
   peer: host4
   peer_interface: Ethernet43
   peer_type: l3leaf
@@ -81,20 +46,6 @@ hostname: host1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
-local_users:
-- name: admin
-  disabled: true
-  privilege: 15
-  role: network-admin
-  no_password: true
-- name: cvpadmin
-  privilege: 15
-  role: network-admin
-  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-  ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
-    cvpadmin@hostmachine.local
-  secondary_ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkz=
-    cvpadmin@hostmachine.local
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -119,19 +70,6 @@ metadata:
   is_deployed: true
   fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 port_channel_interfaces:
-- name: Port-Channel4
-  description: uplink_structured_config on port-channel uplink
-  shutdown: false
-  storm_control:
-    broadcast:
-      level: '25'
-    unknown_unicast:
-      level: '25'
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: none
 - name: Port-Channel1
   description: SERVER_OLD_SW-1/2_ENDPOINT_PORT_CHANNEL
   shutdown: false
@@ -229,4 +167,3 @@ vxlan_interface:
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
-custom_key2: foo

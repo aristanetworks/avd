@@ -95,7 +95,7 @@ ntp:
   servers:
   - name: 0.pool.ntp.org
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 service_routing_protocols_model: multi-agent
 static_routes:
 - vrf: MGMT

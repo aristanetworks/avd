@@ -11,17 +11,7 @@ keys:
       table: design
     deprecation:
       warning: true
-      removed: false
+      removed: true
       remove_in_version: 6.0.0
-      url: https://avd.arista.com/5.x/docs/porting-guides/5.x.x.html#deprecation-of-designtype
+      url: https://avd.arista.com/6.x/docs/porting-guides/6.x.x.html#removal-of-designtype
     type: dict
-    keys:
-      type:
-        type: str
-        description: |
-          By setting the design.type variable, the default node-types and templates described in these documents will be used.
-        valid_values:
-          - l3ls-evpn
-          - mpls
-          - l2ls
-        default: "l3ls-evpn"
