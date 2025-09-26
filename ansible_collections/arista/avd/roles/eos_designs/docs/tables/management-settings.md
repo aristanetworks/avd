@@ -171,16 +171,7 @@
     | [<samp>ipv6_mgmt_destination_networks</samp>](## "ipv6_mgmt_destination_networks") | List, items: String |  |  |  | List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.<br>Replaces the default route.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ipv6_mgmt_destination_networks.[]") | String |  |  |  | IPv6_network/Mask. |
     | [<samp>ipv6_mgmt_gateway</samp>](## "ipv6_mgmt_gateway") | String |  |  | Format: ipv6 | OOB Management interface gateway in IPv6 format.<br>Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.<br> |
-    | [<samp>local_users</samp>](## "local_users") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>aaa_settings.local_users</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "local_users.[].name") | String | Required, Unique |  |  | Username. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "local_users.[].disabled") | Boolean |  |  |  | If true, the user will be removed and all other settings are ignored.<br>Useful for removing the default "admin" user.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;privilege</samp>](## "local_users.[].privilege") | Integer |  |  | Min: 0<br>Max: 15 | Initial privilege level with local EXEC authorization.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "local_users.[].role") | String |  |  |  | EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator".<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sha512_password</samp>](## "local_users.[].sha512_password") | String |  |  |  | SHA512 Hash of Password.<br>Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;no_password</samp>](## "local_users.[].no_password") | Boolean |  |  |  | If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssh_key</samp>](## "local_users.[].ssh_key") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;secondary_ssh_key</samp>](## "local_users.[].secondary_ssh_key") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shell</samp>](## "local_users.[].shell") | String |  |  | Valid Values:<br>- <code>/bin/bash</code><br>- <code>/bin/sh</code><br>- <code>/sbin/nologin</code> | Specify shell for the user.<br> |
+    | [<samp>local_users</samp>](## "local_users") <span style="color:red">removed</span> | List |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 6.0.0. Use <samp>aaa_settings.local_users</samp> instead.</span> |
     | [<samp>logging_settings</samp>](## "logging_settings") | Dictionary |  |  |  | Logging settings |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "logging_settings.hosts") | List, items: Dictionary | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "logging_settings.hosts.[].name") | String | Required |  |  | Syslog server name. |
@@ -662,35 +653,6 @@
     # OOB Management interface gateway in IPv6 format.
     # Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.
     ipv6_mgmt_gateway: <str>
-    # This key is deprecated.
-    # Support will be removed in AVD version 6.0.0.
-    # Use `aaa_settings.local_users` instead.
-    local_users:
-
-        # Username.
-      - name: <str; required; unique>
-
-        # If true, the user will be removed and all other settings are ignored.
-        # Useful for removing the default "admin" user.
-        disabled: <bool>
-
-        # Initial privilege level with local EXEC authorization.
-        privilege: <int; 0-15>
-
-        # EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator".
-        role: <str>
-
-        # SHA512 Hash of Password.
-        # Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.
-        sha512_password: <str>
-
-        # If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
-        no_password: <bool>
-        ssh_key: <str>
-        secondary_ssh_key: <str>
-
-        # Specify shell for the user.
-        shell: <str; "/bin/bash" | "/bin/sh" | "/sbin/nologin">
 
     # Logging settings
     logging_settings:
