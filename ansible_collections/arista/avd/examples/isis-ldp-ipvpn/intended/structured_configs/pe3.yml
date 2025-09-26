@@ -96,6 +96,10 @@ loopback_interfaces:
       interface: true
   isis_enable: CORE
   isis_passive: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
 management_interfaces:
 - name: Management1
   description: OOB_MANAGEMENT
