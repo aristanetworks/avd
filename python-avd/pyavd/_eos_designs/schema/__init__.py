@@ -70466,11 +70466,9 @@ class EosDesigns(EosDesignsRootModel):
     inband_ztp_bootstrap_file: str | None
     """
     Bootstrap URL configured in DHCP to use for inband ZTP.
-    If not set and
-    `cv_settings.onprem_clusters[0].servers[0].name` is set then the bootstrap value will be set to:
-    `https://{cv_settings.onprem_clusters[0].servers[0].name}/ztp/bootstrap`
-    Otherwise no value will be
-    configured.
+    By default the URL will be `https://<first
+    cv server>/ztp/bootstrap` if `cv_settings` are used.
+    Otherwise no value will be configured.
     """
     internal_vlan_order: InternalVlanOrder
     """
@@ -72419,11 +72417,9 @@ class EosDesigns(EosDesignsRootModel):
                 hardware_counters: hardware_counters
                 inband_ztp_bootstrap_file:
                    Bootstrap URL configured in DHCP to use for inband ZTP.
-                   If not set and
-                   `cv_settings.onprem_clusters[0].servers[0].name` is set then the bootstrap value will be set to:
-                   `https://{cv_settings.onprem_clusters[0].servers[0].name}/ztp/bootstrap`
-                   Otherwise no value will be
-                   configured.
+                   By default the URL will be `https://<first
+                   cv server>/ztp/bootstrap` if `cv_settings` are used.
+                   Otherwise no value will be configured.
                 internal_vlan_order:
                    Internal vlan allocation order and range.
 

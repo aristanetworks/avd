@@ -2567,10 +2567,12 @@ keys:
     type: dict
   inband_ztp_bootstrap_file:
     type: str
-    description: "Bootstrap URL configured in DHCP to use for inband ZTP.\nIf not
-      set and `cv_settings.onprem_clusters[0].servers[0].name` is set then the bootstrap
-      value will be set to:\n    `https://{cv_settings.onprem_clusters[0].servers[0].name}/ztp/bootstrap`\nOtherwise
-      no value will be configured."
+    description: 'Bootstrap URL configured in DHCP to use for inband ZTP.
+
+      By default the URL will be `https://<first cv server>/ztp/bootstrap` if `cv_settings`
+      are used.
+
+      Otherwise no value will be configured.'
     documentation_options:
       table: management-settings
   internal_vlan_order:
