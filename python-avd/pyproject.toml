@@ -78,7 +78,6 @@ requires = [
     "cryptography>=38.0.4",
     "aristaproto>=0.1.1",
     "ruff==0.13.1",
-    "async-timeout>=5.0.1"
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
