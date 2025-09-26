@@ -7782,10 +7782,13 @@ $defs:
                 type: list
                 items:
                   type: str
-                description: 'Nodes is required to restrict configuration of BGP neighbors
-                  to certain nodes in the network.
+                description: 'List of node names or regular expressions to match against
+                  hostnames to configure the peer-group.
 
-                  If not set the peer-group is created on devices which have a bgp_peer
+                  The regexes need to match full hostname and be enclosed in quotes,
+                  e.g ''DC1-BL[12]A''.
+
+                  The peer-group is also created on devices which have a bgp_peer
                   mapped to the corresponding peer_group.
 
                   '
@@ -9315,8 +9318,14 @@ $defs:
                       type: list
                       items:
                         type: str
-                      description: Nodes is required to restrict configuration of
-                        BGP neighbors to certain nodes in the network.
+                      description: 'List of node names or regular expressions to match
+                        against hostnames.
+
+                        The regexes need to match full hostname and be enclosed in
+                        quotes, e.g ''DC1-BL[12]A''.
+
+                        Nodes is required to restrict configuration of BGP neighbors
+                        to certain nodes in the network.'
                     set_ipv4_next_hop:
                       type: str
                       description: 'IPv4_address
@@ -9454,11 +9463,14 @@ $defs:
                       type: list
                       items:
                         type: str
-                      description: 'Nodes is required to restrict configuration of
-                        BGP neighbors to certain nodes in the network.
+                      description: 'List of node names or regular expressions to match
+                        against hostnames to configure the peer-group.
 
-                        If not set the peer-group is created on devices which have
-                        a bgp_peer mapped to the corresponding peer_group.
+                        The regexes need to match full hostname and be enclosed in
+                        quotes, e.g ''DC1-BL[12]A''.
+
+                        The peer-group is also created on devices which have a bgp_peer
+                        mapped to the corresponding peer_group.
 
                         '
                     password:
