@@ -4050,11 +4050,6 @@ class EosDesigns(EosDesignsRootModel):
 
     CvTopology._item_type = CvTopologyItem
 
-    class CvpInstanceIps(AvdList[str]):
-        """Subclass of AvdList with `str` items."""
-
-    CvpInstanceIps._item_type = str
-
     class DefaultInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -69163,9 +69158,6 @@ class EosDesigns(EosDesignsRootModel):
         "cv_tags_topology_type": {"type": str},
         "cv_token": {"type": str},
         "cv_topology": {"type": CvTopology},
-        "cvp_ingestauth_key": {"type": str},
-        "cvp_instance_ips": {"type": CvpInstanceIps},
-        "cvp_token_file": {"type": str},
         "dc_name": {"type": str},
         "default_connected_endpoints_description": {"type": str, "default": "{endpoint_type!u}_{endpoint}{endpoint_port?<_}"},
         "default_connected_endpoints_port_channel_description": {"type": str, "default": "{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}"},
@@ -69597,10 +69589,6 @@ class EosDesigns(EosDesignsRootModel):
         "ssh_settings": {"type": SshSettings},
         "svi_profiles": {"type": SviProfiles},
         "system_mac_address": {"type": str},
-        "terminattr_disable_aaa": {"type": bool, "default": False},
-        "terminattr_ingestexclude": {"type": str, "default": "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"},
-        "terminattr_ingestgrpcurl_port": {"type": int, "default": 9910},
-        "terminattr_smashexcludes": {"type": str, "default": "ale,flexCounter,hardware,kni,pulse,strata"},
         "timezone": {"type": str},
         "trunk_groups": {"type": TrunkGroups},
         "type": {"type": str},
@@ -70004,36 +69992,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Subclass of
     AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
-    """
-    cvp_ingestauth_key: str | None
-    """
-    On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication
-    for on-premise CVP.
-    If not set, TerminAttr will be configured with certificate based authentication:
-    - On-premise using token onboarding. Default token path is '/tmp/token'.
-    - CVaaS using token-secure
-    onboarding. Default token path is '/tmp/cv-onboarding-token'.
-    Token must be copied to the device
-    first.
-    """
-    cvp_instance_ips: CvpInstanceIps
-    """
-    List of IPv4 addresses or DNS names for CloudVision.
-    For on-premise CloudVision enter all the nodes
-    of the cluster.
-    For CloudVision as a Service enter the DNS name of the instance.
-    `eos_designs` only
-    supports one CloudVision cluster.
-
-
-    Subclass of AvdList with `str` items.
-    """
-    cvp_token_file: str | None
-    """
-    cvp_token_file is the path to the token file on the switch.
-    If not set the default locations for on-
-    premise or CVaaS will be used.
-    See cvp_ingestauth_key for details.
     """
     dc_name: str | None
     """
@@ -70461,11 +70419,9 @@ class EosDesigns(EosDesignsRootModel):
     inband_ztp_bootstrap_file: str | None
     """
     Bootstrap URL configured in DHCP to use for inband ZTP.
-    If not set and `cvp_instance_ips` is set
-    then the bootstrap value will be set to:
-        `https://{cvp_instance_ips[0]}/ztp/bootstrap`
-    Otherwise
-    no value will be configured.
+    By default the URL will be `https://<first
+    cv server>/ztp/bootstrap` if `cv_settings` are used.
+    Otherwise no value will be configured.
     """
     internal_vlan_order: InternalVlanOrder
     """
@@ -71138,9 +71094,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     Serial Number of the device.
     Used for documentation purpose in the fabric documentation as can also
-    be used by the 'eos_config_deploy_cvp' role.
-    "serial_number" can also be set directly under node
-    type settings.
+    be used by the 'cv_deploy' role.
+    "serial_number" can also be set directly under node type settings.
     If both are set, the value under node type settings takes precedence.
     """
     sflow_settings: SflowSettings
@@ -71216,20 +71171,6 @@ class EosDesigns(EosDesignsRootModel):
     If both are set, the value under node type settings takes
     precedence.
     """
-    terminattr_disable_aaa: bool
-    """Default value: `False`"""
-    terminattr_ingestexclude: str
-    """Default value: `"/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"`"""
-    terminattr_ingestgrpcurl_port: int
-    """
-    Port number used for Terminattr connection to an on-premise CloudVision cluster.
-    The port number is
-    always 443 when using CloudVision as a Service, so this value is ignored.
-
-    Default value: `9910`
-    """
-    terminattr_smashexcludes: str
-    """Default value: `"ale,flexCounter,hardware,kni,pulse,strata"`"""
     timezone: str | None
     """Clock timezone like "CET" or "US/Pacific"."""
     trunk_groups: TrunkGroups
@@ -71660,9 +71601,6 @@ class EosDesigns(EosDesignsRootModel):
             cv_tags_topology_type: str | None | UndefinedType = Undefined,
             cv_token: str | None | UndefinedType = Undefined,
             cv_topology: CvTopology | UndefinedType = Undefined,
-            cvp_ingestauth_key: str | None | UndefinedType = Undefined,
-            cvp_instance_ips: CvpInstanceIps | UndefinedType = Undefined,
-            cvp_token_file: str | None | UndefinedType = Undefined,
             dc_name: str | None | UndefinedType = Undefined,
             default_connected_endpoints_description: str | UndefinedType = Undefined,
             default_connected_endpoints_port_channel_description: str | UndefinedType = Undefined,
@@ -71781,10 +71719,6 @@ class EosDesigns(EosDesignsRootModel):
             ssh_settings: SshSettings | UndefinedType = Undefined,
             svi_profiles: SviProfiles | UndefinedType = Undefined,
             system_mac_address: str | None | UndefinedType = Undefined,
-            terminattr_disable_aaa: bool | UndefinedType = Undefined,
-            terminattr_ingestexclude: str | UndefinedType = Undefined,
-            terminattr_ingestgrpcurl_port: int | UndefinedType = Undefined,
-            terminattr_smashexcludes: str | UndefinedType = Undefined,
             timezone: str | None | UndefinedType = Undefined,
             trunk_groups: TrunkGroups | UndefinedType = Undefined,
             type: str | None | UndefinedType = Undefined,
@@ -72101,30 +72035,6 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of
                    AvdIndexedList with `CvTopologyItem` items. Primary key is `hostname` (`str`).
-                cvp_ingestauth_key:
-                   On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication
-                   for on-premise CVP.
-                   If not set, TerminAttr will be configured with certificate based authentication:
-                   - On-premise using token onboarding. Default token path is '/tmp/token'.
-                   - CVaaS using token-secure
-                   onboarding. Default token path is '/tmp/cv-onboarding-token'.
-                   Token must be copied to the device
-                   first.
-                cvp_instance_ips:
-                   List of IPv4 addresses or DNS names for CloudVision.
-                   For on-premise CloudVision enter all the nodes
-                   of the cluster.
-                   For CloudVision as a Service enter the DNS name of the instance.
-                   `eos_designs` only
-                   supports one CloudVision cluster.
-
-
-                   Subclass of AvdList with `str` items.
-                cvp_token_file:
-                   cvp_token_file is the path to the token file on the switch.
-                   If not set the default locations for on-
-                   premise or CVaaS will be used.
-                   See cvp_ingestauth_key for details.
                 dc_name:
                    DC Name is used in:
                    - Fabric Documentation (Optional, falls back to fabric_name)
@@ -72438,11 +72348,9 @@ class EosDesigns(EosDesignsRootModel):
                 hardware_counters: hardware_counters
                 inband_ztp_bootstrap_file:
                    Bootstrap URL configured in DHCP to use for inband ZTP.
-                   If not set and `cvp_instance_ips` is set
-                   then the bootstrap value will be set to:
-                       `https://{cvp_instance_ips[0]}/ztp/bootstrap`
-                   Otherwise
-                   no value will be configured.
+                   By default the URL will be `https://<first
+                   cv server>/ztp/bootstrap` if `cv_settings` are used.
+                   Otherwise no value will be configured.
                 internal_vlan_order:
                    Internal vlan allocation order and range.
 
@@ -72918,9 +72826,8 @@ class EosDesigns(EosDesignsRootModel):
                 serial_number:
                    Serial Number of the device.
                    Used for documentation purpose in the fabric documentation as can also
-                   be used by the 'eos_config_deploy_cvp' role.
-                   "serial_number" can also be set directly under node
-                   type settings.
+                   be used by the 'cv_deploy' role.
+                   "serial_number" can also be set directly under node type settings.
                    If both are set, the value under node type settings takes precedence.
                 sflow_settings:
                    sFlow settings.
@@ -72975,13 +72882,6 @@ class EosDesigns(EosDesignsRootModel):
                    also be set under node type settings.
                    If both are set, the value under node type settings takes
                    precedence.
-                terminattr_disable_aaa: terminattr_disable_aaa
-                terminattr_ingestexclude: terminattr_ingestexclude
-                terminattr_ingestgrpcurl_port:
-                   Port number used for Terminattr connection to an on-premise CloudVision cluster.
-                   The port number is
-                   always 443 when using CloudVision as a Service, so this value is ignored.
-                terminattr_smashexcludes: terminattr_smashexcludes
                 timezone: Clock timezone like "CET" or "US/Pacific".
                 trunk_groups: Subclass of AvdModel.
                 type:

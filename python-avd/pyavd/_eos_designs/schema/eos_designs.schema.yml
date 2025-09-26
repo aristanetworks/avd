@@ -1421,50 +1421,26 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: str
-    description: 'On-premise CVP ingest auth key. If set, TerminAttr will be configured
-      with key-based authentication for on-premise CVP.
-
-      If not set, TerminAttr will be configured with certificate based authentication:
-
-      - On-premise using token onboarding. Default token path is ''/tmp/token''.
-
-      - CVaaS using token-secure onboarding. Default token path is ''/tmp/cv-onboarding-token''.
-
-      Token must be copied to the device first.'
     deprecation:
       warning: true
+      removed: true
       remove_in_version: 6.0.0
   cvp_instance_ips:
     documentation_options:
       table: cloudvision-settings
     type: list
-    description: 'List of IPv4 addresses or DNS names for CloudVision.
-
-      For on-premise CloudVision enter all the nodes of the cluster.
-
-      For CloudVision as a Service enter the DNS name of the instance.
-
-      `eos_designs` only supports one CloudVision cluster.
-
-      '
-    items:
-      type: str
-      description: IPv4 address or DNS name for CloudVision
     deprecation:
       warning: true
+      removed: true
       new_key: cv_settings
       remove_in_version: 6.0.0
   cvp_token_file:
     documentation_options:
       table: cloudvision-settings
     type: str
-    description: 'cvp_token_file is the path to the token file on the switch.
-
-      If not set the default locations for on-premise or CVaaS will be used.
-
-      See cvp_ingestauth_key for details.'
     deprecation:
       warning: true
+      removed: true
       new_key: cv_settings
       remove_in_version: 6.0.0
   dc_name:
@@ -2591,10 +2567,12 @@ keys:
     type: dict
   inband_ztp_bootstrap_file:
     type: str
-    description: "Bootstrap URL configured in DHCP to use for inband ZTP.\nIf not
-      set and `cvp_instance_ips` is set then the bootstrap value will be set to:\n
-      \   `https://{cvp_instance_ips[0]}/ztp/bootstrap`\nOtherwise no value will be
-      configured."
+    description: 'Bootstrap URL configured in DHCP to use for inband ZTP.
+
+      By default the URL will be `https://<first cv server>/ztp/bootstrap` if `cv_settings`
+      are used.
+
+      Otherwise no value will be configured.'
     documentation_options:
       table: management-settings
   internal_vlan_order:
@@ -5093,7 +5071,7 @@ keys:
     description: 'Serial Number of the device.
 
       Used for documentation purpose in the fabric documentation as can also be used
-      by the ''eos_config_deploy_cvp'' role.
+      by the ''cv_deploy'' role.
 
       "serial_number" can also be set directly under node type settings.
 
@@ -5594,8 +5572,8 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: bool
-    default: false
     deprecation:
+      removed: true
       warning: true
       new_key: cv_settings
       remove_in_version: 6.0.0
@@ -5603,8 +5581,8 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: str
-    default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
     deprecation:
+      removed: true
       warning: true
       new_key: cv_settings
       remove_in_version: 6.0.0
@@ -5612,24 +5590,17 @@ keys:
     documentation_options:
       table: cloudvision-settings
     type: int
-    convert_types:
-    - str
-    default: 9910
-    description: 'Port number used for Terminattr connection to an on-premise CloudVision
-      cluster.
-
-      The port number is always 443 when using CloudVision as a Service, so this value
-      is ignored.'
     deprecation:
       warning: true
+      removed: true
       new_key: cv_settings
       remove_in_version: 6.0.0
   terminattr_smashexcludes:
     documentation_options:
       table: cloudvision-settings
     type: str
-    default: ale,flexCounter,hardware,kni,pulse,strata
     deprecation:
+      removed: true
       warning: true
       new_key: cv_settings
       remove_in_version: 6.0.0

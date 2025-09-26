@@ -20207,8 +20207,7 @@ keys:
           This configuration cannot be pushed with `eos_config_deploy_eapi`, because
           of limitations in `arista.eos` and `ansible.netcommon` plugins.
 
-          The configuration can be pushed via CloudVision with `eos_config_deploy_cvp`
-          or `cv_deploy`.'
+          The configuration can be pushed via CloudVision with the `cv_deploy` role.'
         keys:
           code_units:
             type: list
@@ -22245,8 +22244,8 @@ keys:
       table: metadata
     description: 'Serial Number of the device.
 
-      Used only for documentation and deployment purposes. It is used by the ''eos_config_deploy_cvp''
-      and ''cv_deploy'' roles.'
+      Used only for documentation and deployment purposes. It is used by the ''cv_deploy''
+      role.'
     type: str
     convert_types:
     - int

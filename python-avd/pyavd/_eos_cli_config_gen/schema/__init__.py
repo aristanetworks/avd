@@ -54696,7 +54696,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         This configuration cannot be pushed with `eos_config_deploy_eapi`, because
         of limitations in `arista.eos` and `ansible.netcommon` plugins.
         The configuration can be pushed via
-        CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.
+        CloudVision with the `cv_deploy` role.
 
         Subclass of AvdModel.
         """
@@ -54731,7 +54731,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        This configuration cannot be pushed with `eos_config_deploy_eapi`, because
                        of limitations in `arista.eos` and `ansible.netcommon` plugins.
                        The configuration can be pushed via
-                       CloudVision with `eos_config_deploy_cvp` or `cv_deploy`.
+                       CloudVision with the `cv_deploy` role.
 
                        Subclass of AvdModel.
 
@@ -68013,7 +68013,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """
     Serial Number of the device.
     Used only for documentation and deployment purposes. It is used by the
-    'eos_config_deploy_cvp' and 'cv_deploy' roles.
+    'cv_deploy' role.
     """
     service_routing_configuration_bgp: ServiceRoutingConfigurationBgp
     """Subclass of AvdModel."""
@@ -68600,7 +68600,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 serial_number:
                    Serial Number of the device.
                    Used only for documentation and deployment purposes. It is used by the
-                   'eos_config_deploy_cvp' and 'cv_deploy' roles.
+                   'cv_deploy' role.
                 service_routing_configuration_bgp: Subclass of AvdModel.
                 service_routing_protocols_model: service_routing_protocols_model
                 service_unsupported_transceiver: Subclass of AvdModel.

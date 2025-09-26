@@ -3,7 +3,6 @@ anta_runner
 digital_twin
 eos_cli_config_gen
 eos_cli_config_gen_deprecated_vars
-eos_config_deploy_cvp
 eos_designs_deprecated_vars
 eos_designs-l2ls
 eos_designs-mpls-isis-sr-ldp
