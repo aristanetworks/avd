@@ -3291,6 +3291,7 @@ keys:
             '
           items:
             type: str
+          min_length: 1
         platforms:
           type: list
           min_length: 1
