@@ -1377,8 +1377,8 @@ $defs:
                       items:
                         type: str
                       description: |-
-                  List of node names or regular expressions to match against hostnames.
-                  The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
+                        List of node names or regular expressions to match against hostnames.
+                        The regexes need to match full hostname and be enclosed in quotes, e.g 'DC1-BL[12]A'.
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                     set_ipv4_next_hop:
                       type: str

@@ -7783,10 +7783,11 @@ $defs:
                 type: list
                 items:
                   type: str
-                description: 'List of node names or fully matching regexes to configure
-                  the peer group, e.g. ''DC1-BL[12]B''.
+                description: 'List of node names or regular expressions to match against
+                  hostnames to configure the peer-group.
 
-                  The regexes should be written in quotes.
+                  The regexes need to match full hostname and be enclosed in quotes,
+                  e.g ''DC1-BL[12]A''.
 
                   The peer-group is also created on devices which have a bgp_peer
                   mapped to the corresponding peer_group.
@@ -9318,10 +9319,11 @@ $defs:
                       type: list
                       items:
                         type: str
-                      description: 'List of node names or fully matching regexes,
-                        e.g `DC1-BL[12]A`.
+                      description: 'List of node names or regular expressions to match
+                        against hostnames.
 
-                        The regexes should be written in quotes.
+                        The regexes need to match full hostname and be enclosed in
+                        quotes, e.g ''DC1-BL[12]A''.
 
                         Nodes is required to restrict configuration of BGP neighbors
                         to certain nodes in the network.'
@@ -9462,10 +9464,11 @@ $defs:
                       type: list
                       items:
                         type: str
-                      description: 'List of node names or fully matching regex to
-                        configure the peer group, e.g. ''DC1-BL[12]B''.
+                      description: 'List of node names or regular expressions to match
+                        against hostnames to configure the peer-group.
 
-                        The regexes should be written in quotes.
+                        The regexes need to match full hostname and be enclosed in
+                        quotes, e.g ''DC1-BL[12]A''.
 
                         The peer-group is also created on devices which have a bgp_peer
                         mapped to the corresponding peer_group.
