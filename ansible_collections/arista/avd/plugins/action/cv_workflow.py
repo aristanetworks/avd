@@ -169,7 +169,7 @@ class ActionModule(ActionBase):
                     cloudvision={
                         **asdict(cloudvision),
                         "token": "<removed>",
-                        **({"proxy_password": "<removed>"} if cloudvision.proxy_password is not None else {}),
+                        **({"proxy_password": "<removed>"} if cloudvision.proxy_password is not None else {}),  # NOSONAR
                     },
                     configs=[asdict(config) for config in eos_config_objects],
                     device_tags=[asdict(device_tag) for device_tag in device_tag_objects],
