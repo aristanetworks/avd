@@ -45,6 +45,22 @@ $defs:
         items:
           type: str
           description: IPv6_address/Mask.
+      ipv6_nd:
+        type: dict
+        keys:
+          advertise_ipv6_address_virtuals:
+            type: bool
+            description: Advertise all IPv6 virtual addresses defined under the `ipv6_address_virtuals` key.
+          valid_lifetime:
+            type: str
+            description: In seconds <0-4294967295> or infinite.
+            convert_types:
+              - int
+          preferred_lifetime:
+            type: str
+            description: In seconds <0-4294967295> or infinite.
+            convert_types:
+              - int
       ip_address_virtual_secondaries:
         type: list
         description: Secondary IPv4 VXLAN Anycast IP addresses.

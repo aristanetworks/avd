@@ -10557,9 +10557,17 @@ keys:
               - str
             vrf:
               type: str
-              description: VRF name.
-              convert_types:
-              - int
+              deprecation:
+                warning: true
+                removed: true
+                new_key: ntp.vrf
+      vrf:
+        type: str
+        description: 'VRF name for all NTP servers.
+
+          All NTP servers must be in the same VRF on EOS.'
+        convert_types:
+        - int
       authenticate:
         type: bool
       authenticate_servers_only:

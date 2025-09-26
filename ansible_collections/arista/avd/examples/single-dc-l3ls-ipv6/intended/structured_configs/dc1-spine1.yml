@@ -106,7 +106,7 @@ ntp:
   servers:
   - name: 0.pool.ntp.org
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:

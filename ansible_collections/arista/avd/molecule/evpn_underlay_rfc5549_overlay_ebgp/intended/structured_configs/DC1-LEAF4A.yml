@@ -115,7 +115,7 @@ ntp:
   servers:
   - name: 192.168.200.5
     preferred: true
-    vrf: MGMT
+  vrf: MGMT
 platform:
   sand:
     lag:
